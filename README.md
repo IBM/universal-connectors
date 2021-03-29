@@ -1,17 +1,3 @@
-<details open="open">
-  <summary>Table of Contents</summary>
-
-  - [Overview](#overview)
-  - [How it works](#how-it-works)
-  - [IBM Certified Universal Connector Plugins](#ibm-certified-universal-connector-plugins)
-  - [Using Universal Connector Plugins](#using-a-universal-connector-plugins)
-  - [Creating a custom Universal Connector Plugin](#creating-a-custom-universal-connector-plugin)
-  - [Contributing](#contributing)
-  - [Contact us](#contact-us)
-  - [Licensing](#licensing)
-
-</details>
-
 ## Overview
 
 The Universal Connector framework assists data security teams by providing a method to agentlessly collect activity and audit log data from a variety cloud and on-premise data sources.
@@ -49,7 +35,7 @@ Universal Connector plugins are packaged and deployed in a Docker container envi
 
 ## Contributing
 To make your connector plugin available to the community, submit your connector for IBM Certification.
-- [Guidelines for contributing](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/CONTRIBUTING.md)
+- [Guidelines for contributing](CONTRIBUTING.md)
 - Benefits include:
   - Free, comprehensive testing and certification
   - Expanding the reach of product APIs
