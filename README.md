@@ -1,17 +1,3 @@
-<details open="open">
-  <summary>Table of Contents</summary>
-
-  - [Overview](#overview)
-  - [How it works](#how-it-works)
-  - [IBM Certified Universal Connector Plugins](#ibm-certified-universal-connector-plugins)
-  - [Using Universal Connector Plugins](#using-a-universal-connector-plugins)
-  - [Creating a custom Universal Connector Plugin](#creating-a-custom-universal-connector-plugin)
-  - [Contributing](#contributing)
-  - [Contact us](#contact-us)
-  - [Licensing](#licensing)
-
-</details>
-
 ## Overview
 
 The Universal Connector framework assists data security teams by providing a method to agentlessly collect activity and audit log data from a variety cloud and on-premise data sources.
