@@ -1,0 +1,10 @@
+language: java
+
+os:
+  - linux
+
+before_script:
+  - echo "Running before script..."
+
+script:
+  - echo "Running tests..."
