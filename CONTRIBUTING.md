@@ -63,7 +63,7 @@ Feel free to [create an issue][issues] to question or discuss anything with us. 
 
 ## Testing
 
-Coming soon ....
+Coming soon ...
 
 <!-- links -->
 [issues]: https://github.com/IBM/univer***REMOVED***l-connectors/issues

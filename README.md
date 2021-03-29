@@ -1,17 +1,3 @@
-<details open="open">
-  <summary>Table of Contents</summary>
-
-  - [Overview](#overview)
-  - [How it works](#how-it-works)
-  - [IBM Certified Univer***REMOVED***l Connector Plugins](#ibm-certified-univer***REMOVED***l-connector-plugins)
-  - [Using Univer***REMOVED***l Connector Plugins](#using-a-univer***REMOVED***l-connector-plugins)
-  - [Creating a custom Univer***REMOVED***l Connector Plugin](#creating-a-custom-univer***REMOVED***l-connector-plugin)
-  - [Contributing](#contributing)
-  - [Contact us](#contact-us)
-  - [Licensing](#licensing)
-
-</details>
-
 ## Overview
 
 The Univer***REMOVED***l Connector framework assists data security teams by providing a method to agentlessly collect activity and audit log data from a variety cloud and on-premise data sources.
@@ -49,7 +35,7 @@ Univer***REMOVED***l Connector plugins are packaged and deployed in a Docker con
 
 ## Contributing
 To make your connector plugin available to the community, submit your connector for IBM Certification.
-- [Guidelines for contributing](https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connectors/blob/master/CONTRIBUTING.md)
+- [Guidelines for contributing](CONTRIBUTING.md)
 - Benefits include:
   - Free, comprehensive testing and certification
   - Expanding the reach of product APIs
