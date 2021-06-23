@@ -1,0 +1,5 @@
+{
+	"datasourceTypeName":"Dynamo over Cloudwatch",
+	"inputPluginName":"cloudwatch_logs_input",
+	"filterPluginName":"dynamodb_guardium_plugin_filter"
+}
