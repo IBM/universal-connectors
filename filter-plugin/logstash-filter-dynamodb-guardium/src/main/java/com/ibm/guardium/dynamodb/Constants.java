@@ -5,7 +5,7 @@ public interface Constants {
 	public static final String NOT_AVAILABLE = "NA";
 	public static final String DATA_PROTOCOL_STRING = "DynamoDB native audit";
 	public static final String UNKNOWN_STRING = "";
-	public static final String SERVER_TYPE_STRING = "DynamoDB";
+	public static final String SERVER_TYPE_STRING = "DYNAMODB";
     public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_dynamoguardium_json_parse_error";
 
 	
