@@ -10,7 +10,10 @@
 /test/version_tmp/
 /tmp/
 dist
-
+common/.gradle/buildOutputCleanup/*.bin
+common/.gradle/buildOutputCleanup/*.lock
+common/.gradle/4.8/*.bin
+common/.gradle/4.8/*.lock
 # Used by dotenv library to load environment variables.
 # .env
 
