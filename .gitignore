@@ -11,11 +11,12 @@
 /tmp/
 dist
 
-# Ignore .gradle bin and lock files
-common/.gradle/buildOutputCleanup/*.bin
-common/.gradle/buildOutputCleanup/*.lock
-common/.gradle/4.8/*.bin
-common/.gradle/4.8/*.lock
+# Ignore .gradle folders
+common/.gradle
+filter-plugin/logstash-filter-hdfs-guardium/.gradle
+filter-plugin/logstash-filter-mongodb-guardium/.gradle
+filter-plugin/logstash-filter-mysql-guardium/.gradle
+filter-plugin/logstash-filter-s3-guardium/.gradle
 
 # Ignore compiled build classes
 common/build/classes
