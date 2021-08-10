@@ -11,7 +11,7 @@
 /tmp/
 dist
 
-# Ignore .gradle and .idea folders
+# Ignore unnecessary folders
 common/.gradle
 common/.idea
 common/build
