@@ -1,0 +1,10 @@
+{
+	"connection": {
+		"type": {
+			"description": "Datasource type."
+		},
+		"connectionMethod": {
+			"description": "Connection Method."
+		}
+	}
+}

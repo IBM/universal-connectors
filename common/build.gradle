@@ -1,0 +1,62 @@
+import java.nio.file.Files
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
+
+
+apply plugin: 'java-library'
+
+group 'com.ibm.guardium.universalconnector.commons'
+version "${file("VERSION").text.trim()}" 
+// ===========================================================================
+// plugin info
+// ===========================================================================
+// ===========================================================================
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }    
+}
+
+repositories {
+    mavenCentral()
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.0'
+}
+
+
+dependencies {
+    compile group: 'commons-validator', name: 'commons-validator', version: '1.4.1'
+    testCompile 'junit:junit:4.12'
+}
+
+clean {
+    delete "${projectDir}/build/libs/"
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    //options.compilerArgs += ["--release", "8"]
+}
+
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier = 'javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+artifacts {
+     archives sourcesJar
+     archives javadocJar
+}

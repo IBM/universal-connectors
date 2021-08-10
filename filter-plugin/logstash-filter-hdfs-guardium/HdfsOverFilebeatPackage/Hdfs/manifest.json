@@ -1,0 +1,14 @@
+{
+	"name": "HDFS",
+	"alias": "Hdfs",
+	"type": "filter",
+	"pipeline_type":null,
+	"plugin_version": "0.0.1",
+	"datasourceTypes": [{"type":"HDFS","supportedVersions": [""]}],
+	"supported_input_plugins": ["Filebeat_input"],
+	"developer": "Mae Rockar",
+	"license": "Apache2.0",
+	"description": "This example provides the data needed in order to support HDFS in Guardium Universal Connector.",
+	"configuration_notes": "",
+	"documentation_path": "https://www-03preprod.ibm.com/support/knowledgecenter/"
+}

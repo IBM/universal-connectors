@@ -1,9 +1,26 @@
+<details open="open">
+  <summary>Table of Contents</summary>
+
+  - [Overview](#overview)
+  - [How it works](#how-it-works)
+  - [IBM Certified Universal Connector Plugins](#ibm-certified-universal-connector-plugins)
+  - [Using Universal Connector Plugins](#using-a-universal-connector-plugins)
+  - [Packaging Guardium Insights Universal Connector Plugins](#packaging-universal-connector-plugins)
+  - [Creating a custom Universal Connector Plugin](#creating-a-custom-universal-connector-plugin)
+  - [Contributing](#contributing)
+  - [Contact us](#contact-us)
+  - [Licensing](#licensing)
+
+</details>
+
 ## Overview
 
 The Universal Connector framework assists data security teams by providing a method to agentlessly collect activity and audit log data from a variety cloud and on-premise data sources.
 - Easy to setup and configure
 - Simple to maintain
 - Normalizes collected data - making it consumable for security applications
+
+An important note: only the plug-ins which appear in verifiedUCPlugins.txt are supported in Guardium Insights. The rest are only supported in Guardium GDP.
 
 ## How it works
 Universal Connectors consist of series of three plugins within a [Logstash pipeline](https://www.elastic.co/guide/en/logstash/current/pipeline.html) that ingest, filter, and output events in a normalized, common format:
@@ -25,6 +42,12 @@ Universal Connector plugins are packaged and deployed in a Docker container envi
 ## Using Universal Connector Plugins
 - [In a Guardium environment](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/cfg_overview.html)
 
+## Packaging Guardium Insights Universal Connector Plugins
+1) **Clone universal-connectors project**: git clone https://github.com/IBM/universal-connectors.git
+2) **Enter universal-connector project folder**: cd /path/to/universal-connectors 
+3) **Run packagePluginsForGuardiumInsights.sh script**: sh packagePluginsForGuardiumInsights.sh
+4) **Find required plugins in packagedPlugins**: ls packagedPlugins 
+
 ## Creating a custom Universal Connector Plugin
 - [Configuring native audit on the data source](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/cfg_native_audit_data_source.html)
 - [Developing a filter plugin](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/develop_filter_plugin.html)
@@ -35,7 +58,7 @@ Universal Connector plugins are packaged and deployed in a Docker container envi
 
 ## Contributing
 To make your connector plugin available to the community, submit your connector for IBM Certification.
-- [Guidelines for contributing](CONTRIBUTING.md)
+- [Guidelines for contributing](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/CONTRIBUTING.md)
 - Benefits include:
   - Free, comprehensive testing and certification
   - Expanding the reach of product APIs

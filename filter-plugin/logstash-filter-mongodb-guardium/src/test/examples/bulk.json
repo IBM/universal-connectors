@@ -1,0 +1,29 @@
+{
+    "command": "var bulk = db.posts.initializeOrderedBulkOp(); bulk.insert( { content: 'Some content', owner_id: '4444', via: 'facebook' } ); bulk.find( { owner_id: '4444'} ).update( { $set: {via: 'Facebook'} } ); bulk.execute()",
+    "sql-equivalent": "SELECT * from ... ",
+    "full-sql-guessing": "/*like command above*/",
+    "mongoaudit": {},
+    "construct": {
+        "sentences": [
+            {
+                "verb": "",
+                "descendants": "",
+                "objects": [
+                    {
+                        "name": "",
+                        "type": "collection",
+                        "fields": "",
+                        "schema": ""
+                    },
+                    {
+                        "name": "",
+                        "type": "collection",
+                        "fields": "",
+                        "schema": ""
+                    }
+                ],
+                "fields": []
+            }
+        ]
+    }
+}
