@@ -20,7 +20,7 @@ The Universal Connector framework assists data security teams by providing a met
 - Simple to maintain
 - Normalizes collected data - making it consumable for security applications
 
-An important note: only the plug-ins which appear in verifiedUCPlugins.txt are supported in Guardium Insights. The rest are only supported in Guardium GDP.
+An important note: only the plug-ins which appear in verifiedUCPlugins.txt are supported in Guardium Insights. The rest are only supported in Guardium Data Protection.
 
 ## How it works
 Universal Connectors consist of series of three plugins within a [Logstash pipeline](https://www.elastic.co/guide/en/logstash/current/pipeline.html) that ingest, filter, and output events in a normalized, common format:

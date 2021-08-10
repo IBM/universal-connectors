@@ -4,6 +4,9 @@ This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
+## Filter notes
+* The filter supports events sent through Cloudwatch or SQS.
+
 ## Contribute
 
 The documentation for the Logstash Java plug-ins is available [here](https://www.elastic.co/guide/en/logstash/current/contributing-java-plugin.html).
