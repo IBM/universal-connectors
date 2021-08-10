@@ -1,4 +1,10 @@
 #!/bin/bash
+#--------------------------------------------------------------------------------
+# Copyright 2020-2021 IBM Inc. All rights reserved
+# SPDX-License-Identifier: Apache2.0
+#---------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
+
 VERIFIED_UC_PLUGINS_FILE="verifiedUCPlugins.txt"
 PACKAGED_PLUGINS_DIR=dist/plugins
 

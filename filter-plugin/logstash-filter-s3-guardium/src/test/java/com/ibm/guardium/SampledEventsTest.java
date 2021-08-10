@@ -1,3 +1,9 @@
+/*
+ *
+ * Copyright 2020-2021 IBM Inc. All rights reserved
+ * SPDX-License-Identifier: Apache2.0
+ *
+ */
 package com.ibm.guardium;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

@@ -1,3 +1,9 @@
+/*
+ *
+ * Copyright 2020-2021 IBM Inc. All rights reserved
+ * SPDX-License-Identifier: Apache2.0
+ *
+ */
 package org.logstashplugins;
 
 //import co.elastic.logstash.api.Configuration;
