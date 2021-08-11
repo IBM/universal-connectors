@@ -10,5 +10,5 @@
 	"license": "Apache2.0",
 	"description": "This example provides the data needed in order to support S3 in Guardium Univer***REMOVED***l Connector.",
 	"configuration_notes": "",
-	"documentation_path": "https://www-03preprod.ibm.com/support/knowledgecenter/"
+	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-s3-guardium/README.md"
 }
