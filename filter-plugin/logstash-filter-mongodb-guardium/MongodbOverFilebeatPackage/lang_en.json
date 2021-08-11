@@ -9,11 +9,7 @@
 	},
 	"configuration": {
 		"auth": {
-			"dataShipper": {
-				"label": "Data Shipper",
-				"description": "Data shipper that passes the data to the Guardium Universal Connector."
-			},
-			"datasourceTag": {
+			"guc_filter_param_datasource_tag": {
 				"label": "Datasource Tag",
 				"description": "Tag that was added to every event sent from the data source."
 			}
