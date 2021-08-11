@@ -10,7 +10,7 @@
       "hidden": true
     },
     "help": {
-      "default": "https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-mysql-guardium",
+      "default": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mysql-guardium/README.md",
       "type": "link"
     }
   },
