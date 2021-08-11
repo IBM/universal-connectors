@@ -1,0 +1,48 @@
+{
+    "original-command": "db.Myuser.findOneAndDelete()",
+    "sql-equivalent": "DELETE FROM ... WHERE ..=.. ",
+    "full-sql-guessing": "/*reconstruct like command above? mongoaudit is enough?*/",
+    "mongoaudit": {
+        "atype": "authCheck",
+        "ts": {
+            "$date": "2020-01-21T05:14:37.304-0500"
+        },
+        "local": {
+            "ip": "127.0.0.1",
+            "port": 27017
+        },
+        "remote": {
+            "ip": "127.0.0.1",
+            "port": 50915
+        },
+        "users": [
+            {
+                "user": "BILL",
+                "db": "admin"
+            }
+        ],
+        "roles": [
+            {
+                "role": "readWrite",
+                "db": "admin"
+            }
+        ],
+        "param": {
+            "command": "findAndModify",
+            "ns": "test.Myuser",
+            "args": {
+                "findandmodify": "Myuser",
+                "query": {},
+                "remove": true,
+                "lsid": {
+                    "id": {
+                        "$binary": "RIZRvnaUTda/pKqbWTGE+g==",
+                        "$type": "04"
+                    }
+                },
+                "$db": "test"
+            }
+        },
+        "result": 0
+    }
+}
