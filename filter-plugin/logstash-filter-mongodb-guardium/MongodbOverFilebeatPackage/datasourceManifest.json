@@ -1,0 +1,5 @@
+{
+	"datasourceTypeName":"Mongo over Filebeat",
+	"inputPluginName":"Filebeat_input",
+	"filterPluginName":"Guardium_MongoDB_filter"
+}

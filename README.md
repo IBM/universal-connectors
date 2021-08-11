@@ -1,9 +1,26 @@
+<details open="open">
+  <summary>Table of Contents</summary>
+
+  - [Overview](#overview)
+  - [How it works](#how-it-works)
+  - [IBM Certified Univer***REMOVED***l Connector Plugins](#ibm-certified-univer***REMOVED***l-connector-plugins)
+  - [Using Univer***REMOVED***l Connector Plugins](#using-a-univer***REMOVED***l-connector-plugins)
+  - [Packaging Guardium Insights Univer***REMOVED***l Connector Plugins](#packaging-univer***REMOVED***l-connector-plugins)
+  - [Creating a custom Univer***REMOVED***l Connector Plugin](#creating-a-custom-univer***REMOVED***l-connector-plugin)
+  - [Contributing](#contributing)
+  - [Contact us](#contact-us)
+  - [Licensing](#licensing)
+
+</details>
+
 ## Overview
 
 The Univer***REMOVED***l Connector framework assists data security teams by providing a method to agentlessly collect activity and audit log data from a variety cloud and on-premise data sources.
 - Easy to setup and configure
 - Simple to maintain
 - Normalizes collected data - making it consumable for security applications
+
+An important note: only the plug-ins which appear in verifiedUCPlugins.txt are supported in Guardium Insights. The rest are only supported in Guardium Data Protection.
 
 ## How it works
 Univer***REMOVED***l Connectors consist of series of three plugins within a [Logstash pipeline](https://www.elastic.co/guide/en/logstash/current/pipeline.html) that ingest, filter, and output events in a normalized, common format:
@@ -24,6 +41,12 @@ Univer***REMOVED***l Connector plugins are packaged and deployed in a Docker con
 
 ## Using Univer***REMOVED***l Connector Plugins
 - [In a Guardium environment](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/cfg_overview.html)
+
+## Packaging Guardium Insights Univer***REMOVED***l Connector Plugins
+1) **Clone univer***REMOVED***l-connectors project**: git clone https://github.com/IBM/univer***REMOVED***l-connectors.git
+2) **Enter univer***REMOVED***l-connector project folder**: cd /path/to/univer***REMOVED***l-connectors 
+3) **Run packagePluginsForGuardiumInsights.sh script**: sh packagePluginsForGuardiumInsights.sh
+4) **Find required plugins in packagedPlugins**: ls packagedPlugins 
 
 ## Creating a custom Univer***REMOVED***l Connector Plugin
 - [Configuring native audit on the data source](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/cfg_native_audit_data_source.html)

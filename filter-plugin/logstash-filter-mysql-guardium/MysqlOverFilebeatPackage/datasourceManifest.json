@@ -1,0 +1,5 @@
+{
+	"datasourceTypeName":"Mysql over Filebeat",
+	"inputPluginName":"Filebeat_input",
+	"filterPluginName":"Guardium_Mysql_filter"
+}

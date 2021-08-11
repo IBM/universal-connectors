@@ -1,0 +1,5 @@
+{
+	"datasourceTypeName":"HDFS over Filebeat",
+	"inputPluginName":"Filebeat_input",
+	"filterPluginName":"Guardium_HDFS_filter"
+}

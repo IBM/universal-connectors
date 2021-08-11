@@ -1,0 +1,73 @@
+{
+    "command": "db.posts.insertMany([{}, {}]);",
+    "sql-equivalent": "SELECT * from ... ",
+    "full-sql-guessing": "/*like command above*/",
+    "mongoaudit": {
+        "atype": "authCheck",
+        "ts": {
+            "$date": "2020-01-26T08:45:29.887-0500"
+        },
+        "local": {
+            "ip": "127.0.0.1",
+            "port": 27017
+        },
+        "remote": {
+            "ip": "127.0.0.1",
+            "port": 56470
+        },
+        "users": [],
+        "roles": [],
+        "param": {
+            "command": "insert",
+            "ns": "test.posts",
+            "args": {
+                "insert": "posts",
+                "ordered": true,
+                "lsid": {
+                    "id": {
+                        "$binary": "1P3A98W7QbqeDMqMdP2trA==",
+                        "$type": "04"
+                    }
+                },
+                "$db": "test",
+                "documents": [
+                    {
+                        "_id": {
+                            "$oid": "5e2d97f910bb830004418b03"
+                        },
+                        "content": "Some content",
+                        "owner_id": "12345",
+                        "via": "facebook"
+                    },
+                    {
+                        "_id": {
+                            "$oid": "5e2d97f910bb830004418b04"
+                        },
+                        "content": "Some other content",
+                        "owner_id": "12121",
+                        "via": "slack"
+                    }
+                ]
+            }
+        },
+        "result": 0
+    }
+        ,
+    "construct": {
+        "sentences": [
+            {
+                "verb": "delete",
+                "descendants": "",
+                "objects": [
+                    {
+                        "name": "posts",
+                        "type": "collection",
+                        "fields": "",
+                        "schema": ""
+                    }
+                ],
+                "fields": []
+            }
+        ]
+    }
+}
