@@ -9,6 +9,23 @@
 /test/tmp/
 /test/version_tmp/
 /tmp/
+dist
+
+# Ignore unnecessary folders
+common/.gradle
+common/.idea
+common/build
+filter-plugin/logstash-filter-hdfs-guardium/.gradle
+filter-plugin/logstash-filter-hdfs-guardium/.idea
+filter-plugin/logstash-filter-mongodb-guardium/.gradle
+filter-plugin/logstash-filter-mongodb-guardium/.idea
+filter-plugin/logstash-filter-mysql-guardium/.gradle
+filter-plugin/logstash-filter-mysql-guardium/.idea
+filter-plugin/logstash-filter-s3-guardium/.gradle
+filter-plugin/logstash-filter-s3-guardium/.idea
+
+# Ignore compiled build classes
+common/build/classes
 
 # Used by dotenv library to load environment variables.
 # .env

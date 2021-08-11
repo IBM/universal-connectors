@@ -1,0 +1,65 @@
+db.Myuser.insert( { "_id": ObjectId('58842568c706f50f5c1de663'), "userId": "123456", "user_name":"Eli", "interestedTags": [ "music", "cricket", "hiking", "F1", "Mobile", "racing" ], "listFriends": [ "111111", "222222", "333333" ] } )
+{
+    "atype": "authCheck",
+    "ts": {
+        "$date": "2020-01-21T04:37:30.174-0500"
+    },
+    "local": {
+        "ip": "127.0.0.1",
+        "port": 27017
+    },
+    "remote": {
+        "ip": "127.0.0.1",
+        "port": 47638
+    },
+    "users": [
+        {
+            "user": "BILL",
+            "db": "admin"
+        }
+    ],
+    "roles": [
+        {
+            "role": "readWrite",
+            "db": "admin"
+        }
+    ],
+    "param": {
+        "command": "insert",
+        "ns": "test.Myuser",
+        "args": {
+            "insert": "Myuser",
+            "ordered": true,
+            "lsid": {
+                "id": {
+                    "$binary": "ql5vZfbGTgWXrBSZOU6l5w==",
+                    "$type": "04"
+                }
+            },
+            "$db": "test",
+            "documents": [
+                {
+                    "_id": {
+                        "$oid": "58842568c706f50f5c1de663"
+                    },
+                    "userId": "123456",
+                    "user_name": "Eli",
+                    "interestedTags": [
+                        "music",
+                        "cricket",
+                        "hiking",
+                        "F1",
+                        "Mobile",
+                        "racing"
+                    ],
+                    "listFriends": [
+                        "111111",
+                        "222222",
+                        "333333"
+                    ]
+                }
+            ]
+        }
+    },
+    "result": 0
+}

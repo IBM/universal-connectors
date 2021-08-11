@@ -1,0 +1,72 @@
+{
+    "command": "db.bios.find({ awards: { $elemMatch: { award: 'Turing Award', year: { $gt: 1980 } } } })",
+    "sql-equivalent": "SELECT * FROM bios WHERE awards.award ='Turing Award' AND year>1980",
+    "full-sql-guessing": "/*like command above*/",
+    "mongoaudit": {
+        "atype": "authCheck",
+        "ts": {
+            "$date": "2020-01-14T10:14:43.130-0500"
+        },
+        "local": {
+            "ip": "127.0.0.1",
+            "port": 27017
+        },
+        "remote": {
+            "ip": "127.0.0.1",
+            "port": 33556
+        },
+        "users": [],
+        "roles": [],
+        "param": {
+            "command": "find",
+            "ns": "test.bios",
+            "args": {
+                "find": "bios",
+                "filter": {
+                    "awards": {
+                        "$elemMatch": {
+                            "award": "Turing Award",
+                            "year": {
+                                "$gt": 1980
+                            }
+                        }
+                    }
+                },
+                "lsid": {
+                    "id": {
+                        "$binary": "b9LaXeM7S824KWi92zIEWQ==",
+                        "$type": "04"
+                    }
+                },
+                "$db": "test"
+            }
+        },
+        "result": 0
+    },
+    "construct": {
+        "sentences": [
+            {
+                "verb": "find",
+                "descendants": "",
+                "objects": [
+                    {
+                        "name": "test.bios",
+                        "type": "collection",
+                        "fields": "",
+                        "schema": ""
+                    }
+                ],
+                "fields": [
+                    {
+                        "name": "?awards.award?",
+                        "value": "Turing Award"
+                    },
+                    {
+                        "name": "?awards.year?",
+                        "value": "?{ $gt: 1980 }?"
+                    }
+                ]
+            }
+        ]
+    }
+}

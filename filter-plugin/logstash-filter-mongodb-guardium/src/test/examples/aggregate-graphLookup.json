@@ -1,0 +1,73 @@
+{
+    "command": "db.travelers.aggregate( [ { $graphLookup: { from: 'airports', startWith: '$nearestAirport', connectFromField: 'connects', connectToField: 'airport', maxDepth: 2, depthField: 'numConnections', as: 'destinations' } } ] )",
+    "sql-equivalent": "SELECT * FROM bios WHERE awards.award ='Turing Award' AND year>1980",
+    "full-sql-guessing": "/*like command above*/",
+    "mongoaudit": {
+        "atype": "authCheck",
+        "ts": {
+            "$date": "2020-01-26T09:58:44.547-0500"
+        },
+        "local": {
+            "ip": "127.0.0.1",
+            "port": 27017
+        },
+        "remote": {
+            "ip": "127.0.0.1",
+            "port": 56984
+        },
+        "users": [],
+        "roles": [],
+        "param": {
+            "command": "aggregate",
+            "ns": "test.travelers",
+            "args": {
+                "aggregate": "travelers",
+                "pipeline": [
+                    {
+                        "$graphLookup": {
+                            "from": "airports",
+                            "startWith": "$nearestAirport",
+                            "connectFromField": "connects",
+                            "connectToField": "airport",
+                            "maxDepth": 2,
+                            "depthField": "numConnections",
+                            "as": "destinations"
+                        }
+                    }
+                ],
+                "cursor": {},
+                "lsid": {
+                    "id": {
+                        "$binary": "2WoIDPhSTcKHrdJW4azoow==",
+                        "$type": "04"
+                    }
+                },
+                "$db": "test"
+            }
+        },
+        "result": 0
+    },
+    "construct": {
+        "sentences": [
+            {
+                "verb": "aggregate",
+                "descendants": "",
+                "objects": [
+                    {
+                        "name": "travelers",
+                        "type": "collection",
+                        "fields": "",
+                        "schema": ""
+                    },
+                    {
+                        "name": "airports",
+                        "type": "collection",
+                        "fields": "",
+                        "schema": ""
+                    }
+                ],
+                "fields": []
+            }
+        ]
+    }
+}

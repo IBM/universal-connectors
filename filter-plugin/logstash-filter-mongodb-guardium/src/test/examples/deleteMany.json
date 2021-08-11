@@ -1,0 +1,62 @@
+{
+    "command": "db.posts.deleteMany({'via': 'slack'});",
+    "sql-equivalent": "SELECT * from ... ",
+    "full-sql-guessing": "/*like command above*/",
+    "mongoaudit": {
+        "atype": "authCheck",
+        "ts": {
+            "$date": "2020-01-26T08:38:18.648-0500"
+        },
+        "local": {
+            "ip": "127.0.0.1",
+            "port": 27017
+        },
+        "remote": {
+            "ip": "127.0.0.1",
+            "port": 56470
+        },
+        "users": [],
+        "roles": [],
+        "param": {
+            "command": "delete",
+            "ns": "test.posts",
+            "args": {
+                "delete": "posts",
+                "ordered": true,
+                "lsid": {
+                    "id": {
+                        "$binary": "1P3A98W7QbqeDMqMdP2trA==",
+                        "$type": "04"
+                    }
+                },
+                "$db": "test",
+                "deletes": [
+                    {
+                        "q": {
+                            "via": "slack"
+                        },
+                        "limit": 0
+                    }
+                ]
+            }
+        },
+        "result": 0
+    },
+    "construct": {
+        "sentences": [
+            {
+                "verb": "delete",
+                "descendants": "",
+                "objects": [
+                    {
+                        "name": "posts",
+                        "type": "collection",
+                        "fields": "",
+                        "schema": ""
+                    }
+                ],
+                "fields": []
+            }
+        ]
+    }
+}
