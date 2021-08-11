@@ -1,0 +1,5 @@
+{
+	"datasourceTypeName":"S3 over Cloudwatch_Logs",
+	"inputPluginName":"Cloudwatch_logs_input",
+	"filterPluginName":"Guardium_S3_filter"
+}

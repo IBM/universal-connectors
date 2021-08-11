@@ -1,0 +1,92 @@
+{
+    "command": "db.getCollection(\"users\").aggregate([{$match : {admin : 1}},{$lookup: {from: \"posts\",localField: \"_id\",foreignField: \"owner_id\",as: \"posts\"}},{$project : {posts : { $filter : {input : \"$posts\"  , as : \"post\", cond : { $eq : [\"$$post.via\" , \"facebook\"] } } }, admin : 1}}])",
+    "sql-equivalent": "SELECT * FROM bios WHERE awards.award ='Turing Award' AND year>1980",
+    "full-sql-guessing": "/*like command above*/",
+    "mongoaudit": {
+        "atype": "authCheck",
+        "ts": {
+            "$date": "2020-01-16T06:07:21.122-0500"
+        },
+        "local": {
+            "ip": "127.0.0.1",
+            "port": 27017
+        },
+        "remote": {
+            "ip": "127.0.0.1",
+            "port": 43600
+        },
+        "users": [],
+        "roles": [],
+        "param": {
+            "command": "aggregate",
+            "ns": "test.users",
+            "args": {
+                "aggregate": "users",
+                "pipeline": [
+                    {
+                        "$match": {
+                            "admin": 1
+                        }
+                    },
+                    {
+                        "$lookup": {
+                            "from": "posts",
+                            "localField": "_id",
+                            "foreignField": "owner_id",
+                            "as": "posts"
+                        }
+                    },
+                    {
+                        "$project": {
+                            "posts": {
+                                "$filter": {
+                                    "input": "$posts",
+                                    "as": "post",
+                                    "cond": {
+                                        "$eq": [
+                                            "$$post.via",
+                                            "facebook"
+                                        ]
+                                    }
+                                }
+                            },
+                            "admin": 1
+                        }
+                    }
+                ],
+                "cursor": {},
+                "lsid": {
+                    "id": {
+                        "$binary": "9IxV+mBmQfa73jbV9n4CSQ==",
+                        "$type": "04"
+                    }
+                },
+                "$db": "test"
+            }
+        },
+        "result": 0
+    },
+    "construct": {
+        "sentences": [
+            {
+                "verb": "aggregate",
+                "descendants": "",
+                "objects": [
+                    {
+                        "name": "users",
+                        "type": "collection",
+                        "fields": "",
+                        "schema": ""
+                    },
+                    {
+                        "name": "posts",
+                        "type": "collection",
+                        "fields": "",
+                        "schema": ""
+                    }
+                ],
+                "fields": []
+            }
+        ]
+    }
+}

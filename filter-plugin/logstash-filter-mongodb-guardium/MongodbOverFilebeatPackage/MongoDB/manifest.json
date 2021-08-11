@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_MongoDB_filter",
+	"alias": "Mongo",
+	"type": "filter",
+	"pipeline_type":null,
+	"plugin_version": "0.6.6",
+	"datasourceTypes": [{"type":"MongoDB","supportedVersions": ["4.2","4.4"]}],
+	"supported_input_plugins": ["Filebeat_input"],
+	"developer": "Lions Lion",
+	"license": "Apache2.0",
+	"description": "This example provides the data needed in order to support MongoDB in Guardium Univer***REMOVED***l Connector.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/master/filter-plugin/logstash-filter-mongodb-guardium/README.md"
+}

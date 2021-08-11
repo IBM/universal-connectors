@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_S3_filter",
+	"alias": "S3",
+	"type": "filter",
+	"pipeline_type":null,
+	"plugin_version": "0.6.6",
+	"datasourceTypes": [{"type":"S3","supportedVersions": ["9.5.5"]}],
+	"supported_input_plugins": ["Cloudwatch_logs_input"],
+	"developer": "",
+	"license": "Apache2.0",
+	"description": "This example provides the data needed in order to support S3 in Guardium Univer***REMOVED***l Connector.",
+	"configuration_notes": "",
+	"documentation_path": "https://www-03preprod.ibm.com/support/knowledgecenter/"
+}

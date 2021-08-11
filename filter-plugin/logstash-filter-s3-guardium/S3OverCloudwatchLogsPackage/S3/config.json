@@ -1,0 +1,24 @@
+{
+  "connection": {
+    "type": {
+      "displayName": "S3",
+      "type": "connectorType"
+    },
+    "connectionMethod": {
+      "type": "text",
+      "default": "GUC",
+      "hidden": true
+    },
+    "help": {
+      "default": "<Help URL to configure datasource to make api call>",
+      "type": "link"
+    }
+  },
+  "configuration": {
+    "guc_filter_name": {
+      "type": "text",
+      "default": "Guardium_S3_filter",
+      "hidden": true
+    }
+  }
+}
