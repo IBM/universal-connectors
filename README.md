@@ -58,7 +58,7 @@ Universal Connector plugins are packaged and deployed in a Docker container envi
 
 ## Contributing
 To make your connector plugin available to the community, submit your connector for IBM Certification.
-- [Guidelines for contributing](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/CONTRIBUTING.md)
+- [Guidelines for contributing](CONTRIBUTING.md)
 - Benefits include:
   - Free, comprehensive testing and certification
   - Expanding the reach of product APIs
