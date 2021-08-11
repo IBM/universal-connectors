@@ -9,7 +9,7 @@
 	},
 	"configuration": {
 		"guc_input_param_role-arn": {
-			"label": "AWS Role ARN"
+			"label": "AWS Role ARN (optional)"
 		},
 		"guc_input_param_access_key_id": {
 			"label": "AWS access key id"
@@ -21,7 +21,7 @@
 			"label": "AWS secret access key"
 		},
 		"guc_input_param_event_filter": {
-			"label": "Event filter"
+			"label": "Event filter (optional)"
 		},
 		"auth": {
 			"guc_input_param_log_group": {

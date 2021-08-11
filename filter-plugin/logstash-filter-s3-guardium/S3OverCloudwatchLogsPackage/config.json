@@ -38,8 +38,7 @@
       "type": "password"
     },
     "guc_input_param_region": {
-      "type": "text",
-      "default": "us-east-1"
+      "type": "text"
     },
     "guc_input_param_secret_access_key": {
       "type": "password"
