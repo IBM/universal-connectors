@@ -10,7 +10,7 @@
       "hidden": true
     },
     "help": {
-      "default": "<Help URL to configure datasource to make api call>",
+      "default": "https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-mysql-guardium",
       "type": "link"
     }
   },
