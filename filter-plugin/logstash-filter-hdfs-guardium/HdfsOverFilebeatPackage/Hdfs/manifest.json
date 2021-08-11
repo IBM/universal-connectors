@@ -1,5 +1,5 @@
 {
-	"name": "HDFS",
+	"name": "Guardium_HDFS_filter",
 	"alias": "Hdfs",
 	"type": "filter",
 	"pipeline_type":null,
