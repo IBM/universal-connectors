@@ -60,7 +60,7 @@ Note: Pre-packaged plugins can be downloaded from [here](https://github.com/IBM/
 
 ## Contributing
 To make your connector plugin available to the community, submit your connector for IBM Certification.
-- [Guidelines for contributing](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/CONTRIBUTING.md)
+- [Guidelines for contributing](CONTRIBUTING.md)
 - Benefits include:
   - Free, comprehensive testing and certification
   - Extending the reach of a product, feature, or function
