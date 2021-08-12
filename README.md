@@ -3,10 +3,10 @@
 
   - [Overview](#overview)
   - [How it works](#how-it-works)
-  - [IBM Certified Universal Connector Plugins](#ibm-certified-universal-connector-plugins)
-  - [Using Universal Connector Plugins](#using-a-universal-connector-plugins)
+  - [Available Universal Connector Plugins](#universal-connector-plugins)
+  - [Using Universal Connector Plugins](#using-universal-connector-plugins)
   - [Packaging Guardium Insights Universal Connector Plugins](#packaging-universal-connector-plugins)
-  - [Creating a custom Universal Connector Plugin](#creating-a-custom-universal-connector-plugin)
+  - [Creating custom Universal Connector Plugins](#creating-custom-universal-connector-plugins)
   - [Contributing](#contributing)
   - [Contact us](#contact-us)
   - [Licensing](#licensing)
@@ -20,7 +20,7 @@ The Universal Connector framework assists data security teams by providing a met
 - Simple to maintain
 - Normalizes collected data - making it consumable for security applications
 
-An important note: only the plug-ins which appear in verifiedUCPlugins.txt are supported in Guardium Insights. The rest are only supported in Guardium Data Protection.
+An important note: only the plug-ins which appear in verifiedUCPlugins.txt are supported in Guardium Insights. The rest are only supported in Guardium GDP.
 
 ## How it works
 Universal Connectors consist of series of three plugins within a [Logstash pipeline](https://www.elastic.co/guide/en/logstash/current/pipeline.html) that ingest, filter, and output events in a normalized, common format:
@@ -40,19 +40,21 @@ Universal Connector plugins are packaged and deployed in a Docker container envi
 [View all available plugins](/docs/available_plugins.md)
 
 ## Using Universal Connector Plugins
-- [In a Guardium environment](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/cfg_overview.html)
+- [In Guardium Data Protection](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/cfg_overview.html)
+- [In Guardium Insights](https://www.ibm.com/docs/en/guardium-insights/3.0.x?topic=connector-configuring-universal)
 
-## Packaging Guardium Insights Universal Connector Plugins
+## Packaging Universal Connector Plugins for use in Guardium Insights
+Note: Pre-packaged plugins can be downloaded from [here](https://github.com/IBM/universal-connectors/releases)
 1) **Clone universal-connectors project**: git clone https://github.com/IBM/universal-connectors.git
-2) **Enter universal-connector project folder**: cd /path/to/universal-connectors 
+2) **Enter universal-connector project folder**: cd /path/to/universal-connectors
 3) **Run packagePluginsForGuardiumInsights.sh script**: sh packagePluginsForGuardiumInsights.sh
-4) **Find required plugins in packagedPlugins**: ls packagedPlugins 
+4) **Find required plugins in packagedPlugins**: ls packagedPlugins
 
-## Creating a custom Universal Connector Plugin
+## Creating custom Universal Connector Plugins
 - [Configuring native audit on the data source](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/cfg_native_audit_data_source.html)
 - [Developing a filter plugin](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/develop_filter_plugin.html)
 - [Create](https://www.elastic.co/guide/en/logstash/current/input-new-plugin.html) or use an [existing (recommended)](https://www.elastic.co/guide/en/logstash/current/input-plugins.html) input plugin
-- [Testing the filter in a dev environment](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/test_filter_dev_env.html)
+- [Testing a filter plugin in a development environment](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/test_filter_dev_env.html)
 - [Installing and testing the filter or input plugin on a staging Guardium system](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/test_filter_guardium.html)
 - [Publishing your plugin](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/publish_plugin.html)
 
@@ -61,7 +63,7 @@ To make your connector plugin available to the community, submit your connector 
 - [Guidelines for contributing](CONTRIBUTING.md)
 - Benefits include:
   - Free, comprehensive testing and certification
-  - Expanding the reach of product APIs
+  - Extending the reach of a product, feature, or function
   - Driving usage of a product or solution
 - We also accept currency updates or bug fixes from the community for any existing connector plugins.
 
