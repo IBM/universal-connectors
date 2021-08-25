@@ -92,6 +92,24 @@ public class ParserTest {
         Assert.assertEquals("Students", sentence.getObjects().get(0).name);
     }
 
+	@Test
+    public void testSessionLocator_validIP() {
+        final String dynamoString = "{\"eventVersion\": \"1.08\", \"userIdentity\": { \"type\": \"IAMUser\", \"principalId\": \"AIDAVBQDAZ24R743XVEUH\", \"arn\": \"arn:aws:iam::346824953529:user/rasika.shete\", \"accountId\": \"346824953529\", \"accessKeyId\": \"ASIAVBQDAZ247J7EYCZ5\", \"userName\": \"rasika.shete\", \"sessionContext\": {   \"attributes\": {   \"creationDate\": \"2020-12-28T06:58:12Z\",   \"mfaAuthenticated\": \"false\"   } } }, \"eventTime\": \"2020-12-28T08:18:45Z\", \"eventSource\": \"dynamodb.amazonaws.com\", \"eventName\": \"DeleteTable\", \"awsRegion\": \"ap-south-1\", \"sourceIPAddress\": \"103.62.17.201\", \"userAgent\": \"console.amazonaws.com\", \"requestParameters\": { \"tableName\": \"Students\" }, \"responseElements\": { \"tableDescription\": {   \"tableId\": \"97916744-b891-4756-a966-ca73720eaa73\",   \"provisionedThroughput\": {   \"readCapacityUnits\": 5,   \"writeCapacityUnits\": 5,   \"numberOfDecreasesToday\": 0   },   \"tableName\": \"Students\",   \"tableSizeBytes\": 0,   \"tableStatus\": \"DELETING\",   \"tableArn\": \"arn:aws:dynamodb:ap-south-1:346824953529:table/Students\",   \"itemCount\": 0 } }, \"requestID\": \"QKK5BIUO639AHVDAR1NIFO2UJ3VV4KQNSO5AEMVJF66Q9ASUAAJG\", \"eventID\": \"420dc42a-369a-46f4-b9ea-d7b8867bd86b\", \"readOnly\": false, \"resources\": [ {   \"accountId\": \"346824953529\",   \"type\": \"AWS::DynamoDB::Table\",   \"ARN\": \"arn:aws:dynamodb:ap-south-1:346824953529:table/Students\" } ], \"eventType\": \"AwsApiCall\", \"apiVersion\": \"2012-08-10\", \"managementEvent\": true, \"recipientAccountId\": \"346824953529\", \"eventCategory\": \"Management\"}";
+        final JsonObject dynamoJson = JsonParser.parseString(dynamoString).getAsJsonObject();
+        final SessionLocator result = Parser.parseSessionLocator(dynamoJson);
+
+        Assert.assertEquals("103.62.17.201", result.getClientIp());
+    }
+    
+    @Test
+    public void testSessionLocator_invalidIP() {
+        final String dynamoString = "{\"eventVersion\": \"1.08\", \"userIdentity\": { \"type\": \"IAMUser\", \"principalId\": \"AIDAVBQDAZ24R743XVEUH\", \"arn\": \"arn:aws:iam::346824953529:user/rasika.shete\", \"accountId\": \"346824953529\", \"accessKeyId\": \"ASIAVBQDAZ247J7EYCZ5\", \"userName\": \"rasika.shete\", \"sessionContext\": {   \"attributes\": {   \"creationDate\": \"2020-12-28T06:58:12Z\",   \"mfaAuthenticated\": \"false\"   } } }, \"eventTime\": \"2020-12-28T08:18:45Z\", \"eventSource\": \"dynamodb.amazonaws.com\", \"eventName\": \"DeleteTable\", \"awsRegion\": \"ap-south-1\", \"sourceIPAddress\": \"dynamodb.application-autoscaling.amazonaws.com\", \"userAgent\": \"console.amazonaws.com\", \"requestParameters\": { \"tableName\": \"Students\" }, \"responseElements\": { \"tableDescription\": {   \"tableId\": \"97916744-b891-4756-a966-ca73720eaa73\",   \"provisionedThroughput\": {   \"readCapacityUnits\": 5,   \"writeCapacityUnits\": 5,   \"numberOfDecreasesToday\": 0   },   \"tableName\": \"Students\",   \"tableSizeBytes\": 0,   \"tableStatus\": \"DELETING\",   \"tableArn\": \"arn:aws:dynamodb:ap-south-1:346824953529:table/Students\",   \"itemCount\": 0 } }, \"requestID\": \"QKK5BIUO639AHVDAR1NIFO2UJ3VV4KQNSO5AEMVJF66Q9ASUAAJG\", \"eventID\": \"420dc42a-369a-46f4-b9ea-d7b8867bd86b\", \"readOnly\": false, \"resources\": [ {   \"accountId\": \"346824953529\",   \"type\": \"AWS::DynamoDB::Table\",   \"ARN\": \"arn:aws:dynamodb:ap-south-1:346824953529:table/Students\" } ], \"eventType\": \"AwsApiCall\", \"apiVersion\": \"2012-08-10\", \"managementEvent\": true, \"recipientAccountId\": \"346824953529\", \"eventCategory\": \"Management\"}";
+        final JsonObject dynamoJson = JsonParser.parseString(dynamoString).getAsJsonObject();
+        final SessionLocator result = Parser.parseSessionLocator(dynamoJson);
+
+        Assert.assertEquals("0.0.0.0", result.getClientIp());
+    }
+
     //Accessor values verified.
     @Test
     public void testParseAccessor() throws ParseException {

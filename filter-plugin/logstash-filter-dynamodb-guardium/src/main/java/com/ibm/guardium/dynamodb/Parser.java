@@ -88,6 +88,16 @@ public class Parser {
 		if(sourceIP != null)
 			clientIp = sourceIP;
 
+		try{
+			String arr[] = clientIp.split("\\.");
+			for (String string : arr) {
+				int test = Integer.parseInt(string);
+			}
+		}
+		catch(Exception e) {
+			clientIp = "0.0.0.0";
+		}
+
 		sessionLocator.setClientIp(clientIp);
 		sessionLocator.setClientPort(Constants.CLIENT_PORT);
 		sessionLocator.setServerIp(Constants.SERVER_IP);
