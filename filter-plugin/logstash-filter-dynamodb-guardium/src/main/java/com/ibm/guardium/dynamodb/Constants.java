@@ -1,3 +1,7 @@
+//
+// Copyright 2020-2021 IBM Inc. All rights reserved
+// SPDX-License-Identifier: Apache2.0
+//
 package com.ibm.guardium.dynamodb;
 
 public interface Constants {
@@ -35,5 +39,6 @@ public interface Constants {
 	public static final int SERVER_PORT = -1;
 	public static final String LOGSTASH_TAG_SKIP_NOT_DYNAMO = "_dynamoguardium_skip_not_dynamodb";
 	public static final String MASK_STRING = "?";
+	public static final String SERVER_HOSTNAME = "dynamodb.amazonaws.com";
 	
 }

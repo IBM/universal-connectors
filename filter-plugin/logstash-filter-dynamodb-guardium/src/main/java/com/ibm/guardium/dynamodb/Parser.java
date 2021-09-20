@@ -1,3 +1,7 @@
+//
+// Copyright 2020-2021 IBM Inc. All rights reserved
+// SPDX-License-Identifier: Apache2.0
+//
 package com.ibm.guardium.dynamodb;
 
 import java.text.ParseException;
@@ -137,7 +141,7 @@ public class Parser {
 
 		accessor.setDbUser(dbUsers);
 
-		String eventSource = Constants.UNKNOWN_STRING;
+		String eventSource = Constants.SERVER_HOSTNAME;
 
 		if(data.has(Constants.EVENT_SOURCE) && data.get(Constants.EVENT_SOURCE) != null)
 			eventSource = data.get(Constants.EVENT_SOURCE).getAsString();
