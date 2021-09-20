@@ -38,6 +38,14 @@ repositories {
     mavenCentral()
 }
 
+task copyDependencyLibs(type: Copy) {
+    into "dependenciesLib"
+    from configurations.compileClasspath
+    from configurations.runtimeClasspath
+    from configurations.testCompileClasspath
+    from configurations.testRuntimeClasspath
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '4.0'
 }
@@ -67,6 +75,7 @@ clean {
     delete "${projectDir}/Gemfile"
     delete "${projectDir}/" + pluginInfo.pluginFullName() + ".gemspec"
     delete "${projectDir}/lib/"
+    delete "${projectDir}/dependenciesLib/"
     delete "${projectDir}/vendor/"
     new FileNameFinder().getFileNames(projectDir.toString(), pluginInfo.pluginFullName() + "-?.?.?.gem").each { filename ->
         delete filename
