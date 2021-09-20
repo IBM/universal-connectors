@@ -1,5 +1,5 @@
 {
-	"name": "dynamodb_guardium_plugin_filter",
+	"name": "Guardium_DynamoDB_filter",
 	"alias": "Dynamo",
 	"type": "filter",
 	"pipeline_type":null,
