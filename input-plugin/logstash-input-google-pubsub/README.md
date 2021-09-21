@@ -1,4 +1,4 @@
-# Logstash Plugin
+# Logstash Google PubSub Input Plugin
 
 [![Travis Build Status](https://travis-ci.com/logstash-plugins/logstash-input-google_pubsub.svg)](https://travis-ci.com/logstash-plugins/logstash-input-google_pubsub)
 
