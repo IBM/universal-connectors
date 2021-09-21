@@ -10,8 +10,8 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## Documentation
 
 ### Supported audit messages types
-Fmysql-general.log
-Fmysql.err
+* Fmysql-general.log
+* Fmysql.err
 
 ## Installation
 
