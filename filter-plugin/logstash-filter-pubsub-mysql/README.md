@@ -2,7 +2,7 @@
 
 This is a Logstash filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses a GCP (Google Cloud Platform) audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
 
-## Note
+### Note
 This plug-in assumes the Logstash Google PubSub input plug-in is installed (version ~> 1.2.1, i.e. at least 1.2.1).
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop addition filter plug-ins for Guardium universal connector.
