@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_DynamoDB_filter",
+	"alias": "Dynamo",
+	"type": "filter",
+	"pipeline_type":null,
+	"plugin_version": "0.0.1",
+	"datasourceTypes": [{"type":"Dynamodb","supportedVersions": ["2019.11.21"]}],
+	"supported_input_plugins": ["Cloudwatch_logs"],
+	"developer": "Rasika Shete",
+	"license": "Apache2.0",
+	"description": "This example provides the data needed in order to support Dynamodb in Guardium Universal Connector.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/README.md"
+}
