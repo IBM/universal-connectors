@@ -1,0 +1,14 @@
+{
+	"name": "OracleUnifiedAudit",
+	"alias": "OUA",
+	"type": "filter",
+	"pipeline_type":null,
+	"plugin_version": "0.0.1",
+	"datasourceTypes": [{"type":"OracleUnifiedAudit","supportedVersions": []}],
+	"supported_input_plugins": ["pipe"],
+	"developer": "Mae Rockar - marockar@us.ibm.com",
+	"license": "Apache2.0",
+	"description": "This example provides the data needed in order to support Oracle Unified Audit in Guardium Universal Connector.",
+	"configuration_notes": "",
+	"documentation_path": "https://www-03preprod.ibm.com/support/knowledgecenter/"
+}
