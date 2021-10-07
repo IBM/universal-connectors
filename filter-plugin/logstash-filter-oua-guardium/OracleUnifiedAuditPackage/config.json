@@ -1,0 +1,50 @@
+{
+	"connection": {
+		"type": {
+			"displayName": "OracleUnifiedAudit",
+			"type": "connectorType"
+		},
+		"connectionMethod": {
+			"type": "text",
+			"default": "GUC",
+			"hidden": true
+		},
+		"help": {
+			"default": "<Help URL to configure datasource to make api call>",
+			"type": "link"
+		}
+	},
+	"configuration": {
+		"auth": {
+			"type": "fields",
+			"guc_connection_type": {
+				"type": "text",
+				"hidden": true
+			},
+			"guc_input_name": {
+				"type": "text",
+				"default": "pipe",
+				"hidden": true
+			},
+			"guc_input_param_port": {
+				"type": "text",
+				"default": "",
+				"hidden": true
+			},
+			"guc_input_param_is_ssl": {
+				"type": "boolean",
+				"default": true,
+				"hidden": true
+			},
+			"guc_filter_name": {
+				"type": "text",
+				"default": "oua_filter",
+				"hidden": true
+			},
+			"guc_filter_param_datasource_tag": {
+				"type": "text",
+				"optional": true
+			}
+		}
+	}
+}
