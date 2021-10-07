@@ -1,0 +1,36 @@
+{
+	"connection": {
+		"type": {
+			"displayName": "OracleUnifiedAudit_filter",
+			"type": "connectorType"
+		},
+		"connectionMethod": {
+			"type": "text",
+			"default": "GUC",
+			"hidden": true
+		},
+		"help": {
+			"default": "https://www.ibm.com/docs/en/guardium/11.4",
+			"type": "link"
+		}
+	},
+	"configuration": {
+		"auth": {
+			"type": "fields",
+			"guc_connection_type": {
+				"type": "text",
+				"default": "guc-configuration",
+				"hidden": true
+			},
+			"guc_filter_name": {
+				"type": "text",
+				"default": "oua_filter",
+				"hidden": true
+			},
+			"guc_filter_param_datasource_tag": {
+				"type": "text",
+				"optional": true
+			}
+		}
+	}
+}
