@@ -5,6 +5,8 @@
 1. An Oracle database configured to use Oracle Unified Auditing (OUA) as well as a user for Guardium to read the audit tables in the Oracle database.
 2. A Guardium collector with Univer***REMOVED***l Connector (UC) functionality as well as network connectivity to the Oracle database.
 
+Currently, this plug-in will work only on IBM Security Guardium Data Protection, not Guardium Insights.
+
 ## Building
 
 Update the variables in Makefile for your environment's Java home and Logstash location.
