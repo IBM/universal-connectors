@@ -51,6 +51,15 @@ common/build/classes
 /_yardoc/
 /doc/
 /rdoc/
+**/.gradle/
+**/.settings/
+**/bin/
+**/build/
+# macOS specific
+**/.DS_Store
+# eclipse specific
+**/.project
+**/.classpath
 
 ## Environment normalization:
 /.bundle/

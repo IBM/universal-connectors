@@ -1,5 +1,6 @@
 {
 	"datasourceTypeName":"Mysql over Filebeat",
 	"inputPluginName":"Filebeat_input",
-	"filterPluginName":"Guardium_Mysql_filter"
+	"filterPluginName":"Guardium_Mysql_filter",
+	"supported_platforms": ["on-premise"]
 }
