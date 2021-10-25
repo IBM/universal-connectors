@@ -1,5 +1,6 @@
 {
 	"datasourceTypeName":"Dynamo over Cloudwatch",
 	"inputPluginName":"cloudwatch_logs_input",
-	"filterPluginName":"Guardium_DynamoDB_filter"
+	"filterPluginName":"Guardium_DynamoDB_filter",
+	"supported_platforms": ["AWS"]
 }
