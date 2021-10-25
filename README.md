@@ -58,25 +58,6 @@ Note: Pre-packaged plugins can be downloaded from [here](https://github.com/IBM/
 - [Installing and testing the filter or input plugin on a staging Guardium system](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/test_filter_guardium.html)
 - [Publishing your plugin](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/publish_plugin.html)
 
-Note: To package a plug-in for Guardium Insights, you need to include a few additional files, in this structure: 
-
-    datasourceManifest.json
-    config.json
-    lang_en.json
-    /YourPluginNamePackage
-      |_  filter.conf
-      |_  your-filter-offline-plugin.zip
-      |_ manifest.json # details ...
-
-* _datasourceManifest.json_ specifices the input and filter names, when installed on Logstash, as well as the supported platforms (one of "on-premise", "AWS", "Azure", "GCP", or a new platform of your choice).
-* config.json contains parameters that should be filled-in by Guardium Insights users
-* lang_en.json describes the parameters, for humans
-* YourPluginNamePackage folder contains:
-  * filter.conf - a validated Logstash filter configuration (could also be an input, but usually a filter), with parameters names as placeholders. These values will be replaced by user input, according to the input fields you specified in config.json
-  *  your-filter-offline-plugin.zip - a Logstash offline plugin package. This is the plug-in you created for GDP (see links above for instructions)
-  * manifest.json describes the plugin type ("filter" or "input"), its mechanism ("push" or "pull"), as well as the id/name of the plugin after installed on Logstash, supported data source(s), and other valuable meta-data.
-
-
 ## Contributing
 To make your connector plugin available to the community, submit your connector for IBM Certification.
 - [Guidelines for contributing](CONTRIBUTING.md)
