@@ -1,5 +1,6 @@
 {
 	"datasourceTypeName":"Mongo over Filebeat",
 	"inputPluginName":"Filebeat_input",
-	"filterPluginName":"Guardium_MongoDB_filter"
+	"filterPluginName":"Guardium_MongoDB_filter",
+	"supported_platforms": ["on-premise"]
 }
