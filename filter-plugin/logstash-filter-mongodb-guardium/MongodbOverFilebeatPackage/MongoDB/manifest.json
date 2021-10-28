@@ -2,7 +2,7 @@
 	"name": "Guardium_MongoDB_filter",
 	"alias": "Mongo",
 	"type": "filter",
-	"pipeline_type":null,
+	"pipeline_type":"push",
 	"plugin_version": "0.6.6",
 	"datasourceTypes": [{"type":"MongoDB","supportedVersions": ["4.2","4.4"]}],
 	"supported_input_plugins": ["Filebeat_input"],
