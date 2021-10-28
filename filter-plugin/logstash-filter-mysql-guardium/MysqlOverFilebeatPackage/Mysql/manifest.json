@@ -2,7 +2,7 @@
 	"name": "Guardium_Mysql_filter",
 	"alias": "Mysql",
 	"type": "filter",
-	"pipeline_type":null,
+	"pipeline_type":"push",
 	"plugin_version": "1.0.0",
 	"datasourceTypes": [{"type":"Mysql","supportedVersions": ["5.x"]}],
 	"supported_input_plugins": ["Filebeat_input"],
