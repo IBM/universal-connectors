@@ -86,6 +86,44 @@ To make your connector plug-in available to the community, submit your connector
   - Driving usage of a product or solution.
 - We also accept currency updates or bug fixes from the community for any existing connector plug-ins.
 
+### Pushing to github.com
+
+When your plug-in is ready for publishing and you want to contribute it to this repository, you will need to fork this repository, add your plug-in or fixes, then  create a pull request to the this repository. Instructions: 
+
+1. Fork this repository using the Fork button. See [fork a repo][fork-a-repo]. 
+2. If you committed to another repository (internal, for example) and you want to preserve your commits, and an easy way to push your commits in the future, you can add the forked repo as another remote, before you create a pull request:  
+
+    ```
+    git remote add myfork https://github.com/Tal-Daniel/universal-connectors.git
+    git remote -v
+    ```
+3. Sync your repositories by running `git remote update` or `git fetch myfork`, and checkout a feature branch based on the main branch:
+    
+    git checkout -b myfork-main-fix myfork/main
+
+4. Apply your fix using a git cherry-pick, for example: 
+
+    ```
+    git cherry-pick 432fbbc3
+    ``` 
+    Alternatively, if you want to edit the cherry-pick commit before it is committed, add a _--no-commit_ flag (_-n_), edit what you have to, then  commit with sign-off option (_-s_).
+    ```bash
+    git cherry-pick -n 432fbbc3
+    # edit some files, or not, then
+    git commit -s
+    ```
+    It's a good practice to sign-off *all* your commits.
+
+5. Push your fix/feature branch as a branch of your forked repository. 
+  
+   ```
+   git push -u myfork myfork-main-fix
+   ```
+6. Visit your forked repository and create pull request from your fix/feature branch to this original IBM/universal-connectors repository.
+
+_For IBM employees: To push to github.com under your personal github account, you will need to map your IBM account to your github account. Then, create and setup an SSH key. Finally, you will need to edit your ~/.ssh/config to use your personal github account for any interaction with github.com._
+
+
 ## Contact Us
 If you find any problems or want to make suggestions for future features, please create [issues and suggestions on Github](https://github.com/IBM/universal-connectors/issues).
 
@@ -103,3 +141,5 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+[fork-a-repo]: https://docs.github.com/en/get-started/quickstart/fork-a-repo
