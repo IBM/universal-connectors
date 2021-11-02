@@ -30,23 +30,37 @@ If you just started to work on a new plug-in or a fix, please follow the [fork a
 
 ### Pushing existing code from another repository
 
-1. Fork this repository using the Fork button, and add it as another remote (first time only):  
+1. Fork this public repository using the Fork button, go to the page of the fork repository you just created, and press the Code button: Copy the fork URL, and add it as another remote in your existing project (first time only):  
     ```
     git remote add myfork https://github.com/Tal-Daniel/universal-connectors.git
     git remote -v
     ```
-3. Sync your repositories by running `git remote update` or `git fetch myfork`, and checkout a feature branch based on your fork's main branch:
-    
-    git checkout -b myfork-main-pluginx myfork/main
+2. Sync your repositories by running `git remote update` or `git fetch myfork`
 
-4. Cherry pick your feature or fix using _git cherry-pick_. Add a _--no-commit_ flag (_-n_) if you need to edit the commit before hand, and make sure your commits are signed off, as described in Legal section, below: 
+3. Checkout the branch where your commits were made, like _master_, and find the commits that you added. If it's a range of sequential commits, mark only the first and last commits. For example: 
+    
+    ```
+    git checkout master
+    git log -- filter-plugin/pluginx
+    ```
+
+4. Checkout a branch that is based on your fork's main branch from step 1, above:
+    
+    ```
+    git checkout -b myfork-main myfork/main
+    git checkout -b myfork-main-pluginx
+    ```
+
+5. Cherry pick your commits you found, by running _git cherry-pick_. Add a _--no-commit_ flag (_-n_) if you need to edit the commit before hand, solve any conflicts. Make sure your commits are signed off, as described in the Legal section, below: 
     ```bash
-    git cherry-pick -n 432fbbc3
-    # edit some files, or not, then
+    git cherry-pick -n 432fbbc3 54jj34fb 23jdb34 
+    # A range of commits can also work if you are sure all commits belong: 
+    # git cherry-pick -n 432fbbc3..348a4f34
+    # edit some files, solve conflicts, or not, then
     git commit -s
     ```
 
-5. Push this branch to the remote forked repository and follow normal procedure to create a pull request: 
+6. That's it: The only thing left to do it push this branch to the remote forked repository, and create a pull request for it, from the browser: 
   
    ```
    git push -u myfork myfork-main-pluginx
