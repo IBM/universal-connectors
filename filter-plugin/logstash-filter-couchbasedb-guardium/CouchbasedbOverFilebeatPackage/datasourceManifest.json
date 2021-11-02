@@ -1,0 +1,5 @@
+{
+	"datasourceTypeName":"Couchbase over Filebeat",
+	"inputPluginName":"Filebeat_input",
+	"filterPluginName":"Guardium_CouchbaseDB_filter"
+}
