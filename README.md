@@ -44,11 +44,11 @@ Universal Connector plug-ins are packaged and deployed in a Docker container env
 - [In Guardium Insights](https://www.ibm.com/docs/en/guardium-insights/3.0.x?topic=connector-configuring-universal).
 
 ## Packaging Guardium Insights Universal Connector plug-ins
-Note: Pre-packaged plugins can be downloaded from [here](https://github.com/IBM/universal-connectors/releases)
+Note: Pre-packaged plug-ins can be downloaded from [here](https://github.com/IBM/universal-connectors/releases)
 1) **Clone universal-connectors project**: git clone https://github.com/IBM/universal-connectors.git
 2) **Enter universal-connector project folder**: cd /path/to/universal-connectors
 3) **Run packagePluginsForGuardiumInsights.sh script**: sh packagePluginsForGuardiumInsights.sh
-4) **Find required plugins in packagedPlugins**: ls packagedPlugins
+4) **Find required plug-ins in packagedPlugins**: ls packagedPlugins
 
 ## Creating custom Universal Connector plug-ins
 - [Configuring native audit on the data source](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-configuring-native-audit-data-source)
@@ -78,7 +78,7 @@ Note: To package a plug-in for Guardium Insights, you need to include additional
 
 
 ## Contributing
-To make your connector plug-in available to the community, submit your connector to this repository for IBM Certification. We also accept updates or bug fixes to existing plugins, to keep them current:
+To make your connector plug-in available to the community, submit your connector to this repository for IBM Certification. We also accept updates or bug fixes to existing plug-ins, to keep them current:
 
 - [Guidelines for contributing](CONTRIBUTING.md)
 - Benefits include:
