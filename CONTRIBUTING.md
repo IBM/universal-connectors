@@ -39,7 +39,7 @@ If you just started to work on a new plug-in or a fix, please follow the [fork a
     
     git checkout -b myfork-main-pluginx myfork/main
 
-4. Cherry pick your feature or fix using _git cherry-pick_. Add a _--no-commit_ flag (_-n_) if you need to edit the commit before hand, and make sure your commits are signed off, as described above: 
+4. Cherry pick your feature or fix using _git cherry-pick_. Add a _--no-commit_ flag (_-n_) if you need to edit the commit before hand, and make sure your commits are signed off, as described in Legal section, below: 
     ```bash
     git cherry-pick -n 432fbbc3
     # edit some files, or not, then
@@ -105,3 +105,5 @@ Coming soon ...
 [Guardium community]: https://community.ibm.com/community/user/security/communities/community-home?communitykey=aa1a6549-4b51-421a-9c67-6dd41e65ef85&tab=groupdetails
 
 [README.md]: ./README.md
+
+[fork-a-repo]: https://docs.github.com/en/get-started/quickstart/fork-a-repo
