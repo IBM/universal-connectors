@@ -109,14 +109,17 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 	6. Update the filter section to look like this:
 	
 		if [type] == "filebeat" and "couchbase" in [tags] {
+			
 			mutate {
 			add_field => { "serverIP" => "%{[@metadata][ip_address]}" }
 			add_field => { "serverHostname" => "%{[agent][hostname]}" }
 			}
+			
 			couchbasedb_guardium_plugin_filter{}
+			
+			mutate { remove_field => ["serverHostname","@version","@timestamp","type","sequence","mes***REMOVED***ge","host","tags","input","log","ecs","agent","serverIP"]}
        }
-        mutate { remove_field => ["serverHostname","@version","@timestamp","type","sequence","mes***REMOVED***ge","host","tags","input","log","ecs","agent","serverIP"]}
-		
+        
 	7. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, the connector appears in the Configure Univer***REMOVED***l Connector page.
 
 
