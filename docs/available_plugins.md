@@ -12,4 +12,4 @@ Pre-packaged plugins can be downloaded from here: https://github.com/IBM/univer*
 | [PostgreSQL](../filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/README.md) | 12.x | AWS | IBM | CloudWatch (pull)   | **Guardium Data Protection only**.<br />Installs required [json_encode](https://www.elastic.co/guide/en/logstash-versioned-plugins/current/v3.0.3-plugins-filters-json_encode.html) filter plug-in. |
 | [Amazon DynamoDB](../filter-plugin/logstash-filter-dynamodb-guardium/README.md) | 2019.11.21 | AWS | IBM | CloudWatch (pull)   | **Guardium Data Protection only** |
 | [Oracle Unified Audit](../filter-plugin/logstash-filter-oua-guardium/README.md)    | 18, 19 | On-prem, RDS                 | IBM      | Oracle Unified Audit (pull) | **Guardium Data Protection only** |
-| [Couchbase](../filter-plugin/logstash-filter-couchbasedb-guardium/README.md)    | 6.6.2-9600        | On-premise / Iaas        | IBM    		| Filebeat (push) |
+| [Couchbase](../filter-plugin/logstash-filter-couchbasedb-guardium/README.md)    | 6.6.2-9600        | On-premise / Iaas        | IBM    		| Filebeat (push) | **Guardium Data Protection only** |

@@ -97,29 +97,8 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 	2. Locate the upload file button near the bottom left and then select the offline plug-in named "couchbase-logstash-offline-plugins-7.5.2.zip".
 	3. Click the Plus sign icon. The Connector Configuration dialog box opens.
 	4. Type a name in the Connector name field.
-	5. On the Logstash server, ensure that the port that you want to use is free. This port should should be ***REMOVED***me as the port number defined in the filebeat.yml file. 
-	
-	Update the input section to look like this:
-
-		beats {
-			port => "5001"
-			type => "filebeat"
-       }
-	
-	6. Update the filter section to look like this:
-	
-		if [type] == "filebeat" and "couchbase" in [tags] {
-			
-			mutate {
-			add_field => { "serverIP" => "%{[@metadata][ip_address]}" }
-			add_field => { "serverHostname" => "%{[agent][hostname]}" }
-			}
-			
-			couchbasedb_guardium_plugin_filter{}
-			
-			mutate { remove_field => ["serverHostname","@version","@timestamp","type","sequence","mes***REMOVED***ge","host","tags","input","log","ecs","agent","serverIP"]}
-       }
-        
+	5. Update the input section to add the details from filter-test-beats.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. On the Logstash server, ensure that the port that you want to use is free. This port should should be ***REMOVED***me as the port number defined in the filebeat.yml file.
+	6. Update the filter section to add the details from filter-test-beats.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 	7. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, the connector appears in the Configure Univer***REMOVED***l Connector page.
 
 
