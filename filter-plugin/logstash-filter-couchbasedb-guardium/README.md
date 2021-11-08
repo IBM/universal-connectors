@@ -109,14 +109,17 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	6. Update the filter section to look like this:
 	
 		if [type] == "filebeat" and "couchbase" in [tags] {
+			
 			mutate {
 			add_field => { "serverIP" => "%{[@metadata][ip_address]}" }
 			add_field => { "serverHostname" => "%{[agent][hostname]}" }
 			}
+			
 			couchbasedb_guardium_plugin_filter{}
+			
+			mutate { remove_field => ["serverHostname","@version","@timestamp","type","sequence","message","host","tags","input","log","ecs","agent","serverIP"]}
        }
-        mutate { remove_field => ["serverHostname","@version","@timestamp","type","sequence","message","host","tags","input","log","ecs","agent","serverIP"]}
-		
+        
 	7. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.
 
 
