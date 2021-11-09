@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_CouchbaseDB_filter",
+	"alias": "Couchbase",
+	"type": "filter",
+	"pipeline_type":"push",
+	"plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"CouchbaseDB","supportedVersions": ["6.6.2-9600"]}],
+	"supported_input_plugins": ["Filebeat_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "This example provides the data needed in order to support CouchbaseDB in Guardium Univer***REMOVED***l Connector.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/README.md"
+}
