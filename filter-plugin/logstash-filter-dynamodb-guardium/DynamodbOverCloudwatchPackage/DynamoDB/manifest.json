@@ -6,7 +6,7 @@
 	"plugin_version": "0.0.1",
 	"datasourceTypes": [{"type":"Dynamodb","supportedVersions": ["2019.11.21"]}],
 	"supported_input_plugins": ["Cloudwatch_logs"],
-	"developer": "Rasika Shete",
+	"developer": "IBM",
 	"license": "Apache2.0",
 	"description": "This example provides the data needed in order to support Dynamodb in Guardium Univer***REMOVED***l Connector.",
 	"configuration_notes": "",
