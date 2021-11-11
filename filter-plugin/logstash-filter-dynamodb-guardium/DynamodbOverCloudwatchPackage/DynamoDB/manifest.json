@@ -8,7 +8,7 @@
 	"supported_input_plugins": ["Cloudwatch_logs"],
 	"developer": "IBM",
 	"license": "Apache2.0",
-	"description": "This example provides the data needed in order to support Dynamodb in Guardium Universal Connector.",
+	"description": "Parses events and messages from the Amazon DynamoDB audit log into Guardium.",
 	"configuration_notes": "",
-	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/README.md"
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-dynamodb-guardium/README.md"
 }
