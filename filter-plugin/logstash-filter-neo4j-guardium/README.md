@@ -83,11 +83,11 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	2. Click Upload File and select the offline neo4j-logstash-offline-plugins-7.5.2.zip plug-in. After it is uploaded, click OK.
 	3. Click the Plus sign to open the Connector Configuration dialog box.
 	4. Type a name in the Connector name field.
-	5. Update the input section to add the details from the neo4jFilebeat.conf file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-	6. Update the filter section to add the details from the neo4jFilebeat.conf file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+	5. Update the input section to add the details from the https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage/config.json file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+	6. Update the filter section to add the details from the https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage/config.json  file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 	7. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 ## Limitations
 
-	If your Guardium version is below 11.5, the port should not be 5000, 5141 or 5044, as Guardium Universal Connector reserves these ports for MongoDB events. To check the available ports on Windows, issue this command:
+	If your Guardium version is 11.4 and below, the port should not be 5000, 5141 or 5044, as Guardium Universal Connector reserves these ports for MongoDB events. To check the available ports on Windows, issue this command:
 		netstat -a
