@@ -10,5 +10,5 @@
 	"license": "Apache2.0",
 	"description": "Parses events and messages from the Couchbase audit log into Guardium.",
 	"configuration_notes": "",
-	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/README.md"
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-couchbasedb-guardium/README.md"
 }
