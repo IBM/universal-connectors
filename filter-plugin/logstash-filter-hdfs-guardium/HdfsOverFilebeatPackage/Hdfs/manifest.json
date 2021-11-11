@@ -6,9 +6,9 @@
 	"plugin_version": "0.0.1",
 	"datasourceTypes": [{"type":"HDFS","supportedVersions": [""]}],
 	"supported_input_plugins": ["Filebeat_input"],
-	"developer": "Mae Rockar",
+	"developer": "IBM",
 	"license": "Apache2.0",
-	"description": "This example provides the data needed in order to support HDFS in Guardium Univer***REMOVED***l Connector.",
+	"description": "Parses Hadoop Distributed File System (HDFS) audit events into Guardium.",
 	"configuration_notes": "",
 	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-hdfs-guardium/README.md"
 }
