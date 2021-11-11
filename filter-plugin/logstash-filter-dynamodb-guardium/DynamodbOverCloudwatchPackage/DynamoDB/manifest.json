@@ -6,9 +6,9 @@
 	"plugin_version": "0.0.1",
 	"datasourceTypes": [{"type":"Dynamodb","supportedVersions": ["2019.11.21"]}],
 	"supported_input_plugins": ["Cloudwatch_logs"],
-	"developer": "Rasika Shete",
+	"developer": "IBM",
 	"license": "Apache2.0",
-	"description": "This example provides the data needed in order to support Dynamodb in Guardium Univer***REMOVED***l Connector.",
+	"description": "Parses events and mes***REMOVED***ges from the Amazon DynamoDB audit log into Guardium.",
 	"configuration_notes": "",
-	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/README.md"
+	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-dynamodb-guardium/README.md"
 }
