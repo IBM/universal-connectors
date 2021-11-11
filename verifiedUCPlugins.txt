@@ -2,7 +2,3 @@
 filter-plugin/logstash-filter-mongodb-guardium/MongodbOverFilebeatPackage
 filter-plugin/logstash-filter-mysql-guardium/MysqlOverFilebeatPackage
 filter-plugin/logstash-filter-s3-guardium/S3OverCloudwatchLogsPackage
-filter-plugin/logstash-filter-hdfs-guardium/HdfsOverFilebeatPackage
-filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage
-# Input plugins:
-input-plugin/logstash-input-google-pubsub/GooglePubSubPackage
