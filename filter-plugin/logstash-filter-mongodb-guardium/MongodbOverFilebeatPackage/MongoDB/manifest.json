@@ -8,7 +8,7 @@
 	"supported_input_plugins": ["Filebeat_input"],
 	"developer": "IBM",
 	"license": "Apache2.0",
-	"description": "This example provides the data needed in order to support MongoDB in Guardium Univer***REMOVED***l Connector.",
+	"description": "Parses MongoDB activity audit log mes***REMOVED***ges before insertion into Guardium. Enterprise version is required.",
 	"configuration_notes": "",
 	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-mongodb-guardium/README.md"
 }
