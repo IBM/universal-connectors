@@ -8,7 +8,7 @@
 	"supported_input_plugins": ["Filebeat_input"],
 	"developer": "IBM",
 	"license": "Apache2.0",
-	"description": "This example provides the data needed in order to support CouchbaseDB in Guardium Univer***REMOVED***l Connector.",
+	"description": "Parses events and mes***REMOVED***ges from the Couchbase audit log into Guardium.",
 	"configuration_notes": "",
 	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/README.md"
 }
