@@ -1,5 +1,6 @@
 {
 	"datasourceTypeName":"Neo4j over Filebeat",
 	"inputPluginName":"Filebeat_input",
-	"filterPluginName":"Guardium_Neo4j_filter"
+	"filterPluginName":"Guardium_Neo4j_filter",
+	"supported_platforms": "on-premise"
 }
