@@ -106,7 +106,6 @@ More on creation and management of Pub/Sub topics and subscriptions, see [GCP do
 ## Troubleshooting
 
 * Logs aren't showing:
-   * Sometimes Universal Connector needs to be restarted (`disable` + `enable`) right after uploading the configuration for the events to reach it
    * Check that messages are being sent to your gmachine by going to your *Pub/Sub topic > Publish Messages*, publish a message and see if it's logged in `logstash_stdout_err.log`
    * Make sure you can see messages when going to *Pub/Sub topic > Select Subscription > Pull messages*
    * Check the inclusion/exclusion filters are valid and legal by going to *Edit Sink > Preview Logs* button next to the filters edit window.
