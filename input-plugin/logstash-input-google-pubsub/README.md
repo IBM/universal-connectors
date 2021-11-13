@@ -106,7 +106,6 @@ More on creation and management of Pub/Sub topics and subscriptions, see [GCP do
 ## Troubleshooting
 
 * Logs aren't showing:
-   * Sometimes Univer***REMOVED***l Connector needs to be restarted (`di***REMOVED***ble` + `enable`) right after uploading the configuration for the events to reach it
    * Check that mes***REMOVED***ges are being sent to your gmachine by going to your *Pub/Sub topic > Publish Mes***REMOVED***ges*, publish a mes***REMOVED***ge and see if it's logged in `logstash_stdout_err.log`
    * Make sure you can see mes***REMOVED***ges when going to *Pub/Sub topic > Select Subscription > Pull mes***REMOVED***ges*
    * Check the inclusion/exclusion filters are valid and legal by going to *Edit Sink > Preview Logs* button next to the filters edit window.
