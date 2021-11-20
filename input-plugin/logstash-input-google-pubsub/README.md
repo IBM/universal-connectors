@@ -74,7 +74,7 @@ input {
         # service to fetch tokens.  However, if you are running logstash
         # outside of GCE, you will need to specify the service account's
         # JSON key file below.
-       json_key_file => "${LOGSTASH_DIR}/third_party/<KEY_FILE_NAME>.json"
+       json_key_file => "${THIRD_PARTY_PATH}/<KEY_FILE_NAME>.json"
 
         include_metadata => true
        codec => "json"
