@@ -4,7 +4,7 @@
 	"type": "filter",
 	"pipeline_type":"push",
 	"plugin_version": "1.0.0",
-	"datasourceTypes": [{"type":"Mysql-Percona","supportedVersions": ["5.x"]}],
+	"datasourceTypes": [{"type":"Mysql-Percona","supportedVersions": ["5.7.31-34"]}],
 	"supported_input_plugins": ["Filebeat_input"],
 	"developer": "IBM",
 	"license": "Apache2.0",
