@@ -15,8 +15,9 @@ are pretty much free to use it however you want in whatever way.
 
 ### Step-by-Step Guide for starting Audit Logs Streaming
 1. Create a project attached to billing info 
-2. Set up your Google Cloud project and Pub/Sub topic and subscriptions, as instructed [here](https://cloud.google.com/pubsub/docs/building-pubsub-messaging-system#set_up_your_project_and_topic_and_subscriptions)
+2. Set up your Google Cloud project and Pub/Sub topic and subscriptions:
    - Grant Pub/Sub Editor, Pub/Sub Publisher, Pub/Sub Subscriber roles to your account in IAM to enable editing Pub/Sub and viewing all audited logs. See [Pub/Sub Roles](https://cloud.google.com/pubsub/docs/access-control#roles) for the full list.
+   - Create the topic and subscription as instructed [here](https://cloud.google.com/pubsub/docs/building-pubsub-messaging-system#set_up_your_project_and_topic_and_subscriptions)
 3. Create service account and credentials and add IAM roles
    - Go to *Service accounts > IAM service accounts*, select your project and click Create Service Account
    - Grant Pub/Sub Admin and Cloud Pub/Sub Service Agent roles to the service account in *Service account permissions or IAM & Admin > IAM*
@@ -27,8 +28,8 @@ are pretty much free to use it however you want in whatever way.
    - [Prerequisites](https://cloud.google.com/logging/docs/export/configure_export_v2#before-you-begin)
    - in Logs Router in Logging side panel create a Sink associated with the Pub/Sub topic 
    - Create a Sink [how-to guide](https://cloud.google.com/logging/docs/export/configure_export_v2#creating_sink)
-   - Go to View Sink and copy the Writer address
-   - Go to your topic's *page > Permissions > grant Pub/Sub Publisher role* to the Writer address
+   - Go to *View Sink details > copy the Writer identity*
+   - Go to your topic's *page > Permissions > grant Pub/Sub Publisher role* to the Writer identity
 7. Create the SQL instance and Configure Logging
    - MySQL [how-to guide](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-pubsub-mysql-guardium/README.md#Create-the-SQL-instance-and-Configure-Logging)
 8. Connect to the SQL instance and run queries
