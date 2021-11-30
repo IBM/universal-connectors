@@ -12,8 +12,8 @@ version                    "${file("VERSION").text.trim()}" // read from require
 description                = "MongoDB-Guardium filter plugin"
 pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
 pluginInfo.longDescription = "This gem is a Logstash MongoDB filter plugin required to be installed as part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program."
-pluginInfo.authors         = ['IBM', 'Tal Daniel', 'Natali Geymakher']
-pluginInfo.email           = ['taldan@il.ibm.com']
+pluginInfo.authors         = ['IBM']
+pluginInfo.email           = ['']
 pluginInfo.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
 pluginInfo.pluginType      = "filter"
 pluginInfo.pluginClass     = "MongodbGuardiumFilter"

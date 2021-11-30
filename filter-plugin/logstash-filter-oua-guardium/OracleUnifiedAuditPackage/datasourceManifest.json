@@ -1,0 +1,6 @@
+{
+	"datasourceTypeName":"Oracle Unified Audit",
+	"inputPluginName":"pipe",
+	"filterPluginName":"oua_filter",
+	"supported_platforms": ["on-premise"]
+}
