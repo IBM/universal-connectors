@@ -31,9 +31,10 @@ are pretty much free to use it however you want in whatever way.
    - Go to *View Sink details > copy the Writer identity*
    - Go to your topic's *page > Permissions > grant Pub/Sub Publisher role* to the Writer identity
 7. Create the SQL instance and Configure Logging
-   - MySQL [how-to guide](../../filter-plugin/logstash-filter-pubsub-mysql-guardium/README.md#create-the-sql-instance-and-configure-logging)
-   - PostgreSQL [how-to guide](../../filter-plugin/logstash-filter-pubsub-postgresql-guardium/README.md#create-the-sql-instance-and-configure-logging)
-8. Connect to the SQL instance and run queries
+   - MySQL [how-to guide](../../filter-plugin/logstash-filter-pubsub-mysql-guardium/README.md#prerequisites)
+   - PostgreSQL [how-to guide](../../filter-plugin/logstash-filter-pubsub-postgresql-guardium/README.md#prerequisites)
+8. After installing the plug-in's offline package and once the configuration is uploaded and ***REMOVED***ved to your Guardium machine, restart Univer***REMOVED***l Connector using the Di***REMOVED***ble/Enable button
+9. Connect to the SQL instance and run queries
    - Add your IP to the Authorized networks section in *SQL > Connections > Add Network*
    - Create SQL instance users in *SQL > Instances > `instance_name` > Users*
    - Run queries from Cloud Shell:  *SQL > Instances > `instance_name` > Overview page > Connect using `gcloud`*
