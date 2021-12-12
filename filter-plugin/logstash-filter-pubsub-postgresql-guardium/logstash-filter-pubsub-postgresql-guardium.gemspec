@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'logstash-filter-pubsub-postgresql-guardium'
-  s.version       = '0.1.0'
+  s.version       = '0.1.1'
   s.licenses      = ['Apache-2.0']
   s.summary       = 'This filter plugin parses GCP Pub/Sub events recevied from PostgreSQL'
   s.description   = 'This filter plugin parses GCP Pub/Sub events recevied from PostgreSQL and maps to GuardRecord'
