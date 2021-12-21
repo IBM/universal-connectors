@@ -8,7 +8,6 @@ import co.elastic.logstash.api.FilterMatchListener;
 import co.elastic.logstash.api.LogstashPlugin;
 import co.elastic.logstash.api.PluginConfigSpec;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -24,12 +23,10 @@ import java.time.ZonedDateTime;
 import com.ibm.guardium.universalconnector.commons.structures.*;
 import com.ibm.guardium.universalconnector.commons.Util;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.LoggerConfig;
 
 // class name must match plugin name
-@LogstashPlugin(name = "mysql_percona_guardium_filter")
-public class MySqlPerconaGuardiumFilter implements Filter {
+@LogstashPlugin(name = "mysql_percona_filter")
+public class MySqlPerconaFilter implements Filter {
 
     public static final PluginConfigSpec<String> LOG_LEVEL_CONFIG = PluginConfigSpec.stringSetting("log_level", null);
 
@@ -42,7 +39,7 @@ public class MySqlPerconaGuardiumFilter implements Filter {
     public static final String UNKNOWN_STRING = "";
     public static final String SERVER_TYPE_STRING = "MySql";
 
-    private static Logger log = LogManager.getLogger(MySqlPerconaGuardiumFilter.class);
+    private static Logger log = LogManager.getLogger(MySqlPerconaFilter.class);
 
     private final static Set<String> LOCAL_IP_LIST = new HashSet<>(Arrays.asList("127.0.0.1", "0:0:0:0:0:0:0:1", "::1"));
 
@@ -71,12 +68,12 @@ public class MySqlPerconaGuardiumFilter implements Filter {
         return Collections.singletonList(LOG_LEVEL_CONFIG);
     }
 
-    public MySqlPerconaGuardiumFilter(String id, Configuration config, Context context) {
+    public MySqlPerconaFilter(String id, Configuration config, Context context) {
         this.id = id;
 //        this.logLevel = config.get(LOG_LEVEL_CONFIG);
 //        if (logLevel!=null) {
-//            System.out.println("Setting log level of MySqlPerconaGuardiumFilter to "+logLevel);
-//            Configurator.setLevel(LogManager.getLogger(MySqlPerconaGuardiumFilter.class).getName(), Level.valueOf(logLevel));
+//            System.out.println("Setting log level of MySqlPerconaFilter to "+logLevel);
+//            Configurator.setLevel(LogManager.getLogger(MySqlPerconaFilter.class).getName(), Level.valueOf(logLevel));
 //        }
     }
 
