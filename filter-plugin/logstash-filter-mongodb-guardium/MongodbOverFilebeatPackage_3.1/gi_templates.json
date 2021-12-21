@@ -1,0 +1,32 @@
+{
+  "plugin_name": "MongoDB Over Filebeat",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mongodb-guardium/README.md",
+  "input_name": "Filebeat_input",
+  "input_parameters": [
+    {
+      "port": {
+        "type": "number",
+        "default": 5044,
+        "hidden": true
+      },
+      "is_ssl": {
+        "type": "boolean",
+        "default": true,
+        "hidden": true
+      }
+    }
+  ],
+  "filter_name": "Guardium_MongoDB_filter",
+  "filter_parameters": [],
+  "auth_parameters": [
+    {
+      "guc_filter_param_datasource_tag": {
+        "param_type": "filter",
+        "type": "text",
+        "label": "Datasource Tag",
+        "description": "Tag that was added to every event sent from the data source."
+      }
+    }
+  ],
+  "supported_platforms": ["on-premise"]
+}
