@@ -145,11 +145,12 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## Limitations :
 
-MSSQL auditing only supports error logs for following two groups:
-
-	a. FAILED_DATABASE_AUTHENTICATION_GROUP: Indicates that a principal tried to log on to a contained database and failed. Events in this class are raised by new connections or by connections that are reused from a connection pool.
-	b. FAILED_LOGIN_GROUP: Indicates that a principal tried to log on to SQL Server and failed. Events in this class are raised by new connections or by connections that are reused from a connection pool.
-	c. The mssql plug-in does not support IPV6.
+	• MSSQL auditing only supports error logs for following two groups:
+		a. FAILED_DATABASE_AUTHENTICATION_GROUP: Indicates that a principal tried to log on to a contained database and failed. Events in this class are raised by new connections or by connections that are reused from a connection pool.
+		b. FAILED_LOGIN_GROUP: Indicates that a principal tried to log on to SQL Server and failed. Events in this class are raised by new connections or by connections that are reused from a connection pool.
+	• The mssql plug-in does not support IPV6.
+	• For guardium version 11.4 and below, incorrect value of session start time in report is known issue.
+	• Currently load balancing is not supported.
 
 # Configuring the MSSQL filters in Guardium
 
@@ -169,6 +170,9 @@ MSSQL auditing only supports error logs for following two groups:
 	4. Click the Plus sign to open the Connector Configuration dialog box.
     5. Type a name in the Connector name field.
     6. Update the input section to add the details from awsMSSQL.conf/onPremMSSQL.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+	Note : • For Guardium Data Protection version 11.3, add the following line to the input section:
+	'jdbc_driver_library => "${THIRD_PARTY_PATH}/mssql-jdbc-7.4.1.jre8.jar"'
+		• If auditing is configured way long back and UC is configured at later point of time, still UC will process all the previous older records as well till date, since it is already audited by the DB.
     7. Update the filter section to add the details from awsMSSQL.conf/onPremMSSQL.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
     8. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, the connector appears in the Configure Univer***REMOVED***l Connector page.
 
