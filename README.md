@@ -40,23 +40,23 @@ Univer***REMOVED***l Connector plug-ins are packaged and deployed in a Docker co
 [View all available plug-ins](/docs/available_plugins.md)
 
 ## Using Univer***REMOVED***l Connector plug-ins
-- [In Guardium Data Protection](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/cfg_overview.html).
+- [In Guardium Data Protection](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-configuring-guardium-univer***REMOVED***l).
 - [In Guardium Insights](https://www.ibm.com/docs/en/guardium-insights/3.0.x?topic=connector-configuring-univer***REMOVED***l).
 
 ## Packaging Guardium Insights Univer***REMOVED***l Connector plug-ins
-Note: Pre-packaged plugins can be downloaded from [here](https://github.com/IBM/univer***REMOVED***l-connectors/releases)
+Note: Pre-packaged plug-ins can be downloaded from [here](https://github.com/IBM/univer***REMOVED***l-connectors/releases)
 1) **Clone univer***REMOVED***l-connectors project**: git clone https://github.com/IBM/univer***REMOVED***l-connectors.git
 2) **Enter univer***REMOVED***l-connector project folder**: cd /path/to/univer***REMOVED***l-connectors
 3) **Run packagePluginsForGuardiumInsights.sh script**: sh packagePluginsForGuardiumInsights.sh
-4) **Find required plugins in packagedPlugins**: ls packagedPlugins
+4) **Find required plug-ins in packagedPlugins**: ls packagedPlugins
 
 ## Creating custom Univer***REMOVED***l Connector plug-ins
-- [Configuring native audit on the data source](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/cfg_native_audit_data_source.html)
-- [Developing a filter plug-in](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/develop_filter_plugin.html)
+- [Configuring native audit on the data source](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-configuring-native-audit-data-source)
+- [Developing a filter plug-in](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-developing-filter-plug-in)
 - [Create](https://www.elastic.co/guide/en/logstash/current/input-new-plugin.html) or use an [existing (recommended)](https://www.elastic.co/guide/en/logstash/current/input-plugins.html) input plugin
-- [Testing a filter plug-in in a development environment](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/test_filter_dev_env.html)
-- [Installing and testing the filter or input plug-in on a staging Guardium system](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/test_filter_guardium.html)
-- [Publishing your plug-in](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/publish_plugin.html)
+- [Testing a filter plug-in in a development environment](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-testing-filter-in-dev-environment)
+- [Installing and testing the filter or input plug-in on a staging Guardium system](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system)
+- [Publishing your plug-in](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-publishing-your-plug-in); see also [Contributing](#Contributing) section, below
 
 Note: To package a plug-in for Guardium Insights, you need to include additional files, in this structure: 
 
@@ -78,13 +78,14 @@ Note: To package a plug-in for Guardium Insights, you need to include additional
 
 
 ## Contributing
-To make your connector plug-in available to the community, submit your connector for IBM Certification:
+To make your connector plug-in available to the community, submit your connector to this repository for IBM Certification. We also accept updates or bug fixes to existing plug-ins, to keep them current:
+
 - [Guidelines for contributing](CONTRIBUTING.md)
 - Benefits include:
   - Free, comprehensive testing and certification.
   - Expanding the reach of product APIs.
   - Driving u***REMOVED***ge of a product or solution.
-- We also accept currency updates or bug fixes from the community for any existing connector plug-ins.
+
 
 ## Contact Us
 If you find any problems or want to make suggestions for future features, please create [issues and suggestions on Github](https://github.com/IBM/univer***REMOVED***l-connectors/issues).
