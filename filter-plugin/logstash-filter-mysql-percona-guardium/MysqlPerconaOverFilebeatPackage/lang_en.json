@@ -1,0 +1,18 @@
+{
+	"connection": {
+		"type": {
+			"description": "Datasource type."
+		},
+		"connectionMethod": {
+			"description": "Connection Method."
+		}
+	},
+	"configuration": {
+		"auth": {
+			"guc_filter_param_datasource_tag": {
+				"label": "Datasource Tag",
+				"description": "Tag that was added to every event sent from the data source."
+			}
+		}
+	}
+}
