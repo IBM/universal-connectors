@@ -1,0 +1,622 @@
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T09:47:17.207635Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudsql.googleapis.com%2Fpostgres.log",
+         "textPayload" => "2021-10-07 09:47:17.207 UTC [1032]: [1-1] db=,user= LOG:  automatic analyze of table \"cloudsqladmin.public.heartbeat\" system u***REMOVED***ge: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s",
+          "@timestamp" => 2021-10-07T09:47:58.079Z,
+    "receiveTimestamp" => "2021-10-07T09:47:49.032102154Z",
+            "insertId" => "s=be792898ec9947109d33fd607cc5d6c2;i=a012;b=53906bac512d4a0ca334d1442f010366;m=1581da189;t=5cdc025ec3e53;x=dff50763d9fb7673-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T09:48:17.205979Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudsql.googleapis.com%2Fpostgres.log",
+         "textPayload" => "2021-10-07 09:48:17.205 UTC [1041]: [1-1] db=,user= LOG:  automatic vacuum of table \"cloudsqladmin.public.heartbeat\": index scans: 0\npages: 0 removed, 1 remain, 0 skipped due to pins, 0 skipped frozen\ntuples: 60 removed, 1 remain, 0 are dead but not yet removable, oldest xmin: 1669\nbuffer u***REMOVED***ge: 49 hits, 0 misses, 0 dirtied\navg read rate: 0.000 MB/s, avg write rate: 0.000 MB/s\nsystem u***REMOVED***ge: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s\nWAL u***REMOVED***ge: 1 records, 0 full page images, 188 bytes",
+          "@timestamp" => 2021-10-07T09:48:51.637Z,
+    "receiveTimestamp" => "2021-10-07T09:48:48.679445562Z",
+            "insertId" => "s=be792898ec9947109d33fd607cc5d6c2;i=a120;b=53906bac512d4a0ca334d1442f010366;m=15bb12211;t=5cdc0297fbedb;x=87a936635d4e2e1a-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T09:51:32.432821Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudsql.googleapis.com%2Fpostgres.log",
+         "textPayload" => "2021-10-07 09:51:32.431 UTC [800]: [6-1] db=postgres,user=postgres LOG:  could not receive data from client: Connection reset by peer",
+          "@timestamp" => 2021-10-07T09:52:04.992Z,
+    "receiveTimestamp" => "2021-10-07T09:52:03.936176439Z",
+            "insertId" => "s=be792898ec9947109d33fd607cc5d6c2;i=a4cd;b=53906bac512d4a0ca334d1442f010366;m=167540eeb;t=5cdc03522abb5;x=6f9517009455a8c5-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T09:52:17.283978Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudsql.googleapis.com%2Fpostgres.log",
+         "textPayload" => "2021-10-07 09:52:17.283 UTC [1079]: [1-1] db=,user= LOG:  automatic analyze of table \"cloudsqladmin.public.heartbeat\" system u***REMOVED***ge: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s",
+          "@timestamp" => 2021-10-07T09:52:49.335Z,
+    "receiveTimestamp" => "2021-10-07T09:52:48.991394032Z",
+            "insertId" => "s=be792898ec9947109d33fd607cc5d6c2;i=a59c;b=53906bac512d4a0ca334d1442f010366;m=16a006ec0;t=5cdc037cf0b8a;x=bec92622af69a9f0-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T09:53:17.303257Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudsql.googleapis.com%2Fpostgres.log",
+         "textPayload" => "2021-10-07 09:53:17.302 UTC [1089]: [1-1] db=,user= LOG:  automatic vacuum of table \"cloudsqladmin.public.heartbeat\": index scans: 0\npages: 0 removed, 1 remain, 0 skipped due to pins, 0 skipped frozen\ntuples: 60 removed, 1 remain, 0 are dead but not yet removable, oldest xmin: 1730\nbuffer u***REMOVED***ge: 49 hits, 0 misses, 0 dirtied\navg read rate: 0.000 MB/s, avg write rate: 0.000 MB/s\nsystem u***REMOVED***ge: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s\nWAL u***REMOVED***ge: 1 records, 0 full page images, 188 bytes",
+          "@timestamp" => 2021-10-07T09:53:50.070Z,
+    "receiveTimestamp" => "2021-10-07T09:53:49.216737432Z",
+            "insertId" => "s=be792898ec9947109d33fd607cc5d6c2;i=a6a4;b=53906bac512d4a0ca334d1442f010366;m=16d944110;t=5cdc03b62ddd9;x=14840ae9c6357a69-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T09:58:45.919597Z",
+            "severity" => "ALERT",
+             "logName" => "projects/charged-mind-281913/logs/cloudsql.googleapis.com%2Fpostgres.log",
+         "textPayload" => "2021-10-07 09:58:45.919 UTC [1139]: [1-1] db=postgres,user=postgres FATAL:  password authentication failed for user \"postgres\"",
+          "@timestamp" => 2021-10-07T09:58:48.206Z,
+    "receiveTimestamp" => "2021-10-07T09:58:47.691176468Z",
+            "insertId" => "s=be792898ec9947109d33fd607cc5d6c2;i=ad7c;b=53906bac512d4a0ca334d1442f010366;m=1812a8aa3;t=5cdc04ef9276d;x=18b2dae65030b008-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T09:58:46.227542Z",
+            "severity" => "ALERT",
+             "logName" => "projects/charged-mind-281913/logs/cloudsql.googleapis.com%2Fpostgres.log",
+         "textPayload" => "2021-10-07 09:58:46.227 UTC [1143]: [1-1] db=postgres,user=postgres FATAL:  password authentication failed for user \"postgres\"",
+          "@timestamp" => 2021-10-07T09:58:48.207Z,
+    "receiveTimestamp" => "2021-10-07T09:58:47.691176468Z",
+            "insertId" => "s=be792898ec9947109d33fd607cc5d6c2;i=ad86;b=53906bac512d4a0ca334d1442f010366;m=1812f3d8c;t=5cdc04efdda56;x=7be3a8f079397b16-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T09:59:39.014Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Fdata_access",
+          "@timestamp" => 2021-10-07T09:59:41.641Z,
+        "protoPayload" => {
+        "resourceName" => "instances/postgres-test",
+         "serviceName" => "cloudsql.googleapis.com",
+               "@type" => "type.googleapis.com/google.cloud.audit.AuditLog",
+          "methodName" => "cloudsql.instances.query",
+             "request" => {
+                       "object" => "",
+                    "parameter" => "<not logged>",
+                   "objectType" => "",
+                        "@type" => "type.googleapis.com/google.cloud.sql.audit.v1.PgAuditEntry",
+                   "auditClass" => "READ",
+                    "statement" => "SELECT d.datname as \"Name\",\n\t       pg_catalog.pg_get_userbyid(d.datdba) as \"Owner\",\n\t       pg_catalog.pg_encoding_to_char(d.encoding) as \"Encoding\",\n\t       d.datcollate as \"Collate\",\n\t       d.datctype as \"Ctype\",\n\t       pg_catalog.array_to_string(d.datacl, E'\\n') AS \"Access privileges\"\n\tFROM pg_catalog.pg_database d\n\tORDER BY 1;",
+                    "auditType" => "SESSION",
+                   "chunkIndex" => 1,
+                         "user" => "postgres",
+                      "command" => "SELECT",
+                     "database" => "postgres",
+                   "chunkCount" => 1,
+                  "statementId" => 1,
+            "databaseSessionId" => 1150,
+               "substatementId" => 1
+        }
+    },
+    "receiveTimestamp" => "2021-10-07T09:59:40.50619293Z",
+            "insertId" => "2#717446706140#postgres-test#audit#1633600779014000000#0000000000001746-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T10:00:57.653633Z",
+            "severity" => "ERROR",
+             "logName" => "projects/charged-mind-281913/logs/cloudsql.googleapis.com%2Fpostgres.log",
+         "textPayload" => "2021-10-07 10:00:57.653 UTC [1150]: [2-1] db=postgres,user=postgres ERROR:  syntax error at or near \"/\" at character 1",
+          "@timestamp" => 2021-10-07T10:01:01.680Z,
+    "receiveTimestamp" => "2021-10-07T10:00:59.289501659Z",
+            "insertId" => "s=be792898ec9947109d33fd607cc5d6c2;i=b0ed;b=53906bac512d4a0ca334d1442f010366;m=18904a4b8;t=5cdc056d34181;x=e535c037780c962e-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T10:02:40.12957Z",
+            "severity" => "ERROR",
+             "logName" => "projects/charged-mind-281913/logs/cloudsql.googleapis.com%2Fpostgres.log",
+         "textPayload" => "2021-10-07 10:02:40.129 UTC [1150]: [4-1] db=postgres,user=postgres ERROR:  syntax error at or near \"/\" at character 1",
+          "@timestamp" => 2021-10-07T10:02:44.379Z,
+    "receiveTimestamp" => "2021-10-07T10:02:41.281704749Z",
+            "insertId" => "s=be792898ec9947109d33fd607cc5d6c2;i=b2c2;b=53906bac512d4a0ca334d1442f010366;m=18f204d58;t=5cdc05ceeea22;x=5425d1637e5bf77b-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T10:02:42.796Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Fdata_access",
+          "@timestamp" => 2021-10-07T10:02:45.116Z,
+        "protoPayload" => {
+        "resourceName" => "instances/postgres-test",
+         "serviceName" => "cloudsql.googleapis.com",
+               "@type" => "type.googleapis.com/google.cloud.audit.AuditLog",
+          "methodName" => "cloudsql.instances.query",
+             "request" => {
+                       "object" => "",
+                    "parameter" => "<not logged>",
+                   "objectType" => "",
+                        "@type" => "type.googleapis.com/google.cloud.sql.audit.v1.PgAuditEntry",
+                   "auditClass" => "WRITE",
+                    "statement" => "insert into dummy_table values('DEF','location-C',40);",
+                    "auditType" => "SESSION",
+                   "chunkIndex" => 1,
+                         "user" => "postgres",
+                      "command" => "INSERT",
+                     "database" => "postgres",
+                   "chunkCount" => 1,
+                  "statementId" => 2,
+            "databaseSessionId" => 1150,
+               "substatementId" => 1
+        }
+    },
+    "receiveTimestamp" => "2021-10-07T10:02:44.438473644Z",
+            "insertId" => "2#717446706140#postgres-test#audit#1633600962796000000#00000000000017fe-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T10:05:01.929Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Fdata_access",
+          "@timestamp" => 2021-10-07T10:05:03.459Z,
+        "protoPayload" => {
+        "resourceName" => "instances/postgres-test",
+         "serviceName" => "cloudsql.googleapis.com",
+               "@type" => "type.googleapis.com/google.cloud.audit.AuditLog",
+          "methodName" => "cloudsql.instances.query",
+             "request" => {
+                       "object" => "",
+                    "parameter" => "<not logged>",
+                   "objectType" => "",
+                        "@type" => "type.googleapis.com/google.cloud.sql.audit.v1.PgAuditEntry",
+                   "auditClass" => "WRITE",
+                    "statement" => "insert into dummy_table values('PQR','location-D',54);",
+                    "auditType" => "SESSION",
+                   "chunkIndex" => 1,
+                         "user" => "postgres",
+                      "command" => "INSERT",
+                     "database" => "postgres",
+                   "chunkCount" => 1,
+                  "statementId" => 3,
+            "databaseSessionId" => 1150,
+               "substatementId" => 1
+        }
+    },
+    "receiveTimestamp" => "2021-10-07T10:05:02.885610534Z",
+            "insertId" => "2#717446706140#postgres-test#audit#1633601101929000000#00000000000018b6-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T10:05:11.909Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Fdata_access",
+          "@timestamp" => 2021-10-07T10:05:14.168Z,
+        "protoPayload" => {
+        "resourceName" => "instances/postgres-test",
+         "serviceName" => "cloudsql.googleapis.com",
+               "@type" => "type.googleapis.com/google.cloud.audit.AuditLog",
+          "methodName" => "cloudsql.instances.query",
+             "request" => {
+                       "object" => "",
+                    "parameter" => "<not logged>",
+                   "objectType" => "",
+                        "@type" => "type.googleapis.com/google.cloud.sql.audit.v1.PgAuditEntry",
+                   "auditClass" => "READ",
+                    "statement" => "select * from dummy_table;",
+                    "auditType" => "SESSION",
+                   "chunkIndex" => 1,
+                         "user" => "postgres",
+                      "command" => "SELECT",
+                     "database" => "postgres",
+                   "chunkCount" => 1,
+                  "statementId" => 4,
+            "databaseSessionId" => 1150,
+               "substatementId" => 1
+        }
+    },
+    "receiveTimestamp" => "2021-10-07T10:05:12.980368062Z",
+            "insertId" => "2#717446706140#postgres-test#audit#1633601111909000000#000000000000194f-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T10:05:25.309Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Fdata_access",
+          "@timestamp" => 2021-10-07T10:05:29.736Z,
+        "protoPayload" => {
+        "resourceName" => "instances/postgres-test",
+         "serviceName" => "cloudsql.googleapis.com",
+               "@type" => "type.googleapis.com/google.cloud.audit.AuditLog",
+          "methodName" => "cloudsql.instances.query",
+             "request" => {
+                       "object" => "",
+                    "parameter" => "<not logged>",
+                   "objectType" => "",
+                        "@type" => "type.googleapis.com/google.cloud.sql.audit.v1.PgAuditEntry",
+                   "auditClass" => "WRITE",
+                    "statement" => "update dummy_table set age=50 where name='PQR';",
+                    "auditType" => "SESSION",
+                   "chunkIndex" => 1,
+                         "user" => "postgres",
+                      "command" => "UPDATE",
+                     "database" => "postgres",
+                   "chunkCount" => 1,
+                  "statementId" => 5,
+            "databaseSessionId" => 1150,
+               "substatementId" => 1
+        }
+    },
+    "receiveTimestamp" => "2021-10-07T10:05:26.706490604Z",
+            "insertId" => "2#717446706140#postgres-test#audit#1633601125309000000#00000000000019fe-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T10:05:42.715Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Fdata_access",
+          "@timestamp" => 2021-10-07T10:05:44.927Z,
+        "protoPayload" => {
+        "resourceName" => "instances/postgres-test",
+         "serviceName" => "cloudsql.googleapis.com",
+               "@type" => "type.googleapis.com/google.cloud.audit.AuditLog",
+          "methodName" => "cloudsql.instances.query",
+             "request" => {
+                       "object" => "",
+                    "parameter" => "<not logged>",
+                   "objectType" => "",
+                        "@type" => "type.googleapis.com/google.cloud.sql.audit.v1.PgAuditEntry",
+                   "auditClass" => "READ",
+                    "statement" => "select * from dummy_table;",
+                    "auditType" => "SESSION",
+                   "chunkIndex" => 1,
+                         "user" => "postgres",
+                      "command" => "SELECT",
+                     "database" => "postgres",
+                   "chunkCount" => 1,
+                  "statementId" => 6,
+            "databaseSessionId" => 1150,
+               "substatementId" => 1
+        }
+    },
+    "receiveTimestamp" => "2021-10-07T10:05:44.067196726Z",
+            "insertId" => "2#717446706140#postgres-test#audit#1633601142715000000#0000000000001a98-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T10:05:54.789Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Fdata_access",
+          "@timestamp" => 2021-10-07T10:05:56.928Z,
+        "protoPayload" => {
+        "resourceName" => "instances/postgres-test",
+         "serviceName" => "cloudsql.googleapis.com",
+               "@type" => "type.googleapis.com/google.cloud.audit.AuditLog",
+          "methodName" => "cloudsql.instances.query",
+             "request" => {
+                       "object" => "",
+                    "parameter" => "<not logged>",
+                   "objectType" => "",
+                        "@type" => "type.googleapis.com/google.cloud.sql.audit.v1.PgAuditEntry",
+                   "auditClass" => "WRITE",
+                    "statement" => "update dummy_table set name='GHI',age=54 where address='location-D';",
+                    "auditType" => "SESSION",
+                   "chunkIndex" => 1,
+                         "user" => "postgres",
+                      "command" => "UPDATE",
+                     "database" => "postgres",
+                   "chunkCount" => 1,
+                  "statementId" => 7,
+            "databaseSessionId" => 1150,
+               "substatementId" => 1
+        }
+    },
+    "receiveTimestamp" => "2021-10-07T10:05:56.568666951Z",
+            "insertId" => "2#717446706140#postgres-test#audit#1633601154789000000#0000000000001b5f-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T10:06:01.204Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Fdata_access",
+          "@timestamp" => 2021-10-07T10:06:03.461Z,
+        "protoPayload" => {
+        "resourceName" => "instances/postgres-test",
+         "serviceName" => "cloudsql.googleapis.com",
+               "@type" => "type.googleapis.com/google.cloud.audit.AuditLog",
+          "methodName" => "cloudsql.instances.query",
+             "request" => {
+                       "object" => "",
+                    "parameter" => "<not logged>",
+                   "objectType" => "",
+                        "@type" => "type.googleapis.com/google.cloud.sql.audit.v1.PgAuditEntry",
+                   "auditClass" => "READ",
+                    "statement" => "select * from dummy_table;",
+                    "auditType" => "SESSION",
+                   "chunkIndex" => 1,
+                         "user" => "postgres",
+                      "command" => "SELECT",
+                     "database" => "postgres",
+                   "chunkCount" => 1,
+                  "statementId" => 8,
+            "databaseSessionId" => 1150,
+               "substatementId" => 1
+        }
+    },
+    "receiveTimestamp" => "2021-10-07T10:06:02.207660047Z",
+            "insertId" => "2#717446706140#postgres-test#audit#1633601161204000000#0000000000001bf9-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T10:06:11.709Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Fdata_access",
+          "@timestamp" => 2021-10-07T10:06:14.016Z,
+        "protoPayload" => {
+        "resourceName" => "instances/postgres-test",
+         "serviceName" => "cloudsql.googleapis.com",
+               "@type" => "type.googleapis.com/google.cloud.audit.AuditLog",
+          "methodName" => "cloudsql.instances.query",
+             "request" => {
+                       "object" => "",
+                    "parameter" => "<not logged>",
+                   "objectType" => "",
+                        "@type" => "type.googleapis.com/google.cloud.sql.audit.v1.PgAuditEntry",
+                   "auditClass" => "WRITE",
+                    "statement" => "update dummy_table set age=54,address='location-X';",
+                    "auditType" => "SESSION",
+                   "chunkIndex" => 1,
+                         "user" => "postgres",
+                      "command" => "UPDATE",
+                     "database" => "postgres",
+                   "chunkCount" => 1,
+                  "statementId" => 9,
+            "databaseSessionId" => 1150,
+               "substatementId" => 1
+        }
+    },
+    "receiveTimestamp" => "2021-10-07T10:06:13.095514733Z",
+            "insertId" => "2#717446706140#postgres-test#audit#1633601171709000000#0000000000001caf-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T10:06:21.177Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Fdata_access",
+          "@timestamp" => 2021-10-07T10:06:23.413Z,
+        "protoPayload" => {
+        "resourceName" => "instances/postgres-test",
+         "serviceName" => "cloudsql.googleapis.com",
+               "@type" => "type.googleapis.com/google.cloud.audit.AuditLog",
+          "methodName" => "cloudsql.instances.query",
+             "request" => {
+                       "object" => "",
+                    "parameter" => "<not logged>",
+                   "objectType" => "",
+                        "@type" => "type.googleapis.com/google.cloud.sql.audit.v1.PgAuditEntry",
+                   "auditClass" => "WRITE",
+                    "statement" => "update dummy_table set age=30 where name='XYZ' returning age as age_no;",
+                    "auditType" => "SESSION",
+                   "chunkIndex" => 1,
+                         "user" => "postgres",
+                      "command" => "UPDATE",
+                     "database" => "postgres",
+                   "chunkCount" => 1,
+                  "statementId" => 10,
+            "databaseSessionId" => 1150,
+               "substatementId" => 1
+        }
+    },
+    "receiveTimestamp" => "2021-10-07T10:06:22.710124678Z",
+            "insertId" => "2#717446706140#postgres-test#audit#1633601181177000000#0000000000001d78-0-0@a1"
+}
+{
+            "resource" => {
+        "labels" => {
+            "database_id" => "charged-mind-281913:postgres-test",
+             "project_id" => "charged-mind-281913",
+                 "region" => "us-central"
+        },
+          "type" => "cloudsql_database"
+    },
+            "@version" => "1",
+                "host" => nil,
+           "timestamp" => "2021-10-07T10:06:31.514Z",
+            "severity" => "INFO",
+             "logName" => "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Fdata_access",
+          "@timestamp" => 2021-10-07T10:06:33.050Z,
+        "protoPayload" => {
+        "resourceName" => "instances/postgres-test",
+         "serviceName" => "cloudsql.googleapis.com",
+               "@type" => "type.googleapis.com/google.cloud.audit.AuditLog",
+          "methodName" => "cloudsql.instances.query",
+             "request" => {
+                       "object" => "",
+                    "parameter" => "<not logged>",
+                   "objectType" => "",
+                        "@type" => "type.googleapis.com/google.cloud.sql.audit.v1.PgAuditEntry",
+                   "auditClass" => "WRITE",
+                    "statement" => "delete from dummy_table where age=65;",
+                    "auditType" => "SESSION",
+                   "chunkIndex" => 1,
+                         "user" => "postgres",
+                      "command" => "DELETE",
+                     "database" => "postgres",
+                   "chunkCount" => 1,
+                  "statementId" => 11,
+            "databaseSessionId" => 1150,
+               "substatementId" => 1
+        }
+    },
+    "receiveTimestamp" => "2021-10-07T10:06:32.182388479Z",
+            "insertId" => "2#717446706140#postgres-test#audit#1633601191514000000#0000000000001e1f-0-0@a1"
+}
