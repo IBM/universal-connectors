@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MySqlPerconaGuardiumFilterTest {
+public class MySqlPerconaFilterTest {
 
     @Test
     public void testParseMySqlPercona_Data(){
@@ -25,7 +25,7 @@ public class MySqlPerconaGuardiumFilterTest {
         String mysql_mes***REMOVED***ge = "<14>Feb 12 07:18:30 dbqa09 percona-audit: {\"audit_record\":{\"name\":\"Query\",\"record\":\"106_1970-01-01T00:00:00\",\"timestamp\":\"2021-02-12T12:18:30 UTC\",\"command_class\":\"select\",\"connection_id\":\"12\",\"status\":0,\"sqltext\":\"select * from Products limit 99999\",\"user\":\"root[root] @ localhost []\",\"host\":\"localhost\",\"os_user\":\"\",\"ip\":\"\",\"db\":\"\"}}";
         Configuration config = new ConfigurationImpl(Collections.singletonMap("log_level", "debug"));
         Context context = new ContextImpl(null, null);
-        MySqlPerconaGuardiumFilter filter = new MySqlPerconaGuardiumFilter("test-id", config, context);
+        MySqlPerconaFilter filter = new MySqlPerconaFilter("test-id", config, context);
 
         Event e = new org.logstash.Event();
         TestMatchListener matchListener = new TestMatchListener();
@@ -52,16 +52,16 @@ public class MySqlPerconaGuardiumFilterTest {
 
     @Test
     public void testDbNameExtraction(){
-        String result = MySqlPerconaGuardiumFilter.processDbUser(MySqlPerconaGuardiumFilter.UNKNOWN_STRING);
+        String result = MySqlPerconaFilter.processDbUser(MySqlPerconaFilter.UNKNOWN_STRING);
         Assert.assertEquals("Invalid empty name","",result);
 
-        result = MySqlPerconaGuardiumFilter.processDbUser("abc[def] @ localhost []");
+        result = MySqlPerconaFilter.processDbUser("abc[def] @ localhost []");
         Assert.assertEquals("Invalid simple case","abc",result);
 
-        result = MySqlPerconaGuardiumFilter.processDbUser("abc[def][ghk] @ localhost []");
+        result = MySqlPerconaFilter.processDbUser("abc[def][ghk] @ localhost []");
         Assert.assertEquals("Invalid double[]","abc[def]",result);
 
-        result = MySqlPerconaGuardiumFilter.processDbUser(" abc [ghk] @ localhost []");
+        result = MySqlPerconaFilter.processDbUser(" abc [ghk] @ localhost []");
         Assert.assertEquals("Invalid - not trimmed name","abc",result);
 
     }
@@ -84,7 +84,7 @@ public class MySqlPerconaGuardiumFilterTest {
                 "\t\t\t\t\t\t\t\t\t}";
         Configuration config = new ConfigurationImpl(Collections.singletonMap("log_level", "debug"));
         Context context = new ContextImpl(null, null);
-        MySqlPerconaGuardiumFilter filter = new MySqlPerconaGuardiumFilter("test-id", config, context);
+        MySqlPerconaFilter filter = new MySqlPerconaFilter("test-id", config, context);
 
         Event e = new org.logstash.Event();
         TestMatchListener matchListener = new TestMatchListener();
@@ -104,7 +104,7 @@ public class MySqlPerconaGuardiumFilterTest {
         String error_mes***REMOVED***ge = "percona-audit: {\"audit_record\":{\"name\":\"Query\",\"record\":\"39_2021-02-03T18:54:45\",\"timestamp\":\"2021-02-03T18:55:57 UTC\",\"command_class\":\"select\",\"connection_id\":\"2\",\"status\":1146,\"sqltext\":\"select * from users\",\"user\":\"root[root] @ localhost []\",\"host\":\"localhost\",\"os_user\":\"\",\"ip\":\"\",\"db\":\"mysql\"}}";
         Configuration config = new ConfigurationImpl(Collections.singletonMap("source", "mes***REMOVED***ge"));
         Context context = new ContextImpl(null, null);
-        MySqlPerconaGuardiumFilter filter = new MySqlPerconaGuardiumFilter("test-id", config, context);
+        MySqlPerconaFilter filter = new MySqlPerconaFilter("test-id", config, context);
 
         Event e = new org.logstash.Event();
         TestMatchListener matchListener = new TestMatchListener();
