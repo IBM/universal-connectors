@@ -160,7 +160,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 	• You must have permission for the S-Tap Management role. The admin user includes this role by default.
 	• Download the mssql-offline-plugins-7.5.2.zip plug-in.
-	• Download the mssql-jdbc-7.4.1.jre8.
+	• Download the mssql-jdbc-7.4.1.jre8 from [here] (https://jar-download.com/artifacts/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8)
 
 ## Procedure : 
 
