@@ -143,6 +143,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ## Before you begin
 
 • You must have permission for the S-Tap Management role. The admin user includes this role, by default.
+• Download the required (ngdbc)jars as per your database version from URL:- https://tools.hana.ondemand.com/#hanatools
+
 
 # Procedure
 	1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
