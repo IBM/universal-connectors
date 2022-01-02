@@ -1,0 +1,14 @@
+{
+	"name": "saphana_guardium_plugin_filter",
+	"alias": "SAPHANA",
+	"type": "filter",
+	"pipeline_type":"push",
+  "plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"SAPHANA","supportedVersions": ["2.00.033.00.20180925.2"]}],
+	"supported_input_plugins": ["Filebeat_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses SAP HANA audit log events into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-saphana-guardium/README.md"
+}
