@@ -3,7 +3,7 @@
 	"alias": "S3",
 	"type": "filter",
 	"pipeline_type":"pull",
-	"plugin_version": "0.6.6",
+	"plugin_version": "0.5.4",
 	"datasourceTypes": [{"type":"S3","supportedVersions": ["9.5.5"]}],
 	"supported_input_plugins": ["Cloudwatch_logs_input"],
 	"developer": "IBM",
