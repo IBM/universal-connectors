@@ -14,7 +14,7 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 ## Setup
 
 1. Enable the Univer***REMOVED***l Connector feature on the designated Guardium collectors or stand-alone system.
-2. Download the Oracle Instant Client version 21.1.0.0.0-1 RPM package (only this version is supported) from Oracle. http://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient21/x86_64/
+2. Download the Oracle Instant Client version 21.1.0.0.0-1 RPM package (only this version is supported) from Oracle. https://download.oracle.com/otn_software/linux/instantclient/211000/oracle-instantclient-basic-21.1.0.0.0-1.x86_64.rpm
 3. Download the Oracle Unified Audit Univer***REMOVED***l Connector plugin (guardium-oua-uc.zip).
 4. Create the UC secret to store the Oracle user's password using the grdapi `univer***REMOVED***l_connector_keystore_add`. e.g. `grdapi univer***REMOVED***l_connector_keystore_add key=OUA_USER_PASS password=<PASSWORD>`
 5. If UC is already running, you should restart UC to apply a new or updated key, using grdapi run_univer***REMOVED***l_connector overwrite_old_instance="true"
