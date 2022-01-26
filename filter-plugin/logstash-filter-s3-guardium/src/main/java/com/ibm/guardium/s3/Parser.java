@@ -49,7 +49,7 @@ public class Parser {
 
         record.setSessionId(userIdentity.toString());
 
-        JsonObject requestParameters = auditObj.get("requestParameters")!=null ? auditObj.get("requestParameters").getAsJsonObject() : null;
+        JsonElement requestParameters = auditObj.get("requestParameters")!=null ? auditObj.get("requestParameters") : null;
         record.setDbName(searchForBucketName(requestParameters));
 
         Time time = getTime(getStrValue(auditObj,"eventTime"));
@@ -61,7 +61,6 @@ public class Parser {
         sessionLocator.setClientIp(sourceIPAddress);
         sessionLocator.setClientPort(SessionLocator.PORT_DEFAULT);
 
-        String host = getHost(requestParameters);
         String serverIP = UNKNOWN_IP;//validateIP(host);
         sessionLocator.setServerIp(serverIP);
         sessionLocator.setServerPort(SessionLocator.PORT_DEFAULT);
@@ -154,8 +153,8 @@ public class Parser {
             }
 
             // if not found object in resources property - use the value in "key" field of request parameters
-            if (objects.size() == 0) {
-                SentenceObject object = new SentenceObject(getStrValue(requestParameters, "key"));
+            if (objects.size() == 0 && requestParameters!=null && requestParameters.isJsonObject()) {
+                SentenceObject object = new SentenceObject(getStrValue(requestParameters.getAsJsonObject(), "key"));
                 objects.add(object);
             }
         }
