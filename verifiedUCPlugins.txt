@@ -2,3 +2,12 @@
 filter-plugin/logstash-filter-mongodb-guardium/MongodbOverFilebeatPackage
 filter-plugin/logstash-filter-mysql-guardium/MysqlOverFilebeatPackage
 filter-plugin/logstash-filter-s3-guardium/S3OverCloudwatchLogsPackage
+filter-plugin/logstash-filter-couchbasedb-guardium/CouchbasedbOverFilebeatPackage_3.1
+filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudwatchPackage_3.1
+filter-plugin/logstash-filter-mysql-aws-guardium/MysqlOverCloudwatchLogsPackage_3.1
+filter-plugin/logstash-filter-mysql-guardium/MysqlOverFilebeatPackage_3.1
+filter-plugin/logstash-filter-mysql-percona-guardium/MysqlPerconaOverFilebeatPackage_3.1
+filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage_3.1
+filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage_3.1
+filter-plugin/logstash-filter-s3-guardium/S3OverCloudwatchLogsPackage_3.1
+filter-plugin/logstash-filter-***REMOVED***phana-guardium/SaphanaOverFilebeatPackage_3.1
