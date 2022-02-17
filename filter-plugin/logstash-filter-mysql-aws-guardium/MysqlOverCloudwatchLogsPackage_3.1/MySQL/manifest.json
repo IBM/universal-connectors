@@ -1,5 +1,5 @@
 {
-	"name": "Guardium_AWS_Mysql_filter",
+	"name": "Guardium_Mysql_AWS_filter",
 	"alias": "MySQL",
 	"type": "filter",
 	"pipeline_type":"pull",
