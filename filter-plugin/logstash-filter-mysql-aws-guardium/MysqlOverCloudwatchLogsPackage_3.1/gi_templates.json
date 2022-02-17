@@ -45,7 +45,7 @@
       }
     }
   ],
-  "filter_name": "Guardium_Mysql_filter",
+  "filter_name": "Guardium_AWS_Mysql_filter",
   "filter_parameters": [],
   "auth_parameters": [
     {
