@@ -113,7 +113,7 @@ pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 
 ## Limitations
 1. Since GCP truncates multi-line queries, meaning inserting new lines in your user query would generate multiple logs on 
-Google Cloud, this plug-in would then only ingest the first line of that query. In order to trim-off line feeds via your SQL Editor on DBeaver and have these type of queries fully digested, please refer to [SQL Formatter](PubSubMySQLPackage/sqlFormatter)
+Google Cloud, this plug-in would then only ingest the first line of that query. In order to trim-off line feeds via your SQL Editor on DBeaver and have these type of queries fully digested, please refer to [SQL Formatter](/PubSubMySQLPackage/sqlFormatter)
    
 2. Some internal system queries from DBeaver are ingested by the plug-in. You could easily filter them out by using the 
    GCP logs routing sink's exclusion filter, as seen in the Exclusion filter section above. For more information, check 
