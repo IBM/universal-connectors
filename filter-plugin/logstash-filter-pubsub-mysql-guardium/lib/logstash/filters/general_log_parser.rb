@@ -50,7 +50,7 @@ module GeneralLogParser
         begin
           mes***REMOVED***ge = mes***REMOVED***ge_no_tabs.match(/(?<ts>(\d*-){2}(\d*)T(\d*:){2}(\d*.\d*)Z)[^\[]*\[(?<db_user>[A-Za-z]*)\](\s*)@(\s*)\[cloudsqlproxy~(?<client_ip>(\d)*.(\d)*.(\d)*.(\d)*)\](\s*)(?<session_id>\d*)(\s*)(?<connection_id>(\d*))(\s*)Query(\s)((?<comment>\/*(.*)*\/)(?<query>.*))/)
 
-          msg_comment = mes***REMOVED***ge['comment'].match(/ApplicationName=(?<app_name>[^\s]*).*-(\s*)(?<type>[a-zA-Z]*)/)
+          msg_comment = mes***REMOVED***ge['comment'].match(/ApplicationName=(?<app_name>[^(\s)]*)(\s)[^-]*-(\s)(?<type>[a-zA-Z]*)/)
 
         rescue StandardError
           raise FilterException::GeneralLogProxyParserErr
@@ -58,7 +58,7 @@ module GeneralLogParser
 
         # exclude Main and Metadata logs (i.e. internal GCP logs) and unsupported SQL client apps
         app_name = msg_comment["app_name"]
-        if (app_name =~ /DBeaver/) && (msg_comment['type'] !~ /SQLEditor/)
+        if app_name !~ /DBeaver/ || msg_comment['type'] !~ /SQLEditor/
           raise FilterException::GeneralLogProxyParserBadType
         end
 
