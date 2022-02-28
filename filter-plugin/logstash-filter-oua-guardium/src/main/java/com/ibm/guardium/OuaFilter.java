@@ -72,6 +72,7 @@ public class OuaFilter implements Filter {
 	public static final String DB_USER_TAG = "userid";
 	public static final String SESSION_ID_TAG = "sessionid";
 	public static final String CON_NAME_TAG = "con_name";
+	public static final String RETURN_CODE_TAG = "return_code";
 
     public OuaFilter(String id, Configuration config, Context context) {
         // constructors should validate configuration options
@@ -102,7 +103,7 @@ public class OuaFilter implements Filter {
             		}
             		matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
             	} catch (Exception exception) {
-            	    log.error("Error parsing HDFS event "+logEvent(e), exception);
+                    log.error("Error parsing OUA event "+logEvent(e), exception);
             	    e.tag(LOGSTASH_TAG_PARSE_ERROR);
             	}
 			}
@@ -134,8 +135,40 @@ public class OuaFilter implements Filter {
         record.setData(OuaFilter.parseData(event));
 
 		record.setTime(OuaFilter.getTime(event));
+		record.setException(OuaFilter.parseExceptionRecord(event));
 
 		return record;
+	}
+
+	private static ExceptionRecord parseExceptionRecord(final Event event) {
+		ExceptionRecord exception_record = null;
+		int return_code = 0;
+
+		if (event.getField(OuaFilter.RETURN_CODE_TAG) instanceof Long) {
+			return_code = Integer.parseInt(event.getField(OuaFilter.RETURN_CODE_TAG).toString());
+		}
+
+		if (return_code != 0) {
+			exception_record = new ExceptionRecord();
+
+			exception_record.setDescription(String.format("ORA-%05d", return_code));
+			if (return_code == 1017 || return_code == 1004 || return_code == 1005 ||
+					return_code == 1040 || return_code == 1045 || return_code == 1988 ||
+					return_code == 12317 || return_code == 1267 || return_code == 28000 ||
+					return_code == 28001 || return_code == 28030 || return_code == 28273 ||
+					return_code == 28009) {
+				exception_record.setExceptionTypeId("LOGIN_FAILED");
+			} else {
+				exception_record.setExceptionTypeId("SQL_ERROR");
+			}
+			if (event.getField(OuaFilter.SQL_TAG) instanceof String) {
+				exception_record.setSqlString(event.getField(OuaFilter.SQL_TAG).toString());
+			} else {
+				exception_record.setSqlString(OuaFilter.UNKNOWN_STRING);
+			}
+		}
+
+		return exception_record;
 	}
 
 	private static Data parseData(final Event event) {
