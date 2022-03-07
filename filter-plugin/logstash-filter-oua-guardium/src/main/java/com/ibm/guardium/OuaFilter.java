@@ -98,20 +98,18 @@ public class OuaFilter implements Filter {
 						return_code = Integer.parseInt(e.getField(OuaFilter.RETURN_CODE_TAG).toString());
 					}
 
-					if (return_code == 0 || !OuaFilter.isLoginFailedReturnCode(return_code)) {
-						Record record = OuaFilter.parseRecord(e);
+					Record record = OuaFilter.parseRecord(e);
 
-						final GsonBuilder builder = new GsonBuilder();
-						builder.serializeNulls();
-						final Gson gson = builder.create();
-						e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
+					final GsonBuilder builder = new GsonBuilder();
+					builder.serializeNulls();
+					final Gson gson = builder.create();
+					e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
 
-						if (log.isDebugEnabled()) {
-						   log.debug("Record Event: "+logEvent(e));
-						}
-						matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
-						outputEvents.add(e);
+					if (log.isDebugEnabled()) {
+					   log.debug("Record Event: "+logEvent(e));
 					}
+					matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
+					outputEvents.add(e);
 
 					if (return_code != 0) {
 						Event exception_event = e.clone();
