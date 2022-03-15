@@ -154,6 +154,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	5. Type a name in the Connector name field.
 	6. Update the input section for JDBC Plugin. Use sapHANA-JDBC.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end and for FileBeat use filter-test-beats.conf file's input part.
 	7. Update the filter section for JDBC Plugin. Use sapHANA-JDBC.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end and for FileBeat use filter-test-beats.conf file's filter part.
+	Note: "type" field should match in input and filter configuration section. This field should be unique for every individual connector added.
 	8. Click Save. Guardium validates the new connector, and enables the universal connector if it was
 	disabled. After it is validated, it appears in the Configure Universal Connector page.
 	
