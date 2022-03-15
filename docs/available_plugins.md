@@ -20,4 +20,5 @@ Pre-packaged plugins can be downloaded from here: https://github.com/IBM/univer*
 | [Couchbase](../filter-plugin/logstash-filter-couchbasedb-guardium/README.md)    | 6.6.2-9600        | On-premise / Iaas        | IBM    		| Filebeat (push) | **Guardium Data Protection only** |
 | [SAP HANA](../filter-plugin/logstash-filter-***REMOVED***phana-guardium/README.md)    | 2.00.033.00.1535711040        | On-premise / Iaas        | IBM    		| Filebeat (push), JDBC (pull) | **Guardium Data Protection only** |
 | [Neo4j](../filter-plugin/logstash-filter-neo4j-guardium/README.md)    | 14.0        | On-premise / Iaas        | IBM    		| Filebeat (push) | **Guardium Data Protection only** |
+| [Aurora-MySQL](../filter-plugin/logstash-filter-aurora-mysql-guardium/README.md) | Aurora(MySQL 5.7)2.07.2 | AWS | IBM | CloudWatch (pull)   | **Guardium Data Protection only** |
 
