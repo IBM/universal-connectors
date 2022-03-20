@@ -3,7 +3,7 @@
 	"alias": "Dynamo",
 	"type": "filter",
 	"pipeline_type":"pull",
-	"plugin_version": "0.0.1",
+	"plugin_version": "1.0.0",
 	"datasourceTypes": [{"type":"Dynamodb","supportedVersions": ["2019.11.21"]}],
 	"supported_input_plugins": ["Cloudwatch_logs"],
 	"developer": "IBM",
