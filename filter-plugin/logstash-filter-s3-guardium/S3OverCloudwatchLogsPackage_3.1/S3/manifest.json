@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_S3_filter",
+	"alias": "S3",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "0.5.4",
+	"datasourceTypes": [{"type":"S3","supportedVersions": ["9.5.5"]}],
+	"supported_input_plugins": ["Cloudwatch_logs_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses Amazon S3 database events into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-s3-guardium/README.md"
+}
