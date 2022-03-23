@@ -1,5 +1,5 @@
 {
-	"name": "saphana_guardium_plugin_filter",
+	"name": "Guardium_SAPHANA_filter",
 	"alias": "SAPHANA",
 	"type": "filter",
 	"pipeline_type":"push",
