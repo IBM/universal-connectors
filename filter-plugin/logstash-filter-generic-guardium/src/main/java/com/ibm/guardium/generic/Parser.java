@@ -301,7 +301,7 @@ public class Parser {
 	}
 	public static void setUsername(final Accessor accessor,final JsonObject data) {
 		
-		String user = Constants.UNKNOWN_STRING;
+		String user = Constants.NOT_AVAILABLE;
 		
 		if(data.has(Constants.DBUSER) && data.get(Constants.DBUSER)!=null) {
 			user = data.get(Constants.DBUSER).getAsString();
