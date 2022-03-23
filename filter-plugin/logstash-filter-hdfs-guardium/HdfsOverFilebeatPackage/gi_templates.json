@@ -1,6 +1,6 @@
 {
-  "plugin_name": "SAPHANA Over Filebeat",
-  "help_link": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-***REMOVED***phana-guardium/README.md",
+  "plugin_name": "HDFS Over Filebeat",
+  "help_link": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-hdfs-guardium/README.md",
   "input_name": "Filebeat_input",
   "input_parameters": [
     {
@@ -16,7 +16,7 @@
       }
     }
   ],
-  "filter_name": "***REMOVED***phana_guardium_plugin_filter",
+  "filter_name": "Guardium_HDFS_filter",
   "filter_parameters": [],
   "auth_parameters": [
     {
