@@ -1,8 +1,0 @@
-{
-	"datasourceTypeName":"Percona Mysql over Filebeat",
-	"inputPluginName":"Filebeat_input",
-	"filterPluginName":"Guardium_Percona_Mysql_filter",
-	"supported_platforms": ["on-premise"]
-	"plugin_version": "1.0.6",
-        "datasourceTypes": [{"type":"Percona Mysql","supportedVersions": ["5.x"]}],
-}

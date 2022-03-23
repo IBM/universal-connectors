@@ -1,5 +1,0 @@
-{
-	"datasourceTypeName":"SAPHANA over Filebeat",
-	"inputPluginName":"Filebeat_input",
-	"filterPluginName":"saphana_guardium_plugin_filter"
-}
