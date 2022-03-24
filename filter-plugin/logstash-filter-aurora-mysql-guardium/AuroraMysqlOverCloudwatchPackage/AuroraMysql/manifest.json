@@ -1,0 +1,14 @@
+{
+	"name": "auroramysqlguardiumpluginfilter",
+	"alias": "AuroraMysql",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "0.0.1",
+	"datasourceTypes": [{"type":"AuroraMysql","supportedVersions": ["Aurora(MySQL5.7)2.07.2"]}],
+	"supported_input_plugins": ["Cloudwatch_logs"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses events and mes***REMOVED***ges from the Amazon DynamoDB audit log into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-aurora-mysql-guardium/README.md"
+}
