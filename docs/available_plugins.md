@@ -21,4 +21,5 @@ Pre-packaged plugins can be downloaded from here: https://github.com/IBM/univer*
 | [SAP HANA](../filter-plugin/logstash-filter-***REMOVED***phana-guardium/README.md)    | 2.00.033.00.1535711040        | On-premise / Iaas        | IBM    		| Filebeat (push), JDBC (pull) | **Guardium Data Protection and GI** |
 | [Neo4j](../filter-plugin/logstash-filter-neo4j-guardium/README.md)    | 14.0        | On-premise / Iaas        | IBM    		| Filebeat (push) | **Guardium Data Protection only** |
 | [Aurora-MySQL](../filter-plugin/logstash-filter-aurora-mysql-guardium/README.md) | Aurora(MySQL 5.7)2.07.2 | AWS | IBM | CloudWatch (pull)   | **Guardium Data Protection only** |
+| [Teradata](../filter-plugin/logstash-filter-teradatadb-guardium/README.md) | 16.20 , 17.5 | Cloud , On-premise | IBM | JDBC (pull)   | **Guardium Data Protection only** |
 
