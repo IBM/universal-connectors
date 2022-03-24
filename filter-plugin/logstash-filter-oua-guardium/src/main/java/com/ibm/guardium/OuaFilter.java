@@ -72,6 +72,7 @@ public class OuaFilter implements Filter {
 	public static final String DB_USER_TAG = "userid";
 	public static final String SESSION_ID_TAG = "sessionid";
 	public static final String CON_NAME_TAG = "con_name";
+	public static final String RETURN_CODE_TAG = "return_code";
 
     public OuaFilter(String id, Configuration config, Context context) {
         // constructors should validate configuration options
@@ -84,34 +85,59 @@ public class OuaFilter implements Filter {
     @Override
     public Collection<Event> filter(Collection<Event> events, FilterMatchListener matchListener) {
         ArrayList<Event> skippedEvents = new ArrayList<>();
+        ArrayList<Event> outputEvents = new ArrayList<>();
         for (Event e : events) {
             if (log.isDebugEnabled()) {
                log.debug("Event: "+logEvent(e));
             }
 			if (e.getField("mes***REMOVED***ge") instanceof String) {
 				try {
-            		Record record = OuaFilter.parseRecord(e);
+					int return_code = -1;
 
-            		final GsonBuilder builder = new GsonBuilder();
-            		builder.serializeNulls();
-            		final Gson gson = builder.create();
-            		e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
+					if (e.getField(OuaFilter.RETURN_CODE_TAG) instanceof Long) {
+						return_code = Integer.parseInt(e.getField(OuaFilter.RETURN_CODE_TAG).toString());
+					}
 
-            		if (log.isDebugEnabled()) {
-            		   log.debug("Record Event: "+logEvent(e));
-            		}
-            		matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
+					if (return_code == 0 || !OuaFilter.isLoginFailedReturnCode(return_code)) {
+						Record record = OuaFilter.parseRecord(e);
+
+						final GsonBuilder builder = new GsonBuilder();
+						builder.serializeNulls();
+						final Gson gson = builder.create();
+						e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
+
+						if (log.isDebugEnabled()) {
+						   log.debug("Record Event: "+logEvent(e));
+						}
+						matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
+						outputEvents.add(e);
+					}
+
+					if (return_code != 0) {
+						Event exception_event = e.clone();
+						Record exception_record = OuaFilter.parseExceptionRecord(exception_event);
+
+						final GsonBuilder exception_builder = new GsonBuilder();
+						exception_builder.serializeNulls();
+						final Gson exception_gson = exception_builder.create();
+						exception_event.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, exception_gson.toJson(exception_record));
+
+						if (log.isDebugEnabled()) {
+						   log.debug("Record Event: "+logEvent(exception_event));
+						}
+						matchListener.filterMatched(exception_event); // Flag OK for filter input/parsing/out
+						outputEvents.add(exception_event);
+					}
             	} catch (Exception exception) {
-            	    log.error("Error parsing HDFS event "+logEvent(e), exception);
+                    log.error("Error parsing OUA event "+logEvent(e), exception);
             	    e.tag(LOGSTASH_TAG_PARSE_ERROR);
             	}
 			}
         }
 
-        // Remove skipped mongodb events from reaching output
-        // FIXME log which events skipped
-        events.removeAll(skippedEvents);
-        return events;
+        // Remove skipped events from reaching output
+        outputEvents.removeAll(skippedEvents);
+        return outputEvents;
     }
 
     public static Record parseRecord(final Event event) throws ParseException {
@@ -132,10 +158,75 @@ public class OuaFilter implements Filter {
 		record.setSessionLocator(OuaFilter.parseSessionLocator(event));
         record.setAccessor(OuaFilter.parseAccessor(event));
         record.setData(OuaFilter.parseData(event));
+        record.setException(null);
 
 		record.setTime(OuaFilter.getTime(event));
 
 		return record;
+	}
+
+	public static Record parseExceptionRecord(final Event event) throws ParseException {
+        Record record = new Record();
+
+		if (event.getField(OuaFilter.DB_NAME_TAG) instanceof String) {
+			record.setDbName(event.getField(OuaFilter.DB_NAME_TAG).toString());
+		} else {
+			record.setDbName(OuaFilter.UNKNOWN_STRING);
+		}
+
+		if (event.getField(OuaFilter.SESSION_ID_TAG) instanceof Long) {
+			record.setSessionId(event.getField(OuaFilter.SESSION_ID_TAG).toString());
+		} else {
+			record.setSessionId(OuaFilter.UNKNOWN_STRING);
+		}
+
+		record.setSessionLocator(OuaFilter.parseSessionLocator(event));
+        record.setAccessor(OuaFilter.parseAccessor(event));
+        record.setData(null);
+		record.setException(OuaFilter.parseException(event));
+
+		record.setTime(OuaFilter.getTime(event));
+
+		return record;
+	}
+
+	private static ExceptionRecord parseException(final Event event) {
+		ExceptionRecord exception_record = null;
+		int return_code = 0;
+
+		if (event.getField(OuaFilter.RETURN_CODE_TAG) instanceof Long) {
+			return_code = Integer.parseInt(event.getField(OuaFilter.RETURN_CODE_TAG).toString());
+		}
+
+		if (return_code != 0) {
+			exception_record = new ExceptionRecord();
+
+			exception_record.setDescription(String.format("ORA-%05d", return_code));
+			if (OuaFilter.isLoginFailedReturnCode(return_code)) {
+				exception_record.setExceptionTypeId("LOGIN_FAILED");
+			} else {
+				exception_record.setExceptionTypeId("SQL_ERROR");
+			}
+			if (event.getField(OuaFilter.SQL_TAG) instanceof String) {
+				exception_record.setSqlString(event.getField(OuaFilter.SQL_TAG).toString());
+			} else {
+				exception_record.setSqlString(OuaFilter.UNKNOWN_STRING);
+			}
+		}
+
+		return exception_record;
+	}
+
+	private static Boolean isLoginFailedReturnCode(int code) {
+		if (code == 1017 || code == 1004 || code == 1005 ||
+				code == 1040 || code == 1045 || code == 1988 ||
+				code == 12317 || code == 1267 || code == 28000 ||
+				code == 28001 || code == 28030 || code == 28273 ||
+				code == 28009) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private static Data parseData(final Event event) {
