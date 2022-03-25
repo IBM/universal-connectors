@@ -1,14 +1,19 @@
 # Generic-Guardium Logstash Filter plugin
 
-This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses events and mes***REMOVED***ges from any database audit log into a Guardium record instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
+This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses events and mes***REMOVED***ges from any database audit log into a Guardium record instance (a standard structure made of several parts).
+
+(If the audit log uses a syntax unfamilar to Guardium, parse the syntax to extract more fields. If you are not using a configuration based on one of our working configuration examples, consider contributing it as a pull request so it may used as a template in the future.)
+
+The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
 Currently, this plug-in will work only on IBM Security Guardium Data Protection, not Guardium Insights.
 
-This plug-in is a tool that helps developers write other plug-ins
+This plug-in is a tool that helps developers write other plug-ins. It is written in Java, so it can be used as a template for creating new connectors for any datasource.
 
-This plugin is written in Java and so is a script that can be directly copied into Guardium configuration of Univer***REMOVED***l Connectors. There is no need to upload the plugin code. However, in order to support few features one zip has to be added named, generic-offline-plugins-7.5.2.zip 
+You may directly copy it into a Guardium configuration for Univer***REMOVED***l Connectors. There is no need to upload the plugin code. 
 
-The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium univer***REMOVED***l connector.
+However, in order to support a few features one zip has to be added with the name: generic-offline-plugins-7.5.2.zip
+This plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium univer***REMOVED***l connector.
 
 ## Limitations
 	• The generic plug-in does not support IPV6.
