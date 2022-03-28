@@ -14,7 +14,11 @@ used in the plugin configuration as a variable for password secret
 
 Currently, this plug-in will work only on IBM Security Guardium Data Protection, not Guardium Insights
 
+## Building
 
+Update the variables in Makefile for your environment's Java home and Logstash location
+
+	
 ## Setup
 
 1. Create a designated Database User for OUA UC to retrieve audit data with minimal privileges (using DBA help) as follows:
