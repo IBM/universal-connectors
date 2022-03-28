@@ -4,8 +4,8 @@
 
 1. Unified auditing must be enabled in an Oracle database that will be monitored by this method
 2. Download the Basic Instant client package from Oracle. 
-Note: In this release only specific Instant client will be supported from v21.1.0.0.0 Download here: https://download.oracle.com/otn_software/linux/instantclient/211000/oracleinstantclient-basic-21.1.0.0.0-1.x86_64.rpm
-3. Download the OUA UC plugin "guardium-oua-uc.zip" from https://github.com/IBM/univer***REMOVED***l-connectors/raw/main/filter-plugin/logstash-filter-ouaguardium/OracleUnifiedAuditPackage/OracleUnifiedAudit/guardium-oua-uc.zip
+Note: In this release only specific Instant client will be supported from v21.1.0.0.0 Download here: https://download.oracle.com/otn_software/linux/instantclient/211000/oracle-instantclient-basic-21.1.0.0.0-1.x86_64.rpm
+3. Download the OUA UC plugin "guardium-oua-uc.zip" from https://github.com/IBM/univer***REMOVED***l-connectors/raw/main/filter-plugin/logstash-filter-oua-guardium/OracleUnifiedAuditPackage/OracleUnifiedAudit/guardium-oua-uc.zip
 4. A designated user for OUA UC should be created for Oracle database access. An existing user with sysdba privileges can also be used
 5. A secret containing the user’s password for OUA UC must be created
 Example: grdapi univer***REMOVED***l_connector_keystore_add key=OUA_USER_PASS 
@@ -39,7 +39,7 @@ SELECT UTL_INADDR.get_host_address FROM DUAL;
 	
 If there are no errors that means you can use this new user for this UC method
 	
-2. Enable the univer***REMOVED***l collector feature on the designated Guardium collectors or the stand-alone system. See https://www.ibm.com/docs/en/guardium/11.4?topic=connector-enabling-guardiumuniver***REMOVED***l-collectors
+2. Enable the univer***REMOVED***l collector feature on the designated Guardium collectors or the stand-alone system. See https://www.ibm.com/docs/en/guardium/11.4?topic=connector-enabling-guardium-univer***REMOVED***l-collectors
 	
 3. On the collector, go to Setup > Tools and Views > Configure Univer***REMOVED***l Connector
 	
