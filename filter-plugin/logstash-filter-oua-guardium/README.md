@@ -8,7 +8,7 @@ Note: In this release only specific Instant client will be supported from v21.1.
 3. Download the OUA UC plugin `guardium-oua-uc.zip` from [here](https://github.com/IBM/univer***REMOVED***l-connectors/raw/main/filter-plugin/logstash-filter-oua-guardium/OracleUnifiedAuditPackage/OracleUnifiedAudit/guardium-oua-uc.zip)
 4. A designated user for OUA UC should be created for Oracle database access. An existing user with sysdba privileges can also be used
 5. A secret containing the user’s password for OUA UC must be created
-Example: `grdapi univer***REMOVED***l_connector_keystore_add key=OUA_USER_PASS password=<PASSWORD>` where `<PASSWORD>` is the OUA UC user’s password for the database. `OUA_USER_PASS` will be used in the plugin configuration as a variable for password secret
+    - Example: `grdapi univer***REMOVED***l_connector_keystore_add key=OUA_USER_PASS password=<PASSWORD>` where `<PASSWORD>` is the OUA UC user’s password for the database. `OUA_USER_PASS` will be used in the plugin configuration as a variable for password secret
 
 Currently, this plug-in will work only on IBM Security Guardium Data Protection, not Guardium Insights
 
@@ -19,26 +19,26 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 ## Setup
 
 1. Create a designated Database User for OUA UC to retrieve audit data with minimal privileges (using DBA help) as follows:
-Assuming the name for the designated Oracle Unified Audit user with minimal permissions will be "guardium" with password "password"
-Connect to Oracle using sysdba account and execute the following commands:
+    - Assuming the name for the designated Oracle Unified Audit user with minimal permissions will be "guardium" with password "password"
+    - Connect to Oracle using sysdba account and execute the following commands:
 
-```
-CREATE USER guardium IDENTIFIED BY password;
-GRANT CONNECT, RESOURCE to guardium;
-GRANT SELECT ANY DICTIONARY TO guardium;
-exec DBMS_NETWORK_ACL_ADMIN.APPEND_HOST ACE(host => 'localhost', 
-ace => xs$ace_type(privilege_list => xs$name_list('connect', 
-'resolve'), principal_name => 'guardium', principal_type => xs_acl.ptype_db));
-```
+        ```
+        CREATE USER guardium IDENTIFIED BY password;
+        GRANT CONNECT, RESOURCE to guardium;
+        GRANT SELECT ANY DICTIONARY TO guardium;
+        exec DBMS_NETWORK_ACL_ADMIN.APPEND_HOST ACE(host => 'localhost',
+        ace => xs$ace_type(privilege_list => xs$name_list('connect',
+        'resolve'), principal_name => 'guardium', principal_type => xs_acl.ptype_db));
+        ```
 
-To verify your new user's privileges, connect to the Oracle instance that you planning to monitor using the name and credentials for your designated user and run the following statements:
+    - To verify your new user's privileges, connect to the Oracle instance that you planning to monitor using the name and credentials for your designated user and run the following statements:
 
-```
-select count(*) from AUDSYS.AUD$UNIFIED;
-SELECT UTL_INADDR.get_host_address FROM DUAL;
-```
+        ```
+        select count(*) from AUDSYS.AUD$UNIFIED;
+        SELECT UTL_INADDR.get_host_address FROM DUAL;
+        ```
 
-If there are no errors that means you can use this new user for this UC method
+    - If there are no errors that means you can use this new user for this UC method
 
 2. Enable the univer***REMOVED***l collector feature on the designated Guardium collectors or the stand-alone system. See [here](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-enabling-guardium-univer***REMOVED***l-collectors)
 
@@ -52,17 +52,17 @@ If there are no errors that means you can use this new user for this UC method
 
     - Paste content of "oua_config" in the "Input configuration" field
 
-```
-pipe { type => "oua" command => "${OUA_BINARY_PATH} -c /usr/lib/oracle/21/client64/lib -s 
-${THIRD_PARTY_PATH} -r 100 -t 50000 -p 100 -a ${THIRD_PARTY_PATH} -j 
-guardium/${OUA_USER_PASS}@<ORACLE_OUA_SERVER>:<ORACLE_PORT>/<SERVICE_NAME>" }
-```
+        ```
+        pipe { type => "oua" command => "${OUA_BINARY_PATH} -c /usr/lib/oracle/21/client64/lib -s
+        ${THIRD_PARTY_PATH} -r 100 -t 50000 -p 100 -a ${THIRD_PARTY_PATH} -j
+        guardium/${OUA_USER_PASS}@<ORACLE_OUA_SERVER>:<ORACLE_PORT>/<SERVICE_NAME>" }
+        ```
 
     - Paste content of "oua_filter" in the "Filter configuration" field
 
-```
-if [type] == "oua" { json { source => "mes***REMOVED***ge" } if "_jsonparsefailure" not in [tags] { oua_filter {} } }
-```
+        ```
+        if [type] == "oua" { json { source => "mes***REMOVED***ge" } if "_jsonparsefailure" not in [tags] { oua_filter {} } }
+        ```
 
     - NOTE: The type specified for the filters must be unique among Univer***REMOVED***l Connectors and be identical in the input and filter configurations
 
