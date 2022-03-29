@@ -4,9 +4,12 @@ This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the
 
 Currently, this plug-in will work only on IBM Security Guardium Data Protection, not Guardium Insights.
 
-This plugin is written in Ruby and so is a script that can be directly copied into Guardium configuration of Universal Connectors. There is no need to upload the plugin code. However, in order to support few features one zip has to be added named, postgres-offline-plugins-7.5.2.zip 
+This plugin is written in Ruby and so is a script that can be directly copied into Guardium configuration of Universal Connectors. There is no need to upload the plugin code. However, in order to support few features one zip has to be added named, postgres-offline-plugins-7.5.2.zip
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
+
+### NOTES
+* GDP: requires installation of [json_encode](https://www.elastic.co/guide/en/logstash-versioned-plugins/current/v3.0.3-plugins-filters-json_encode.html) filter plug-in
 
 ## Limitations
 	• The postgres plug-in does not support IPV6.
@@ -71,11 +74,11 @@ steps to create a new parameter group:
 		• Enter the DB parameter group name.
 		• Enter the DB parameter group description.
 	4. Click Save. The new group appears in the Parameter Groups section.
-	
+
 ## Enabling PGAudit Session Auditing
-	
+
 Session Auditing allows you to log activities that are selected in the pgaudit.log for logging. Be cautious when you select which activities will be logged, as logged activities can affect the performance of the database instance.
-	
+
 
 ### Procedure
 	1. In the lefthand Amazon RDS panel, select Parameter Groups.
