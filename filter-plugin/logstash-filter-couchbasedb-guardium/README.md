@@ -99,6 +99,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	4. Type a name in the Connector name field.
 	5. Update the input section to add the details from filter-test-beats.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. On the Logstash server, ensure that the port that you want to use is free. This port should should be same as the port number defined in the filebeat.yml file.
 	6. Update the filter section to add the details from filter-test-beats.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+	Note: "type" field should match in input and filter configuration section. This field should be unique for every individual connector added.
 	7. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.
 
 
