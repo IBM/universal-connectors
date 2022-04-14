@@ -26,7 +26,7 @@ Update the variables in Makefile for your environment's Java home and Logstash l
         CREATE USER guardium IDENTIFIED BY password;
         GRANT CONNECT, RESOURCE to guardium;
         GRANT SELECT ANY DICTIONARY TO guardium;
-        exec DBMS_NETWORK_ACL_ADMIN.APPEND_HOST ACE(host => 'localhost',
+        exec DBMS_NETWORK_ACL_ADMIN.APPEND_HOST_ACE(host => 'localhost',
         ace => xs$ace_type(privilege_list => xs$name_list('connect',
         'resolve'), principal_name => 'guardium', principal_type => xs_acl.ptype_db));
         ```
