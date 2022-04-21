@@ -1,6 +1,6 @@
 {
 	"name": "Guardium_Mysql_AWS_filter",
-	"alias": "MySQL",
+	"alias": "Mysql",
 	"type": "filter",
 	"pipeline_type":"pull",
 	"plugin_version": "1.0.0",
