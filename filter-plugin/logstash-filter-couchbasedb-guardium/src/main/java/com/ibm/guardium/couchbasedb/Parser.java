@@ -67,12 +67,18 @@ public class Parser {
 				}	
 			}
 				}else {
-					if(data.has(Constants.ERROR_MESSAGE) && !data.get(Constants.ERROR_MESSAGE).isJsonNull()){
+					if ((data.has(Constants.ERROR_MESSAGE) && !data.get(Constants.ERROR_MESSAGE).isJsonNull())) {
 						record.setException(Parser.parseExceptionForAPI(data));
-					}else {
-						record.setData(Parser.parseData(data));
+					} 
+					else {
+						if (data.get(Constants.ID).getAsInt() == 8264 || data.get(Constants.ID).getAsInt() == 8193) {
+							record.setException(Parser.parseExceptionForAPI(data));
+						}
+						else {
+							record.setData(Parser.parseData(data));
+						}
+						}
 					}
-			}
 	}
 	
 	public static String parseSessionID(final JsonObject data){
@@ -203,7 +209,7 @@ public class Parser {
 	}
 	public static void setUsername(final Accessor accessor,final JsonObject data) {
 		
-		String user = Constants.UNKNOWN_STRING;
+		String user = Constants.NOT_AVAILABLE;
 		if (data.has(Constants.REAL_USERID) && !data.get(Constants.REAL_USERID).isJsonNull()) {
 			JsonObject realUserID = data.getAsJsonObject(Constants.REAL_USERID);
 
@@ -305,7 +311,14 @@ public class Parser {
 		ExceptionRecord exceptionRecord = new ExceptionRecord();
 		
 		if (data.has(Constants.ID) && !data.get(Constants.ID).isJsonNull()) {
-			exceptionRecord.setExceptionTypeId(data.get(Constants.ID).getAsString());	
+			if (data.get(Constants.ID).getAsInt() == 8193 || data.get(Constants.ID).getAsInt() == 8264) {
+				exceptionRecord.setExceptionTypeId(Constants.LOGIN_FAILED);
+			} else {
+				exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
+			}	
+		}
+		else {
+			exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
 		}
 		
 		if (data.has(Constants.DESCRIPTION) && !data.get(Constants.DESCRIPTION).isJsonNull()) {
@@ -325,7 +338,13 @@ public class Parser {
 
 		ExceptionRecord exceptionRecord = new ExceptionRecord();
 		if (data.has(Constants.ID) && !data.get(Constants.ID).isJsonNull()) {
-			exceptionRecord.setExceptionTypeId(data.get(Constants.ID).getAsString());	
+			if (data.get(Constants.ID).getAsInt() == 8193 || data.get(Constants.ID).getAsInt() == 8264) {
+				exceptionRecord.setExceptionTypeId(Constants.LOGIN_FAILED);
+			} else {
+				exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
+			}	
+		}else {
+			exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
 		}
 		
 		if (data.has(Constants.DESCRIPTION) && !data.get(Constants.DESCRIPTION).isJsonNull()) {
