@@ -13,6 +13,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## Limitations
 	• The postgres plug-in does not support IPV6.
+	• PGAudit logs the batch queries multiple times, so report will show multiple entries for the ***REMOVED***me.
 
 ## Configuring the AWS Postgres service
 
@@ -35,7 +36,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 		a. Configure the database options.
 		b. Select options for Backup.
 		c. If desired, enable Encryption on the database instances.
-		d. In Log exports, select the log types to publish to Amazon CloudWatch (logs out of Postgresql log and/or Upgrade log).
+		d. In Log exports, select the Postgresql log type to publish to Amazon CloudWatch.
 		e. Select the options for Deletion protection.
 	16. Click Create Database.
 	17. To view the database, click Databases under Amazon RDS in the left panel.
@@ -70,7 +71,7 @@ steps to create a new parameter group:
 	1. Go to Services > Database > Parameter groups.
 	2. Click Create Parameter Group in the left pane.
 	3. Enter the parameter group details.
-		• Select the parameter group family, for example, postgres 12.
+		• Select the parameter group family, for example, postgres 12, this version should match the version of the database that is created and with which this parameter group is to be associated.
 		• Enter the DB parameter group name.
 		• Enter the DB parameter group description.
 	4. Click Save. The new group appears in the Parameter Groups section.
@@ -86,9 +87,9 @@ Session Auditing allows you to log activities that are selected in the pgaudit.l
 	3. Click Edit parameters and add these settings:
 		• pgaudit.log = all, -misc (Select the options from the Allowed values list. You can specify multiple values, and separate them with “,”. The values that are marked with “-” are excluded while logging.)
 		• pgaudit.log_catalog = 0
-		• pgaudit.log_parameter = 1
+		• pgaudit.log_parameter = 0
 		• shared_preload_libraries = pgaudit
-		• log_error_verbosity = verbose
+		• log_error_verbosity = default
 	4. Provide the required permissions to this role while associating it with the table that is audited. For example, grant ALL on <relation_name> to rds_pgaudit (this grant enables full SELECT, INSERT, UPDATE, and DELETE logging on the relation_name).
 
 ## Enabling PGAudit Object Auditing
@@ -100,10 +101,10 @@ Object auditing affects the performance less than session auditing, due to the f
 		• pgaudit.log = none (since this is not needed for extensive SESSION logging)
 		• pgaudit.role = rds_pgaudit
 		• pgaudit.log_catalog = 0
-		• pgaudit.log_parameter = 1
+		• pgaudit.log_parameter = 0
 		• shared_preload_libraries = pgaudit
-		• log_error_verbosity = verbose
-	2. Provide the required permissions to this role while associating it with the table that is audited. For example, grant ALL on <relation_name> to rds_pgaudit (this grant enables full SELECT, INSERT, UPDATE, and DELETE logging on the relation_name).
+		• log_error_verbosity = default
+	2. Provide the required permissions to the rds_pgaudit role while associating it with the table that is audited. For example, grant ALL on <relation_name> to rds_pgaudit (this grant enables full SELECT, INSERT, UPDATE, and DELETE logging on the relation_name).
 
 ## Associating the DB Parameter Group with the database Instance
 
@@ -163,11 +164,13 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 
 # Procedure
 	1. On the collector, go to Setup > Tools and Views > Configure Univer***REMOVED***l Connector.
-	2. Click Upload File and select the offline postgres-offline-plugins-7.5.2.zip plug-in. After it is uploaded, click OK.
-	3. Click the Plus sign to open the Connector Configuration dialog box.
-	4. Type a name in the Connector name field.
-	5. Update the input section to add the details from postgresCloudwatch.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-	6. Update the filter section to add the details from postgresCloudwatch.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-	7. "type" field should match in input and filter configuration section. This field should be unique for  every individual connector added.
-	8. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was
+	2. First Enable the Univer***REMOVED***l Guardium connector, if it is Di***REMOVED***bled already.
+	3. Click Upload File and select the offline postgres-offline-plugins-7.5.2.zip plug-in. After it is uploaded, click OK.
+	4. Click the Plus sign to open the Connector Configuration dialog box.
+	5. Type a name in the Connector name field.
+	6. Update the input section to add the details from postgresCloudwatch.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+	7. Update the filter section to add the details from postgresCloudwatch.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+	8. "type" field should match in input and filter configuration section. This field should be unique for  every individual connector added.
+	9. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was
 	di***REMOVED***bled. After it is validated, it appears in the Configure Univer***REMOVED***l Connector page.
+
