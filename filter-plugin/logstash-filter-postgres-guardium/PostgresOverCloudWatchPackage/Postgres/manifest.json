@@ -8,7 +8,7 @@
 	"supported_input_plugins": ["Cloudwatch_logs_input"],
 	"developer": "IBM",
 	"license": "Apache2.0",
-	"description": "Parses Amazon MySQL database events into Guardium.",
+	"description": "Parses Amazon Postgres database events into Guardium.",
 	"configuration_notes": "",
 	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/README.md"
 }
