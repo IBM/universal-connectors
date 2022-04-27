@@ -5,7 +5,8 @@ This filter is a script written in Ruby. It should be copied directly into the G
 ### NOTE
 * For CloudWatch to monitor your RDS instance, the MariaDB audit plug-in must be running on the instance. For information about this plug-in and version compatibilty, refer to [MariaDB Audit Plugin support](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.AuditPlugin.html).
 * The client source program is not available in messages sent by MySQL. This data is sent only in the first audit log message upon database connection - and the filter plug-in doesn't aggregate data from different messages.
-
+* Currently, this plugin supports only audit logs and "Login Failed" error logs.
+* The ‘type’ field should be the same in both the input and filter sections in the Logstash configuration file. This field should be unique for every individual connector added.
 ## Create and configure a MySQL database instance
 ### Create a MySQL database instance
 To create a new MySQL instance, follow the instructions described [here](https://aws.amazon.com/getting-started/hands-on/create-mysql-db/). When setting the properties under Additional Configuration, in the Log exports section select Audit log and Error log as the log types to publish to Amazon.
