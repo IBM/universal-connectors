@@ -181,7 +181,6 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
       event.set('GuardRecord', event.get('GuardRecord').to_json)
 
     rescue Exception => e
-      @logger.error(e.mes***REMOVED***ge)
       event.cancel
     else
       @logger.debug('Sending record to Guardium output plugin')
