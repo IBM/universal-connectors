@@ -1,3 +1,7 @@
+## 3.0.1
+  - Supported SQL Instance GCP plug-in changed from `general-log` to `cloudsql_mysql_audit`
+    - Includes support of multi-line queries containing newline characters
+  - Added support for various MySQL Client Applications 
 ## 2.0.1
   - Bug fix for Cloud SQL Proxy general logs comment regexp
 ## 2.0.0
