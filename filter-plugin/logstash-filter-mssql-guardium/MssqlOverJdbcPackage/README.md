@@ -6,12 +6,15 @@ This plugin is written in Ruby and so is a script that can be directly copied in
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
+### NOTES
+* GDP: requires installation of [json_encode](https://www.elastic.co/guide/en/logstash-versioned-plugins/current/v3.0.3-plugins-filters-json_encode.html) filter plug-in
+
 # Configuring AWS MSSQL RDS Instance and Configuring Audit Logs
 
 ## Procedure
 
 	1. Create database instance
-	
+
 		a. Go to https://console.aws.amazon.com/
 		b. Click on Services.
 		c. In the Database section, click on RDS.
@@ -25,11 +28,11 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 		k. Export logs: error logs can be selected.
 		l. To access DB from outside, select public access to yes under Connectivity section.
 		m. Select create database.
-	
+
 	2. Accessing database instance from outside
-	
+
 		To access DB instance from outside we need to add inbound rule to database.
-			
+
 			a. Click on database that we created in previous step.
 			b. Go to ‘Connectivity & security’ tab.
 			c. Under security, click on ‘VPC security group’(which is default we selected while creating database)
@@ -41,7 +44,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 			g. We will be requiring “Microsoft MSSQL Management Studio” to connect with the database and do DB operations. To connect with DB, use endpoint and port which we will get under ‘Connectivity & security’ tab in rds instance.
 
 	3. Assign parameter group to database instance.
-	
+
 		a. We can assign default parameter group to our database. Parameter group family should be ‘sqlserver-ee-14.0’ and parameter ‘rds.sqlserver_audit’ parameter should be set to true.
 		b. In Navigation panel choose Databases.
 		c. Select mssql database that we created. Click on Modify button.
@@ -50,7 +53,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 		f. Click on Continue. On next window select Apply Immediately and click on Modify DB Instance.
 
 	4. Create custom option group to database instance. (optional)
-	
+
 		a. In the navigation pane, choose Option groups.
 		b. Choose Create group.
 		c. In the Create option group window, do the following:
@@ -93,7 +96,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 
 	5. Associate the option group with the DB instance
-	
+
 		a. In Navigation panel choose Databases.
 		b. Select mssql database that we created. Click on Modify button
 		c. Go to Advance configurations
@@ -106,35 +109,35 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## Procedure
 
 	1. Connecting to database:
-		
+
 		a. Start the SQL Server Management Studio and provide connection details. Enter the ‘endpoint’ (for AWS, you will get this on AWS RDS console) as the Server Name. Provide the ‘username’ and the master ‘password’ that we had set while creating the database.
 		b. Create database.
 
 	2. About Audits:
-		
+
 		a. SQL Server audit lets you create server audits, which can contain server audit specifications for server level events, and database audit specifications for database level events.
 		b. When you define an audit, you specify the location for the output of the results. This is the audit destination. The audit is created in a disabled state and does not automatically audit any actions. After the audit is enabled, the audit destination receives data from the audit.
 
 	3. Creating audit:
-	
+
 		a. Create an audit (In management studio: Security -> Audits -> New Audit)
 		b. Provide file path ([D:\rdsdbdata\SQLAudit\] default for AWS RDS instance).
 		c. Keep remaining configurations as is.
 		d. Enable the audit.
-		
+
 	4. Create audit specifications:
-	
+
 		a. Create a server audit specification:
-		
+
 			I. In management go to Security, expand it.
 			II. Right click on Server audit specification option and select New audit specification.
 			III. Select Audit that we created in earlier step.
 			IV. Configure Audit log groups as per requirement. (Detailed audit log groups can be found on Microsoft documentation site)
 			V. Click on Ok button.
 			VI. Right click on server audit specification that we have created and select enable to enable it.
-			
+
 		b. Create database audit specification:
-		
+
 			I. In management go to Database, expand it.
 			II. Expand security under it.
 			III. Right click on Database audit specification option and select New audit specification.
@@ -162,11 +165,11 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 	• Download the mssql-offline-plugins-7.5.2.zip plug-in.
 	• Download the mssql-jdbc-7.4.1.jre8 from [here] (https://jar-download.com/artifacts/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8)
 
-## Procedure : 
+## Procedure :
 
     1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 	2. Click Upload File and select the offline mssql-offline-plugins-7.5.2.zip plug-in. After it is uploaded, click OK.
-    3. Again click Upload File and select the offline mssql-jdbc-7.4.1.jre8 file. After it is uploaded, click OK. . 
+    3. Again click Upload File and select the offline mssql-jdbc-7.4.1.jre8 file. After it is uploaded, click OK. .
 	4. Click the Plus sign to open the Connector Configuration dialog box.
     5. Type a name in the Connector name field.
     6. Update the input section to add the details from awsMSSQL.conf/onPremMSSQL.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
@@ -175,4 +178,3 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 		• If auditing is configured way long back and UC is configured at later point of time, still UC will process all the previous older records as well till date, since it is already audited by the DB.
     7. Update the filter section to add the details from awsMSSQL.conf/onPremMSSQL.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
     8. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.
-
