@@ -87,7 +87,12 @@
 		3] Timestamp configuration.
 		4] Cast operations.
 		5] Stored Procedure and User Defined Functions.
-	• This plug-in is not tested on cloud instance.
+	• The Teradata auditing does not audit authentication failure(Login Failed) operations.
+	• Following important field couldn't mapped with TeradataDB audit logs. 
+		- OS USER : Not Available with audit logs.
+		- Client HostName : Not Available with audit logs.
+		- Database Name	: Not Available with audit logs.
+	• In case of EC2 guardium instance, Teradata traffic took more time (25-30 min) to populate data in full sql Report. 
 	• This plug-in supports queries that are approximately 32,000 characters long. When the count of characters in a query exceed the given count, the remaining part of the query is stored in other rows. This is why the SQLTextInfo column of the table DBC.DBQLSqlTbl has more than one row per QueryID.
 	• serverIp is hardcoded to "0.0.0.0" in this plugin, as tables referred in configuration file do not have an attribute that directly holds actual serverIp value but that can be checked from column LogonSource(from DBC.DBQLOGTBL ) or sourceProgram  attribute. For more information on how to check the serverIp from LogonSource, please refer this doc:-
 	https://docs.teradata.com/r/ANYCOtbX9Q1iyd~Uiok8gA/VPQKKhAyOf6hzUc4sfciIQ
