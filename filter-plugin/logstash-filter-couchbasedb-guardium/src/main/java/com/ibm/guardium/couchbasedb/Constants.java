@@ -15,7 +15,7 @@ public interface Constants {
 	public static final int DEFAULT_CLIENT_PORT = -1;
 	public static final String UNKNOWN_STRING = "";
 	public static final String SERVER_TYPE_STRING = "COUCHBASE";
-	public static final String DATA_PROTOCOL_STRING = "CouchbaseDB native audit";
+	public static final String DATA_PROTOCOL_STRING = "COUCHBASE";
 	public static final String REQUEST_ID = "requestId";
 	public static final String CLIENT_CONTEXT_ID = "clientContextId";
 	public static final String INTERNAL="INTERNAL-";
@@ -46,5 +46,7 @@ public interface Constants {
 	public static final String COUCHB_LANGUAGE="COUCHB";
 	public static final String FREE_TEXT="FREE_TEXT";
 	public static final String HTTP_METHOD="httpMethod";
+	public static final String SQL_ERROR="SQL_ERROR";
+	public static final String LOGIN_FAILED="LOGIN_FAILED";
 	
 }
