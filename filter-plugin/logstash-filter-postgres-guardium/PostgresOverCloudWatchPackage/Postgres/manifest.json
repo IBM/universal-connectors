@@ -10,5 +10,5 @@
 	"license": "Apache2.0",
 	"description": "Parses Amazon MySQL database events into Guardium.",
 	"configuration_notes": "",
-	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/README.md"
+	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-postgres-guardium/README.md"
 }
