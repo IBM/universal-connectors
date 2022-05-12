@@ -11,7 +11,9 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## Documentation
 
 ### Prerequisites
-Download the [Logstash Offline package](PubSubPostgreSQLPackage/logstash-offline-plugins-filter-pubsub-postgresql-guardium.zip) that includes both the Logstash Google PubSub input plugin and the PostgreSQL PubSub filter plugin, and upload it to the gmachine.
+Download the [Logstash Offline package](PubSubPostgreSQLPackage/11_4/logstash-offline-plugins-filter-pubsub-postgresql-guardium.zip) that includes both the Logstash Google PubSub input plugin and the PostgreSQL PubSub filter plugin, and upload it to the gmachine.
+#### Note
+This version is for GDP v11.4, i.e. latest stable version. The [planned](PubSubPostgreSQLPackage/planned) folder contains the package for future release.
 Please refer to the [input plugin's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
 
 ###  Create the SQL instance and Configure Logging

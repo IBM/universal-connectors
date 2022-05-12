@@ -1,0 +1,27 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|   timestamp   |                                                                                         message                                                                                          |
+|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1642760819931 | {"atype":"updateUser","ts":1642760819931,"remote_ip":"unix_domain_socket","user":"serviceadmin","param":{"userName":"kirtimalhotra","passwordChanged":true,"rolesSet":false}}            |
+| 1642760998400 | {"atype":"authenticate","ts":1642760998400,"remote_ip":"172.31.45.103:40528","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643028812348 | {"atype":"authenticate","ts":1643028812348,"remote_ip":"172.31.45.103:49812","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643028812408 | {"atype":"authenticate","ts":1643028812408,"remote_ip":"172.31.45.103:49812","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643028812484 | {"atype":"authenticate","ts":1643028812484,"remote_ip":"172.31.45.103:49812","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643032926518 | {"atype":"authenticate","ts":1643032926518,"remote_ip":"172.31.45.103:49882","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643032926579 | {"atype":"authenticate","ts":1643032926579,"remote_ip":"172.31.45.103:49882","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643032926660 | {"atype":"authenticate","ts":1643032926660,"remote_ip":"172.31.45.103:49882","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643032992026 | {"atype":"authenticate","ts":1643032992026,"remote_ip":"172.31.45.103:49886","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643033456060 | {"atype":"authenticate","ts":1643033456060,"remote_ip":"172.31.45.103:49974","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643034075408 | {"atype":"authenticate","ts":1643034075408,"remote_ip":"172.31.45.103:50016","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643034170708 | {"atype":"authenticate","ts":1643034170708,"remote_ip":"172.31.45.103:50018","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643034183384 | {"atype":"authenticate","ts":1643034183384,"remote_ip":"172.31.45.103:50020","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643034204200 | {"atype":"authenticate","ts":1643034204200,"remote_ip":"172.31.45.103:50022","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643034214068 | {"atype":"authenticate","ts":1643034214068,"remote_ip":"172.31.45.103:50024","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643089071284 | {"atype":"authenticate","ts":1643089071284,"remote_ip":"172.31.45.103:59382","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643089174931 | {"atype":"authenticate","ts":1643089174931,"remote_ip":"172.31.45.103:59408","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643092776020 | {"atype":"authenticate","ts":1643092776020,"remote_ip":"172.31.45.103:59750","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643092776078 | {"atype":"authenticate","ts":1643092776078,"remote_ip":"172.31.45.103:59750","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643092776159 | {"atype":"authenticate","ts":1643092776159,"remote_ip":"172.31.45.103:59750","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643093205691 | {"atype":"authenticate","ts":1643093205691,"remote_ip":"172.31.45.103:59910","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643121599362 | {"atype":"authenticate","ts":1643121599362,"remote_ip":"172.31.45.103:33440","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+| 1643265087320 | {"atype":"authenticate","ts":1643265087320,"remote_ip":"172.31.45.103:50830","user":"","param":{"user":"kirtimalhotra","mechanism":"SCRAM-SHA-1","success":true,"message":"","error":0}} |
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
