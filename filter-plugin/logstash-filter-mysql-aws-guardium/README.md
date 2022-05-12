@@ -2,9 +2,12 @@
 This is a Logstash filter configuration. This filter receives CloudWatch audit logs of AWS MySQL instances, and filters those events and parses them into a Guardium record instance. The information is then sent over to Guardium as a JSON GuardRecord.
 This filter is a script written in Ruby. It should be copied directly into the Guardium univer***REMOVED***l connector configuration. There is no need to modify the filter section (changes in the filter section may affect proper filtering).
 
-### NOTE
+### NOTES
 * For CloudWatch to monitor your RDS instance, the MariaDB audit plug-in must be running on the instance. For information about this plug-in and version compatibilty, refer to [MariaDB Audit Plugin support](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.AuditPlugin.html).
 * The client source program is not available in mes***REMOVED***ges sent by MySQL. This data is sent only in the first audit log mes***REMOVED***ge upon database connection - and the filter plug-in doesn't aggregate data from different mes***REMOVED***ges.
+* Currently, this plugin supports only audit logs and "Login Failed" error logs.
+* The ‘type’ field should be the ***REMOVED***me in both the input and filter sections in the Logstash configuration file. This field should be unique for every individual connector added.
+* GDP: requires installation of [json_encode](https://www.elastic.co/guide/en/logstash-versioned-plugins/current/v3.0.3-plugins-filters-json_encode.html) filter plug-in
 
 ## Create and configure a MySQL database instance
 ### Create a MySQL database instance
