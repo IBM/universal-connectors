@@ -1,6 +1,6 @@
 {
   "plugin_name": "Postgres over Cloudwatch_Logs",
-  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/README.md",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-postgres-guardium/README.md",
   "input_name": "Cloudwatch_logs_input",
   "input_parameters": [
     {
