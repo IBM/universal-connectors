@@ -1,6 +1,6 @@
 {
   "plugin_name": "Mysql Percona Over Filebeat",
-  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mysql-precona-guardium/README.md",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mysql-percona-guardium/README.md",
   "input_name": "Filebeat_input",
   "input_parameters": [
     {
