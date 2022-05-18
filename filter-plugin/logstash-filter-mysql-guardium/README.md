@@ -32,6 +32,7 @@ Notes:
 * The client "Source program" is not available in messages sent by MySQL. This is because this data is sent only in the first audit log message upon database connection - and the filter plug-in doesn't aggregate data from different messages.
 * If events with "(NONE)" local/remote IP addresses are not filtered, the filter plug-in will convert the IP to "0.0.0.0", as a valid format for IP is needed. However, this is atypical, since as messages without users are filtered out.
 * Events in the filter are not removed, but tagged if not parsed (see [Filter result](#filter-result), below).
+*  If the dbname is not coming from command line, it will not get populated. If the user wants to see the dbname, either they need to send a use statement or send it on command line.
 
 
 ## Example 
