@@ -8,7 +8,7 @@ This filter is a script written in Ruby. It should be copied directly into the G
 * Currently, this plugin supports only audit logs and "Login Failed" error logs.
 * The ‘type’ field should be the ***REMOVED***me in both the input and filter sections in the Logstash configuration file. This field should be unique for every individual connector added.
 * GDP: requires installation of [json_encode](https://www.elastic.co/guide/en/logstash-versioned-plugins/current/v3.0.3-plugins-filters-json_encode.html) filter plug-in
-
+* The 'use' statement does not display the account ID in the 'Database Name' column on the reports page.
 ## Create and configure a MySQL database instance
 ### Create a MySQL database instance
 To create a new MySQL instance, follow the instructions described [here](https://aws.amazon.com/getting-started/hands-on/create-mysql-db/). When setting the properties under Additional Configuration, in the Log exports section select Audit log and Error log as the log types to publish to Amazon.
