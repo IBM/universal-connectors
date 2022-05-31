@@ -32,8 +32,8 @@ task wrapper(type: Wrapper) {
 
 
 dependencies {
-    compile group: 'commons-validator', name: 'commons-validator', version: '1.4.1'
-    testCompile 'junit:junit:4.12'
+    compile group: 'commons-validator', name: 'commons-validator', version: '1.7'
+    testCompile 'junit:junit:4.13.1'
 }
 
 clean {
