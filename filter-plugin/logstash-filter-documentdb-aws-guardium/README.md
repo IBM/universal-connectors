@@ -107,7 +107,7 @@ For DocumentDB, "replace" is used as mutate filter configuration. It is used to 
 	  example :- 92216548523_docdbcluster.aws.com
 
 ## Sample configuration
-Below is a copy of the filter scope included `docdb.conf` [file](DocumentDBOverCloudwatchPackage/filter.conf) that shows a basic
+Below is a copy of the filter scope included `docdb.conf` [file](DocumentDBOverCloudwatchPackage/documentDBCloudwatch.conf) that shows a basic
 configuration for this plugin.
 #### Input part:
 ```
@@ -140,7 +140,7 @@ filter {
 ## Before you begin
 * You must have permission for the S-Tap Management role.The admin user includes this role by     default.
 * Download the [guardium_logstash-offline-plugin-documentdb.zip](DocumentDBOverCloudwatchPackage/guardium_logstash-offline-plugin-documentdb.zip) plug-in.
-* Download the plugin filter configuration file [docdb.conf](DocumentDBOverCloudwatchPackage/filter.conf).
+* Download the plugin filter configuration file [docdb.conf](DocumentDBOverCloudwatchPackage/documentDBCloudwatch.conf).
 
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Univer***REMOVED***l Connector.
