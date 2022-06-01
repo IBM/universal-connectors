@@ -152,8 +152,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	3. Click Upload File again and select the ngdbc-2.9.12 jar file. After it is uploaded, click OK.   
 	4. Click the Plus sign to open the Connector Configuration dialog box.
 	5. Type a name in the Connector name field.
-	6. Update the input section for JDBC Plugin. Use sapHANA-JDBC.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end and for FileBeat use filter-test-beats.conf file's input part.
-	7. Update the filter section for JDBC Plugin. Use sapHANA-JDBC.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end and for FileBeat use filter-test-beats.conf file's filter part.
+	6. Update the input section for JDBC Plugin. Use ssaphanaJDBC.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end and for FileBeat use filter-test-beats.conf file's input part.
+	7. Update the filter section for JDBC Plugin. Use saphanaJDBC.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end and for FileBeat use filter-test-beats.conf file's filter part.
 	Note: The "type" field should match in the input and filter configuration section. This field should be unique for every individual connector added.
 	Note: For moderate to large amounts of data, include pagination to facilitate the audit and to avoid out of memory errors. Use the parameters below in the input section when using a JDBC connector, and remove the concluding semicolon ';' from the jdbc statement :
 jdbc_paging_enabled => true

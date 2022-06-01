@@ -126,8 +126,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	2. Click Upload File and select the offline aurora-mysql-offline-plugins-7.5.2.zip plug-in. After it is uploaded, click OK.
 	3. Click the Plus sign to open the Connector Configuration dialog box.
 	4. Type a name in the Connector name field.
-	5. Update the input section to add the details from aurora-mysqlCloudwatch.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-	6. Update the filter section to add the details from aurora-mysqlCloudwatch.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+	5. Update the input section to add the details from auroraMysqlCloudwatch.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+	6. Update the filter section to add the details from auroraMysqlCloudwatch.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 	Note: "type" field should match in input and filter configuration section. This field should be unique for every individual connector added.
 	7. Click Save. Guardium validates the new connector, and enables the universal connector if it was
 	disabled. After it is validated, it appears in the Configure Universal Connector page.
