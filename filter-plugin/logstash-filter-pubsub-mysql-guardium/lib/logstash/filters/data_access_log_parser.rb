@@ -49,7 +49,7 @@ module DataAccessLogParser
 
         if  starts_with_comment
           msg_comment = comment_element.match(/ApplicationName=(?<app_name>[a-zA-Z]*)(\s)(?<version>\d*.\d*.\d*)?((\s)-(\s)(?<type>[a-zA-Z]*))?/)
-          app_name = msg_comment['app_name'] + " " + msg_comment['version']
+          app_name = "#{msg_comment['app_name']} #{msg_comment['version']}"
         elsif not is_proxy
           app_name = "Google Cloud Shell (gcloud)"
         else
@@ -66,13 +66,22 @@ module DataAccessLogParser
           ip_prefix = ''
         end
 
-        client_ip_array = request['ip'].match(/#{ip_prefix}(?<ip_address>\d*.\d*.\d*.\d*)/)
-        client_ip = client_ip_array['ip_address']
+        server_ip_array = request['ip'].match(/#{ip_prefix}(?<ip_address>\d*.\d*.\d*.\d*)/)
+        server_ip = server_ip_array['ip_address']
       rescue StandardError
         raise FilterException::BadIPPrefixCloudSQL
       end
 
-      session_id = request["threadId"]
+      # generate a consistent hash key for db_name
+      db_name_key= (Digest::SHA1.hexdigest db_name).to_i(16)
+      # avoiding arbitrary size longer than 64 bits
+      db_name_key = db_name_key.to_s[0..9]
+
+      # session_id is comprised of the concatenation of the session id and the hash key generated above
+      # this resolves Sniffer not being able to parse varying dbNames and assign them to separate sessions
+      # with no prior "use db_name" command, which isn't audited in GCP for the used plug-in (cloudsql_mysql_audit)
+      session_id = "#{request["threadId"]}#{db_name_key}"
+
       db_user = request["user"]
 
       if request['status'] =~ /unsuccessful/
@@ -86,7 +95,7 @@ module DataAccessLogParser
 
       end
       event.set('[GuardRecord][sessionId]', session_id)
-      event.set('[GuardRecord][sessionLocator][clientIp]', client_ip)
+      event.set('[GuardRecord][sessionLocator][serverIp]', server_ip)
       event.set('[GuardRecord][accessor][dbUser]', db_user)
       event.set('[GuardRecord][dbName]', db_name)
       event.set('[GuardRecord][accessor][serviceName]', svc_name)
