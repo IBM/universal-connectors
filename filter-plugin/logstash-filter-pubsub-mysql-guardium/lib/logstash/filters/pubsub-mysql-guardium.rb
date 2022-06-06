@@ -5,6 +5,7 @@
 
 require 'logstash/filters/base'
 require 'logstash/namespace'
+require 'digest/sha1'
 require 'json'
 require_relative 'filter_exception'
 require_relative 'timestamp_formatter'
@@ -61,6 +62,7 @@ class LogStash::Filters::PubsubMysql < LogStash::Filters::Base
     event.set('[GuardRecord][accessor][dbUser]', 'Undisclosed')
     event.set('[GuardRecord][sessionLocator][clientIp]', '0.0.0.0')
     event.set('[GuardRecord][accessor][serviceName]', svc_name)
+    event.set('[GuardRecord][sessionLocator][serverIp]', '0.0.0.0')
 
   end
   # def parseErrLog
@@ -99,13 +101,14 @@ class LogStash::Filters::PubsubMysql < LogStash::Filters::Base
 
       event.set('[GuardRecord][data][construct]', nil)
 
-      event.set('[GuardRecord][sessionLocator][clientPort]', 0)
+      event.set('[GuardRecord][sessionLocator][clientPort]', nil)
       event.set('[GuardRecord][sessionLocator][clientIpv6]', nil)
       event.set('[GuardRecord][sessionLocator][serverIpv6]', nil)
 
 
-      event.set('[GuardRecord][sessionLocator][serverIp]', '0.0.0.0')
-      event.set('[GuardRecord][sessionLocator][serverPort]', 0)
+
+      event.set('[GuardRecord][sessionLocator][clientIp]', '127.0.0.1')
+      event.set('[GuardRecord][sessionLocator][serverPort]', 3306)
       event.set('[GuardRecord][sessionLocator][isIpv6]', false)
 
       event.set('[GuardRecord][accessor][serverType]', 'MySQL')
