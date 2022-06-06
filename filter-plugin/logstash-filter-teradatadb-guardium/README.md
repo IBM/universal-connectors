@@ -114,7 +114,7 @@
     3. Click Upload File and select the offline logstash-offline-Teradata-plugins-7.5.2 plug-in. After it is uploaded, click OK.
 	4. Click the Plus sign to open the Connector Configuration dialog box.
     5. Type a name in the Connector name field.
-    6. Update the input section to add the details from Teradata.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide required details for DB server name, username and password for making JDBC connectivity.
-    7. Update the filter section to add the details from Teradata.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the ***REMOVED***me DB server name as in above step against the Server_Hostname attribute in the filter section.
+    6. Update the input section to add the details from teradataJDBC.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide required details for DB server name, username and password for making JDBC connectivity.
+    7. Update the filter section to add the details from teradataJDBC.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the ***REMOVED***me DB server name as in above step against the Server_Hostname attribute in the filter section.
 	Note: "type" field should match in input and filter configuration section. This field should be unique for every individual connector added.
     8. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, the connector appears in the Configure Univer***REMOVED***l Connector page.

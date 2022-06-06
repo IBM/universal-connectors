@@ -1,6 +1,0 @@
-{
-	"datasourceTypeName":"AuroraMysql over Cloudwatch",
-	"inputPluginName":"cloudwatch_logs_input",
-	"filterPluginName":"auroramysqlguardiumpluginfilter",
-	"supported_platforms": ["AWS"]
-}
