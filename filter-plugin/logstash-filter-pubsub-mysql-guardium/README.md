@@ -138,7 +138,7 @@ To install on your local machine that is running Logstash, execute:
 
 ### Sample Configuration
 
-Below is a copy of the filter scope included `googlepubsub.conf` [file](PubSubMySQLPackage/googlepubsub.conf) that shows a basic
+Below is a copy of the filter scope included `mysqlGooglePubsub.conf` [file](PubSubMySQLPackage/mysqlGooglePubsub.conf) that shows a basic
 configuration for this plugin.
 #### Filter part:
 ```

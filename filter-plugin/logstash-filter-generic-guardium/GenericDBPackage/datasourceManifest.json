@@ -1,6 +1,0 @@
-{
-	"datasourceTypeName":"Generic DB Plugin",
-	"inputPluginName":"can be any Logstash supported Input Plugin",
-	"filterPluginName":"generic_guardium_filter",
-	"supported_platforms": ["AWS", "on-premise"]
-}
