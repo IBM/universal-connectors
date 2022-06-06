@@ -46,9 +46,12 @@ Please refer to the [input plugin's repository](../../input-plugin/logstash-inpu
 ### Notes
 - `serverHostName` field is populated with the name of the MySQL instance connection
 - `serviceName` field is populated with Cloud SQL Service. See [docs](https://cloud.google.com/sql/docs/postgres)
+
+
+### Limitations
+- The _SQL string that caused the exception_ column in the report is blank, since this information is not embedded in the error messages pulled from Google Cloud.
 - `sourceProgram` field is left blank since this information is not embedded in the messages pulled from Google Cloud. Queries can be run either from Cloud Shell with `gcloud` or from a locally installed PostgreSQL Server
 - `clientIP` and `serverIP` fields are populated with `0.0.0.0`, as this information is not embedded in the messages pulled from Google Cloud.
-
 
 ## Installation
 To install this plug-in, you need to download the [offline pack](PubSubPostgreSQLPackage/logstash-offline-plugins-filter-pubsub-postgresql-guardium.zip) and upload the file to the gmachine
