@@ -70,7 +70,7 @@ In case you wish to use **Cloud SQL proxy**, use the following steps:
 
 6. Setup your SQL client application with **DBeaver** as an example:
     1. Click _Database > New Database Connection > MySQL > Next_
-    2. You’ll then get to a connection form where you specify host, port, database, user, and password. Leave the 
+    2. You’ll then get to a connection form where you specify host, port, database, user, and password. Leave the
        defaults and add the user and password from GCP. Also click Show all databases
     3. Then you can click the Test Connection button, and you should see a success pop-up message
     4. Click OK twice, and you are up and running
@@ -86,7 +86,7 @@ For **Cloud SQL proxy**:
 resource.type="cloudsql_database" resource.labels.database_id="<PROJECT_ID>:<SQL_Instance_name>"
 ((logName="projects/<PROJECT_ID>/logs/cloudaudit.googleapis.com%2Fdata_access" AND protoPayload.methodName="cloudsql.instances.query" AND protoPayload.request.query:"/*" AND
 protoPayload.request.query:"SQLEditor")
-OR 
+OR
 logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 ```
 **DataGrip:**
@@ -94,14 +94,14 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 resource.type="cloudsql_database" resource.labels.database_id="<PROJECT_ID>:<SQL_Instance_name>"
 ((logName="projects/<PROJECT_ID>/logs/cloudaudit.googleapis.com%2Fdata_access" AND protoPayload.methodName="cloudsql.instances.query" AND protoPayload.request.query:"/*" AND
  protoPayload.request.query:"DataGrip")
-OR 
+OR
 logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 ```
 **All client applications:**
 ```
 resource.type="cloudsql_database" resource.labels.database_id="<PROJECT_ID>:<SQL_Instance_name>"
 ((logName="projects/<PROJECT_ID>/logs/cloudaudit.googleapis.com%2Fdata_access" AND protoPayload.methodName="cloudsql.instances.query")
-OR 
+OR
 logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 ```
 
@@ -110,7 +110,7 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
      - Set the exclusion filter name to `internal_logs`
      - Set the filter
        ```
-        protoPayload.request.query:"mysql.heartbeat" OR protoPayload.request.query="Select 1" OR protoPayload.request.ip="127.0.0.1" OR protoPayload.request.cmd:"connect" OR protoPayload.request.query:"information_schema" OR protoPayload.request.query:"@@session" OR protoPayload.request.query:"performance_schema"
+       protoPayload.request.query:"mysql.heartbeat" OR protoPayload.request.query="Select 1" OR protoPayload.request.ip="127.0.0.1" OR protoPayload.request.cmd:"connect" OR protoPayload.request.query:"information_schema" OR protoPayload.request.query:"@@" OR protoPayload.request.query:"performance_schema"  OR  protoPayload.request.query:"mysql." OR protoPayload.request.query:"select @@" OR protoPayload.request.query:"`mysql`."
        ```
      - To exclude DBeaver **and** DataGrip, concatenate the following to the previous exclusion filter:
        ```
@@ -151,9 +151,9 @@ pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 **Note:** `cloudsqlproxy_enabled` will default to `false` if not explicitly used in filter scope.
 
 ## Limitations
-1. Some internal system queries for client apps other than DBeaver might be ingested by the plug-in. You could easily filter them out by using the 
-   GCP logs routing sink's exclusion filter, as seen in the Exclusion filter section above (simply append to it an `OR` followed by your expression). For more information, check 
-   [Exclusion filters](https://cloud.google.com/logging/docs/routing/overview#exclusions) and 
+1. Some internal system queries for client apps other than DBeaver might be ingested by the plug-in. You could easily filter them out by using the
+   GCP logs routing sink's exclusion filter, as seen in the Exclusion filter section above (simply append to it an `OR` followed by your expression). For more information, check
+   [Exclusion filters](https://cloud.google.com/logging/docs/routing/overview#exclusions) and
    [Logging query language](https://cloud.google.com/logging/docs/view/logging-query-language).
 2. mysql-slow.log logs aren't supported in this version
 3. `SQLEditor` is the event type identifying user queries on DBeaver. For DataGrip, there's no type embedded in the event's comment, meaning some internal system queries will be ingested by this plug-in.
