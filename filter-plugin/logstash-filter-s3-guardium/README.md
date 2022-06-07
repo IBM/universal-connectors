@@ -20,10 +20,3 @@ To build and create an updated GEM of this filter plug-in which can be installed
     ```LOGSTASH_CORE_PATH=/Users/taldan/logstash76/logstash-core```
 
 3. Run ```$ ./gradlew.unix gem --info``` to create the GEM (ensure you have JRuby installed beforehand, as described [here](https://www.ibm.com/docs/en/guardium/11.3?topic=connector-developing-plug-ins)).
-
-To test installation on your development Logstash
-1. Install Logstash (using Brew, for example).
-2. Install the filter plug-in (see above).
-2. Run this command:
-
-    ```$ logstash -f ./filter-test.conf --config.reload.automatic```
