@@ -105,7 +105,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
     4. Again click Upload File and select the offline mssql-jdbc-7.4.1.jre8 file. After it is uploaded, click OK. . 
 	5. Click the Plus sign to open the Connector Configuration dialog box.
     6. Type a name in the Connector name field.
-    7. Update the input section to add the details from azureSQL.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+    7. Update the input section to add the details from azureSQLJDBC.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 	Note : • For Guardium Data Protection version 11.3, add the following line to the input section:
 	'jdbc_driver_library => "${THIRD_PARTY_PATH}/mssql-jdbc-7.4.1.jre8.jar"'
 		• If auditing is configured way long back and UC is configured at later point of time, still UC will process all the previous older records as well till date, since it is already audited by the DB.
@@ -114,7 +114,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 			jdbc_page_size => <size> 
 	8. "type" field should match in input and filter configuration section. This field should be unique for every individual connector added.
 	9. If using two jdbc plugin on same machine ,last_run_metadata_path file name should be different.
-    10. Update the filter section to add the details from azureSQL.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+    10. Update the filter section to add the details from azureSQLJDBC.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
     11. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.
 
 

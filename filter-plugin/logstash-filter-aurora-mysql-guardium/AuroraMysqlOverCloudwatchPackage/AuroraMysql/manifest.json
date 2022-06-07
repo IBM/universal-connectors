@@ -1,5 +1,5 @@
 {
-	"name": "auroramysqlguardiumpluginfilter",
+	"name": "Guardium_AuroraMysql_filter",
 	"alias": "AuroraMysql",
 	"type": "filter",
 	"pipeline_type":"pull",
