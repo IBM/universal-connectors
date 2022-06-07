@@ -59,7 +59,7 @@ To install this plug-in, you need to download the [offline pack](PubSubPostgreSQ
 
 ### Sample Configuration
 
-  Below is a copy of the filter scope included in `googlepubsub.conf` [file](PubSubPostgreSQLPackage/googlepubsub.conf) that shows a basic configuration for this plugin.
+  Below is a copy of the filter scope included in `postgresqlGooglePubsub.conf` [file](PubSubPostgreSQLPackage/postgresqlGooglePubsub.conf) that shows a basic configuration for this plugin.
 #### Filter part:
   ```
   filter {
