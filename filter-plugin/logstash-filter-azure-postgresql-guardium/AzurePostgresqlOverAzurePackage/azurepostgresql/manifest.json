@@ -1,0 +1,14 @@
+{
+	"name": "Azure_Postgresql_Guardium_Plugin_filter",
+	"alias": "Postgresql",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"AzurePostgresql","supportedVersions": ["11"]}],
+	"supported_input_plugins": ["Azure_event_hub_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses events and mes***REMOVED***ges from the Azure PostgreSQL audit log into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-azure-postgresql-guardium/README.md"
+}
