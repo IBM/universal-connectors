@@ -71,6 +71,7 @@ If the customer wants to get more insights into these options, they can reach ou
 			c. In Auditing, Click on "Enable Azure SQL Auditing" Button.
 			d. Select "Storage" Audit log destination Check box.
 			e. Select Storage Account which you have created.
+			f. Click on "Advanced properties", And select " Retention (Days)"
 	5. Then ,Click on "Save" Button.
 	
 		
@@ -126,12 +127,12 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 
 	On First G Machine,in input section for JDBC Plugin update "statement" field like below:
 	
-	SELECT event_time , succeeded , session_id , database_name , client_ip , server_principal_name , application_name , statement,server_instance_name,host_name,DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) AS updatedeventtime,additional_information  FROM sys.fn_get_audit_file('https://<storage-account-name>.blob.core.windows.net/sqldbauditlogs/<server_instance_name>/<DB-NAME>', DEFAULT, DEFAULT) where action_id='BCM' and statement not like '%xproc%' and statement not like '%SPID%' and statement not like '%SERVER%' and statement not like '%DEADLOCK_PRIORITY%' and application_name ='Microsoft SQL Server Management Studio - Query' and session_id%2 = 0 and DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) > :sql_last_value order by event_time;
+	SELECT event_time,succeeded,session_id,database_name,client_ip,server_principal_name,application_name,statement,server_instance_name,host_name,DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) AS updatedeventtime,additional_information  FROM sys.fn_get_audit_file('https://<storage-account-name>.blob.core.windows.net/sqldbauditlogs/<server_instance_name>/<DB-NAME>', DEFAULT, DEFAULT) where action_id='BCM' and statement not like '%xproc%' and statement not like '%SPID%' and statement not like '%DEADLOCK_PRIORITY%' and application_name not like '%Microsoft SQL Server Management Studio - Tran***REMOVED***ct-SQL IntelliSense%' and session_id%2 = 0 and DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) > :sql_last_value order by event_time;
 
 		
 		
 	On Second G machine ,in input section for JDBC Plugin update "statement" field like below:
 	
-	SELECT event_time , succeeded , session_id , database_name , client_ip , server_principal_name , application_name , statement,server_instance_name,host_name,DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) AS updatedeventtime,additional_information  FROM sys.fn_get_audit_file('https://<storage-account-name>.blob.core.windows.net/sqldbauditlogs/<server_instance_name>/<DB-NAME>', DEFAULT, DEFAULT) where action_id='BCM' and statement not like '%xproc%' and statement not like '%SPID%' and statement not like '%SERVER%' and statement not like '%DEADLOCK_PRIORITY%' and application_name ='Microsoft SQL Server Management Studio - Query' and session_id%2 = 1 and DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) > :sql_last_value order by event_time;
+	SELECT event_time,succeeded,session_id,database_name,client_ip,server_principal_name,application_name,statement,server_instance_name,host_name,DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) AS updatedeventtime,additional_information  FROM sys.fn_get_audit_file('https://<storage-account-name>.blob.core.windows.net/sqldbauditlogs/<server_instance_name>/<DB-NAME>', DEFAULT, DEFAULT) where action_id='BCM' and statement not like '%xproc%' and statement not like '%SPID%' and statement not like '%DEADLOCK_PRIORITY%' and application_name not like '%Microsoft SQL Server Management Studio - Tran***REMOVED***ct-SQL IntelliSense%' and session_id%2 = 1 and DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) > :sql_last_value order by event_time;
 	
 		
