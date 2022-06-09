@@ -8,9 +8,9 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ##	Limitations
 	• The azure postgreSQL plug-in does not support IPV6.
-  • For sql errors and login failed,sql string is not available.
+	• For sql errors and login failed,sql string is not available.
 	• For primary or foreign key constraints violation, entry would be added to sql error report as well as full sql report.
-  • Source program will be seen as blank in report for some clients(here for psql and pgadmin we get value but for visual studio it is blank).
+	• Source program will be seen as blank in report for some clients(here for psql and pgadmin we get value but for visual studio it is blank).
 
 
 ##	Configuring the Azure PostgreSQL service
