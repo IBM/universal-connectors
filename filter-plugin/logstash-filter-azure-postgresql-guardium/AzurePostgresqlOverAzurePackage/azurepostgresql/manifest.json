@@ -2,7 +2,7 @@
 	"name": "Azure_Postgresql_Guardium_Plugin_filter",
 	"alias": "Postgresql",
 	"type": "filter",
-	"pipeline_type":"push",
+	"pipeline_type":"pull",
 	"plugin_version": "1.0.0",
 	"datasourceTypes": [{"type":"AzurePostgresql","supportedVersions": ["11"]}],
 	"supported_input_plugins": ["Azure_event_hub_input"],
