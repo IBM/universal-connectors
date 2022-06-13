@@ -1,6 +1,0 @@
-{
-	"datasourceTypeName":"Azure Postgresql over Azure",
-	"inputPluginName":"Azure_event_hub_input",
-	"filterPluginName":"azure_postgresql_guardium_plugin_filter",
-	"supported_platforms": ["on-premise"]
-}
