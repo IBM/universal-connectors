@@ -38,6 +38,11 @@
         "optional": true,
         "label": "Event filter (optional)"
       },
+      "account_id": {
+      "type": "text",
+      "optional": true,
+      "label": "Account id (optional)"
+    },
       "type": {
         "type": "text",
         "default": "S3",
