@@ -1,10 +1,10 @@
 Gem::Specification.new do |s|
   s.name          = 'logstash-filter-pubsub-mysql-guardium'
-  s.version       = '0.1.0'
+  s.version       = '3.0.3'
   s.licenses      = ['Apache-2.0']
   s.summary       = 'This filter plugin parses GCP Pub/Sub events recevied from MySQL'
   s.description   = 'This filter plugin parses GCP Pub/Sub events recevied from MySQL and maps to GuardRecord'
-  # s.homepage      = 'TODO: Put your plugin''s website or public repo URL here.'
+  s.homepage      = 'https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-pubsub-mysql-guardium'
   s.authors       = ['IBM']
   s.email         = ''
   s.require_paths = ['lib']
