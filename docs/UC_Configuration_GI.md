@@ -17,13 +17,13 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
 ## Procedure
 
 
-1.  Click **Connections** in the **Settings** menu.
+1. Click **Connections** in the **Settings** menu.
     
-2.  Click **Manage > UC plug-ins**.
+2. Click **Manage > UC plug-ins**.
     
-3.  If the plug-in is already installed, proceed to [step 4](#Navigate_back_to_the_Connections_page_(**Settings_%3E_Connections**)). If the plug-in for the specific data source type is not installed, click **Add plug-in**. Go to the directory with the plug-ins you already downloaded, select the .zip file for this data source type, and click **Open**.
+3. If the plug-in is already installed, proceed to <em>**step 4**</em>. If the plug-in for the specific data source type is not installed, click **Add plug-in**. Go to the directory with the plug-ins you already downloaded, select the .zip file for this data source type, and click **Open**.
     
-4.  Navigate back to the Connections page (**Settings > Connections**).
+4. Navigate back to the Connections page (**Settings > Connections**).
 
     
 5.  Click **Add connection.**  The Connect to new data source page opens, with a card for each data source type whose plug-in is already installed.
@@ -52,7 +52,7 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
     
     d. Click **Next**.
     
-    e. Follow the instructions according to the input plug-in type you selected in [step 4](#Navigate_back_to_the_Connections_page_(**Settings_%3E_Connections**)).
+    e. Follow the instructions according to the input plug-in type you selected in <em>**step c**</em>.
     
  ## Filebeat   
 1.  In the Additional info page, enter a **Data source tag**: This tag identifies the plug-in that is associated with this connector. Use this tag in the filebeat.yml    configuration of the data sources whose type matches this plug-in step 2 of the last section on this page: Configuring Filebeat to forward audit logs to Guardium.  The data source sends the tag with every event. For example, specify any-mongodb in this field, and configure Filebeat with the ***REMOVED***me tag for MongoDB activity logs coming from your MongoDB data source.
@@ -90,7 +90,7 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
     
 1.  Open the file filebeat.yml, usually located in /etc/filebeat/filebeat.yml.
     
-2.  In the tags section, enter the value of the Data source tag that you defined when you added a connection in the Filebeat section on this page. For example, `tags: ["any-tag-name"]`.
+2.  In the tags section, enter the value of the Data source tag that you defined when you added a connection in the Filebeat section on this page. For example, `tags: ["<tag-name>"]`.
     
 3.  In the Logstash Output section, enter the hostname URL from the Configuration Notes popup from when you configured the univer***REMOVED***l connector in the first procedure on this page. For example, `hosts: ["<hostname-URL>:5044"]`
 
