@@ -75,7 +75,7 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
     
 *   **AWS account region** - for example, "us-east-1".
     
-*   **Event filter** (optional) - specify the filters to apply when fetching resources. For example, for filtering an S3 events based on bucket name: '{ $.eventSource = "s3.amazonaws.com" && $.requestParameters.bucketName = ""}'.
+*   **Event filter** (optional) - specify the filters to apply when fetching resources. For example, for filtering an S3 events based on bucket name: '{ \$.eventSource = "s3.amazonaws.com" && \$.requestParameters.bucketName = ""}'.
     
 *   **Account id** (optional) - your AWS account ID (For more information, click [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html#FindingYourAWSId)).
     
