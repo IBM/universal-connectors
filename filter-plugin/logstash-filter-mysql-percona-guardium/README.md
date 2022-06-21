@@ -1,72 +1,91 @@
-# MySql-Percona-Guardium Logstash filter plug-in
+# MySql-Percona-Guardium Logstash filter plug-in 
 
-This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. 
-It is an extension of MySql-Guardium Logstash filter plug-in. see [MySql-Guardium Logstash filter plug-in](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mysql-guardium/README.md)
-<div>
-<section class="section" role="region" aria-labelledby="d27740e34" id="concept_unt_dlb_2nb__filebeat_cfg"><h2 class="sectiontitle bx--type-expressive-heading-04" id="d27740e34">Filebeat configuration</h2>
+This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It is an extension of MySql-Guardium Logstash filter plug-in. See [MySql-Guardium Logstash filter plug-in](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mysql-guardium/README.md)
 
-<ol class="bx--list--ordered--temporary">
-<li class="bx--list__item">On the database, configure the Filebeat data shipper to forward the audit logs to the Guardium
-universal connector. In the file <span class="ph filepath">filebeat.yml</span>, usually located in
-<span class="ph filepath">/etc/filebeat/filebeat.yml</span>, modify the <code class="ph codeph">filebeat.inputs</code> section.<ol type="a" class="bx--list--ordered--temporary bx--list--nested">
-<li class="bx--list__item">Change the <code class="ph codeph">enabled</code> field to <code class="ph codeph">true</code>, update the Logstash host,
-and add the path of the audit logs. For
-example:<div class="bx--snippet bx--snippet--multi bx--snippet--wraptext bx--snippet--expand"><div class="bx--snippet-container" tabindex="0" aria-label="Code snippet"><pre class="codeblock"><code class="language-plaintext hljs">#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj; filebeat.inputs:
-    type: log
-    #&zwnj; Change to true to enable this input configuration.
-    enabled: true 
-    paths:
-    #&zwnj;- c:\programdata\elasticsearch\logs*
-    C:\downloads\docker_volumes*
-    output.logstash:
-    #&zwnj; The Logstash hosts
-    hosts: ["&lt;Guardium IP&gt;:5045"] #&zwnj; just to ip/host name of the gmachine
-    # Paths that should be crawled and fetched. Glob based paths.
-    paths: 
-    - /var/lib/mysql/audit.log
-    tags: ["mysqlpercona"] 
-    #&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#&zwnj;#
-</code></pre></div><button data-copy-btn="" class="bx--copy-btn" aria-label="Copy to clipboard" title="Copy to clipboard" type="button" tabindex="0"><span class="bx--assistive-text bx--copy-btn__feedback">Copied!</span><svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--snippet__icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M14,5v9H5V5h9m0-1H5A1,1,0,0,0,4,5v9a1,1,0,0,0,1,1h9a1,1,0,0,0,1-1V5a1,1,0,0,0-1-1Z"></path><path d="M2,9H1V2A1,1,0,0,1,2,1H9V2H2Z"></path></svg>
-      </button></div></li>
+## Filebeat configuration
 
-<li class="bx--list__item">Filebeat communicates with the Guardium universal connector via port 5045. Verify that port 5045
-is open.</li>
 
-</ol>
-</li>
+1.  On the database, configure the Filebeat data shipper to forward the audit logs to the Guardium universal connector. In the file filebeat.yml, usually located in /etc/filebeat/filebeat.yml, modify the `filebeat.inputs` section.
 
-<li class="bx--list__item">Restart the filebeat service by
-entering:<div class="bx--snippet bx--snippet--multi bx--snippet--wraptext bx--snippet--expand"><div class="bx--snippet-container" tabindex="0" aria-label="Code snippet"><pre class="codeblock"><code class="language-plaintext hljs">sudo service filebeat restart</code></pre></div><button data-copy-btn="" class="bx--copy-btn" aria-label="Copy to clipboard" title="Copy to clipboard" type="button" tabindex="0"><svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--snippet__icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M14,5v9H5V5h9m0-1H5A1,1,0,0,0,4,5v9a1,1,0,0,0,1,1h9a1,1,0,0,0,1-1V5a1,1,0,0,0-1-1Z"></path><path d="M2,9H1V2A1,1,0,0,1,2,1H9V2H2Z"></path></svg>
-      </button></div></li>
+  a.  Change the `enabled` field to `true`, update the Logstash host, and add the path of the audit logs. For example:
+        
+            #‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌ filebeat.inputs:
+                type: log
+                #‌ Change to true to enable this input configuration.
+                enabled: true 
+                paths:
+                #‌- c:\programdata\elasticsearch\logs*
+                C:\downloads\docker_volumes*
+                output.logstash:
+                #‌ The Logstash hosts
+                hosts: ["<Guardium IP>:5045"] #‌ just to ip/host name of the gmachine
+                # Paths that should be crawled and fetched. Glob based paths.
+                paths: 
+                - /var/lib/mysql/audit.log
+                tags: ["mysqlpercona"] 
+                #‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#
+            
+        
+  Copied!
+        
+  b. Filebeat communicates with the Guardium universal connector via port 5045. Verify that port 5045 is open.
 
-</ol>
+2.  Restart the filebeat service by entering:
+    
+        sudo service filebeat restart
+    
 
-</section>
-<section class="section" role="region" aria-labelledby="d27740e91"><h2 class="sectiontitle bx--type-expressive-heading-04" id="d27740e91">Percona configuration</h2>
+Percona configuration
+---------------------
 
-<ol class="bx--list--ordered--temporary">
-<li class="bx--list__item">On the database, update the file:
-<span class="ph filepath">/etc/percona-server.conf.d/mysqld.cnf</span><div class="bx--snippet bx--snippet--multi bx--snippet--wraptext bx--snippet--expand"><div class="bx--snippet-container" tabindex="0" aria-label="Code snippet"><pre class="codeblock"><code class="language-plaintext hljs">symbolic-links=0
-    bind_address=0.0.0.0
-    log-error=/var/log/mysqld.log
-    pid-file=/var/run/mysqld/mysqld.pid
-    audit_log_format=JSON
-    audit_log_handler=FILE
-    audit_log_file=/var/lib/mysql/audit.log</code></pre></div><button data-copy-btn="" class="bx--copy-btn" aria-label="Copy to clipboard" title="Copy to clipboard" type="button" tabindex="0"><svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--snippet__icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M14,5v9H5V5h9m0-1H5A1,1,0,0,0,4,5v9a1,1,0,0,0,1,1h9a1,1,0,0,0,1-1V5a1,1,0,0,0-1-1Z"></path><path d="M2,9H1V2A1,1,0,0,1,2,1H9V2H2Z"></path></svg>
-      </button></div></li>
+1.  On the database, update the file: /etc/percona-server.conf.d/mysqld.cnf
+    
+        symbolic-links=0
+            bind_address=0.0.0.0
+            log-error=/var/log/mysqld.log
+            pid-file=/var/run/mysqld/mysqld.pid
+            audit_log_format=JSON
+            audit_log_handler=FILE
+            audit_log_file=/var/lib/mysql/audit.log
+    
+2.  Restart the mysql service.
 
-<li class="bx--list__item">Restart the mysql service.</li>
+## Guardium configuration
+1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 
-</ol>
+2. Click Upload and Install plug-ins, and upload the file logstash-filter-mysql_percona_guardium_filter.
 
-</section>
-</div>
+3. Type a name in the Connector name field.
+4. In the Input configuration field, enter:
 
-## Contribute
-You can enhance this filter and open a pull request with suggested changes - or you can use the project to create a different filter plug-in for Guardium that supports other data sources.
+         ##   Change the port to match the Filebeat configuration on your data source. Port should not be 5000, 5141 or 5044, as Guardium Universal Connector reserves these ports for MongoDB events. If this port appears in other Connector configurations, on this Guardium system, make sure it flags events as type "filebeat":
+       beats { port => 5045 type => "filebeat" } 
 
-## References
-See [documentation for Logstash Java plug-ins](https://www.elastic.co/guide/en/logstash/current/contributing-java-plugin.html).
+where the TCP or UDP port is the same one you configured in the Filebeat configuration.
 
-See [Guardium Universal connector commons](https://www.github.com/IBM/guardium-universalconnector-commons) library for more details regarding the standard Guardium Record object.
+5. In the Filter configuration field, enter:
+       
+         # For this to work, the Filebeat configuration on your data source should tag the events it is sending.  
+       if [type] == "filebeat" and "mysqlpercona" in [tags] {
+       mutate { add_field => { "source_program" => "percona-audit" } }
+       mutate { add_field => { "client_hostname" => "%{[agent][hostname]}" } }
+       mutate { add_field => { "server_hostname" => "%{[host][hostname]}" } }
+       mutate { add_field => { "server_ip" => "%{[host][ip][0]}" } }
+       mutate { replace => { "message" => "%{source_program}: %{message}" } }
 
+	   mysql_percona_guardium_filter {}
+	
+   	# keep original event fields, for debugging
+   	if "_mysqlguardium_parse_error" not in [tags] {
+			mutate { remove_field => [
+					"message", "syslog_timestamp", "source_program", "program",
+					"syslog_pid", "syslog_message",
+					"server_hostname", "client_hostname", "host",
+					"ecs", "log", "agent", "input"]
+			}   	}
+        }
+
+6. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated,the connector appears in the Configure Universal Connector page.
+
+ ## Contribute
+  You can enhance this filter and open a pull request with suggested changes - or you can use the project to create a different filter plug-in for Guardium that supports other data sources. ## References See \[documentation for Logstash Java plug-ins\](https://www.elastic.co/guide/en/logstash/current/contributing-java-plugin.html). See \[Guardium Universal connector commons\](https://www.github.com/IBM/guardium-universalconnector-commons) library for more details regarding the standard Guardium Record object.
