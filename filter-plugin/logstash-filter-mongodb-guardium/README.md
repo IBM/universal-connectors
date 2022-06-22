@@ -84,6 +84,13 @@ To test the filter using your local Logstash installation, run this command:
     ```$ logstash -f ./filter-test-generator.conf --config.reload.automatic```
 
 
+## Configuring the MongoDB filters in Guardium Insights
+
+To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/univer***REMOVED***l-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
+
+In the input configuration section, refer to the Filebeat section.
+
+
 ### Not yet supported
 1. Support fields.
 2. Embedded documents as inner objects.
@@ -91,12 +98,6 @@ To test the filter using your local Logstash installation, run this command:
 
 ## Contribute
 You can enhance this filter and open a pull request with suggested changes - or you can use the project to create a different filter plug-in for Guardium that supports other data sources.
-
-## Configuring the MongoDB filters in Guardium Insights
-
-To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/univer***REMOVED***l-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
-
-In the input configuration section, refer to either the CloudWatch or Filebeat section.
 
 
 ## References
