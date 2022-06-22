@@ -7,7 +7,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## Filter notes
 * The filter supports events sent through Cloudwatch or SQS.
 
-## Configuring the dynamodb filters in Guardium Insights
+## Configuring the Amazon S3 filter in Guardium Insights
 
 To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/universal-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
 
