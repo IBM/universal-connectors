@@ -11,7 +11,8 @@ This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the
   
   For example:
         
-            #‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌ filebeat.inputs:
+            #‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌
+	    filebeat.inputs:
                 type: log
                 #‌ Change to true to enable this input configuration.
                 enabled: true 
