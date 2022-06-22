@@ -102,6 +102,11 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 	Note: "type" field should match in input and filter configuration section. This field should be unique for every individual connector added.
 	7. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, the connector appears in the Configure Univer***REMOVED***l Connector page.
 
+## Configuring the Couchbase filter in Guardium Insights
+
+To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/univer***REMOVED***l-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
+
+In the input configuration section, refer to the Filebeat section.
 
 ## Not supported
 • Java filter code is used to handle “Query and Index Service” events logs only. The code can be enhanced further, depending on the purpose, if you are using Couchbase for your individual projects. All other types of Audit Events (except “Query and Index Service”) are not in scope for now.
