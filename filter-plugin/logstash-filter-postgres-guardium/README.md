@@ -173,7 +173,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 
-## Configuring the dynamodb filters in Guardium Insights
+## Configuring the Amazon RDS for PostgreSQL filter in Guardium Insights
 
 To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/universal-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
 
