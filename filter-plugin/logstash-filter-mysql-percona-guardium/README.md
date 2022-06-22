@@ -90,5 +90,12 @@ where the TCP or UDP port is the same one you configured in the Filebeat configu
 
 6. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated,the connector appears in the Configure Universal Connector page.
 
+## Configuring the MySQL for Percona filters in Guardium Insights
+
+To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/universal-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
+
+In the input configuration section, refer to the Filebeat section.
+
+
  ## Contribute
   You can enhance this filter and open a pull request with suggested changes - or you can use the project to create a different filter plug-in for Guardium that supports other data sources. ## References See \[documentation for Logstash Java plug-ins\](https://www.elastic.co/guide/en/logstash/current/contributing-java-plugin.html). See \[Guardium Universal connector commons\](https://www.github.com/IBM/guardium-universalconnector-commons) library for more details regarding the standard Guardium Record object.
