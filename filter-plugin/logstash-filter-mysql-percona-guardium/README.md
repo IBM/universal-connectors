@@ -7,7 +7,9 @@ This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the
 
 1.  On the database, configure the Filebeat data shipper to forward the audit logs to the Guardium universal connector. In the file filebeat.yml, usually located in /etc/filebeat/filebeat.yml, modify the `filebeat.inputs` section.
 
-  a.  Change the `enabled` field to `true`, update the Logstash host, and add the path of the audit logs. For example:
+  a.  Change the `enabled` field to `true`, update the Logstash host, and add the path of the audit logs. 
+  
+  For example:
         
             #‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌#‌ filebeat.inputs:
                 type: log
@@ -75,8 +77,8 @@ where the TCP or UDP port is the same one you configured in the Filebeat configu
 
 	   mysql_percona_guardium_filter {}
 	
-   	# keep original event fields, for debugging
-   	if "_mysqlguardium_parse_error" not in [tags] {
+   	     # keep original event fields, for debugging
+   	     if "_mysqlguardium_parse_error" not in [tags] {
 			mutate { remove_field => [
 					"message", "syslog_timestamp", "source_program", "program",
 					"syslog_pid", "syslog_message",
