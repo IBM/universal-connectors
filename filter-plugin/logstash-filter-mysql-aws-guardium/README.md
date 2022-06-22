@@ -54,7 +54,7 @@ The 'rd***REMOVED***dmin' user queries the database every second to check its he
 	7. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, it appears in the Configure Univer***REMOVED***l Connector page.
 
 
-## Configuring the dynamodb filters in Guardium Insights
+## Configuring the AWS MySQL Guardium Logstash filter in Guardium Insights
 
 To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/univer***REMOVED***l-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
 
