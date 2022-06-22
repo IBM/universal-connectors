@@ -83,7 +83,7 @@ The hosts option specifies the Logstash server and the port (5001) where Logstas
 3. To learn how to start FileBeat, see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
 	
 	
-## Configuring the Couchbase filters in Guardium
+## Configuring the Couchbase filter in Guardium
 
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector identifies and parses received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Couchbase template.
 
@@ -102,7 +102,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	Note: "type" field should match in input and filter configuration section. This field should be unique for every individual connector added.
 	7. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.
 
-## Configuring the dynamodb filters in Guardium Insights
+## Configuring the Couchbase filter in Guardium Insights
 
 To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/universal-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
 
