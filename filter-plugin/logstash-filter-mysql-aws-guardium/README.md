@@ -54,7 +54,7 @@ The 'rdsadmin' user queries the database every second to check its health. This 
 	7. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 
-## Configuring the dynamodb filters in Guardium Insights
+## Configuring the AWS MySQL Guardium Logstash filter in Guardium Insights
 
 To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/universal-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
 
