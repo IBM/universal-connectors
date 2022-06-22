@@ -62,6 +62,10 @@ entering:<div class="bx--snippet bx--snippet--multi bx--snippet--wraptext bx--sn
 </section>
 </div>
 
+## Configuring the MySQL filters in Guardium Insights
+To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/universal-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
+In the input configuration section, refer to the Filebeat section.
+
 ## Contribute
 You can enhance this filter and open a pull request with suggested changes - or you can use the project to create a different filter plug-in for Guardium that supports other data sources.
 
