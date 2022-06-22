@@ -336,6 +336,11 @@ This feature requires the Enterprise version of MySQL.
 -   The rsyslog server IP must follow `local6`, for example: `local6.* @@<Guardium IP>:10514`. Do not use port 5141 since this conflicts with the MongoDB default configuration.
 -   Use `@<Guardium IP>:port_num` for UDP. Use `@@<Guardium IP>:port_num` for TCP. For example:`local6.* @@<gmachine_ip>:5000 ### To send to logstash using tcp local6.* @<gmachine_ip>:5142 ### To send to logstash using UDP`
 
+6.Restart Syslog by entering the command:
+`sudo service rsyslog restart`
+
+
+
 ## What to do next
 Enable the univer***REMOVED***l connector on your collector. [Enabling the Guardium univer***REMOVED***l connector on collectors](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-enabling-guardium-univer***REMOVED***l-collectors).
 
