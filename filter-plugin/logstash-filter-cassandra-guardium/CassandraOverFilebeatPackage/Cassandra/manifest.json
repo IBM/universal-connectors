@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_Cassandra_filter",
+	"alias": "Cassandra",
+	"type": "filter",
+	"pipeline_type":"push",
+	"plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"Cassandra","supportedVersions": ["4.0.1"]}],
+	"supported_input_plugins": ["Filebeat_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses events and messages from the Cassandra audit log into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-cassandra-guardium/README.md"
+}
