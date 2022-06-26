@@ -75,7 +75,7 @@ The universal connector configuration has a few parts, all described in this tas
     
 *   **AWS account region** - for example, "us-east-1".
     
-*   **Event filter** (optional) - specify the filters to apply when fetching resources. For example, for filtering an S3 events based on bucket name: '{$ .eventSource = "s3.amazonaws.com" && $ .requestParameters.bucketName = ""}'.
+*   **Event filter** (optional) - specify the filters to apply when fetching resources. For example, for filtering an S3 events based on bucket name: '{$ .eventSource = "s3.amazonaws.com" && $ .requestParameters.bucketName = "```give bucket name```"}'.
     
 *   **Account id** (optional) - your AWS account ID (For more information, click [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html#FindingYourAWSId)).
     
@@ -92,9 +92,9 @@ The universal connector configuration has a few parts, all described in this tas
     
 2.  In the tags section, enter the value of the Data source tag that you defined when you added a connection in the Filebeat section on this page. For example, `tags: ["<tag-name>"]`.
     
-3.  In the Logstash Output section, enter the hostname URL from the Configuration Notes popup from when you configured the universal connector in the first procedure on this page. For example, `hosts: ["<hostname-URL>:5044"]`
+3.  In the Logstash Output section, enter the hostname URL from the Configuration Notes popup from when you configured the universal connector in the first procedure on this page. For example, `hosts: ["<hostname-URL>:443"]`
 
-**NOTE**: In GI, whenever using plug-ins that are based on Filebeat as a data shipper, the configured port should be 5044. Guardium Insights will map this to an internal port
+**NOTE**: In GI, whenever using plug-ins that are based on Filebeat as a data shipper, the configured port should be 443. Guardium Insights will map this to an internal port
 
 4.  Copy the location of the downloaded certificate, in the ssl.certificate\_authorities row in step 3 of the Filebeat section on this page. For example, `ssl.certificate_authorities: ["/etc/pki/ca-trust/GuardiumInsightsCA.pem"]`
     
