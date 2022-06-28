@@ -11,3 +11,4 @@ filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage
 filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage
 filter-plugin/logstash-filter-s3-guardium/S3OverCloudwatchLogsPackage
 filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage
+filter-plugin/logstash-filter-s3-guardium/S3OverCloudwatchLogsPackage
