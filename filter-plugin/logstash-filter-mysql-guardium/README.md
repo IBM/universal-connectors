@@ -82,11 +82,8 @@ To test filter installation on your development Logstash:
     ```$ logstash -f ./filter-test.conf --config.reload.automatic```
 
 ## Configuring the MySQL filters in Guardium Insights
-
 To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/univer***REMOVED***l-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
-
 In the input configuration section, refer to the Filebeat section.
-
 
 
 ### Not supported
