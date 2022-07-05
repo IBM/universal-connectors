@@ -260,6 +260,13 @@ To configure this plug-in for Guardium Insights, follow [this guide.](https://gi
 
 In the input configuration section, refer to the Filebeat section.
 
+## Configuring the SAP HANA filters in Guardium Insights
+
+To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/univer***REMOVED***l-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
+
+In the input configuration section, refer to the Filebeat section.
+
+
 ## Limitations :
 
 1. SAP HANA auditing only supports error logs for authentication failures.
