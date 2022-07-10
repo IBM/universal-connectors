@@ -104,7 +104,7 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 
 ## Configuring the Couchbase filter in Guardium Insights
 
-To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/univer***REMOVED***l-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
+To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/UC_Configuration_GI.md)
 
 In the input configuration section, refer to the Filebeat section.
 
