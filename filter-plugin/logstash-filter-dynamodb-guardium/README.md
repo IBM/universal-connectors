@@ -101,6 +101,6 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 ## Configuring the dynamodb filters in Guardium Insights
 
-To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/universal-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
+To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/universal-connectors/blob/main/docs/UC_Configuration_GI.md)
 
 In the input configuration section, refer to the CloudWatch_logs section.
