@@ -9,7 +9,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## Configuring the Amazon S3 over Cloudwatch_logs in Guardium Insights
 
-To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/univer***REMOVED***l-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
+To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/UC_Configuration_GI.md)
 
 In the input configuration section, refer to the CloudWatch_logs section.
 
