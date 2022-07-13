@@ -20,7 +20,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## Configuring Amazon DynamoDB and sending logs to CloudWatch
 
-# To authorize outgoing traffic from Amazone Web Services (AWS) to Guardium, run these APIs:
+# To authorize outgoing traffic from Amazone Web Services (AWS) to Guardium, run these API:
 
 	grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
 	grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
@@ -98,10 +98,9 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	5. Update the input section to add the details from dynamodbCloudwatch.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 	6. Update the filter section to add the details from dynamodbCloudwatch.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 	7. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
-	
+
 ## Configuring the dynamodb filters in Guardium Insights
 
-To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/RefaelAdi/universal-connectors/blob/INS-18044/docs/UC_Configuration_GI.md#Configuring_Filebeat_to_forward_audit_logs_to_Guardium)
+To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/universal-connectors/blob/main/docs/UC_Configuration_GI.md)
 
-In the input configuration section, refer to the CloudWatch section.
-	
+In the input configuration section, refer to the CloudWatch_logs section.

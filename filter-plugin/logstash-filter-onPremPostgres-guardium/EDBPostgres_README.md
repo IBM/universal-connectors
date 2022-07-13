@@ -1,13 +1,3 @@
-## EDB Postgres-Guardium Logstash filter plug-in
-
-This is a Logstash filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the EDB Postgres audit log into a Guardium record instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
-
-Currently, this plug-in will work only on IBM Security Guardium Data Protection, not Guardium Insights.
-
-This plugin is written in Ruby and so is a script that can be directly copied into Guardium configuration of Universal Connectors. There is no need to upload the plugin code. However, in order to support few features one zip has to be added named, postgres-offline-plugins-7.5.2.zip
-
-The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
-
 ## Installing EDB Postgres and configuring auditing
 
 ### Installing the EDB Postgres on Linux environment
@@ -78,7 +68,7 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 	
 	Inside the input section, add the tags to uniquely identify the EDB events from the rest.
 	
-	tags: ["guc_edb_param"]
+	tags: ["guc_postgres_param"]
 	
     • While editing the Filebeat configuration file, disable Elasticsearch output by commenting it out. Then enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
 		
@@ -114,11 +104,11 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 # Procedure
 	1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 	2. First Enable the Universal Guardium connector, if it is Disabled already.
-	3. Click Upload File and select the offline postgres-offline-plugins-7.5.2.zip plug-in. After it is uploaded, click OK.
+	3. Click Upload File and select the offline [postgres-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresOverFilebeatPackage/Postgres/postgres-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK.
 	4. Click the Plus sign to open the Connector Configuration dialog box.
 	5. Type a name in the Connector name field.
-	6. Update the input section to add the details from edbPostgres.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-	7. Update the filter section to add the details from edbPostgres.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+	6. Update the input section to add the details from [PostgresFilebeat.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+	7. Update the filter section to add the details from [PostgresFilebeat.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 	8. "type" field should match in input and filter configuration section. This field should be unique for  every individual connector added.
 	9. The tag added in the filebeat.yml file should match the "[tags]" specified in filter part.
 	10. Click Save. Guardium validates the new connector, and enables the universal connector if it was
