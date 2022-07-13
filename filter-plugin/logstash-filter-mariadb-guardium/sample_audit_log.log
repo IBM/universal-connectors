@@ -1,0 +1,37 @@
+20220121 11:12:26,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,0,CONNECT,,,0
+20220121 11:12:27,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,37,QUERY,,'select @@version_comment limit 1',0
+20220121 11:12:38,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,38,QUERY,,'create database MartiaDB',0
+20220121 11:12:44,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,39,QUERY,,'SELECT DATABASE()',0
+20220121 11:13:01,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,41,QUERY,,'create database MariaDB',0
+20220121 11:13:05,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,42,QUERY,,'SELECT DATABASE()',0
+20220121 11:13:05,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,44,QUERY,MariaDB,'show databases',0
+20220121 11:13:05,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,45,QUERY,MariaDB,'show tables',0
+20220121 11:13:15,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,46,CREATE,MariaDB,connector_details,
+20220121 11:13:15,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,46,QUERY,MariaDB,'create table connector_details(connectorname varchar(20),version int(3), releaseddata DATETIME(3),releasedpersonname varchar(20))',0
+20220121 11:14:53,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,47,QUERY,MariaDB,'insert into connector_details (connnectorname,version,releaseddata,releasedpersonname values (\'Redis\',1,CURRENT_DATE(),\'Brijesh\')',1064
+20220121 11:16:02,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,49,WRITE,MariaDB,connector_details,
+20220121 11:16:02,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,49,QUERY,MariaDB,'insert into connector_details (connectorname,version,releaseddata,releasedpersonname) values (\'Redis\',1,CURRENT_DATE(),\'Brijesh\')',0
+20220121 11:16:11,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,50,QUERY,MariaDB,'select * From connector_Details',1146
+20220121 11:16:28,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,51,READ,MariaDB,connector_details,
+20220121 11:16:28,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,21,51,QUERY,MariaDB,'select * From connector_details',0
+20220215 01:02:06,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,76,639,QUERY,MariaDB,'Create Procedure GetOrdersbyCustomerName2 (IN name varchar(55)) Begin  select * from connector_details where releasedpersonname = \'Kirti12\'; END',0
+20220203 10:32:01,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,507,QUERY,testDB,'Create Procedure GetOrdersbyCustomerName (IN name varchar(55))\nBegin \nselect * from Orders where CustomerID in (select CustomerID from Customers where CustomerName = name)',1064
+20220203 10:33:23,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,509,QUERY,testDB,'END',1064
+20220203 10:34:23,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,510,WRITE,mysql,proc,
+20220203 10:34:23,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,510,QUERY,testDB,'Create Procedure GetOrdersbyCustomerName (IN name varchar(55))\nBegin \nselect * from Orders where CustomerID in (select CustomerID from Customers where CustomerName = name);\nEND',0
+20220203 10:35:01,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,511,QUERY,testDB,'GetOrdersbyCustomerName(\'Marcus\')\n;\n\n\n&&',1064
+20220203 10:35:19,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,512,QUERY,testDB,'GetOrdersbyCustomerName(\'Marcus\')',1064
+20220203 10:35:31,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,513,QUERY,testDB,'exec GetOrdersbyCustomerName(\'Marcus\')',1064
+20220203 10:36:07,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,514,READ,mysql,proc,
+20220203 10:36:07,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,515,READ,testDB,Orders,
+20220203 10:36:07,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,515,READ,testDB,Customers,
+20220203 10:36:07,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,515,QUERY,testDB,'select * from Orders where CustomerID in (select CustomerID from Customers where CustomerName =  NAME_CONST(\'name\',_latin1\'Marcus\' COLLATE \'latin1_swedish_ci\'))',0
+20220203 10:36:07,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,515,QUERY,testDB,'CALL GetOrdersbyCustomerName(\'Marcus\')',0
+20220203 11:09:36,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,517,READ,testDB,Orders,
+20220203 11:09:36,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,517,READ,testDB,Customers,
+20220203 11:09:36,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,517,QUERY,testDB,'select * from Orders where CustomerID in (select CustomerID from Customers where CustomerName =  NAME_CONST(\'name\',_latin1\'Marcus\' COLLATE \'latin1_swedish_ci\'))',0
+20220203 11:09:36,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,517,QUERY,testDB,'CALL GetOrdersbyCustomerName(\'Marcus\')',0
+20220203 11:43:14,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,62,0,DISCONNECT,testDB,,0
+20220203 11:43:14,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,60,0,DISCONNECT,testDB,,0
+20220203 11:44:33,ip-172-31-44-208.ap-south-1.compute.internal,root,localhost,63,0,CONNECT,,,0
+
