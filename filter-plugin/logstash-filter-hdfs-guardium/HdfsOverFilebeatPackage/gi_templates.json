@@ -13,6 +13,11 @@
         "type": "boolean",
         "default": true,
         "hidden": true
+      },
+      "include_codec_tag": {
+        "type": "boolean",
+        "default": true,
+        "hidden": true
       }
     }
   ],
