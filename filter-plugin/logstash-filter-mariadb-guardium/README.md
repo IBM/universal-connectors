@@ -163,7 +163,7 @@ exclude_lines: ["set autocommit=0","set autocommit=1","SELECT @@tx_isolation"]
 	
 	
 ## Sample Configuration
-Below is a copy of the filter scope included [`mariadb.conf`](https://gitlab.com/g1774/mariadb/-/blob/main/MariaDB.conf) that shows a basic
+Below is a copy of the filter scope included [MariaDB.conf](MariaDB.conf) that shows a basic
 configuration for this plugin.
 #### Input part:
 ```
@@ -240,7 +240,7 @@ Before you can build & create an updated GEM of this filter plugin, set up your 
 3. Clone the [github-uc-commons](https://github.com/IBM/guardium-univer***REMOVED***lconnector-commons) project and build a JAR from it according to instructions specified there. The project contains Guardium Record structure you need to adjust, so Guardium univer***REMOVED***l connector can eventually feed your filter's output into Guardium. 
 4. Edit _gradle.properties_ and add a GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH variable with the path to the built JAR. For example:
     ```GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH=../guardium-univer***REMOVED***lconnector-commons/build/libs```
-If you'd like to start with the most simple filter plugin, we recommend to follow all the steps in [How to write a Java filter plugin][https://www.elastic.co/guide/en/logstash/7.16/java-filter-plugin.html] tutorial.
+If you'd like to start with the most simple filter plugin, we recommend to follow all the steps in [How to write a Java filter plugin](https://www.elastic.co/guide/en/logstash/7.16/java-filter-plugin.html) tutorial.
 ### Build plugin GEM
 To build this filter project into a GEM that can be installed onto Logstash, run 
     $ ./gradlew.unix gem --info
