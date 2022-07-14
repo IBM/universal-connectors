@@ -43,6 +43,11 @@
         "optional": true,
         "label": "codec (optional)"
       },
+      "account_id": {
+        "type": "text",
+        "optional": true,
+        "label": "Account id (optional)"
+      },
       "type": {
         "type": "text",
         "default": "postgres",

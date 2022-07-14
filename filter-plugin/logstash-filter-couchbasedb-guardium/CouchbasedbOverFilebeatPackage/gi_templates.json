@@ -13,7 +13,12 @@
         "type": "boolean",
         "default": true,
         "hidden": true
-      }
+      },
+      "include_codec_tag": {
+      "type": "boolean",
+      "default": true,
+      "hidden": true
+    }
     }
   ],
   "filter_name": "Guardium_CouchbaseDB_filter",
