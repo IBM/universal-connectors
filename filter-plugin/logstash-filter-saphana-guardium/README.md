@@ -168,6 +168,7 @@ For example:-
        enabled: true
         paths:
        - <host_name/trace/DB_<DB_Name>/*.audit_trail.csv>
+		tags : ["saphana"]
 
 
 c) While editing the Filebeat configuration file, disable Elasticsearch output by commenting it out. Then enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
