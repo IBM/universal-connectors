@@ -1,13 +1,7 @@
 # Filter plugins read to zip:
-filter-plugin/logstash-filter-aurora-mysql-guardium/AuroraMysqlOverCloudwatchPackage
-filter-plugin/logstash-filter-couchbasedb-guardium/CouchbasedbOverFilebeatPackage
 filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudwatchPackage
-filter-plugin/logstash-filter-hdfs-guardium/HdfsOverFilebeatPackage
-filter-plugin/logstash-filter-mongodb-guardium/MongodbOverFilebeatPackage
 filter-plugin/logstash-filter-mysql-aws-guardium/MysqlOverCloudwatchLogsPackage
-filter-plugin/logstash-filter-mysql-guardium/MysqlOverFilebeatPackage
-filter-plugin/logstash-filter-mysql-percona-guardium/MysqlPerconaOverFilebeatPackage
 filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage
 filter-plugin/logstash-filter-s3-guardium/S3OverCloudwatchLogsPackage
-filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage
 filter-plugin/logstash-filter-s3-guardium/S3OverCloudwatchLogsPackage
+filter-plugin/logstash-filter-s3-guardium/S3OverSQSPackage

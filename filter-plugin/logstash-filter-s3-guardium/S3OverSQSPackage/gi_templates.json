@@ -1,51 +1,37 @@
 {
-  "plugin_name": "S3 over Cloudwatch_Logs",
+  "plugin_name": "S3 over SQS",
   "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-s3-guardium/README.md",
-  "input_name": "Cloudwatch_logs_input",
+  "input_name": "SQS_input",
   "input_parameters": [
     {
+      "queue": {
+        "type": "text",
+        "optional": true,
+        "label": "Queue"
+      },
       "role-arn": {
         "type": "text",
         "optional": true,
         "label": "AWS Role ARN (optional)"
-      },
-      "start_position": {
-        "type": "text",
-        "default": "end",
-        "hidden": true
-      },
-      "interval": {
-        "type": "number",
-        "default": 5,
-        "hidden": true
       },
       "access_key_id": {
         "type": "password",
         "optional": true,
         "label": "AWS access key id"
       },
-      "region": {
-        "type": "text",
-        "label": "AWS account region"
-      },
       "secret_access_key": {
         "type": "password",
         "optional": true,
         "label": "AWS secret access key"
       },
-      "event_filter": {
-        "type": "text",
-        "optional": true,
-        "label": "Event filter (optional)"
-      },
-      "account_id": {
-      "type": "text",
-      "label": "Account id"
-    },
       "type": {
         "type": "text",
         "default": "S3",
         "hidden": true
+      },
+      "account_id": {
+        "type": "text",
+        "label": "Account id"
       }
     }
   ],
@@ -53,9 +39,9 @@
   "filter_parameters": [],
   "auth_parameters": [
     {
-      "guc_input_param_log_group": {
+      "guc_input_param_region": {
         "type": "text",
-        "label": "Cloudwatch Log Group name"
+        "label": "Region"
       }
     }
   ],
