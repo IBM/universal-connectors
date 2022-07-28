@@ -45,7 +45,7 @@
       },
       "account_id": {
         "type": "text",
-        "label": "Account id (optional)"
+        "label": "Account id"
       },
       "type": {
         "type": "text",
