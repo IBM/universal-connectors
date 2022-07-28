@@ -40,8 +40,7 @@
       },
       "account_id": {
         "type": "text",
-        "optional": true,
-        "label": "Account id (optional)"
+        "label": "Account id"
       },
       "type": {
         "type": "text",
