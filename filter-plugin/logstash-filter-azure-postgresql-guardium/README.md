@@ -111,6 +111,22 @@ In this plugin we have used Azure Event Hub.
 						e.	Select Save to save the setting.				 
 		7.	After about 15 minutes, verify that events are displayed in your event hub.
 		
+		8.	Configurations needed to monitor traffic from single Event Hub, when UCs are configred on two 	separate Collectors
+			Procedure :-
+			We need to do the following steps:
+				1. We can create namespace in azure event hub as per given above but select standard pricing tier instead of basic in pricing tier configuration.
+				2. After creation of namespace we can create eventhub and connection string as per mention above.
+				3. After successful creation of eventhub we can add a consumer group to event hub as follows:
+					1. In the list of event hubs, select your event hub.
+					2. On the Event Hubs instance page, from entities select consumer group.
+					3. In consumer group click on add button from top.
+					4. Give the name to consumer group and create the consumer group.
+				4. Stream logs to event hub as mentioned as above.
+				5. For gmachine , We have to use these consumer group name in input section of configuration file as follows:
+					1. On one machine in input section of configuration file in consumer group field give           name as $Default.
+					2. On other machine in input section of configuration file in consumer group field give name of other consumer group.
+					3. Keep all other configurations as it is.
+		
 
 ## Connecting to Azure postgreSQL Database:
 

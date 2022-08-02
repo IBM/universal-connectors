@@ -36,9 +36,12 @@ public class Parser {
 
 		Record record = new Record();
 
-		record.setSessionId(e.getField(Constants.SESSION_ID).toString());
+		String dbname = Constants.NA;
+		if (e.getField(Constants.DATABASE_NAME) != null) {
+			dbname = e.getField(Constants.DATABASE_NAME).toString();
 
-		record.setDbName(e.getField(Constants.DATABASE_NAME).toString());
+		}
+		record.setDbName(dbname);
 
 		record.setAppUserName(Constants.APP_USER_NAME);
 
@@ -48,23 +51,30 @@ public class Parser {
 
 		record.setAccessor(Parser.parseAccessor(e));
 
+		parseSessionId(e, record);
+
 		if (e.getField(Constants.SUCCEEDED).toString().contains("LOG")) {
 
 			Data data = new Data();
-			data.setOriginalSqlCommand(e.getField(Constants.STATEMENT).toString());
+
+			if (e.getField(Constants.STATEMENT) != null) {
+				data.setOriginalSqlCommand(e.getField(Constants.STATEMENT).toString());
+			} else {
+				data.setOriginalSqlCommand(Constants.NA);
+			}
 			record.setData(data);
-			
+
 		} else {
-			if (e.getField(Constants.SUCCEEDED).toString().contains("FATAL") && (e.getField(Constants.SQL_STATE).toString().contains("28P01"))) 
-			{
-				
+			if (e.getField(Constants.SUCCEEDED).toString().contains("FATAL")
+					&& (e.getField(Constants.PREFIX).toString().contains("28P01"))) {
+
 				ExceptionRecord exceptionRecord = new ExceptionRecord();
 				exceptionRecord.setExceptionTypeId(Constants.LOGIN_ERROR);
 				exceptionRecord.setDescription(e.getField(Constants.MESSAGE).toString());
 				exceptionRecord.setSqlString(Constants.NA);
 				record.setException(exceptionRecord);
 			} else {
-			
+
 				ExceptionRecord exceptionRecord = new ExceptionRecord();
 				exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
 				exceptionRecord.setDescription(e.getField(Constants.MESSAGE).toString());
@@ -72,6 +82,7 @@ public class Parser {
 				record.setException(exceptionRecord);
 			}
 		}
+
 		return record;
 	}
 
@@ -84,37 +95,56 @@ public class Parser {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = (sdf.parse(dateString));
 			millis = date.getTime();
-		} 
-		catch (Exception exe)
-		{
+		} catch (Exception exe) {
 			exe.printStackTrace();
 		}
 		return new Time(millis, 0, 0);
 	}
 
+	public static void parseSessionId(final Event e, final Record record) {
+
+		if (e.getField(Constants.SESSION_ID) != null) {
+			record.setSessionId(e.getField(Constants.SESSION_ID).toString());
+		} else {
+			Integer hashCode = (record.getSessionLocator().getClientIp() + record.getSessionLocator().getClientPort()
+					+ record.getDbName()).hashCode();
+			record.setSessionId(hashCode.toString());
+		}
+
+	}
+
 	public static SessionLocator parseSessionLocator(final Event e) {
 
 		SessionLocator sessionLocator = new SessionLocator();
-		sessionLocator.setClientIp(e.getField(Constants.CLIENT_IP).toString());
-		sessionLocator.setClientPort(Parser.parseClientPORT(e));
+
+		String clientIp = Constants.DEFAULT_IP;
+		if (e.getField(Constants.CLIENT_IP) != null) {
+			clientIp = (e.getField(Constants.CLIENT_IP).toString());
+		}
+		sessionLocator.setClientIp(clientIp);
+
+		int clientPort = 0;
+		if (e.getField(Constants.CLIENT_PORT) != null) {
+			clientPort = Parser.parseClientPort(e);
+		}
+		sessionLocator.setClientPort(clientPort);
+
 		sessionLocator.setServerIp(Constants.DEFAULT_IP);
 		sessionLocator.setServerPort(Constants.DEFAULT_PORT);
 		sessionLocator.setIpv6(false);
 		sessionLocator.setClientIpv6(Constants.UNKNOWN_STRING);
 		sessionLocator.setServerIpv6(Constants.UNKNOWN_STRING);
-	
+
 		return sessionLocator;
 	}
 
-	public static int parseClientPORT(final Event e) {
+	public static int parseClientPort(final Event e) {
 
 		int i = 0;
 		try {
 			String s = e.getField(Constants.CLIENT_PORT).toString();
 			i = Integer.valueOf(s);
-		}
-		catch (Exception exec)
-		{
+		} catch (Exception exec) {
 			exec.printStackTrace();
 		}
 		return i;
@@ -127,7 +157,13 @@ public class Parser {
 		accessor.setLanguage(Constants.LANGUAGE);
 		accessor.setClientHostName(Constants.UNKNOWN_STRING);
 		accessor.setClientOs(Constants.UNKNOWN_STRING);
-		accessor.setDbUser(e.getField(Constants.USER_NAME).toString());
+
+		String DbUser = Constants.NA;
+		if (e.getField(Constants.USER_NAME) != null) {
+			DbUser = e.getField(Constants.USER_NAME).toString();
+		}
+		accessor.setDbUser(DbUser);
+
 		accessor.setServerType(Constants.SERVER_TYPE_STRING);
 		accessor.setCommProtocol(Constants.COMM_PROTOCOL);
 		accessor.setDbProtocol(Constants.DATA_PROTOCOL_STRING);
@@ -136,17 +172,29 @@ public class Parser {
 		accessor.setServerDescription(Constants.UNKNOWN_STRING);
 		accessor.setServiceName(Constants.UNKNOWN_STRING);
 		accessor.setServerOs(Constants.UNKNOWN_STRING);
-		accessor.setServerHostName(e.getField(Constants.SERVER_HOSTNAME).toString());
-		if(e.getField(Constants.APPLICATION_NAME).toString().contains("[unknown]"))
-		{
-			accessor.setSourceProgram(Constants.UNKNOWN_STRING);
+		String ServerHostName = Constants.UNKNOWN_STRING;
+		if (e.getField(Constants.SERVER_HOSTNAME) != null) {
+			ServerHostName = e.getField(Constants.SERVER_HOSTNAME).toString();
 		}
-		else
-		{
-		accessor.setSourceProgram(e.getField(Constants.APPLICATION_NAME).toString());
-		}
-		accessor.setOsUser(e.getField(Constants.USER_NAME).toString());
 
+		accessor.setServerHostName(ServerHostName);
+
+		String sourceProgram = Constants.NA;
+		if (e.getField(Constants.APPLICATION_NAME) != null) {
+
+			if (e.getField(Constants.APPLICATION_NAME).toString().contains("[unknown]")) {
+				sourceProgram = Constants.UNKNOWN_STRING;
+			} else {
+				sourceProgram = (e.getField(Constants.APPLICATION_NAME).toString());
+			}
+		}
+		accessor.setSourceProgram(sourceProgram);
+
+		String OsUser = Constants.UNKNOWN_STRING;
+		if (e.getField(Constants.USER_NAME) != null) {
+			OsUser = (e.getField(Constants.USER_NAME).toString());
+		}
+		accessor.setOsUser(OsUser);
 		return accessor;
 	}
 }
