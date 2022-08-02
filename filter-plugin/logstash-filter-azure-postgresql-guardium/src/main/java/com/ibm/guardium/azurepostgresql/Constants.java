@@ -50,6 +50,9 @@ public interface Constants {
 
 	public static final String SERVER_HOSTNAME = "server_hostname";
 	
-	public static final String NA = "";
+	public static final String NA = "NA";
+	
+	public static final String RECORDS = "records";
+	public static final String PREFIX = "pre_fix";
 
 }
