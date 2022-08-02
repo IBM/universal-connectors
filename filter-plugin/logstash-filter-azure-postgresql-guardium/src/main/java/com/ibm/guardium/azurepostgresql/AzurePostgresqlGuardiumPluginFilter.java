@@ -87,7 +87,8 @@ public class AzurePostgresqlGuardiumPluginFilter implements Filter {
 				matchListener.filterMatched(e);
 
 			} catch (Exception exception) {
-
+				
+				log.error("Given Event Is Not An Instance Of String " + e.getField(Constants.RECORDS));
 				exception.printStackTrace();
 			}
 		}
