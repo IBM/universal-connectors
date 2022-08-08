@@ -3,10 +3,14 @@
 
   - [Overview](#overview)
   - [How it works](#how-it-works)
-  - [Available Universal Connector plug-ins](#available-universal-connector-plug-ins)
-  - [Using Universal Connector plug-ins](#using-universal-connector-plug-ins)
-  - [Packaging Guardium Insights Universal Connector plug-ins](#packaging-guardium-insights-universal-connector-plug-ins)
-  - [Creating custom Universal Connector plug-ins](#creating-custom-universal-connector-plug-ins)
+  - [Deploying universal connector](#deploying-universal-connector)
+  - [Monitoring universal connector connections](#monitoring-universal-connector-connections)
+  - [Policies](#policies)
+  - [Known limitations](#known-limitations)
+  - [FAQs](#faqs)
+  - [Developing plug-ins] (developing-plug-ins)
+  - [Packaging Guardium Insights universal connector plug-ins] (#packaging-guardium-insights-universal-connector-plug-ins)
+  - [Creating custom universal connector plug-ins] (#creating-custom-universal-connector-plug-ins)
   - [Contributing](#contributing)
   - [Contact us](#contact-us)
   - [Licensing](#licensing)
@@ -15,19 +19,50 @@
 
 ## Overview
 
-The Universal Connector framework assists data security teams by providing an agentless method for collecting activity and auditing log data from a variety of cloud and on-premise data sources. The framework:
-- Is easy to set up and configure.
-- Is simple to maintain.
-- Normalizes collected data, making it consumable for security applications.
+he Guardium universal connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using S-TAPs. The Guardium Universal Connector includes support for MongoDB, MySQL, and Amazon S3, requiring minimal configuration. Users can easily develop plug-ins for other data sources, and install them in Guardium.
 
-Important note: Only the plug-ins that appear in verifiedUCPlugins.txt are supported in Guardium Insights. The rest are only supported in Guardium Data Protection (GDP).
+Figure 1. Guardium universal connector architecture
+
+![Universal Connector](guc.jpg)
+
+data flow from input plugin to guardium sniffer
+
+The Guardium universal connector supports many platforms and connectivity options. It supports pull and push modes, multi-protocols, on-premises, and cloud platforms. For the data sources with pre-defined plug-ins, you configure Guardium to accept audit logs from the data source.
+
+For data sources that do not have pre-defined plug-ins, you can customize the filtering and parsing components of audit trails and log formats. The open architecture enables reuse of prebuilt filters and parsers, and creation of shared library for the Guardium community.
+
+The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. The Guardium policy, as usual, determines whether the activities are legitimate or not, when to alert, and the auditing level per activity.
+
+The Guardium universal connector scales by adding Guardium collectors. It has a load-balancing and fail-over mechanism among multiple Guardium collectors.
+
+Connections to databases that are configured with the Guardium universal connector are handled the same as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
+
+#### Limitations
+ * When configuring universal connectors, only use port numbers higher than 5000. Use a new port for each future connection.
+
+* S3 SQS and S3 Cloudwatch plug-ins are not supported on IPV6 Guardium systems.
+
+* The DynamoDB plug-in does not support IPV6.
+
+* MySQL plug-ins do not send the DB name to Guardium, if the DB commands are performed by using MySQL native client.
+
+* When connected with a MySQL plug-in, queries for non-existent tables are not logged to GDM_CONSTRUCT.
+
+* MongoDB plug-ins do not send the client source program to Guardium.
+
+* Use only the packages that are supplied by IBM. Do not use extra spaces in the title.
+
+
 
 ## How it works
-The Universal Connectors consist of a series of three plug-ins within a [Logstash pipeline](https://www.elastic.co/guide/en/logstash/current/pipeline.html) that ingest, filter, and output events in a normalized, common format:
 
-1) **Input plug-in**: Settings to pull events from APIs or receive push of events.
-2) **Filter plug-in**: Parses, filters, and modifies events into a common format.
-3) **Output plug-in**: Sends normalized events to locations to be consumed by security applications.
+The Universal Connectors consist of a series of three plug-ins within a Logstash pipeline that ingest, filter, and output events in a normalized, common format:
+
+1. Input plug-in: Settings to pull events from APIs or receive push of events.
+
+2. Filter plug-in: Parses, filters, and modifies events into a common format.
+
+3. Output plug-in: Sends normalized events to locations to be consumed by security applications.
 
 ![Universal Connector - Logstash pipeline](/docs/images/uc_overview.png)
 
@@ -35,13 +70,66 @@ Universal Connector plug-ins are packaged and deployed in a Docker container env
 
 [Technical demo](https://youtu.be/LAYhVoYMb28)
 
-## Available Universal Connector plug-ins
+## Deploying Universal Connector
 
-[View all available plug-ins](/docs/available_plugins.md)
+Overall, deploying the universal connector involves the following workflow:
 
-## Using Universal Connector plug-ins
-- [In Guardium Data Protection](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-configuring-guardium-universal).
-- [In Guardium Insights](https://www.ibm.com/docs/en/guardium-insights/3.0.x?topic=connector-configuring-universal).
+a. uploading and installing a plugin
+
+b. configuring native auditing on the data source
+
+c. sending native audit logs to the universal connector (not all plugins require this)
+
+d. configuring the universal connector to read the native audit logs
+
+However, the specific steps for each workflow may differ slightly per different data sources. See our [list of of available plugins](https://github.com/IBM/universal-connectors/blob/main/docs/available_plugins.md) to view detailed, step-by-step instructions for each supported data source/plug-in.
+
+
+## Monitoring UC connections
+
+The Universal connector is monitored via tools that are already familiar to Guardium Data Protection and Guardium Insights users, for example [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=started-data-activity-monitoring) in GDP and [this page](xxx) in GI. 
+
+a. [separate readme for GDP UC monitoring, based off existing GDP doc]
+
+b. [seperate readme for GI UC monitoring, based off existing GI doc]
+
+## Policies
+
+With a few exceptions, using data from the universal connector is no different than using data from any other source in Guardium Data Protection or Guardium Insights:
+
+a. [separate readme for  GDP UC policies, based off existing GDP doc]
+
+b. [separate readme for  GI UC policies, based off existing GI doc]
+
+
+***NOTE: if policy-related restrictions/limitations are identical for GDP +GI, let's just list them here instead***
+
+## Known limitations
+
+The universal connector has the following known limitations:
+
+### Guardium Data Protection
+
+### Guardium Insights
+
+(GI list, if different)
+
+***Limitations associated with specific datasources are described in the UC plugin readme files for each datasource***
+
+## FAQs
+
+link to seperate readme [here]
+
+***Need to decide if it's 2 seperate readmes for GDP and GI, or one readme with 2 different sections- GDP and GI. Possibly a 3rd section- universal, overlapping FAQs for GDP AND GI.***
+
+## Developing plug-ins
+
+Users can develop their own universal connector plugins, if needed, and contribute them back to the open source project, if desired. 
+
+ [link to documentation about developing UC plugins]. OR JUST DROP IN HERE?
+
+***NOTE: any GI/GDP specific content around plugin development should be handled in the plugin development doc itself and not here: it's mostly going to be down to how the plugin receives its configuration setting from the end users, and that's just one part of plugin development.***
+
 
 ## Packaging Guardium Insights Universal Connector plug-ins
 Note: Pre-packaged plug-ins can be downloaded from [here](https://github.com/IBM/universal-connectors/releases)
