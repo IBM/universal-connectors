@@ -118,7 +118,7 @@ The universal connector has the following known limitations:
 
 ## FAQs
 
-link to seperate readme [here]
+link to seperate readme [here](docs/faqs_gdp.md)
 
 ***Need to decide if it's 2 seperate readmes for GDP and GI, or one readme with 2 different sections- GDP and GI. Possibly a 3rd section- universal, overlapping FAQs for GDP AND GI.***
 
