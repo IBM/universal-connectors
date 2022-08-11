@@ -1,6 +1,6 @@
 # Apache Solr GCP-Guardium Logstash filter plug-in
 
-This is a Logstash filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses a GCP (Google Cloud Platform) event logs into a Guardium record instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
+This is a Logstash filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses GCP (Google Cloud Platform) event logs into a Guardium record instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 The Apache Solr GCP plugin supports only Guardium Data Protection as of now.
 
 ### Note
@@ -22,7 +22,7 @@ This version is for GDP v11.4, i.e., stable version. Please refer to the
 
 ##### Grant Permission Required for log view/ download
 User can view and download the generated logs. 
-Following Identity and Access Management roles required for view and download logs:
+Following Identity and Access Management roles required to view and download logs:
 * Logs view:
 roles/logging.viewer (Logs Viewer) 
 roles/logging.privateLogViewer (Private Logs Viewer)
@@ -30,18 +30,18 @@ roles/logging.privateLogViewer (Private Logs Viewer)
 Logging Admin (roles/logging.admin)
 Logs View Accessor (roles/logging.viewAccessor)
 
-##### Steps to Set destination(TOPIC & SUBSCRIPTION) permissions
+##### Steps to set destination(TOPIC & SUBSCRIPTION) permissions
 To set permissions for log sink to route to its destination, do the following:
 * Obtain the sink's writer identity—an email address—from the new sink.
    1. Go to the Log Router page, and select menu  > View sink details. 
    2. The writer identity appears in the Sink details panel.
-* If user have Owner access to the destination, 
+* If the user has owner access to the destination, 
    1. add the sink's writer identity to topic and give it the Pub/Sub Publisher and Subscriber role.
    2. add the sink's writer identity to subscription and give it the Pub/Sub Subscriber role.
 
 ### GCP instance Creation 
 
-1. In the Google Cloud Console, go to the VM instances page..
+1. In the Google Cloud Console, go to the VM instances page.
 2. Select your project and click Continue.
 3. Click Create instance.
 4. Specify a Name for your VM.
@@ -60,7 +60,7 @@ You can learn more about VM Creation [here](https://cloud.google.com/compute/doc
         $ sudo apt install default-jre
 2.Run the below command to check the java version:
         $ java –version
-3.In order for Solr to work as expected, user need to have the lsof command installed as well.
+3.In order for Solr to work as expected, the user needs to have the lsof command installed as well.
         The lsof command stands for "list open files".  Run the following command for lsof Installation:
         $ sudo apt install lsof
 4.Run the following commands to download Solr installation files:
@@ -75,7 +75,7 @@ You can learn more about VM Creation [here](https://cloud.google.com/compute/doc
 ```
 #### Launching Apache Solr
 ```
-1.Once the script completes, Solr will be installed as a service and running in the background on users server (on port 8983). To verify, run:
+1.Once the script completes, Solr will be installed as a service and run in the background on the user's server (on port 8983). To verify, run:
        $ sudo service solr status
 2.Solr facilitates to run it in 2 modes:
 2.1.Standalone mode :An index is stored on a single computer and the setup is called a core.There can be multiple cores or indexes here.
@@ -92,33 +92,33 @@ You can learn more about ApacheSolr Setup [here](https://solr.apache.org/guide/8
 Once the Apache Solr set up is done, Ops Agent needs to be installed and configured on the system.
 
 ## Login to the Solr Dashboard
-In order to access the Solr admin panel. Visit the hostname or IP address on port(solr is running):
+In order to access the Solr admin panel, visit the hostname or IP address on port(solr is running):
     http://ip_address:port/solr/
 
 ### Core Creation in Standalone mode
 ```
 1.Create a new Solr core with the following command:
   $ sudo bin/solr create -c core_name -force
-  For eg: Core Created named as new_core:
+  For example: Core Created named as new_core:
   $ sudo bin/solr create -c new_core -force
-2.Created core will reflect in the core drop down on solr admin console.
+2.Created core will reflect in the core drop-down menu on the solr admin console.
 ```
 ### Collection Creation in SolrCloud mode
 ```
 1.Create a new Solr collection with the following command(having default shard and replica count):
   $ sudo bin/solr create -c collection_name -force
-To create collection having specified shard and replica count. 
+To create a collection having specified shard and replica count. 
   $ sudo bin/solr create -c collection_name -s <count> -rf <count> -force
-For eg: Collection Created named as new_collection respectively.
+For example: Collection Created named as new_collection respectively.
   $ sudo bin/solr create -c new_collection -force
   $ sudo bin/solr create -c new_collection -s 1 -rf 2 -force
-2.Created collection will reflect in the collection drop down on solr admin console.
+2.Created collection will reflect in the collection drop-down menu on the solr admin console.
 
 ```
 ### Configure Ops Agent
 The Ops Agent is the primary agent for collecting telemetry from your Compute Engine instances.
 ```
-Run Following commands to install ops agent
+Run the following commands to install ops agent
 sudo curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
 sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 
@@ -130,9 +130,9 @@ Put your configuration for the Ops Agent in the following path:
 
 <b>/etc/google-cloud-ops-agent/config.yaml<b>
 
-To configure logging , Visit Solr Dashboard, under Java Properties , search for solr.​log.​dir
+To configure logging, visit Solr Dashboard. Under Java Properties , search for solr.​log.​dir
 
-**When Solr running in Standalone mode**
+**When Solr runs in Standalone mode**
 ```
 logging:
   receivers:
@@ -145,7 +145,7 @@ logging:
       default_pipeline:
         receivers: [files]
 ```
-**When Solr running in SolrCloud mode**
+**When Solr runs in SolrCloud mode**
 ```
 logging:
   receivers:
@@ -161,13 +161,13 @@ logging:
       default_pipeline:
         receivers: [files]        
 ```
-Then,restart agent using below command:<br>
+Then,restart the agent using the below command:<br>
 <b>$ sudo service google-cloud-ops-agent restart<b>
 
 You can learn more about [Ops Agent installation](https://cloud.google.com/monitoring/agent/ops-agent/installation) and [configuration](https://cloud.google.com/monitoring/agent/ops-agent/configuration).
 
 
-#### Configure Logging & Filter the logs using resources, logs and severity levels to display
+#### Configure logging and filter the logs using resources, logs, and severity levels to display
 1. Select a Google Cloud project.Go to the Google Cloud navigation menu and select Logging > Logs Explorer.
 2. Filter the logs in logs explorer
     - Resources: The resources available in your current project.
@@ -186,28 +186,28 @@ You can learn more about [Ops Agent installation](https://cloud.google.com/monit
 * Display the menu for the topic created in previous step and click on New subscription.
 * Type a name for the subscription, such as MySub.
 * Leave the delivery type as Pull.
-* Click on Create button
+* Click Create button
 
 ##### Steps to create log sink in Pub/Sub
 * In the Cloud Console, go to the Logging > Log Router page. 
 * Click on Create sink button.
 * In the Sink details panel, enter the following details:
-* Sink name: Provide an identifier for the sink; note that after User create the sink, user can't rename the sink, but can delete it and create a new sink.
+* Sink name: Provide an identifier for the sink; note that after the user creates the sink, the user can't rename the sink, but can delete it and create a new sink.
 * Sink description (optional): Describe the purpose or use case for the sink.
 * In the Sink destination panel, select the Pub/Sub topic as sink service and destination.
 * Choose logs to include in the sink in the Build inclusion filter panel. 
-* User can filter the logs using log name, resource and severity.
-* In case of multi-region one need to do the ***REMOVED***me set of configurations on that region.
-Based on the region different configuration file will be used for  Input Plugin
+* The user can filter the logs using log name, resource, and severity.
+* In cases of multiple regions, use the ***REMOVED***me set of configurations for all regions.
+Use different configuration files for the input plug-in based on the region.
 
 ##### Steps to Create service account credentials
 * Go to the Service accounts section of IAM & Admin console. 
 * Select project and click on Create Service Account.
 * Enter a Service account name, such as apachesolrgcp-pubsub.
-* Click on Create.
-* The service account needs access on subscription that was created earlier. Use the Select a role dropdown to add the Pub/Sub Subscriber role. 
-* Click Continue. user does not need to grant users access to this service account.
-* Click Create Key. The key is used by logstash input plugin configuration file.
+* Click Create.
+* The service account needs access to a subscription that was created earlier. Use the Select a role drop-down menu to add the Pub/Sub Subscriber role. 
+* Click Continue. The user does not need to grant users access to this service account.
+* Click the Create key. The key is used by the logstash input plug-in configuration file.
 * Select JSON and click Create. 
 * Rename the key file to ~/Downloads/key.json.	  
 	  
@@ -236,29 +236,29 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Univer***REMOVED***l Connector.
-2. Enable the connector if is in di***REMOVED***bled state before uploading the UC plug-in.
+2. Enable the connector if it is di***REMOVED***bled before uploading the UC plug-in.
 3. Click Upload File and select the offline [guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip](PubSubApacheSolrPackage/guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip) plug-in. After it is uploaded, click OK.
-4. Click Upload File and select the key.json file(which was generated above for Service Account). After it is uploaded, click OK.
+4. Click Upload File and select the key.json file(which was generated above for the service account). After it is uploaded, click OK.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
-7. Update the input section to add the details from [solrgcp.conf](PubSubApacheSolrPackage/solrgcp.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-8. Update the filter section to add the details from [solrgcp.conf](PubSubApacheSolrPackage/solrgcp.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-9. 'type' field should match in input and filter configuration section.This field should be unique for every individual connector added.
-10. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, it appears in the Configure Univer***REMOVED***l Connector page.
-11. After offline plugin is installed and configuration is uploaded and ***REMOVED***ved in Guardium machine, restart Univer***REMOVED***l Connector using Di***REMOVED***ble/Enable button.
+7. Update the input section to add the details from the [solrgcp.conf](PubSubApacheSolrPackage/solrgcp.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+8. Update the filter section to add the details from the [solrgcp.conf](PubSubApacheSolrPackage/solrgcp.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+9. The 'type' fields should match in input and filter configuration sections.This field should be unique for every individual connector added.
+10. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, it appears on the Configure Univer***REMOVED***l Connector page.
+11. After the offline plug-in is installed and configuration is uploaded and ***REMOVED***ved in the Guardium machine, restart the Univer***REMOVED***l Connector using the Di***REMOVED***ble/Enable button.
 
 ## Limitations  
-1. Following important fields couldn't be mapped with ApacheSolr qtp logs.
+1. The following important fields couldn't be mapped with ApacheSolr qtp logs.
      - SourceProgram : field is left blank since this information is not embedded in the mes***REMOVED***ges pulled from Google Cloud.
      - clientIP and serverIP : fields are populated with 0.0.0.0, as this information is not embedded in the mes***REMOVED***ges pulled from Google Cloud.
      - OS User         : Not available with logs
      - Client HostName : Not available with logs
 
-2. As qtp(QueuedThreadPool)logs are taken into consideration because it have more information.
-   Below fields are not available
+2. The qtp(QueuedThreadPool)logs are taken into consideration because they have more information.
+   The below fields are not available
      - dbUser         : Not available with logs
      - LOGIN_FAILED : Not available with logs
 
 3. While launching Solr in SolrCloud mode, multiple logs will be generated for single query execution as a call to shard(In SolrCloud, a logical partition of a single Collection) and replica(A Core that acts as a physical copy of a Shard in a SolrCloud Collection).
 
-4. On executing error queries in multiline from third-party tool, GCP is not capturing log as a single event.So, partial query will be displayed in Sql Error Report.
+4. On executing error queries in multiline from third-party tool, GCP is not capturing log as a single event.So, partial query will be displayed in the SQL Error Report.
