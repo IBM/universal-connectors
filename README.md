@@ -37,10 +37,6 @@ The Guardium univer***REMOVED***l connector scales by adding Guardium collectors
 
 Connections to databases that are configured with the Guardium univer***REMOVED***l connector are handled the ***REMOVED***me as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
 
-#### Limitations
-
-
-
 ## How it works
 
 The Univer***REMOVED***l Connectors consist of a series of three plug-ins within a Logstash pipeline that ingest, filter, and output events in a normalized, common format:
@@ -74,7 +70,7 @@ However, the specific steps for each workflow may differ slightly per different 
 
 ## Monitoring UC connections
 
-The Univer***REMOVED***l connector is monitored via tools that are already familiar to Guardium Data Protection and Guardium Insights users, for example [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=started-data-activity-monitoring) in GDP and [this page](xxx) in GI. 
+The Univer***REMOVED***l connector is monitored via tools that are already familiar to Guardium Data Protection and Guardium Insights users. As well as some unique tools that can be found in the following links. 
 
 a. [separate readme for GDP UC monitoring, based off existing GDP doc]
 
@@ -82,14 +78,10 @@ b. [seperate readme for GI UC monitoring, based off existing GI doc]
 
 ## Policies
 
-With a few exceptions, using data from the univer***REMOVED***l connector is no different than using data from any other source in Guardium Data Protection or Guardium Insights:
+With a few exceptions, using data from the univer***REMOVED***l connector is no different than using data from any other source in Guardium Data Protection or Guardium Insights. For Guardium Data Protection, there are a few unique policies that can be found in this link:
 
 a. [separate readme for  GDP UC policies, based off existing GDP doc]
 
-b. [separate readme for  GI UC policies, based off existing GI doc]
-
-
-***NOTE: if policy-related restrictions/limitations are identical for GDP +GI, let's just list them here instead***
 
 ## Known limitations
 
@@ -121,7 +113,9 @@ Known limitations for Guardium insights can be found in the UC plugin readme fil
 
 ## FAQs
 
-link to seperate readme [here](docs/faqs_gdp.md)
+[Here](docs/faqs_gdp.md) is a list of frequently asked questions for Guardium Data Protection. 
+
+[Here](docs/faqs_gi.md) is a list of frequently asked questions for Guardium Insights. 
 
 ***Need to decide if it's 2 seperate readmes for GDP and GI, or one readme with 2 different sections- GDP and GI. Possibly a 3rd section- univer***REMOVED***l, overlapping FAQs for GDP AND GI.***
 
@@ -129,47 +123,10 @@ link to seperate readme [here](docs/faqs_gdp.md)
 
 Users can develop their own univer***REMOVED***l connector plugins, if needed, and contribute them back to the open source project, if desired. 
 
-### Guardium Data Protection
+[Here](docs/developing_plugins_gdp.md) is a guide for developing new plug-ins for Guardium Data Protection. 
 
+[Here](docs/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights. 
 
-
-### Guardium Insights
-
- #### Packaging Guardium Insights Univer***REMOVED***l Connector plug-ins
-Note: Pre-packaged plug-ins can be downloaded from [here](https://github.com/IBM/univer***REMOVED***l-connectors/releases)
-1) **Clone univer***REMOVED***l-connectors project**: git clone https://github.com/IBM/univer***REMOVED***l-connectors.git
-2) **Enter univer***REMOVED***l-connector project folder**: cd /path/to/univer***REMOVED***l-connectors
-3) **Run packagePluginsForGuardiumInsights.sh script**: sh packagePluginsForGuardiumInsights.sh
-4) **Find required plug-ins in packagedPlugins**: ls packagedPlugins
-
-## Creating custom Univer***REMOVED***l Connector plug-ins
-- [Configuring native audit on the data source](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-configuring-native-audit-data-source)
-- [Developing a filter plug-in](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-developing-filter-plug-in)
-- [Create](https://www.elastic.co/guide/en/logstash/current/input-new-plugin.html) or use an [existing (recommended)](https://www.elastic.co/guide/en/logstash/current/input-plugins.html) input plugin
-- [Testing a filter plug-in in a development environment](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-testing-filter-in-dev-environment)
-- [Installing and testing the filter or input plug-in on a staging Guardium system](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system)
-- [Publishing your plug-in](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-publishing-your-plug-in); see also [Contributing](#Contributing) section, below
-
-Note: To package a plug-in for Guardium Insights, you need to include additional files, in this structure: 
-
-    datasourceManifest.json
-    config.json
-    lang_en.json
-    /YourPluginNamePackage
-      |_  filter.conf
-      |_  your-filter-offline-plugin.zip
-      |_ manifest.json # details ...
-
-* _datasourceManifest.json_: Specifies the input and filter names (when installed on Logstash), as well as the supported platforms ("on-premise", "AWS", "Azure", "GCP", or a new platform of your choice).
-* config.json: Contains parameters that are completed by Guardium Insights users.
-* lang_en.json: Describes the parameters.
-* YourPluginNamePackage folder contains:
-  * filter.conf: A validated Logstash filter configuration (could also be an input, but usually a filter), with parameters names as placeholders. These values will be replaced by user input, according to the input fields you specified in config.json.
-  * your-filter-offline-plugin.zip: A Logstash offline plug-in package. This is the plug-in you created for GDP (see links above for instructions).
-  * manifest.json: Describes the plug-in type ("filter" or "input"), its mechanism ("push" or "pull"), as well as the id/name of the plug-in after it is installed on Logstash, supported data source(s), and other valuable meta-data.
-
-
-***NOTE: any GI/GDP specific content around plugin development should be handled in the plugin development doc itself and not here: it's mostly going to be down to how the plugin receives its configuration setting from the end users, and that's just one part of plugin development.***
 
 
 ## Contributing
