@@ -4,13 +4,13 @@
   - [Overview](#overview)
   - [How it works](#how-it-works)
   - [Deploying univer***REMOVED***l connector](#deploying-univer***REMOVED***l-connector)
-  - [Monitoring univer***REMOVED***l connector connections](#monitoring-univer***REMOVED***l-connector-connections)
+  - [Monitoring univer***REMOVED***l connector  connections](#monitoring-univer***REMOVED***l-connector-connections)
   - [Policies](#policies)
   - [Known limitations](#known-limitations)
   - [FAQs](#faqs)
-  - [Developing plug-ins] (developing-plug-ins)
-  - [Packaging Guardium Insights univer***REMOVED***l connector plug-ins] (#packaging-guardium-insights-univer***REMOVED***l-connector-plug-ins)
-  - [Creating custom univer***REMOVED***l connector plug-ins] (#creating-custom-univer***REMOVED***l-connector-plug-ins)
+  - [Developing plug-ins](developing-plug-ins)
+  - [Packaging Guardium Insights univer***REMOVED***l connector plug-ins](#packaging-guardium-insights-univer***REMOVED***l-connector-plug-ins)
+  - [Creating custom univer***REMOVED***l connector plug-ins](#creating-custom-univer***REMOVED***l-connector-plug-ins)
   - [Contributing](#contributing)
   - [Contact us](#contact-us)
   - [Licensing](#licensing)
@@ -19,11 +19,11 @@
 
 ## Overview
 
-he Guardium univer***REMOVED***l connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using S-TAPs. The Guardium Univer***REMOVED***l Connector includes support for MongoDB, MySQL, and Amazon S3, requiring minimal configuration. Users can easily develop plug-ins for other data sources, and install them in Guardium.
+The Guardium univer***REMOVED***l connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using S-TAPs. The Guardium Univer***REMOVED***l Connector includes support for MongoDB, MySQL, and Amazon S3, requiring minimal configuration. Users can easily develop plug-ins for other data sources, and install them in Guardium.
 
 Figure 1. Guardium univer***REMOVED***l connector architecture
 
-![Univer***REMOVED***l Connector](guc.jpg)
+![Univer***REMOVED***l Connector](/docs/images/guc.jpg)
 
 data flow from input plugin to guardium sniffer
 
@@ -38,19 +38,6 @@ The Guardium univer***REMOVED***l connector scales by adding Guardium collectors
 Connections to databases that are configured with the Guardium univer***REMOVED***l connector are handled the ***REMOVED***me as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
 
 #### Limitations
- * When configuring univer***REMOVED***l connectors, only use port numbers higher than 5000. Use a new port for each future connection.
-
-* S3 SQS and S3 Cloudwatch plug-ins are not supported on IPV6 Guardium systems.
-
-* The DynamoDB plug-in does not support IPV6.
-
-* MySQL plug-ins do not send the DB name to Guardium, if the DB commands are performed by using MySQL native client.
-
-* When connected with a MySQL plug-in, queries for non-existent tables are not logged to GDM_CONSTRUCT.
-
-* MongoDB plug-ins do not send the client source program to Guardium.
-
-* Use only the packages that are supplied by IBM. Do not use extra spaces in the title.
 
 
 
@@ -110,11 +97,27 @@ The univer***REMOVED***l connector has the following known limitations:
 
 ### Guardium Data Protection
 
-### Guardium Insights
+ * When configuring univer***REMOVED***l connectors, only use port numbers higher than 5000. Use a new port for each future connection.
 
-(GI list, if different)
+* S3 SQS and S3 Cloudwatch plug-ins are not supported on IPV6 Guardium systems.
+
+* The DynamoDB plug-in does not support IPV6.
+
+* MySQL plug-ins do not send the DB name to Guardium, if the DB commands are performed by using MySQL native client.
+
+* When connected with a MySQL plug-in, queries for non-existent tables are not logged to GDM_CONSTRUCT.
+
+* MongoDB plug-ins do not send the client source program to Guardium.
+
+* Use only the packages that are supplied by IBM. Do not use extra spaces in the title.
 
 ***Limitations associated with specific datasources are described in the UC plugin readme files for each datasource***
+
+### Guardium Insights
+
+Known limitations for Guardium insights can be found in the UC plugin readme files for each datasource
+
+
 
 ## FAQs
 
@@ -126,12 +129,13 @@ link to seperate readme [here](docs/faqs_gdp.md)
 
 Users can develop their own univer***REMOVED***l connector plugins, if needed, and contribute them back to the open source project, if desired. 
 
- [link to documentation about developing UC plugins]. OR JUST DROP IN HERE?
-
-***NOTE: any GI/GDP specific content around plugin development should be handled in the plugin development doc itself and not here: it's mostly going to be down to how the plugin receives its configuration setting from the end users, and that's just one part of plugin development.***
+### Guardium Data Protection
 
 
-## Packaging Guardium Insights Univer***REMOVED***l Connector plug-ins
+
+### Guardium Insights
+
+ #### Packaging Guardium Insights Univer***REMOVED***l Connector plug-ins
 Note: Pre-packaged plug-ins can be downloaded from [here](https://github.com/IBM/univer***REMOVED***l-connectors/releases)
 1) **Clone univer***REMOVED***l-connectors project**: git clone https://github.com/IBM/univer***REMOVED***l-connectors.git
 2) **Enter univer***REMOVED***l-connector project folder**: cd /path/to/univer***REMOVED***l-connectors
@@ -163,6 +167,9 @@ Note: To package a plug-in for Guardium Insights, you need to include additional
   * filter.conf: A validated Logstash filter configuration (could also be an input, but usually a filter), with parameters names as placeholders. These values will be replaced by user input, according to the input fields you specified in config.json.
   * your-filter-offline-plugin.zip: A Logstash offline plug-in package. This is the plug-in you created for GDP (see links above for instructions).
   * manifest.json: Describes the plug-in type ("filter" or "input"), its mechanism ("push" or "pull"), as well as the id/name of the plug-in after it is installed on Logstash, supported data source(s), and other valuable meta-data.
+
+
+***NOTE: any GI/GDP specific content around plugin development should be handled in the plugin development doc itself and not here: it's mostly going to be down to how the plugin receives its configuration setting from the end users, and that's just one part of plugin development.***
 
 
 ## Contributing
