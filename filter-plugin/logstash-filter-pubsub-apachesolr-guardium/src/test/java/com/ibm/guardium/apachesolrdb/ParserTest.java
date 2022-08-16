@@ -93,4 +93,15 @@ public class ParserTest {
 				"o.a.s.h.RequestHandlerBase org.apache.solr.common.SolrException: Cannot parse provided JSON: Unexpected EOF: char=(EOF),position=20 AFTER=''",
 				exceptionRecord.getDescription().toString());
 	}
+	
+	@Test
+	public void testRedacted() throws Exception {
+		final String solrString = "{\"insertId\":\"1lzqgspg20hyho1\",\"jsonPayload\":{\"mes***REMOVED***ge\":\"2022-06-03 11:27:38.004 INFO  (qtp2005169944-19) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=\\/admin\\/cores params={core=firstCore&other=secondCore&action=SWAP} status=0 QTime=207\"},\"resource\":{\"type\":\"gce_instance\",\"labels\":{\"zone\":\"asia-south2-a\",\"instance_id\":\"6290282768426383618\",\"project_id\":\"project-sccd\"}},\"timestamp\":\"2022-05-30T08:50:36.941752806Z\",\"labels\":{\"compute.googleapis.com\\/resource_name\":\"apachesolrqa\"},\"logName\":\"projects\\/project-sccd\\/logs\\/files\",\"receiveTimestamp\":\"2022-05-30T08:50:37.641620487Z\"}";
+		final JsonObject solrJson = JsonParser.parseString(solrString).getAsJsonObject();
+		Record record = Parser.parseQtpRecord(solrJson);
+		String redacted = record.getData().getConstruct().getRedactedSensitiveDataSql();
+		Assert.assertNotNull(redacted);
+		Assert.assertNotNull(record);
+		Assert.assertEquals("o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={core=?&other=?&action=?}", redacted);
+	}
 }

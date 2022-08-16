@@ -12,7 +12,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ### Prerequisites
 
-Download the [Logstash Offline package](PubSubApacheSolrPackage/guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip) for the ApacheSolrGCP PubSub filter plugin, and upload it to the gmachine.
+Download the [Logstash Offline package](PubSubApacheSolrPackage/guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip) for the Google Cloud Apache Solr PubSub filter plugin, and upload it to the Guardium Data Protection collector.
 
 #### Note
 This version is for GDP v11.4, i.e., stable version. Please refer to the
@@ -88,11 +88,11 @@ To Launch Solr in Standalone Mode:
        $ sudo bin/solr start -e cloud -force
 ```
 
-You can learn more about ApacheSolr Setup [here](https://solr.apache.org/guide/8_8/installing-solr.html)
-Once the Apache Solr set up is done, Ops Agent needs to be installed and configured on the system.
+You can learn more about Apache Solr setup [here](https://solr.apache.org/guide/8_8/installing-solr.html)
+Once the Apache Solr setup is done, Ops Agent needs to be installed and configured on the system.
 
 ## Login to the Solr Dashboard
-In order to access the Solr admin panel, visit the hostname or IP address on port(solr is running):
+To access the Solr admin panel, visit the hostname or IP address on port (solr is running):
     http://ip_address:port/solr/
 
 ### Core Creation in Standalone mode
@@ -213,11 +213,14 @@ Use different configuration files for the input plug-in based on the region.
 	  
 ##### Inclusion Filter
 Edit the Sink via *Logs Router > Sink Inclusion Filter*:
+##### Description
+The purpose of this inclusion filter is to include logs that are the result of RequestHandler, LogUpdateProcessorFactory, HttpSolrCall, and Exceptions in Solr.
 
  ```
 resource.type="gce_instance" resource.labels.instance_id="<instance_id>"
 logName="projects/project-sccd/logs/files"
-jsonPayload.mes***REMOVED***ge=~(("o.a.s.c.S.Request" AND "status=0") OR "o.a.s.u.p.LogUpdateProcessorFactory" OR "o.a.s.h.RequestHandlerBase org.apache.solr.common.SolrException" OR ("o.a.s.s.HttpSolrCall" AND "status=0" ) OR "o.a.s.c.a.c.OverseerCollectionMes***REMOVED***geHandler" OR "o.a.s.c.s.i.s.ExceptionStream")
+jsonPayload.mes***REMOVED***ge=~(("o.a.s.c.S.Request" AND "status=0" AND ("path=/select" OR "path=/spell" OR "path=/query" OR "path=/get" OR "path=/terms" OR "path=/export")) OR "o.a.s.u.p.LogUpdateProcessorFactory" OR "o.a.s.h.RequestHandlerBase org.apache.solr.common.SolrException" OR ("o.a.s.s.HttpSolrCall" AND "status=0" ) OR "o.a.s.c.a.c.OverseerCollectionMes***REMOVED***geHandler" OR "o.a.s.c.s.i.s.ExceptionStream" OR "o.a.s.h.SQLHandler" OR "o.a.s.h.e.ExportWriter" OR "o.a.s.h.StreamHandler")
+
 ```
   
 
@@ -253,12 +256,9 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
      - clientIP and serverIP : fields are populated with 0.0.0.0, as this information is not embedded in the mes***REMOVED***ges pulled from Google Cloud.
      - OS User         : Not available with logs
      - Client HostName : Not available with logs
+	 - dbUser          : Not available with logs
+     - LOGIN_FAILED    : Not available with logs
 
-2. The qtp(QueuedThreadPool)logs are taken into consideration because they have more information.
-   The below fields are not available
-     - dbUser         : Not available with logs
-     - LOGIN_FAILED : Not available with logs
+2. While launching Solr in SolrCloud mode, multiple logs will be generated for single query execution as a call to shard(In SolrCloud, a logical partition of a single Collection) and replica(A Core that acts as a physical copy of a Shard in a SolrCloud Collection).
 
-3. While launching Solr in SolrCloud mode, multiple logs will be generated for single query execution as a call to shard(In SolrCloud, a logical partition of a single Collection) and replica(A Core that acts as a physical copy of a Shard in a SolrCloud Collection).
-
-4. On executing error queries in multiline from third-party tool, GCP is not capturing log as a single event.So, partial query will be displayed in the SQL Error Report.
+3. On executing error queries in multiline from third-party tool, GCP is not capturing log as a single event.So, partial query will be displayed in the SQL Error Report.
