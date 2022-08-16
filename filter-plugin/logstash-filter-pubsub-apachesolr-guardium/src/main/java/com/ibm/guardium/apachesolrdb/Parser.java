@@ -417,7 +417,7 @@ public class Parser {
 		Map<String, String> redactMap = new LinkedHashMap<>();
 		if (map.get(ApplicationConstant.PARAMS) != null) {
 			String query = CommonUtils.formatFirstChar(map.get(ApplicationConstant.PARAMS));
-			String params = CommonUtils.formatFirstAndLastChar(query);
+			String params = CommonUtils.formatFirstAndLastChar(query);//core=firstCore&other=secondCore&action=SWAP			System.out.println(params);
 			if (params.contains("}{")) {
 				params = params.replace("}{", "&");
 			}
@@ -426,9 +426,9 @@ public class Parser {
 				if (each.contains("=") && each.split("=").length == 2) {
 					redactMap.put(each.split("=")[0], each.split("=")[1]);
 				}
-				redactMap.put(each.split("=")[0], ApplicationConstant.MASK_STRING);
+				redactMap.put(each.split("=")[0], ApplicationConstant.MASK_STRING);//{core=?, other=?, action=?}
 			}
-			String redact = redactMap.toString().replace(", ", "&");
+			String redact = redactMap.toString().replace(", ", "&");//{core=?&other=?&action=?}
 			return redact;
 		}
 		return ApplicationConstant.UNKNOWN_STRING;
