@@ -80,7 +80,7 @@ b. [Monitoring UC connections in Guardium Data Protection](/docs/monitoring_GI.m
 
 With a few exceptions, using data from the universal connector is no different than using data from any other source in Guardium Data Protection or Guardium Insights. For Guardium Data Protection, there are a few unique policies that can be found in this link:
 
-a. [separate readme for  GDP UC policies, based off existing GDP doc]
+[Configuring Policies for the universal connector](/docs/uc_policies_gdp.md)
 
 
 ## Known limitations
