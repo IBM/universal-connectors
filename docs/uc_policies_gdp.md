@@ -1,3 +1,5 @@
+# Configuring policies for the universal connector
+
 Policies for the Guardium universal connector are created and managed just like all other Guardium policies.
 
 The Guardium universal connector supports these rule actions:
