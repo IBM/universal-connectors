@@ -1,3 +1,5 @@
+# Configuring policies for the univer***REMOVED***l connector
+
 Policies for the Guardium univer***REMOVED***l connector are created and managed just like all other Guardium policies.
 
 The Guardium univer***REMOVED***l connector supports these rule actions:
