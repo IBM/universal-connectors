@@ -72,9 +72,9 @@ However, the specific steps for each workflow may differ slightly per different 
 
 The Univer***REMOVED***l connector is monitored via tools that are already familiar to Guardium Data Protection and Guardium Insights users. As well as some unique tools that can be found in the following links. 
 
-a. [separate readme for GDP UC monitoring, based off existing GDP doc]
+a. [Monitoring UC connections in Guardium Data Protection](/docs/monitoring_gdp.md)
 
-b. [seperate readme for GI UC monitoring, based off existing GI doc]
+b. [Monitoring UC connections in Guardium Data Protection](/docs/monitoring_gi.md)
 
 ## Policies
 
