@@ -127,16 +127,16 @@ Users can develop their own univer***REMOVED***l connector plugins, if needed, a
 
 [Here](docs/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights. 
 
+### To make your connector plug-in available to the community, submit your connector to this repository for IBM Certification. We also accept updates or bug fixes to existing plug-ins, to keep them current:
 
+### - [Guidelines for contributing](CONTRIBUTING.md)
+### - Benefits include:
 
-## Contributing
-To make your connector plug-in available to the community, submit your connector to this repository for IBM Certification. We also accept updates or bug fixes to existing plug-ins, to keep them current:
-
-- [Guidelines for contributing](CONTRIBUTING.md)
-- Benefits include:
-  - Free, comprehensive testing and certification.
-  - Expanding the reach of product APIs.
-  - Driving u***REMOVED***ge of a product or solution.
+  **- Free, comprehensive testing and certification.**
+  
+  **- Expanding the reach of product APIs.** 
+  
+  **- Driving u***REMOVED***ge of a product or solution.**
 
 
 ## Contact Us
