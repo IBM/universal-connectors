@@ -74,7 +74,7 @@ The Univer***REMOVED***l connector is monitored via tools that are already famil
 
 a. [Monitoring UC connections in Guardium Data Protection](/docs/monitoring_GDP.md)
 
-b. [Monitoring UC connections in Guardium Insights](/docs/monitoring_GI.md)
+b. [Monitoring UC connections in Guardium Insights](/docs/monitoring_GI.MD)
 
 ## Policies
 
