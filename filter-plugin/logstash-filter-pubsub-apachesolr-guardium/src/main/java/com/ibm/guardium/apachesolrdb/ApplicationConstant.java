@@ -41,7 +41,6 @@ public class ApplicationConstant {
 	public static final String LABELS = "labels";
 	public static final String ZONE = "zone";
 	public static final Integer DEFAULT_PORT = -1;
-	public static final Boolean IP = Boolean.FALSE;
 	public static final String PARAMS = "params";
 	public static final String PATH = "path";
 	public static final String CORE = "core";
