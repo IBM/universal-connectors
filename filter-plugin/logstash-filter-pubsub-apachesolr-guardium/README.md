@@ -218,7 +218,7 @@ The purpose of this inclusion filter is to include logs that are the result of R
 
  ```
 resource.type="gce_instance" resource.labels.instance_id="<instance_id>"
-logName="projects/project-sccd/logs/files"
+logName="projects/<project-id>/logs/files"
 jsonPayload.message=~(("o.a.s.c.S.Request" AND "status=0" AND ("path=/select" OR "path=/spell" OR "path=/query" OR "path=/get" OR "path=/terms" OR "path=/export")) OR "o.a.s.u.p.LogUpdateProcessorFactory" OR "o.a.s.h.RequestHandlerBase org.apache.solr.common.SolrException" OR ("o.a.s.s.HttpSolrCall" AND "status=0" ) OR "o.a.s.c.a.c.OverseerCollectionMessageHandler" OR "o.a.s.c.s.i.s.ExceptionStream" OR "o.a.s.h.SQLHandler" OR "o.a.s.h.e.ExportWriter" OR "o.a.s.h.StreamHandler")
 
 ```
