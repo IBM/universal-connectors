@@ -202,7 +202,7 @@ public class Parser {
 		sessionLocator.setClientIp(ApplicationConstant.DEFAULT_IP);
 		sessionLocator.setClientIpv6(ApplicationConstant.UNKNOWN_STRING);
 		sessionLocator.setClientPort(ApplicationConstant.DEFAULT_PORT);
-		sessionLocator.setIpv6(ApplicationConstant.IP);
+		sessionLocator.setIpv6(Boolean.FALSE);
 		sessionLocator.setServerIp(ApplicationConstant.DEFAULT_IP);
 		sessionLocator.setServerIpv6(ApplicationConstant.UNKNOWN_STRING);
 		sessionLocator.setServerPort(ApplicationConstant.DEFAULT_PORT);
