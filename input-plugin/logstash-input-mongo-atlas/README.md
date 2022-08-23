@@ -73,11 +73,11 @@ In order to support a few features one zip has to be added with the name "guardi
 ## Procedure
   1. On the collector, go to Setup > Tools and Views > Configure Univer***REMOVED***l Connector.
   2. Enable the Guardium Univer***REMOVED***l Connector if is in di***REMOVED***bled state before uploading the UC plug-in.
-  3. Click Upload File and select the offline https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connector/blob/GRD-62759/logstash-input-mongo-atlas/InputMongoAtlasPackage/guardium_logstash-offline-plugins-mongo-atlas.zip plug-in. After it is uploaded, click OK.
+  3. Click Upload File and select the offline https://github.com/IBM/univer***REMOVED***l-connectors/raw/main/input-plugin/logstash-input-mongo-atlas/InputMongoAtlasPackage/guardium_logstash-offline-plugins-mongo-atlas.zip plug-in. After it is uploaded, click OK.
   4. Click the Plus sign to open the Connector Configuration dialog box.
   5. Type a name in the Connector name field.
-  6. Update the input section to add the details from the https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connector/blob/GRD-62759/logstash-input-mongo-atlas/input-mongo-atlas.conf file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-  7. Update the filter section to add the details from the https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connector/blob/GRD-62759/logstash-input-mongo-atlas/input-mongo-atlas.conf file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+  6. Update the input section to add the details from the https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/input-plugin/logstash-input-mongo-atlas/input-mongo-atlas.conf file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+  7. Update the filter section to add the details from the https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/input-plugin/logstash-input-mongo-atlas/input-mongo-atlas.conf file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
   8. 'type' field should match in input and filter configuration section.This field should be unique for every individual connector added.
   9. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, it appears in the Configure Univer***REMOVED***l Connector page.
 
