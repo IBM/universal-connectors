@@ -79,6 +79,7 @@ public interface Constants {
 	public static final String IP = "0.0.0.0";
 
 	public static final String OFFSET = "totalOffset";
+	public static final String LOGIN_FAILED="LOGIN_FAILED";
 
 
 }

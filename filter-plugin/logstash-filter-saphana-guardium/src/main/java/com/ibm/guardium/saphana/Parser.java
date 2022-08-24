@@ -190,7 +190,8 @@ public class Parser {
 		} else {
 			exceptionRecord.setSqlString(Constants.UNKNOWN_STRING);
 			exceptionRecord.setDescription(Constants.AUTH_FAIL);
-			exceptionRecord.setExceptionTypeId(data.get(Constants.AUDIT_ACTION).getAsString());
+			exceptionRecord.setExceptionTypeId(Constants.LOGIN_FAILED);
+
 		}
 
 		return exceptionRecord;
