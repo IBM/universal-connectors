@@ -56,6 +56,7 @@ Please refer to the [input plugin's repository](../../input-plugin/logstash-inpu
 ## Installation
 To install this plug-in, you need to download the [offline pack](PubSubPostgreSQLPackage/logstash-offline-plugins-filter-pubsub-postgresql-guardium.zip) and upload the file to the gmachine
 
+After you install the plug-in's offline package and upload and ***REMOVED***ve the configuration to your Guardium machine, restart the Univer***REMOVED***l Connector using the Di***REMOVED***ble/Enable button or CLI.
 
 ### Sample Configuration
 
