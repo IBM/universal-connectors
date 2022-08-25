@@ -131,6 +131,8 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 ## Installation
 To install this plug-in, you need to download the [offline pack](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-offline-plugins-filter-pubsub-mysql-guardium.zip).
 
+After you install the plug-in's offline package and upload and save the configuration to your Guardium machine, restart the Universal Connector using the Disable/Enable button or CLI.
+
 ### Note
 To install on your local machine that is running Logstash, execute:
 `bin/logstash-plugin install file:///path/to/logstash-offline-plugin-input-google_pubsub.zip
