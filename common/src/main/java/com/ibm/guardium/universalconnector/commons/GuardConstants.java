@@ -4,6 +4,7 @@
 //
 package com.ibm.guardium.universalconnector.commons;
 
+
 public class GuardConstants {
     public static final String GUARDIUM_RECORD_FIELD_NAME="GuardRecord";
 }

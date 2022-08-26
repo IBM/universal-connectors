@@ -50,7 +50,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.7'
     compile 'com.google.code.gson:gson:2.8.6'
     compile fileTree(dir: LOGSTASH_CORE_PATH, include: "**/logstash-core-*.*.*.jar")
-    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-?.?.?.jar")
+    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-?.?.?.jar") 
     //implementation 'com.google.code.gson:gson:2.8.6'
     
     testCompile 'junit:junit:4.13.1'
