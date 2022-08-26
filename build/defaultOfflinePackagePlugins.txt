@@ -1,6 +1,7 @@
-univer***REMOVED***l-connectors-main/filter-plugin/logstash-output-guardium/logstash-output-java_output_to_guardium-1.3.9.gem
-logstash_docker/uc/config/logstash-input-cloudwatch_logs-1.0.3.gem
-univer***REMOVED***l-connectors-main/filter-plugin/logstash-filter-mysql-guardium/logstash-filter-mysql_filter_guardium-1.0.0.gem
-univer***REMOVED***l-connectors-main/filter-plugin/logstash-filter-mongodb-guardium/logstash-filter-mongodb_guardium_filter-0.6.6.gem
-univer***REMOVED***l-connectors-main/filter-plugin/logstash-filter-s3-guardium/logstash-filter-logstash_filter_s3_guardium-0.5.4.gem
-univer***REMOVED***l-connectors-main/input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input-1.0.1.gem
+filter-plugin/logstash-output-guardium/logstash-output-java_output_to_guardium-1.3.9.gem
+input-plugin/logstash-input-cloudwatch_logs-1.0.3.gem
+filter-plugin/logstash-filter-mysql-guardium/logstash-filter-mysql_filter_guardium-1.0.0.gem
+filter-plugin/logstash-filter-mongodb-guardium/logstash-filter-mongodb_guardium_filter-0.6.6.gem
+filter-plugin/logstash-filter-s3-guardium/logstash-filter-logstash_filter_s3_guardium-0.5.4.gem
+filter-plugin/logstash-filter-hdfs-guardium/logstash-filter-hdfs_guardium_filter-0.0.1.gem
+input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input-1.0.1.gem
