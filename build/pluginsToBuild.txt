@@ -1,9 +1,6 @@
-universal-connectors-main/filter-plugin/logstash-filter-mongodb-guardium
-universal-connectors-main/filter-plugin/logstash-filter-mysql-guardium
-universal-connectors-main/filter-plugin/logstash-filter-s3-guardium
-universal-connectors-main/filter-plugin/logstash-filter-hdfs-guardium
-#universal-connectors-main/filter-plugin/logstash-filter-generic-guardium
-universal-connectors-main/filter-plugin/logstash-output-guardium
-universal-connectors-main/input-plugin/logstash-input-mongo-atlas
-#logstash-filter-mysql-percona-guardium
-#logstash-input-cloudwatch-logs-master
+filter-plugin/logstash-filter-mongodb-guardium
+filter-plugin/logstash-filter-mysql-guardium
+filter-plugin/logstash-filter-s3-guardium
+filter-plugin/logstash-filter-hdfs-guardium
+filter-plugin/logstash-output-guardium
+input-plugin/logstash-input-mongo-atlas
