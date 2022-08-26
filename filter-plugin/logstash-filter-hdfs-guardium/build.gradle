@@ -72,7 +72,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.7'
     compile 'com.google.code.gson:gson:2.8.9'
 	compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
-	compile fileTree(dir: COMMONS_PATH, include: "common-*.*.*.jar")
+	compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
     //implementation 'com.google.code.gson:gson:2.8.9'
     
     testCompile 'junit:junit:4.12'
