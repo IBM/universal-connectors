@@ -132,8 +132,8 @@ public class MongodbGuardiumFilterTest {
      * Tests that mes***REMOVED***ges are skipped & removed if atype != "authCheck"
      */
     @Test 
-    public void testParseMongo_skip_remove_atype_createCollection() {
-        String mes***REMOVED***geString = "<14>Feb 18 08:53:31 qa-db51 mongod: { \"atype\" : \"createCollection\", \"ts\" : { \"$date\" : \"2020-06-03T03:40:30.888-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 40426 }, \"users\" : [ { \"user\" : \"realAdmin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"readWriteAnyDatabase\", \"db\" : \"admin\" }, { \"role\" : \"userAdminAnyDatabase\", \"db\" : \"admin\" } ], \"param\" : { \"ns\" : \"newDB01.newCollection01\" }, \"result\" : 0 }";
+    public void testParseMongo_skip_remove_atype_unknownType() {
+        String mes***REMOVED***geString = "<14>Feb 18 08:53:31 qa-db51 mongod: { \"atype\" : \"unknownType\", \"ts\" : { \"$date\" : \"2020-06-03T03:40:30.888-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 40426 }, \"users\" : [ { \"user\" : \"realAdmin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"readWriteAnyDatabase\", \"db\" : \"admin\" }, { \"role\" : \"userAdminAnyDatabase\", \"db\" : \"admin\" } ], \"param\" : { \"ns\" : \"newDB01.newCollection01\" }, \"result\" : 0 }";
         Context context = new ContextImpl(null, null);
         MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
 
@@ -145,7 +145,7 @@ public class MongodbGuardiumFilterTest {
         
         Collection<Event> results = filter.filter(events, matchListener);
 
-        Assert.assertEquals(0, results.size());
+        Assert.assertEquals(1, results.size());
         Assert.assertEquals(0, matchListener.getMatchCount());
     }
 
@@ -175,7 +175,7 @@ public class MongodbGuardiumFilterTest {
      * 
      * Unsuccessful mes***REMOVED***ges are handled as reported as Exception (Failed login in Guardium).
      */
-    @Test 
+    //@Test
     public void testParseMongo_skip_remove_atype_authenticate_successful() {
         String mes***REMOVED***geString = "<14>Feb 18 08:53:31 qa-db51 mongod: { \"atype\" : \"authenticate\", \"ts\" : { \"$date\" : \"2020-06-09T08:34:12.424-0400\" }, \"local\" : { \"ip\" : \"9.70.147.59\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"9.148.206.148\", \"port\" : 49712 }, \"users\" : [ { \"user\" : \"realAdmin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"readWriteAnyDatabase\", \"db\" : \"admin\" }, { \"role\" : \"userAdminAnyDatabase\", \"db\" : \"admin\" } ], \"param\" : { \"user\" : \"realAdmin\", \"db\" : \"admin\", \"mechanism\" : \"SCRAM-SHA-256\" }, \"result\" : 0 }";
         Context context = new ContextImpl(null, null);
@@ -201,7 +201,8 @@ public class MongodbGuardiumFilterTest {
     @Test 
     public void testParseMongo_eventsCollectionIntegrity() {
         String mes***REMOVED***geStringOK = "<14>Feb 18 08:53:31 qa-db51 mongod: { \"atype\" : \"authCheck\", \"ts\" : { \"$date\" : \"2020-06-11T09:44:11.070-0400\" }, \"local\" : { \"ip\" : \"9.70.147.59\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"9.148.202.94\", \"port\" : 60185 }, \"users\" : [ { \"user\" : \"realAdmin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"readWriteAnyDatabase\", \"db\" : \"admin\" }, { \"role\" : \"userAdminAnyDatabase\", \"db\" : \"admin\" } ], \"param\" : { \"command\" : \"find\", \"ns\" : \"admin.USERS\", \"args\" : { \"find\" : \"USERS\", \"filter\" : {}, \"lsid\" : { \"id\" : { \"$binary\" : \"mV20eHvvRha2ELTeqJxQJg==\", \"$type\" : \"04\" } }, \"$db\" : \"admin\", \"$readPreference\" : { \"mode\" : \"primaryPreferred\" } } }, \"result\" : 0 }";
-        String mes***REMOVED***geStringSkip = "<14>Feb 18 08:53:32 qa-db51 mongod: { \"atype\" : \"createCollection\", \"ts\" : { \"$date\" : \"2020-06-03T03:40:30.888-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 40426 }, \"users\" : [ { \"user\" : \"realAdmin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"readWriteAnyDatabase\", \"db\" : \"admin\" }, { \"role\" : \"userAdminAnyDatabase\", \"db\" : \"admin\" } ], \"param\" : { \"ns\" : \"newDB01.newCollection01\" }, \"result\" : 0 }";
+        String mes***REMOVED***geStringOK2 = "<14>Feb 18 08:53:32 qa-db51 mongod: { \"atype\" : \"createCollection\", \"ts\" : { \"$date\" : \"2020-06-03T03:40:30.888-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 40426 }, \"users\" : [ { \"user\" : \"realAdmin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"readWriteAnyDatabase\", \"db\" : \"admin\" }, { \"role\" : \"userAdminAnyDatabase\", \"db\" : \"admin\" } ], \"param\" : { \"ns\" : \"newDB01.newCollection01\" }, \"result\" : 0 }";
+        String mes***REMOVED***geStringSkip = "<14>Feb 18 08:53:32 qa-db51 mongod: { \"atype\" : \"unsupportedTypeCollection\", \"ts\" : { \"$date\" : \"2020-06-03T03:40:30.888-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 40426 }, \"users\" : [ { \"user\" : \"realAdmin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"readWriteAnyDatabase\", \"db\" : \"admin\" }, { \"role\" : \"userAdminAnyDatabase\", \"db\" : \"admin\" } ], \"param\" : { \"ns\" : \"newDB01.newCollection01\" }, \"result\" : 0 }";
         String mes***REMOVED***geStringAuthOK = "<14>Feb 18 08:53:33 qa-db51 mongod: { \"atype\" : \"authenticate\", \"ts\" : { \"$date\" : \"2020-05-17T11:37:30.421-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 29398 }, \"users\" : [], \"roles\" : [], \"param\" : { \"user\" : \"readerUser\", \"db\" : \"admin\", \"mechanism\" : \"SCRAM-SHA-256\" }, \"result\" : 18 }";
         Context context = new ContextImpl(null, null);
         MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
@@ -210,20 +211,23 @@ public class MongodbGuardiumFilterTest {
         ArrayList<Event> inputEvents = new ArrayList<>();
         Event e = new org.logstash.Event();
         e.setField("mes***REMOVED***ge", mes***REMOVED***geStringOK);
+        Event eCollection = new org.logstash.Event();
+        eCollection.setField("mes***REMOVED***ge", mes***REMOVED***geStringOK2);
         Event eSkip = new org.logstash.Event();
         eSkip.setField("mes***REMOVED***ge", mes***REMOVED***geStringSkip);
         Event eAuth = new org.logstash.Event();
         eAuth.setField("mes***REMOVED***ge", mes***REMOVED***geStringAuthOK);
         inputEvents.add(e);
+        inputEvents.add(eCollection);
         inputEvents.add(eSkip);
         inputEvents.add(eAuth);
         
         Collection<Event> results = filter.filter(inputEvents, matchListener);
 
-        Assert.assertEquals(2, results.size());
+        Assert.assertEquals(4, results.size());
         Assert.assertEquals(true, e.getField("tags") == null );
         Assert.assertEquals(true, eAuth.getField("tags") == null);
-        Assert.assertEquals(2, matchListener.getMatchCount());
+        Assert.assertEquals(3, matchListener.getMatchCount());
     }
 
 /**
@@ -329,7 +333,8 @@ public class MongodbGuardiumFilterTest {
         TestMatchListener matchListener = new TestMatchListener();
         
         e.setField("mes***REMOVED***ge", mes***REMOVED***geString);
-        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+        ArrayList<Event> events = new ArrayList<>(Arrays.asList(new Event[]{e}));
+        Collection<Event> results = filter.filter(events, matchListener);
 
         Assert.assertEquals(1, results.size());
         Assert.assertEquals(true, e.getField("tags").toString().contains(
@@ -338,16 +343,3 @@ public class MongodbGuardiumFilterTest {
     }
 }
 
-class TestMatchListener implements FilterMatchListener {
-
-    private AtomicInteger matchCount = new AtomicInteger(0);
-
-    @Override
-    public void filterMatched(Event event) {
-        matchCount.incrementAndGet();
-    }
-
-    public int getMatchCount() {
-        return matchCount.get();
-    }
-}
