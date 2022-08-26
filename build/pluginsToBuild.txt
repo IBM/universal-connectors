@@ -1,9 +1,6 @@
-univer***REMOVED***l-connectors-main/filter-plugin/logstash-filter-mongodb-guardium
-univer***REMOVED***l-connectors-main/filter-plugin/logstash-filter-mysql-guardium
-univer***REMOVED***l-connectors-main/filter-plugin/logstash-filter-s3-guardium
-univer***REMOVED***l-connectors-main/filter-plugin/logstash-filter-hdfs-guardium
-#univer***REMOVED***l-connectors-main/filter-plugin/logstash-filter-generic-guardium
-univer***REMOVED***l-connectors-main/filter-plugin/logstash-output-guardium
-univer***REMOVED***l-connectors-main/input-plugin/logstash-input-mongo-atlas
-#logstash-filter-mysql-percona-guardium
-#logstash-input-cloudwatch-logs-master
+filter-plugin/logstash-filter-mongodb-guardium
+filter-plugin/logstash-filter-mysql-guardium
+filter-plugin/logstash-filter-s3-guardium
+filter-plugin/logstash-filter-hdfs-guardium
+filter-plugin/logstash-output-guardium
+input-plugin/logstash-input-mongo-atlas
