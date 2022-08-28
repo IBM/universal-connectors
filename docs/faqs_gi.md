@@ -1,11 +1,11 @@
 # FAQs for Guardium Insights
 
 
-1.	**How many connections can one Univer***REMOVED***l Connector have?**
+1.	**How many univer***REMOVED***l connections can be configured at once?**
 
 It depends on the Open Shift cluster resources. No limit defined.
 
-2.	**Create connection started, connection is in starting up status a long time.**
+2.	**The connection is taking more than 15 minutes to start up.**
 
 It may take time, up to 15 minutes. Wait and refresh the connection status.
 
@@ -16,7 +16,7 @@ https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/available_
 
 4.	**Connection creation fails.**
 
-•	Connect with CLI tools to your OpenShift cluster.
+•	Connect via CLI to your OpenShift cluster.
 
 Example:
 
@@ -25,8 +25,8 @@ Example:
     AHippopotamusPlaysHopscotchWithAnElephant -n
     staging
 
-•	Find the UC-manager pod and check pod status.
-The status should be 1/1 running as in example:
+•	Find the univer***REMOVED***l connector manager pod and check the pod's status.
+The status should be 1/1 running as in the following example.
 
 Example:
 
@@ -46,9 +46,9 @@ Example:
 
     794c5bb44c-cdp9g
 
-5.	**Connection is in red or yellow and has an unhealthy Connectivity status on the Connections page.**
+5.	**The connection is in red or yellow and has an unhealthy Connectivity status on the Connections page.**
 
-•	Connect with CLI tools to your openshift cluster.
+•	Connect via CLI to your openshift cluster.
 
 Example:
 
@@ -58,7 +58,7 @@ Example:
      AHippopotamusPlaysHopscotchWithAnElephant -n
      staging
 
-•	Find UC pods and check that the pods' statuses are running 1/1 as in example. If status of uc pods is not running or not 1/1, perform steps from paragraph 4 above: check uc-manager logs.
+•	Find UC pods and check that the pods' statuses are running 1/1 as in the following example. If the status of the UC pods is not running or not 1/1, perform the steps from question 4: check uc-manager logs.
 
 Example:
 
@@ -73,7 +73,7 @@ Example:
     connector-0              1/1     Running     
     0             13d
 
-•	Enter into UC container and check ```UC  logstash_stdout_stderr.log``` for errors and exceptions:
+•	Enter the UC container pod and check ```UC  logstash_stdout_stderr.log``` for errors and exceptions:
 
 Example:
 
@@ -82,7 +82,7 @@ Example:
     ls  -ltr
     cat logstash_stdout_stderr.log
 
-•	Enable GI reconciler, then delete the old connection and create a new connection. To enable reconciler: connect with CLI to your cluster and run as in example.
+•	Enable the Guardium Insights operator, then delete the old connection, and create a new connection. To enable the GI operator: connect via CLI to your cluster and run what appears in the following example.
 
 Example:
 
@@ -93,7 +93,7 @@ Example:
 
 6.	**Does MustGather support the Guardium univer***REMOVED***l connector?**
 
-*Yes, every MustGather option includes logs for the Guardium univer***REMOVED***l connector. (TBD)*
+Yes, every MustGather option includes logs for the Guardium univer***REMOVED***l connector. 
 
 7.	**Data is missing from reports.**
 
@@ -103,7 +103,7 @@ a.	Go to the GI ```Connections``` page and see whether the connection is in gree
 
 * If the status is red, perform the item from question #3 above (Copy the plugin package from the official location and retry. )
 
-* *Status in UI is green.*
+* If the status turns to green, continue trying the points below. If it remains red, continue trying to get a green, healthy connectivity status. 
 
 b.	Check if traffic is running on the datasource.
 
@@ -115,15 +115,15 @@ e.	Check that the connection settings are set correctly on the datasource side.
 
 Example:
 
-For mongo over Filebeat configuration, check on the datasource that:
+For a Mongo over Filebeat configuration, check on the datasource that:
 
 •	The Mongo database auditing is configured in a mongod.conf file, mongo service is running , mongo audit log file is created.
 
-•	In the filebeat.yml , in filebeat.inputs: check the path to audit logs. It should be ***REMOVED***me path as the one configured in the MongoDB configuration file in the auditing section.
+•	In the filebeat.yml file , in filebeat.inputs: check the path to the audit logs. It should be ***REMOVED***me path as the one configured in the MongoDB configuration file in the auditing section.
 
-•	In the filebeat.yml,  check that the tags are identical to the ones in the Connection configuration details in on the GI connection page (on the right side of the page).
+•	In the filebeat.yml file,  check that the tags are identical to the ones in the Connection configuration details in on the GI connection page (in the sidebar on the right side of the page).
 
-To check datasource tag on GI :Go to the connection page, select your connection, click on connection name, check the datasource tag in Univer***REMOVED***l Connector Configuration (on the right side of the page)
+To check datasource tag on GI :Go to the connection page, select your connection, click on connection name, check the datasource tag in Univer***REMOVED***l Connector Configuration (in the sidebar on the right side of the page)
 
 •	Check that the server certificate is downloaded from the connection page and uploaded to the datasource. Check that the path to the certificate is set in the filebeat.yml and uncommented.
 
@@ -141,9 +141,7 @@ Example:
     0a94651246c65639d6ebe7da606c2479-0000.us-
     east.containers.appdomain.cloud:443"]
 
-     #hosts: ["ukwh5r5mhhmipecfe44s6f1-univer***REMOVED***l-
-     connector.apps.lions-master.cp.fyre.ibm.com:443"]
-
+    
 •	Restart filebeat service after editing the filebeat.yml file and checking status after restart
 
 Example:
@@ -160,27 +158,28 @@ f.	Check that communication between the database server and the managed unit is 
 
 •	Verify that a Policy with a Log full details rule is created and installed, and that no other policy blocks it.
 
-•	Check the steps from paragraph 6 above.
+•	Check the steps from question 6 above.
 
 •	Set the debug level in the uc_logstahs log and check “Guardium Events” in the log. If you found events in uc_logstahs.log, the problem may be in the minisnif.
 
 To setup UC debug logs level:
 connect with CLI to your cluster
 
-Enter the uc pod
+Enter the univer***REMOVED***l connector pod
 
 Run the command: ```${UC_SCRIPTS}/set_uc_log_level.sh "debug"```
 
-•	*Create a MustGather and look for the univer***REMOVED***l connector log (TBD)*
+•	Create a MustGather and look for the univer***REMOVED***l connector log 
 
-*Plug-in questions*
+**Plug-in questions**
 
-*Univer***REMOVED***l connector does not start with your plug-in or configuration*
+**Univer***REMOVED***l connector does not start with your plug-in or configuration**
 
-*See Installing and testing the filter or input plug-in on a staging Guardium system for details on how to collect diagnostic data by running a must gather command.*
+See Installing and testing the filter or input plug-in on a staging Guardium system for details on how to collect diagnostic data by running a must gather command.
 
-*Is Java required to create a plug-in?*
+**Is Java required to create a plug-in?**
 
-*No, you can develop by using Ruby, especially when Guardium knows how to parse your data source commands. However, if you need to parse the commands for a new data source type, Java is the best choice.
-How much time does it take to develop a plug-in?
-Give yourself 4 - 5 weeks, maybe a bit more to perfect it.*
+No, you can develop by using Ruby, especially when Guardium knows how to parse your data source commands. However, if you need to parse the commands for a new data source type, Java is the best choice.
+
+**How much time does it take to develop a plug-in?**
+Give yourself 4 - 5 weeks, maybe a bit more to perfect it.
