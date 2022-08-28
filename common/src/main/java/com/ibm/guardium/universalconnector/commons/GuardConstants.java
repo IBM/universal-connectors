@@ -4,6 +4,7 @@
 //
 package com.ibm.guardium.univer***REMOVED***lconnector.commons;
 
+
 public class GuardConstants {
     public static final String GUARDIUM_RECORD_FIELD_NAME="GuardRecord";
 }
