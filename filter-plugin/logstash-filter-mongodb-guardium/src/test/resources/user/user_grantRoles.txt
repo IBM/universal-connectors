@@ -1,0 +1,41 @@
+{
+	"atype": "grantRolesToUser",
+	"ts": {
+		"$date": "2022-07-05T12:17:20.632-05:00"
+	},
+	"local": {
+		"ip": "db-server-ip-removed",
+		"port": 27017
+	},
+	"remote": {
+		"ip": "db-server-ip-removed",
+		"port": 34753
+	},
+	"users": [
+		{
+			"user": "admin",
+			"db": "admin"
+		}
+	],
+	"roles": [
+		{
+			"role": "root",
+			"db": "admin"
+		}
+	],
+	"param": {
+		"user": "usrgbdi1",
+		"db": "dbgbdi1",
+		"roles": [
+			{
+				"role": "readWrite",
+				"db": "dbgbdi1"
+			},
+			{
+				"role": "dbgbdirol1",
+				"db": "dbgbdi1"
+			}
+		]
+	},
+	"result": 0
+}

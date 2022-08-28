@@ -1,0 +1,43 @@
+{
+	"atype": "updateRole",
+	"ts": {
+		"$date": "2022-07-05T12:17:20.635-05:00"
+	},
+	"local": {
+		"ip": "db-server-ip-removed",
+		"port": 27017
+	},
+	"remote": {
+		"ip": "db-server-ip-removed",
+		"port": 34753
+	},
+	"users": [
+		{
+			"user": "admin",
+			"db": "admin"
+		}
+	],
+	"roles": [
+		{
+			"role": "root",
+			"db": "admin"
+		}
+	],
+	"param": {
+		"role": "dbgbdirol2",
+		"db": "dbgbdi1",
+		"privileges": [
+			{
+				"resource": {
+					"db": "dbgbdi1",
+					"collection": " "
+				},
+				"actions": [
+					"createCollection",
+					"createIndex"
+				]
+			}
+		]
+	},
+	"result": 0
+}
