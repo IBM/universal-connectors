@@ -1,0 +1,31 @@
+{
+	"atype": "dropRole",
+	"ts": {
+		"$date": "2022-07-05T12:17:20.643-05:00"
+	},
+	"local": {
+		"ip": "db-server-ip-removed",
+		"port": 27017
+	},
+	"remote": {
+		"ip": "db-server-ip-removed",
+		"port": 34753
+	},
+	"users": [
+		{
+			"user": "admin",
+			"db": "admin"
+		}
+	],
+	"roles": [
+		{
+			"role": "root",
+			"db": "admin"
+		}
+	],
+	"param": {
+		"role": "dbgbdirol3",
+		"db": "dbgbdi1"
+	},
+	"result": 0
+}
