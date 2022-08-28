@@ -47,9 +47,20 @@ The Universal Connectors consist of a series of three plug-ins within a Logstash
 
 3. Output plug-in: Sends normalized events to locations to be consumed by security applications.
 
+**ALTERNATIVE OPTION FOR TEXT:**
+
+The Universal Connector is a Logstash pipeline consisting of a series of three plug-ins:
+
+1. Input plug-in. This plug-in ingests events. Depending on the type of plug-in, there are settings to either pull events from APIs or receive a push of events.
+
+2. Filter plug-in. This plug-in filters events. The filter plug-in parses, filters, and modifies event logs into in a normalized format. 
+
+3. Output plug-in. This plug-in takes the event logs in a normalized format and sends it to IBM Guardium (either Guardium Data Protection or Guardium Insights). 
+
 ![Universal Connector - Logstash pipeline](/docs/images/uc_overview.png)
 
 Universal Connector plug-ins are packaged and deployed in a Docker container environment.
+
 
 [Technical demo](https://youtu.be/LAYhVoYMb28)
 
