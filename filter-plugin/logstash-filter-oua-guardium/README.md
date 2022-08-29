@@ -76,3 +76,7 @@ Note: The following arguments are used in configuration for OUA plugin
 - -p period : period of time between passes specified in seconds (default 300)
 - -s path : path to directory where state should be ***REMOVED***ved
 - -j : output audits in JSON format
+
+## Limitation
+
+Normally, the "Statement Type" attribute for the "FULL SQL" entity in reports shows us whether a full SQL statement is a prepared statement. However, because OUA doesn't give us information about whether a statement is a prepared statement or not, the "Statement type" attribute is not applicable for the OUA UC plug-in.
