@@ -65,10 +65,10 @@ dependencies {
 
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
     compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
-    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar"
+    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.jruby:jruby-complete:9.2.7.0'
+            testCompile 'junit:junit:4.13.1'
+            testCompile 'org.jruby:jruby-complete:9.3.2.0'
 }
 
 clean {
