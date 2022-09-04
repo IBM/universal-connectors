@@ -5,6 +5,3 @@ filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage
 filter-plugin/logstash-filter-s3-guardium/S3OverCloudwatchLogsPackage
 filter-plugin/logstash-filter-s3-guardium/S3OverCloudwatchLogsPackage
 filter-plugin/logstash-filter-s3-guardium/S3OverSQSPackage
-input-plugin/logstash-input-mongo-atlas/InputMongoAtlasPackage
-filter-plugin/logstash-filter-mongodb-guardium/MongodbOverMongoAtlasPackage
-filter-plugin/logstash-filter-mysql-guardium/MysqlOverFilebeatPackage
