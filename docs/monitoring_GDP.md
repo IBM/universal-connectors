@@ -17,7 +17,7 @@ You can typically see the connectors and their status in the following Guardium 
 
 * S-TAP Events
 * Central manager pages:
-  * In the Deployment Health Topology, click ```Expand S-TAPs```. Connectors have the icon: , color-coded green, yellow, or red. For more information, see [Deployment health topology and table views](https://www.ibm.com/docs/en/guardium/11.4?topic=views-deployment-health-topology-table).
+  * In the Deployment Health Topology, click ```Expand S-TAPs```. Connectors have the icon: ![icon](/universal-connectors/docs/images/icon-guc.jpg) , color-coded green, yellow, or red. For more information, see [Deployment health topology and table views](https://www.ibm.com/docs/en/guardium/11.4?topic=views-deployment-health-topology-table).
  * In the Deployment Health Table, in the S-TAPs tab, you can identify connectors by
    * Under Hostname or IP address, the address ends in ```:UCn```.
    * Under Version, the name is ```Universal connector Vn.n.n.```.
