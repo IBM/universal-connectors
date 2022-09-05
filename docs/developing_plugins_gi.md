@@ -20,8 +20,6 @@
 - [Installing and testing the filter or input plug-in on a staging Guardium system](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system)
 - [Publishing your plug-in](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-publishing-your-plug-in); see also [Contributing](#Contributing) section, below
 
-(or: see [this] readme on developing new plug-ins for Guardium Data Protection.) 
-
 Then, to make package a plug-in that is suitable for Guardium Insights, you also need to include additional files, in this structure: 
 
     datasourceManifest.json
