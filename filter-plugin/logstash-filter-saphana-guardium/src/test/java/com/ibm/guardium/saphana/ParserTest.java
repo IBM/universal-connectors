@@ -137,7 +137,7 @@ public class ParserTest {
 		data.addProperty(Constants.SCHEMA_NAME, "SYSTEM");
 
 		String date = Parser.parseTimestamp(data);
-		Assert.assertEquals("2020-12-28 07:35:21", date);
+		Assert.assertEquals("2021-12-07 05:53:02", date);
 	}
 
 	// Timestamp parsing
