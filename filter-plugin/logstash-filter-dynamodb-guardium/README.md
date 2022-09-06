@@ -13,14 +13,9 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
     5. DeleteTable event
     6. Error event
 
-## Limitations
-
-	The dynamodb plug-in does not support IPV6.
-
-
 ## Configuring Amazon DynamoDB and sending logs to CloudWatch
 
-# To authorize outgoing traffic from Amazone Web Services (AWS) to Guardium, run these API:
+# To authorize outgoing traffic from Amazon Web Services (AWS) to Guardium, run these API:
 
 	grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
 	grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
@@ -32,12 +27,14 @@ In the AWS web interface, configure the service for Dynamodb.
 
 	1. Go to https://console.aws.amazon.com/:
 
-		a) Click Services in the top left menu.
-		b) In the Database section, click DynamoDB.
-		c) Select the required region in the top right corner.
-		d) Click Create Table.
-		e) Provide the Table name and Primary key.
-		f) Click Create.
+		a) Click <Services> in the top left menu.
+		b) Underneath <All services>, click on <Database>
+		c) On the right panel, click <DynamoDB>
+		d) At the top right, click on the drop down menu and select your region (??)
+		e) Click the orange <Create Table> button.
+		f) Enter a table name
+		g) Enter a partition key
+		h) Scroll down and click the orange <Create table> button
 
 ## Enable logging through CloudTrail
 
@@ -46,35 +43,42 @@ There are different ways for auditing and logging. We will use CloudTrail for th
 ## Procedure
 
     1. Click Services in the top left menu.
-    2. In the Storage section, select S3.
-    3. Create an S3 bucket.
-    4. Select the appropriate region.
-    5. In Management & Governance, select CloudTrail.
-    6. Click Create Trail.
-    7. Enter the trail name.
-    8. For Storage location, choose Create new S3 bucket to create a bucket.
-    9. Deselect the check box to disable Log file SSE-KMS encryption.
-    10. Enable CloudWatch logs.
-    11. Create a new Log group and IAM role.
-    12. Click Next.
-    13. For Choose log event, select Data events and Management events.
-    14. In the Management events section, ensure that Read and Write are selected.
-    15. Deselect the Read and Write option for All current and future S3 buckets.
-    16. Browse the created S3 bucket - and then enable Read and Write options.
-    17. Preview the details provided and then click Create Trail.
-
+	2. Underneath <All services>, click on <Management & Governance>
+	3. On the right panel, click <Cloud Trail>
+	4. Click <Create trail> button
+	5. Provide a trail name under <Trail name>
+	6. Under <Storage location>, verify "Create new S3 bucket" is selected
+	7. Under <Log file SSE-KMS encryption>, uncheck the Enabled box
+	8. Under <CloudWatch Logs>, check the Enabled box
+	9. Verify (x)New is selected under <Log group>
+	10. Under <Log group name>, provide a new log group name
+	11. Verify (x)New is selected under <IAM Role>
+	12 Under <Role name>, provide a new role name
+	13. Click the orange [Next] button at the lower right
+	14. Under Event type, select [x] Management events and [x] Data events
+	15. Verify [x]Read and [x]Write is selected under API Activity
+	16. In the <Data Events> section, click the [Switch to basic event selectors] button
+	17. Click [Continue] to confirm button.
+	18. Verify <Data event source> is S3
+	19. Uncheck the []Read and []Write boxes next to <All current and future S3 buckets>
+	20. Next to the [Browse] button under <Individual bucket selection>, ensure that both Read and Write boxes are selected
+	21. Click [Add data event type] button
+	22. Click the <Data event source> dropdown and select "DynamoDB"
+	23. Click the orange [NEXT] button
+	24. Verify all parameters shown are correct.
+	25. Click the orange [Create trail] button
 
 ## View the logs entries on CloudWatch
 
 ## Procedure
 
-	1. Click the Services drop down.
-    2. Enter the CloudWatch string in the search box.
-    3. Click CloudWatch to redirect to the CloudWatch dashboard.
-    4. In the left pane, select Logs.
-    5. Click Log Groups.
-    6. Search for the log group that you created in the previous step.
-    7. In the log group, locate the <account_id>CloudTrail_<region> file. All events are logged to this file.
+	1. Click the Service drop down.
+	2. On right <Recently visited> panel, click on CloudWatch
+	3. On the left panel, click on Logs
+	4. Click on <Log groups> under Logs
+	5. In the search box, enter the name of the log group created in the previous STEP 9.
+	6. Click on the log group that appeared from the search
+	7. All logs will appear under log streams in the format: <account_i>_CloudTrail_<region>
 
 
 ## Configuring the dynamodb filters in Guardium
@@ -91,13 +95,22 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 # Procedure
 
-	1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-	2. Click Upload File and select the offline dynamodb-offline-plugins-7.5.2.zip plug-in. After it is uploaded, click OK.
-	3. Click the Plus sign to open the Connector Configuration dialog box.
-	4. Type a name in the Connector name field.
-	5. Update the input section to add the details from dynamodbCloudwatch.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-	6. Update the filter section to add the details from dynamodbCloudwatch.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-	7. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+	1. On the collector, navigate to Setup > Tools and Views > Configure Universal Connector
+	2. First Enable the Universal Guardium connector, if it is Disabled already.
+	3. Click the [Upload File] button
+	4. Select the downloaded file "dynamodb-offline-plugins-7.5.2.zip"
+	5. Click [Upload/install]
+	6. Click [OK] on the upload confirmation
+	7. Click the Plus sign to open the Connector Configuration dialog box.
+	8. Type a name in the Connector name field.
+	9. Update the input section to add the details from dynamodbCloudwatch.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+	10. Update the filter section to add the details from dynamodbCloudwatch.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+	11. "type" field should match in input and filter configuration section. This field should be unique for every individual connector added.
+	12. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+	
+## Limitations
+
+	The dynamodb plug-in does not support IPV6.
 
 ## Configuring the dynamodb filters in Guardium Insights
 
