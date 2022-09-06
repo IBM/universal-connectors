@@ -1,0 +1,147 @@
+  [
+   {
+    "insertId": "g3fma1f1oq84b",
+    "jsonPayload": {
+      "message": "2022-02-15 04:46:29.825 INFO  (qtp672313607-21) [   x:first_core] o.a.s.u.p.LogUpdateProcessorFactory [first_core]  webapp=/solr path=/update params={commitWithin=1000&overwrite=true&wt=json&_=1644899728883}{add=[349834 (1724803070858100736)]} 0 309"
+    },
+    "resource": {
+      "type": "gce_instance",
+      "labels": {
+        "zone": "asia-south2-a",
+        "project_id": "project-sccd",
+        "instance_id": "2639899388249855782"
+      }
+    },
+    "timestamp": "2022-02-15T04:46:30.014809537Z",
+    "logName": "projects/project-sccd/logs/files",
+    "receiveTimestamp": "2022-02-15T04:46:30.274599078Z"
+  },
+  {
+    "insertId": "1nxp4l7fts54hr",
+    "jsonPayload": {
+      "message": "2022-02-15 05:07:16.137 INFO  (qtp672313607-23) [   x:first_core] o.a.s.c.S.Request [first_core]  webapp=/solr path=/select params={q=id:17&_=1644899732148} hits=1 status=0 QTime=8"
+    },
+    "resource": {
+      "type": "gce_instance",
+      "labels": {
+        "instance_id": "2639899388249855782",
+        "zone": "asia-south2-a",
+        "project_id": "project-sccd"
+      }
+    },
+    "timestamp": "2022-02-15T05:07:16.137639350Z",
+    "logName": "projects/project-sccd/logs/files",
+    "receiveTimestamp": "2022-02-15T05:07:16.364786980Z"
+  },
+  {
+    "insertId": "1sdfe2tf5msfdd",
+    "jsonPayload": {
+      "message": "2022-02-15 07:20:49.917 ERROR (qtp672313607-14) [   x:first_core] o.a.s.h.RequestHandlerBase org.apache.solr.common.SolrException: Cannot parse provided JSON: Unexpected EOF: char=(EOF),position=20 AFTER=''"
+    },
+    "resource": {
+      "type": "gce_instance",
+      "labels": {
+        "project_id": "project-sccd",
+        "zone": "asia-south2-a",
+        "instance_id": "2639899388249855782"
+      }
+    },
+    "timestamp": "2022-02-15T07:20:49.927893085Z",
+    "logName": "projects/project-sccd/logs/files",
+    "receiveTimestamp": "2022-02-15T07:20:50.430376583Z"
+  },
+  {
+    "insertId": "g3fma1f1qac72",
+    "jsonPayload": {
+      "message": "2022-02-15 04:56:09.556 INFO  (qtp672313607-23) [   x:first_core] o.a.s.c.S.Request [first_core]  webapp=/solr path=/select params={q=*:*&_=1644899732148} hits=55 status=0 QTime=0"
+    },
+    "resource": {
+      "type": "gce_instance",
+      "labels": {
+        "instance_id": "2639899388249855782",
+        "zone": "asia-south2-a",
+        "project_id": "project-sccd"
+      }
+    },
+    "timestamp": "2022-02-15T04:56:09.559425402Z",
+    "logName": "projects/project-sccd/logs/files",
+    "receiveTimestamp": "2022-02-15T04:56:10.320549425Z"
+  },
+  {
+    "insertId": "1uvd2uaeqsse8",
+    "jsonPayload": {
+      "message": "2022-02-15 05:07:04.616 INFO  (qtp672313607-23) [   x:first_core] o.a.s.u.p.LogUpdateProcessorFactory [first_core]  webapp=/solr path=/update params={commitWithin=1000&overwrite=true&wt=json&_=1644899728883}{add=[97900 (1724804365930201088)]} 0 4"
+    },
+    "resource": {
+      "type": "gce_instance",
+      "labels": {
+        "project_id": "project-sccd",
+        "zone": "asia-south2-a",
+        "instance_id": "2639899388249855782"
+      }
+    },
+    "timestamp": "2022-02-15T05:07:04.616415831Z",
+    "logName": "projects/project-sccd/logs/files",
+    "receiveTimestamp": "2022-02-15T05:07:05.373196753Z"
+  },
+  {
+    "insertId": "1hjv7ozg267k24i",
+    "jsonPayload": {
+      "message": "2022-05-30 06:27:23.594 INFO  (qtp1077072774-19) [c:firstcoll s:shard1 r:core_node5 x:firstcoll_shard1_replica_n3] o.a.s.c.S.Request [firstcoll_shard1_replica_n3]  webapp=/solr path=/select params={q=*:*&_=1653892047967} hits=0 status=0 QTime=444"
+    },
+    "resource": {
+      "type": "gce_instance",
+      "labels": {
+        "zone": "asia-south2-a",
+        "project_id": "project-sccd",
+        "instance_id": "6290282768426383618"
+      }
+    },
+    "timestamp": "2022-05-30T06:27:23.595191029Z",
+    "labels": {
+      "compute.googleapis.com/resource_name": "apachesolrqa"
+    },
+    "logName": "projects/project-sccd/logs/files",
+    "receiveTimestamp": "2022-05-30T06:27:23.640289274Z"
+  },
+  {
+    "insertId": "2s4s1xg12f5gji",
+    "jsonPayload": {
+      "message": "2022-05-30 09:05:14.157 INFO  (qtp1077072774-14) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/collections params={replicationFactor=2&maxShardsPerNode=-1&collection.configName=secondcoll&name=secondcoll&action=CREATE&numShards=2&wt=json} status=0 QTime=3607"
+    },
+    "resource": {
+      "type": "gce_instance",
+      "labels": {
+        "instance_id": "6290282768426383618",
+        "zone": "asia-south2-a",
+        "project_id": "project-sccd"
+      }
+    },
+    "timestamp": "2022-05-30T09:05:14.158924012Z",
+    "labels": {
+      "compute.googleapis.com/resource_name": "apachesolrqa"
+    },
+    "logName": "projects/project-sccd/logs/files",
+    "receiveTimestamp": "2022-05-30T09:05:14.640113195Z"
+  },
+  {
+    "insertId": "1hjv7ozg2d6qrj4",
+    "jsonPayload": {
+      "message": "2022-05-31 06:17:09.989 INFO  (qtp1077072774-23) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/collections params={action=CLUSTERSTATUS} status=0 QTime=1"
+    },
+    "resource": {
+      "type": "gce_instance",
+      "labels": {
+        "zone": "asia-south2-a",
+        "project_id": "project-sccd",
+        "instance_id": "6290282768426383618"
+      }
+    },
+    "timestamp": "2022-05-31T06:17:09.989587656Z",
+    "labels": {
+      "compute.googleapis.com/resource_name": "apachesolrqa"
+    },
+    "logName": "projects/project-sccd/logs/files",
+    "receiveTimestamp": "2022-05-31T06:17:10.638177552Z"
+  }
+  ]

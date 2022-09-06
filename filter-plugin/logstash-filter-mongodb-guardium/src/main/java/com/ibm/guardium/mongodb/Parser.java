@@ -393,7 +393,7 @@ public class Parser {
     /**
      * Redact except values of objects and verbs
      */
-    static JsonElement RedactWithExceptions(JsonObject data) {
+    public static JsonElement RedactWithExceptions(JsonObject data) {
 
         final JsonObject param = data.get("param").getAsJsonObject();
         final String command = param.get("command").getAsString();

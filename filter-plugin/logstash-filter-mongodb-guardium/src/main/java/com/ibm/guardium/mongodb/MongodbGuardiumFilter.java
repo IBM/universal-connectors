@@ -12,6 +12,7 @@ import co.elastic.logstash.api.FilterMatchListener;
 import co.elastic.logstash.api.LogstashPlugin;
 import co.elastic.logstash.api.PluginConfigSpec;
 import com.google.gson.*;
+import com.ibm.guardium.mongodb.parsersbytype.BaseParser;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import com.ibm.guardium.universalconnector.commons.Util;
 import com.ibm.guardium.universalconnector.commons.structures.*;
@@ -55,7 +56,7 @@ public class MongodbGuardiumFilter implements Filter {
     public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_mongoguardium_json_parse_error";
 
     private String id;
-    private final static String MONGOD_AUDIT_START_SIGNAL = "mongod: ";
+    public final static String MONGOD_AUDIT_START_SIGNAL = "mongod: ";
     private final static String MONGOS_AUDIT_START_SIGNAL = "mongos: ";
     private final static String MONGO_INTERNAL_API_IP = "(NONE)";
     private static final InetAddressValidator inetAddressValidator = InetAddressValidator.getInstance();
@@ -87,17 +88,14 @@ public class MongodbGuardiumFilter implements Filter {
                         JsonObject inputJSON = (JsonObject) JsonParser.parseString(input);
                         
                         // filter internal and not parsed events
-                        final String atype = inputJSON.get("atype").getAsString();
-                        final JsonArray users = inputJSON.getAsJsonArray("users");
-                        if ((!atype.equals("authCheck") && !atype.equals("authenticate")) // filter handles only authCheck message template & authentication error,
-                            || (atype.equals("authenticate") && inputJSON.get("result").getAsString().equals("0")) // not auth success,
-                            || (users.size() == 0 && !atype.equals("authenticate")) )  { // nor messages with empty users array, as it's an internal command (except authenticate, which states in param.user)
+                        BaseParser parser = ParserFactory.getParser(inputJSON);
+
+                        Record record = parser.parseRecord(inputJSON);
+                        if (record==null){
                             e.tag(LOGSTASH_TAG_SKIP);
-							skippedEvents.add(e);
+                            skippedEvents.add(e);
                             continue;
                         }
-                        
-                        Record record = Parser.parseRecord(inputJSON);
 
                         // server_hostname
                         if (e.getField("server_hostname") instanceof String) {
@@ -121,6 +119,7 @@ public class MongodbGuardiumFilter implements Filter {
                         log.error("MongoDB filter: Error handling mongo message "+input);
                         log.error("MongoDB filter: Error parsing mongo event "+logEvent(e), exception);
                         e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
+                        //skippedEvents.add(e);
                     }
                 } else {
                     e.tag(LOGSTASH_TAG_SKIP_NOT_MONGODB);
@@ -160,9 +159,11 @@ public class MongodbGuardiumFilter implements Filter {
         SessionLocator sessionLocator = record.getSessionLocator();
         String sessionServerIp = sessionLocator.getServerIp();
 
+        String serverIpResult = sessionServerIp;
         if (isMongoInternalCommandIp(sessionServerIp)){
             String ip = getValidatedEventServerIp(e);
             if (ip!=null) {
+                serverIpResult = ip;
                 if (Util.isIPv6(ip)){
                     sessionLocator.setServerIpv6(ip);
                     sessionLocator.setIpv6(true);
@@ -171,20 +172,32 @@ public class MongodbGuardiumFilter implements Filter {
                     sessionLocator.setIpv6(false);
                 }
             } else if (sessionServerIp.equalsIgnoreCase(MONGO_INTERNAL_API_IP)) {
-                    sessionLocator.setServerIp("0.0.0.0");
+                sessionLocator.setServerIp("0.0.0.0");
+                serverIpResult = "0.0.0.0";
             }
-
+            // set value to accessor field
+            String acccessorServerHost = record.getAccessor().getServerHostName();
+            if (acccessorServerHost==null || acccessorServerHost.trim().isEmpty()){
+                record.getAccessor().setServerHostName(serverIpResult);
+            }
         }
-        
+
         String sessionClientIp = sessionLocator.getClientIp();
         if (isMongoInternalCommandIp(sessionClientIp)) {
             // as clientIP & serverIP were equal
+            String clientIpResult = null;
             if (sessionLocator.isIpv6()){
                 sessionLocator.setClientIpv6(sessionLocator.getServerIpv6());
+                clientIpResult = sessionLocator.getServerIpv6();
             } else {
                 sessionLocator.setClientIp(sessionLocator.getServerIp());
+                clientIpResult = sessionLocator.getServerIp();
             }
-
+            // set value to accessor field
+            String acccessorClientHost = record.getAccessor().getClientHostName();
+            if (acccessorClientHost==null || acccessorClientHost.trim().isEmpty()){
+                record.getAccessor().setClientHostName(clientIpResult);
+            }
         }
     }
 
