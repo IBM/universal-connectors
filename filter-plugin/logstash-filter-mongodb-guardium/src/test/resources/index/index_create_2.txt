@@ -1,0 +1,28 @@
+{
+  "atype": "createIndex",
+  "ts": {
+    "$date": "2022-08-23T15:12:09.914-05:00"
+  },
+  "local": {
+    "ip": "0.0.0.0",
+    "port": 0
+  },
+  "remote": {
+    "ip": "1.2.3.4",
+    "port": 0
+  },
+  "users": [],
+  "roles": [],
+  "param": {
+    "ns": "admin.PLAYERS",
+    "indexName": "tags_1",
+    "indexSpec": {
+      "v": 2,
+      "key": {
+        "tags": 1
+      },
+      "name": "tags_1"
+    }
+  },
+  "result": 0
+}
