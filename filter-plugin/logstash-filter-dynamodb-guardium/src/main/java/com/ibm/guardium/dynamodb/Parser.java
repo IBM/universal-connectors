@@ -11,6 +11,8 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import com.google.gson.Gson;
@@ -46,8 +48,7 @@ public class Parser {
 			else
 				record.setSessionId(Constants.NOT_AVAILABLE);
 
-			String dbName = Constants.UNKNOWN_STRING;
-			record.setDbName(dbName);
+			record.setDbName(Parser.parseDbName(data));
 
 			String dateString = Parser.parseTimestamp(data);
 			Time time = Parser.getTime(dateString);
@@ -65,7 +66,24 @@ public class Parser {
 		}
 		return record;
 	}
-	
+
+	private static String parseDbName(JsonObject data) {
+
+		String dbName = Constants.UNKNOWN_STRING;
+		if(data.has(Constants.RESOURCES) && data.get(Constants.RESOURCES) != null) {
+			JsonArray resources = (JsonArray) data.get(Constants.RESOURCES);
+			JsonObject obj = (JsonObject) resources.get(0);
+			String arn = obj.get("ARN").getAsString();
+			String arns[] = arn.split(":");
+			String acc_no = arns[4];
+			String tableNames = arns[5];
+			String tableString[] = tableNames.split("/");
+			String tableName = tableString[1];
+			dbName = acc_no + ":" + tableName;
+		}
+		return dbName;
+	}
+
 	//----------- TIME
 	
 	public static String parseTimestamp(final JsonObject data) {
@@ -121,30 +139,34 @@ public class Parser {
 		accessor.setServerType(Constants.SERVER_TYPE_STRING);
 
 		String dbUsers = Constants.NOT_AVAILABLE;
+		String clientHostName = Constants.UNKNOWN_STRING;
+
 		if(data.has(Constants.USER_IDENTITY) && data.get(Constants.USER_IDENTITY) != null && !(data.get(Constants.USER_IDENTITY).isJsonNull())) {
 			JsonObject userIdentity = data.getAsJsonObject(Constants.USER_IDENTITY);
 
-			if(userIdentity.has(Constants.USERNAME) && userIdentity.get(Constants.USERNAME).getAsString() != null){
-				dbUsers = userIdentity.get(Constants.USERNAME).getAsString();
-			}
-			else if(userIdentity.has(Constants.SESSION_CONTEXT) && userIdentity.get(Constants.SESSION_CONTEXT) != null && !(userIdentity.get(Constants.SESSION_CONTEXT).isJsonNull()))	{
-				JsonObject sessionContext = userIdentity.getAsJsonObject(Constants.SESSION_CONTEXT);
+			if(userIdentity.has(Constants.ARN) && userIdentity.get(Constants.ARN).getAsString() != null) {
+				String arnNumber = userIdentity.get(Constants.ARN).getAsString();
 
-				if(sessionContext.has(Constants.SESSION_ISSUER) && sessionContext.get(Constants.SESSION_ISSUER) != null && !(sessionContext.get(Constants.SESSION_ISSUER).isJsonNull())) {
-					JsonObject sessionIssuer = sessionContext.getAsJsonObject(Constants.SESSION_ISSUER);
-					if(sessionIssuer.has(Constants.USERNAME) && sessionIssuer.get(Constants.USERNAME).getAsString() != null) {
-						dbUsers = sessionIssuer.get(Constants.USERNAME).getAsString();
-					}
-				}
+				String arnNumbers[] = arnNumber.split("::");
+				dbUsers = arnNumbers[1];
 			}
+
+			if(userIdentity.has(Constants.ACCOUNT_ID) && userIdentity.get(Constants.ACCOUNT_ID).getAsString() != null) 
+				clientHostName = userIdentity.get(Constants.ACCOUNT_ID).getAsString();
 		}
 
 		accessor.setDbUser(dbUsers);
+		accessor.setClientHostName(clientHostName);
 
-		String eventSource = Constants.SERVER_HOSTNAME;
+		String eventSource = Constants.UNKNOWN_STRING;
+		
+		if(data.has(Constants.ACCOUNT_ID)) {
+			String account_id = data.get(Constants.ACCOUNT_ID).getAsString();
+			eventSource = account_id + "_AWS_Dynamodb";
+		}
+		else 
+			eventSource = "dynamodb.amazon.com";
 
-		if(data.has(Constants.EVENT_SOURCE) && data.get(Constants.EVENT_SOURCE) != null)
-			eventSource = data.get(Constants.EVENT_SOURCE).getAsString();
 		accessor.setServerHostName(eventSource);
 
 		String sourceProgram = Constants.UNKNOWN_STRING;
@@ -157,7 +179,6 @@ public class Parser {
 		accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL);
 
 		accessor.setClient_mac(Constants.UNKNOWN_STRING);
-		accessor.setClientHostName(Constants.UNKNOWN_STRING);
 		accessor.setClientOs(Constants.UNKNOWN_STRING);
 		accessor.setCommProtocol(Constants.UNKNOWN_STRING);
 		accessor.setDbProtocolVersion(Constants.UNKNOWN_STRING);
@@ -281,7 +302,7 @@ public class Parser {
     private static ExceptionRecord parseException(JsonObject data) {
 
     	ExceptionRecord exceptionRecord = new ExceptionRecord();
-    	exceptionRecord.setExceptionTypeId(data.get(Constants.ERROR_CODE).getAsString());
+    	exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
     	exceptionRecord.setDescription(data.get(Constants.ERROR_MESSAGE).getAsString());
 
     	String query = Constants.UNKNOWN_STRING;
