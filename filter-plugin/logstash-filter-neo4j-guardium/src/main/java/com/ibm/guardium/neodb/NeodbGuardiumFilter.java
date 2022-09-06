@@ -85,7 +85,7 @@ public class NeodbGuardiumFilter implements Filter {
 				}
 
 			} catch (ParseException pe) {
-				log.error("Neo4j filter: Error parsing neo4j event " + pe);
+				log.error("Neo4j filter: Error parsing neo4j event " + e.getField(Constants.MESSAGE).toString(), pe);
 				e.tag(Constants.LOGSTASH_TAG_JSON_PARSE_ERROR);
 			} catch (Exception exception) {
 				log.error("Neo4j filter: Error parsing neo4j event " + e.getField(Constants.MESSAGE).toString(),
@@ -103,53 +103,52 @@ public class NeodbGuardiumFilter implements Filter {
 		if (queryStatement.startsWith("EXPLAIN"))
 			return false;
 
-		int lastIndex = queryStatement.lastIndexOf("type");
-		if (lastIndex == -1)
-			return false;
-		String string = queryStatement.substring(lastIndex);
-
-		return string.contains("user-direct");
+		return true;
 
 	}
 
 	private JsonObject inputData(Event e) {
 		JsonObject data = new JsonObject();
 
-		if (e.getField(Constants.CLIENT_IP).toString() != null
+		if (e.getField(Constants.CLIENT_IP) != null
 				&& !e.getField(Constants.CLIENT_IP).toString().isEmpty()) {
 			data.addProperty(Constants.CLIENT_IP, e.getField(Constants.CLIENT_IP).toString());
 		}
-		if (e.getField(Constants.SERVER_IP).toString() != null
+		if (e.getField(Constants.SERVER_IP) != null
 				&& !e.getField(Constants.SERVER_IP).toString().isEmpty()) {
 			data.addProperty(Constants.SERVER_IP, e.getField(Constants.SERVER_IP).toString());
 		}
-		if (e.getField(Constants.DB_PROTOCOL).toString() != null
+		if (e.getField(Constants.DB_PROTOCOL) != null
 				&& e.getField(Constants.DB_PROTOCOL).toString().isEmpty()) {
 			data.addProperty(Constants.DB_PROTOCOL, e.getField(Constants.DB_PROTOCOL).toString());
 		}
-		if (e.getField(Constants.TIMESTAMP).toString() != null
+		if (e.getField(Constants.TIMESTAMP) != null
 				&& !e.getField(Constants.TIMESTAMP).toString().isEmpty()) {
 			data.addProperty(Constants.TIMESTAMP, e.getField(Constants.TIMESTAMP).toString());
 		}
-		if (e.getField(Constants.LOG_LEVEL).toString() != null
+		if (e.getField(Constants.LOG_LEVEL) != null
 				&& !e.getField(Constants.LOG_LEVEL).toString().isEmpty()) {
 			data.addProperty(Constants.LOG_LEVEL, e.getField(Constants.LOG_LEVEL).toString());
 		}
-		if (e.getField(Constants.DB_USER).toString() != null && !e.getField(Constants.DB_USER).toString().isEmpty()) {
+		if (e.getField(Constants.DB_USER) != null && !e.getField(Constants.DB_USER).toString().isEmpty()) {
 			data.addProperty(Constants.DB_USER, e.getField(Constants.DB_USER).toString());
 		}
-		if (e.getField(Constants.DB_NAME).toString() != null && !e.getField(Constants.DB_NAME).toString().isEmpty()) {
+		if (e.getField(Constants.DB_NAME) != null && !e.getField(Constants.DB_NAME).toString().isEmpty()) {
 			data.addProperty(Constants.DB_NAME, e.getField(Constants.DB_NAME).toString());
 		}
-		if (e.getField(Constants.SOURCE_PROGRAM).toString() != null
+		if (e.getField(Constants.SOURCE_PROGRAM) != null
 				&& !e.getField(Constants.SOURCE_PROGRAM).toString().isEmpty()) {
 			data.addProperty(Constants.SOURCE_PROGRAM, e.getField(Constants.SOURCE_PROGRAM).toString());
 		}
-		if (e.getField(Constants.QUERY_STATEMENT).toString() != null
+		if (e.getField(Constants.QUERY_STATEMENT) != null
 				&& !e.getField(Constants.QUERY_STATEMENT).toString().isEmpty()) {
 			data.addProperty(Constants.QUERY_STATEMENT, e.getField(Constants.QUERY_STATEMENT).toString());
 		}
-		if (e.getField(Constants.MESSAGE).toString() != null && !e.getField(Constants.MESSAGE).toString().isEmpty()) {
+		if (e.getField(Constants.SERVER_HOSTNAME) != null
+				&& !e.getField(Constants.SERVER_HOSTNAME).toString().isEmpty()) {
+			data.addProperty(Constants.SERVER_HOSTNAME, e.getField(Constants.SERVER_HOSTNAME).toString());
+		}
+		if (e.getField(Constants.MESSAGE) != null && !e.getField(Constants.MESSAGE).toString().isEmpty()) {
 			data.addProperty(Constants.MESSAGE, e.getField(Constants.MESSAGE).toString());
 		}
 		return data;
