@@ -13,6 +13,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -187,7 +189,8 @@ public class MongoDbIpaTest {
         String messageUnderTest = String.format(messageStrForIPTests, serverIp, clientIp);
         e.setField("message", messageUnderTest);
         e.setField("server_ip", serverIpFromFilebeat);
-        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+        ArrayList<Event> events = new ArrayList<>(Arrays.asList(new Event[]{e}));
+        Collection<Event> results = filter.filter(events, matchListener);
 
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));

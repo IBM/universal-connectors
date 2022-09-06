@@ -1,0 +1,51 @@
+{
+  "atype": "createRole",
+  "ts": {
+    "$date": "2022-08-23T13:54:25.281-05:00"
+  },
+  "local": {
+    "ip": "127.0.0.1",
+    "port": 27017
+  },
+  "remote": {
+    "ip": "127.0.0.1",
+    "port": 52948
+  },
+  "users": [
+    {
+      "user": "realadmin",
+      "db": "admin"
+    }
+  ],
+  "roles": [
+    {
+      "role": "userAdminAnyDatabase",
+      "db": "admin"
+    },
+    {
+      "role": "readWriteAnyDatabase",
+      "db": "admin"
+    }
+  ],
+  "param": {
+    "role": "TEST_ROLE",
+    "db": "admin",
+    "roles": [
+      {
+        "role": "read",
+        "db": "admin"
+      }
+    ],
+    "privileges": [
+      {
+        "resource": {
+          "cluster": true
+        },
+        "actions": [
+          "addShard"
+        ]
+      }
+    ]
+  },
+  "result": 0
+}
