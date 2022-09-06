@@ -47,14 +47,13 @@ public class Parser {
 		Record record = new Record();
 
 		if (data != null) {
-			record.setSessionId(Constants.NOT_AVAILABLE);
 
 			record.setAppUserName(Constants.NOT_AVAILABLE);
 
 			// DB Name
 			String dbName = Constants.NOT_AVAILABLE;
 
-			if (data.has(Constants.DB_NAME)) {
+			if (data.has(Constants.DB_NAME) && data.get(Constants.DB_NAME) != null) {
 				dbName = data.get(Constants.DB_NAME).getAsString();
 			}
 
@@ -72,6 +71,8 @@ public class Parser {
 			// Accessor
 			record.setAccessor(Parser.parseAccessor(data));
 
+			Parser.parseSessionId(record);
+
 			// Data
 			if (data.get(Constants.LOG_LEVEL).toString().contains("INFO")) {
 				record.setData(Parser.parseData(data));
@@ -83,6 +84,15 @@ public class Parser {
 		return record;
 	}
 
+// 	---------------------- Session Id -----------------------
+
+	public static void parseSessionId(Record record) {
+
+		Integer hashCode = (record.getSessionLocator().getClientIp() + record.getSessionLocator().getClientPort()
+					+ record.getDbName()).hashCode();
+		record.setSessionId(hashCode.toString());
+	}
+
 //	-----------------------------------------------Accessor-----------------
 
 	public static Accessor parseAccessor(JsonObject data) {
@@ -92,15 +102,16 @@ public class Parser {
 		accessor.setServerType(Constants.SERVER_TYPE_STRING);
 
 		String dbUser = Constants.NOT_AVAILABLE;
-		if (data.has(Constants.DB_USER)) {
+		if (data.has(Constants.DB_USER) && data.get(Constants.DB_USER) != null) {
 			dbUser = data.get(Constants.DB_USER).getAsString();
 		}
 		accessor.setDbUser(dbUser);
 
-		accessor.setServerHostName(Constants.SERVER_HOSTNAME);
+		if(data.has(Constants.SERVER_HOSTNAME) && data.get(Constants.SERVER_HOSTNAME) != null)
+			accessor.setServerHostName(data.get(Constants.SERVER_HOSTNAME).getAsString());
 
 		String sourceProgram = Constants.UNKNOWN_STRING;
-		if (data.has(Constants.SOURCE_PROGRAM)) {
+		if (data.has(Constants.SOURCE_PROGRAM) && data.get(Constants.SOURCE_PROGRAM) != null) {
 			sourceProgram = data.get(Constants.SOURCE_PROGRAM).getAsString();
 		}
 		accessor.setSourceProgram(sourceProgram);
@@ -186,15 +197,13 @@ public class Parser {
 	public static ExceptionRecord parseException(JsonObject data) {
 		ExceptionRecord exceptionRecord = new ExceptionRecord();
 
-		exceptionRecord.setExceptionTypeId(Constants.UNKNOWN_STRING);
+		exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
 
 		String queryStatement = data.get(Constants.QUERY_STATEMENT).getAsString();
 		String[] queryData = queryStatement.split("'} - ");
 
 		String query = queryData[0].toString();
 		String exceptionDes = queryData[1].toString();
-		log.error("exception description in code :******* : " + exceptionDes);
-		log.error("exception query in code :******* : " + query);
 		exceptionRecord.setDescription(exceptionDes);
 
 		exceptionRecord.setSqlString(query);
@@ -218,7 +227,7 @@ public class Parser {
 				}
 			}
 		} catch (Exception e) {
-			log.error("Neo4j filter: Error parsing JSon " + inputJSON, e);
+			log.error("Neo4j filter: Error parsing JSon in parser" + inputJSON, e);
 			throw e;
 		}
 		return data;
@@ -231,8 +240,13 @@ public class Parser {
 			final Construct construct = new Construct();
 			construct.sentences.add(sentence);
 
-			construct.setFullSql(data.get(Constants.QUERY_STATEMENT).getAsString());
-
+			String queryStatement = data.get(Constants.QUERY_STATEMENT).toString();
+			String[] fullSql = queryStatement.split("runtime");
+			String query[] =  fullSql[0].split("- \\{\\} - ");
+			if(query[0].isEmpty())
+				construct.setFullSql(fullSql[0].substring(1).trim());
+			else
+				construct.setFullSql(query[0].substring(1).trim());
 			construct.setRedactedSensitiveDataSql(Parser.parseRedactedSensitiveDataSql(data));
 			return construct;
 		} catch (final Exception e) {
