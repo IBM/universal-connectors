@@ -96,17 +96,17 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 # Procedure
 
 	1. On the collector, navigate to Setup > Tools and Views > Configure Universal Connector
-	2. First Enable the Universal Guardium connector, if it is Disabled already.
+	2. First Enable the Universal Guardium connector, if it is Disabled already
 	3. Click the [Upload File] button
 	4. Select the downloaded file "dynamodb-offline-plugins-7.5.2.zip"
 	5. Click [Upload/install]
 	6. Click [OK] on the upload confirmation
-	7. Click the Plus sign to open the Connector Configuration dialog box.
+	7. Click the Plus sign to open the Connector Configuration dialog box
 	8. Type a name in the Connector name field.
-	9. Update the input section to add the details from dynamodbCloudwatch.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-	10. Update the filter section to add the details from dynamodbCloudwatch.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+	9. Update the input section to add the details from dynamodbCloudwatch.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end
+	10. Update the filter section to add the details from dynamodbCloudwatch.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end
 	11. "type" field should match in input and filter configuration section. This field should be unique for every individual connector added.
-	12. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+	12. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page
 	
 ## Limitations
 
