@@ -40,7 +40,6 @@ public class ParserTest {
 		Assert.assertEquals(
 				"CREATE TABLE Orders (OrderID int NOT NULL,OrderNumber int NOT NULL,PersonID int,PRIMARY KEY (OrderID))",
 				record.getData().getOriginalSqlCommand());
-
 	}
 
 	// Exception handling
@@ -55,9 +54,9 @@ public class ParserTest {
 		data.addProperty(Constants.AUDIT_ACTION, "CONNECT");
 		data.addProperty(Constants.DB_USER, "JOHNNY");
 		data.addProperty(Constants.DB_NAME, "music");
+		data.addProperty(Constants.SERVER_HOSTNAME, "serverHostName");
 		final Record record = Parser.parseRecord(data);
-
-		Assert.assertEquals("1100", record.getException().getExceptionTypeId());
+		Assert.assertEquals("LOGIN_FAILED", record.getException().getExceptionTypeId());
 		Assert.assertEquals("CONNECT", record.getException().getDescription());
 	}
 
@@ -77,7 +76,7 @@ public class ParserTest {
 		data.addProperty(Constants.AUDIT_ACTION, "Create Table");
 		data.addProperty(Constants.DB_USER, "JOHNNY");
 		data.addProperty(Constants.DB_NAME, "MUSIC");
-
+		data.addProperty(Constants.SERVER_HOSTNAME, "serverHostName");
 		Record record = Parser.parseRecord(data);
 		Accessor actual = record.getAccessor();
 
