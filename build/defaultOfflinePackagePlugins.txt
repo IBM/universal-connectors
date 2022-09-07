@@ -7,5 +7,5 @@ filter-plugin/logstash-filter-mysql-percona-guardium/logstash-filter-mysql_perco
 filter-plugin/logstash-filter-generic-guardium/logstash-filter-generic_guardium_filter-1.0.0.gem
 filter-plugin/logstash-filter-saphana-guardium/logstash-filter-saphana_guardium_plugin_filter-1.0.1.gem
 filter-plugin/logstash-filter-cassandra-guardium/logstash-filter-cassandra_guardium_plugin_filter-1.0.0.gem
-filter-plugin/logstash-filter-neo4j-guardium/logstash-filter-neodb_guardium_filter-1.0.0.gem
+filter-plugin/logstash-filter-aurora-mysql-guardium/logstash-filter-auroramysqlguardiumpluginfilter-1.0.1.gem
 input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input-1.0.1.gem
