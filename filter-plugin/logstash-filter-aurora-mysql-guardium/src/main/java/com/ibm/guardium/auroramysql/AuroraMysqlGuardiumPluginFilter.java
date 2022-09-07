@@ -104,8 +104,8 @@ public class AuroraMysqlGuardiumPluginFilter implements Filter {
 		if (e.getField(Constants.SERVER_INSTANCE) != null) {
 			data.addProperty(Constants.SERVER_INSTANCE, e.getField(Constants.SERVER_INSTANCE).toString());
 		}
-		if (e.getField(Constants.SERVERHOSTNAME) != null) {
-			data.addProperty(Constants.SERVERHOSTNAME, e.getField(Constants.SERVERHOSTNAME).toString());
+		if (e.getField(Constants.SERVER_HOSTNAME) != null) {
+			data.addProperty(Constants.SERVER_HOSTNAME, e.getField(Constants.SERVER_HOSTNAME).toString());
 		}
 		
 		return data;
