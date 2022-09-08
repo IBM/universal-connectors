@@ -20,7 +20,7 @@ public interface Constants {
 	public static final String Language = "MYSQL";
 	public static final String APP_USER = "AWSService";
 	public static final String IP = "0.0.0.0";
-	public static final String SERVER_HOSTNAME = "Server_Hostname";
+	public static final String SERVERHOSTNAME = "Server_Hostname";
 	public static final String LOGIN_FAILED = "LOGIN_FAILED";
 	public static final String SQL_ERROR = "SQL_ERROR";
 }

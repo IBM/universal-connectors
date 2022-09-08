@@ -87,7 +87,7 @@ public class Parser {
 
 		accessor.setDbProtocol(Constants.DB_PROTOCOL);
 		accessor.setServerType(Constants.SERVER_TYPE);
-		accessor.setServerHostName(data.get(Constants.SERVER_HOSTNAME).getAsString());
+		accessor.setServerHostName(data.get(Constants.SERVERHOSTNAME).getAsString());
 		accessor.setServiceName(Constants.UNKNOWN_STRING);
 		accessor.setClientHostName(Constants.UNKNOWN_STRING);
 
