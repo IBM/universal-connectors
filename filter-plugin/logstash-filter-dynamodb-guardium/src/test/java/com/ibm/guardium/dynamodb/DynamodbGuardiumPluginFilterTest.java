@@ -48,6 +48,8 @@ public class DynamodbGuardiumPluginFilterTest {
         TestMatchListener matchListener = new TestMatchListener();
         
         e.setField("mes***REMOVED***ge", mongodString2);
+        e.setField("account_id", "123456789");
+        e.setField("host", "test.com");
         Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 
         Assert.assertEquals(1, results.size());
