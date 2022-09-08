@@ -34,7 +34,7 @@ public class ParserTest {
 		data.addProperty(Constants.AUDIT_ACTION, "Create Table");
 		data.addProperty(Constants.DB_USER, "admin");
 		data.addProperty(Constants.DB_NAME, "music");
-
+		data.addProperty(Constants.SERVERHOSTNAME, "serverHostName");
 		final Record record = Parser.parseRecord(data);
 
 		Assert.assertEquals(
@@ -44,7 +44,7 @@ public class ParserTest {
 
 	// Exception handling
 	@Test
-	public void testParseRecord_Error() throws ParseException {
+	public void testParseRecord_Error () throws ParseException {
 		JsonObject data = new JsonObject();
 		data.addProperty(Constants.CLIENT_IP, "0.0.0.0");
 		data.addProperty(Constants.TIMESTAMP, "1638806583399975");
@@ -54,7 +54,7 @@ public class ParserTest {
 		data.addProperty(Constants.AUDIT_ACTION, "CONNECT");
 		data.addProperty(Constants.DB_USER, "JOHNNY");
 		data.addProperty(Constants.DB_NAME, "music");
-		data.addProperty(Constants.SERVER_HOSTNAME, "serverHostName");
+		data.addProperty(Constants.SERVERHOSTNAME, "serverHostName");
 		final Record record = Parser.parseRecord(data);
 		Assert.assertEquals("LOGIN_FAILED", record.getException().getExceptionTypeId());
 		Assert.assertEquals("CONNECT", record.getException().getDescription());
@@ -76,7 +76,7 @@ public class ParserTest {
 		data.addProperty(Constants.AUDIT_ACTION, "Create Table");
 		data.addProperty(Constants.DB_USER, "JOHNNY");
 		data.addProperty(Constants.DB_NAME, "MUSIC");
-		data.addProperty(Constants.SERVER_HOSTNAME, "serverHostName");
+		data.addProperty(Constants.SERVERHOSTNAME, "serverHostName");
 		Record record = Parser.parseRecord(data);
 		Accessor actual = record.getAccessor();
 
