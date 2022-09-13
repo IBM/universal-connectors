@@ -5,14 +5,14 @@
 package com.ibm.guardium.dynamodb;
 
 public interface Constants {
-	
+
 	public static final String NOT_AVAILABLE = "NA";
-	public static final String DATA_PROTOCOL_STRING = "DynamoDB native audit";
+	public static final String DATA_PROTOCOL_STRING = "AMAZON DYNAMODB";
 	public static final String UNKNOWN_STRING = "";
 	public static final String SERVER_TYPE_STRING = "DYNAMODB";
-    public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_dynamoguardium_json_parse_error";
+	public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_dynamoguardium_json_parse_error";
 
-	
+
 	public static final String REQUEST_ID = "requestID";
 	public static final String ERROR_MESSAGE = "errorMes***REMOVED***ge";
 	public static final String ERROR_CODE = "errorCode";
@@ -32,6 +32,8 @@ public interface Constants {
 	public static final String ACCESS_KEY_ID = "accessKeyId";
 	public static final String EVENT_ID = "eventId";
 	public static final String EVENT_SOURCE = "eventSource";
+	public static final String ARN = "arn";
+	public static final String RESOURCES = "resources";
 
 	//constants
 	public static final int CLIENT_PORT = -1;
@@ -40,5 +42,7 @@ public interface Constants {
 	public static final String LOGSTASH_TAG_SKIP_NOT_DYNAMO = "_dynamoguardium_skip_not_dynamodb";
 	public static final String MASK_STRING = "?";
 	public static final String SERVER_HOSTNAME = "dynamodb.amazonaws.com";
-	
+	public static final String SQL_ERROR = "SQL_ERROR";
+
+
 }

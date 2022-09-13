@@ -15,7 +15,10 @@ public class Constants {
 	public static final String LOGSTASH_TAG_SKIP_NOT_NEO = "_neoguardium_skip_not_neo";
 
 	public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_neoguardium_json_parse_error";
-	public static final String SERVER_HOSTNAME = "";
+	public static final String SERVER_HOSTNAME = "serverHostName";
+	public static final String SQL_ERROR = "SQL_ERROR";
+
+	
 
 	// Input parameters
 	public static final String CLIENT_IP = "client_ip";
