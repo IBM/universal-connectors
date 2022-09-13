@@ -1,0 +1,433 @@
+[
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "fsautosa0617@project-sccd.iam.gserviceaccount.com",
+        "serviceAccountKeyName": "//iam.googleapis.com/projects/project-sccd/serviceAccounts/fsautosa0617@project-sccd.iam.gserviceaccount.com/keys/b8eb1631fc7637e4f9afd68ac4ba8d5c99bb46dc"
+      },
+      "requestMetadata": {
+        "callerIp": "110.235.238.40",
+        "callerSuppliedUserAgent": "grpc-java-netty/1.44.1,gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-07-05T07:15:11.017342Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firestore.googleapis.com",
+      "methodName": "google.firestore.v1.Firestore.BatchGetDocuments",
+      "authorizationInfo": [
+        {
+          "resource": "projects/project-sccd/databases/",
+          "permission": "datastore.entities.get",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/project-sccd/databases/(default)",
+      "numResponseItems": "1",
+      "request": {
+        "database": "projects/project-sccd/databases/(default)",
+        "@type": "type.googleapis.com/google.firestore.v1.BatchGetDocumentsRequest",
+        "documents": [
+          "projects/project-sccd/databases/(default)/documents/AutoCollect/Automation1657005308834"
+        ]
+      },
+      "metadata": {
+        "processingDuration": "0.020295592s",
+        "@type": "type.googleapis.com/google.cloud.audit.DatastoreServiceData",
+        "keys": [
+          "projects/project-sccd/databases/(default)/documents/AutoCollect/Automation1657005308834"
+        ]
+      }
+    },
+    "insertId": "2rzzvsd10ck",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "project_id": "project-sccd",
+        "service": "firestore.googleapis.com",
+        "method": "google.firestore.v1.Firestore.BatchGetDocuments"
+      }
+    },
+    "timestamp": "2022-07-05T07:15:11.000883Z",
+    "severity": "INFO",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Fdata_access",
+    "receiveTimestamp": "2022-07-05T07:15:11.576241067Z"
+  }
+]
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "balram.verma@hcl.com"
+      },
+      "requestMetadata": {
+        "callerIp": "168.149.165.2",
+        "callerSuppliedUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36 Edg/103.0.1264.37,gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-07-05T07:11:58.502993Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firestore.googleapis.com",
+      "methodName": "google.firestore.v1.Firestore.ListDocuments",
+      "authorizationInfo": [
+        {
+          "resource": "projects/project-sccd/databases/",
+          "permission": "datastore.entities.get",
+          "granted": true,
+          "resourceAttributes": {}
+        },
+        {
+          "resource": "projects/project-sccd/databases/",
+          "permission": "datastore.entities.list",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/project-sccd/databases/(default)",
+      "request": {
+        "parent": "projects/project-sccd/databases/(default)/documents",
+        "pageSize": 300,
+        "@type": "type.googleapis.com/google.firestore.v1.ListDocumentsRequest",
+        "collectionId": "09march-coll",
+        "mask": {
+          "fieldPaths": [
+            "`9march-doc`"
+          ]
+        },
+        "orderBy": "`9march-doc`"
+      },
+      "metadata": {
+        "processingDuration": "0.041990544s",
+        "@type": "type.googleapis.com/google.cloud.audit.DatastoreServiceData"
+      }
+    },
+    "insertId": "-ye52rse1z60w",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "method": "google.firestore.v1.Firestore.ListDocuments",
+        "service": "firestore.googleapis.com",
+        "project_id": "project-sccd"
+      }
+    },
+    "timestamp": "2022-07-05T07:11:58.464481Z",
+    "severity": "INFO",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Fdata_access",
+    "receiveTimestamp": "2022-07-05T07:11:59.444648696Z"
+  },
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "balram.verma@hcl.com"
+      },
+      "requestMetadata": {
+        "callerIp": "168.149.165.2",
+        "callerSuppliedUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36 Edg/103.0.1264.37,gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-07-05T07:12:50.987562Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firestore.googleapis.com",
+      "methodName": "google.firestore.v1.Firestore.ListDocuments",
+      "authorizationInfo": [
+        {
+          "resource": "projects/project-sccd/databases/",
+          "permission": "datastore.entities.list",
+          "granted": true,
+          "resourceAttributes": {}
+        },
+        {
+          "resource": "projects/project-sccd/databases/",
+          "permission": "datastore.entities.get",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/project-sccd/databases/(default)",
+      "request": {
+        "orderBy": "DID2",
+        "@type": "type.googleapis.com/google.firestore.v1.ListDocumentsRequest",
+        "parent": "projects/project-sccd/databases/(default)/documents",
+        "mask": {
+          "fieldPaths": [
+            "DID2"
+          ]
+        },
+        "collectionId": "09march-coll",
+        "pageSize": 300
+      },
+      "metadata": {
+        "processingDuration": "0.006113360s",
+        "@type": "type.googleapis.com/google.cloud.audit.DatastoreServiceData"
+      }
+    },
+    "insertId": "-xkligae17g8k",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "service": "firestore.googleapis.com",
+        "project_id": "project-sccd",
+        "method": "google.firestore.v1.Firestore.ListDocuments"
+      }
+    },
+    "timestamp": "2022-07-05T07:12:50.981439Z",
+    "severity": "INFO",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Fdata_access",
+    "receiveTimestamp": "2022-07-05T07:12:51.735085423Z"
+  },
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "fsautosa0617@project-sccd.iam.gserviceaccount.com",
+        "serviceAccountKeyName": "//iam.googleapis.com/projects/project-sccd/serviceAccounts/fsautosa0617@project-sccd.iam.gserviceaccount.com/keys/b8eb1631fc7637e4f9afd68ac4ba8d5c99bb46dc"
+      },
+      "requestMetadata": {
+        "callerIp": "110.235.238.40",
+        "callerSuppliedUserAgent": "grpc-java-netty/1.44.1,gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-07-05T07:14:18.305302Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firestore.googleapis.com",
+      "methodName": "google.firestore.v1.Firestore.BatchGetDocuments",
+      "authorizationInfo": [
+        {
+          "resource": "projects/project-sccd/databases/",
+          "permission": "datastore.entities.get",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/project-sccd/databases/(default)",
+      "numResponseItems": "1",
+      "request": {
+        "database": "projects/project-sccd/databases/(default)",
+        "@type": "type.googleapis.com/google.firestore.v1.BatchGetDocumentsRequest",
+        "documents": [
+          "projects/project-sccd/databases/(default)/documents/AutoCollect/Automation1657005255992"
+        ]
+      },
+      "metadata": {
+        "keys": [
+          "projects/project-sccd/databases/(default)/documents/AutoCollect/Automation1657005255992"
+        ],
+        "@type": "type.googleapis.com/google.cloud.audit.DatastoreServiceData",
+        "processingDuration": "0.010111672s"
+      }
+    },
+    "insertId": "641kpxe2h0sy",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "method": "google.firestore.v1.Firestore.BatchGetDocuments",
+        "service": "firestore.googleapis.com",
+        "project_id": "project-sccd"
+      }
+    },
+    "timestamp": "2022-07-05T07:14:18.296195Z",
+    "severity": "INFO",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Fdata_access",
+    "receiveTimestamp": "2022-07-05T07:14:18.599615152Z"
+  },
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "fsautosa0617@project-sccd.iam.gserviceaccount.com",
+        "serviceAccountKeyName": "//iam.googleapis.com/projects/project-sccd/serviceAccounts/fsautosa0617@project-sccd.iam.gserviceaccount.com/keys/b8eb1631fc7637e4f9afd68ac4ba8d5c99bb46dc"
+      },
+      "requestMetadata": {
+        "callerIp": "110.235.238.40",
+        "callerSuppliedUserAgent": "grpc-java-netty/1.44.1,gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-07-05T07:14:18.462360Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firestore.googleapis.com",
+      "methodName": "google.firestore.v1.Firestore.RunQuery",
+      "authorizationInfo": [
+        {
+          "resource": "projects/project-sccd/databases/",
+          "permission": "datastore.entities.get",
+          "granted": true,
+          "resourceAttributes": {}
+        },
+        {
+          "resource": "projects/project-sccd/databases/",
+          "permission": "datastore.entities.list",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/project-sccd/databases/(default)",
+      "numResponseItems": "4",
+      "request": {
+        "@type": "type.googleapis.com/google.firestore.v1.RunQueryRequest",
+        "structuredQuery": {
+          "from": [
+            {
+              "collectionId": "AutoCollect"
+            }
+          ],
+          "where": {
+            "fieldFilter": {
+              "field": {
+                "fieldPath": "AGC"
+              },
+              "op": "EQUAL",
+              "value": {
+                "stringValue": "Agra Cantonment"
+              }
+            }
+          }
+        },
+        "parent": "projects/project-sccd/databases/(default)/documents"
+      },
+      "metadata": {
+        "processingDuration": "0.037973120s",
+        "@type": "type.googleapis.com/google.cloud.audit.DatastoreServiceData"
+      }
+    },
+    "insertId": "641kpxe2h0t2",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "project_id": "project-sccd",
+        "service": "firestore.googleapis.com",
+        "method": "google.firestore.v1.Firestore.RunQuery"
+      }
+    },
+    "timestamp": "2022-07-05T07:14:18.424246Z",
+    "severity": "INFO",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Fdata_access",
+    "receiveTimestamp": "2022-07-05T07:14:18.599615152Z"
+  },
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "fsautosa0617@project-sccd.iam.gserviceaccount.com",
+        "serviceAccountKeyName": "//iam.googleapis.com/projects/project-sccd/serviceAccounts/fsautosa0617@project-sccd.iam.gserviceaccount.com/keys/b8eb1631fc7637e4f9afd68ac4ba8d5c99bb46dc"
+      },
+      "requestMetadata": {
+        "callerIp": "110.235.238.40",
+        "callerSuppliedUserAgent": "grpc-java-netty/1.44.1,gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-07-05T07:15:11.017342Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firestore.googleapis.com",
+      "methodName": "google.firestore.v1.Firestore.BatchGetDocuments",
+      "authorizationInfo": [
+        {
+          "resource": "projects/project-sccd/databases/",
+          "permission": "datastore.entities.get",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/project-sccd/databases/(default)",
+      "numResponseItems": "1",
+      "request": {
+        "database": "projects/project-sccd/databases/(default)",
+        "@type": "type.googleapis.com/google.firestore.v1.BatchGetDocumentsRequest",
+        "documents": [
+          "projects/project-sccd/databases/(default)/documents/AutoCollect/Automation1657005308834"
+        ]
+      },
+      "metadata": {
+        "processingDuration": "0.020295592s",
+        "@type": "type.googleapis.com/google.cloud.audit.DatastoreServiceData",
+        "keys": [
+          "projects/project-sccd/databases/(default)/documents/AutoCollect/Automation1657005308834"
+        ]
+      }
+    },
+    "insertId": "2rzzvsd10ck",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "project_id": "project-sccd",
+        "service": "firestore.googleapis.com",
+        "method": "google.firestore.v1.Firestore.BatchGetDocuments"
+      }
+    },
+    "timestamp": "2022-07-05T07:15:11.000883Z",
+    "severity": "INFO",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Fdata_access",
+    "receiveTimestamp": "2022-07-05T07:15:11.576241067Z"
+  }
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "authenticationInfo": {
+        "principalEmail": "vejalla.indrani@hcl.com"
+      },
+      "requestMetadata": {
+        "callerIp": "117.216.244.14",
+        "callerSuppliedUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36,gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-07-27T13:46:40.084767Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firestore.googleapis.com",
+      "methodName": "google.firestore.admin.v1.FirestoreAdmin.UpdateField",
+      "authorizationInfo": [
+        {
+          "resource": "projects/project-sccd/databases/(default)/collectionGroups/collection-27-jul/fields/id",
+          "permission": "datastore.indexes.update",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/project-sccd/databases/(default)/collectionGroups/collection-27-jul/fields/id",
+      "request": {
+        "field": {
+          "name": "projects/project-sccd/databases/(default)/collectionGroups/collection-27-jul/fields/id"
+        },
+        "@type": "type.googleapis.com/google.firestore.admin.v1.UpdateFieldRequest",
+        "updateMask": "indexConfig"
+      }
+    },
+    "insertId": "1ndnjwjc1vh",
+    "resource": {
+      "type": "datastore_database",
+      "labels": {
+        "database_id": "(default)",
+        "project_id": "project-sccd"
+      }
+    },
+    "timestamp": "2022-07-27T13:46:39.914964Z",
+    "severity": "NOTICE",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Factivity",
+    "operation": {
+      "id": "projects/project-sccd/databases/(default)/operations/AyBjODM3OWZmOTQ1NWEtOGFiYS1iNjc0LTkzZTYtYmMxNTE3OGQkGnRsdWFmZWQHEjFzLXNhLXJleGVkbmktbmltZGETCkYS",
+      "producer": "firestore.googleapis.com",
+      "first": true
+    },
+    "receiveTimestamp": "2022-07-27T13:46:40.459753415Z"
+  }
+]
