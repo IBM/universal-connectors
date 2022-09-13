@@ -55,6 +55,7 @@ public class AuroraMysqlGuardiumPluginFilterTest {
 		e.setField(Constants.SERVER_INSTANCE, "testauroracluster-instance-1");
 		e.setField(Constants.DB_USER, "admin");
 		e.setField(Constants.AUDIT_ACTION, "FAILED_CONNECT");
+		e.setField(Constants.SERVERHOSTNAME, "serverHostName");
 
 		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 
