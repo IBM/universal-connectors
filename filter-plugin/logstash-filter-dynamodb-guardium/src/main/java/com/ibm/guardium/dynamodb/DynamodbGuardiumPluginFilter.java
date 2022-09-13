@@ -57,13 +57,14 @@ public class DynamodbGuardiumPluginFilter implements Filter{
 				String input = e.getField("mes***REMOVED***ge").toString();
 	            try {
 	            	JsonObject inputJSON = (JsonObject) JsonParser.parseString(input);
+					inputJSON.addProperty(Constants.ACCOUNT_ID, e.getField("account_id").toString());
 	            	Record record = Parser.parseRecord(inputJSON);
 	            	final GsonBuilder builder = new GsonBuilder();
 	            	builder.serializeNulls();
 	            	final Gson gson = builder.create();
 	            	e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
 
-	            	matchListener.filterMatched(e); 
+	            	matchListener.filterMatched(e);
 	            }
 	            catch (Exception exception) {
 	            	log.error("Dynamodb filter: Error parsing dynamo event "+ exception);

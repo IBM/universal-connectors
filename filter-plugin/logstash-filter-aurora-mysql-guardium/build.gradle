@@ -30,7 +30,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
     }
 }
 
@@ -38,8 +38,16 @@ repositories {
     mavenCentral()
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.0'
+tasks.register("vendor"){
+    dependsOn shadowJar
+    doLast {
+        String vendorPathPrefix = "vendor/jar-dependencies"
+        String projectGroupPath = project.group.replaceAll('\\.', '/')
+        File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
+        projectJarFile.mkdirs()
+        Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
+        validatePluginJar(projectJarFile, project.group)
+    }
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
@@ -49,14 +57,14 @@ shadowJar {
 }
 
 dependencies {
-    compile group: 'commons-validator', name: 'commons-validator', version: '1.5.1'
+    compile group: 'commons-validator', name: 'commons-validator', version: '1.7'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
     compile 'org.apache.commons:commons-lang3:3.7'
-    compile 'com.google.code.gson:gson:2.8.6'
-    compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-?.?.?.jar")
-    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-univer***REMOVED***lconnector-commons-?.?.?.jar")
-    //implementation 'com.google.code.gson:gson:2.8.6'
-    
+    compile 'com.google.code.gson:gson:2.8.9'
+    compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
+    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
+    //implementation 'com.google.code.gson:gson:2.8.9'
+
     testCompile 'junit:junit:4.12'
     testCompile 'org.jruby:jruby-complete:9.2.7.0'
     
@@ -70,7 +78,7 @@ clean {
     delete "${projectDir}/" + pluginInfo.pluginFullName() + ".gemspec"
     delete "${projectDir}/lib/"
     delete "${projectDir}/vendor/"
-    new FileNameFinder().getFileNames(projectDir.toString(), pluginInfo.pluginFullName() + "-?.?.?.gem").each { filename ->
+    new FileNameFinder().getFileNames(projectDir.toString(), pluginInfo.pluginFullName() + "-*.*.*.gem").each { filename ->
         delete filename
     }
 }
@@ -79,24 +87,13 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-task vendor(dependsOn: shadowJar) {
-    doLast {
-        String vendorPathPrefix = "vendor/jar-dependencies"
-        String projectGroupPath = project.group.replaceAll('\\.', '/')
-        File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
-        projectJarFile.mkdirs()
-        Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
-        validatePluginJar(projectJarFile, project.group)
-    }
-}
-
-task generateRubySupportFiles() {
+tasks.register("generateRubySupportFiles") {
     doLast {
         generateRubySupportFilesForPlugin(project.description, project.group, version)
     }
 }
 
-task removeObsoleteJars() {
+tasks.register("removeObsoleteJars") {
     doLast {
         new FileNameFinder().getFileNames(
                 projectDir.toString(),
@@ -107,7 +104,8 @@ task removeObsoleteJars() {
     }
 }
 
-task gem(dependsOn: [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]) {
+tasks.register("gem"){
+    dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
     doLast {
         buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
     }
@@ -119,7 +117,7 @@ task copyDependencyLibs(type: Copy) {
    from configurations.runtimeClasspath
    from configurations.testCompileClasspath
    from configurations.testRuntimeClasspath
-   }
+}
 
 
 
