@@ -1,0 +1,137 @@
+import java.nio.file.Files
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
+
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
+ 
+// ===========================================================================
+//                             plugin info
+// ===========================================================================
+group                      "com.ibm.guardium.firestore" // must match the package of the main plugin class
+version                    "${file("VERSION").text.trim()}" // read from required VERSION file
+description                = "Fire-Store-Guardium filter plugin"
+pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
+pluginInfo.longDescription = "This gem is a Logstash Fire-Store filter plugin required to be installed as part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program."
+pluginInfo.authors         = ['IBM']
+pluginInfo.email           = ['']
+pluginInfo.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
+pluginInfo.pluginType      = "filter"
+pluginInfo.pluginClass     = "FireStoreGuardiumFilter"
+pluginInfo.pluginName      = "fire_store_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
+// ===========================================================================
+ 
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: "com.github.johnrengelman.shadow"
+
+shadowJar {
+    classifier = null
+    transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer)
+    
+}
+
+dependencies {
+
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'org.apache.commons:commons-lang3:3.7'
+   
+     
+    testImplementation group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    testImplementation 'org.jruby:jruby-complete:9.2.7.0'
+    
+    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-master-?.?.?.jar")
+    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-?.?.?.jar")
+    
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.2'
+    
+   // https://mvnrepository.com/artifact/org.json/json
+	implementation group: 'org.json', name: 'json', version: '20210307'
+    
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-master-?.?.?.jar") 
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+clean {
+    delete "${projectDir}/Gemfile"
+    delete "${projectDir}/" + pluginInfo.pluginFullName() + ".gemspec"
+    delete "${projectDir}/lib/"
+    delete "${projectDir}/vendor/"
+    new FileNameFinder().getFileNames(projectDir.toString(), pluginInfo.pluginFullName() + "-?.?.?.gem").each { filename ->
+        delete filename
+    }
+}
+
+task vendor(dependsOn: shadowJar) {
+    doLast {
+        String vendorPathPrefix = "vendor/jar-dependencies"
+        String projectGroupPath = project.group.replaceAll('\\.', '/')
+        File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
+        projectJarFile.mkdirs()
+        Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
+        validatePluginJar(projectJarFile, project.group)
+    }
+}
+
+
+task generateRubySupportFiles() {
+    doLast {
+        generateRubySupportFilesForPlugin(project.description, project.group, version)
+    }
+}
+
+task removeObsoleteJars() {
+    doLast {
+        new FileNameFinder().getFileNames(
+                projectDir.toString(),
+                "vendor/**/" + pluginInfo.pluginFullName() + "*.jar",
+                "vendor/**/" + pluginInfo.pluginFullName() + "-" + version + ".jar").each { f ->
+            delete f
+        }
+    }
+}
+
+tasks.register("gem"){
+    dependsOn ([downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles])
+    doLast {
+        buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
+    }
+}
+
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+    
+     afterEvaluate { // (optional) : to exclude classes / packages from coverage
+        classDirectories.from = files(classDirectories.files.collect {
+            fileTree(
+                dir: it,
+                exclude: ['com/ibm/guardium/firestore/CommonUtils','com/ibm/guardium/firestore/ExceptionEnum.*'])
+        })
+    }
+}
+test.finalizedBy jacocoTestReport
