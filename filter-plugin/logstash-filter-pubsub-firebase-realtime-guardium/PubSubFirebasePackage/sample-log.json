@@ -1,0 +1,534 @@
+[
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "aayushi.palod@hcl.com"
+      },
+      "requestMetadata": {
+        "callerIp": "2402:8100:3869:5a3f:7c04:7ea4:5ce9:9296",
+        "callerSuppliedUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44,gzip(gfe),gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-06-24T05:56:04.257962Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firebasedatabase.googleapis.com",
+      "methodName": "google.firebase.database.v1beta.RealtimeDatabaseService.ListDatabaseInstances",
+      "authorizationInfo": [
+        {
+          "resource": "projects/1065340084898",
+          "permission": "firebasedatabase.instances.list",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/1065340084898/locations/-",
+      "request": {
+        "parent": "projects/1065340084898/locations/-",
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.ListDatabaseInstancesRequest"
+      }
+    },
+    "insertId": "yp75crd1ka6",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "method": "google.firebase.database.v1beta.RealtimeDatabaseService.ListDatabaseInstances",
+        "service": "firebasedatabase.googleapis.com",
+        "project_id": "project-sccd"
+      }
+    },
+    "timestamp": "2022-06-24T05:56:03.876362Z",
+    "severity": "INFO",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Fdata_access",
+    "receiveTimestamp": "2022-06-24T05:56:05.031193200Z"
+  },
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {
+        "code": 3,
+        "mes***REMOVED***ge": "Error; please try again later."
+      },
+      "authenticationInfo": {
+        "principalEmail": "aayushi.palod@hcl.com"
+      },
+      "requestMetadata": {
+        "callerIp": "2402:8100:3869:5a3f:7c04:7ea4:5ce9:9296",
+        "callerSuppliedUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44,gzip(gfe),gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-06-24T05:58:33.023943Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firebasedatabase.googleapis.com",
+      "methodName": "google.firebase.database.v1beta.RealtimeDatabaseService.CreateDatabaseInstance",
+      "authorizationInfo": [
+        {
+          "resource": "projects/1065340084898",
+          "permission": "firebasedatabase.instances.create",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/1065340084898/locations/us-central1",
+      "request": {
+        "databaseInstance": {
+          "type": "USER_DATABASE"
+        },
+        "parent": "projects/1065340084898/locations/us-central1",
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.CreateDatabaseInstanceRequest",
+        "validateOnly": true,
+        "databaseId": "project-sccd"
+      }
+    },
+    "insertId": "-k8xek1d1kz0",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "service": "firebasedatabase.googleapis.com",
+        "method": "google.firebase.database.v1beta.RealtimeDatabaseService.CreateDatabaseInstance",
+        "project_id": "project-sccd"
+      }
+    },
+    "timestamp": "2022-06-24T05:58:32.643443Z",
+    "severity": "ERROR",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Factivity",
+    "receiveTimestamp": "2022-06-24T05:58:33.650158403Z"
+  },
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "aayushi.palod@hcl.com"
+      },
+      "requestMetadata": {
+        "callerIp": "2402:8100:3869:5a3f:7c04:7ea4:5ce9:9296",
+        "callerSuppliedUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44,gzip(gfe),gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-06-24T05:58:34.512286Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firebasedatabase.googleapis.com",
+      "methodName": "google.firebase.database.v1beta.RealtimeDatabaseService.CreateDatabaseInstance",
+      "authorizationInfo": [
+        {
+          "resource": "projects/1065340084898",
+          "permission": "firebasedatabase.instances.create",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/1065340084898/locations/us-central1",
+      "request": {
+        "databaseInstance": {
+          "type": "USER_DATABASE"
+        },
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.CreateDatabaseInstanceRequest",
+        "databaseId": "project-sccd-67a02",
+        "validateOnly": true,
+        "parent": "projects/1065340084898/locations/us-central1"
+      },
+      "response": {
+        "databaseUrl": "https://project-sccd-67a02.firebaseio.com",
+        "name": "projects/1065340084898/locations/us-central1/instances/project-sccd-67a02",
+        "type": "USER_DATABASE",
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.DatabaseInstance",
+        "project": "projects/1065340084898"
+      }
+    },
+    "insertId": "-7rejhcd1m7q",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "service": "firebasedatabase.googleapis.com",
+        "method": "google.firebase.database.v1beta.RealtimeDatabaseService.CreateDatabaseInstance",
+        "project_id": "project-sccd"
+      }
+    },
+    "timestamp": "2022-06-24T05:58:34.204381Z",
+    "severity": "NOTICE",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Factivity",
+    "receiveTimestamp": "2022-06-24T05:58:35.442490780Z"
+  },
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {
+        "code": 3,
+        "mes***REMOVED***ge": "Error; please try again later."
+      },
+      "authenticationInfo": {
+        "principalEmail": "aayushi.palod@hcl.com"
+      },
+      "requestMetadata": {
+        "callerIp": "2402:8100:3869:5a3f:7c04:7ea4:5ce9:9296",
+        "callerSuppliedUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44,gzip(gfe),gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-06-24T05:58:41.526643Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firebasedatabase.googleapis.com",
+      "methodName": "google.firebase.database.v1beta.RealtimeDatabaseService.CreateDatabaseInstance",
+      "authorizationInfo": [
+        {
+          "resource": "projects/1065340084898",
+          "permission": "firebasedatabase.instances.create",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/1065340084898/locations/us-central1",
+      "request": {
+        "databaseId": "project-sccd-67a02-",
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.CreateDatabaseInstanceRequest",
+        "parent": "projects/1065340084898/locations/us-central1",
+        "databaseInstance": {
+          "type": "USER_DATABASE"
+        },
+        "validateOnly": true
+      }
+    },
+    "insertId": "-4zloebd1kjs",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "method": "google.firebase.database.v1beta.RealtimeDatabaseService.CreateDatabaseInstance",
+        "project_id": "project-sccd",
+        "service": "firebasedatabase.googleapis.com"
+      }
+    },
+    "timestamp": "2022-06-24T05:58:41.204097Z",
+    "severity": "ERROR",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Factivity",
+    "receiveTimestamp": "2022-06-24T05:58:42.015794119Z"
+  },
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "aayushi.palod@hcl.com"
+      },
+      "requestMetadata": {
+        "callerIp": "2402:8100:3869:5a3f:7c04:7ea4:5ce9:9296",
+        "callerSuppliedUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44,gzip(gfe),gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-06-24T05:59:09.996558Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firebasedatabase.googleapis.com",
+      "methodName": "google.firebase.database.v1beta.RealtimeDatabaseService.CreateDatabaseInstance",
+      "authorizationInfo": [
+        {
+          "resource": "projects/1065340084898",
+          "permission": "firebasedatabase.instances.create",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/1065340084898/locations/us-central1",
+      "request": {
+        "parent": "projects/1065340084898/locations/us-central1",
+        "validateOnly": true,
+        "databaseId": "project-sccd-67a02-abcd",
+        "databaseInstance": {
+          "type": "USER_DATABASE"
+        },
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.CreateDatabaseInstanceRequest"
+      },
+      "response": {
+        "type": "USER_DATABASE",
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.DatabaseInstance",
+        "databaseUrl": "https://project-sccd-67a02-abcd.firebaseio.com",
+        "project": "projects/1065340084898",
+        "name": "projects/1065340084898/locations/us-central1/instances/project-sccd-67a02-abcd"
+      }
+    },
+    "insertId": "-7rejhcd1mb0",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "service": "firebasedatabase.googleapis.com",
+        "method": "google.firebase.database.v1beta.RealtimeDatabaseService.CreateDatabaseInstance",
+        "project_id": "project-sccd"
+      }
+    },
+    "timestamp": "2022-06-24T05:59:09.747471Z",
+    "severity": "NOTICE",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Factivity",
+    "receiveTimestamp": "2022-06-24T05:59:10.446744058Z"
+  },
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "aayushi.palod@hcl.com"
+      },
+      "requestMetadata": {
+        "callerIp": "2402:8100:3869:5a3f:7c04:7ea4:5ce9:9296",
+        "callerSuppliedUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44,gzip(gfe),gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-06-24T05:59:13.277888Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firebasedatabase.googleapis.com",
+      "methodName": "google.firebase.database.v1beta.RealtimeDatabaseService.CreateDatabaseInstance",
+      "authorizationInfo": [
+        {
+          "resource": "projects/1065340084898",
+          "permission": "firebasedatabase.instances.create",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/1065340084898/locations/us-central1",
+      "request": {
+        "parent": "projects/1065340084898/locations/us-central1",
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.CreateDatabaseInstanceRequest",
+        "databaseId": "project-sccd-67a02-abcd",
+        "databaseInstance": {
+          "type": "USER_DATABASE"
+        }
+      },
+      "response": {
+        "type": "USER_DATABASE",
+        "name": "projects/1065340084898/locations/us-central1/instances/project-sccd-67a02-abcd",
+        "databaseUrl": "https://project-sccd-67a02-abcd.firebaseio.com",
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.DatabaseInstance",
+        "project": "projects/1065340084898"
+      }
+    },
+    "insertId": "yp75crd1koq",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "service": "firebasedatabase.googleapis.com",
+        "project_id": "project-sccd",
+        "method": "google.firebase.database.v1beta.RealtimeDatabaseService.CreateDatabaseInstance"
+      }
+    },
+    "timestamp": "2022-06-24T05:59:12.688197Z",
+    "severity": "NOTICE",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Factivity",
+    "receiveTimestamp": "2022-06-24T05:59:13.899254134Z"
+  },
+  {
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "aayushi.palod@hcl.com"
+      },
+      "requestMetadata": {
+        "callerIp": "2402:8100:3869:5a3f:7c04:7ea4:5ce9:9296",
+        "callerSuppliedUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44,gzip(gfe),gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-06-24T05:59:14.115946Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firebasedatabase.googleapis.com",
+      "methodName": "google.firebase.database.v1beta.RealtimeDatabaseService.ListDatabaseInstances",
+      "authorizationInfo": [
+        {
+          "resource": "projects/1065340084898",
+          "permission": "firebasedatabase.instances.list",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/1065340084898/locations/-",
+      "request": {
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.ListDatabaseInstancesRequest",
+        "parent": "projects/1065340084898/locations/-"
+      }
+    },
+    "insertId": "-k8xek1d1l2m",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "service": "firebasedatabase.googleapis.com",
+        "method": "google.firebase.database.v1beta.RealtimeDatabaseService.ListDatabaseInstances",
+        "project_id": "project-sccd"
+      }
+    },
+    "timestamp": "2022-06-24T05:59:13.795562Z",
+    "severity": "INFO",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Fdata_access",
+    "receiveTimestamp": "2022-06-24T05:59:14.606603056Z"
+  },
+{
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "aayushi.palod@hcl.com"
+      },
+      "requestMetadata": {
+        "callerIp": "122.161.51.105",
+        "callerSuppliedUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44,gzip(gfe),gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-06-22T09:37:05.834447Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firebasedatabase.googleapis.com",
+      "methodName": "google.firebase.database.v1beta.RealtimeDatabaseService.ReenableDatabaseInstance",
+      "authorizationInfo": [
+        {
+          "resource": "projects/1065340084898",
+          "permission": "firebasedatabase.instances.reenable",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/1065340084898/locations/us-central1/instances/project-sccd-26ae8-aayushi",
+      "request": {
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.ReenableDatabaseInstanceRequest",
+        "name": "projects/1065340084898/locations/us-central1/instances/project-sccd-26ae8-aayushi"
+      },
+      "response": {
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.DatabaseInstance",
+        "type": "USER_DATABASE",
+        "project": "projects/1065340084898",
+        "databaseUrl": "https://project-sccd-26ae8-aayushi.firebaseio.com",
+        "name": "projects/1065340084898/locations/us-central1/instances/project-sccd-26ae8-aayushi"
+      }
+    },
+    "insertId": "9fnb00d2tgw",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "service": "firebasedatabase.googleapis.com",
+        "project_id": "project-sccd",
+        "method": "google.firebase.database.v1beta.RealtimeDatabaseService.ReenableDatabaseInstance"
+      }
+    },
+    "timestamp": "2022-06-22T09:37:05.375458Z",
+    "severity": "NOTICE",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Factivity",
+    "receiveTimestamp": "2022-06-22T09:37:06.134731204Z"
+  },
+{
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "aayushi.palod@hcl.com"
+      },
+      "requestMetadata": {
+        "callerIp": "122.161.51.105",
+        "callerSuppliedUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44,gzip(gfe),gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-06-22T09:47:45.496736Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firebasedatabase.googleapis.com",
+      "methodName": "google.firebase.database.v1beta.RealtimeDatabaseService.Di***REMOVED***bleDatabaseInstance",
+      "authorizationInfo": [
+        {
+          "resource": "projects/1065340084898",
+          "permission": "firebasedatabase.instances.di***REMOVED***ble",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/1065340084898/locations/us-central1/instances/project-sccd-26ae8-aayushi",
+      "request": {
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.Di***REMOVED***bleDatabaseInstanceRequest",
+        "name": "projects/1065340084898/locations/us-central1/instances/project-sccd-26ae8-aayushi"
+      },
+      "response": {
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.DatabaseInstance",
+        "type": "USER_DATABASE",
+        "project": "projects/1065340084898",
+        "databaseUrl": "https://project-sccd-26ae8-aayushi.firebaseio.com",
+        "name": "projects/1065340084898/locations/us-central1/instances/project-sccd-26ae8-aayushi"
+      }
+    },
+    "insertId": "-3lt3ghd2d0i",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "service": "firebasedatabase.googleapis.com",
+        "project_id": "project-sccd",
+        "method": "google.firebase.database.v1beta.RealtimeDatabaseService.Di***REMOVED***bleDatabaseInstance"
+      }
+    },
+    "timestamp": "2022-06-22T09:47:45.158493Z",
+    "severity": "NOTICE",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Factivity",
+    "receiveTimestamp": "2022-06-22T09:47:45.730539225Z"
+  },
+{
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "status": {},
+      "authenticationInfo": {
+        "principalEmail": "pankaj-g766@hcl.com"
+      },
+      "requestMetadata": {
+        "callerIp": "168.149.166.95",
+        "callerSuppliedUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33,gzip(gfe),gzip(gfe)",
+        "requestAttributes": {
+          "time": "2022-06-10T12:18:06.170559Z",
+          "auth": {}
+        },
+        "destinationAttributes": {}
+      },
+      "serviceName": "firebasedatabase.googleapis.com",
+      "methodName": "google.firebase.database.v1beta.RealtimeDatabaseService.DeleteDatabaseInstance",
+      "authorizationInfo": [
+        {
+          "resource": "projects/1065340084898",
+          "permission": "firebasedatabase.instances.delete",
+          "granted": true,
+          "resourceAttributes": {}
+        }
+      ],
+      "resourceName": "projects/1065340084898/locations/us-central1/instances/project-sccd-pankaj-test-10",
+      "request": {
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.DeleteDatabaseInstanceRequest",
+        "name": "projects/1065340084898/locations/us-central1/instances/project-sccd-pankaj-test-10"
+      },
+      "response": {
+        "@type": "type.googleapis.com/google.firebase.database.v1beta.DatabaseInstance",
+        "type": "USER_DATABASE",
+        "project": "projects/1065340084898",
+        "databaseUrl": "https://project-sccd-pankaj-test-10.firebaseio.com",
+        "name": "projects/1065340084898/locations/us-central1/instances/project-sccd-pankaj-test-10"
+      }
+    },
+    "insertId": "jpid44d2xhw",
+    "resource": {
+      "type": "audited_resource",
+      "labels": {
+        "method": "google.firebase.database.v1beta.RealtimeDatabaseService.DeleteDatabaseInstance",
+        "service": "firebasedatabase.googleapis.com",
+        "project_id": "project-sccd"
+      }
+    },
+    "timestamp": "2022-06-10T12:18:05.821337Z",
+    "severity": "NOTICE",
+    "logName": "projects/project-sccd/logs/cloudaudit.googleapis.com%2Factivity",
+    "receiveTimestamp": "2022-06-10T12:18:06.711321889Z"
+  }
+]
