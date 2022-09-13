@@ -1,0 +1,7 @@
+2022-02-09 06:31:31.397 INFO  (qtp234250762-18) [   x:demo_collection] o.a.s.u.p.LogUpdateProcessorFactory [demo_collection]  webapp=/solr path=/update params={commitWithin=1000&overwrite=true&wt=json&_=1644230869164}{add=[400 (1724266097036754944)]} 0 3
+2022-02-09 06:33:02.727 INFO  (qtp234250762-18) [   x:demo_collection] o.a.s.u.p.LogUpdateProcessorFactory [demo_collection]  webapp=/solr path=/update params={commitWithin=1000&overwrite=true&wt=json&_=1644230869164}{add=[401 (1724266192804249600)]} 0 2
+2022-02-09 06:49:31.070 INFO  (qtp234250762-22) [   x:demo_collection] o.a.s.c.S.Request [demo_collection]  webapp=/solr path=/select params={q=id:401&_=1644230860222} hits=1 status=0 QTime=0
+2022-02-09 06:44:21.089 ERROR (qtp234250762-19) [   x:demo_collection] o.a.s.h.RequestHandlerBase org.apache.solr.common.SolrException: Expected: OBJECT_START but got STRING at [2]
+2022-02-15 04:16:07.774 INFO  (qtp2005169944-25) [   x:testnew] o.a.s.c.S.Request [testnew]  webapp=/solr path=/select params={q=id:123&indent=true&q.op=OR&_=1644898437709} hits=1 status=0 QTime=4
+2022-02-15 04:23:46.295 INFO  (qtp2005169944-20) [   x:test123] o.a.s.u.p.LogUpdateProcessorFactory [test123]  webapp=/solr path=/update params={commitWithin=1000&overwrite=true&wt=json&_=1644897727942}{add=[yashi (1724801641240068096)]} 0 196
+2022-03-24 11:56:22.486 INFO  (qtp2005169944-57) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={name=Solr_sample_core&action=CREATE&instanceDir=Solr_sample_core&wt=json} status=0 QTime=2167
