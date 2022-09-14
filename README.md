@@ -79,7 +79,7 @@ The Universal connector is monitored via tools that are already familiar to Guar
 
 ## Policies
 
-With a few exceptions,  using data from the universal connector is no different than using data from any other source in Guardium Data Protection or Guardium Insights. For using the Universal Connector in Guardium Data Protection, there are a few unique policies that can be found in this link:
+With a few Exceptions,  using data from the universal connector is no different than using data from any other source in Guardium Data Protection or Guardium Insights. For using the Universal Connector in Guardium Data Protection, there are a few unique policies that can be found in this link:
 
 [Configuring Policies for the universal connector](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-configuring-policies-universal)
 
