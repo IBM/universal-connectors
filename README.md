@@ -79,7 +79,7 @@ The Univer***REMOVED***l connector is monitored via tools that are already famil
 
 ## Policies
 
-With a few exceptions, using data from the univer***REMOVED***l connector is no different than using data from any other source in Guardium Data Protection or Guardium Insights. For using the Univer***REMOVED***l Connector in Guardium Data Protection, there are a few unique policies that can be found in this link:
+With a few exceptions,  using data from the univer***REMOVED***l connector is no different than using data from any other source in Guardium Data Protection or Guardium Insights. For using the Univer***REMOVED***l Connector in Guardium Data Protection, there are a few unique policies that can be found in this link:
 
 [Configuring Policies for the univer***REMOVED***l connector](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-configuring-policies-univer***REMOVED***l)
 
