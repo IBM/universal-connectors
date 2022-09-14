@@ -74,7 +74,7 @@ public class ParserHelperTest {
 		event.setField(ApplicationConstant.CONNECTIONID_KEY, null);
 		event.setField(ApplicationConstant.DATABASE_KEY, null);
 		event.setField(ApplicationConstant.USERNAME_KEY, null);
-		event.setField(ApplicationConstantTest.RETCODE_KEY, null);
+		event.setField(ApplicationConstantTest.RETCODE_KEY, "0");
 		event.setField(ApplicationConstantTest.OBJECT_KEY, "'show globl variables like \\\\'server-audit%\\\\''");
 		event.setField(ApplicationConstantTest.HOSTNAME_KEY, "localhost");
 		event.setField(ApplicationConstantTest.SERVERHOST_KEY, "LP-5CD1184J8J");
@@ -96,7 +96,7 @@ public class ParserHelperTest {
 	}
 
 	@Test
-	public void parseAccessorTest() {
+	public void parseAccessorTest() throws Exception {
 		Event event = new org.logstash.Event();
 		event.setField(ApplicationConstant.HOSTNAME_KEY, ApplicationConstantTest.HOSTNAME_VALUE);
 		event.setField(ApplicationConstant.SERVERHOST_KEY, ApplicationConstantTest.SERVERHOST_VALUE);
@@ -114,7 +114,7 @@ public class ParserHelperTest {
 	}
 
 	@Test
-	public void parseAccessor1Test() {
+	public void parseAccessor1Test() throws Exception {
 		Event event = new org.logstash.Event();
 		event.setField(ApplicationConstant.HOSTNAME_KEY, null);
 		event.setField(ApplicationConstant.SERVERHOST_KEY, null);
