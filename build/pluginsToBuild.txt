@@ -5,9 +5,9 @@ filter-plugin/logstash-filter-hdfs-guardium
 filter-plugin/logstash-output-guardium
 filter-plugin/logstash-filter-mysql-percona-guardium
 filter-plugin/logstash-filter-generic-guardium
-filter-plugin/logstash-filter-dynamodb-guardium
-filter-plugin/logstash-filter-mariadb-guardium
 filter-plugin/logstash-filter-***REMOVED***phana-guardium
 filter-plugin/logstash-filter-cas***REMOVED***ndra-guardium
 filter-plugin/logstash-filter-aurora-mysql-guardium
+filter-plugin/logstash-filter-dynamodb-guardium
+filter-plugin/logstash-filter-mariadb-guardium
 input-plugin/logstash-input-mongo-atlas
