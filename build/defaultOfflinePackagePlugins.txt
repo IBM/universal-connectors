@@ -10,5 +10,4 @@ filter-plugin/logstash-filter-cas***REMOVED***ndra-guardium/logstash-filter-cas*
 filter-plugin/logstash-filter-aurora-mysql-guardium/logstash-filter-auroramysqlguardiumpluginfilter-1.0.1.gem
 filter-plugin/logstash-filter-dynamodb-guardium/logstash-filter-dynamodb_guardium_plugin_filter-1.0.0.gem
 filter-plugin/logstash-filter-mariadb-guardium/logstash-filter-mariadb_guardium_filter-2.3.60.gem
-filter-plugin/logstash-filter-neo4j-guardium/logstash-filter-neodb_guardium_filter-1.0.0.gem
 input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input-1.0.1.gem
