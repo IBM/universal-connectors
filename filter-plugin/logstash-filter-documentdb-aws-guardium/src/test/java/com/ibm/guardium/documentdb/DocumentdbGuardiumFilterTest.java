@@ -8,10 +8,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+//import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
 import com.google.gson.Gson;
 import com.ibm.guardium.univer***REMOVED***lconnector.commons.GuardConstants;
@@ -20,6 +18,10 @@ import com.ibm.guardium.univer***REMOVED***lconnector.commons.structures.Record;
 import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
 import co.elastic.logstash.api.FilterMatchListener;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+//import static org.junit.Assert.*;
 
 public class DocumentdbGuardiumFilterTest {
 
