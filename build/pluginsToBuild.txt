@@ -7,4 +7,6 @@ filter-plugin/logstash-filter-generic-guardium
 filter-plugin/logstash-filter-saphana-guardium
 filter-plugin/logstash-filter-cassandra-guardium
 filter-plugin/logstash-filter-aurora-mysql-guardium
+filter-plugin/logstash-filter-dynamodb-guardium
+filter-plugin/logstash-filter-mariadb-guardium
 input-plugin/logstash-input-mongo-atlas
