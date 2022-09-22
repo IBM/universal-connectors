@@ -69,7 +69,7 @@ public class CouchdbGuardiumFilter implements Filter {
 						event.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(rec));
 						matchListener.filterMatched(event);
 					} catch (Exception exception) {
-						log.error("Exception occurred while parsing the audit log:  ", e);
+						log.error("Exception occurred while parsing the audit log:  ", event);
 						event.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
 					}
 				} 
