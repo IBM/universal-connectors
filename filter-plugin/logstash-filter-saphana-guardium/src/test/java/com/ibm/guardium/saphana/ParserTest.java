@@ -71,7 +71,7 @@ public class ParserTest {
 		data.addProperty(Constants.SCHEMA_NAME, "SYSTEM");
 		final Record record = Parser.parseRecord(data);
 
-		Assert.assertEquals("CONNECT", record.getException().getExceptionTypeId());
+		Assert.assertEquals("LOGIN_FAILED", record.getException().getExceptionTypeId());
 		Assert.assertEquals("authentication failed", record.getException().getDescription());
 	}
 
