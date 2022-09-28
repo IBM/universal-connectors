@@ -57,9 +57,8 @@ public class ParserTest {
 		final Record record = Parser.parseRecord(intrimData);
 
 		Assert.assertEquals(Constants.TEXT, record.getAccessor().getDataType());
-		Assert.assertEquals("REQUEST_FAILURE", record.getException().getExceptionTypeId());
+		Assert.assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
 		Assert.assertNull(record.getData());
-
 	}
 
 	@SuppressWarnings("unchecked")

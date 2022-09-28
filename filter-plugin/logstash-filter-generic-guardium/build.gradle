@@ -61,15 +61,18 @@ dependencies {
     compile group: 'commons-validator', name: 'commons-validator', version: '1.7'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
     compile 'org.apache.commons:commons-lang3:3.7'
-    compile 'com.google.code.gson:gson:2.8.6'
+    compile 'com.google.code.gson:gson:2.8.9'
     compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
     compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-univer***REMOVED***lconnector-commons-*.*.*.jar")
     //implementation 'com.google.code.gson:gson:2.8.6'
-    
-    testCompile 'junit:junit:4.13.1'
-    testCompile 'org.jruby:jruby-complete:9.3.2.0'
-    
-   testCompile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-univer***REMOVED***lconnector-commons-*.*.*.jar")
+
+    // testCompile 'junit:junit:4.13.1'
+    // testCompile 'org.jruby:jruby-complete:9.3.2.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.jruby:jruby-complete:9.2.7.0'
+
+    //testCompile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-univer***REMOVED***lconnector-commons-*.*.*.jar")
 }
 
 clean {
@@ -77,7 +80,7 @@ clean {
     delete "${projectDir}/" + pluginInfo.pluginFullName() + ".gemspec"
     delete "${projectDir}/lib/"
     delete "${projectDir}/vendor/"
-    new FileNameFinder().getFileNames(projectDir.toString(), pluginInfo.pluginFullName() + "-?.?.?.gem").each { filename ->
+    new FileNameFinder().getFileNames(projectDir.toString(), pluginInfo.pluginFullName() + "-*.*.*.gem").each { filename ->
         delete filename
     }
 }
