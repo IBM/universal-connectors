@@ -10,4 +10,3 @@ filter-plugin/logstash-filter-aurora-mysql-guardium
 filter-plugin/logstash-filter-dynamodb-guardium
 filter-plugin/logstash-filter-mariadb-guardium
 filter-plugin/logstash-filter-couchbasedb-guardium
-input-plugin/logstash-input-mongo-atlas
