@@ -1,0 +1,33 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+.settings
+# Ignore Gradle build output directorySS
+build
+bin
+*.idea
+*.iml
+lib/
+lib/*.rb
+vendor/
+.bundle/
+build/
+out/
+.idea
+.gradle
+.vscode
+.classpath
+.project
+*.code-workspace
+*.DS_Store
+*.iml
+*.class
+*.ipr
+*.iws
+*.gem
+*.gemspec
+*.properties
+Gemfile*
+# settings.gradle
+.gitattributes
+log/
+

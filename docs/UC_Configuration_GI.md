@@ -54,7 +54,7 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
     
     e. Follow the instructions according to the input plug-in type you selected in <em>**step c**</em>.
     
- ## Filebeat   
+ ## Filebeat input plug-in configuration
 1.  In the Additional info page, enter a **Data source tag**: This tag identifies the plug-in that is associated with this connector. Use this tag in the filebeat.yml    configuration of the data sources whose type matches this plug-in step 2 of the last section on this page: Configuring Filebeat to forward audit logs to Guardium.  The data source sends the tag with every event. For example, specify any-mongodb in this field, and configure Filebeat with the ***REMOVED***me tag for MongoDB activity logs coming from your MongoDB data source.
       
 2.  Click **Configure**.
@@ -65,7 +65,7 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
        
 5. To configure the data source to communicate with Guardium Insights, follow the instructions in the last section on this page: Configuring Filebeat to forward audit logs to Guardium.  Copy the hostname in the Configuration Notes to configure the host in the filebeat.yml file on your datasource.
         
- ## Cloudwatch\_logs
+ ## CloudWatch input plug-in configuration
         
 1. In the Additional info page, specify the details of the connection you want to create:
 
