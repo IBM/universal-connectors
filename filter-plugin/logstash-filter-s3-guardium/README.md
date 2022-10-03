@@ -24,7 +24,7 @@ b.	Click Create trail and enter the trail name
 
 c.	Fill in the details
 
-![General details](univer***REMOVED***l-connectors/docs/images/cloudwatch/general_details.png)
+![General details]([univer***REMOVED***l-connectors/docs/images/cloudwatch/general_details.png](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/images/cloudwatch/CloudWatch_logs.png))
 
 2. Enable the CloudWatch logs, select the target log group, and click Next
 
