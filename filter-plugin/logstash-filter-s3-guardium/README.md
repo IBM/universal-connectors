@@ -24,25 +24,25 @@ b.	Click Create trail and enter the trail name
 
 c.	Fill in the details
 
-![General details]()
+![General details](univer***REMOVED***l-connectors/docs/images/cloudwatch/general_details.png)
 
 2. Enable the CloudWatch logs, select the target log group, and click Next
 
-![CloudWatch logs]()
+![CloudWatch logs](univer***REMOVED***l-connectors/docs/images/cloudwatch/CloudWatch_logs.png)
 
 3. Select both Management events and Data events
 
-![Log events]()
+![Log events](univer***REMOVED***l-connectors/docs/images/cloudwatch/log_events.png)
 
 4. Select S3 as the data event source and the buckets that you want to monitor and click Next (Here we switched to basic event selectors)
 
-![Data events]()
+![Data events](univer***REMOVED***l-connectors/docs/images/cloudwatch/data_events.png)
 
 
 
 5. In the `Summary` screen, validate that the data is accurate and click Create
 
- ![Summary]()
+ ![Summary](univer***REMOVED***l-connectors/docs/images/cloudwatch/summary.png)
 
 ## Configuring an IAM role for CloudWatch integration
 
@@ -54,13 +54,13 @@ c.	Fill in the details
 
 (For both the role and every instance that will use it: ``"arn:aws:iam::346824953529:role/ec2_single_account_cloudwatch_logs/*"``, ``"arn:aws:iam::346824953529:role/ec2_single_account_cloudwatch_logs"``.)
 
- ![Roles]()
+ ![Roles](univer***REMOVED***l-connectors/docs/images/cloudwatch/roles.png)
 
-  ![IAM Roles]()
+  ![IAM Roles](univer***REMOVED***l-connectors/docs/images/cloudwatch/iam_roles.png)
 
 3. Select AWS service as Trusted entity type and EC2 as a use case.
 
- ![AWS + EC2]()
+ ![AWS + EC2](univer***REMOVED***l-connectors/docs/images/cloudwatch/awsec2.png)
 
 
 
@@ -68,9 +68,9 @@ c.	Fill in the details
 
    a. Go to the ec2 machine hosting Guardium and modify the IAM role to the one you created
 
-   ![ec2 Roles]()
+   ![ec2 Roles](univer***REMOVED***l-connectors/docs/images/cloudwatch/ec2_roles.png)
 
-    ![IAM ec2 Roles]()
+    ![IAM ec2 Roles](univer***REMOVED***l-connectors/docs/images/cloudwatch/iam_ec2_rolls.png)
 
 5. VPC endpoint- In cases where Cloudwatch Logs is outside the VPC of the ec2 machine hosting Guardium, you can create a VPC endpoint that will establish a private connection between your VPC and CloudWatch Logs by following the instructions in:
 https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch-logs-and-interface-VPC.html
@@ -83,93 +83,12 @@ https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch-logs-and-int
 
 3. Select Connector template as Amazon S3 using CloudWatch
 
- ![Connector configuration 1]()
+ ![Connector configuration 1](univer***REMOVED***l-connectors/docs/images/cloudwatch/connector_configuration_1.png)
 
 4. Fill in the log group and the role_arn that were assigned to the ec2
 
- ![Connector configuration 2]()
+ ![Connector configuration 2](univer***REMOVED***l-connectors/docs/images/cloudwatch/connector_configuration_2.png)
 
-# Univer***REMOVED***l connector for CloudWatch with S3 in a single account
-
-## Configuring Amazon AWS CloudTrail to send log files to CloudWatch
-
-The full AWS documentation is in
-https://docs.aws.amazon.com/awscloudtrail/latest/userguide/send-cloudtrail-events-to-cloudwatch-logs.html
-
-### Procedure
-
-1. Go to https://console.aws.amazon.com/cloudtrail
-
-a.	Click Trails in the left menu
-
-b.	Click Create trail and enter the trail name
-
-c.	Fill in the details
-
-![General details]()
-
-2. Enable the CloudWatch logs, select the target log group, and click Next
-
-![CloudWatch logs]()
-
-3. Select both Management events and Data events
-
-![Log events]()
-
-4. Select S3 as the data event source and the buckets that you want to monitor and click Next (Here we switched to basic event selectors)
-
-![Data events]()
-
-
-
-5. In the `Summary` screen, validate that the data is accurate and click Create
-
- ![Summary]()
-
-## Configuring an IAM role for CloudWatch integration
-
-1. Log in to your IAM console (https://console.aws.amazon.com/iam/).
-
-   a. Create a role
-
-2. Select Roles in the left-hand navigation and then create a new IAM role that has `CloudWatchLogsReadOnlyAccess` and `sts:AssumeRole` permissions
-
-(For both the role and every instance that will use it: ``"arn:aws:iam::346824953529:role/ec2_single_account_cloudwatch_logs/*"``, ``"arn:aws:iam::346824953529:role/ec2_single_account_cloudwatch_logs"``.)
-
- ![Roles]()
-
-  ![IAM Roles]()
-
-3. Select AWS service as Trusted entity type and EC2 as a use case.
-
- ![AWS + EC2]()
-
-
-
-4. Set the role to the ec2 machine hosting Guardium
-
-   a. Go to the ec2 machine hosting Guardium and modify the IAM role to the one you created
-
-   ![ec2 Roles]()
-
-    ![IAM ec2 Roles]()
-
-5. VPC endpoint- In cases where Cloudwatch Logs is outside the VPC of the ec2 machine hosting Guardium, you can create a VPC endpoint that will establish a private connection between your VPC and CloudWatch Logs by following the instructions in:
-https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch-logs-and-interface-VPC.html
-
-## Configuring the univer***REMOVED***l connector in Guardium
-
-1. Log in to Guardium
-
-2. Go to `Configure Univer***REMOVED***l Connector`
-
-3. Select Connector template as Amazon S3 using CloudWatch
-
- ![Connector configuration 1]()
-
-4. Fill in the log group and the role_arn that were assigned to the ec2
-
- ![Connector configuration 2]()
 ## Configuring the Amazon S3 over Cloudwatch_logs in Guardium Insights
 
 To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/UC_Configuration_GI.md)
