@@ -24,7 +24,7 @@ b.	Click Create trail and enter the trail name
 
 c.	Fill in the details
 
-![General details]([/docs/images/cloudwatch/general_details.png]
+![General details](/docs/images/cloudwatch/general_details.png)
 
 2. Enable the CloudWatch logs, select the target log group, and click Next
 
