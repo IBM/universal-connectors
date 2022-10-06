@@ -73,7 +73,7 @@ Overall, deploying the univer***REMOVED***l connector involves the following wor
 
 The Univer***REMOVED***l connector is monitored via tools that are already familiar to Guardium Data Protection and Guardium Insights users. As well as some unique tools that can be found in the following links. 
 
- [Monitoring UC connections in Guardium Data Protection](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-monitoring-data-flow-status)
+ [Monitoring UC connections in Guardium Data Protection](docs/monitoring_GDP.md)
 
  [Monitoring UC connections in Guardium Insights](/docs/monitoring_GI.MD)
 
@@ -81,7 +81,7 @@ The Univer***REMOVED***l connector is monitored via tools that are already famil
 
 With a few Exceptions,  using data from the univer***REMOVED***l connector is no different than using data from any other source in Guardium Data Protection or Guardium Insights. For using the Univer***REMOVED***l Connector in Guardium Data Protection, there are a few unique policies that can be found in this link:
 
-[Configuring Policies for the univer***REMOVED***l connector](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-configuring-policies-univer***REMOVED***l)
+[Configuring Policies for the univer***REMOVED***l connector](docs/uc_policies_gdp.md)
 
 
 ## Known limitations
