@@ -73,7 +73,7 @@ Overall, deploying the universal connector involves the following workflow:
 
 The Universal connector is monitored via tools that are already familiar to Guardium Data Protection and Guardium Insights users. As well as some unique tools that can be found in the following links. 
 
- [Monitoring UC connections in Guardium Data Protection](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-monitoring-data-flow-status)
+ [Monitoring UC connections in Guardium Data Protection](docs/monitoring_GDP.md)
 
  [Monitoring UC connections in Guardium Insights](/docs/monitoring_GI.MD)
 
@@ -81,7 +81,7 @@ The Universal connector is monitored via tools that are already familiar to Guar
 
 With a few Exceptions,  using data from the universal connector is no different than using data from any other source in Guardium Data Protection or Guardium Insights. For using the Universal Connector in Guardium Data Protection, there are a few unique policies that can be found in this link:
 
-[Configuring Policies for the universal connector](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-configuring-policies-universal)
+[Configuring Policies for the universal connector](docs/uc_policies_gdp.md)
 
 
 ## Known limitations
