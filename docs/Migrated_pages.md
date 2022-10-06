@@ -211,13 +211,13 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
 
 - Make sure that Elasticsearch output is commented out.
   - Add or uncomment the Logstash output and edit the following parameters:
-  - Add all the Guardium Universal Connector IPs and ports:
+  - For Guardium Data Protection, add all the Guardium Universal Connector IPs and ports:
 
                 ```
                 hosts: **hosts: \[“<ipaddress1\>:<port\>”,”<ipaddress2\>:<port\>,”<ipaddress3\>:<port\>”...\]**
                 ```
-
-  - Use the same port you selected when configuring the Universal Connector.
+  -  For Guardium Insights, add all universal connector hosts and ports.  Copy the hostname and port (443) from the Configuration Notes to configure the host in the filebeat.yml file on your datasource.
+  - For Guardium Data Protection, use the same port you selected when configuring the Universal Connector. For Guardium Insights, the configured port should be 443. Guardium Insights will map this to an internal port and then copy the path to the certificate (see step 4 and 5 in the Procedure on [this page](universal-connectors/docs/UC_Configuration_GI.md)).
   - Enable load balancing:
 
                 ```
