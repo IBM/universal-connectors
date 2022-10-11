@@ -18,11 +18,11 @@ https://docs.aws.amazon.com/awscloudtrail/latest/userguide/send-cloudtrail-event
 
 1. Go to https://console.aws.amazon.com/cloudtrail
 
-a.	Click Trails in the left menu
+    a.	Click Trails in the left menu
 
-b.	Click Create trail and enter the trail name
+    b.	Click Create trail and enter the trail name
 
-c.	Fill in the details
+    c.	Fill in the details
 
 ![General details](/docs/images/cloudwatch/general_details.png)
 
