@@ -18,11 +18,11 @@ https://docs.aws.amazon.com/awscloudtrail/latest/userguide/send-cloudtrail-event
 
 1. Go to https://console.aws.amazon.com/cloudtrail
 
-a.	Click Trails in the left menu
+    a.	Click Trails in the left menu
 
-b.	Click Create trail and enter the trail name
+    b.	Click Create trail and enter the trail name
 
-c.	Fill in the details
+    c.	Fill in the details
 
 ![General details](/docs/images/cloudwatch/general_details.png)
 
@@ -46,34 +46,87 @@ c.	Fill in the details
 
 ## Configuring an IAM role for CloudWatch integration
 
-1. Log in to your IAM console (https://console.aws.amazon.com/iam/).
+1.	Log in to your IAM console (https://console.aws.amazon.com/iam/).
 
    a. Create a role
 
-2. Select Roles in the left-hand navigation and then create a new IAM role that has `CloudWatchLogsReadOnlyAccess` and `sts:AssumeRole` permissions
+2.	Select ```AWS service``` as ```Trusted entity``` type and ```EC2``` as a ```use case```. Click ```Next```
 
-(For both the role and every instance that will use it: ``"arn:aws:iam::346824953529:role/ec2_single_account_cloudwatch_logs/*"``, ``"arn:aws:iam::346824953529:role/ec2_single_account_cloudwatch_logs"``.)
+![use case](/docs/images/cloudwatch/use_case.png)
 
- ![Roles](/docs/images/cloudwatch/roles.png)
+3.	Search ```“CloudWatchLogsReadOnlyAccess“``` in ```policy filter``` and select it. Click ```Next```
 
-  ![IAM Roles](/docs/images/cloudwatch/iam_roles.png)
+![policy filter](/docs/images/cloudwatch/policy_filter.png)
 
-3. Select AWS service as Trusted entity type and EC2 as a use case.
+4.	Enter ```RoleName```
 
- ![AWS + EC2](/docs/images/cloudwatch/awsec2.png)
+![role name](/docs/images/cloudwatch/role_name.png)
+
+5.	Click ```Create Role```
+
+![create role](/docs/images/cloudwatch/create_role.png)
+
+6.	Search for the created role and open it.
+
+7.	In the ```Permissions``` tab, click the ```Add Permissions``` button and select ```Create Inline Policy```
+
+8.	On the ```Create Policy``` page, select JSON editor and add the below policy.
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "sts:AssumeRole",
+            "Resource": [
+                "arn:aws:iam::<AWS Account>:role/<Role Name>/*",
+                "arn:aws:iam::<AWS Account>:role/<Role Name>",
+                "arn:aws:sts::<AWS Account>:assumed-role/<Role Name>/*",
+                "arn:aws:sts::<AWS Account>:assumed-role/<Role Name>/<EC2 Instance Id>"
+            ]
+        }
+    ]
+}
+ ```
+ ![create policy](/docs/images/cloudwatch/create_policy.png)
+
+9.	Click ```Review Policy```
+
+10.	Enter the policy name and click ```Create Policy```
+
+![create policy 2](/docs/images/cloudwatch/create_policy_2.png)
+
+11.	On ```Role```, click the ```Trust relationships``` tab, click ```Edit trust policy```
+
+12.	Add the below statement in ```trust policy``` and click  ```Update Policy```:
+
+```
+{
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:sts::<AWS Account>:assumed-role/<Role Name>/<EC2 Instance Id>"
+            },
+            "Action": "sts:AssumeRole"
+        }
+```
+![update policy](/docs/images/cloudwatch/update_policy.png)
+
+13.	Set the role to the ec2 machine hosting Guardium
+
+ a.	Go to the ec2 machine hosting Guardium and modify the IAM role to the one you created
+![iam role](/docs/images/cloudwatch/iam_role.png)
+![iam role 2](/docs/images/cloudwatch/iam_role_2.png)
 
 
+14.	VPC endpoint- In cases where Cloudwatch Logs is outside the VPC of the ec2 machine hosting Guardium, you can create a VPC endpoint that will establish a private connection between your VPC and CloudWatch Logs by following the instructions in: https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch-logs-and-interface-VPC.html
 
-4. Set the role to the ec2 machine hosting Guardium
+To authorize outgoing traffic from Amazon Web Services (AWS) to Guardium, run these APIs:
+```
+grdapi add_domain_to_univer***REMOVED***l_connector_allowed_domains domain=amazonaws.com
+grdapi add_domain_to_univer***REMOVED***l_connector_allowed_domain
+```
 
-   a. Go to the ec2 machine hosting Guardium and modify the IAM role to the one you created
-
-   ![ec2 Roles](/docs/images/cloudwatch/ec2_roles.png)
-
-    ![IAM ec2 Roles](/docs/images/cloudwatch/iam_ec2_rolls.png)
-
-5. VPC endpoint- In cases where Cloudwatch Logs is outside the VPC of the ec2 machine hosting Guardium, you can create a VPC endpoint that will establish a private connection between your VPC and CloudWatch Logs by following the instructions in:
-https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch-logs-and-interface-VPC.html
 
 ## 3. Configuring the univer***REMOVED***l connector in Guardium
 
