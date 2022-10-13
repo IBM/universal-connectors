@@ -1,7 +1,7 @@
 /*
-© Copyright IBM Corp. 2021, 2022 All rights reserved.
-SPDX-License-Identifier: Apache-2.0
- */
+* © Copyright IBM Corp. 2021, 2022 All rights reserved.
+* SPDX-License-Identifier: Apache-2.0
+*/
 
 package com.ibm.neptune.connector.constant;
 
