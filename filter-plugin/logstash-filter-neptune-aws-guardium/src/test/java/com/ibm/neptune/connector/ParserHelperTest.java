@@ -65,7 +65,7 @@ public class ParserHelperTest {
 		Time actualResponse = ParserHelper.parseTime(ApplicationConstantTest.TIME_STAMP);
 		assertNotNull(actualResponse);
 		assertEquals(Long.parseLong(ApplicationConstantTest.TIME_STAMP), actualResponse.getTimstamp());
-		//assertEquals(ApplicationConstantTest.MINOFFSETFROMGMT, actualResponse.getMinOffsetFromGMT());
+
 	}
 
 	@Test
@@ -103,7 +103,6 @@ public class ParserHelperTest {
 						.split(ApplicationConstantTest.DOT)[0] + ".aws.com",
 				actualResponse.getAccessor().getServerHostName());
 		assertEquals(Long.parseLong(ApplicationConstantTest.TIME_STAMP), actualResponse.getTime().getTimstamp());
-		//assertEquals(ApplicationConstantTest.MINOFFSETFROMGMT, actualResponse.getTime().getMinOffsetFromGMT());
 		assertEquals(ApplicationConstantTest.SERVER_IP, actualResponse.getSessionLocator().getServerIp());
 		assertEquals(Integer.parseInt(ApplicationConstantTest.SERVER_PORT),
 				actualResponse.getSessionLocator().getServerPort());
@@ -137,7 +136,6 @@ public class ParserHelperTest {
 						.split(ApplicationConstantTest.DOT)[0] + ".aws.com",
 				actualResponse.getAccessor().getServerHostName());
 		assertEquals(Long.parseLong(ApplicationConstantTest.TIME_STAMP), actualResponse.getTime().getTimstamp());
-		//assertEquals(ApplicationConstantTest.MINOFFSETFROMGMT, actualResponse.getTime().getMinOffsetFromGMT());
 		assertEquals(ApplicationConstantTest.SERVER_IP, actualResponse.getSessionLocator().getServerIp());
 		assertEquals(Integer.parseInt(ApplicationConstantTest.SERVER_PORT),
 				actualResponse.getSessionLocator().getServerPort());
