@@ -1,5 +1,5 @@
 /*
-© Copyright IBM Corp. 2021, 2022 All rights reserved.
+*ï¿½ Copyright IBM Corp. 2021, 2022 All rights reserved.
 SPDX-License-Identifier: Apache-2.0
  */
 
