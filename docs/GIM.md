@@ -3,17 +3,17 @@
 You can use the GIM client, which is installed on your database,
 to manage native log audit forwarding by using Filebeat and Syslog.
 
-•	**Configuring the GIM client to handle Filebeat and Syslog on MongoDB**
+•	Configuring the GIM client to handle Filebeat and Syslog on MongoDB
 
 You can configure the Filebeat and Syslog native log audit on MongoDB data sources
 by installing the GIM client on the MongoDB, and configuring the GIM parameters in the Setup by Client page.
 
-•	**Installing the GIM client by using shell on Unix, and configuring Filebeat and Syslog on MongoDB by using GIM**
+•	Installing the GIM client by using shell on Unix, and configuring Filebeat and Syslog on MongoDB by using GIM
 
 You can install the ```GIM BUNDLE-GUC``` by script on the Unix database server,
 and then continue by configuring the Guardium universal connector in the Set up by Client page.
 
-•	**Creating a filter for MongoDB activity audit log by using the API**
+•	Creating a filter for MongoDB activity audit log by using the API
 
 The groups in the API `schedule_generate_mongo_filter_job` are used to continuously update
 the value of the GIM parameter ```GUC_AUDIT_LOG_FILTER```. The GIM parameter specifies which events to include
@@ -24,7 +24,8 @@ populating the groups, and running the API.
 
 You can configure the Filebeat and Syslog native log audit on MongoDB data sources by installing the
  GIM client on the MongoDB, and configuring the GIM parameters in the Setup by Client page.
-Before you begin
+ 
+### Before you begin
 
 •	Obtain the GIM client from either [Fix Central](https://www.ibm.com/support/fixcentral/), or your
 Guardium representative. The bundle name has the format BUNDLE-GUC.
@@ -32,7 +33,7 @@ Guardium representative. The bundle name has the format BUNDLE-GUC.
 •	The GIM bundles must be uploaded and imported to the Guardium system. See [Uploading and
 importing GIM modules](https://www.ibm.com/docs/en/guardium/11.5?topic=gim-uploading-importing-modules).
 
-About this task
+### About this task
 
 You can either update the configuration immediately and restart the database, or save the configuration to a
 temporary mongod.conf file on the database. The parameter ```GUC_RESTART_DB``` controls the restart.
@@ -40,7 +41,7 @@ See the [parameter description](https://www.ibm.com/docs/en/guardium/11.4?topic=
 (You can also install the GIM bundle on Linux servers by using the shell.
 See Installing the GIM client by using shell on Unix, and configuring Filebeat and Syslog on MongoDB by using GIM below.)
 
-Procedure
+### Procedure
 
 1. Install the GIM client on your data sources.
 For UNIX, use GUC GIM package guard-bundle-GUC-11.4.0.0_r111103_v11_4_1-rhel-8-linux-x86_64.gim.
@@ -74,11 +75,8 @@ b.	Set the ```GUC_GUARD_HOSTS``` parameter, which is required for installation.
 | ----------                |  -----------                                                                                                                              |
 |GUC_GUARD_HOSTS            | IPv4: Comma-delimited string of ```host_port```. For Syslog, only one pair is allowed.IPv6: Comma-delimited string of ```[host]_port```.  |
 |                           |     To connect to a Guardium system configured with IPv6, configure the rsyslog on the MongoDB server to send by using a TCP port.            |
-|                           |   For example, ```programname, isequal, "mongod" @@[2620:1f7:807:a080:956:9300:0:1c]:5000``` is a required parameter for installation.      |
-|GUC_INSTALL_FILEBEAT       |	Determines whether the GIM bundle needs to install Filebeat on your database or not. Valid values:                                        |
-|                                	0: Do not install Filebeat. This is the default value.
-|                                	Install Filebeat on your database.
-|                                Optional. Can be set only during installation, not during update.
+|                           |   For example, ```programname, isequal, "mongod" @@[2620:1f7:807:a080:956:9300:0:1c]:5000``` is a required parameter for installation.    |    
+|GUC_INSTALL_FILEBEAT       |	Determines whether the GIM bundle needs to install Filebeat on your database or not. Valid values:<br>  0: Do not install Filebeat. This is the default value.<br> 1:	Install Filebeat on your database.<br><br> Optional. Can be set only during installation, not during update. |
 
   c.	Click Install.
 
@@ -113,7 +111,8 @@ After completing this procedure, see enabling the Guardium universal connector o
 ## Installing the GIM client by using shell on Unix, and configuring Filebeat and Syslog on MongoDB by using GIM
 
 You can install the ```GIM BUNDLE-GUC``` by script on the Unix database server, and then continue by configuring the Guardium universal connector in the Set up by Client page.
-Before you begin
+
+ ### Before you begin
 •	Obtain the correct Guardium universal connector installer script, from either [Fix Central](https://www.ibm.com/support/fixcentral/), or your Guardium representative. The script name identifies the database server operating system. The GUC shell installation package name is in the format: ```guard-bundle-GUC-11.3.0.0_r109603_v11_3_1-rhel-7-linux-x86_64.gim.sh```, where the first three numbers are the release number, followed by the revision number, in this example r109603.
 
 ### Procedure
