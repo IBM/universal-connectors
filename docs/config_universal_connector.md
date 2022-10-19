@@ -1,6 +1,6 @@
 # Configuring the Guardium univer***REMOVED***l connector
 
-Review the options and the end-to-end flow for configuring the Guardium univer***REMOVED***l connector before you start.
+Review the options and the end-to-end flow for configuring the Guardium univer***REMOVED***l connector.
 
 **Your role must include S-TAP Management Application role permission.**
 
@@ -10,34 +10,21 @@ Review the options and the end-to-end flow for configuring the Guardium univer**
 
 2.	For the data source types supported by Guardium:
 
-a.	Configure the native audit logs on the data source so that they can be parsed by Guardium, then configure the data shipper to forward the audit logs to the Guardium univer***REMOVED***l connector.
+      a.	Configure the native audit logs on the data source so that they can be parsed by Guardium, then configure the data shipper to forward the audit logs to the Guardium univer***REMOVED***l connector.
 
-b.	Configure the Guardium univer***REMOVED***l connector to read the native audit logs. See Adding connectors and plug-ins in Guardium. Customize one of the pre-defined templates, depending on your environment./To configure audit logs with one of the pre-packaged plug-ins that comes with Guardium, see the following pages:
+      b.	Configure the Guardium univer***REMOVED***l connector to read the native audit logs. See the section about adding connectors and plug-ins below. 
 
-*** Note: if you are using secrets or sensitive information in your configuration, see the Creating and Managing Secrets section below before you configure a new connector ***
+***Note: if you are using secrets or sensitive information in your configuration, see the Creating and Managing Secrets section below before you configure a new connector***
 
+3.	For a data source that does not have off-the-shelf support by Guardium, [upload a plug-in](docs/available_plugins.md)
 
-[Configuring audit logs on MongoDB and forwarding to Guardium with Filebeat] or [Configuring the GIM client to handle Filebeat and Syslog on MongoDB]
+4.	Enable the univer***REMOVED***l collector feature on the designated Guardium collectors or the stand-alone system. See the section about enabling the Guardium univer***REMOVED***l connector on collectors below.
 
-[Configuring audit logs on MongoDB and forwarding to Guardium via Syslog] or [Configuring the GIM client to handle Filebeat and Syslog on MongoDB]
-
-[Configuring audit logs on MySQL and forwarding to Guardium via Syslog]
-
-[Configuring audit logs on MySQL and forwarding to Guardium via Filebeat]
-
-[Configuring Amazon S3 auditing with CloudWatch]
-
-[Configuring Amazon S3 auditing via SQS]
-
-3.	For a data source that does not have off-the-shelf support by Guardium, upload a plug-in. See [Adding connectors and plug-ins in Guardium]
-
-4.	Enable the univer***REMOVED***l collector feature on the designated Guardium collectors or the stand-alone system. See [Enabling the Guardium univer***REMOVED***l connector on collectors].
-
-## Creating and Managing Secrets
+# Creating and Managing Secrets
 
 It is more secure to store secrets in the univer***REMOVED***l connector keystore, instead of writing the passwords in plain text within a connector configuration. Store secrets before you add a connector configuration that is using a secret. You also need to restart the univer***REMOVED***l connector to make the new or updated secrets available for univer***REMOVED***l connector configurations.
 
-### Procedure
+## Procedure
 
 1.	Create a secret. Log in to the Guardium CLI and create the key by using the grdapi command:
 ```
@@ -70,13 +57,13 @@ ok
 
 3.	Add a key as an environment variable in the connector configuration.
 
-a. Log in to Guardium and then go to the ```Configure Univer***REMOVED***l Connector``` page.
+      a. Log in to Guardium and then go to the ```Configure Univer***REMOVED***l Connector``` page.
 
-b. Upload jdbc driver (JAR file)
+      b. Upload jdbc driver (JAR file)
 
-c. Add or edit a connector configuration to use a secret. Instead of writing the secret in plain text, type the key that you created as an environment variable.
+      c. Add or edit a connector configuration to use a secret. Instead of writing the secret in plain text, type the key that you created as an environment variable.
 For example,
-```
+           ```
   jdbc {   
 ...  
 jdbc_connection_string => "jdbc:..."  
@@ -85,8 +72,9 @@ jdbc_password => "${MYSQL_USERX_PASSWORD}"
  ... }     
 jdbc_password =>        
 "${MYSQL_USERX_PASSWORD}"
-```
-•	Save the configuration.
+         ```
+    
+    d. Save the configuration.
 
 ***Note: To use the JDBC input plug-in, you need to upload a driver (JAR file), then add the configuration.***
 
@@ -117,6 +105,7 @@ After you configure the database server native audit, and the file forwarding to
 **Tip: To simplify managing multiple collectors, create a managed unit group and use the API. See [Creating managed unit groups](https://www.ibm.com/docs/en/guardium/11.5?topic=functions-creating-managed-unit-groups).**
 
 **Attention: When you reboot your Guardium system, restart the Guardium univer***REMOVED***l connector by running the API:**
+
 ```
 grdapi run_local_univer***REMOVED***l_connector
 ```
@@ -126,13 +115,14 @@ Procedure
 
 2.	To enable on multiple collectors by using the API, on the central manager enter:
 ```
-grdapi run_univer***REMOVED***l_connector api_target_host=group:<managed unit group name>```
+grdapi run_univer***REMOVED***l_connector api_target_host=group:<managed unit group name>
+```
 
 3.	Check the status by:
 
 - Checking that the ```Di***REMOVED***bled``` button is active in the Configure Univer***REMOVED***l Connector page, which indicates that the Guardium Univer***REMOVED***l Connector is enabled.
 
-- Enter the API command on the managed unit (not on the central manager): ```grdapi get_univer***REMOVED***l_connector_status```
+- Entering the API command on the managed unit (not on the central manager): ```grdapi get_univer***REMOVED***l_connector_status```
 
 
 # Adding connectors and plug-ins in Guardium
@@ -143,8 +133,10 @@ The output of the Guardium univer***REMOVED***l connector is forwarded to the Gu
 
 Configure Guardium to read the native audit logs by customizing a pre-defined template for data sources that have pre-defined plug-ins (Amazon S3, MongoDB, and MySQL), or with your own plug-in.
 
-
+##  Before you begin
 **You must have permission for the role S-Tap Management. The admin user has this role by default.**
+
+## About this task
 
 Pre-defined plug-ins: Guardium has a few pre-defined plug-ins for specific data sources: Amazon S3, MongoDB, and MySQL. In this scenario, you do not need to upload a plug-in. Instead, you can use the corresponding template to help you to configure the input and the filter. The templates include all required fields. The input and filter sections conform to the sections in an Elastic Logstash configuration file, described [here](https://www.elastic.co/guide/en/logstash/7.5/configuration-file-structure.html).
 
@@ -163,7 +155,9 @@ if [type] == "syslogMongoDB" {
 *** Tip: When you ***REMOVED***ve a connector configuration, Guardium stops the univer***REMOVED***l connector, verifies the new connection syntax, and initiates the new connection. Then, it restarts the univer***REMOVED***l connector. To prevent unneces***REMOVED***ry loss of data during this stop period (usually about 1 minute), verify new configurations on a test Guardium system before you add them to your live system.***
 
 ## Procedure
+
 1.	On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Univer***REMOVED***l Connector```.
+
 2.	Click the plus icon. The Connector Configuration dialog opens.
 
 3.	For pre-defined plug-ins:
@@ -174,4 +168,4 @@ b.	From the Connector template drop-down list, select the template that most clo
 
 c.	Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, it appears in the Configure Univer***REMOVED***l Connector page.
 
-4.	For offline plug-in packs and related files, see https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/available_plugins.md
+4.	For offline plug-in packs and related files, [upload a plug-in here](docs/available_plugins.md).
