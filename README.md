@@ -66,16 +66,7 @@ In Guardium Data Protection, the overall workflow for deploying the universal co
 
 4. Configuring the universal connector to read the native audit logs
 
-In Guardium Insights, the workflow for deploying the universal connector is slightly different, and can be summarized as follows:
-
-
- 1. Uploading a plug-in that configures the filter or parser to convert the data source events to a standard Guardium format
- 
- 2. Configuring the connection between Guardium Insights and the data source
- 
- 3. Downloading the certificate (when using Filebeat input type)
-
-To see the workflow for Guardium Insights in more detail, click [here](docs/UC_Configuration_GI.md)
+In Guardium Insights, the workflow for deploying the universal connector is slightly different, and can be found [here](docs/UC_Configuration_GI.md)
 
 ***
 **However, the specific steps for each workflow may differ slightly per different data sources. See our [list of of available plugins](https://github.com/IBM/universal-connectors/blob/main/docs/available_plugins.md) to view detailed, step-by-step instructions for each supported data source/plug-in**.
