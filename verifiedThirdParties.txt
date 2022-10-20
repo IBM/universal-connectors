@@ -1,0 +1,4 @@
+***REMOVED***phana-jdbc https://tools.hana.ondemand.com/additional/ngdbc-latest.jar
+snowflake-jdbc https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.9.2/snowflake-jdbc-3.9.2.jar
+Azure-SQL-jdbc https://download.jar-download.com/cache_jars/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8/jar_files.zip?_=1666266541825
+MSSQL-jdbc https://download.jar-download.com/cache_jars/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8/jar_files.zip?_=1666266541825
