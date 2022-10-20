@@ -56,7 +56,7 @@ Univer***REMOVED***l Connector plug-ins are packaged and deployed in a Docker co
 
 ## Deploying Univer***REMOVED***l Connector
 
-Overall, deploying the univer***REMOVED***l connector involves the following workflow:
+In Guardium Data Protection, the overall workflow for deploying the univer***REMOVED***l connector is as follows:
 
 1. Uploading and installing a plugin
 
@@ -65,6 +65,11 @@ Overall, deploying the univer***REMOVED***l connector involves the following wor
 3. Sending native audit logs to the univer***REMOVED***l connector, using either a push or pull workflow. 
 
 4. Configuring the univer***REMOVED***l connector to read the native audit logs
+
+More detailed information about the workflow for GDP can be found [here](docs/uc_config_gdp.md).
+
+In Guardium Insights, the workflow for deploying the univer***REMOVED***l connector is slightly different, and can be found [here](docs/UC_Configuration_GI.md)
+
 ***
 **However, the specific steps for each workflow may differ slightly per different data sources. See our [list of of available plugins](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/available_plugins.md) to view detailed, step-by-step instructions for each supported data source/plug-in**.
 ***
