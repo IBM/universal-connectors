@@ -56,7 +56,7 @@ Universal Connector plug-ins are packaged and deployed in a Docker container env
 
 ## Deploying Universal Connector
 
-Overall, deploying the universal connector involves the following workflow:
+In Guardium Data Protection, the overall workflow for deploying the universal connector is as follows:
 
 1. Uploading and installing a plugin
 
@@ -65,6 +65,11 @@ Overall, deploying the universal connector involves the following workflow:
 3. Sending native audit logs to the universal connector, using either a push or pull workflow. 
 
 4. Configuring the universal connector to read the native audit logs
+
+More detailed information about the workflow for GDP can be found [here](docs/uc_config_gdp.md).
+
+In Guardium Insights, the workflow for deploying the universal connector is slightly different, and can be found [here](docs/UC_Configuration_GI.md)
+
 ***
 **However, the specific steps for each workflow may differ slightly per different data sources. See our [list of of available plugins](https://github.com/IBM/universal-connectors/blob/main/docs/available_plugins.md) to view detailed, step-by-step instructions for each supported data source/plug-in**.
 ***
