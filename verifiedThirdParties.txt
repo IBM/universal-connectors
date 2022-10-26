@@ -1,4 +1,4 @@
-saphana-jdbc.jar https://tools.hana.ondemand.com/additional/ngdbc-latest.jar
+saphana-jdbc.jar https://repo1.maven.org/maven2/com/sap/cloud/db/jdbc/ngdbc/2.14.7/ngdbc-2.14.7.jar
 snowflake-jdbc.jar https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.9.2/snowflake-jdbc-3.9.2.jar
 Azure-SQL-jdbc.jar https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/7.4.1.jre8/mssql-jdbc-7.4.1.jre8.jar
 MSSQL-jdbc.jar https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/7.4.1.jre8/mssql-jdbc-7.4.1.jre8.jar
