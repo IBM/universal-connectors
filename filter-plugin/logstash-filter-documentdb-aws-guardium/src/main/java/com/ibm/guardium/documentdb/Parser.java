@@ -182,14 +182,21 @@ public class Parser {
 			sentence.getObjects().add(parseSentenceObjectDocumentDbAudit(param,atype));
 		} else {// Profiler logs
 			final JsonObject command = data.get("command").getAsJsonObject();
-			for(Iterator<String> iterator = command.keySet().iterator(); iterator.hasNext();) {
-				String key = iterator.next();
+			if (data.has("op") && data.get("op").getAsString().equals("update")
+					|| data.has("op") && data.get("op").getAsString().equals("remove")) {
+				String key = data.get("op").getAsString();
 				sentence = new Sentence(key);
-				break;
+			} else {
+				for (Iterator<String> iterator = command.keySet().iterator(); iterator.hasNext();) {
+					String key = iterator.next();
+					sentence = new Sentence(key);
+					break;
+				}
 			}
-			sentence.getObjects().add(parseSentenceObjectDocumentDbProfiler(command));
+			sentence.getObjects().add(parseSentenceObjectDocumentDbProfiler(data));
 			
 		}
+		
 		return sentence;
 	}
 
@@ -203,12 +210,11 @@ public class Parser {
 		if(aType.equalsIgnoreCase("authenticate") && command.has("user")) {
 			sentenceObject = new SentenceObject(command.get("user").getAsString());
 		}else if(command.has("ns")) {
-			sentenceObject = new SentenceObject(command.get("ns").getAsString());
+			sentenceObject = new SentenceObject(!aType.equalsIgnoreCase("createDatabase")?command.get("ns").getAsString().split("\\.")[1]:command.get("ns").getAsString());
 		}else {
 			sentenceObject = new SentenceObject(command.toString());
 		}
 		sentenceObject.setType("collection"); // this used to be default value, but since sentence is defined in
-		// common package, "collection" as default value was removed
 
 		return sentenceObject;
 	}
@@ -220,30 +226,14 @@ public class Parser {
 	 */
 	protected static SentenceObject parseSentenceObjectDocumentDbProfiler(JsonObject command) {
 		SentenceObject sentenceObject = new SentenceObject(UNKOWN_STRING);
-		if (command.has("aggregate")) {
-			final JsonArray pipeline = command.getAsJsonArray("pipeline");
-			if (pipeline != null && pipeline.size() > 0) {
-				for (final JsonElement stage : pipeline) {
-
-					// handle * lookups
-					// + object if stage has $lookup or $graphLookup: { from: obj2 }
-					String matchStage = null;
-
-					if (stage.getAsJsonObject().has("$match")) {
-						matchStage = stage.getAsJsonObject().getAsJsonObject("$match").toString();
-					}
-
-					if (matchStage != null) {
-						// String m=matchStage.toString();
-						sentenceObject =  new SentenceObject(matchStage);
-					}
-				}
-			}
-		}else {
+		if (command != null && command.has("ns")) {
+			final String ns = command.get("ns").getAsString();
+			sentenceObject = new SentenceObject(ns.split("\\.")[1]);
+		}
+		else {
 			sentenceObject = new SentenceObject(command.toString());
 		}
 		sentenceObject.setType("collection"); // this used to be default value, but since sentence is defined in
-		// common package, "collection" as default value was removed
 
 		return sentenceObject;
 	}
