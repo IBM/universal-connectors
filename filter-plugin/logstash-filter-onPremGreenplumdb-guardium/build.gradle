@@ -52,13 +52,13 @@ dependencies {
 	implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.9'
 	implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
 
-    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-?.?.?.jar")
-    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-univer***REMOVED***lconnector-commons-master-?.?.?.jar")
+    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
+    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
  
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
     testImplementation 'org.jruby:jruby-complete:9.2.19.0'
     
-    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-univer***REMOVED***lconnector-commons-master-?.?.?.jar")
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
     
    
    
@@ -86,7 +86,8 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-task vendor(dependsOn: shadowJar) {
+tasks.register("vendor"){
+    dependsOn shadowJar
     doLast {
         String vendorPathPrefix = "vendor/jar-dependencies"
         String projectGroupPath = project.group.replaceAll('\\.', '/')
@@ -97,13 +98,13 @@ task vendor(dependsOn: shadowJar) {
     }
 }
 
-task generateRubySupportFiles() {
+tasks.register("generateRubySupportFiles"){
     doLast {
         generateRubySupportFilesForPlugin(project.description, project.group, version)
     }
 }
 
-task removeObsoleteJars() {
+tasks.register("removeObsoleteJars") {
     doLast {
         new FileNameFinder().getFileNames(
                 projectDir.toString(),
@@ -114,7 +115,8 @@ task removeObsoleteJars() {
     }
 }
 
-task gem(dependsOn: [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]) {
+tasks.register("gem"){
+    dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
     doLast {
         buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
     }
