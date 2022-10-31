@@ -12,4 +12,6 @@ filter-plugin/logstash-filter-neptune-aws-guardium
 filter-plugin/logstash-filter-couchbasedb-guardium
 filter-plugin/logstash-filter-couchdb-guardium
 filter-plugin/logstash-filter-mariadb-guardium
+filter-plugin/logstash-filter-azure-apachesolr-guardium
+filter-plugin/logstash-filter-onPremGreenplumdb-guardium
 input-plugin/logstash-input-mongo-atlas
