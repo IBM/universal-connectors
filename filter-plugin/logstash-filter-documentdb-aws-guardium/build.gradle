@@ -98,6 +98,7 @@ tasks.withType(JavaCompile) {
 }
 
 tasks.register("vendor"){
+    dependsOn shadowJar
     doLast {
         String vendorPathPrefix = "vendor/jar-dependencies"
         String projectGroupPath = project.group.replaceAll('\\.', '/')
