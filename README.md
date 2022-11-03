@@ -126,11 +126,14 @@ Known limitations for Guardium insights can be found in the UC plugin readme fil
 
 ## Developing plug-ins
 
-Users can develop their own univer***REMOVED***l connector plugins, if needed, and contribute them back to the open source project, if desired. 
+Users can develop their own univer***REMOVED***l connector plugins, if needed, and contribute them back to the open source project, if desired.
+
+(In order to overwrite old plug-ins, you can upload a new version from the official IBM Github page. Please make sure that the new plug-in has the exact ***REMOVED***me name as the old version.)
 
 [Here](docs/developing_plugins_gdp.md) is a guide for developing new plug-ins for Guardium Data Protection. 
 
 [Here](docs/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights. 
+
 
 ***
 **To make your connector plug-in available to the community, submit your connector to this repository for IBM Certification. We also accept updates or bug fixes to existing plug-ins, to keep them current:**
