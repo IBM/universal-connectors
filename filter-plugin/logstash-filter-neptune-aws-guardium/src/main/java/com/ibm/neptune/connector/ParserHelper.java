@@ -1,10 +1,8 @@
 /*
-© Copyright IBM Corp. 2021, 2022 All rights reserved.
-SPDX-License-Identifier: Apache-2.0
+ * Copyright 2020-2021 IBM Inc. All rights reserved
+ * SPDX-License-Identifier: Apache2.0
  */
-
 package com.ibm.neptune.connector;
-
 import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;

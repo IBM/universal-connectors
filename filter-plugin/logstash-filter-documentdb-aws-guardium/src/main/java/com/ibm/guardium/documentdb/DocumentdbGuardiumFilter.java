@@ -45,7 +45,7 @@ public class DocumentdbGuardiumFilter implements Filter {
 	private final static String DOCUMENTDB_PROFILER_SIGNAL = "command";
 	private final static String AGGR_KEY="aggregate";
 	private final static String COUNT_KEY="count";
-	private final static String DELETE_KEY="delete";
+	private final static String DELETE_KEY="remove";
 	private final static String INSERT_KEY="insert";
 	private final static String UPDATE_KEY="update";
 	private final static String DISTINCT_KEY="distinct";
@@ -88,12 +88,10 @@ public class DocumentdbGuardiumFilter implements Filter {
 		if (log == null) {
 			// instantiate default logger, as other Context can not coexsit alongside Guardium Univer***REMOVED***l Connector Logger context.
 			log = LogManager.getLogger(DocumentdbGuardiumFilter.class);
-			log.error ("got logger at filter instantiation"); // Only ERROR level and above work, as that the default Logger level cannot be changed in Guardium v11.3.
 		}
 		String mes***REMOVED***geString=null;
 		ArrayList<Event> skippedEvents = new ArrayList<>();
 		for (Event e : events) {
-			log.debug("DocumentDB filter: Got Event: " + logEvent(e));
 			if (e.getField("mes***REMOVED***ge") instanceof String) {
 				mes***REMOVED***geString = e.getField("mes***REMOVED***ge").toString();
 				
@@ -103,7 +101,9 @@ public class DocumentdbGuardiumFilter implements Filter {
 						JsonObject inputJSON = (JsonObject) JsonParser.parseString(mes***REMOVED***geString);
 						final String atype = inputJSON.get("atype").getAsString();
 						final JsonObject param = inputJSON.get("param").getAsJsonObject();
-                        if ((atype.equals("authenticate") && param.get("error").getAsString().equals("0")) || (!param.has("ns")) || (param.has("ns") && param.get("ns").getAsString().isEmpty()) )  {
+                       if ((atype.equals("authenticate") && param.get("error").getAsString().equals("0") ) ||
+				       	(param.has("ns") && param.get("ns").getAsString().isEmpty()))
+						{
                             e.tag(LOGSTASH_TAG_SKIP);
 							skippedEvents.add(e);
                             continue;
@@ -117,17 +117,11 @@ public class DocumentdbGuardiumFilter implements Filter {
 						if(e.getField("event_id") !=null && e.getField("event_id") instanceof String) {
 							record.setSessionId(record.getSessionId()+e.getField("event_id").toString());
 						}
-						log.debug(record.getSessionId());
 						this.correctIPs(e, record);
 						final GsonBuilder builder = new GsonBuilder();
 						builder.serializeNulls();
 						final Gson gson = builder.create();
 						e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
-						if (record.getDbName().equals(Parser.UNKOWN_STRING))  {
-                            e.tag(LOGSTASH_TAG_SKIP);
-							skippedEvents.add(e);
-                            continue;
-                        }
 						matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
 					} catch (Exception exception) {
 						// don't let event pass filter
