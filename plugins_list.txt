@@ -10,4 +10,3 @@ MysqlPerconaOverFilebeatPackage.zip
 SaphanaOverFilebeatPackage.zip
 JDBC_input.zip
 AzureSQLOverJdbcPackage.zip
-SnowflakeoverJDBCPackage.zip
