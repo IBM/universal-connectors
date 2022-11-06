@@ -1,0 +1,14 @@
+bin
+lib/
+*.class
+vendor/
+.bundle/
+build/
+.gradle
+.classpath
+.project
+*.gem
+*.gemspec
+Gemfile*
+gradle.properties
+.settings/
