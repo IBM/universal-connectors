@@ -11,3 +11,4 @@ SaphanaOverFilebeatPackage.zip
 JDBC_input.zip
 AzureSQLOverJdbcPackage.zip
 SaphanaOverJdbcPackage.zip
+MssqlAWSOverJdbcPackage.zip
