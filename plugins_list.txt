@@ -12,3 +12,5 @@ JDBC_input.zip
 AzureSQLOverJdbcPackage.zip
 SaphanaOverJdbcPackage.zip
 MssqlAWSOverJdbcPackage.zip
+MssqlOnPremOverJdbcPackage.zip
+SnowflakeoverJDBCPackage.zip
