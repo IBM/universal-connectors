@@ -4,13 +4,11 @@
   - [Overview](#overview)
   - [How it works](#how-it-works)
   - [Deploying universal connector](#deploying-universal-connector)
-  - [Monitoring universal connector  connections](#monitoring-universal-connector-connections)
+  - [Monitoring universal connector  connections](#monitoring-uc-connections)
   - [Policies](#policies)
   - [Known limitations](#known-limitations)
   - [FAQs](#faqs)
-  - [Developing plug-ins](developing-plug-ins)
-  - [Packaging Guardium Insights universal connector plug-ins](#packaging-guardium-insights-universal-connector-plug-ins)
-  - [Creating custom universal connector plug-ins](#creating-custom-universal-connector-plug-ins)
+  - [Developing plug-ins](#developing-plug-ins)
   - [Contributing](#contributing)
   - [Contact us](#contact-us)
   - [Licensing](#licensing)
@@ -136,6 +134,7 @@ Users can develop their own universal connector plugins, if needed, and contribu
 
 
 ***
+## Contributing
 **To make your connector plug-in available to the community, submit your connector to this repository for IBM Certification. We also accept updates or bug fixes to existing plug-ins, to keep them current:**
 
 - **[Guidelines for contributing](CONTRIBUTING.md)**
