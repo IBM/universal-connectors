@@ -8,3 +8,9 @@ MongodbOverFilebeatPackage.zip
 MysqlOverFilebeatPackage.zip
 MysqlPerconaOverFilebeatPackage.zip
 SaphanaOverFilebeatPackage.zip
+JdbcInputPluginPackage.zip
+AzureSQLOverJdbcPackage.zip
+SaphanaOverJdbcPackage.zip
+MssqlAWSOverJdbcPackage.zip
+MssqlOnPremOverJdbcPackage.zip
+SnowflakeOverJbdcPackage.zip
