@@ -4,13 +4,11 @@
   - [Overview](#overview)
   - [How it works](#how-it-works)
   - [Deploying univer***REMOVED***l connector](#deploying-univer***REMOVED***l-connector)
-  - [Monitoring univer***REMOVED***l connector  connections](#monitoring-univer***REMOVED***l-connector-connections)
+  - [Monitoring univer***REMOVED***l connector  connections](#monitoring-uc-connections)
   - [Policies](#policies)
   - [Known limitations](#known-limitations)
   - [FAQs](#faqs)
-  - [Developing plug-ins](developing-plug-ins)
-  - [Packaging Guardium Insights univer***REMOVED***l connector plug-ins](#packaging-guardium-insights-univer***REMOVED***l-connector-plug-ins)
-  - [Creating custom univer***REMOVED***l connector plug-ins](#creating-custom-univer***REMOVED***l-connector-plug-ins)
+  - [Developing plug-ins](#developing-plug-ins)
   - [Contributing](#contributing)
   - [Contact us](#contact-us)
   - [Licensing](#licensing)
@@ -136,6 +134,7 @@ Users can develop their own univer***REMOVED***l connector plugins, if needed, a
 
 
 ***
+## Contributing
 **To make your connector plug-in available to the community, submit your connector to this repository for IBM Certification. We also accept updates or bug fixes to existing plug-ins, to keep them current:**
 
 - **[Guidelines for contributing](CONTRIBUTING.md)**
