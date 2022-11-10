@@ -101,7 +101,7 @@ public class ParserTest {
 		
 		e.setField(Constants.TIMESTAMP, "2022-03-02 14:06:56");
 		Time time = Parser.parseTimestamp(e);
-		Assert.assertEquals(1646210216000L, time.getTimstamp());
+		Assert.assertEquals(1646222816000L, time.getTimstamp());
 	}
 
 	@Test
@@ -141,7 +141,7 @@ public class ParserTest {
 		Event e = intitalizeEventObject();
 		
 		e.setField(Constants.SUCCEEDED, "FATAL" );
-		e.setField(Constants.SQL_STATE,"28P01");
+		e.setField(Constants.PREFIX,"28P01");
 		e.setField(Constants.MESSAGE, "password authentication failed for user \"postgres\"");
 		final Record record = Parser.parseRecord(e);
 		Assert.assertEquals(Constants.LOGIN_ERROR, record.getException().getExceptionTypeId());
