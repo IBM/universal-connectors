@@ -1,7 +1,7 @@
 {
-  "plugin_name": "Filebeat_input",
+  "plugin_name": "SQS_input",
   "help_link": "",
-  "input_name": "Filebeat_input",
+  "input_name": "SQS_input",
   "input_parameters": [
   ],
   "filter_name": "",

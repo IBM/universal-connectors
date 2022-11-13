@@ -4,7 +4,7 @@
   "type": "input",
   "pipeline_type": null,
   "plugin_version": "1.0.0",
-  "supportedDatasources": null,
+  "supportedDataSources": null,
   "supportedInputPlugins": null,
   "developer": "Elastic",
   "license": "Apache2.0",
