@@ -90,8 +90,8 @@ Supported events:
 2.	From the Connector template menu, select the offline logstash-offline-plugins-7.5.2.zip plug-in.
 3.	Type a name in the Connector name field.
 4.	Modify the input section to look like this :
-```
-	cloudwatch_logs {
+
+	      cloudwatch_logs {
 				#Mandatory arguments:
 				log_group => ["aws-dynamodb-logs"]
 				access_key_id => "<insert_access_key>"
@@ -101,13 +101,13 @@ Supported events:
 				interval => 5
 				event_filter => ""
 				type => "Dynamodb"
-		}
-		```
+		      }
+		
 where log_group is the log group that is created for the data instance (for example, ```"aws-dynamodb-logs"```).
 
 5.	Update the filter section to look like this:
-```
-if [type] == "Dynamodb" {
+					
+       if [type] == "Dynamodb" {
 			json {
 					source => "message"
 					target => "parsed_json"
@@ -133,11 +133,10 @@ if [type] == "Dynamodb" {
 			output {
 				stdout { codec => rubydebug }
 		}
-```
+
 
 6. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.
  
-
 ## Configuring Amazon S3 auditing with CloudWatch
 
 CloudTrail monitors S3 activity in your Amazon account. Configure CloudTrail with Cloud Watch so that Guardium can pull the info from CloudWatch into the Guardium collector and analyze it.
@@ -157,7 +156,6 @@ Configuring Amazon S3 auditing to send files to Cloud Watch (and then on to the 
 
 - If you access CloudWatch from a separate AWS account, follow this procedure: **Configuring AWS security credentials for cross-account CloudWatch integration that uses a configuration with role_arn**.
  
-
 ### Configuring Amazon AWS CloudTrail to send log files to CloudWatch
 
 #### Before you begin
@@ -188,7 +186,6 @@ d.	On the next page, click ```Allow```.
 For more details, see [Creating a Trail](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-a-trail-using-the-console-first-time.html) and [Logs](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/send-cloudtrail-events-to-cloudwatch-logs.html).
 
 [Related information](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-a-trail-using-the-console-first-time.html)
-
 
 ### Configuring security credentials for your AWS user account
 
@@ -222,7 +219,6 @@ In the Amazon UI, create and save the IAM role. You use it when you configure a 
 #### Results
 That IAM role that you created will be used to configure the connector in role_arn (no access key ID or secret access key will be needed).
 
-
 ### Configuring AWS security credentials for cross-account CloudWatch integration that uses a configuration with role_arn
 
 When you are using two AWS accounts, use the following configuration: a Guardium hosted on an EC2 account and a CloudWatch account.
@@ -242,8 +238,8 @@ This procedure assumes that:
 - Restrict access by using one of the following methods:
  - Add the policy ```CloudWatchLogsReadOnlyAccess``` to that role and an inline policy that eliminates access to all groups except ```npDemoGroup```.
 
-	  {
-             "Version": "2012-10-17",
+	       {
+                  "Version": "2012-10-17",
 	             "Statement": {
 	                  "Effect": "Deny",
 	                  "Action": "*",
@@ -252,12 +248,12 @@ This procedure assumes that:
 	                     ]
 
 	          }
-       }
+            }
 
  - Use an inline policy so the role can read logs only on the resource arn:```aws:logs:us-east-1:2222:log-group:npDemoGroup:*```.
 
 
-	{
+	     {
 	           "Version": "2012-10-17",
 	           "Statement": [
 	               {
@@ -273,13 +269,13 @@ This procedure assumes that:
 	                  "Effect": "Allow",
 	                  "Resource": "arn:aws:logs:us-east-1:2222:log-group:npDemoGroup:*"	                  }
 	              ]
-	}
+	     }
 
 2.	Add a trust policy to ```ec2_read_loggorups_from_1111``` to trust the role on the other account (1111) that is assigned to the ec2 that hosts Guardium.
 
 
 
-	{
+	     {
 	               "Version": "2012-10-17",
 	"Statement": [
 	{
@@ -299,7 +295,7 @@ This procedure assumes that:
     "Action": "sts:AssumeRole"
 	        }
 	]
-	}
+	     }
 
 
 In this example, the ARN of the created role is: ```arn:aws:iam::2222:role/ec2_read_loggorups_from_1111```
@@ -358,12 +354,10 @@ And add this inline policy:
 	                     type => "S3"
     }
 
-
 ## Configuring Amazon S3 auditing via SQS
 
 In this mode, events are moved to the SQS message queuing service, and then to the Guardium universal connector. It provides load balancing for multiple connectors from one database to the Guardium universal connector.
 
- 
 ### Moving events from S3 to SQS
 Guardium uses input from the SQS message queuing service. Learn how to move events from S3 to SQS.
 
@@ -372,6 +366,7 @@ Complete all tasks in Configuring Amazon S3 auditing with CloudWatch.
 
 #### Procedure
 1.	Create a queue. See [Creating an Amazon SQS queue (console)](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/step-create-queue.html).
+	
 2.	Create a rule in CloudWatch to move events from S3 to SQS.
 
 a.	Go to https://console.aws.amazon.com/cloudwatch.
@@ -408,14 +403,16 @@ i.	Validate that the Enabled checkbox is checked.
 
 j.	Click ```Create rule```.
 
- 
 ### Configuring AWS user account security credentials for SQS integration
 
 Create the security credentials that you use when you enable the connector on your collector.
+	
 #### Before you begin
+	
 Complete all tasks in Configuring Amazon S3 auditing with CloudWatch.
 
 #### Procedure
+	
 1.	Create a policy for the relevant IAM user.
 
 a.	Log in to IAM console as IAM user (https://console.aws.amazon.com/iam/).
