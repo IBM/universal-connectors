@@ -70,6 +70,8 @@ In Guardium Insights, the workflow for deploying the univer***REMOVED***l connec
 
 ***
 **However, the specific steps for each workflow may differ slightly per different data sources. See our [list of of available plugins](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/available_plugins.md) to view detailed, step-by-step instructions for each supported data source/plug-in**.
+
+**See also: [Using GIM](docs/GIM.md), [Using AWS](docs/aws.md), [Configuring with MongoDB, Filebeat, Syslog, and MYSQL](docs/Migrated_pages.md)
 ***
 
 ## Monitoring UC connections
