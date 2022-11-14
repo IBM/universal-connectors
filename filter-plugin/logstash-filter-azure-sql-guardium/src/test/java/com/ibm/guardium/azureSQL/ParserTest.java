@@ -33,7 +33,7 @@ public class ParserTest {
 		e.setField(Constants.DATABASE_NAME,"AzureDB");
 		e.setField(Constants.APPLICATION_NAME,"SQL SERVER");
 		e.setField(Constants.CLIENT_HOST_NAME,"DESKTOP-KJ3D16L");
-		e.setField(Constants.SERVER_INSTANCE_NAME,"test-server-azuresql");
+		e.setField(Constants.Server_Hostname,"test-server-azuresql");
 		e.setField(Constants.SUCCEEDED,"true");
 		return e;
    } 
