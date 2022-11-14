@@ -46,10 +46,6 @@ task copyDependencyLibs(type: Copy) {
     from configurations.testRuntimeClasspath
 }
 
-//task wrapper(type: Wrapper) {
-//    gradleVersion = '4.0'
-//}
-
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
