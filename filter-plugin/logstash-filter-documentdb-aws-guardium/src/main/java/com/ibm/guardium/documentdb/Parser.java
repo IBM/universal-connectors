@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -187,8 +188,8 @@ public class Parser {
 				String key = data.get("op").getAsString();
 				sentence = new Sentence(key);
 			} else {
-				for (Iterator<String> iterator = command.keySet().iterator(); iterator.hasNext();) {
-					String key = iterator.next();
+				for (Iterator<Entry<String, JsonElement>> iterator = command.entrySet().iterator(); iterator.hasNext();) {
+					String key = iterator.next().getKey();
 					sentence = new Sentence(key);
 					break;
 				}
@@ -210,7 +211,13 @@ public class Parser {
 		if(aType.equalsIgnoreCase("authenticate") && command.has("user")) {
 			sentenceObject = new SentenceObject(command.get("user").getAsString());
 		}else if(command.has("ns")) {
-			sentenceObject = new SentenceObject(!aType.equalsIgnoreCase("createDatabase")?command.get("ns").getAsString().split("\\.")[1]:command.get("ns").getAsString());
+			sentenceObject = new SentenceObject(command.get("ns").getAsString().contains(".")?command.get("ns").getAsString().split("\\.")[1]:command.get("ns").getAsString());
+		}else if(command.has("userName")){
+			sentenceObject = new SentenceObject(command.get("userName").getAsString());	
+		}else if(aType.equalsIgnoreCase("createRole") && command.has("role")) {
+			sentenceObject = new SentenceObject(command.get("role").getAsString());
+		}else if(aType.equalsIgnoreCase("dropRole") && command.has("roleName")) {
+			sentenceObject = new SentenceObject(command.get("roleName").getAsString());
 		}else {
 			sentenceObject = new SentenceObject(command.toString());
 		}
@@ -227,8 +234,7 @@ public class Parser {
 	protected static SentenceObject parseSentenceObjectDocumentDbProfiler(JsonObject command) {
 		SentenceObject sentenceObject = new SentenceObject(UNKOWN_STRING);
 		if (command != null && command.has("ns")) {
-			final String ns = command.get("ns").getAsString();
-			sentenceObject = new SentenceObject(ns.split("\\.")[1]);
+			sentenceObject = new SentenceObject(command.get("ns").getAsString().contains(".")?command.get("ns").getAsString().split("\\.")[1]:command.get("ns").getAsString());
 		}
 		else {
 			sentenceObject = new SentenceObject(command.toString());
@@ -348,8 +354,7 @@ public class Parser {
 		accessor.setOsUser(Parser.UNKOWN_STRING);
 		accessor.setServerDescription(Parser.UNKOWN_STRING);
 		accessor.setServerOs(Parser.UNKOWN_STRING);
-		accessor.setServiceName(SERVER_TYPE_STRING);
-
+	  
 
 
 		return accessor;
