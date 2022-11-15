@@ -98,7 +98,7 @@ public class DocumentdbGuardiumFilter implements Filter {
 
 				if (messageString.contains(DOCUMENTDB_AUDIT_SIGNAL)) {// This is an audit event
 					try {
-						JsonObject inputJSON = (JsonObject) JsonParser.parseString(messageString);
+						JsonObject inputJSON = new Gson().fromJson(messageString, JsonObject.class);
 						final String atype = inputJSON.get("atype").getAsString();
 						final JsonObject param = inputJSON.get("param").getAsJsonObject();
                        if ((atype.equals("authenticate") && param.get("error").getAsString().equals("0") ) ||
@@ -112,8 +112,9 @@ public class DocumentdbGuardiumFilter implements Filter {
 						if(e.getField("serverHostnamePrefix") !=null && e.getField("serverHostnamePrefix") instanceof String) {
 							record.getAccessor().setServerHostName(e.getField("serverHostnamePrefix").toString()+".aws.com");
 							String dbName=record.getDbName();
-							record.setDbName(!dbName.isEmpty()?e.getField("serverHostnamePrefix").toString()+":"+dbName:dbName);
+							record.setDbName(!dbName.isEmpty()?e.getField("serverHostnamePrefix").toString()+":"+dbName:e.getField("serverHostnamePrefix").toString());
 						}
+						record.getAccessor().setServiceName(record.getDbName());
 						if(e.getField("event_id") !=null && e.getField("event_id") instanceof String) {
 							record.setSessionId(record.getSessionId()+e.getField("event_id").toString());
 						}
@@ -133,7 +134,7 @@ public class DocumentdbGuardiumFilter implements Filter {
 					try {
 						if(messageString.contains(AGGR_KEY) || messageString.contains(COUNT_KEY) || messageString.contains(DELETE_KEY) || messageString.contains(DISTINCT_KEY)|| messageString.contains(FIND_KEY)|| messageString.contains(FINDANDMODIFY_KEY)||messageString.contains(INSERT_KEY)||messageString.contains(UPDATE_KEY))
 						{
-							JsonObject inputJSON = (JsonObject) JsonParser.parseString(messageString);
+							JsonObject inputJSON = new Gson().fromJson(messageString, JsonObject.class);
 							if ((!inputJSON.has("ns")) || (inputJSON.has("ns") && inputJSON.get("ns").getAsString().isEmpty()) )  {
 	                            e.tag(LOGSTASH_TAG_SKIP);
 								skippedEvents.add(e);
@@ -143,8 +144,9 @@ public class DocumentdbGuardiumFilter implements Filter {
 							if(e.getField("serverHostnamePrefix") !=null && e.getField("serverHostnamePrefix") instanceof String) {
 								record.getAccessor().setServerHostName(e.getField("serverHostnamePrefix").toString()+".aws.com");
 								String dbName=record.getDbName();
-								record.setDbName(!dbName.isEmpty()?e.getField("serverHostnamePrefix").toString()+":"+dbName:dbName);
+								record.setDbName(!dbName.isEmpty()?e.getField("serverHostnamePrefix").toString()+":"+dbName:e.getField("serverHostnamePrefix").toString());			
 							}
+							record.getAccessor().setServiceName(record.getDbName());
 							if(e.getField("event_id") !=null && e.getField("event_id") instanceof String) {
 								record.setSessionId(record.getSessionId()+e.getField("event_id").toString());
 							}
