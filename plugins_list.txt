@@ -14,3 +14,5 @@ SaphanaOverJdbcPackage.zip
 MssqlAWSOverJdbcPackage.zip
 MssqlOnPremOverJdbcPackage.zip
 SnowflakeOverJbdcPackage.zip
+AzureEventHubsInputPackage.zip
+AzurePostgresqlOverAzureEventHubs.zip
