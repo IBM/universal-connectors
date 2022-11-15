@@ -35,7 +35,7 @@ public class ParserHelperTest {
 		event.setField("totalOffset", "-330");
 		Record actualResponse = ParserHelper.parseRecord(event);
 		assertNotNull(actualResponse);
-		assertEquals("7", actualResponse.getSessionId());
+		assertEquals("-105977793", actualResponse.getSessionId());
 		assertEquals("mariadb", actualResponse.getDbName());
 		assertEquals("root", actualResponse.getAppUserName());
 		assertEquals(1644009464000L, actualResponse.getTime().getTimstamp());
@@ -60,7 +60,7 @@ public class ParserHelperTest {
 		event.setField("totalOffset", "-330");
 		Record actualResponse = ParserHelper.parseRecord(event);
 		assertNotNull(actualResponse);
-		assertEquals("7", actualResponse.getSessionId());
+		assertEquals("-105977793", actualResponse.getSessionId());
 		assertEquals("mariadb", actualResponse.getDbName());
 		assertEquals("root", actualResponse.getAppUserName());
 		assertEquals("Error (1064)", actualResponse.getException().getDescription());
@@ -103,13 +103,12 @@ public class ParserHelperTest {
 		event.setField(ApplicationConstant.USERNAME_KEY, ApplicationConstantTest.USERNAME_VALUE);
 		event.setField(ApplicationConstant.SOURCEPROGRAM_KEY, ApplicationConstant.SOURCEPROGRAM_VALUE);
 		event.setField(ApplicationConstant.SERVER_TYPE_STRING, "MariaDB");
-		event.setField(ApplicationConstant.DBPROTOCAL_STRING, "MariaDB native audit");
+		event.setField(ApplicationConstant.DBPROTOCAL_STRING, "MariaDB");
 		Accessor actualResponse = ParserHelper.parseAccessor(event);
 		assertNotNull(actualResponse);
 		assertEquals(ApplicationConstantTest.HOSTNAME_VALUE, actualResponse.getClientHostName());
 		assertEquals(ApplicationConstantTest.SERVERHOST_VALUE, actualResponse.getServerHostName());
 		assertEquals(ApplicationConstantTest.USERNAME_VALUE, actualResponse.getDbUser());
-		assertEquals(ApplicationConstant.SOURCEPROGRAM_VALUE, actualResponse.getSourceProgram());
 
 	}
 
