@@ -25,7 +25,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ### Prerequisites
 Download the [Logstash Offline package](PubSubMySQLPackage/logstash-offline-plugins-filter-pubsub-mysql-guardium.zip) that includes both the Logstash Google PubSub input plugin and the MySQL PubSub filter plugin, and upload it to the gmachine.
-#### Note
+#### Note 
 This version is compliant with GDP v11.4 and above. Please refer to the
 [input plugin's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
 
