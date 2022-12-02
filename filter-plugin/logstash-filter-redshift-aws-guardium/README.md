@@ -1,7 +1,9 @@
 ## Redshift-Guardium Logstash filter plug-in
-This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the AWS Redshift audit log into a Guardium record instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The contstruct details the main action (verb) and collections (objects) involved. In this connector we are using "PGRS" Guardium parser as well as custom parser for some scenarios. The Redshift plugin supports only Guardium Data Protection as of now.
+This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the AWS Redshift audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The contstruct details the main action (verb) and collections (objects) involved. In this connector we are using "PGRS" Guardium parser as well as custom parser for some scenarios. The Redshift plugin supports only Guardium Data Protection as of now.
 
 This plug-in uses two parsers. It relies on Guardium SQL parser most of the time, while parsing some queries unique to Redshift by itself.
+
+The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for the Guardium universal connector.
 
  # Notes
  1. While connecting  third part tool (sqlworkbench/j), we need to add an inbound rule to the security group inside Redshift cluster
@@ -14,7 +16,7 @@ This plug-in uses two parsers. It relies on Guardium SQL parser most of the time
           3. Port range: 5439 (default)
           4. Source : Custom (0.0.0.0/0)
      - Click on Save rules.
-## Configuring the AWS Redshift service/cluster
+## 1. Configuring the AWS Redshift service/cluster
 ## Procedure:
 1. Go to https://console.aws.amazon.com/.
 2. Search for Amazon Redshift and navigate to the AWS Redshift management Console. Click on 'Create cluster'.
@@ -22,7 +24,7 @@ This plug-in uses two parsers. It relies on Guardium SQL parser most of the time
 4. In the Database configurations section, choose Admin username and password. You can also select 'Auto generate password'. 
 5. Now click on the create cluster button. 
 
-# Enable Auditing
+# 2. Enable Auditing
 ## Enable and Configure Audit Logging
 ### Procedure
 1. Navigate to the Redshift Console and click on the cluster that you just created and go to properties tab.
@@ -62,16 +64,39 @@ In Database configurations section, you can see the default database name is dev
 ### Procedure
 1. Create a table with details and append the row with the created table
 2. Execute query with Run button.
-## Viewing the logs entries on S3 
+## 3. Viewing the logs entries on S3 
 ## Procedure
 Go to S3 buckets from the search box and find the details of the generated logs (UserActivity/Connection) in below format:
 
 `s3`/<`bucket`>/<`prefix/`>/`AWSLogs/`/<`Account ID`>`redshift/`/<`region/`>/`<Year/>`/`<Month/>`/`<Day/>`/ See the generated UserActivity/Connection logs here.
+
+## 4. Configuring the Redshift filter in Guardium
+The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Redshift template.
+
 ## Authorizing outgoing traffic from AWS to Guardium
 1. Log in to the Guardium API.
 2. Issue these commands:
 grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
-# Limitations
+
+## Before you begin
+* You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+* You must have permission for the S-Tap Management role. The admin user includes this role by default.
+* Download the [logstash-filter-redshift_guardium_connector.zip](logstash-filter-redshift_guardium_connector.zip) plug-in.
+* Download the plugin filter configuration file [redshift.conf](redshift.conf).
+
+## Procedure
+1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
+2. Enable the connector if it is already disabled, before proceeding to upload the UC.
+3. Click Upload File and select the [logstash-filter-redshift_guardium_connector.zip](logstash-filter-redshift_guardium_connector.zip) plug-in. After it is uploaded, click OK.
+4. Click the Plus sign to open the Connector Configuration dialog box.
+5. Type a name in the Connector name field.
+6. Update the input section to add the details from [redshift.conf](redshift.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from [redshift.conf](redshift.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+8. The "type" fields should match in input and filter configuration sections. This field should be unique for every individual connector added.
+9. Click Save. Guardium validates the new connector, and enables the universal connector if it was
+disabled. After it is validated, it appears in the Configure Universal Connector page.
+
+## 5. Limitations
 1. The log files will appear in the s3 bucket in hourly batches, and sometimes even later. A typical delay is 30-120 minutes.
 
 2. The Following important fields couldn't be mapped with Redshift audit logs
@@ -86,88 +111,3 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
     - Select queries with `PIVOT/UNPIVOT` will not be parsed by the Connector.
 5. CREATE MATERIALIZED VIEW commands appear multiple times on the S3 bucket, Guardium full SQL report and sniffer logs.
 6. Any query having key constraints (primary key, foreign key, unique key) may create duplicacy in logs because they are not enforced by Amazon Redshift, as mentioned in AWS document. (https://docs.aws.amazon.com/redshift/latest/dg/t_Defining_constraints.html)
-## Configuring the Redshift filter in Guardium
-The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Redshift template.
-
-## Logstash configuration
-## Input Parameters
-* bucket - string or Array of strings - Mandatory
-* prefix - string - Mandatory
-* access_key_id - string
-* secret_access_key - string
-* region - string - Default (us-east-1)
-* type - string - used mainly for filter activation. No default value.
-* Multiline codec - The multiline codec will collapse multiline messages and merge them into a single event. This codec is used in Redshift to allow joining of multiline messages from user activity log files into a single event.
-## Filter Parameters
-* grok filter - The Grok is a filter within Logstash which is useful to parse event logs and divide messages to multiple fields. Users will utilize predefined patterns for parsing logs. Grok offers a way to parse unstructured log data into a format can be queried. As Grok is based on regular expressions, any valid regular expressions (regexp) are also valid in grok. More information around grok filter can be found at https://www.elastic.co/guide/en/logstash/current/plugins-filters-grok.html
-For Redshift, grok/regex patterns are used to parse user activity and the connection logs data.
-
-* mutate filter - The mutate filter allows you to perform general mutations on fields. You can rename, replace, and modify fields in your events. More information about the mutate filter can be found at https://www.elastic.co/guide/en/logstash/current/plugins-filters-mutate.html#plugins-filters-mutate-replace
-For Redshift, "replace" is used as a mutate filter configuration. It is used to replace the value of an event field with a new value, or add the field if it doesn’t already exist. The replace mutate filter is used to give a unique value of serverHostname for each configuration being added in Guardium. For every Guardium configuration, the serverHostname value will be used as the differentiating factor in the STAP status table.
-
-* The server Hostname is made up of 2 values:
-   - AccountID - The AWS account id, the user needs to provide the value for it.
-   - ClusterName- The User needs to provide the name of Redshift cluster. 
-   - example :- 92236548523-redscluster.aws.com 
-   
-* The database Name is made up of 3 values: 
-  - AccountID - The AWS account id, user needs to provide the value for it.
-  - ClusterName- The user needs to provide the name of Redshift cluster. 
-  - Database Name- The name of Redshift Database.
-  - example :- 92236548523:redscluster:dev 
-## Before you begin
-* You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [Guardium_offline_plugin_redshift.zip](S3OverRedshiftPackage/logstash-filter-redshift_guardium_connector.zip) plug-in.
-* Download the plugin filter configuration file [redshift.conf](redshift.conf).
-
-## Procedure
-1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. Enable the connector if it is already disabled, before proceeding to upload the UC.
-3. Click Upload File and select the Guardium_offline_plugin_redshift.zip plug-in. After it is uploaded, click OK.
-4. Click the Plus sign to open the Connector Configuration dialog box.
-5. Type a name in the Connector name field.
-6. Update the input section to add the details from [redshift.conf](redshift.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7. Update the filter section to add the details from [redshift.conf](redshift.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-8. The "type" fields should match in input and filter configuration sections. This field should be unique for every individual connector added.
-9. Click Save. Guardium validates the new connector, and enables the universal connector if it was
-disabled. After it is validated, it appears in the Configure Universal Connector page.
-# Set-up dev environment
-Before you can build & create an updated GEM of this filter plugin, set up your environment as follows: 
-1. Clone the Logstash codebase & build its libraries as as specified in [How to write a java filter plugin](https://github.com/logstash-plugins/logstash-filter-java_filter_example). Use branch 7.x (this filter was developed alongside 7.14 branch).
-2. Create gradle.properties and add LOGSTASH_CORE_PATH variable with the path to the logstash-core folder you created in the previous step. For example:
-
-    `LOGSTASH_CORE_PATH=/Users/taldan/logstash76/logstash-core`
-
-3. Clone the [githhub-uc-commons](https://github.com/IBM/guardium-universalconnector-commons) project and build a JAR from it according to the instructions specified there. The project contains a Guardium Record structure that you need to adjust, so the Guardium universal connector can eventually feed your filter's output into Guardium.
-
-4. Edit gradle.properties and add a GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH variable with the path to the built JAR. For example:
-
-    `GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH=../guardium-universalconnector-commons/build/libs`
-
-If you'd like to start with the most simple filter plugin, we recommend following all the steps in [How to write a Java filter plugin][logstash-java-plugin-dev] tutorial.
-## Build plugin GEM
-To build this filter project into a GEM that can be installed onto Logstash, run
-
-    $ ./gradlew.unix gem --info
-
-Sometimes, especially after major changes, clean the artifacts before you run the build gem task:
-
-    $ ./gradlew.unix clean
-
-## Install
-To install this plugin on your local developer machine with Logstash installed, run:
-
-    $ ~/Downloads/logstash-7.14/bin/logstash-plugin install./logstash-filter-redshift_guardium_filter-?.?.?.gem
-
-### Notes:
-* Replace "?" with this plugin version
-* logstash-plugin may not handle relative paths well, so try to install the gem from a simple path, as in the example above.
-## Run on local Logstash
-To test your filter using your local Logstash installation, run
-
-    $ ~/Downloads/logstash-7.14/bin/logstash -f redshift-test.conf
-
-This configuration file generates an Event and sends it through the installed filter plugin.
-
-
-
