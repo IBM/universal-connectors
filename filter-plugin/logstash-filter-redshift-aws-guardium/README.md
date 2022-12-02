@@ -81,13 +81,13 @@ grdapi add_domain_to_univer***REMOVED***l_connector_allowed_domains domain=amazo
 ## Before you begin
 * You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [logstash-filter-redshift_guardium_connector.zip](logstash-filter-redshift_guardium_connector.zip) plug-in.
+* Download the [logstash-filter-redshift_guardium_connector.zip](S3OverRedshiftPackage/logstash-filter-redshift_guardium_connector.zip) plug-in.
 * Download the plugin filter configuration file [redshift.conf](redshift.conf).
 
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Univer***REMOVED***l Connector.
 2. Enable the connector if it is already di***REMOVED***bled, before proceeding to upload the UC.
-3. Click Upload File and select the [logstash-filter-redshift_guardium_connector.zip](logstash-filter-redshift_guardium_connector.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the [logstash-filter-redshift_guardium_connector.zip](S3OverRedshiftPackage/logstash-filter-redshift_guardium_connector.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [redshift.conf](redshift.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
