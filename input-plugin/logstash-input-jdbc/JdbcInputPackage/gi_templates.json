@@ -1,0 +1,11 @@
+{
+  "plugin_name": "JDBC_input",
+  "help_link": "",
+  "input_name": "JDBC_input",
+  "input_parameters": [
+  ],
+  "filter_name": "",
+  "filter_parameters": [],
+  "auth_parameters": [
+  ]
+}

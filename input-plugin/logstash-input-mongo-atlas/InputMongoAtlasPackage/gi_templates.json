@@ -1,0 +1,11 @@
+{
+  "plugin_name": "Mongo Atlas",
+  "help_link": "",
+  "input_name": "Mongo_atlas_input",
+  "input_parameters": [
+  ],
+  "filter_name": "",
+  "filter_parameters": [],
+  "auth_parameters": [
+  ]
+}
