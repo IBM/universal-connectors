@@ -1,0 +1,11 @@
+{
+  "plugin_name": "Azure_event_hubs_input",
+  "help_link": "",
+  "input_name": "Azure_event_hubs_input",
+  "input_parameters": [
+  ],
+  "filter_name": "",
+  "filter_parameters": [],
+  "auth_parameters": [
+  ]
+}
