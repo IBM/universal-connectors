@@ -341,11 +341,13 @@ public class DocumentdbGuardiumFilterTest {
 		Event e = new org.logstash.Event();
 		TestMatchListener matchListener = new TestMatchListener();
 		e.setField("mes***REMOVED***ge", DbString);
+		e.setField("serverHostnamePrefix","LP-123455556");
+		e.setField("event_id", "1234567");
 		filter.filter(Collections.singletonList(e), matchListener);
 		String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
 		Record record = (new Gson()).fromJson(recordString, Record.class);
 		assertNotNull(record.getAccessor().getServiceName());
-		assertEquals(Parser.SERVER_TYPE_STRING, record.getAccessor().getServiceName());
+		assertEquals("LP-123455556:test", record.getAccessor().getServiceName());
 	}
 
 	//Test DBProtocol

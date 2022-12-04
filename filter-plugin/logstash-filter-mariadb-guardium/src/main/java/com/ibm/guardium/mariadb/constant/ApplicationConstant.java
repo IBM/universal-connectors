@@ -23,7 +23,7 @@ public class ApplicationConstant {
 	public static final String SERVER_TYPE_STRING = "MariaDB";
 	public static final String SOURCEPROGRAM_KEY = "source_program";
 	public static final String SOURCEPROGRAM_VALUE = "mariadb";
-	public static final String DBPROTOCAL_STRING = "MariaDB native audit";
+	public static final String DBPROTOCAL_STRING = "MariaDB";
 	public static final String SERVICE_NAME_STRING = "mariadb";
 	public static final String SERVER_IP_STRING = "0.0.0.0";
 	public static final String CLIENT_IP_STRING = "0.0.0.0";
