@@ -1,0 +1,11 @@
+{
+  "plugin_name": "Cloudwatch_logs_input",
+  "help_link": "",
+  "input_name": "Cloudwatch_logs_input",
+  "input_parameters": [
+  ],
+  "filter_name": "",
+  "filter_parameters": [],
+  "auth_parameters": [
+  ]
+}
