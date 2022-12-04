@@ -1,0 +1,21 @@
+{
+  "pluginName": "Filebeat_input",
+  "pluginAlias": "Filebeat",
+  "pluginType": "input",
+  "pluginPipelineType": null,
+  "pluginVersion": "6.0.11",
+  "supportedDataSources": null,
+  "supportedInputPlugins": null,
+  "pluginDeveloper": "Elastic",
+  "pluginLicense": "Apache2.0",
+  "pluginDescription": "Listens for events in the Elastic Filebeat format. Incoming events are passed on to the filter stage.",
+  "pluginConfigurationNotes": null,
+  "pluginDocumentationPath": "",
+  "pluginSHA256Checksum": -1,
+  "pluginOfflinePackagePath": null,
+  "pluginConfigTemplateParams": null,
+  "pluginConfigTemplateStrings": null,
+  "uploadDate": null,
+  "uploadUser": null,
+  "autoScaling": true
+}
