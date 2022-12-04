@@ -79,4 +79,4 @@ Note: The following arguments are used in configuration for OUA plugin
 
 ## Limitation
 
-Normally, the "Statement Type" attribute for the "FULL SQL" entity in reports shows us whether a full SQL statement is a prepared statement. However, because OUA doesn't give us information about whether a statement is a prepared statement or not, the "Statement type" attribute is not applicable for the OUA UC plug-in.
+Normally, the "Statement Type" attribute for the "FULL SQL" entity in Guardium reports shows us whether a full SQL statement is a prepared statement. However, because OUA doesn't give us information about whether a statement is a prepared statement or not, the "Statement type" attribute is not applicable for the OUA UC plug-in.
