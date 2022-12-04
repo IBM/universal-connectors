@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,7 +41,7 @@ public class ParserHelper {
 			.append(DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
 
 	private static final DateTimeFormatter DATE_TIME_FORMATTER = dateTimeFormatterBuilder.toFormatter();
-
+	static List<String> lst = new ArrayList<>();
 	/**
 	 * parseRecord method to parse data from event and set to record object
 	 * 
@@ -52,15 +54,11 @@ public class ParserHelper {
 			record.setAccessor(parseAccessor(event));
 			record.setSessionLocator(parseSessionLocator(event));
 			record.setTime(getTime(event));
-			record.setSessionId(event.getField(ApplicationConstant.CONNECTIONID_KEY) != null
-					? event.getField(ApplicationConstant.CONNECTIONID_KEY).toString()
-					: ApplicationConstant.NOT_AVAILABLE);
+			record.setSessionId(getSessionId(event));
 			record.setAppUserName(event.getField(ApplicationConstant.USERNAME_KEY) != null
 					? event.getField(ApplicationConstant.USERNAME_KEY).toString()
 					: ApplicationConstant.UNKNOWN_STRING);
-			record.setDbName(event.getField(ApplicationConstant.DATABASE_KEY) != null
-					? event.getField(ApplicationConstant.DATABASE_KEY).toString()
-					: ApplicationConstant.UNKNOWN_STRING);
+			record.setDbName(getDbName(event));
 			if (event.getField(ApplicationConstant.RETCODE_KEY) != null
 					&& event.getField(ApplicationConstant.RETCODE_KEY).toString().trim() != ""
 					&& Integer.parseInt(event.getField(ApplicationConstant.RETCODE_KEY).toString().trim()) == 0) {
@@ -95,17 +93,12 @@ public class ParserHelper {
 			accessor.setClientHostName(event.getField(ApplicationConstant.HOSTNAME_KEY) != null
 					? event.getField(ApplicationConstant.HOSTNAME_KEY).toString()
 					: ApplicationConstant.UNKNOWN_STRING);
-			accessor.setDbUser(event.getField(ApplicationConstant.USERNAME_KEY) != null
-					? event.getField(ApplicationConstant.USERNAME_KEY).toString()
-					: ApplicationConstant.NOT_AVAILABLE);
-			accessor.setSourceProgram(event.getField(ApplicationConstant.SOURCEPROGRAM_KEY) != null
-					? event.getField(ApplicationConstant.SOURCEPROGRAM_KEY).toString()
-					: ApplicationConstant.SOURCEPROGRAM_VALUE);
+			accessor.setDbUser(getDbUser(event));
+			accessor.setSourceProgram(ApplicationConstant.UNKNOWN_STRING);
 			accessor.setServerType(ApplicationConstant.SERVER_TYPE_STRING);
 			accessor.setLanguage(ApplicationConstant.LANGUAGE_STRING);
 			accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
 			accessor.setDbProtocol(ApplicationConstant.DBPROTOCAL_STRING);
-
 			accessor.setClient_mac(ApplicationConstant.UNKNOWN_STRING);
 			accessor.setClientOs(ApplicationConstant.UNKNOWN_STRING);
 			accessor.setCommProtocol(ApplicationConstant.UNKNOWN_STRING);
@@ -113,14 +106,37 @@ public class ParserHelper {
 			accessor.setOsUser(ApplicationConstant.UNKNOWN_STRING);
 			accessor.setServerDescription(ApplicationConstant.UNKNOWN_STRING);
 			accessor.setServerOs(ApplicationConstant.UNKNOWN_STRING);
-			accessor.setServiceName(ApplicationConstant.SERVICE_NAME_STRING);
+			accessor.setServiceName(getDbName(event));
 		} catch (Exception e) {
 			log.error("Exception occurred while parsing event in parseAccessor method: ", e);
 			throw e;
 		}
 		return accessor;
 	}
+	
+	public static String getSessionId(final Event event) throws Exception {
+		String sessionId = ApplicationConstant.NOT_AVAILABLE;
+		if (event.getField(ApplicationConstant.CONNECTIONID_KEY) != null) {
+			sessionId = Integer.toString((event.getField(ApplicationConstant.CONNECTIONID_KEY).toString()
+					+ getDbName(event) + getDbUser(event)).hashCode());
+		}
+		return sessionId;
 
+	}
+	private static String getDbUser(Event event) {
+		String dbUser = event.getField(ApplicationConstant.USERNAME_KEY) != null
+				? event.getField(ApplicationConstant.USERNAME_KEY).toString()
+				: ApplicationConstant.NOT_AVAILABLE;
+		return dbUser;
+	}
+
+	private static String getDbName(Event event) {
+		String dbName = event.getField(ApplicationConstant.DATABASE_KEY) != null
+				? event.getField(ApplicationConstant.DATABASE_KEY).toString()
+				: ApplicationConstant.UNKNOWN_STRING;
+		return dbName;
+	}
+	
 	/**
 	 * Using this method to set details about the user who accessed the Exception
 	 * source
@@ -208,7 +224,6 @@ public class ParserHelper {
 	 * @param event
 	 * @return Time
 	 */
-
 	public static Time getTime(final Event event) {
 		String dateString = null;
 		dateString = event.getField(ApplicationConstant.TIMESTAMP_KEY).toString();
@@ -225,7 +240,6 @@ public class ParserHelper {
 
 		return time;
 	}
-
 	/**
 	 * parseSQL() method will perform operation on String inputs, set the expected
 	 * value into respective dataset name and then return the value as response
@@ -243,9 +257,9 @@ public class ParserHelper {
 				&& event.getField(ApplicationConstant.OBJECT_KEY).toString().trim() != "") {
 			builder = new StringBuilder(event.getField(ApplicationConstant.OBJECT_KEY).toString().trim());
 			builder.deleteCharAt(builder.length() - 1).deleteCharAt(0);
-			fullSql = builder.toString().replaceAll("\n|\r", " ").replaceAll("\\\\n|\r", " ").replaceAll("\\\\'", "'");
+			fullSql = builder.toString().replaceAll("\n|\r", " ").replaceAll("\\\\n|\\\\r", " ").replaceAll("\\\\'", "'").replaceAll("\\\\","").replaceAll("\\\\t", "");
 			// Check for create user Query - Need to replace the '*' with 'x'.
-			Pattern createUserPattern = Pattern.compile("^create\\s+user", Pattern.CASE_INSENSITIVE);
+			Pattern createUserPattern = Pattern.compile("^create\\s+user", Pattern.CASE_INSENSITIVE);			
 			Matcher matcher = createUserPattern.matcher(fullSql);
 			if (matcher.find()) {
 				// Code to replace '*' with 'x'
