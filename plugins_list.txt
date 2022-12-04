@@ -19,5 +19,3 @@ AzurePostgresqlOverAzureEventHubs.zip
 SQSInputPackage.zip
 FilebeatInputPackage.zip
 CloudwatchLogsInputPackage.zip
-InputMongoAtlasPackage.zip
-MongodbOverMongoAtlasPackage.zip
