@@ -19,16 +19,9 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
 
 1. Click **Connections** in the **Settings** menu.
     
-2. Click **Manage > UC plug-ins**.
+2.  Click **Add connection.**  The Connect to new data source page opens, with a card for each available data source type.
     
-3. If the plug-in is already installed, proceed to <em>**step 4**</em>. If the plug-in for the specific data source type is not installed, click **Add plug-in**. Go to the directory with the plug-ins you already downloaded, select the .zip file for this data source type, and click **Open**.
-    
-4. Navigate back to the Connections page (**Settings > Connections**).
-
-    
-5.  Click **Add connection.**  The Connect to new data source page opens, with a card for each data source type whose plug-in is already installed.
-    
-6.  Select the data source type. This opens a panel that aids you in initiating the connection.
+3.  Select the data source type. This opens a panel that aids you in initiating the connection.
     
     a **Select data source environment**: Select the environment that hosts your data source.
     
@@ -38,7 +31,7 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
     
     d. After reading the **Additional information**, click **Configure**.
     
-7.  Enter the details for this connection.
+4.  Enter the details for this connection.
     
     a. In the Name and description page, enter this information:
     
