@@ -1,29 +1,14 @@
-## Dynamodb-Guardium Logstash filter plug-in
+# Dynamodb-Guardium Logstash filter plug-in
 
-This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses events and mes***REMOVED***ges from the Amazon DynamoDB audit log into a Guardium record instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The contstruct details the main action (verb) and collections (objects) involved. 
+This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses events and mes***REMOVED***ges from the Amazon DynamoDB audit log into a [Guardium record](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/common/src/main/java/com/ibm/guardium/univer***REMOVED***lconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium univer***REMOVED***l connector.
 
-## Supported Events
-
-    1. UpdateTable event
-    2. CreateTable event
-    3. DescribeTable event
-    4. ListTables event
-    5. DeleteTable event
-    6. Error event
-
-## Configuring Amazon DynamoDB and sending logs to CloudWatch
-
-# To authorize outgoing traffic from Amazon Web Services (AWS) to Guardium, run these API:
-
-	grdapi add_domain_to_univer***REMOVED***l_connector_allowed_domains domain=amazonaws.com
-	grdapi add_domain_to_univer***REMOVED***l_connector_allowed_domains domain=amazon.com
-
+## 1. Configuring Amazon DynamoDB
 
 In the AWS web interface, configure the service for Dynamodb.
 
-## Procedure
+### Procedure
 
 	1. Go to https://console.aws.amazon.com/:
 
@@ -36,11 +21,20 @@ In the AWS web interface, configure the service for Dynamodb.
 		g) Enter a partition key
 		h) Scroll down and click the orange <Create table> button
 
-## Enable logging through CloudTrail
+## 2. Enabling audit logs 
 
-There are different ways for auditing and logging. We will use CloudTrail for this example since it supports all required parameters. 
+There are different ways for auditing and logging. We will use CloudTrail for this example since it supports all required parameters. The below events are supported for auditing in AWS
 
-## Procedure
+### Supported Events
+
+    1. UpdateTable event
+    2. CreateTable event
+    3. DescribeTable event
+    4. ListTables event
+    5. DeleteTable event
+    6. Error event
+
+### Procedure
 
     1. Click Services in the top left menu.
 	2. Underneath <All services>, click on <Management & Governance>
@@ -68,9 +62,9 @@ There are different ways for auditing and logging. We will use CloudTrail for th
 	24. Verify all parameters shown are correct.
 	25. Click the orange [Create trail] button
 
-## View the logs entries on CloudWatch
+## 3. Viewing the logs on CloudWatch
 
-## Procedure
+### Procedure
 
 	1. Click the Service drop down.
 	2. On right <Recently visited> panel, click on CloudWatch
@@ -80,37 +74,42 @@ There are different ways for auditing and logging. We will use CloudTrail for th
 	6. Click on the log group that appeared from the search
 	7. All logs will appear under log streams in the format: <account_i>_CloudTrail_<region>
 
+### Limitations
 
-## Configuring the dynamodb filters in Guardium
+	The dynamodb plug-in does not support IPV6.
+
+## 4. Configuring the Dynamodb filters in Guardium
 
 The Guardium univer***REMOVED***l connector is the Guardium entry point for native audit logs. The univer***REMOVED***l connector identifies and parses received events, and then converts them to a standard Guardium format. The output of the univer***REMOVED***l connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the dynamodb template.
 
-## Before you begin
+### Authorizing outgoing traffic from AWS to Guardium
 
-	• You must have permission for the S-Tap Management role. The admin user has this role by default.
-	• Download the dynamodb-offline-plugins-7.5.2.zip plug-in.
-	• Verify whether you have cloudwatch_logs input plugin available using following command : 
-		su - cli
-		grdapi show_univer***REMOVED***l_connector_plugins
+#### Procedure
 
-# Procedure
+	1. Log in to the Guardium Collector's APIs.
+	2. Issue these commands:
+		• grdapi add_domain_to_univer***REMOVED***l_connector_allowed_domains domain=amazonaws.com
+		• grdapi add_domain_to_univer***REMOVED***l_connector_allowed_domains domain=amazon.com
+#### Before you begin
 
-	1. On the collector, navigate to Setup > Tools and Views > Configure Univer***REMOVED***l Connector
-	2. First Enable the Univer***REMOVED***l Guardium connector, if it is Di***REMOVED***bled already
-	3. Click the [Upload File] button
-	4. Select the downloaded file "dynamodb-offline-plugins-7.5.2.zip"
-	5. Click [Upload/install]
-	6. Click [OK] on the upload confirmation
-	7. Click the Plus sign to open the Connector Configuration dialog box
-	8. Type a name in the Connector name field.
-	9. Update the input section to add the details from dynamodbCloudwatch.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end
-	10. Update the filter section to add the details from dynamodbCloudwatch.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end
-	11. "type" field should match in input and filter configuration section. This field should be unique for every individual connector added.
-	12. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, it appears in the Configure Univer***REMOVED***l Connector page
-	
-## Limitations
+• You must have LFD policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
 
-	The dynamodb plug-in does not support IPV6.
+• You must have permission for the S-Tap Management role. The admin user includes this role by default.
+
+• Download the [dynamodb-offline-plugins-7.5.2.zip plug-in.](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudwatchPackage/DynamoDB/dynamodb-offline-plugins-7.5.2.zip)
+
+
+### Procedure
+
+1. On the collector, navigate to Setup > Tools and Views > Configure Univer***REMOVED***l Connector
+2. First enable the Univer***REMOVED***l Guardium connector, if it is di***REMOVED***bled already
+3. Click Upload File and select the offline plug-in named [dynamodb-offline-plugins-7.5.2.zip plug-in.](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudwatchPackage/DynamoDB/dynamodb-offline-plugins-7.5.2.zip). After it is uploaded, click OK.
+4. Click the Plus sign to open the Connector Configuration dialog box
+5. Type a name in the Connector name field.
+6. Update the input section to add the details from the [dynamodbCloudwatch.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-dynamodb-guardium/dynamodbCloudwatch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end
+7. Update the filter section to add the details from the [dynamodbCloudwatch.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-dynamodb-guardium/dynamodbCloudwatch.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end
+8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+9. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, it appears in the Configure Univer***REMOVED***l Connector page
 
 ## Configuring the dynamodb filters in Guardium Insights
 

@@ -1,19 +1,12 @@
-##	Azure PostgreSQL-Guardium Logstash filter plug-in
+# Azure PostgreSQL-Guardium Logstash filter plug-in
 
-This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses events and mes***REMOVED***ges from the azure postgreSQL audit log into a Guardium record instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
+This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses events and mes***REMOVED***ges from the azure postgreSQL audit log into a [Guardium record](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/common/src/main/java/com/ibm/guardium/univer***REMOVED***lconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
 Currently, this plug-in will work only on IBM Security Guardium Data Protection, not Guardium Insights.
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium univer***REMOVED***l connector.
 
-##	Limitations
-	• The azure postgreSQL plug-in does not support IPV6.
-	• For sql errors and login failed,sql string is not available.
-	• For primary or foreign key constraints violation, entry would be added to sql error report as well as full sql report.
-	• Source program will be seen as blank in report for some clients(here for psql and pgadmin we get value but for visual studio it is blank).
-
-
-##	Configuring the Azure PostgreSQL service
+## 1.	Configuring the Azure PostgreSQL service
 
 There are following ways to get Azure PostgreSQL audit data:
 
@@ -25,7 +18,7 @@ There are following ways to get Azure PostgreSQL audit data:
 In this plugin we have used Azure Event Hub.
 
 
-##	Procedure:
+###	Procedure:
 	1. Go to https://portal.azure.com/.
 	2. Click search bar.
 	3. Search for azure database for postgreSQL servers.
@@ -47,7 +40,7 @@ In this plugin we have used Azure Event Hub.
 	13. Click on add current client IP address, and then click on Save.
 	
 	
-## Enabling Auditing
+## 2. Enabling Auditing
 
 	1.	From settings,select server parameter.
 	2.	Search for shared_preload_libraries in server parameter.
@@ -67,9 +60,10 @@ In this plugin we have used Azure Event Hub.
 					•	pgaudit.log_client = off
 					•	pgaudit.log_parameter = off
 	6.	Click ***REMOVED***ve.
-			
+	
+## 3. Viewing the Audit logs
 		
-## Azure Event Hub Connection:
+### Azure Event Hub Connection:
 
 		1.	Search event hub in search bar.
 		2.	Select create event hubs namespace button.
@@ -128,7 +122,7 @@ In this plugin we have used Azure Event Hub.
 					3. Keep all other configurations as it is.
 		
 
-## Connecting to Azure postgreSQL Database:
+## 4. Connecting to Azure postgreSQL Database:
 
 		1. Start the psql and provide connection details.
 		2. Enter the 'server name' (from overview window of server in azure portal)
@@ -140,25 +134,32 @@ In this plugin we have used Azure Event Hub.
         		GRANT pg_read_all_settings TO <admin-username>;(use admin-username which is given at the time of creation of database)
 				    eg:-GRANT pg_read_all_settings TO postgres; 
 
+#### Limitations
+	• The azure postgreSQL plug-in does not support IPV6.
+	• For sql errors and login failed,sql string is not available.
+	• For primary or foreign key constraints violation, entry would be added to sql error report as well as full sql report.
+	• Source program will be seen as blank in report for some clients(here for psql and pgadmin we get value but for visual studio it is blank).
 
-## Configuring the Azure PostgreSQL filters in Guardium
+## 5. Configuring the Azure PostgreSQL filters in Guardium
 
 The Guardium univer***REMOVED***l connector is the Guardium entry point for native audit logs. The Guardium univer***REMOVED***l connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium univer***REMOVED***l connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the azure postgreSQL template.
 
 
-## Before you begin
-	• You must have permission for the S-Tap Management role. The admin user includes this role by default.
-	• Download the azure-postgresql-offline-plugins-7.5.2.zip plug-in.
+#### Before you begin
+• You must have LFD policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+																	 
 
+• You must have permission for the S-Tap Management role. The admin user includes this role by default.
+• Download the [azure-postgresql-offline-plugins-7.5.2.zip](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plug-in.		 
 
-## Procedure : 
+#### Procedure : 
 
-  1.	On the collector, go to Setup > Tools and Views > Configure Univer***REMOVED***l Connector.
-  2.	First Enable the Univer***REMOVED***l Guardium connector, if it is Di***REMOVED***bled already.
-  3.	Click Upload File and select the offline azure-postgresql-offline-plugins-7.5.2.zip plugin. After it is uploaded,click OK.
-  4.	Click the Plus sign to open the Connector Configuration dialog box.
-  5.	Type a name in the Connector name field.
-  6.	Update the input section to add the details from azurepostgresql.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-  7.	"type" field should match in input and filter configuration section. This field should be unique for every individual connector added.
-  8.	Update the filter section to add the details from azurepostgresql.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-  9.	Click **Save**. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, the connector appears in the Configure Univer***REMOVED***l Connector page.
+1.	On the collector, go to Setup > Tools and Views > Configure Univer***REMOVED***l Connector.
+2.	First enable the Univer***REMOVED***l Guardium connector, if it is di***REMOVED***bled already.
+3.	Click Upload File and select the offline [azure-postgresql-offline-plugins-7.5.2.zip](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plugin. After it is uploaded,click OK.
+4.	Click the Plus sign to open the Connector Configuration dialog box.
+5.	Type a name in the Connector name field.
+6.	Update the input section to add the details from [azurepostgresql.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-azure-postgresql-guardium/azurepostgresql.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7.	The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+8.	Update the filter section to add the details from [azurepostgresql.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-azure-postgresql-guardium/azurepostgresql.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+9.	Click **Save**. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, the connector appears in the Configure Univer***REMOVED***l Connector page.
