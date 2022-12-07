@@ -127,7 +127,8 @@ In the configuration notes there are `data source tag`, `host` and `UC certifica
        ```
        openssl pkcs8 -in filebeat.key -topk8 -out filebeat-pkcs8.key -nocrypt
        ```
-       c. Creating certificate request file
+       c. Create a certificate request file.
+       
       First create filebeat-csr.conf file with
        ```
        [ req ]
