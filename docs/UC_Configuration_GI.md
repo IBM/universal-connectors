@@ -19,16 +19,9 @@ The universal connector configuration has a few parts, all described in this tas
 
 1. Click **Connections** in the **Settings** menu.
     
-2. Click **Manage > UC plug-ins**.
+2.  Click **Add connection.**  The Connect to new data source page opens, with a card for each available data source type.
     
-3. If the plug-in is already installed, proceed to <em>**step 4**</em>. If the plug-in for the specific data source type is not installed, click **Add plug-in**. Go to the directory with the plug-ins you already downloaded, select the .zip file for this data source type, and click **Open**.
-    
-4. Navigate back to the Connections page (**Settings > Connections**).
-
-    
-5.  Click **Add connection.**  The Connect to new data source page opens, with a card for each data source type whose plug-in is already installed.
-    
-6.  Select the data source type. This opens a panel that aids you in initiating the connection.
+3.  Select the data source type. This opens a panel that aids you in initiating the connection.
     
     a **Select data source environment**: Select the environment that hosts your data source.
     
@@ -38,7 +31,7 @@ The universal connector configuration has a few parts, all described in this tas
     
     d. After reading the **Additional information**, click **Configure**.
     
-7.  Enter the details for this connection.
+4.  Enter the details for this connection.
     
     a. In the Name and description page, enter this information:
     
@@ -55,15 +48,27 @@ The universal connector configuration has a few parts, all described in this tas
     e. Follow the instructions according to the input plug-in type you selected in <em>**step c**</em>.
     
  ## Filebeat input plug-in configuration
-1.  In the Additional info page, enter a **Data source tag**: This tag identifies the plug-in that is associated with this connector. Use this tag in the filebeat.yml    configuration of the data sources whose type matches this plug-in step 2 of the last section on this page: Configuring Filebeat to forward audit logs to Guardium.  The data source sends the tag with every event. For example, specify any-mongodb in this field, and configure Filebeat with the same tag for MongoDB activity logs coming from your MongoDB data source.
+Prerequisite: 
+
+On the data source server, create a **certificate authority** for Filebeat.
+This CA will be used later to create a certificate for signing the events from Filebeat to the universal connector.
+
+Run this command:
+```openssl req -x509 -sha256 -days 356 -nodes -newkey rsa:2048 -subj "/CN=filebeat.lan/C=IL" -keyout filebeatCA.key -out filebeatCA.crt``` 
+
+Then, copy `filebeatCA.crt` to your local system.
+
+1. In the Additional info page, enter a **Data source tag**: This tag uniquely identifies the incoming Filebeat stream. This tag will be added later to filebeat configuration so filebeat will tag every event with this tag. For example, specify `any-mongodb` in this field.
       
-2.  Click **Configure**.
+2. Click on **upload certificates authorities** button and select the authority created in the prerequisites: `filebeatCA.crt`. You can specify multiple authorities from your local system if needed. The UC will process an event only if its certificate is signed by one the specified authorities. 
+
+3. Click **Configure**.
         
-3.  In the Configuration notes page, click Download certificate to **download the certificate** to your local system. Copy the certificate to the data source (refer to step 4 in the last section on this page: Configuring Filebeat to forward audit logs to Guardium.) All data sources of any one specific type use the same certificate.
+4.  In the Configuration notes page, click **Download certificate** to download the UC certificate authority to your local system. Copy the certificate to the data source (will be added to filebeat configuration later). All data sources of any one specific type use the same certificate.
         
-4.  Click **Done**.
+5.  Click **Done**.
        
-5. To configure the data source to communicate with Guardium Insights, follow the instructions in the last section on this page: Configuring Filebeat to forward audit logs to Guardium.  Copy the hostname in the Configuration Notes to configure the host in the filebeat.yml file on your datasource.
+6. To configure the data source to communicate with Guardium Insights, follow the instructions in the last section on this page: Configuring Filebeat to forward audit logs to Guardium.  Copy the hostname in the Configuration Notes to configure the host in the filebeat.yml file on your datasource.
         
  ## CloudWatch input plug-in configuration
         
@@ -87,19 +92,105 @@ The universal connector configuration has a few parts, all described in this tas
     
     
   ## Procedure
-    
-1.  Open the file filebeat.yml, usually located in /etc/filebeat/filebeat.yml.
-    
-2.  In the tags section, enter the value of the Data source tag that you defined when you added a connection in the Filebeat section on this page. For example, `tags: ["<tag-name>"]`.
-    
-3.  In the Logstash Output section, enter the hostname URL from the Configuration Notes popup from when you configured the universal connector in the first procedure on this page. For example, `hosts: ["<hostname-URL>:443"]`
+prerequisites:
+* On the data source server there is a **certificate authority** (filebeatCA key and certificate).
+* A connection was added by the steps in the section: [Filebeat input plug-in configuration](https://github.com/IBM/universal-connectors/blob/main/docs/UC_Configuration_GI.md#filebeat-input-plug-in-configuration). 
+In the configuration notes there are `data source tag`, `host` and `UC certificate authority` that are used in these steps. 
 
+
+1.  Open the Filebeat Configuration. (filebeat.yml). usually located in `/etc/filebeat/filebeat.yml`.
+    
+2.  Locate the `tags` section, enter the Data source tag. For example, `tags: ["any-mongodb"]`.
+    
+3.  Locate `output.logstash` section and add an entry for Guardium Insights:
+    ```
+    # The Logstash hosts
+    hosts: ["<hostname-URL>:443"]
+    ```
 **NOTE**: In GI, whenever using plug-ins that are based on Filebeat as a data shipper, the configured port should be 443. Guardium Insights will map this to an internal port
 
-4.  Copy the location of the downloaded certificate, in the ssl.certificate\_authorities row in step 3 of the Filebeat section on this page. For example, `ssl.certificate_authorities: ["/etc/pki/ca-trust/GuardiumInsightsCA.pem"]`
+4. Configure mTLS - Logstash to Filebeat:
+   1. Download the SSL certificate (`UC certificate authority`) from Guardium Insights and upload it to the machine where Filebeat is.
+   2. Copy the location of the downloaded certificate and enter it as the certificate authority.
+    ```
+    # List of root certificates for HTTPS server verifications
+    ssl.certificate_authorities: ["/etc/pki/ca-trust/GuardiumInsightsCA.pem"]
+    ```
+5. Configure mTLS - Filebeat to Logstash:
+   1. Create a Filebeat certificate:
+   
+       a. Create a private key: 
+       ```
+       openssl genrsa -out filebeat.key 2048 
+       ```
+       b. Convert private key to pkc8
+       ```
+       openssl pkcs8 -in filebeat.key -topk8 -out filebeat-pkcs8.key -nocrypt
+       ```
+       c. Create a certificate request file.
+       
+      First create filebeat-csr.conf file with
+       ```
+       [ req ]
+       default_bits = 2048
+       prompt = no
+       default_md = sha256
+       req_extensions = req_ext
+       distinguished_name = dn
     
-5.  Restart Filebeat to effect these changes
+       [ dn ]
+       C = IL
+       CN = filebeat.lan
     
-    Linux: Enter the command: `sudo service filebeat restart`
+       [ req_ext ]
+       subjectAltName = @alt_names
     
-6.  Windows: Restart in the Services window
+       [ alt_names ]
+       DNS.1 = <SERVER DNS>
+       ```
+       d. Now generate the certificate request file:
+       ```
+       openssl req -new -key filebeat.key -out filebeat.csr -config filebeat-csr.conf
+       ```
+       e. Generate certificate from csr file and CA 
+          Create certificate configuration file (filebeat-cert.conf) like
+       ```
+       authorityKeyIdentifier=keyid,issuer
+       basicConstraints=CA:FALSE
+       keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+       subjectAltName = @alt_names
+    
+       [alt_names]
+       DNS.1 = <SERVER DNS>
+       ```
+       f. Now generate the certificate
+       ```
+       openssl x509 -req -in filebeat.csr -CA filebeatCA.crt -CAkey filebeatCA.key -CAcreateserial -out filebeat.crt -days 365 -sha256 -extfile filebeat-cert.conf
+       ```
+   2. Locate the `output.logstash` section and add an entry for the certificate:
+      ```
+       ssl.certificate: "<PATH TO>/filebeat.crt"
+       ssl.key: "<PATH TO>/filebeat-pkcs8.key"
+       ```
+
+Summary: 
+
+   ```
+   tags: ["any-mongodb"]
+   
+   output.logstash:
+     # The Logstash hosts
+     hosts: ["<hostname-URL>:443"]
+     # List of root certificates for HTTPS server verifications
+     ssl.certificate_authorities: ["/etc/pki/ca-trust/GuardiumInsightsCA.pem"]
+     # Certificate for SSL client authentication
+     ssl.certificate: "/etc/pki/certs/filebeat.crt"
+     # Certificate key for SSL client authentication
+     ssl.key: "/etc/pki/certs/filebeat-pkcs8.key"
+   ```
+    
+6.  Restart Filebeat to effect these changes
+    
+    Linux: Run the command: `sudo service filebeat restart`
+    
+7. Windows: Restart in the Services window
