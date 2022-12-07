@@ -50,7 +50,7 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
  ## Filebeat input plug-in configuration
 Prerequisite: 
 
-On the data source server create a **certificate authority** for filebeat.
+On the data source server, create a **certificate authority** for Filebeat.
 This CA will be used later to create a certificate for signing the events from filebeat to UC.
 
 Run this command
