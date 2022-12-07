@@ -1,4 +1,4 @@
-## Neo4j-Guardium Logstash filter plug-in
+# Neo4j-Guardium Logstash filter plug-in
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses events and mes***REMOVED***ges from the Neo4j audit log into a [Guardium record](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/common/src/main/java/com/ibm/guardium/univer***REMOVED***lconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The contstruct details the main action (verb) and collections (objects) involved.
 
@@ -6,16 +6,16 @@ Currently, this plug-in will work only with IBM Security Guardium Data Protectio
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium univer***REMOVED***l connector.
 
-## 1. Installing Neo4j database and configuring logs
+## 1. Configuring the Neo4j database
 
-## Procedure
+### Procedure
 
 	1. Download “neo4j-community-4.2.1.zip”. Extract the archive file and then install Neo4j.
 	2. Add a database from the console.
 
 ## 2. Enabling the audit logs:
 
-## Procedure
+### Procedure
 
 	1. Neo4j supports the below log types :
 		a. Debug.log: Information useful when debugging problems with Neo4j.
@@ -44,13 +44,9 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## 3. Viewing the audit logs
 
-## Procedure
-
     To view logs, go to the Neo4j console and select DB > manage > Open Folder > logs.
 
 ## 4. Configuring Filebeat to push logs to Guardium
-
-## Procedure
 
 ## a. Filebeat installation
 
@@ -100,6 +96,14 @@ To use Logstash to perform additional processing on the data collected by Filebe
 		• The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections.
 
 		•You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
+### Limitations
+
+	• Queries containing a semi-colon in a batch query, causes skipping of the entire batch query
+	• If your Guardium version is 11.4 and below, the port should not be 5000, 5141 or 5044, as Guardium Univer***REMOVED***l Connector reserves these ports for MongoDB events. To check the available ports on Windows, issue this command:
+		netstat -a
+	• Neo4j logs some queries multiple times, since they are executed in pipeline, so the ***REMOVED***me will be reflected in the Reports
+	• Multiple system related queries are logged, which cannot be skipped, so will be seen in the Reports
+	• Neo4j does not support Failed Login. 			   
 
 ## 5. Configuring the Neo4j filters in Guardium
 
@@ -107,27 +111,21 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 
 ### Before you begin
 
-	• You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step #4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
-	• You must have permission for the S-Tap Management role. The admin user includes this role, by default.
-	• Download the [neo4j-logstash-offline-plugins-7.5.2.zip](https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connectors/tree/master/filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage/Neo4jDB/neo4j-logstash-offline-plugins-7.5.2.zip) plug-in.
+• You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step #4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+
+• You must have permission for the S-Tap Management role. The admin user includes this role, by default.
+
+• Download the [neo4j-logstash-offline-plugins-7.16.3.zip](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage/Neo4jDB/neo4j-logstash-offline-plugins-7.16.3.zip) plug-in.
 
 # Procedure
 
-	1. On the collector, go to Setup > Tools and Views > Configure Univer***REMOVED***l Connector.
-	2. First Enable the Univer***REMOVED***l Guardium connector, if it is Di***REMOVED***bled already.
-	3. Click Upload File and select the offline [neo4j-logstash-offline-plugins-7.5.2.zip](https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connectors/tree/master/filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage/Neo4jDB/neo4j-logstash-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK.
-	4. Click the Plus sign to open the Connector Configuration dialog box.
-	5. Type a name in the Connector name field.
-	6. Update the input section to add the details from the [neo4jFilebeat.conf](https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connectors/blob/master/filter-plugin/logstash-filter-neo4j-guardium/neo4jFilebeat.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-	7. Update the filter section to add the details from the [neo4jFilebeat.conf](https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connectors/blob/master/filter-plugin/logstash-filter-neo4j-guardium/neo4jFilebeat.conf)  file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-	8. "type" field should match in input and filter configuration section. This field should be unique for  every individual connector added.
-	9. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, it appears in the Configure Univer***REMOVED***l Connector page.
+1. On the collector, go to Setup > Tools and Views > Configure Univer***REMOVED***l Connector.
+2. First enable the Univer***REMOVED***l Guardium connector, if it is di***REMOVED***bled already.
+3. Click Upload File and select the offline [neo4j-logstash-offline-plugins-7.16.3.zip](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage/Neo4jDB/neo4j-logstash-offline-plugins-7.16.3.zip) plug-in. After it is uploaded, click OK.
+4. Click the Plus sign to open the Connector Configuration dialog box.
+5. Type a name in the Connector name field.
+6. Update the input section to add the details from the [neo4jFilebeat.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-neo4j-guardium/neo4jFilebeat.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from the [neo4jFilebeat.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-neo4j-guardium/neo4jFilebeat.conf)  file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+8. The "type" fields should match in the input and the filter configuration section. This field should be unique for  every individual connector added
+9. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, it appears in the Configure Univer***REMOVED***l Connector page.
 
-## 6. Limitations
-
-	• Queries containing semi-colon in batch query, causes skipping of the entire batch query
-	• If your Guardium version is 11.4 and below, the port should not be 5000, 5141 or 5044, as Guardium Univer***REMOVED***l Connector reserves these ports for MongoDB events. To check the available ports on Windows, issue this command:
-		netstat -a
-	• Neo4j logs some queries multiple times, since they are executed in pipeline, so the ***REMOVED***me will be reflected in the Reports
-	• Multiple system related queries are logged, which cannot be skipped, so will be seen in the Reports
-	• Neo4j does not support Failed Login. 
