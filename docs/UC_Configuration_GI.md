@@ -51,7 +51,7 @@ The universal connector configuration has a few parts, all described in this tas
 Prerequisite: 
 
 On the data source server, create a **certificate authority** for Filebeat.
-This CA will be used later to create a certificate for signing the events from filebeat to UC.
+This CA will be used later to create a certificate for signing the events from Filebeat to the universal connector.
 
 Run this command
 ```openssl req -x509 -sha256 -days 356 -nodes -newkey rsa:2048 -subj "/CN=filebeat.lan/C=IL" -keyout filebeatCA.key -out filebeatCA.crt``` 
