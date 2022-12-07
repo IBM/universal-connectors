@@ -1,14 +1,14 @@
 # MSSQL-Guardium Logstash filter plug-in
 
-This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the MSSQL audit log into a Guardium record instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
+This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the MSSQL audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
 This plugin is written in Ruby and so is a script that can be directly copied into Guardium configuration of Universal Connectors. There is no need to upload the plugin code. However, in order to support few features one zip has to be added named, mssql-offline-plugins-7.5.2.zip and a jar file for mssql has to be uploaded named, mssql-jdbc-7.4.1.jre8.
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
-# Configuring AWS MSSQL RDS Instance and Configuring Audit Logs
+## 1. Configuring AWS MSSQL RDS
 
-## Procedure
+### Procedure
 
 	1. Create database instance
 	
@@ -112,9 +112,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 		e. Click on Continue. On next window select Apply Immediately and click on Modify DB 	Instance.
 
 
-# Audit Logs Configurations
-
-## Procedure
+## 2. Enabling Auditing
 
 	1. Connecting to database:
 		
@@ -156,7 +154,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 			VI. Click on Ok button.
 			VII. Right click on database audit specification that we have created and select enable to enable it.
 
-## Limitations :
+#### Limitations :
 
 	• MSSQL auditing only supports error logs for following two groups:
 		a. FAILED_DATABASE_AUTHENTICATION_GROUP: Indicates that a principal tried to log on to a contained database and failed. Events in this class are raised by new connections or by connections that are reused from a connection pool.
@@ -165,29 +163,44 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 	• For guardium version 11.4 and below, incorrect value of session start time in report is known issue.
 	• Currently load balancing is not supported.
 
-# Configuring the MSSQL filters in Guardium
+## 3. Configuring the MSSQL filters in Guardium
 
-	The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector identifies and parses received events, and then converts them to a standard Guardium format. The output of the universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the MSSQL template.
+The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector identifies and parses received events, and then converts them to a standard Guardium format. The output of the universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the MSSQL template.
 
-# Before you begin
 
-	• You must have permission for the S-Tap Management role. The admin user includes this role by default.
-	• Download the mssql-offline-plugins-7.5.2.zip plug-in.
-	• Download the mssql-jdbc-7.4.1.jre8.
+### Authorizing outgoing traffic from AWS to Guardium
 
-## Procedure : 
+#### Procedure
+	1. Log in to the Guardium API.
+	2. Issue these commands:
+		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
+		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
+		
+#### Before you begin
 
-    1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-	2. First Enable the Universal Guardium connector, if it is Disabled already.
-	3. Click Upload File and select the offline mssql-offline-plugins-7.5.2.zip plug-in. After it is uploaded, click OK.
-	4. Click the Plus sign to open the Connector Configuration dialog box.
-	5. Type a name in the Connector name field.
-	6. Update the input section to add the details from awsMSSQL.conf/onPremMSSQL.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-		Note : • For Guardium Data Protection version 11.3, add the following line to the input section:
+• You must have LFD policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+
+• You must have permission for the S-Tap Management role. The admin user includes this role by default.
+
+• Download the [mssql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in.
+
+• Download the [mssql-jdbc-7.4.1.jre8](https://jar-download.com/artifacts/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8) jar.
+
+#### Procedure: 
+
+1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
+2. First Enable the Universal Guardium connector, if it is Disabled already.
+3. Click Upload File and select the offline [mssql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK.
+4. Click the Plus sign to open the Connector Configuration dialog box.
+5. Type a name in the Connector name field.
+6. Update the input section to add the details from [awsMSSQL.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/awsMssqlJDBC.conf) for AWS MSSQL or [on-premMssqlJDBC.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/on-premMssqlJDBC.conf) for on prem MSSQL setup file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+	Note : 
+		• For Guardium Data Protection version 11.3, add the following line to the input section:
 			'jdbc_driver_library => "${THIRD_PARTY_PATH}/mssql-jdbc-7.4.1.jre8.jar"'
 		• If auditing is configured way long back and UC is configured at later point of time, still UC will process all the previous older records as well till date, since it is already audited by the DB.
-	7. Update the filter section to add the details from awsMSSQL.conf/onPremMSSQL.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-	8. "type" field should match in input and filter configuration section. This field should be unique for  every individual connector added.
-	9. Click Save. Guardium validates the new connector, and enables the universal connector if it was
+7. Update the filter section to add the details from [awsMSSQL.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/awsMssqlJDBC.conf) for AWS MSSQL or [on-premMssqlJDBC.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/on-premMssqlJDBC.conf) for on prem MSSQL setup file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+8. "type" field should match in input and filter configuration section. This field should be unique for  every individual connector added.
+9. If using two jdbc plug-ins on the same machine, the last_run_metadata_path file name should be different.
+10. Click Save. Guardium validates the new connector, and enables the universal connector if it was
 	disabled. After it is validated, it appears in the Configure Universal Connector page.
 
