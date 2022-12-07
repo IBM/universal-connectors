@@ -48,7 +48,7 @@ The universal connector configuration has a few parts, all described in this tas
     e. Follow the instructions according to the input plug-in type you selected in <em>**step c**</em>.
     
  ## Filebeat input plug-in configuration
-prerequisites: 
+Prerequisite: 
 
 On the data source server create a **certificate authority** for filebeat.
 This CA will be used later to create a certificate for signing the events from filebeat to UC.
