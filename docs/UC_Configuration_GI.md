@@ -55,7 +55,8 @@ This CA will be used later to create a certificate for signing the events from F
 
 Run this command
 ```openssl req -x509 -sha256 -days 356 -nodes -newkey rsa:2048 -subj "/CN=filebeat.lan/C=IL" -keyout filebeatCA.key -out filebeatCA.crt``` 
-and copy `filebeatCA.crt` to your local system.
+
+Then, copy `filebeatCA.crt` to your local system.
 
 1. In the Additional info page, enter a **Data source tag**: This tag uniquely identifies the incoming Filebeat stream. This tag will be added later to filebeat configuration so filebeat will tag every event with this tag. For example, specify `any-mongodb` in this field.
       
