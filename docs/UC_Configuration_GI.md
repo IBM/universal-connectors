@@ -53,7 +53,7 @@ Prerequisite:
 On the data source server, create a **certificate authority** for Filebeat.
 This CA will be used later to create a certificate for signing the events from Filebeat to the universal connector.
 
-Run this command
+Run this command:
 ```openssl req -x509 -sha256 -days 356 -nodes -newkey rsa:2048 -subj "/CN=filebeat.lan/C=IL" -keyout filebeatCA.key -out filebeatCA.crt``` 
 
 Then, copy `filebeatCA.crt` to your local system.
@@ -117,13 +117,13 @@ In the configuration notes there are `data source tag`, `host` and `UC certifica
     ssl.certificate_authorities: ["/etc/pki/ca-trust/GuardiumInsightsCA.pem"]
     ```
 5. Configure mTLS - Filebeat to Logstash:
-   1. Create a filebeat certificate:
+   1. Create a Filebeat certificate:
    
        a. Create a private key: 
        ```
        openssl genrsa -out filebeat.key 2048 
        ```
-       b. convert private key to pkc8
+       b. Convert private key to pkc8
        ```
        openssl pkcs8 -in filebeat.key -topk8 -out filebeat-pkcs8.key -nocrypt
        ```
@@ -145,7 +145,7 @@ In the configuration notes there are `data source tag`, `host` and `UC certifica
        subjectAltName = @alt_names
     
        [ alt_names ]
-       DNS.1 = server.dns.com
+       DNS.1 = <SERVER DNS>
        ```
        d. Now generate the certificate request file:
        ```
@@ -160,13 +160,13 @@ In the configuration notes there are `data source tag`, `host` and `UC certifica
        subjectAltName = @alt_names
     
        [alt_names]
-       DNS.1 = server.dns.com
+       DNS.1 = <SERVER DNS>
        ```
        f. Now generate the certificate
        ```
        openssl x509 -req -in filebeat.csr -CA filebeatCA.crt -CAkey filebeatCA.key -CAcreateserial -out filebeat.crt -days 365 -sha256 -extfile filebeat-cert.conf
        ```
-   2. Locate `output.logstash` section and add an entry of the certificate:
+   2. Locate the `output.logstash` section and add an entry for the certificate:
       ```
        ssl.certificate: "<PATH TO>/filebeat.crt"
        ssl.key: "<PATH TO>/filebeat-pkcs8.key"
