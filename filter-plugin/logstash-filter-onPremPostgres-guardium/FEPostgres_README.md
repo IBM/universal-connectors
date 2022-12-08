@@ -1,8 +1,7 @@
-## Installing Fujitsu Enterprise Postgres and configuring auditing
-
+## 1. Configuring the Fujitsu Enterprise Postgres
 For this example, we will assume that we already have a working Fujitsu Enterprise Postgres setup.
 
-## Enabling the pgaudit extension
+## 2. Enabling pgaudit extension logs:
 
 There are different ways of auditing and logging in Fujitsu postgres. For this exercise, we will use pgaudit, the open
 source audit logging extension for PostgreSQL 
@@ -30,26 +29,31 @@ source audit logging extension for PostgreSQL
 			class = 'WRITE, DDL, ERROR, FUNCTION, ROLE'
 	9. Save and close the file.
 	10. Restart the DB server so as to get the changes reflected. Command to restart the server  pg_ctl restart -D <dbInstanceName>
-	
 
-## Viewing the audit logs
+## 3. Viewing the audit logs
 
 When logger parameter is set to 'auditLog', one can also add settings for 'log_directory' and 'log_filename', where the log files can be found. If not specified it is in default location <path_of_pgaudit.conf>/pgaudit_log/
 	
-## Filebeat configurations:
+## 4. Configuring Filebeat to push logs to Guardium
 
-#### Procedure:
+## a. Filebeat installation
 
-1. To install Filebeat on your system, follow the steps in this topic:
+### Procedure:
+
+To install Filebeat on your system, follow the steps in this topic:
     https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#installation
 
-2. Filebeat configuration:
+## b. Filebeat configuration:
 
 To use Logstash to perform additional processing on the data collected by Filebeat, we need to configure Filebeat to use Logstash. To do this, modify the filebeat.yml file which you can find inside the folder where filebeat is installed. Follow these instructions for finding the installation directory:
 https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
-    • Locate "filebeat.inputs" in the filebeat.yml file and then use the "paths" attribute to set the location of the EDB Postgres audit logs:
-	For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/configuration-filebeat-options.html#configuration-filebeat-options
+### Procedure:
+
+1. Configuring the input section :-
+
+    • Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
+																																														 
        
 	For example:-
 	   filebeat.inputs:
@@ -58,24 +62,34 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
         paths:
        - <directory specified in pgaudit.conf under "log_directory" parameter, if not specified it is pgaudit_log directory>
 	
-	Inside input section, need to add configuration to process multi-line audit events, add below settings for the same
+	• To process multi-line audit events, add the settings in the same inputs section.
 	
-	multiline.type: pattern
-    multiline.pattern: 'AUDIT:'
-    multiline.negate: true
-    multiline.match: after
+		multiline.type: pattern
+		multiline.pattern: 'AUDIT:'
+		multiline.negate: true
+		multiline.match: after
 	
-	Inside the input section, add the tags to uniquely identify the EDB events from the rest.
+	• Add the tags to uniquely identify the Neo4j events from the rest.
 	
-	tags: ["guc_postgres_param"]
+		tags: ["guc_postgres_param"]
 	
-    • While editing the Filebeat configuration file, disable Elasticsearch output by commenting it out. Then enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
-		
-	For example:-
-       output.logstash:
-       hosts: ["127.0.0.1:5001"]
+ 2. Configuring the output section:
+	
+	• Locate "output" in the filebeat.yml file, then add the following parameters.
+					   
+								
 
-The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections. You can set any port number except 5044, 5141, and 5000 (as these are currently reserved as ports for the MongoDB incoming log).
+    • Disable Elasticsearch output by commenting it out.
+
+	• Enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
+
+	• For example:
+
+		output.logstash:
+		hosts: ["<host>:<port>"]
+	• The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections.
+
+	• You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
 	
 	• Locate "Processors" in the filebeat.yml file and then add below attribute to get timezone of Server:
 	For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/add-locale.html
@@ -92,27 +106,29 @@ The hosts option specifies the Logstash server and the port (5001) where Logstas
 3. To learn how to start FileBeat, see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
 	
 	
-## Limitations
+### Limitations
 	• Here, the exact query that caused exception is not logged, so in reports it is set as NA (Not Available)
+
 	
-	
-## Configuring the Fujitsu Enterprise Postgres filters in Guardium
+## 5. Configuring the Fujitsu Enterprise Postgres filters in Guardium
 
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the postgres template.
 
 ## Before you begin
-	• You must have permission for the S-Tap Management role. The admin user includes this role by default.
-	• Download the postgres-offline-plugins-7.5.2.zip plug-in.
+• You must have LFD policy enabled on the collector. The detailed steps can be found in step #4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+
+• You must have permission for the S-Tap Management role. The admin user includes this role, by default.
+					 
+• Download the [postgres-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresOverFilebeatPackage/postgres-offline-plugins-7.5.2.zip) plug-in
 
 # Procedure
-	1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-	2. First Enable the Universal Guardium connector, if it is Disabled already.
-	3. Click Upload File and select the offline [postgres-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresOverFilebeatPackage/Postgres/postgres-offline-plugins-7.5.2.zip)  plug-in. After it is uploaded, click OK.
-	4. Click the Plus sign to open the Connector Configuration dialog box.
-	5. Type a name in the Connector name field.
-	6. Update the input section to add the details from [PostgresFilebeat.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-	7. Update the filter section to add the details from [PostgresFilebeat.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-	8. "type" field should match in input and filter configuration section. This field should be unique for  every individual connector added.
-	9. The tag added in the filebeat.yml file should match the "[tags]" specified in filter part.
-	10. Click Save. Guardium validates the new connector, and enables the universal connector if it was
-	disabled. After it is validated, it appears in the Configure Universal Connector page.
+1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
+2. First enable the Universal Guardium connector, if it is disabled already.
+3. Click Upload File and select the offline [postgres-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresOverFilebeatPackage/postgres-offline-plugins-7.5.2.zip)  plug-in. After it is uploaded, click OK.
+4. Click the Plus sign to open the Connector Configuration dialog box.
+5. Type a name in the Connector name field.
+6. Update the input section to add the details from the [PostgresFilebeat.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from the [PostgresFilebeat.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+8. The "type" fields should match in the input and the filter configuration section. This field should be unique for  every individual connector added.
+9. The tag added in the filebeat.yml file should match the "[tags]" specified in the filter part.
+10. Click Save. Guardium validates the new connector, and enables the universal connector if it was	disabled. After it is validated, it appears in the Configure Universal Connector page.

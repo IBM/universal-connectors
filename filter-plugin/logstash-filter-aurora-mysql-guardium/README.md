@@ -1,19 +1,13 @@
-## Aurora-mysql-Guardium Logstash filter plug-in
+# Aurora-mysql-Guardium Logstash filter plug-in
 
-This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the aurora-mysql audit log into a Guardium record instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
+This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the aurora-mysql audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
 Currently, this plug-in will work only on IBM Security Guardium Data Protection, not Guardium Insights.
 
-This plugin is written in Ruby and so is a script that can be directly copied into Guardium configuration of Universal Connectors. There is no need to upload the plugin code. However, in order to support few features one zip has to be added named, aurora-mysql-offline-plugins-7.5.2.zip 
-
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
-## Limitations
-	• The aurora-mysql plug-in does not support IPV6.
-	• The aurora-mysql auditing does not audit Procedure,Function,Show tables operations.
-	• Source Program will be seen as blank in report.
 
-## Configuring the AWS aurora-mysql service
+## 1. Configuring the AWS aurora-mysql service
 
 ### Procedure:
 	1. Go to https://console.aws.amazon.com/.
@@ -52,7 +46,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 		e. Click Add Rule and then click Save changes.
 		The database may need to be restarted.
 
-## Enabling Auditing
+## 2. Enabling Auditing
 
 	1. Click on Parameter Groups.
 	2. Click on "Create Parameter Groups" Button .
@@ -77,57 +71,66 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 	12. Click on Modify Cluster.
 	13. Reboot the DB Cluster for the changes to take effect.
 		
-## Viewing the Audit logs
+## 3. Viewing the Audit logs
 
 The Audit logs can be seen in log files in RDS, and also on CloudWatch.
 	• “Viewing the auditing details in RDS log files”
 	• “Viewing the logs entries on CloudWatch”
 
-## Viewing the auditing details in RDS log files
+### Viewing the auditing details in RDS log files
 
 The RDS log files can be viewed, watched, and downloaded. The name of the RDS log file is modifiable and is controlled by parameter log_filename.
 
-### Procedure
+#### Procedure
 	1. Go to Services > Database > RDS > Databases.
 	2. Select the database instance.
 	3. Select the Logs & Events section.
 	4. The end of the Logs section lists the files that contain the auditing details. The newest file is the last page.
 
-## Viewing the logs entries on CloudWatch
+### Viewing the logs entries on CloudWatch
 
 By default, each database instance has an associated log group with a name in this format: /aws/rds/instance/<instance_name>/aurora-mysqlql. You can use this log group, or you can create a new one and associate it with the database instance.
 
-### Procedure
+#### Procedure
 	1. On the AWS Console page, open the Services menu.
 	2. Enter the CloudWatch string in the search box.
 	3. Click CloudWatch to redirect to the CloudWatch dashboard.
 	4. In the left panel, select Logs.
 	5. Click Log Groups.
+	
 
-## Authorizing outgoing traffic from AWS to Guardium
+#### Limitations
+	• The aurora-mysql plug-in does not support IPV6.
+	• The aurora-mysql auditing does not audit Procedure,Function,Show tables operations.
+	• Source Program will be seen as blank in report.
 
-### Procedure
+## 4. Configuring the aurora-mysql filters in Guardium
+
+The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the aurora-mysql template.
+
+### Authorizing outgoing traffic from AWS to Guardium
+
+#### Procedure
 	1. Log in to the Guardium API.
 	2. Issue these commands:
 		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
 		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 
+#### Before you begin
+• You must have LFD policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
 
-## Configuring the aurora-mysql filters in Guardium
+• You must have permission for the S-Tap Management role. The admin user includes this role by default.
+	
+• Download the [Aurora-Mysql-offlinePlugin.zip plug-in.](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-aurora-mysql-guardium/AuroraMysqlOverCloudwatchPackage/AuroraMysql/Aurora-Mysql-offlinePlugin.zip)
 
-The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the aurora-mysql template.
-
-## Before you begin
-	• You must have permission for the S-Tap Management role. The admin user includes this role by default.
-	• Download the aurora-mysql-offline-plugins-7.5.2.zip plug-in.
-
-# Procedure
-	1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-	2. Click Upload File and select the offline aurora-mysql-offline-plugins-7.5.2.zip plug-in. After it is uploaded, click OK.
-	3. Click the Plus sign to open the Connector Configuration dialog box.
-	4. Type a name in the Connector name field.
-	5. Update the input section to add the details from auroraMysqlCloudwatch.conf file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-	6. Update the filter section to add the details from auroraMysqlCloudwatch.conf file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-	Note: "type" field should match in input and filter configuration section. This field should be unique for every individual connector added.
-	7. Click Save. Guardium validates the new connector, and enables the universal connector if it was
+#### Procedure
+1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
+2. First enable the Universal Guardium connector, if it is disabled already.
+3. Click Upload File and select the offline [Aurora-Mysql-offlinePlugin.zip plug-in.](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-aurora-mysql-guardium/AuroraMysqlOverCloudwatchPackage/AuroraMysql/Aurora-Mysql-offlinePlugin.zip) plug-in. After it is uploaded, click OK.						 
+4. Click the Plus sign to open the Connector Configuration dialog box.
+5. Type a name in the Connector name field.
+6. Update the input section to add the details from [auroraMysqlCloudwatch.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-aurora-mysql-guardium/auroraMysqlCloudwatch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from [auroraMysqlCloudwatch.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-aurora-mysql-guardium/auroraMysqlCloudwatch.conf)  file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+9. Click Save. Guardium validates the new connector, and enables the universal connector if it was
 	disabled. After it is validated, it appears in the Configure Universal Connector page.
