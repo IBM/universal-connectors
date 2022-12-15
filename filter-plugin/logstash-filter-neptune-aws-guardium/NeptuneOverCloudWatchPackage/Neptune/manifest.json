@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_Neptune_filter",
+	"alias": "Neptune",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "2.3.20",
+	"datasourceTypes": [{"type":"Neptune","supportedVersions": ["1.1"]}],
+	"supported_input_plugins": ["Cloudwatch_logs_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses events and messages from the Neptune audit log into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-neptune-aws-guardium/README.md"
+}

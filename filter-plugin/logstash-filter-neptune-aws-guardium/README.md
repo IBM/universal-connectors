@@ -129,3 +129,10 @@ The Guardium universal connector is the Guardium entry point for native audit lo
      - Client HostName : Not available with Audit logs
      - The Neptune audit log doesn’t include error logs, so in Guardium we will not be able to show this in the in SQL_ERROR & LOGIN_FAILED report.In cases of invalid queries, an error message will appear in the Guardium logs instead of records.
 
+	
+## 6. Configuring the AWS Neptune Guardium Logstash filters in Guardium Insights
+
+To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/universal-connectors/blob/main/docs/UC_Configuration_GI.md)
+
+In the input configuration section, refer to the CloudWatch_logs section.
+
