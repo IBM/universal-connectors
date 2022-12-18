@@ -132,3 +132,9 @@ di***REMOVED***bled. After it is validated, it appears in the Configure Univer**
 	 - serverIP : This field is populated with 0.0.0.0, as this information is not embedded in the mes***REMOVED***ges pulled from AWS Cloudwatch.
      - clientPort and serverPort : Not available with audit logs
  - For system generated LOGIN_FAILED logs, the Dbuser value not available,so we set NA.
+ 
+## 7. Configuring the AWS MariaDB Guardium Logstash filters in Guardium Insights
+
+To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/UC_Configuration_GI.md)
+
+In the input configuration section, refer to the CloudWatch_logs section.
