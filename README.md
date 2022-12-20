@@ -19,6 +19,9 @@
 
 The Guardium univer***REMOVED***l connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using S-TAPs. The Guardium Univer***REMOVED***l Connector includes support for MongoDB, MySQL, and Amazon S3, requiring minimal configuration. Users can easily develop plug-ins for other data sources, and install them in Guardium.
 
+**Note:**
+MongoDB, MySQL, and Amazon S3 are presented as an example of the three pre-defined, internal (meaning that they're "built-in" or pre-installed in UC -- there's no need to manually upload any .zips to execute them and no pre-requisites are required, as opposed to user made packages or other supported plug-ins which are "external"/need to be manually uploaded onto the gmachine or GI), in-house supported packages, that require minimal configs on the client end: the customer needs to simply use a ready made template for plugging in values for the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed LS plug-ins or write their own ruby code parser as a pre-processing stage prior to executing the filter/input plug-ins.
+
 Figure 1. Guardium univer***REMOVED***l connector architecture
 
 ![Univer***REMOVED***l Connector](/docs/images/guc.jpg)
@@ -32,6 +35,7 @@ For data sources that do not have pre-defined plug-ins, you can customize the fi
 The Guardium univer***REMOVED***l connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium univer***REMOVED***l connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. The Guardium policy, as usual, determines whether the activities are legitimate or not, when to alert, and the auditing level per activity.
 
 The Guardium univer***REMOVED***l connector scales by adding Guardium collectors. It has a load-balancing and fail-over mechanism among multiple Guardium collectors.
+
 
 Connections to databases that are configured with the Guardium univer***REMOVED***l connector are handled the ***REMOVED***me as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
 
@@ -48,6 +52,15 @@ The Univer***REMOVED***l Connector is a Logstash pipeline consisting of a series
 ![Univer***REMOVED***l Connector - Logstash pipeline](/docs/images/uc_overview.png)
 
 Univer***REMOVED***l Connector plug-ins are packaged and deployed in a Docker container environment.
+
+### Further how-tos (?)
+There are a couple of flavors aimed at enabling audit log forwarding into Guardium for various Data Sources, comprised of either a cloud or on-premise data lake platform, of a Data Base type that is supported by the Guardium sniffer (should attach here a link to the supported dbs):
+  → The three pre-installed plug-in packages (mongo, mysql and s3) that require minimal configurations on the client's end: plugging in suited values in their respective template configuration files in the input and filter sections is sufficient OR adding a ruby code sub-section to the filter sections in case a more complex parsing method is neces***REMOVED***ry as a pre-processing stage to be executed prior to the respective filter plug-in.
+  → For not yet supported Data Sources, you can either upload an external filter plug-in or develop your own and add it to our plug-ins repository, with the option to clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)
+**Note:**
+It's optional to add an input plug-in to the repository in case the existing ones are insufficient for your needs, although it's recommended to use one of the existing or preinstalled input plug-ins and modify their config files' input section accordingly
+**Note:**
+The Output plug-in is presented here as an under-the-hood internal component of the UC pipeline and is not to be accessed or modified by the user.
 
 
 [Technical demo](https://youtu.be/LAYhVoYMb28)
