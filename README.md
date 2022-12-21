@@ -64,6 +64,8 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
 **Note:**
 It's optional to add an input plug-in to the repository in case the existing ones are insufficient for your needs, although it's recommended to use one of the existing or preinstalled input plug-ins and modify their config files' input section accordingly
+
+
 **Note:**
 The Output plug-in is presented here as an under-the-hood internal component of the UC pipeline and is not to be accessed or modified by the user.
 
