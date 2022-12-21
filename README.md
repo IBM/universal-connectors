@@ -154,7 +154,14 @@ Users can develop their own universal connector plugins, if needed, and contribu
 
 [Here](docs/developing_plugins_gdp.md) is a guide for developing new plug-ins for Guardium Data Protection. 
 
-[Here](docs/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights. 
+[Here](docs/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights.
+
+
+**Note:**
+For adding a parsing section as a pre-processing stage prior to executing the filter plug-in, use [Ruby filter plugin](https://www.elastic.co/guide/en/logstash/current/plugins-filters-ruby.html).
+
+**Note:**
+For developing a Ruby filter plug-in, use [How to write a Logstash filter plugin](https://www.elastic.co/guide/en/logstash/current/filter-new-plugin.html)
 
 
 ***
