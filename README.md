@@ -165,6 +165,9 @@ For adding a parser to the filter section of the configuration file as a pre-pro
 ### <a name="Ruby-plug-in"></a> Develop a Ruby filter plug-in
 For developing a Ruby filter plug-in, use [How to write a Logstash filter plugin](https://www.elastic.co/guide/en/logstash/current/filter-new-plugin.html)
 
+**Note:**
+It is the developer's responsibility to maintain and update the Data Base's supported versions 
+
 
 ***
 ## Contributing
