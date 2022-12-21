@@ -21,9 +21,6 @@ The Guardium universal connector enables Guardium Data Protection and Guardium I
 
 The captured events embed logs of any type that's supported by the configured Data Source. That includes, among many others: information, DDLs and DMLs, errors of varying sub-types, encrypted, administrative, etc.
 
-**Note:**
-MongoDB, MySQL, and Amazon S3 are presented here as an example of the three pre-defined, internal (meaning that they're "built-in" or pre-installed in UC -- there's no need to manually upload any .zips to execute them and no pre-requisites are required, as opposed to user made packages or other supported plug-ins which are "external"/need to be manually uploaded onto the gmachine or GI), in-house supported packages, that require minimal configs on the client end: the customer needs to simply use a ready made template for plugging in values for the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed LS plug-ins or write their own ruby code parser as a pre-processing stage prior to executing the filter/input plug-ins.
-
 Figure 1. Guardium universal connector architecture
 
 ![Universal Connector](/docs/images/guc.jpg)
@@ -62,6 +59,10 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
   1. The three pre-installed plug-in packages (mongo, mysql and s3) that require minimal configurations on the client's end: plugging in suited values in their respective template configuration files in the input and filter sections is sufficient OR adding a ruby code sub-section to the filter sections in case a more complex parsing method is necessary as a pre-processing stage to be executed prior to the respective filter plug-in.
   2. For not yet supported Data Sources, you can either upload an external filter plug-in or develop your own and add it to our plug-ins repository, with the option to clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)
+
+
+  **Note:**
+  MongoDB, MySQL, and Amazon S3 are presented here as an example of the three pre-defined, internal (meaning that they're "built-in" or pre-installed in UC -- there's no need to manually upload any .zips to execute them and no pre-requisites are required, as opposed to user made packages or other supported plug-ins which are "external"/need to be manually uploaded onto the gmachine or GI), in-house supported packages, that require minimal configs on the client end: the customer needs to simply use a ready made template for plugging in values for the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed LS plug-ins or write their own Ruby code parser using the [Ruby filter plug-in](#Use Logstash's Ruby filter plug-in) as a pre-processing stage prior to executing the filter/input plug-ins.
 
 
 **Note:**
@@ -157,10 +158,10 @@ Users can develop their own universal connector plugins, if needed, and contribu
 [Here](docs/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights.
 
 
-**Note:**
+### Use Logstash's Ruby filter plug-in
 For adding a parsing section as a pre-processing stage prior to executing the filter plug-in, use [Ruby filter plugin](https://www.elastic.co/guide/en/logstash/current/plugins-filters-ruby.html).
 
-**Note:**
+### Develop a Ruby filter plug-in
 For developing a Ruby filter plug-in, use [How to write a Logstash filter plugin](https://www.elastic.co/guide/en/logstash/current/filter-new-plugin.html)
 
 
