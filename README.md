@@ -34,14 +34,16 @@ For data sources that do not have pre-defined plug-ins, you can customize the fi
 
 The Guardium univer***REMOVED***l connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium univer***REMOVED***l connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. The Guardium policy, as usual, determines whether the activities are legitimate or not, when to alert, and the auditing level per activity.
 
-The Guardium univer***REMOVED***l connector scales by adding Guardium collectors. It has a load-balancing and fail-over mechanism among multiple Guardium collectors.
+The Guardium univer***REMOVED***l connector scales by adding Guardium collectors. It provides a load-balancing and fail-over mechanisms among a set of Guardium collectors. In it of itself, it might implicate distribution of the whole set of events to each of the Guardium collectors in the set, causing duplications and redundant event processing. To bypass this fallback default behavior, these mechanisms are to be configured as part of the input scope of the installed connector's configuration file.
 
+**Note:**
+See GCP's Pub/Sub input plug-in [load-balancing configuration](https://github.com/IBM/univer***REMOVED***l-connectors/tree/main/input-plugin/logstash-input-google-pubsub#note-2) as an example.
 
 Connections to databases that are configured with the Guardium univer***REMOVED***l connector are handled the ***REMOVED***me as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
 
 ## How it works
 
-The Univer***REMOVED***l Connector is a Logstash pipeline consisting of a series of three plug-ins:
+The Univer***REMOVED***l Connector under-the-hood is a Logstash pipeline comprising of a series of three plug-ins:
 
 1. Input plug-in. This plug-in ingests events. Depending on the type of plug-in, there are settings to either pull events from APIs or receive a push of events.
 
