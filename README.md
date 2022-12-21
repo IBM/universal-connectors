@@ -62,7 +62,7 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
 
   **Note:**
-  MongoDB, MySQL, and Amazon S3 are presented here as an example of the three pre-defined, internal (meaning that they're "built-in" or pre-installed in UC -- there's no need to manually upload any .zips to execute them and no pre-requisites are required, as opposed to user made packages or other supported plug-ins which are "external"/need to be manually uploaded onto the gmachine or GI), in-house supported packages, that require minimal configs on the client end: the customer needs to simply use a ready made template for plugging in values for the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed LS plug-ins or write their own Ruby code parser using the [Ruby filter plug-in](#Use-Logstash's-Ruby-filter-plug-in) as a pre-processing stage prior to executing the filter/input plug-ins.
+  MongoDB, MySQL, and Amazon S3 are presented here as an example of the three pre-defined, internal (meaning that they're "built-in" or pre-installed in UC -- there's no need to manually upload any .zips to execute them and no pre-requisites are required, as opposed to user made packages or other supported plug-ins which are "external"/need to be manually uploaded onto the gmachine or GI), in-house supported packages, that require minimal configs on the client end: the customer needs to simply use a ready made template for plugging in values for the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed LS plug-ins or write their own Ruby code parser using the [Ruby filter plug-in](#Ruby-filter) as a pre-processing stage prior to executing the filter/input plug-ins.
 
 
 **Note:**
@@ -158,10 +158,10 @@ Users can develop their own univer***REMOVED***l connector plugins, if needed, a
 [Here](docs/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights.
 
 
-### Use Logstash's Ruby filter plug-in
-For adding a parsing section as a pre-processing stage prior to executing the filter plug-in, use [Ruby filter plugin](https://www.elastic.co/guide/en/logstash/current/plugins-filters-ruby.html).
+###<a name="Ruby-filter"></a> Use Logstash's Ruby filter plug-in
+For adding a parser to the filter section of the configuration file as a pre-processing stage prior to executing the filter plug-in, use [Ruby filter plugin](https://www.elastic.co/guide/en/logstash/current/plugins-filters-ruby.html).
 
-### Develop a Ruby filter plug-in
+###<a name="Ruby-plug-in"></a> Develop a Ruby filter plug-in
 For developing a Ruby filter plug-in, use [How to write a Logstash filter plugin](https://www.elastic.co/guide/en/logstash/current/filter-new-plugin.html)
 
 
