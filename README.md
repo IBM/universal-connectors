@@ -57,8 +57,11 @@ Univer***REMOVED***l Connector plug-ins are packaged and deployed in a Docker co
 
 ### Further how-tos (?)
 There are a couple of flavors aimed at enabling audit log forwarding into Guardium for various Data Sources, comprised of either a cloud or on-premise data lake platform, of a Data Base type that is supported by the Guardium sniffer (should attach here a link to the supported dbs):
-  → The three pre-installed plug-in packages (mongo, mysql and s3) that require minimal configurations on the client's end: plugging in suited values in their respective template configuration files in the input and filter sections is sufficient OR adding a ruby code sub-section to the filter sections in case a more complex parsing method is neces***REMOVED***ry as a pre-processing stage to be executed prior to the respective filter plug-in.
-  → For not yet supported Data Sources, you can either upload an external filter plug-in or develop your own and add it to our plug-ins repository, with the option to clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)
+
+  1. The three pre-installed plug-in packages (mongo, mysql and s3) that require minimal configurations on the client's end: plugging in suited values in their respective template configuration files in the input and filter sections is sufficient OR adding a ruby code sub-section to the filter sections in case a more complex parsing method is neces***REMOVED***ry as a pre-processing stage to be executed prior to the respective filter plug-in.
+  2. For not yet supported Data Sources, you can either upload an external filter plug-in or develop your own and add it to our plug-ins repository, with the option to clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)
+
+
 **Note:**
 It's optional to add an input plug-in to the repository in case the existing ones are insufficient for your needs, although it's recommended to use one of the existing or preinstalled input plug-ins and modify their config files' input section accordingly
 **Note:**
