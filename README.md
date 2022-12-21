@@ -54,15 +54,15 @@ The Universal Connector under-the-hood is a Logstash pipeline comprising of a se
 
 Universal Connector plug-ins are packaged and deployed in a Docker container environment.
 
-### Further how-tos (?)
+### In-depth how-tos
 There are a couple of flavors aimed at enabling audit log forwarding into Guardium for various Data Sources, comprised of either a cloud or on-premise data lake platform, of a Data Base type that is supported by the Guardium sniffer (should attach here a link to the supported dbs):
 
-  1. The three pre-installed plug-in packages (mongo, mysql and s3) that require minimal configurations on the client's end: plugging in suited values in their respective template configuration files in the input and filter sections is sufficient OR adding a ruby code sub-section to the filter sections in case a more complex parsing method is necessary as a pre-processing stage to be executed prior to the respective filter plug-in.
+  1. The three pre-installed plug-in packages (MongoDB, MySQL, and Amazon S3) that require minimal configurations on the client's end: either plugging in suited values in their respective template configuration files in the input and filter sections, or adding a ruby code sub-section to the filter sections in case a more complex parsing method is necessary as a pre-processing stage to be executed prior to the respective filter plug-in is sufficient.
   2. For not yet supported Data Sources, you can either upload an external filter plug-in or develop your own and add it to our plug-ins repository, with the option to clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)
 
 
   **Note:**
-  MongoDB, MySQL, and Amazon S3 are presented here as an example of the three pre-defined, internal (meaning that they're "built-in" or pre-installed in UC -- there's no need to manually upload any .zips to execute them and no pre-requisites are required, as opposed to user made packages or other supported plug-ins which are "external"/need to be manually uploaded onto the gmachine or GI), in-house supported packages, that require minimal configs on the client end: the customer needs to simply use a ready made template for plugging in values for the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed LS plug-ins or write their own Ruby code parser using the [Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter/input plug-ins.
+  MongoDB, MySQL, and Amazon S3 are presented here as an example of the three pre-defined and pre-installed plug-ins that are built-in in Universal Connector. These packages do not require any manual uploads or other such pre-requisites on the user's end, as opposed to user made plug-ins or other available Logstash plug-ins. The user needs to simply use a ready made template for plugging in values to the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed Logstash plug-ins, or write their own Ruby code parser using the [Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter/input plug-ins.
 
 
 **Note:**
