@@ -35,9 +35,6 @@ The Guardium universal connector identifies and parses the received events, and 
 
 The Guardium universal connector scales by adding Guardium collectors. It provides a load-balancing and fail-over mechanisms among a set of Guardium collectors. In it of itself, it might implicate distribution of the whole set of events to each of the Guardium collectors in the set, causing duplications and redundant event processing. To bypass this fallback default behavior, these mechanisms are to be configured as part of the input scope of the installed connector's configuration file.
 
-**Note:**
-See GCP's Pub/Sub input plug-in [load-balancing configuration](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub#note-2) as an example.
-
 Connections to databases that are configured with the Guardium universal connector are handled the same as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
 
 ## How it works
@@ -71,6 +68,10 @@ It's optional to add an input plug-in to the repository in case the existing one
 
 **Note:**
 The Output plug-in is presented here as an under-the-hood internal component of the UC pipeline and is not to be accessed or modified by the user.
+
+
+**Note:**
+See GCP's Pub/Sub input plug-in [load-balancing configuration](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub#note-2) as an example.
 
 
 [Technical demo](https://youtu.be/LAYhVoYMb28)
