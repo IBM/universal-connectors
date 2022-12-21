@@ -17,10 +17,12 @@
 
 ## Overview
 
-The Guardium universal connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using S-TAPs, that includes, among many others: information, DDLs and DMLs, error of varying sub-types, encrypted, administrative, etc. The Guardium Universal Connector includes support for MongoDB, MySQL, and Amazon S3, requiring minimal configuration. Users can easily develop plug-ins for other data sources, and install them in Guardium.
+The Guardium universal connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using S-TAPs, The Guardium Universal Connector includes support for MongoDB, MySQL, and Amazon S3, requiring minimal configuration. Users can easily develop plug-ins for other data sources, and install them in Guardium.
+
+The captured events embed logs of any type that's supported by the configured Data Source. That includes, among many others: information, DDLs and DMLs, errors of varying sub-types, encrypted, administrative, etc.
 
 **Note:**
-MongoDB, MySQL, and Amazon S3 are presented as an example of the three pre-defined, internal (meaning that they're "built-in" or pre-installed in UC -- there's no need to manually upload any .zips to execute them and no pre-requisites are required, as opposed to user made packages or other supported plug-ins which are "external"/need to be manually uploaded onto the gmachine or GI), in-house supported packages, that require minimal configs on the client end: the customer needs to simply use a ready made template for plugging in values for the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed LS plug-ins or write their own ruby code parser as a pre-processing stage prior to executing the filter/input plug-ins.
+MongoDB, MySQL, and Amazon S3 are presented here as an example of the three pre-defined, internal (meaning that they're "built-in" or pre-installed in UC -- there's no need to manually upload any .zips to execute them and no pre-requisites are required, as opposed to user made packages or other supported plug-ins which are "external"/need to be manually uploaded onto the gmachine or GI), in-house supported packages, that require minimal configs on the client end: the customer needs to simply use a ready made template for plugging in values for the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed LS plug-ins or write their own ruby code parser as a pre-processing stage prior to executing the filter/input plug-ins.
 
 Figure 1. Guardium universal connector architecture
 
