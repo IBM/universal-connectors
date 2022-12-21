@@ -16,7 +16,7 @@ Review the options and the end-to-end flow for configuring the Guardium univer**
 
 ***Note: if you are using secrets or sensitive information in your configuration, see the Creating and Managing Secrets section below before you configure a new connector***
 
-3.	For a data source that does not have off-the-shelf support by Guardium, [upload a plug-in](/available_plugins.md)
+3.	For a data source that does not have off-the-shelf support by Guardium, [upload a plug-in](/docs/available_plugins.md)
 
 4.	Enable the univer***REMOVED***l collector feature on the designated Guardium collectors or the stand-alone system. See the section about enabling the Guardium univer***REMOVED***l connector on collectors below.
 
