@@ -19,7 +19,7 @@
 
 The Guardium universal connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using S-TAPs, The Guardium Universal Connector includes support for MongoDB, MySQL, and Amazon S3, requiring minimal configuration. Users can easily develop plug-ins for other data sources, and install them in Guardium.
 
-The captured events embed logs of any type that's supported by the configured Data Source. That includes, among many others: information, DDLs and DMLs, errors of varying sub-types, encrypted, administrative, etc.
+The captured events embed logs of any type that's supported by the configured Data Source. That includes: information, administrative (e.g.: login logs, various data lake platform native plug-in related data), DDLs and DMLs, errors of varying sub-types, etc. The incoming Universal Connector events can be configured to arrive either encrypted or as plaintext.
 
 Figure 1. Guardium universal connector architecture
 
@@ -33,9 +33,10 @@ For data sources that do not have pre-defined plug-ins, you can customize the fi
 
 The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. The Guardium policy, as usual, determines whether the activities are legitimate or not, when to alert, and the auditing level per activity.
 
-The Guardium universal connector scales by adding Guardium collectors. It provides a load-balancing and fail-over mechanisms among a set of Guardium collectors. In it of itself, it might implicate distribution of the whole set of events to each of the Guardium collectors in the set, causing duplications and redundant event processing. To bypass this fallback default behavior, these mechanisms are to be configured as part of the input scope of the installed connector's configuration file.
+The Guardium universal connector scales by adding Guardium collectors. It provides a load-balancing and fail-over mechanisms among a set of Guardium collectors. In it of itself, it might implicate distribution of the whole set of events to each of the Guardium collectors in the set, causing duplications and redundant event processing. To bypass this fallback default behavior, these mechanisms are to be configured as part of the input scope of the installed connector's configuration file. (*)
 
 Connections to databases that are configured with the Guardium universal connector are handled the same as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
+
 
 ## How it works
 
@@ -43,35 +44,35 @@ The Universal Connector under-the-hood is a Logstash pipeline comprising of a se
 
 1. Input plug-in. This plug-in ingests events. Depending on the type of plug-in, there are settings to either pull events from APIs or receive a push of events.
 
-2. Filter plug-in. This plug-in filters events. The filter plug-in parses, filters, and modifies event logs into in a normalized format. 
+2. Filter plug-in. This plug-in filters events. The filter plug-in parses, filters, and modifies event logs into in a normalized format.
 
-3. Output plug-in. This plug-in takes the event logs in a normalized format and sends it to IBM Guardium (either Guardium Data Protection or Guardium Insights). 
+3. Output plug-in. This plug-in takes the event logs in a normalized format and sends it to IBM Guardium (either Guardium Data Protection or Guardium Insights).
+
+***Note: the Output plug-in is presented here as an internal component of the UC pipeline and is not to be accessed or modified by the user.***
 
 ![Universal Connector - Logstash pipeline](/docs/images/uc_overview.png)
 
 Universal Connector plug-ins are packaged and deployed in a Docker container environment.
 
 ### In-depth how-tos
-There are a couple of flavors aimed at enabling audit log forwarding into Guardium for various Data Sources, comprised of either a cloud or on-premise data lake platform, of a Data Base type that is supported by the Guardium sniffer (should attach here a link to the supported dbs):
+There are a couple of flavors aimed at enabling audit log forwarding into Guardium for various Data Sources, comprised of either a cloud or on-premise data lake platform, of a Data Base type that is supported by the Guardium sniffer:
 
   1. The three pre-installed plug-in packages (MongoDB, MySQL, and Amazon S3) that require minimal configurations on the client's end: either plugging in suited values in their respective template configuration files in the input and filter sections, or adding a ruby code sub-section to the filter sections in case a more complex parsing method is necessary as a pre-processing stage to be executed prior to the respective filter plug-in is sufficient.
+
   2. For not yet supported Data Sources, you can either upload an external filter plug-in or develop your own and add it to our plug-ins repository, with the option to clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)
 
+### Keep in mind:
 
-  **Note:**
-  MongoDB, MySQL, and Amazon S3 are presented here as an example of the three pre-defined and pre-installed plug-ins that are built-in in Universal Connector. These packages do not require any manual uploads or other such pre-requisites on the user's end, as opposed to user made plug-ins or other available Logstash plug-ins. The user needs to simply use a ready-made template for plugging in values to the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed Logstash plug-ins, or write their own Ruby code parser using the [Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter/input plug-ins.
-
-
-**Note:**
-It's optional to add an input plug-in to the repository in case the existing ones are insufficient for your needs, although it's recommended to use one of the existing or preinstalled input plug-ins and modify their config files' input section accordingly
-
-
-**Note:**
-The Output plug-in is presented here as an under-the-hood internal component of the UC pipeline and is not to be accessed or modified by the user.
+  1. (1) above is with the exception of GI 3.3.0, SaaS and GDP 12.0.0 where all of the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed.
+  2. (2) above is with the exception of GI SaaS 1.0.0 where no manual uploads by the customer are allowed.
+  3. MongoDB, MySQL, and Amazon S3 are presented here as an example of the three pre-defined and pre-installed plug-ins that are built-in in Universal Connector. These packages do not require any manual uploads or other such pre-requisites on the user's end, as opposed to user made plug-ins or other available Logstash plug-ins. The user needs to simply use a ready-made template for plugging in values to the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed Logstash plug-ins, or write their own Ruby code parser using the [Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter/input plug-ins.***
+  4. It's optional to add an input plug-in to the repository in case the existing ones are insufficient for your needs, although it's recommended to use one of the existing or preinstalled input plug-ins and modify their config files' input section accordingly.
+  5. Referring to (*): see GCP's Pub/Sub input plug-in [load-balancing configuration](/input-plugin/logstash-input-google-pubsub#note-2) as an example.
 
 
-**Note:**
-See GCP's Pub/Sub input plug-in [load-balancing configuration](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub#note-2) as an example.
+
+
+
 
 
 [Technical demo](https://youtu.be/LAYhVoYMb28)
