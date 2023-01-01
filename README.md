@@ -21,7 +21,7 @@
 
 The Guardium universal connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using S-TAPs, The Guardium Universal Connector includes support for MongoDB, MySQL, and Amazon S3, requiring minimal configuration. Users can easily develop plug-ins for other data sources, and install them in Guardium.
 
-The captured events embed logs of any type that's supported by the configured Data Source. That includes: information and administrative system logs (e.g.: login logs, various data lake platform native plug-in related data), DDLs and DMLs, errors of varying sub-types, etc. The incoming Universal Connector events can be configured to arrive either encrypted or as plaintext.
+The captured events embed logs of any type that's supported by the configured Data Source. That includes: information and administrative system logs (e.g.: login logs, various data lake platform native plug-in related data), DDLs and DMLs, errors of varying sub-types, etc. The incoming events into Universal Connector can be configured to arrive either encrypted or as plaintext.
 
 Figure 1. Guardium universal connector architecture
 
