@@ -13,6 +13,7 @@
   - [Developing plug-ins](#developing-plug-ins)
     * [Use Logstash's Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in)
     * [Develop a filter plug-in](#-develop-a-filter-plug-in)
+    * [Develop an input plug-in](#-develop-an-input-plug-in)
   - [Contributing](#contributing)
   - [Contact us](#contact-us)
   - [Licensing](#licensing)
@@ -171,6 +172,10 @@ For adding a parser to the filter section of the configuration file as a pre-pro
 ### <a name="filter-plug-in"></a> Develop a filter plug-in
 * For developing a Ruby filter plug-in, use [How to write a Logstash filter plugin](https://www.elastic.co/guide/en/logstash/current/filter-new-plugin.html)
 * For developing a Java filter plug-in, use [How to write a Java filter plugin](https://www.elastic.co/guide/en/logstash/current/java-filter-plugin.html)
+
+### <a name="input-plug-in"></a> Develop an input plug-in
+* For developing a Ruby input plug-in, use [How to write a Logstash input plugin](https://www.elastic.co/guide/en/logstash/current/input-new-plugin.html)
+* For developing a Java input plug-in, use [How to write a Java filter plugin](https://www.elastic.co/guide/en/logstash/current/java-input-plugin.html)
 
 **Note:**
 It is the developer's responsibility to maintain and update the Data Base's supported versions 
