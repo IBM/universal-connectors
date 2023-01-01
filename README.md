@@ -3,6 +3,8 @@
 
   - [Overview](#overview)
   - [How it works](#how-it-works)
+    * [In-depth how-tos](#in-depth-how-tos)
+      + [Keep in mind](#keep-in-mind)
   - [Deploying universal connector](#deploying-universal-connector)
   - [Monitoring universal connector  connections](#monitoring-uc-connections)
   - [Policies](#policies)
@@ -19,7 +21,7 @@
 
 The Guardium universal connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using S-TAPs, The Guardium Universal Connector includes support for MongoDB, MySQL, and Amazon S3, requiring minimal configuration. Users can easily develop plug-ins for other data sources, and install them in Guardium.
 
-The captured events embed logs of any type that's supported by the configured Data Source. That includes: information, administrative (e.g.: login logs, various data lake platform native plug-in related data), DDLs and DMLs, errors of varying sub-types, etc. The incoming Universal Connector events can be configured to arrive either encrypted or as plaintext.
+The captured events embed logs of any type that's supported by the configured Data Source. That includes: information and administrative system logs (e.g.: login logs, various data lake platform native plug-in related data), DDLs and DMLs, errors of varying sub-types, etc. The incoming Universal Connector events can be configured to arrive either encrypted or as plaintext.
 
 Figure 1. Guardium universal connector architecture
 
@@ -57,17 +59,18 @@ Universal Connector plug-ins are packaged and deployed in a Docker container env
 ### In-depth how-tos
 There are a couple of flavors aimed at enabling audit log forwarding into Guardium for various Data Sources, comprised of either a cloud or on-premise data lake platform, of a Data Base type that is supported by the Guardium sniffer:
 
-  1. The three pre-installed plug-in packages (MongoDB, MySQL, and Amazon S3) that require minimal configurations on the client's end: either plugging in suited values in their respective template configuration files in the input and filter sections, or adding a ruby code sub-section to the filter sections in case a more complex parsing method is necessary as a pre-processing stage to be executed prior to the respective filter plug-in is sufficient.
+  1. Utilize the three pre-installed plug-in packages (MongoDB, MySQL, and Amazon S3) that require minimal configurations on the client's end by either plugging in suited values in their respective template configuration files in the input and filter sections, or adding a Ruby code sub-section to the said filter section in case a more complex parsing method is necessary as a pre-processing stage to be executed prior to the respective filter plug-in is sufficient.
 
   2. For not yet supported Data Sources, you can either upload an external filter plug-in or [develop your own](#developing-plug-ins) and add it to our plug-ins repository, with the option to clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)
 
 ### Keep in mind:
 
-  1. (1) above is with the exception of GI 3.3.0, SaaS and GDP 12.0.0 where all of the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed.
+  1. (1) above is with the exception of GI 3.3.0, SaaS and GDP 12.0.0 where all of the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed upon start-up.
   2. (2) above is with the exception of GI SaaS 1.0.0 where no manual uploads by the customer are allowed.
-  3. MongoDB, MySQL, and Amazon S3 are presented here as an example of the three pre-defined and pre-installed plug-ins that are built-in in Universal Connector. These packages do not require any manual uploads or other such pre-requisites on the user's end, as opposed to user made plug-ins or other available Logstash plug-ins. The user needs to simply use a ready-made template for plugging in values to the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed Logstash plug-ins, or write their own Ruby code parser using the [Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter/input plug-ins.
+  3. MongoDB, MySQL, and Amazon S3 are presented here as an example of the three pre-defined and pre-installed plug-ins. These packages do not require any manual uploads or other such pre-requisites on the user's end, as opposed to user made plug-ins or other available Logstash plug-ins. The user needs to simply use a ready-made template for plugging in values to the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed Logstash plug-ins, or write their own Ruby code parser using the [Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter/input plug-ins.
   4. It's optional to add an input plug-in to the repository in case the existing ones are insufficient for your needs, although it's recommended to use one of the existing or preinstalled input plug-ins and modify their config files' input section accordingly.
-  5. Referring to (*) in the Overview section above: see GCP's Pub/Sub input plug-in [load-balancing configuration](/input-plugin/logstash-input-google-pubsub#note-2) as an example.
+  5. When developing your own plug-in, you can optionally either let the parsing operations be executed by your filter plug-in, or assign this task to the Guardium Sniffer by transferring the event to the Output plug-in in a designated structure as part of the filter plug-in development, as instructed in the links in the [Developers Guide](#developing-plug-ins).
+  5. Referring to (*) in the [Overview](#overview) section: see GCP's Pub/Sub input plug-in [load-balancing configuration](/input-plugin/logstash-input-google-pubsub#note-2) as an example.
 
 
 
