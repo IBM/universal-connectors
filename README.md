@@ -12,7 +12,7 @@
   - [FAQs](#faqs)
   - [Developing plug-ins](#developing-plug-ins)
     * [Use Logstash's Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in)
-    * [Develop a Ruby filter plug-in](#-develop-a-ruby-filter-plug-in)
+    * [Develop a filter plug-in](#-develop-a-filter-plug-in)
   - [Contributing](#contributing)
   - [Contact us](#contact-us)
   - [Licensing](#licensing)
@@ -168,8 +168,9 @@ Users can develop their own univer***REMOVED***l connector plugins, if needed, a
 ### <a name="Ruby-filter"></a> Use Logstash's Ruby filter plug-in
 For adding a parser to the filter section of the configuration file as a pre-processing stage prior to executing the filter plug-in, use [Ruby filter plugin](https://www.elastic.co/guide/en/logstash/current/plugins-filters-ruby.html).
 
-### <a name="Ruby-plug-in"></a> Develop a Ruby filter plug-in
-For developing a Ruby filter plug-in, use [How to write a Logstash filter plugin](https://www.elastic.co/guide/en/logstash/current/filter-new-plugin.html)
+### <a name="filter-plug-in"></a> Develop a filter plug-in
+* For developing a Ruby filter plug-in, use [How to write a Logstash filter plugin](https://www.elastic.co/guide/en/logstash/current/filter-new-plugin.html)
+* For developing a Java filter plug-in, use [How to write a Java filter plugin](https://www.elastic.co/guide/en/logstash/current/java-filter-plugin.html)
 
 **Note:**
 It is the developer's responsibility to maintain and update the Data Base's supported versions 
