@@ -67,7 +67,7 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
   2. (2) above is with the exception of GI SaaS 1.0.0 where no manual uploads by the customer are allowed.
   3. MongoDB, MySQL, and Amazon S3 are presented here as an example of the three pre-defined and pre-installed plug-ins that are built-in in Universal Connector. These packages do not require any manual uploads or other such pre-requisites on the user's end, as opposed to user made plug-ins or other available Logstash plug-ins. The user needs to simply use a ready-made template for plugging in values to the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed Logstash plug-ins, or write their own Ruby code parser using the [Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter/input plug-ins.
   4. It's optional to add an input plug-in to the repository in case the existing ones are insufficient for your needs, although it's recommended to use one of the existing or preinstalled input plug-ins and modify their config files' input section accordingly.
-  5. Referring to (*): see GCP's Pub/Sub input plug-in [load-balancing configuration](/input-plugin/logstash-input-google-pubsub#note-2) as an example.
+  5. Referring to (*) in the Overview section above: see GCP's Pub/Sub input plug-in [load-balancing configuration](/input-plugin/logstash-input-google-pubsub#note-2) as an example.
 
 
 
