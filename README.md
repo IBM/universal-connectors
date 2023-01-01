@@ -64,7 +64,7 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
   1. Utilize the three out-of-the-box pre-installed plug-in packages (MongoDB, MySQL, and Amazon S3) that require minimal configurations on the client's end by either plugging in suited values in their respective template configuration files in the input and filter sections, or adding a Ruby code sub-section to the said filter section in case a more complex parsing method is necessary as a pre-processing stage to be executed prior to the respective filter plug-in is sufficient.
 
-  2. For not yet supported Data Sources, you can either upload an external filter plug-in or [develop your own](#developing-plug-ins) and add it to our plug-ins repository, with the option to clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)
+  2. For not yet supported Data Sources, you can either upload an external IBM approved filter plug-in or [develop your own](#developing-plug-ins) and add it to our plug-ins repository, with the option to clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)
 
 ### Further Notes:
 
