@@ -4,7 +4,7 @@
   - [Overview](#overview)
   - [How it works](#how-it-works)
     * [In-depth how-tos](#in-depth-how-tos)
-      + [Keep in mind](#keep-in-mind)
+    * [Further notes](#further-notes)
   - [Deploying univer***REMOVED***l connector](#deploying-univer***REMOVED***l-connector)
   - [Monitoring univer***REMOVED***l connector  connections](#monitoring-uc-connections)
   - [Policies](#policies)
@@ -63,7 +63,7 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
   2. For not yet supported Data Sources, you can either upload an external filter plug-in or [develop your own](#developing-plug-ins) and add it to our plug-ins repository, with the option to clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)
 
-### Keep in mind:
+### Further Notes:
 
   1. (1) above is with the exception of GI 3.3.0, SaaS and GDP 12.0.0 where all of the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed upon start-up.
   2. (2) above is with the exception of GI SaaS 1.0.0 where no manual uploads by the customer are allowed.
