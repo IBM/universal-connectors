@@ -11,6 +11,8 @@
   - [Known limitations](#known-limitations)
   - [FAQs](#faqs)
   - [Developing plug-ins](#developing-plug-ins)
+    * [Use Logstash's Ruby filter plug-in](#use-logstash's-ruby-filter-plug-in)
+    * [Develop a Ruby filter plug-in](#develop-a-ruby-filter-plug-in)
   - [Contributing](#contributing)
   - [Contact us](#contact-us)
   - [Licensing](#licensing)
