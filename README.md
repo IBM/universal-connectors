@@ -49,7 +49,7 @@ The Universal Connector under-the-hood is a Logstash pipeline comprising of a se
 
 1. Input plug-in. This plug-in ingests events. Depending on the type of plug-in, there are settings to either pull events from APIs or receive a push of events.
 
-2. Filter plug-in. This plug-in filters events. The filter plug-in parses, filters, and modifies event logs into in a normalized format.
+2. Filter plug-in. This plug-in filters events. The filter plug-in parses, filters, and modifies event logs into a Guardium digestible format.
 
 3. Output plug-in. This plug-in takes the event logs in a normalized format and sends it to IBM Guardium (either Guardium Data Protection or Guardium Insights).
 
@@ -65,6 +65,8 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
   1. Utilize the three out-of-the-box pre-installed plug-in packages (MongoDB, MySQL, and Amazon S3) that require minimal configurations on the client's end by either plugging in suited values in their respective template configuration files in the input and filter sections, or adding a Ruby code sub-section to the said filter section in case a more complex parsing method is necessary as a pre-processing stage to be executed prior to the respective filter plug-in is sufficient.
 
   2. For not yet supported Data Sources, you can either upload an external IBM approved filter plug-in or [develop your own](#developing-plug-ins) and add it to our plug-ins repository, with the option to clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)
+
+  3. For some data lake platforms it's possible to define inclusion and exclusion filters for the events routed to Universal Connector to be ingested by the input plug-in which can result in a more efficient filtering implemented either as part of the filter scope in the connector's configuration file, or the developed filter plug-in
 
 ### Further Notes:
 
