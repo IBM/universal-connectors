@@ -49,9 +49,9 @@ The Universal Connector under-the-hood is a Logstash pipeline comprising of a se
 
 1. Input plug-in. This plug-in ingests events. Depending on the type of plug-in, there are settings to either pull events from APIs or receive a push of events.
 
-2. Filter plug-in. This plug-in filters events. The filter plug-in parses, filters, and modifies event logs into a Guardium digestible format.
+2. Filter plug-in. This plug-in filters the events captured by the input plug-in. The filter plug-in parses, filters, and modifies event logs into a Guardium digestible format.
 
-3. Output plug-in. This plug-in takes the event logs in a normalized format and sends it to IBM Guardium (either Guardium Data Protection or Guardium Insights).
+3. Output plug-in. This plug-in receives the formatted event logs from the filter plug-in and transmits them to IBM Guardium (either Guardium Data Protection or Guardium Insights).
 
 ***Note: the Output plug-in is presented here as an internal component of the UC pipeline and is not to be accessed or modified by the user.***
 
