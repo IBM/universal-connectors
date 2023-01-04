@@ -4,7 +4,7 @@
   - [Overview](#overview)
   - [How it works](#how-it-works)
     * [The Workflows](#the-workflows)
-    * [Further notes](#further-notes)
+    * [Keep In Mind](#keep-in-mind)
     * [Enabling Load-balancing and Fail-Over](#enabling-load-balancing-and-fail-over)
   - [Deploying universal connector](#deploying-universal-connector)
   - [Monitoring universal connector  connections](#monitoring-uc-connections)
@@ -70,7 +70,7 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
   3. For some data lake platforms it's possible to define inclusion and exclusion filters for the events routed to Universal Connector to be ingested by the input plug-in which can result in a more efficient filtering implemented either as part of the filter scope in the connector's configuration file, or the developed filter plug-in
 
-### Further Notes:
+### Keep In Mind:
 
   1. The pre-defined and pre-installed plug-ins do not require any manual uploads or other such pre-requisites on the user's end, as opposed to user made plug-ins or other available Logstash plug-ins. The user needs to simply use a ready-made template for plugging in values to the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed Logstash plug-ins, or write their own Ruby code parser using the [Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter plug-ins.
   2. It's optional to add an input plug-in to the repository in case the existing ones are insufficient for your needs, although it's recommended to use one of the existing pre-installed input plug-ins and modify their respective config files' input section according to their documentation[^4].
@@ -223,7 +223,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 [^1]: See [IBM Guardium System Requirements and Supported Platforms](https://www.ibm.com/support/pages/ibm-guardium-system-requirements-and-supported-platforms)
-[^2]: in GI 3.3.0, SaaS and GDP 12.0.0 all of the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed upon start-up.
+[^2]: In GI 3.3.0, SaaS and GDP 12.0.0 all of the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed upon start-up.
 [^3]: with the exception of GI SaaS 1.0.0 where no manual uploads by the customer are allowed.
 [^4]: See [Input plugins](/docs/available_plugins.md#input-plugins) for the full list and documentation.
 [^5]: See GCP MySQL's [Create the SQL Instance](/filter-plugin/logstash-filter-pubsub-mysql-guardium#create-the-sql-instance) section as an example of configuring audit log types via the cloud SQL Instance.
