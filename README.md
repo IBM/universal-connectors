@@ -151,6 +151,7 @@ The univer***REMOVED***l connector has the following known limitations:
 Known limitations for Guardium insights can be found in the UC plugin readme files for each datasource
 ***
 ***Limitations associated with specific datasources are described in the UC plugin readme files for each datasource.***
+
 **See [Available Plug-ins](/docs/available_plugins.md) for more information.**
 ***
 
