@@ -39,7 +39,7 @@ For data sources that do not have pre-defined plug-ins, you can customize the fi
 
 The Guardium univer***REMOVED***l connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium univer***REMOVED***l connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. The Guardium policy, as usual, determines whether the activities are legitimate or not, when to alert, and the auditing level per activity.
 
-The Guardium univer***REMOVED***l connector is scalable. It provides load-balancing and fail-over mechanisms among a deployment of Univer***REMOVED***l Connector instances, that either conform to GDP as a set of Guardium Collectors, or to GI as a set of Univer***REMOVED***l Connector Pods. For more information, see [Enabling Load-Balancing and Fail-Over](#enabling-load balancing-and-fail-over).
+The Guardium univer***REMOVED***l connector is scalable. It provides load-balancing and fail-over mechanisms among a deployment of Univer***REMOVED***l Connector instances, that either conform to GDP as a set of Guardium Collectors, or to GI as a set of Univer***REMOVED***l Connector Pods. For more information, see [Enabling Load-Balancing and Fail-Over](#enabling-load-balancing-and-fail-over).
 
 Connections to databases that are configured with the Guardium univer***REMOVED***l connector are handled the ***REMOVED***me as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
 
