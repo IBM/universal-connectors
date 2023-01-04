@@ -134,17 +134,18 @@ The universal connector has the following known limitations:
 
  * When configuring universal connectors, only use port numbers higher than 5000. Use a new port for each future connection.
 
-* S3 SQS and S3 Cloudwatch plug-ins are not supported on IPV6 Guardium systems.
+ * Use only the packages that are supplied by IBM. Do not use extra spaces in the title.
 
-* The DynamoDB plug-in does not support IPV6.
+* IPV6 support
+  - S3 SQS and S3 Cloudwatch plug-ins are not supported on IPV6 Guardium systems.
+  - The DynamoDB plug-in does not support IPV6.
 
-* MySQL plug-ins do not send the DB name to Guardium, if the DB commands are performed by using MySQL native client.
-
-* When connected with a MySQL plug-in, queries for non-existent tables are not logged to GDM_CONSTRUCT.
+* MySQL plug-ins:
+  - do not send the DB name to Guardium, if the DB commands are performed by using MySQL native client.
+  - When connected with this plug-in, queries for non-existent tables are not logged to GDM_CONSTRUCT.
 
 * MongoDB plug-ins do not send the client source program to Guardium.
 
-* Use only the packages that are supplied by IBM. Do not use extra spaces in the title.
 
 ### Guardium Insights
 
