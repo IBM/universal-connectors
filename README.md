@@ -75,12 +75,13 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
   1. The pre-defined and pre-installed plug-ins do not require any manual uploads or other such pre-requisites on the user's end, as opposed to user made plug-ins or other available Logstash plug-ins. The user needs to simply use a ready-made template for plugging in values to the input and filter sections of their respective configuration files, or expand these sections by using online pre-installed Logstash plug-ins, or write their own Ruby code parser using the [Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter plug-ins.
   2. It's optional to add an input plug-in to the repository in case the existing ones are insufficient for your needs, although it's recommended to use one of the existing pre-installed input plug-ins and modify their respective config files' input section according to their documentation[^4].
   3. The user can choose to configure either pull or push methods via the mas***REMOVED***ging middleware service installed on the Data Lake Platform that is used by the input plug-in. Mes***REMOVED***ges can be received with pull or push delivery. In pull mode, the Univer***REMOVED***l Connector instance initiates requests to the remote service to retrieve mes***REMOVED***ges. In push mode, the remote service initiates requests to the Univer***REMOVED***l Connector instance to deliver mes***REMOVED***ges.
+  4. The specific audit log types transmitted into Univer***REMOVED***l Connector from the Data Source are configurable via the SQL Instance settings installed on the Data Lake Platform. This can vary depending on the installed Data Lake Platform native plug-ins and the utilized mes***REMOVED***ging middleware service[^5].
 
 
 
 
 ### Enabling Load Balancing and Fail-over
-Using the given out-of-the-box mechanisms in both GDP and GI might implicate distribution of the whole set of ingested events to each of the Guardium instances (i.e., Guardium Collectors and Univer***REMOVED***l Connector Pods respectively) in the set, causing duplications and redundant event processing. To properly avoid this fallback default behavior, these mechanisms are to be configured as part of the input scope of the installed Connector's configuration file[^5]. This is configurable via both pull and push methods. Note that the push method requires configuring the master Univer***REMOVED***l Connector instance that will function as the leader of the set of instances and hold the responsibility of load balancing the events over the set.
+Using the given out-of-the-box mechanisms in both GDP and GI might implicate distribution of the whole set of ingested events to each of the Guardium instances (i.e., Guardium Collectors and Univer***REMOVED***l Connector Pods respectively) in the set, causing duplications and redundant event processing. To properly avoid this fallback default behavior, these mechanisms are to be configured as part of the input scope of the installed Connector's configuration file[^6]. This is configurable via both pull and push methods. Note that the push method requires configuring the master Univer***REMOVED***l Connector instance that will function as the leader of the set of instances and hold the responsibility of load balancing the events over the set.
 
 
 
@@ -93,7 +94,7 @@ In Guardium Data Protection, the overall workflow for deploying the univer***REM
 
 2. Uploading and installing a plugin
 
-3. Configuring native auditing[^6] on the data source
+3. Configuring native auditing[^7] on the data source
 
 4. Sending native audit logs to the univer***REMOVED***l connector, using either a push or pull workflow.
 
@@ -224,6 +225,7 @@ limitations under the License.
 [^1]: See [IBM Guardium System Requirements and Supported Platforms](https://www.ibm.com/support/pages/ibm-guardium-system-requirements-and-supported-platforms)
 [^2]: in GI 3.3.0, SaaS and GDP 12.0.0 all of the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed upon start-up.
 [^3]: with the exception of GI SaaS 1.0.0 where no manual uploads by the customer are allowed.
-[^4]: See [Input plugins](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/available_plugins.md#input-plugins) for the full list and documentation.
-[^5]: See GCP's Pub/Sub input plug-in [load-balancing configuration](/input-plugin/logstash-input-google-pubsub#note-2) as an example of a pull method plug-in.
-[^6]: For some Data Sources it is possible to configure either real-time audit logging or historic one via the input plug-in's configuration file in its input scope (i.e., [JDBC Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter#3-configure-the-input-and-filter-plugins))
+[^4]: See [Input plugins](/docs/available_plugins.md#input-plugins) for the full list and documentation.
+[^5]: See GCP MySQL's [Create the SQL Instance](/filter-plugin/logstash-filter-pubsub-mysql-guardium#create-the-sql-instance) section as an example of configuring audit log types via the cloud SQL Instance.
+[^6]: See GCP's Pub/Sub input plug-in [load-balancing configuration](/input-plugin/logstash-input-google-pubsub#note-2) as an example of a pull method plug-in.
+[^7]: For some Data Sources it is possible to configure either real-time audit logging or historic one via the input plug-in's configuration file in its input scope (i.e., [JDBC Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter#3-configure-the-input-and-filter-plugins))
