@@ -109,7 +109,7 @@ In Guardium Insights, the workflow for deploying the univer***REMOVED***l connec
 **Note that the specific steps for each workflow may differ slightly per different data sources. See our [list of of available plugins](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/available_plugins.md) to view detailed, step-by-step instructions for each supported data source/plug-in**.
 
 ***
-**Miscellaneous: [Using GIM](docs/GIM.md), [Using AWS](docs/aws.md), [Configuring with MongoDB, Filebeat, Syslog, and MYSQL](docs/Migrated_pages.md)**
+**Miscellaneous: [Using GIM](docs/GIM.md)[^8], [Using AWS](docs/aws.md), [Configuring with MongoDB, Filebeat, Syslog, and MYSQL](docs/Migrated_pages.md)**
 ***
 
 ## Monitoring UC connections
@@ -229,3 +229,4 @@ limitations under the License.
 [^5]: See GCP MySQL's [Create the SQL Instance](/filter-plugin/logstash-filter-pubsub-mysql-guardium#create-the-sql-instance) section as an example of configuring audit log types via the cloud SQL Instance.
 [^6]: See GCP's Pub/Sub input plug-in [load-balancing configuration](/input-plugin/logstash-input-google-pubsub#note-2) as an example of a pull method plug-in.
 [^7]: For some Data Sources it is possible to configure either real-time audit logging or historic one via the input plug-in's configuration file in its input scope (i.e., [JDBC Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter#3-configure-the-input-and-filter-plugins))
+[^8]: GIM is currently supported only for [Filebeat and Syslog on MongoDB](/docs/GIM.md#configuring-gim-to-handle-filebeat-and-syslog-on-mongodb).
