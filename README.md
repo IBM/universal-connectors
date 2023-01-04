@@ -145,13 +145,13 @@ The universal connector has the following known limitations:
 
 * Use only the packages that are supplied by IBM. Do not use extra spaces in the title.
 
-***Limitations associated with specific datasources are described in the UC plugin readme files for each datasource***
-
 ### Guardium Insights
 
 Known limitations for Guardium insights can be found in the UC plugin readme files for each datasource
-
-
+***
+***Limitations associated with specific datasources are described in the UC plugin readme files for each datasource.***
+**See [Available Plug-ins](/docs/available_plugins.md) for more information.**
+***
 
 ## FAQs
 
