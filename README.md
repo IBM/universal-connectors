@@ -187,7 +187,7 @@ For adding a parser to the filter section of the configuration file as a pre-pro
 * For developing a Java input plug-in, use [How to write a Java filter plugin](https://www.elastic.co/guide/en/logstash/current/java-input-plugin.html)
 
 **Note:**
-It is the developer's responsibility to maintain and update the Data Base's supported versions
+It is the developer's responsibility to maintain and update the database's supported versions
 
 
 ***
