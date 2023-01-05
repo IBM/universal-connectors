@@ -47,7 +47,7 @@ Connections to databases that are configured with the Guardium univer***REMOVED*
 
 ## How it works
 
-The Univer***REMOVED***l Connector under-the-hood is a Logstash pipeline comprising of a series of three plug-ins:
+Under the hood, the univer***REMOVED***l connector is a Logstash pipeline comprised of a series of three plug-ins:
 
 1. Input plug-in. This plug-in ingests events. Depending on the type of plug-in, there are settings to either pull events from APIs or receive a push of events.
 
