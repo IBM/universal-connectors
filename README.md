@@ -176,7 +176,7 @@ Users can develop their own univer***REMOVED***l connector plugins, if needed, a
 
 
 ### <a name="Ruby-filter"></a> Use Logstash's Ruby filter plug-in
-For adding a parser to the filter section of the configuration file as a pre-processing stage prior to executing the filter plug-in, use [Ruby filter plugin](https://www.elastic.co/guide/en/logstash/current/plugins-filters-ruby.html).
+For adding a parser to the filter section of the configuration file as a pre-processing stage prior to executing the filter plug-in, use the [Ruby filter plugin](https://www.elastic.co/guide/en/logstash/current/plugins-filters-ruby.html).
 
 ### <a name="filter-plug-in"></a> Develop a filter plug-in
 * For developing a Ruby filter plug-in, use [How to write a Logstash filter plugin](https://www.elastic.co/guide/en/logstash/current/filter-new-plugin.html)
