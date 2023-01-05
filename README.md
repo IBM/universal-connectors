@@ -55,7 +55,7 @@ The Univer***REMOVED***l Connector under-the-hood is a Logstash pipeline compris
 
 3. Output plug-in. This plug-in receives the formatted event logs from the filter plug-in and transmits them to IBM Guardium (either Guardium Data Protection or Guardium Insights).
 
-***Note: the Output plug-in is presented here as an internal component of the UC pipeline and is not to be accessed or modified by the user.***
+***Note: the Output plug-in is presented here as an internal component of the univer***REMOVED***l connector pipeline and is not to be accessed or modified by the user.***
 
 ![Univer***REMOVED***l Connector - Logstash pipeline](/docs/images/uc_overview.png)
 
