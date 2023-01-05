@@ -81,7 +81,7 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
 
 ### Enabling Load Balancing and Fail-over
-Using the given out-of-the-box mechanisms in both GDP and GI might implicate distribution of the whole set of ingested events to each of the Guardium instances (i.e., Guardium Collectors and Universal Connector Pods respectively) in the set, causing duplications and redundant event processing. To properly avoid this fallback default behavior, these mechanisms are to be configured as part of the input scope of the installed Connector's configuration file[^6]. This is configurable via both pull and push methods. Note that the push method on GDP requires configuring the full set of Collectors as part of the said input scope. For detailed information regarding each plug-in, check the [Available Plug-ins](/docs/available_plugins.md) page.
+Using the given out-of-the-box mechanisms in both Guardium Data Protection and Guardium Insights might implicate distribution of the whole set of ingested events to each of the Guardium instances (i.e., Guardium collectors and universal connector pods respectively) in the set. This could cause duplications and redundant event processing. To properly avoid this fallback default behavior, configure these mechanisms as part of the input scope of the installed connector's configuration file[^6]. This is configurable via both pull and push methods. Note that the push method on Guardium Data Protection requires configuring the full set of collectors as part of the said input scope. For detailed information regarding each plug-in, check the [Available Plug-ins](/docs/available_plugins.md) page.
 
 
 
