@@ -223,7 +223,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 [^1]: See [IBM Guardium System Requirements and Supported Platforms](https://www.ibm.com/support/pages/ibm-guardium-system-requirements-and-supported-platforms)
-[^2]: In GI 3.3.0, SaaS and GDP 12.0.0 all of the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed upon start-up.
+[^2]: In GI 3.3.0, SaaS, and GDP 12.0.0 all of the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed upon startup.
 [^3]: with the exception of GI SaaS 1.0.0 where no manual uploads by the customer are allowed.
 [^4]: See [Input plugins](docs/available_plugins.md#input-plugins) for the full list and documentation.
 [^5]: See GCP MySQL's [Create the SQL Instance and Configure Logging](filter-plugin/logstash-filter-pubsub-mysql-guardium#create-the-sql-instance-and-configure-logging) section as an example of configuring audit log types via the cloud SQL Instance.
