@@ -25,7 +25,7 @@
 
 The Guardium univer***REMOVED***l connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using S-TAPs. It includes support for various plug-in packages, requiring minimal configuration. You can easily develop plug-ins for other data sources and install them in Guardium.
 
-The captured events embed mes***REMOVED***ges of any type that's supported by the configured Data Source. That includes: information and administrative system logs (e.g.: login logs, various data lake platform native plug-in related data), DDLs and DMLs, errors of varying sub-types, etc. The incoming events into Univer***REMOVED***l Connector can be configured to arrive either encrypted or as plaintext.
+The captured events embed mes***REMOVED***ges of any type that is supported by the configured data source. That includes: information and administrative system logs (e.g.: login logs, various data lake platform native plug-in related data), DDLs and DMLs, errors of varying sub-types, etc. The incoming events received by the univer***REMOVED***l connector can be configured to arrive either encrypted or as plaintext.
 
 Figure 1. Guardium univer***REMOVED***l connector architecture
 
