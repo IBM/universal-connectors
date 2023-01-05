@@ -142,7 +142,7 @@ The universal connector has the following known limitations:
   - The DynamoDB plug-in does not support IPV6.
 
 * MySQL plug-ins:
-  - do not send the DB name to Guardium, if the DB commands are performed by using MySQL native client.
+  - do not send the database name to Guardium if the database commands are performed by using MySQL native client.
   - When connected with this plug-in, queries for non-existent tables are not logged to GDM_CONSTRUCT.
 
 * MongoDB plug-ins do not send the client source program to Guardium.
