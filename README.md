@@ -68,7 +68,7 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
   2. For data sources that are not yet supported, you can either upload an IBM-approved filter plug-in or [develop your own](#developing-plug-ins) and add it to our plug-in repository. You can also clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)[^3]. You can optionally either let the parsing operations be executed by your filter plug-in, or assign this task to the Guardium Sniffer by transferring the event to the Output plug-in in a designated structure as part of the filter plug-in development, as instructed in the links in the [Developers Guide](#developing-plug-ins).
 
-  3. For some data lake platforms it's possible to define inclusion and exclusion filters for the events routed to Universal Connector to be ingested by the input plug-in which can result in a more efficient filtering implemented either as part of the filter scope in the connector's configuration file, or the developed filter plug-in
+  3. For some data lake platforms, you can define inclusion and exclusion filters for the events routed to the universal connector to be ingested by the input plug-in. This can result in a more efficient filtering implemented either as part of the filter scope in the connector's configuration file, or in the developed filter plug-in.
 
 ### Keep In Mind:
 
