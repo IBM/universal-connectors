@@ -90,7 +90,7 @@ Using the given out-of-the-box mechanisms in both Guardium Data Protection and G
 
 In Guardium Data Protection, the overall workflow for deploying the univer***REMOVED***l connector is as follows:
 
-1. Install desired policies as instructed in [Policies](#policies)
+1. Installing desired policies as instructed in [Policies](#policies)
 
 2. Uploading and installing a plugin
 
