@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_Greenplum_filter",
+	"alias": "Greenplum",
+	"type": "filter",
+	"pipeline_type":"push",
+	"plugin_version": "1.0.6",
+	"datasourceTypes": [{"type":"Greenplum","supportedVersions": ["6.21.0"]}],
+	"supported_input_plugins": ["Filebeat_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses events and mes***REMOVED***ges from the Greenplum audit log into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-onPremGreenplumdb-guardium/README.md"
+}
