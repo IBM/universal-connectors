@@ -98,7 +98,7 @@ In Guardium Data Protection, the overall workflow for deploying the universal co
 
 4. Sending native audit logs to the universal connector, using either a push or pull workflow.
 
-5. Configuring the universal connector to read the native audit logs
+5. Configuring the universal connector to read the native audit logs.
 
 
 More detailed information about the workflow for GDP can be found [here](docs/uc_config_gdp.md).
