@@ -98,7 +98,7 @@ In Guardium Data Protection, the overall workflow for deploying the univer***REM
 
 4. Sending native audit logs to the univer***REMOVED***l connector, using either a push or pull workflow.
 
-5. Configuring the univer***REMOVED***l connector to read the native audit logs
+5. Configuring the univer***REMOVED***l connector to read the native audit logs.
 
 
 More detailed information about the workflow for GDP can be found [here](docs/uc_config_gdp.md).
