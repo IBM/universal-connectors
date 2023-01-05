@@ -226,7 +226,7 @@ limitations under the License.
 [^2]: In GI 3.3.0, SaaS and GDP 12.0.0 all of the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed upon start-up.
 [^3]: with the exception of GI SaaS 1.0.0 where no manual uploads by the customer are allowed.
 [^4]: See [Input plugins](/docs/available_plugins.md#input-plugins) for the full list and documentation.
-[^5]: See GCP MySQL's [Create the SQL Instance](/filter-plugin/logstash-filter-pubsub-mysql-guardium#create-the-sql-instance-and-configure-logging) section as an example of configuring audit log types via the cloud SQL Instance.
-[^6]: See GCP's Pub/Sub input plug-in [load-balancing configuration](/input-plugin/logstash-input-google-pubsub#note-2) as an example of a pull method plug-in.
+[^5]: See GCP MySQL's [Create the SQL Instance and Configure Logging](filter-plugin/logstash-filter-pubsub-mysql-guardium#create-the-sql-instance-and-configure-logging) section as an example of configuring audit log types via the cloud SQL Instance.
+[^6]: See GCP's Pub/Sub input plug-in [load-balancing configuration](input-plugin/logstash-input-google-pubsub#note-2) as an example of a pull method plug-in.
 [^7]: For some Data Sources it is possible to configure either real-time audit logging or historic one via the input plug-in's configuration file in its input scope (i.e., [JDBC Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter#3-configure-the-input-and-filter-plugins))
 [^8]: GIM is currently supported only for [Filebeat and Syslog on MongoDB](/docs/GIM.md#configuring-gim-to-handle-filebeat-and-syslog-on-mongodb).
