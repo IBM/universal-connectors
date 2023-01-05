@@ -62,7 +62,7 @@ The Universal Connector under-the-hood is a Logstash pipeline comprising of a se
 Universal Connector plug-ins are packaged and deployed in a Docker container environment.
 
 ### The Workflows
-There are a couple of flavors aimed at enabling audit log forwarding into Guardium for various Data Sources, comprised of either a cloud or on-premise data lake platform, of a Data Base type that is supported by the Guardium sniffer[^1]:
+There are a couple of flavors aimed at enabling audit log forwarding into Guardium for various data sources, comprised of either a cloud or on-premise data lake platform, of a database type that is supported by the Guardium sniffer[^1]:
 
   1. Utilize the out-of-the-box pre-installed plug-in packages[^2] that require minimal configurations on the client's end by either plugging in suited values in their respective template configuration files in the input and filter sections, or adding a Ruby code sub-section to the said filter section in case a more complex parsing method is necessary as a pre-processing stage to be executed prior to the execution of the respective filter plug-in. See each plug-in's user manual via [Available Plug-ins](/docs/available_plugins.md).
 
