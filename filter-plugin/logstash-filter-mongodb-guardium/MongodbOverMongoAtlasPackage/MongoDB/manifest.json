@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_Mongo_Atlas_filter",
+	"alias": "Mongo",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "0.6.6",
+	"datasourceTypes": [{"type":"MongoDB","supportedVersions": ["4.2","4.4"]}],
+	"supported_input_plugins": ["Mongo_atlas_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses MongoDB activity audit log messages before insertion into Guardium. Enterprise version is required.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-mongo-atlas/README.md"
+}
