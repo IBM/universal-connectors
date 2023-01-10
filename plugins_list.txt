@@ -14,10 +14,10 @@ SaphanaOverJdbcPackage.zip
 MssqlAWSOverJdbcPackage.zip
 MssqlOnPremOverJdbcPackage.zip
 SnowflakeOverJbdcPackage.zip
+MongodbOverMongoAtlasPackage.zip
 AzureEventHubsInputPackage.zip
 AzurePostgresqlOverAzureEventHubs.zip
 SQSInputPackage.zip
 FilebeatInputPackage.zip
 CloudwatchLogsInputPackage.zip
 InputMongoAtlasPackage.zip
-MongodbOverMongoAtlasPackage.zip
