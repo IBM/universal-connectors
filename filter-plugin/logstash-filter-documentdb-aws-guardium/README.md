@@ -92,7 +92,7 @@ The Guardium universal connector is the Guardium entry point for native audit/pr
      * grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
 
 ### Before you begin
-* You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+* You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step 4 under the section about Installing and testing the filter or input plug-in on a staging Guardium system on [this page](https://github.com/IBM/universal-connectors/blob/main/docs/developing_plugins_gdp.md).
 * You must have permission for the S-Tap Management role.The admin user includes this role by     default.
 * Download the [guardium_logstash-offline-plugin-documentdb.zip](DocumentDBOverCloudwatchPackage/guardium_logstash-offline-plugin-documentdb.zip) plug-in.
 * Download the plugin filter configuration file [ documentDBCloudwatch.conf](DocumentDBOverCloudwatchPackage/documentDBCloudwatch.conf).
