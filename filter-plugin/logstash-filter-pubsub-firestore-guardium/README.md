@@ -123,7 +123,7 @@ The inclusion filter mentioned above will be used to view the Audit logs in the 
 The Guardium universal connector is the Guardium entry point for native audit/data_access logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit/data_access logs by customizing the Firestore template.
 
 ### Before you begin
-   * You must have the Log Full Details policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+   *  You must have the log full details policy enabled on the collector. The detailed steps can be found in step 4 under the section about Installing and testing the filter or input plug-in on a staging Guardium system on [this page](https://github.com/IBM/universal-connectors/blob/main/docs/developing_plugins_gdp.md).
    * You must have permission for the S-Tap Management role. The admin user includes this role by default.
    * Download the [guardium_logstash-offline-plugins-ps-firestore.zip](PubSubFireStorePackage/guardium_logstash-offline-plugins-ps-firestore.zip) plug-in.
 
