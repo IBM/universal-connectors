@@ -133,6 +133,11 @@ With a few Exceptions,  using data from the universal connector is no different 
 ## Known limitations
 
 The universal connector has the following known limitations:
+***
+***Disclaimer: limitations associated with specific datasources are described in the UC plugin readme files for each datasource.***
+
+**See [Available Plug-ins](/docs/available_plugins.md) for more information.**
+***
 
 ### Guardium Data Protection
 
@@ -144,21 +149,12 @@ The universal connector has the following known limitations:
   - S3 SQS and S3 Cloudwatch plug-ins are not supported on IPV6 Guardium systems.
   - The DynamoDB plug-in does not support IPV6.
 
-* MySQL plug-ins:
+* Native MySQL plug-in[^10]:
   - do not send the database name to Guardium if the database commands are performed by using MySQL native client.
   - When connected with this plug-in, queries for non-existent tables are not logged to GDM_CONSTRUCT.
 
 * MongoDB plug-ins do not send the client source program to Guardium.
 
-
-### Guardium Insights
-
-Known limitations for Guardium insights can be found in the UC plugin readme files for each datasource
-***
-***Limitations associated with specific datasources are described in the UC plugin readme files for each datasource.***
-
-**See [Available Plug-ins](/docs/available_plugins.md) for more information.**
-***
 
 ## FAQs
 
@@ -235,3 +231,4 @@ limitations under the License.
 [^7]: Check [Available Plug-ins](/docs/available_plugins.md) for the list of plug-ins that are pre-installed and do not require any manual uploads.
 [^8]: For some data sources, you can configure either real-time or historic audit logging  via the input plug-in's configuration file in its input scope (e.g., [JDBC Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter#3-configure-the-input-and-filter-plugins))
 [^9]: GIM is currently supported only for [Filebeat and Syslog on MongoDB](docs/GIM.md#configuring-gim-to-handle-filebeat-and-syslog-on-mongodb).
+[^10]: See [MySQL filter plug-in page](filter-plugin/logstash-filter-mysql-guardium/README.md#mysql-guardium-logstash-filter-plug-in)
