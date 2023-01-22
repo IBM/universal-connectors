@@ -133,11 +133,6 @@ With a few Exceptions,  using data from the universal connector is no different 
 ## Known limitations
 
 The universal connector has the following known limitations:
-***
-***Disclaimer: limitations associated with specific datasources are described in the UC plugin readme files for each datasource.***
-
-**See [Available Plug-ins](/docs/available_plugins.md) for more information.**
-***
 
 ### Guardium Data Protection
 
@@ -155,6 +150,11 @@ The universal connector has the following known limitations:
 
 * MongoDB plug-ins do not send the client source program to Guardium.
 
+***
+***Disclaimer: limitations associated with specific datasources are described in the UC plugin readme files for each datasource.***
+
+**See [Available Plug-ins](/docs/available_plugins.md) for more information.**
+***
 
 ## FAQs
 
