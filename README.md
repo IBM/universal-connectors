@@ -37,9 +37,9 @@ The Guardium univer***REMOVED***l connector supports many platforms and connecti
 
 For data sources that do not have pre-defined plug-ins, you can customize the filtering and parsing components of audit trails and log formats. The open architecture enables reuse of prebuilt filters and parsers, and creation of shared library for the Guardium community.
 
-The Guardium univer***REMOVED***l connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium univer***REMOVED***l connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. The Guardium policy, as usual, determines whether the activities are legitimate or not, when to alert, and the auditing level per activity.
+The Guardium Univer***REMOVED***l Connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium univer***REMOVED***l connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. The Guardium policy, as usual, determines whether the activities are legitimate or not, when to alert, and the auditing level per activity.
 
-The Guardium univer***REMOVED***l connector is scalable. It provides load-balancing and fail-over mechanisms among a deployment of Univer***REMOVED***l Connector instances, that either conform to Guardium Data Protection as a set of Guardium Collectors, or to Guardium Insights as a set of univer***REMOVED***l connector pods. For more information, see [Enabling Load-Balancing and Fail-Over](#enabling-load-balancing-and-fail-over).
+The Guardium Univer***REMOVED***l Connector is scalable. It provides load-balancing and fail-over mechanisms among a deployment of Univer***REMOVED***l Connector instances, that either conform to Guardium Data Protection as a set of Guardium Collectors, or to Guardium Insights as a set of univer***REMOVED***l connector pods. The load-balancing mechanism distributes the events sent from the data source among a collection of Univer***REMOVED***l Connector instances installed on the Guardium endpoints (i.e., Guardium Data Protection collectors or Guardium Insights pods). For more information, see [Enabling Load-Balancing and Fail-Over](#enabling-load-balancing-and-fail-over).
 
 Connections to databases that are configured with the Guardium univer***REMOVED***l connector are handled the ***REMOVED***me as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
 
@@ -68,20 +68,20 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
   2. For data sources that are not yet supported, you can either upload an IBM-approved filter plug-in or [develop your own](#developing-plug-ins) and add it to our plug-in repository. You can also clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)[^3]. You can optionally either let the parsing operations be executed by your filter plug-in, or assign this task to the Guardium Sniffer by transferring the event to the Output plug-in in a designated structure as part of the filter plug-in development, as instructed in the links in the [Developers Guide](#developing-plug-ins).
 
-  3. For some data lake platforms, you can define inclusion and exclusion filters for the events routed to the univer***REMOVED***l connector to be ingested by the input plug-in. This can result in a more efficient filtering implemented either as part of the filter scope in the connector's configuration file, or in the developed filter plug-in.
 
 ### Keep In Mind:
 
   1. The pre-defined and pre-installed plug-ins do not require any manual uploads or other such pre-requisites on the user's end, as opposed to user-made plug-ins or other available Logstash plug-ins. You can simply use a ready-made template for plugging in values to the input and filter sections of their respective configuration files, expand these sections by using online pre-installed Logstash plug-ins, or write your own Ruby code parser using the [Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter plug-ins.
-  2.  It is recommended to use one of the input plug-ins already in the repository and modify its config file input section [^4]. But if the input plug-ins already in the repository are insufficient for your needs, you can add a new one. 
+  2.  It is recommended to use one of the input plug-ins already in the repository and modify its config file input section [^4]. But if the input plug-ins already in the repository are insufficient for your needs, you can add a new one.
   3. The user can choose to configure either pull or push methods via the mas***REMOVED***ging middleware service installed on the data lake platform that is used by the input plug-in. Mes***REMOVED***ges can be received with pull or push delivery. In pull mode, the Univer***REMOVED***l Connector instance initiates requests to the remote service to retrieve mes***REMOVED***ges. In push mode, the remote service initiates requests to the Univer***REMOVED***l Connector instance to deliver mes***REMOVED***ges.
   4. The specific audit log types transmitted into the univer***REMOVED***l connector from the data source are configurable via the SQL instance settings installed on the data lake platform. This can vary depending on the installed data lake platform native plug-ins and the utilized mes***REMOVED***ging middleware service[^5].
+  5. For some data lake platforms, you can define inclusion and exclusion filters for the events routed to the univer***REMOVED***l connector to be ingested by the input plug-in. This can result in a more efficient filtering implemented either as part of the filter scope in the connector's configuration file, or in the developed filter plug-in.
 
 
 
 
 ### Enabling Load Balancing and Fail-over
-Using the given out-of-the-box mechanisms in both Guardium Data Protection and Guardium Insights might implicate distribution of the whole set of ingested events to each of the Guardium instances (i.e., Guardium collectors and univer***REMOVED***l connector pods respectively) in the set. This could cause duplications and redundant event processing. To properly avoid this fallback default behavior, configure these mechanisms as part of the input scope of the installed connector's configuration file[^6]. This is configurable via both pull and push methods. Note that the push method on Guardium Data Protection requires configuring the full set of collectors as part of the ***REMOVED***id input scope. For detailed information regarding each plug-in, check the [Available Plug-ins](/docs/available_plugins.md) page.
+Using the given out-of-the-box mechanisms in both Guardium Data Protection and Guardium Insights might implicate distribution of the whole set of ingested events to each of the Guardium instances (i.e., Guardium collectors and univer***REMOVED***l connector pods respectively) in the set. This could cause duplications and redundant event processing. To properly avoid this fallback default behavior, configure these mechanisms as part of the input scope of the installed connector's configuration file. This is configurable via both pull[^6.1] and push[^6.2] methods. Note that the push method on Guardium Data Protection requires configuring the full set of collectors as part of the ***REMOVED***id input scope. For detailed information regarding each plug-in, check the [Available Plug-ins](/docs/available_plugins.md) page.
 
 
 
@@ -92,9 +92,9 @@ In Guardium Data Protection, the overall workflow for deploying the univer***REM
 
 1. Installing desired policies as instructed in [Policies](#policies)
 
-2. Uploading and installing a plugin
+2. Install and configure a plugin[^7]
 
-3. Configuring native auditing[^7] on the data source
+3. Configuring native auditing[^8] on the data source
 
 4. Sending native audit logs to the univer***REMOVED***l connector, using either a push or pull workflow.
 
@@ -109,7 +109,10 @@ In Guardium Insights, the workflow for deploying the univer***REMOVED***l connec
 **Note that the specific steps for each workflow may differ slightly per different data sources. See our [list of of available plugins](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/available_plugins.md) to view detailed, step-by-step instructions for each supported data source/plug-in**.
 
 ***
-**Miscellaneous: [Using GIM](docs/GIM.md)[^8], [Using AWS](docs/aws.md), [Configuring with MongoDB, Filebeat, Syslog, and MYSQL](docs/Migrated_pages.md)**
+**Miscellaneous:**
+ - You can optionally use a Guardium client installed on a database running on your local host for forwarding native audit logs into Univer***REMOVED***l Connector via Filebeat or Syslog[^9]. See [Using GIM](docs/GIM.md) for more information.
+ - On how to configure Univer***REMOVED***l Connector for various data sources via AWS, see [Using AWS](docs/aws.md)
+ - On how to configure ***REMOVED***mple data sources and forward to Univer***REMOVED***l Connector via Syslog or Filebeat, see [Sample data sources Configurations via Filebeat and Syslog](docs/Migrated_pages.md)
 ***
 
 ## Monitoring UC connections
@@ -227,6 +230,8 @@ limitations under the License.
 [^3]: with the exception of GI SaaS 1.0.0 where no manual uploads by the customer are allowed.
 [^4]: See [Input plugins](docs/available_plugins.md#input-plugins) for the full list and documentation.
 [^5]: See GCP MySQL's [Create the SQL Instance and Configure Logging](filter-plugin/logstash-filter-pubsub-mysql-guardium#create-the-sql-instance-and-configure-logging) section as an example of configuring audit log types via the cloud SQL Instance.
-[^6]: See GCP's Pub/Sub input plug-in [load-balancing configuration](input-plugin/logstash-input-google-pubsub#note-2) as an example of a pull method plug-in.
-[^7]: For some data sources, you can configure either real-time or historic audit logging  via the input plug-in's configuration file in its input scope (e.g., [JDBC Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter#3-configure-the-input-and-filter-plugins))
-[^8]: GIM is currently supported only for [Filebeat and Syslog on MongoDB](docs/GIM.md#configuring-gim-to-handle-filebeat-and-syslog-on-mongodb).
+[^6.1]: See GCP's Pub/Sub input plug-in [load-balancing configuration](input-plugin/logstash-input-google-pubsub#note-2) as an example of a pull method plug-in.
+[^6.2]: See Filebeat input plug-in [load-balancing configuration](https://www.elastic.co/guide/en/beats/filebeat/master/load-balancing.html) as an example of a push method plug-in.
+[^7]: Check [Available Plug-ins](/docs/available_plugins.md) for the list of plug-ins that are pre-installed and do not require any manual uploads.
+[^8]: For some data sources, you can configure either real-time or historic audit logging  via the input plug-in's configuration file in its input scope (e.g., [JDBC Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter#3-configure-the-input-and-filter-plugins))
+[^9]: GIM is currently supported only for [Filebeat and Syslog on MongoDB](docs/GIM.md#configuring-gim-to-handle-filebeat-and-syslog-on-mongodb).
