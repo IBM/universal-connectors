@@ -1,0 +1,47 @@
+{
+  "plugin_name": "MongoDB Over Mongo_Atlas",
+  "help_link": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/input-plugin/logstash-input-mongo-atlas/README.md",
+  "input_name": "Mongo_atlas_input",
+  "input_parameters": [
+    {
+      "interval": {
+        "type": "number",
+        "default": 300,
+        "hidden": true
+      },
+      "group_id": {
+        "type": "text",
+        "label": "group-id"
+      },
+      "type": {
+        "type": "text",
+        "default" : "mongodbatlas",
+        "hidden": true
+      }
+    }
+  ],
+  "credentials": [
+    {
+      "public_key": {
+        "type": "password",
+        "label": "public-key"
+
+      },
+      "private_key": {
+        "type": "password",
+        "label": "private-key"
+      }
+    }
+  ],
+  "filter_name": "Guardium_Mongo_Atlas_filter",
+  "filter_parameters": [],
+  "auth_parameters": [
+    {
+      "guc_input_param_hostname": {
+        "type": "text",
+        "label": "Hostname"
+      }
+    }
+  ],
+  "supported_platforms": ["Cloud"]
+}
