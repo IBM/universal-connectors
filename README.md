@@ -10,7 +10,7 @@
   - [Monitoring universal connector  connections](#monitoring-uc-connections)
   - [Policies](#policies)
   - [Known limitations](#known-limitations)
-  - [FAQs and Troubleshooting](#faqs-and_troubleshooting)
+  - [FAQs and Troubleshooting](#faqs-and-troubleshooting)
   - [Developing plug-ins](#developing-plug-ins)
     * [Use Logstash's Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in)
     * [Develop a filter plug-in](#-develop-a-filter-plug-in)
