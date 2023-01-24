@@ -55,7 +55,7 @@ Under the hood, the universal connector is a Logstash pipeline comprised of a se
 
 3. Output plug-in. This plug-in receives the formatted event logs from the filter plug-in and transmits them to IBM Guardium (either Guardium Data Protection or Guardium Insights).
 
-***Note: the Output plug-in is presented here as an internal component of the universal connector pipeline and is not to be accessed or modified by the user.***
+***Note: the output plug-in is presented here as an internal component of the universal connector pipeline and is not to be accessed or modified by the user.***
 
 ![Universal Connector - Logstash pipeline](/docs/images/uc_overview.png)
 
