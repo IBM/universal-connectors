@@ -10,7 +10,7 @@
   - [Monitoring universal connector  connections](#monitoring-uc-connections)
   - [Policies](#policies)
   - [Known limitations](#known-limitations)
-  - [FAQs](#faqs)
+  - [FAQs and Troubleshooting](#faqs-and_troubleshooting)
   - [Developing plug-ins](#developing-plug-ins)
     * [Use Logstash's Ruby filter plug-in](#-use-logstashs-ruby-filter-plug-in)
     * [Develop a filter plug-in](#-develop-a-filter-plug-in)
@@ -130,6 +130,8 @@ With a few Exceptions,  using data from the universal connector is no different 
 [Configuring Policies for the universal connector](docs/uc_policies_gdp.md)
 
 
+
+
 ## Known limitations
 
 ***Please note: limitations associated with specific datasources are described in the UC plugin readme files for each datasource.***
@@ -154,11 +156,11 @@ With a few Exceptions,  using data from the universal connector is no different 
 
 
 
-## FAQs
+## FAQs and Troubleshooting
 
-[Here](docs/faqs_gdp.md) is a list of frequently asked questions for Guardium Data Protection.
+[Here](docs/faqs_troubleshooting_gdp.md) is a list of frequently asked questions and troubleshooting sections for Guardium Data Protection.
 
-[Here](docs/faqs_gi.md) is a list of frequently asked questions for Guardium Insights.
+[Here](docs/faqs_troubleshooting_gi.md) is a list of frequently asked questions and troubleshooting sections for Guardium Insights.
 
 
 ## Developing plug-ins
