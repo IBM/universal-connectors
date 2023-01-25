@@ -1,14 +1,14 @@
-## 1. jdbc input plug-in
+## jdbc input plug-in
 
 This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It connects to the Database using driver library and pull the events from the audit log tables. The events are then sent over to corresponding filter plugin which transforms these audit logs into a [Guardium record](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/common/src/main/java/com/ibm/guardium/univer***REMOVED***lconnector/commons/structures/Record.java)  instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
 
-## 2. Purpose:
+## Purpose:
 
 Specify the "Select" query with the required parameters, to pull the Events from the audit tables, and this plugin will pull the events into Guardium.
 
 
-## 3. U***REMOVED***ge:
+## U***REMOVED***ge:
 
 ### Parameters:
 	
@@ -92,7 +92,7 @@ Other standard logstash parameters are available such as:
 		}
 	}
 
-## 4. JDBC Load Balancing Configuration
+## JDBC Load Balancing Configuration
 
 In JDBC input plug-ins , we distribute load between two machines based on even and odd sessionIds or any other Primary Key of the Audit Table.
 
