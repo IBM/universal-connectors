@@ -162,6 +162,8 @@ With a few Exceptions,  using data from the univer***REMOVED***l connector is no
 
 [Here](docs/faqs_troubleshooting_gi.md) is a list of frequently asked questions and troubleshooting sections for Guardium Insights.
 
+**Note:**
+For further plug-in designated troubleshooting, see "troubleshooting" section in the plug-in's documentation linked at [Available Plug-ins](/docs/available_plugins.md)
 
 ## Developing plug-ins
 
