@@ -12,11 +12,11 @@ Review the options and the end-to-end flow for configuring the Guardium universa
 
       a.	Configure the native audit logs on the data source so that they can be parsed by Guardium, then configure the data shipper to forward the audit logs to the Guardium universal connector.
 
-      b.	Configure the Guardium universal connector to read the native audit logs. See the section about adding connectors and plug-ins below. 
+      b.	Configure the Guardium universal connector to read the native audit logs. See the section about adding connectors and plug-ins below.
 
 ***Note: if you are using secrets or sensitive information in your configuration, see the Creating and Managing Secrets section below before you configure a new connector***
 
-3.	For a data source that does not have off-the-shelf support by Guardium, [upload a plug-in](docs/available_plugins.md)
+3.	For a data source that does not have off-the-shelf support by Guardium, follow the instructions detailed in [upload a plug-in](/docs/available_plugins.md)
 
 4.	Enable the universal collector feature on the designated Guardium collectors or the stand-alone system. See the section about enabling the Guardium universal connector on collectors below.
 
@@ -73,7 +73,7 @@ jdbc_password => "${MYSQL_USERX_PASSWORD}"
 jdbc_password =>        
 "${MYSQL_USERX_PASSWORD}"
          ```
-    
+
     d. Save the configuration.
 
 ***Note: To use the JDBC input plug-in, you need to upload a driver (JAR file), then add the configuration.***
@@ -168,4 +168,4 @@ b.	From the Connector template drop-down list, select the template that most clo
 
 c.	Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
-4.	For offline plug-in packs and related files, [upload a plug-in here](docs/available_plugins.md).
+4.	For offline plug-in packs and related files, see further instructions in [upload a plug-in](/docs/available_plugins.md).

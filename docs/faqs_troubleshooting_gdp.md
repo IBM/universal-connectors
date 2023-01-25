@@ -1,4 +1,4 @@
-# FAQs
+# FAQs and Troubleshooting for Guardium Data Protection
 
 Find answers to commonly asked questions about the Guardium universal connector.
 
@@ -60,5 +60,3 @@ Find answers to commonly asked questions about the Guardium universal connector.
 -   **How much time does it take to develop a plug-in?**
 
     Give yourself 4 - 5 weeks, maybe a bit more to perfect it.
-
-
