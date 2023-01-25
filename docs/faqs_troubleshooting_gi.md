@@ -1,4 +1,4 @@
-# FAQs for Guardium Insights
+# FAQs and Troubleshooting for Guardium Insights
 
 
 1.	**How many univer***REMOVED***l connections can be configured at once?**
@@ -93,7 +93,7 @@ Example:
 
 6.	**Does MustGather support the Guardium univer***REMOVED***l connector?**
 
-Yes, every MustGather option includes logs for the Guardium univer***REMOVED***l connector. 
+Yes, every MustGather option includes logs for the Guardium univer***REMOVED***l connector.
 
 7.	**Data is missing from reports.**
 
@@ -103,7 +103,7 @@ a.	Go to the GI ```Connections``` page and see whether the connection is in gree
 
 * If the status is red, perform the item from question #3 above (Copy the plugin package from the official location and retry. )
 
-* If the status turns to green, continue trying the points below. If it remains red, continue trying to get a green, healthy connectivity status. 
+* If the status turns to green, continue trying the points below. If it remains red, continue trying to get a green, healthy connectivity status.
 
 b.	Check if traffic is running on the datasource.
 
@@ -141,7 +141,7 @@ Example:
     0a94651246c65639d6ebe7da606c2479-0000.us-
     east.containers.appdomain.cloud:443"]
 
-    
+
 •	Restart filebeat service after editing the filebeat.yml file and checking status after restart
 
 Example:
@@ -169,7 +169,7 @@ Enter the univer***REMOVED***l connector pod
 
 Run the command: ```${UC_SCRIPTS}/set_uc_log_level.sh "debug"```
 
-•	Create a MustGather and look for the univer***REMOVED***l connector log 
+•	Create a MustGather and look for the univer***REMOVED***l connector log
 
 **Plug-in questions**
 
