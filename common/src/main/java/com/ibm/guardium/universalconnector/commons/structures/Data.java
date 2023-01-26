@@ -44,6 +44,11 @@ public class Data {
         return originalSqlCommand;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Data{" +
+                "construct=" + construct +
+                ", originalSqlCommand='" + originalSqlCommand + '\'' +
+                '}';
+    }
 }

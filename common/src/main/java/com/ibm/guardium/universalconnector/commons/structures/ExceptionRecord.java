@@ -62,4 +62,13 @@ public class ExceptionRecord {
     public void setSqlString(String sqlString) {
         this.sqlString = sqlString;
     }
+
+    @Override
+    public String toString() {
+        return "ExceptionRecord{" +
+                "exceptionTypeId='" + exceptionTypeId + '\'' +
+                ", description='" + description + '\'' +
+                ", sqlString='" + sqlString + '\'' +
+                '}';
+    }
 }

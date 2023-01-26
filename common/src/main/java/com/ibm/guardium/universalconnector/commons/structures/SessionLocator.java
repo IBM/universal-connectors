@@ -115,4 +115,17 @@ public class SessionLocator {
     public void setServerIpv6(String serverIpv6) {
         this.serverIpv6 = serverIpv6;
     }
+
+    @Override
+    public String toString() {
+        return "SessionLocator{" +
+                "clientIp='" + clientIp + '\'' +
+                ", clientPort=" + clientPort +
+                ", serverIp='" + serverIp + '\'' +
+                ", serverPort=" + serverPort +
+                ", isIpv6=" + isIpv6 +
+                ", clientIpv6='" + clientIpv6 + '\'' +
+                ", serverIpv6='" + serverIpv6 + '\'' +
+                '}';
+    }
 }
