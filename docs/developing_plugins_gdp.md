@@ -267,11 +267,7 @@ if [type]== syslogMongoDB{...
   * ***Use the tag as the identifier in the Filter configuration:***
  ```if [type] == "filebeat" and "mongodb" in [tags] {  ```
 
-4. Set a policy with ```Log full details``` to see events from your DB server in Guardium reports.
-
-* If you haven't yet, create a policy in the Policy builder. Give it a name, and add a rule with the Action ```LOG FULL DETAILS```.
-
-* Install the policy. (Since you are working on a staging or sandbox Guardium system, delete any other policies.)
+4. Set the policies you require. Refer to the Policies section of our main universal connector documentation for more details. 
 
 5. Enable the Guardium universal connector.
 
