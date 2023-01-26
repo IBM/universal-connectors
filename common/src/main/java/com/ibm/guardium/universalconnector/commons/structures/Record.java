@@ -27,6 +27,20 @@ package com.ibm.guardium.univer***REMOVED***lconnector.commons.structures;
 public class Record {
 
     /**
+     * Not to be filled by filter developer
+     * Univer***REMOVED***l Connector name as it was set in Guardium UI,
+     * The field is automatically added to filter configuration upon ***REMOVED***ving configuration in UI
+     */
+    private String connectorName;
+
+    /**
+     * Not to be filled by filter developer
+     * Univer***REMOVED***l Connector id as it was create in Guardium database table.
+     * The field is automatically added to filter configuration upon ***REMOVED***ving configuration in UI
+     */
+    private String connectorId;
+
+    /**
      * mandatory field - uniquely identifies sessionid
      */
     private String sessionId;
@@ -184,5 +198,37 @@ public class Record {
      */
     public void setException(ExceptionRecord exception) {
         this.exception = exception;
+    }
+
+    public String getConnectorName() {
+        return connectorName;
+    }
+
+    public void setConnectorName(String connectorName) {
+        this.connectorName = connectorName;
+    }
+
+    public String getConnectorId() {
+        return connectorId;
+    }
+
+    public void setConnectorId(String connectorId) {
+        this.connectorId = connectorId;
+    }
+
+    @Override
+    public String toString() {
+        return "Record{" +
+                "connectorName='" + connectorName + '\'' +
+                ", connectorId='" + connectorId + '\'' +
+                ", sessionId='" + sessionId + '\'' +
+                ", dbName='" + dbName + '\'' +
+                ", appUserName='" + appUserName + '\'' +
+                ", time=" + time +
+                ", sessionLocator=" + sessionLocator +
+                ", accessor=" + accessor +
+                ", data=" + data +
+                ", exception=" + exception +
+                '}';
     }
 }

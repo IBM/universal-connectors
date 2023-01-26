@@ -75,4 +75,14 @@ public class Sentence {
     public void setFields(ArrayList<String> fields) {
         this.fields = fields;
     }
+
+    @Override
+    public String toString() {
+        return "Sentence{" +
+                "verb='" + verb + '\'' +
+                ", objects=" + objects +
+                ", descendants=" + descendants +
+                ", fields=" + fields +
+                '}';
+    }
 }
