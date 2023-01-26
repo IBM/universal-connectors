@@ -162,7 +162,7 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 
 ### Before you begin
 
-* You must have the Log Full Details policy enabled on the collector. The detailed steps can be found under the section about Installing and testing the filter or input plug-in on a staging Guardium system on [this page](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/developing_plugins_gdp.md). 
+* Configure the policies you require. See [policies](/../../#policies) for more information. 
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
 * Download the [guardium_logstash-offline-plugin-apache-solr-azure.zip](ApacheSolrOverFilebeatPackage/guardium_logstash-offline-plugin-apache-solr-azure.zip) plug-in.
 
