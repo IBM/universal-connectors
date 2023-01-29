@@ -8,6 +8,7 @@
   "supportedInputPlugins": null,
   "developer": "Elastic",
   "license": "Apache2.0",
+  "supported_input_plugins": [],
   "description": "Pull events from an Amazon Simple Queue Service (SQS) queue and passes them to the filter stage",
   "configuration_notes": "This plugin is suppose to enable load balancing between multiple Guardium Insight clusters",
   "documentation_path": "",
