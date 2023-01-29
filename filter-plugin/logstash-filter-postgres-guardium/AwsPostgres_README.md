@@ -184,7 +184,7 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 		• grdapi add_domain_to_univer***REMOVED***l_connector_allowed_domains domain=amazon.com
 
 #### Before you begin
-• You must have LFD policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+• Configure the policies you require. See [policies](/../../#policies) for more information.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 

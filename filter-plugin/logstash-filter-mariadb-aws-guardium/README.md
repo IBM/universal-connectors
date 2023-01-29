@@ -105,7 +105,7 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 	 
 ### Before you begin
 
-* You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step 5 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+*  Configure the policies you require. See [policies](/../../#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
 * Download the [Guardium_offline_plugin_awsmariadb.zip](MariaDBOverCloudWatchPackage/AWSMariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in.
 * Download the plugin filter configuration file [MariaDBCloudWatch.conf](MariaDBCloudWatch.conf).
