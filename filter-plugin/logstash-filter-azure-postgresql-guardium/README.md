@@ -146,10 +146,11 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 
 #### Before you begin
-• You must have LFD policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
-																	 
 
+•  Configure the policies you require. See [policies](/../../#policies) for more information.
+																	
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
+
 • Download the [azure-postgresql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plug-in.		 
 
 #### Procedure : 
