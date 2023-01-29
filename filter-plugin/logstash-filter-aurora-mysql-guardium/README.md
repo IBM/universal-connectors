@@ -10,31 +10,31 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## 1. Configuring the AWS aurora-mysql service
 
 ### Procedure:
-	1. Go to https://console.aws.amazon.com/.
-	2. Click Services.
-	3. In the Database section, click RDS.
-	4. Select the region in the top right corner.
-	5. In the central panel of the Amazon RDS Dashboard, click Create database.
-	6. Choose a database creation method.
-	7. In the Engine options, select Amazon Aurora, and then select the Amazon Aurora MySQL-Compatible Edition.
-	8. Select an Capacity type(Provisioned).
-	9. Select template (Production,Dev/Test)
-	10. In the Settings section, type the database instance name and create the master account with the username and password to log in to the database.
-	11. Select the database instance size according to your requirements.
-	12. Select appropriate storage options (for example, you may want to enable auto scaling).
-	13. Select the Availability and durability options.
-	14. Select the connectivity settings that are appropriate for your environment. To make the database accessible, set the Public access option to Publicly Accessible within Additional Configuration.
-	15. Select the type of Authentication for the database (choose from Password Authentication, Password and IAM database authentication, and Password and Kerberos authentication).
-	16. Expand the Additional Configuration options:
+1. Go to https://console.aws.amazon.com/.
+2. Click Services.
+3. In the Database section, click RDS.
+4. Select the region in the top right corner.
+5. In the central panel of the Amazon RDS Dashboard, click Create database.
+6. Choose a database creation method.
+7. In the Engine options, select Amazon Aurora, and then select the Amazon Aurora MySQL-Compatible Edition.
+8. Select an Capacity type(Provisioned).
+9. Select template (Production,Dev/Test)
+10. In the Settings section, type the database instance name and create the master account with the username and password to log in to the database.
+11. Select the database instance size according to your requirements.
+12. Select appropriate storage options (for example, you may want to enable auto scaling).
+13. Select the Availability and durability options.
+14. Select the connectivity settings that are appropriate for your environment. To make the database accessible, set the Public access option to Publicly Accessible within Additional Configuration.
+15. Select the type of Authentication for the database (choose from Password Authentication, Password and IAM database authentication, and Password and Kerberos authentication).
+16. Expand the Additional Configuration options:
 		a. Configure the database options.
 		b. Select DB cluster parameter group.
 		b. Select options for Backup.
 		c. If desired, enable Encryption on the database instances.
 		d. In Log exports, select the log types to publish to Amazon CloudWatch (Audit log).
 		e. Select the options for Deletion protection.
-	17. Click Create Database.
-	18. To view the database, click Databases under Amazon RDS in the left panel.
-	19. To authorize inbound traffic, edit the security group:
+17. Click Create Database.
+18. To view the database, click Databases under Amazon RDS in the left panel.
+19. To authorize inbound traffic, edit the security group:
 		a. In the database summary page, select the Connectivity and Security tab. Under Security, click VPC security group.
 		b. Click the group name that you selected while creating database (each database has one active group).
 		c. In the Inbound rule section, choose to edit the inbound rules.
@@ -48,28 +48,28 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## 2. Enabling Auditing
 
-	1. Click on Parameter Groups.
-	2. Click on "Create Parameter Groups" Button .
-	3. Provide below details:
+1. Click on Parameter Groups.
+2. Click on "Create Parameter Groups" Button .
+3. Provide below details:
 		• Parameter group family : Provide aurora-mysql version
 		• Type : DB cluster parameter group
 		• Group name : Name of Group
 		• Description : Privide description
-	4. then ,Click on "create" Button.
-	5. Select "DB Parameter" ,Click on "Parameter group actions" ,Select "Edit".
-	6. Change the value of parameter,Add these settings:
+4. then ,Click on "create" Button.
+5. Select "DB Parameter" ,Click on "Parameter group actions" ,Select "Edit".
+6. Change the value of parameter,Add these settings:
 		• server_audit_events = CONNECT,QUERY_DCL,QUERY_DDL,QUERY_DML	
 		• server_audit_excl_users =	rd***REMOVED***dmin
 		• server_audit_logging	= 1
 		• server_audit_logs_upload	= 1
 		• log_output = FILE
-	7. Click on "Save changes" Button.
-	8. Go To "Database Clustor" ,Click on "modify"
-	9. Go To "Additional Configuration" ,then "Database options".
-	10. Change DB clustor parameter group.
-	11. Click on continue and select Apply immediately
-	12. Click on Modify Cluster.
-	13. Reboot the DB Cluster for the changes to take effect.
+7. Click on "Save changes" Button.
+8. Go To "Database Clustor" ,Click on "modify"
+9. Go To "Additional Configuration" ,then "Database options".
+10. Change DB clustor parameter group.
+11. Click on continue and select Apply immediately
+12. Click on Modify Cluster.
+13. Reboot the DB Cluster for the changes to take effect.
 		
 ## 3. Viewing the Audit logs
 
@@ -117,7 +117,7 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 		• grdapi add_domain_to_univer***REMOVED***l_connector_allowed_domains domain=amazon.com
 
 #### Before you begin
-• You must have LFD policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+•  Configure the policies you require. See [policies](/../../#policies) for more information.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 	
