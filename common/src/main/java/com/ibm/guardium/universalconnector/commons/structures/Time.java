@@ -42,4 +42,13 @@ public class Time {
     public void setMinDst(int minDst) {
         this.minDst = minDst;
     }
+
+    @Override
+    public String toString() {
+        return "Time{" +
+                "timstamp=" + timstamp +
+                ", minOffsetFromGMT=" + minOffsetFromGMT +
+                ", minDst=" + minDst +
+                '}';
+    }
 }

@@ -53,4 +53,13 @@ public class Construct {
     public void setRedactedSensitiveDataSql(String redactedSensitiveDataSql) {
         this.redactedSensitiveDataSql = redactedSensitiveDataSql;
     }
+
+    @Override
+    public String toString() {
+        return "Construct{" +
+                "sentences=" + sentences +
+                ", fullSql='" + fullSql + '\'' +
+                ", redactedSensitiveDataSql='" + redactedSensitiveDataSql + '\'' +
+                '}';
+    }
 }
