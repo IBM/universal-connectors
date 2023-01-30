@@ -213,4 +213,26 @@ public class Accessor {
     public void setDataType(String dataType) {
         this.dataType = dataType;
     }
+
+    @Override
+    public String toString() {
+        return "Accessor{" +
+                "dbUser='" + dbUser + '\'' +
+                ", serverType='" + serverType + '\'' +
+                ", serverOs='" + serverOs + '\'' +
+                ", clientOs='" + clientOs + '\'' +
+                ", clientHostName='" + clientHostName + '\'' +
+                ", serverHostName='" + serverHostName + '\'' +
+                ", commProtocol='" + commProtocol + '\'' +
+                ", dbProtocol='" + dbProtocol + '\'' +
+                ", dbProtocolVersion='" + dbProtocolVersion + '\'' +
+                ", osUser='" + osUser + '\'' +
+                ", sourceProgram='" + sourceProgram + '\'' +
+                ", client_mac='" + client_mac + '\'' +
+                ", serverDescription='" + serverDescription + '\'' +
+                ", serviceName='" + serviceName + '\'' +
+                ", language='" + language + '\'' +
+                ", dataType='" + dataType + '\'' +
+                '}';
+    }
 }

@@ -4,6 +4,8 @@
 //
 package com.ibm.guardium.universalconnector.commons.structures;
 
+import java.util.Arrays;
+
 public class SentenceObject {
     public String name; 
     public String type; // in mongo
@@ -49,5 +51,15 @@ public class SentenceObject {
 
     public void setSchema(String schema) {
         this.schema = schema;
+    }
+
+    @Override
+    public String toString() {
+        return "SentenceObject{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", fields=" + Arrays.toString(fields) +
+                ", schema='" + schema + '\'' +
+                '}';
     }
 }
