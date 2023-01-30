@@ -86,7 +86,9 @@ Then, copy `filebeatCA.crt` to your local system.
     
 *   **Cloudwatch Log Group name** - specify the log group that is created for your data instance.
     
-    For example "/aws/rds/instance/any\_instance/any\_log\_group" .
+    For example "/aws/rds/instance/any\_instance/any\_log\_group".
+    
+    ***NOTE: Due to the possibility of Cloudwatch reporting events multiple times for plug-ins configured for Guardium Insights, it is recommended to use SQS instead***
     
  ## Configuring Filebeat to forward audit logs to Guardium
     
