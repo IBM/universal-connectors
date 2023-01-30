@@ -113,6 +113,7 @@ In Guardium Insights, the workflow for deploying the univer***REMOVED***l connec
  - You can optionally use a Guardium client installed on a database running on your local host for forwarding native audit logs into Univer***REMOVED***l Connector via Filebeat or Syslog[^9]. See [Using GIM](docs/GIM.md) for more information.
  - On how to configure Univer***REMOVED***l Connector for various data sources via AWS, see [Using AWS](docs/aws.md)
  - On how to configure ***REMOVED***mple data sources and forward the generated audit log events into Univer***REMOVED***l Connector via Syslog or Filebeat, see [Sample data sources Configurations via Filebeat and Syslog](docs/***REMOVED***mple_data_sources_configurations.md)
+ - To see suggested configurations for optimized database performance. see [here](docs/suggested_configurations_to_optimize_database_performance.md)
 ***
 
 ## Monitoring UC connections
@@ -128,6 +129,8 @@ The Univer***REMOVED***l connector is monitored via tools that are already famil
 With a few exceptions,  using data from the univer***REMOVED***l connector is no different than using data from any other source in Guardium Data Protection or Guardium Insights. For using the univer***REMOVED***l connector in Guardium Data Protection, there are a few unique policies that can be found in this link:
 
 [Configuring Policies for the univer***REMOVED***l connector](docs/uc_policies_gdp.md)
+
+For more general information about policies, refer to our  [Guardium Data Protection](https://www.ibm.com/docs/en/SSMPHH_latest/com.ibm.guardium.doc.admin/tshoot/policies.html) and [Guardium Insights](https://www.ibm.com/docs/en/SSWSZ5_latest/policies.html) policy documentation . 
 
 
 

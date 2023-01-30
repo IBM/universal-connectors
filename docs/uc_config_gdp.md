@@ -107,7 +107,7 @@ After you configure the database server native audit, and the file forwarding to
 **Attention: When you reboot your Guardium system, restart the Guardium univer***REMOVED***l connector by running the API:**
 
 ```
-grdapi run_local_univer***REMOVED***l_connector
+grdapi run_univer***REMOVED***l_connector
 ```
 
 Procedure
