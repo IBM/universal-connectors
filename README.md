@@ -113,6 +113,7 @@ In Guardium Insights, the workflow for deploying the universal connector is slig
  - You can optionally use a Guardium client installed on a database running on your local host for forwarding native audit logs into Universal Connector via Filebeat or Syslog[^9]. See [Using GIM](docs/GIM.md) for more information.
  - On how to configure Universal Connector for various data sources via AWS, see [Using AWS](docs/aws.md)
  - On how to configure sample data sources and forward the generated audit log events into Universal Connector via Syslog or Filebeat, see [Sample data sources Configurations via Filebeat and Syslog](docs/sample_data_sources_configurations.md)
+ - To see suggested configurations for optimized database performance. see [here](docs/suggested_configurations_to_optimize_database_performance.md)
 ***
 
 ## Monitoring UC connections
