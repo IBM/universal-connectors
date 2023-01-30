@@ -1,8 +1,11 @@
-# Logstash Google PubSub Input Plugin
+## google_pubsub input plug-in
 
 This is a [Logstash](https://github.com/elastic/logstash) input plugin for
 [Google Pub/Sub](https://cloud.google.com/pubsub/). The plugin can subscribe
-to a topic and ingest mes***REMOVED***ges.
+to a topic and ingest mes***REMOVED***ges. The events are then sent over to corresponding filter plugin which transforms these audit logs into a [Guardium record](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/common/src/main/java/com/ibm/guardium/univer***REMOVED***lconnector/commons/structures/Record.java)  instance (which is a standard structure made out of several parts).
+
+
+## Purpose:
 
 The plugin ingests [Stackdriver Logging](https://cloud.google.com/logging/) mes***REMOVED***ges via the
 [Exported Logs](https://cloud.google.com/logging/docs/export/using_exported_logs)
@@ -11,9 +14,29 @@ feature of Stackdriver Logging.
 It is fully free and fully open source. The license is Apache 2.0, meaning you
 are pretty much free to use it however you want in whatever way.
 
-## Documentation
+## U***REMOVED***ge:
 
-### Step-by-Step Guide for starting Audit Logs Streaming
+### a. Prerequisites:
+
+#### Procedure:
+
+1. Access to Google Cloud Platform project
+
+2. Enable the Google Pub/Sub API.
+
+3. If the plugin is to be used to ingest Stackdriver Logging mes***REMOVED***ges, then the Stackdriver Logging API should be enabled and configure log exporting to Pub/Sub.
+
+4. Below links can be used to gather more information on the ***REMOVED***me
+	
+	* Google Cloud Platform Projects and [Overview](https://cloud.google.com/docs/overview/)
+	* Google Cloud Pub/Sub [documentation](https://cloud.google.com/pubsub/)
+	* Stackdriver Logging [documentation](https://cloud.google.com/logging/)
+
+
+### b. Audit Logs Streaming
+
+#### Procedure:
+
 1. Create a project attached to billing info 
 2. Set up your Google Cloud project and Pub/Sub topic and subscriptions:
    - Grant Pub/Sub Editor, Pub/Sub Publisher, Pub/Sub Subscriber roles to your account in IAM to enable editing Pub/Sub and viewing all audited logs. See [Pub/Sub Roles](https://cloud.google.com/pubsub/docs/access-control#roles) for the full list.
@@ -39,23 +62,66 @@ are pretty much free to use it however you want in whatever way.
    - Create SQL instance users in *SQL > Instances > `instance_name` > Users*
    - Run queries from Cloud Shell:  *SQL > Instances > `instance_name` > Overview page > Connect using `gcloud`*
 
-### Note
-For more information on Prerequisites, Cloud Pub/Sub, Authentication and
-Stackdriver logging - refer to [Google Pub/Sub](https://www.elastic.co/guide/en/logstash/current/plugins-inputs-google_pubsub.html).
-
-## Installation
+### b. Installation
 
 To install this plug-in, you need to download the [offline pack](https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connectors/blob/master/input-plugin/logstash-input-google-pubsub/GooglePubSubPackage/logstash-offline-plugin-input-google_pubsub.zip), and use Upload file in the Guardium machine.
 
-### Note
+#### Note
 To install on your local machine that is running Logstash, execute:
-`bin/logstash-plugin install file:///path/to/logstash-offline-plugin-input-google_pubsub.zip
-`
+`bin/logstash-plugin install file:///path/to/logstash-offline-plugin-input-google_pubsub.zip`
+
+### c. Parameters:
+	
+| Parameter | Input Type | Required | Default |
+|-----------|------------|----------|---------|
+| project_id | String  | Yes |  |
+| topic | String | Yes |  |
+| subscription | String | No |  |
+| json_key_file | a valid filesystem path | No |  |
+| include_metadata | Boolean | No | false|
+| create_subscription | Boolean | No | false|
+| max_mes***REMOVED***ges | Number | Yes | 5|
+
+
+
+
+
+#### `project_id`
+The `project_id` setting allows to set the Google Cloud Project ID (name, not number).
+
+#### `topic`
+The `topic` setting allows specifying the Google Cloud Pub/Sub Topic and Subscription. Note that the topic must be created manually with Cloud Logging pre-configured export to PubSub configured to use the defined topic. The subscription will be created automatically by the plugin.
+
+#### `subscription`
+The `subscription` setting allows to specify teh subscription
+
+#### `json_key_file`
+The `json_key_file` allows setting authentication details, if logstash is running within Google Compute Engine, the plugin will use GCE’s Application Default Credentials. Outside of GCE, you will need to specify a Service Account JSON key file.
+
+#### `include_metadata`
+The `include_metadata` setting, if set true, will include the full mes***REMOVED***ge data in the [@metadata][pubsub_mes***REMOVED***ge] field
+
+#### `create_subscription`
+The `create_subscription` setting, if set true, will have the input plugin create a new subscription on startup instead of manually creating it on GCP
+##### Note
+    - This requires additional permissions to be granted to the client (i.e. the Service Account) and is not recommended for most use-cases. If you still need to use it, grant the Service Account the "Cloud Pub/Sub Service Agent" Role in *IAM & Admin > Service Accounts > Grant Access*
+
+#### `max_mes***REMOVED***ges`
+The `max_mes***REMOVED***ges` setting, helps to mitigate the issues caused due to subscriber client processing and acknowledging the mes***REMOVED***ges more slowly than Pub/Sub sending them to the client. This option helps to control the rate at which the subscriber receives mes***REMOVED***ges.
+
+
+#### Logstash Default config params
+Other standard logstash parameters are available such as:
+* `add_field`
+* `type`
+* `tags`
 
 ### Sample Configuration
 
 Below is a copy of the included `googlepubsub.conf` [file](https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connectors/blob/master/input-plugin/logstash-input-google-pubsub/GooglePubSubPackage/googlepubsub.conf) that shows a basic
 configuration for this plugin.
+
+
 #### Input part:
 ```
 input {
@@ -88,23 +154,6 @@ input {
 Setting a different `subscription` for each Logstash pipeline running on a server, enables receiving the full set of mes***REMOVED***ges published to the `topic`.
 Setting the ***REMOVED***me `subscription` for multiple Logstash pipelines running on different servers, can be used for **Load Balancing** the processing of the mes***REMOVED***ges over those servers.
 
-### More configuration options
-#### Subscription Creation on startup
-To have the input plugin create a new subscription on startup instead of manually creating it on GCP, use:
-    `create_subscription => true`
-##### Note
-   - Value defaults to `false` in case the feature is not used in the configuration
-   - This requires additional permissions to be granted to the client (i.e. the Service Account) and is not recommended for most use-cases. If you still need to use it, grant the Service Account the "Cloud Pub/Sub Service Agent" Role in *IAM & Admin > Service Accounts > Grant Access*
-
-#### Mes***REMOVED***ge Flow Control
-Your subscriber client might process and acknowledge mes***REMOVED***ges more slowly than Pub/Sub sends them to the client. In this case, to mitigate the issues that might occur, use `max_mes***REMOVED***ges` configuration option to control the rate at which the subscriber receives mes***REMOVED***ges.
-`max_mes***REMOVED***ges => <NUM>`
-
-##### Note
-   - Value defaults to 5 in case the feature is not used in the configuration
-   - The maximum number of mes***REMOVED***ges returned per request. The Pub/Sub system may return fewer than the number specified.
-
-More on creation and management of Pub/Sub topics and subscriptions, see [GCP docs](https://cloud.google.com/pubsub/docs/admin)
 
 ## Troubleshooting
 
@@ -113,8 +162,3 @@ More on creation and management of Pub/Sub topics and subscriptions, see [GCP do
    * Make sure you can see mes***REMOVED***ges when going to *Pub/Sub topic > Select Subscription > Pull mes***REMOVED***ges*
    * Check the inclusion/exclusion filters are valid and legal by going to *Edit Sink > Preview Logs* button next to the filters edit window.
    * If you're still not seeing logs, double check that you don't have another configuration running using the ***REMOVED***me subscription name.
-
-
-## Contributing
-
-You can enhance this input and open a pull request with suggested changes - or you can use the project to create a different input plug-in for Guardium that supports other data sources.
