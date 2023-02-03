@@ -77,13 +77,12 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
     • Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters. 
 ```
-	For example:-
-	   filebeat.inputs:
+    filebeat.inputs:
        - type: log   
        enabled: true
         paths:
-       - <host_name/trace/DB_<DB_Name>/*.log>
-       #exclude_lines: ['^DBG']
+       -/var/lib/mysql/*.log
+       exclude_lines: ["select 1","SET autocommit","select @@version_comment","SHOW COLLATION","SELECT @@tx_isolation","select @@lower_case_table_names","SET GLOBAL","SHOW GLOBAL","COMMIT","ROLLBACK","SELECT CONCAT","FLUSH PRIVILEGES","set @@SQL_SELECT_LIMIT","SELECT TABLE_SCHEMA TABLE_CAT","@@max_allowed_packet"]
        tags: ["MariaDB_On_Premise"]
 ```
 2. Configuring the output section:
@@ -153,10 +152,11 @@ at Filebeat level only.
 Filebeat provides a solution which can be implemented to ignore such logs, below are the steps
 1. Open filebeat.yml in notepad or any OS specific text editor.
 2. Search "filebeat.inputs" property.
-3. Under the "filebeat.inputs" property, uncomment the exculde_lines property and place the query user wants to ignore at filebeat level
+3. Under the "filebeat.inputs" property, uncomment the exclude_lines property and place the query user wants to ignore at filebeat level
+4. Different third party tool may generate different system queries, so based on observation user need to modify queries in 'exclude line' of filebeat configuration.
 	
 ```
-exclude_lines: ["set autocommit=0","set autocommit=1","SELECT @@tx_isolation"]
+exclude_lines: ["select 1","SET autocommit","select @@version_comment","SHOW COLLATION","SELECT @@tx_isolation","select @@lower_case_table_names","SET GLOBAL","SHOW GLOBAL","COMMIT","ROLLBACK","SELECT CONCAT","FLUSH PRIVILEGES","set @@SQL_SELECT_LIMIT","SELECT TABLE_SCHEMA TABLE_CAT","@@max_allowed_packet"]
 		
  ```
 
@@ -165,13 +165,13 @@ The Guardium universal connector is the Guardium entry point for native audit lo
  
 ## Before you begin
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [logstash-filter_offline_plugin_mariadb.zip](MariaDBOverFilebeatPackage/logstash-filter-mariadb_guardium_filter.zip) plug-in.
+* Download the [logstash-filter-mariadb_guardium_filter.zip](MariaDBOverFilebeatPackage/logstash-filter-mariadb_guardium_filter.zip) plug-in.
 * Download the plugin filter configuration file [MariaDB.conf](MariaDB.conf).
 
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is disabled before uploading the UC plug-in.	
-3. Click Upload File and select the offline [logstash-filter_offline_plugin_mariadb.zip](MariaDBOverFilebeatPackage/logstash-filter-mariadb_guardium_filter.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [logstash-filter-mariadb_guardium_filter.zip](MariaDBOverFilebeatPackage/logstash-filter-mariadb_guardium_filter.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [mariadb.conf](MariaDB.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
