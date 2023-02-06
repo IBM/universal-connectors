@@ -18,3 +18,4 @@ filter-plugin/logstash-filter-documentdb-aws-guardium/logstash-filter-documentdb
 filter-plugin/logstash-filter-azure-postgresql-guardium/logstash-filter-azure_postgresql_guardium_plugin_filter
 filter-plugin/logstash-filter-azure-sql-guardium/logstash-filter-azuresql_guardium_plugin_filter
 input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input
+
