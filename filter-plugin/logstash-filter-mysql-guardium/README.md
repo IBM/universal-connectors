@@ -77,7 +77,7 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 2. First, enable the Guardium universal connector, if it is currently disabled.
 3. Click the Plus sign to open the ```Connector Configuration``` dialog box.
 4. Type a name in the ```Connector name``` field.
-5. Select Connector template as "MySQL using Filebeat" or "MySQL using Syslog".
+5. Select ```MySQL using Filebeat``` or ```MySQL using Syslog``` for the ```Connector template```.
 6. Follow the notes in the ```Input configuration``` section.
 7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 8. Click ```Save```. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the ```Configure Universal Connector``` page.
