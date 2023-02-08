@@ -10,7 +10,7 @@ In order to install the Audit Plugin, please refer to the official MySQL [docume
 This guide provides detailed information on how to install the Audit Plugin, as well as best practices for configuring and using it in a secure manner.
 
 
-## 4. Configuring Filebeat to push logs to Guardium
+## 3. Configuring Filebeat to push logs to Guardium
 
 ## a. Filebeat installation
 
@@ -77,7 +77,7 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 *  If the dbname is not coming from command line, it will not get populated. If the user wants to see the dbname, either they need to send a use statement or send it on command line.
 * *IPv6* addresses are typically supported by the MySQL and filter plug-ins, however this is not fully supported by the Guardium pipeline.
 
-## 5. Configuring the MySQL filters in Guardium Data Protection (GDP)
+## 4. Configuring the MySQL filters in Guardium Data Protection (GDP)
 
 The Guardium universal connector is the Guardium entry point for native audit logs.
 The universal connector identifies and parses received events, and converts them to a standard Guardium format.
@@ -96,7 +96,7 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 8. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
-## Configuring the MySQL filters in Guardium Insights
+## 5. Configuring the MySQL filters in Guardium Insights
 To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/universal-connectors/blob/main/docs/UC_Configuration_GI.md)
 In the input configuration section, refer to the Filebeat section.
 
