@@ -92,7 +92,7 @@ In the input configuration section, refer to the Filebeat section.
 * Field _server_hostname_ (required) - Server hostname is expected (extracted from the second field of the syslog mes***REMOVED***ge).
 * Field _server_ip_ - States the IP address of the MySQL server, if it is available to the filter plug-in. The filter will use this IP address instead of localhost IP addresses that are reported by MySQL, if actions were performed directly on the database server.
 * The client "Source program" is not available in mes***REMOVED***ges sent by MySQL. This is because this data is sent only in the first audit log mes***REMOVED***ge upon database connection - and the filter plug-in doesn't aggregate data from different mes***REMOVED***ges.
-* If events with "(NONE)" local/remote IP addresses are not filtered, the filter plug-in will convert the IP to "0.0.0.0", as a valid format for IP is needed. However, this is atypical, since as mes***REMOVED***ges without users are filtered out.
+* If events with "(NONE)" local/remote IP addresses are not filtered, the filter plug-in will convert the IP to "0.0.0.0", as a valid format for IP is needed. However, this is atypical, since mes***REMOVED***ges without users are filtered out.
 * Events in the filter are not removed, but tagged if not parsed (see [Filter result](#filter-result), below).
 *  If the dbname is not coming from command line, it will not get populated. If the user wants to see the dbname, either they need to send a use statement or send it on command line.
 * *IPv6* addresses are typically supported by the MySQL and filter plug-ins, however this is not fully supported by the Guardium pipeline.
