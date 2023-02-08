@@ -74,7 +74,7 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 ### Procedure
 
 1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
-2. First enable the Universal Guardium connector, if it is disabled already.
+2. First, enable the Guardium universal connector, if it is currently disabled.
 3. Click the Plus sign to open the Connector Configuration dialog box.
 4. Type a name in the Connector name field.
 5. Select Connector template as "MySQL using Filebeat" or "MySQL using Syslog".
