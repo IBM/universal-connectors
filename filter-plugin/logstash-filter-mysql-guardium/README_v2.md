@@ -4,7 +4,7 @@ This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop addition filter plug-ins for Guardium universal connector.
 
 ## 1. Configuring the Mysql server
-There are multiple ways to install a MySQL server. For this example, we will assume that we already have a working MySQL setup.
+There are multiple ways to install a MySQL on-premise server. For this example, we will assume that we already have a working MySQL setup.
 ## 2. Installing and Enabling Auditing
 In order to install the Audit Plugin, please refer to the official MySQL [documentation](https://dev.mysql.com/doc/mysql-secure-deployment-guide/5.7/en/secure-deployment-audit.html):
 This guide provides detailed information on how to install the Audit Plugin, as well as best practices for configuring and using it in a secure manner.
