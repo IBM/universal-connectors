@@ -21,7 +21,7 @@ This guide provides detailed information on how to install the Audit Plug-in, as
 
 ## b. Filebeat configuration:
 
-To use Logstash to perform additional processing on the data collected by Filebeat, we need to configure Filebeat to use Logstash. To do this, modify the filebeat.yml file which you can find inside the folder where filebeat is installed. Follow these instructions for finding the installation directory:
+To use Logstash to perform additional processing on the data collected by Filebeat, we need to configure Filebeat to use Logstash. To do this, modify the filebeat.yml file which you can find inside the folder where Filebeat is installed. Follow these instructions for finding the installation directory:
 https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 ### Procedure:
