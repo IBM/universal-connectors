@@ -61,21 +61,6 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 3. To learn how to start FileBeat, see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
 
-## Notes
-### Supported errors:
-* LOGIN_FAILED
-* SQL_ERROR
-
-
-### Filter notes
-* The filter supports events sent through Syslog or Filebeat. It relies on the "mysql_audit_log:" prefix in the event message for the JSON portion of the audit to be parsed.
-* Field _server_hostname_ (required) - Server hostname is expected (extracted from the second field of the syslog message).
-* Field _server_ip_ - States the IP address of the MySQL server, if it is available to the filter plug-in. The filter will use this IP address instead of localhost IP addresses that are reported by MySQL, if actions were performed directly on the database server.
-* The client "Source program" is not available in messages sent by MySQL. This is because this data is sent only in the first audit log message upon database connection - and the filter plug-in doesn't aggregate data from different messages.
-* If events with "(NONE)" local/remote IP addresses are not filtered, the filter plug-in will convert the IP to "0.0.0.0", as a valid format for IP is needed. However, this is atypical, since as messages without users are filtered out.
-* Events in the filter are not removed, but tagged if not parsed (see [Filter result](#filter-result), below).
-*  If the dbname is not coming from command line, it will not get populated. If the user wants to see the dbname, either they need to send a use statement or send it on command line.
-* *IPv6* addresses are typically supported by the MySQL and filter plug-ins, however this is not fully supported by the Guardium pipeline.
 
 ## 4. Configuring the MySQL filters in Guardium Data Protection (GDP)
 
@@ -89,14 +74,30 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 ### Procedure
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. First enable the Universal Guardium connector, if it is disabled already.4. Click the Plus sign to open the Connector Configuration dialog box.
-5. Type a name in the Connector name field.
-6. Select Connector template as "MySQL using Filebeat" or "MySQL using Syslog" CloudWatch
-7. Follow the notes in the  "Input configuration" section.
-8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+2. First enable the Universal Guardium connector, if it is disabled already.
+3. Click the Plus sign to open the Connector Configuration dialog box.
+4. Type a name in the Connector name field.
+5. Select Connector template as "MySQL using Filebeat" or "MySQL using Syslog".
+6. Follow the notes in the  "Input configuration" section.
+7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 8. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 ## 5. Configuring the MySQL filters in Guardium Insights
 To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/universal-connectors/blob/main/docs/UC_Configuration_GI.md)
 In the input configuration section, refer to the Filebeat section.
 
+
+## Notes
+### Supported errors:
+* LOGIN_FAILED
+* SQL_ERROR
+
+### Filter notes
+* The filter supports events sent through Syslog or Filebeat. It relies on the "mysql_audit_log:" prefix in the event message for the JSON portion of the audit to be parsed.
+* Field _server_hostname_ (required) - Server hostname is expected (extracted from the second field of the syslog message).
+* Field _server_ip_ - States the IP address of the MySQL server, if it is available to the filter plug-in. The filter will use this IP address instead of localhost IP addresses that are reported by MySQL, if actions were performed directly on the database server.
+* The client "Source program" is not available in messages sent by MySQL. This is because this data is sent only in the first audit log message upon database connection - and the filter plug-in doesn't aggregate data from different messages.
+* If events with "(NONE)" local/remote IP addresses are not filtered, the filter plug-in will convert the IP to "0.0.0.0", as a valid format for IP is needed. However, this is atypical, since as messages without users are filtered out.
+* Events in the filter are not removed, but tagged if not parsed (see [Filter result](#filter-result), below).
+*  If the dbname is not coming from command line, it will not get populated. If the user wants to see the dbname, either they need to send a use statement or send it on command line.
+* *IPv6* addresses are typically supported by the MySQL and filter plug-ins, however this is not fully supported by the Guardium pipeline.
