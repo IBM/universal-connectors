@@ -74,7 +74,7 @@ The output of the Guardium univer***REMOVED***l connector is forwarded to the Gu
 ### Procedure
 
 1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Univer***REMOVED***l Connector```.
-2. First enable the Univer***REMOVED***l Guardium connector, if it is di***REMOVED***bled already.
+2. First, enable the Guardium univer***REMOVED***l connector, if it is currently di***REMOVED***bled.
 3. Click the Plus sign to open the Connector Configuration dialog box.
 4. Type a name in the Connector name field.
 5. Select Connector template as "MySQL using Filebeat" or "MySQL using Syslog".
