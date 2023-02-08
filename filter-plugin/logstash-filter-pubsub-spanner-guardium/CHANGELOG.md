@@ -1,0 +1,10 @@
+
+# Changelog
+Notable changes will be documented in this file.
+
+ 
+
+## [2.2.49]
+
+### Added
+- Initial release, in parallel to Guardium v11.4.
