@@ -80,7 +80,7 @@ The output of the Guardium univer***REMOVED***l connector is forwarded to the Gu
 5. Select Connector template as "MySQL using Filebeat" or "MySQL using Syslog".
 6. Follow the notes in the ```Input configuration``` section.
 7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
-8. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, it appears in the Configure Univer***REMOVED***l Connector page.
+8. Click ```Save```. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, it appears in the ```Configure Univer***REMOVED***l Connector``` page.
 
 ## 5. Configuring the MySQL filters in Guardium Insights
 To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/UC_Configuration_GI.md)
