@@ -88,11 +88,6 @@ In the input configuration section, refer to the Filebeat section.
 
 
 ## Notes
-### Supported errors:
-* LOGIN_FAILED
-* SQL_ERROR
-
-### Filter notes
 * The filter supports events sent through Syslog or Filebeat. It relies on the "mysql_audit_log:" prefix in the event message for the JSON portion of the audit to be parsed.
 * Field _server_hostname_ (required) - Server hostname is expected (extracted from the second field of the syslog message).
 * Field _server_ip_ - States the IP address of the MySQL server, if it is available to the filter plug-in. The filter will use this IP address instead of localhost IP addresses that are reported by MySQL, if actions were performed directly on the database server.
