@@ -84,7 +84,7 @@ The output of the Guardium univer***REMOVED***l connector is forwarded to the Gu
 
 ## 5. Configuring the MySQL filters in Guardium Insights
 To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/UC_Configuration_GI.md)
-In the input configuration section, refer to the Filebeat section.
+In the ```Input configuration``` section, refer to the Filebeat section.
 
 
 ## Notes
