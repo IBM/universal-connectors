@@ -119,7 +119,7 @@ https://docs.aws.amazon.com/awscloudtrail/latest/userguide/send-cloudtrail-event
 ![iam role 2](/docs/images/cloudwatch/iam_role_2.png)
 
 
-14.	VPC endpoint- In cases where Cloudwatch Logs is outside the VPC of the ec2 machine hosting Guardium, you can create a VPC endpoint that will establish a private connection between your VPC and CloudWatch Logs by following the instructions in: https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch-logs-and-interface-VPC.html
+14.	VPC endpoint- In cases where Cloudwatch Logs is outside the VPC of the ec2 machine hosting Guardium, you can create a VPC endpoint that will establish a private connection between your VPC and CloudWatch Logs by following the instructions in: https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch-logs-and-interface-VPC.html In case arn role based authentication is used in input - in addition to connection to Cloudwatch, VPC connection to STS should also be established between ec2 machine and Cloudwatch accout
 
 To authorize outgoing traffic from Amazon Web Services (AWS) to Guardium, run these APIs:
 ```
