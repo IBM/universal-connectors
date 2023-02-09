@@ -44,20 +44,20 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 2. Configuring the output section:
 
-   	• Locate "output" in the filebeat.yml file, then add the following parameters.
+   	 • Locate "output" in the filebeat.yml file, then add the following parameters.
 
-   	• Disable Elasticsearch output by commenting it out.
+   	 • Disable Elasticsearch output by commenting it out.
 
-   	• Enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
+   	 • Enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
 
    For example:
 
-   	output.logstash:
-   		hosts: ["127.0.0.1:5001"]
+   	 output.logstash:
+   		 hosts: ["127.0.0.1:5001"]
    	
-   	• The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections.
+   	 • The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections.
 
-   	• You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
+   	 • You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
 
 3. To learn how to start FileBeat, see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
 
