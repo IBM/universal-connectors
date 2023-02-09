@@ -3,7 +3,7 @@ Notable changes will be documented in this file.
 
 ## [2.3.70]
 - Downgraded gradle version to 6.5.1
-- System event filtering is being migrated to a filebeat configuration. 
+- System events filtered at filebeat configuration level. 
 - Queries that include a single-line comment are handled.
 
 ## [2.3.67]
