@@ -44,16 +44,16 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 2. Configuring the output section:
 
-   	 • Locate "output" in the filebeat.yml file, then add the following parameters.
+   • Locate "output" in the filebeat.yml file, then add the following parameters.
 
-   	 • Disable Elasticsearch output by commenting it out.
+   • Disable Elasticsearch output by commenting it out.
 
-   	 • Enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
+   • Enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
 
-   For example:
+     For example:
 
-   	 output.logstash:
-   		 hosts: ["127.0.0.1:5001"]
+   	   output.logstash:
+   		   hosts: ["127.0.0.1:5001"]
    	
    	 • The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections.
 
