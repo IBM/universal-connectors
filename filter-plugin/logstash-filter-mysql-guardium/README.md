@@ -30,12 +30,12 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
    • Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
 
-   	filebeat.inputs:
-   		- type: log   
-   		- enabled: true
-   	paths:
-   		- <path_of_log_file as specified in /path/to/audit.log file>
-   		- exclude_lines: ['AuditLogManager']
+       filebeat.inputs:
+   		   - type: log   
+   		   - enabled: true
+   	   paths:
+   		   - <path_of_log_file as specified in /path/to/audit.log file>
+   		   - exclude_lines: ['AuditLogManager']
 
    where path_of_log_file is the ***REMOVED***me path that was used when enabling MySQL auditing. For example, /home/mysql8_ent/mysql/data/audit.log .
 
@@ -53,7 +53,7 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
    For example:
 
    	output.logstash:
-   		hosts: ["127.0.0.1:5045"]
+   		hosts: ["127.0.0.1:5001"]
    	
    	• The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections.
 
