@@ -50,8 +50,8 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
    • Enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
 
-     For example:
-
+   For example:
+   ### 
    	   output.logstash:
    		   hosts: ["127.0.0.1:5001"]
    	
