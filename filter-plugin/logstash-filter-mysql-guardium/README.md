@@ -8,6 +8,7 @@ There are multiple ways to install a MySQL on-premise server. For this example, 
 ## 2. Installing and enabling auditing
 In order to install the Audit Plug-in, please refer to the official MySQL [documentation](https://dev.mysql.com/doc/mysql-secure-deployment-guide/5.7/en/secure-deployment-audit.html):
 This guide provides detailed information on how to install the Audit Plug-in, as well as best practices for configuring and using it in a secure manner.
+Additional information about configure auditing in MySQL in [here](https://dev.mysql.com/doc/refman/8.0/en/audit-log-logging-configuration.html)
 
 
 ## 3. Configuring Filebeat to push logs to Guardium
