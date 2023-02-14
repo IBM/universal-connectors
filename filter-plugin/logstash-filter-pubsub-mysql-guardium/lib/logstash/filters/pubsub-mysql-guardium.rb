@@ -106,7 +106,7 @@ class LogStash::Filters::PubsubMysql < LogStash::Filters::Base
       event.set('[GuardRecord][sessionLocator][serverIpv6]', nil)
 
 
-
+      
       event.set('[GuardRecord][sessionLocator][clientIp]', '127.0.0.1')
       event.set('[GuardRecord][sessionLocator][serverPort]', 3306)
       event.set('[GuardRecord][sessionLocator][isIpv6]', false)
