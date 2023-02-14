@@ -20,7 +20,7 @@ As a universal connector plug-in developer, you should be familiar with code cov
 - A developed universal connector Java plug-in that includes unit tests in the path designated by Logstash for Java plug-ins (`<TYPE>-plugin/logstash-<TYPE>-<PLUGIN_NAME>/src/test`)
 
 ### Keep In Mind
-- Make sure you install all the necessary Jacoco plug-ins and set the minimum coverage as detailed in the template build.gradle bellow.
+- Make sure you install all the necessary Jacoco plug-ins and set the minimum coverage as detailed in the template build.gradle below.
 
   - Plug-ins used: jacoco, org.barfuin.gradle.jacocolog
 
