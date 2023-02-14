@@ -5,12 +5,12 @@ As a Universal Connector plug-in developer, you should be familiarized with Code
 <details open="open">
   <summary>Table of contents</summary>
 
-  - [Integrate code coverage into Java plug-ins](#Integrate-code-coverage-into-Java-plug-ins)
-    * [Prerequisites](#Prerequisites)
+  - [Integrate code coverage into Java plug-ins](#integrate-code-coverage-into-java-plug-ins)
+    * [Prerequisites](#prerequisites)
     * [Keep In Mind](#keep-in-mind)
-    * [Template build.gradle](#Template-build.gradle)
-    * [Template Makefile](#Template-Makefile)
-  - [Integrate code coverage into Ruby plug-ins](#Integrate-code-coverage-into-Ruby-plug-ins)
+    * [Template build.gradle](#template-build.gradle)
+    * [Template Makefile](#template-makefile)
+  - [Integrate code coverage into Ruby plug-ins](#integrate-code-coverage-into-ruby-plug-ins)
 
 </details>
 
