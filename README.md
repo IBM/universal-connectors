@@ -197,7 +197,7 @@ It is the developer's responsibility to maintain and update the database's suppo
 **Useful links:**
  - [Integrate Code Coverage tool into Univer***REMOVED***l Connector Plug-ins](/docs/integrate_code_coverage_into_plug-ins.md)
  - [Supplemental notes](https://ibm.box.com/s/l62ainzsod9jos2p7pss1ssy4cij2pgn)
-***
+
 
 
 ***
