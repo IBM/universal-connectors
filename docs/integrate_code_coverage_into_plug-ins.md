@@ -16,7 +16,7 @@ As a Univer***REMOVED***l Connector plug-in developer, you should be familiarize
 
 ## Integrate code coverage into Java plug-ins
 ### Prerequisites
-- Jacoco code coverage tool for Java
+- Familiarity with Jacoco code coverage tool for Java
 - A developed Univer***REMOVED***l Connector Java plug-in that includes unit tests in the path designated by Logstash for Java plug-ins (`<TYPE>-plugin/logstash-<TYPE>-<PLUGIN_NAME>/src/test`)
 
 ### Keep In Mind
