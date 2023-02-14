@@ -130,7 +130,7 @@ With a few exceptions,  using data from the universal connector is no different 
 
 [Configuring Policies for the universal connector](docs/uc_policies_gdp.md)
 
-For more general information about policies, refer to our  [Guardium Data Protection](https://www.ibm.com/docs/en/SSMPHH_latest/com.ibm.guardium.doc.admin/tshoot/policies.html) and [Guardium Insights](https://www.ibm.com/docs/en/SSWSZ5_latest/policies.html) policy documentation . 
+For more general information about policies, refer to our  [Guardium Data Protection](https://www.ibm.com/docs/en/SSMPHH_latest/com.ibm.guardium.doc.admin/tshoot/policies.html) and [Guardium Insights](https://www.ibm.com/docs/en/SSWSZ5_latest/policies.html) policy documentation .
 
 
 
@@ -192,6 +192,12 @@ For adding a parser to the filter section of the configuration file as a pre-pro
 
 **Note:**
 It is the developer's responsibility to maintain and update the database's supported versions
+
+***
+**Useful links:**
+ - [Integrate Code Coverage tool into Universal Connector Plug-ins](/docs/integrate_code_coverage_into_plug-ins.md)
+ - [Supplemental notes](https://ibm.box.com/s/l62ainzsod9jos2p7pss1ssy4cij2pgn)
+***
 
 
 ***
