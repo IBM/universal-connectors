@@ -1,0 +1,124 @@
+import java.nio.file.Files
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+    }
+}
+
+plugins {
+  id 'com.github.johnrengelman.shadow' version '4.0.0'
+  id 'java'
+}
+
+apply plugin: 'java'
+apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
+
+// ===========================================================================
+// plugin info
+// ===========================================================================
+group                      'com.infoinsightsllc.guardium' // must match the package of the main plugin class
+version                    "${file("VERSION").text.trim()}" // read from required VERSION file
+description                = "Guardium Universal Connector Filter Plugin for Snowflake"
+pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
+pluginInfo.longDescription = "Guardium Universal Connector Filter Plugin for Snowflake"
+pluginInfo.authors         = ['Information Insights LLC']
+pluginInfo.email           = ['john.haldeman@infoinsightsllc.com']
+pluginInfo.homepage        = "http://www.infoinsightsllc.com"
+pluginInfo.pluginType      = "filter"
+pluginInfo.pluginClass     = "GuardiumSnowflakeFilter"
+pluginInfo.pluginName      = "guardium_snowflake_filter" // must match the @LogstashPlugin annotation in the main plugin class
+// ===========================================================================
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.0'
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+shadowJar {
+    classifier = null
+}
+
+dependencies {    
+    compile group: 'commons-validator', name: 'commons-validator', version: '1.4.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
+    compile 'org.apache.commons:commons-lang3:3.7'
+    compile 'org.apache.logging.log4j:log4j-api:2.9.1'
+    compile 'org.apache.logging.log4j:log4j-core:2.9.1'
+    compile 'com.google.code.gson:gson:2.8.6'
+    compile 'org.jruby:jruby-complete:9.2.7.0'
+    compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-?.?.?.jar")
+    compile fileTree(dir: LOGSTASH_UC_COMMONS_PATH, include: "guardium-universalconnector-commons-1.0.0.jar")
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.jruby:jruby-complete:9.2.7.0'
+
+    testCompile fileTree(dir: LOGSTASH_UC_COMMONS_PATH, include: "guardium-universalconnector-commons-1.0.0.jar")
+}
+
+shadowJar{
+  transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer)
+}
+
+
+clean {
+    delete "${projectDir}/Gemfile"
+    delete "${projectDir}/" + pluginInfo.pluginFullName() + ".gemspec"
+    delete "${projectDir}/lib/"
+    delete "${projectDir}/vendor/"
+    new FileNameFinder().getFileNames(projectDir.toString(), pluginInfo.pluginFullName() + "-?.?.?.gem").each { filename ->
+        delete filename
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+task vendor(dependsOn: shadowJar) {
+    doLast {
+        String vendorPathPrefix = "vendor/jar-dependencies"
+        String projectGroupPath = project.group.replaceAll('\\.', '/')
+        File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
+        projectJarFile.mkdirs()
+        Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
+        validatePluginJar(projectJarFile, project.group)
+    }
+}
+
+task generateRubySupportFiles() {
+    doLast {
+        generateRubySupportFilesForPlugin(project.description, project.group, version)
+    }
+}
+
+task removeObsoleteJars() {
+    doLast {
+        new FileNameFinder().getFileNames(
+                projectDir.toString(),
+                "vendor/**/" + pluginInfo.pluginFullName() + "*.jar",
+                "vendor/**/" + pluginInfo.pluginFullName() + "-" + version + ".jar").each { f ->
+            delete f
+        }
+    }
+}
+
+task gem(dependsOn: [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]) {
+    doLast {
+        buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
+    }
+}
