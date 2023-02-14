@@ -28,17 +28,15 @@ module DataAccessLogParser
       end
 
       query = request['query']
-      query_no_tabs_lf_cr = query.gsub /(\t|\n|\r|\r\n)/, ' '
-      query_compressed_ws = query_no_tabs_lf_cr.gsub(/\s+/, ' ')
       begin
 
-        if query_compressed_ws.start_with? "/*"
-          index = query_compressed_ws.index("*/") + 2
-          query_element = query_compressed_ws[index..-1]
-          comment_element = query_compressed_ws[0..index-1]
+        if query.start_with? "/*"
+          index = query.index("*/") + 2
+          query_element = query[index..-1]
+          comment_element = query[0..index-1]
           starts_with_comment = true
         else
-          query_element = query_compressed_ws
+          query_element = query
         end
 
         original_sql = query_element
