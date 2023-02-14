@@ -17,7 +17,7 @@ As a universal connector plug-in developer, you should be familiar with code cov
 ## Integrate code coverage into Java plug-ins
 ### Prerequisites
 - Familiarity with Jacoco code coverage tool for Java
-- A developed Universal Connector Java plug-in that includes unit tests in the path designated by Logstash for Java plug-ins (`<TYPE>-plugin/logstash-<TYPE>-<PLUGIN_NAME>/src/test`)
+- A developed universal connector Java plug-in that includes unit tests in the path designated by Logstash for Java plug-ins (`<TYPE>-plugin/logstash-<TYPE>-<PLUGIN_NAME>/src/test`)
 
 ### Keep In Mind
 - Make sure you install all the necessary Jacoco plug-ins and set the minimum coverage as detailed in the template build.gradle bellow.
