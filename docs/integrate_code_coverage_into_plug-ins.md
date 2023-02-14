@@ -1,6 +1,6 @@
 # Integrate Code Coverage tool into Univer***REMOVED***l Connector Plug-ins
 ## Introduction
-As a Univer***REMOVED***l Connector plug-in developer, you should be familiarized with Code Coverage tools targeted at monitoring the plug-in's unit tests folder for percentage coverage that corresponds to our conventions.
+As a univer***REMOVED***l connector plug-in developer, you should be familiar with code coverage tools targeted at monitoring the plug-in's unit tests folder for percentage coverage that corresponds to our conventions.
 
 <details open="open">
   <summary>Table of contents</summary>
