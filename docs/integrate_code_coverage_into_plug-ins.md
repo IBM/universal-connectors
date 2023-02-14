@@ -8,7 +8,7 @@ As a Univer***REMOVED***l Connector plug-in developer, you should be familiarize
   - [Integrate code coverage into Java plug-ins](#integrate-code-coverage-into-java-plug-ins)
     * [Prerequisites](#prerequisites)
     * [Keep In Mind](#keep-in-mind)
-    * [Template build.gradle](#template-build.gradle)
+    * [Template build.gradle](#template-buildgradle)
     * [Template Makefile](#template-makefile)
   - [Integrate code coverage into Ruby plug-ins](#integrate-code-coverage-into-ruby-plug-ins)
 
