@@ -130,7 +130,7 @@ With a few exceptions,  using data from the univer***REMOVED***l connector is no
 
 [Configuring Policies for the univer***REMOVED***l connector](docs/uc_policies_gdp.md)
 
-For more general information about policies, refer to our  [Guardium Data Protection](https://www.ibm.com/docs/en/SSMPHH_latest/com.ibm.guardium.doc.admin/tshoot/policies.html) and [Guardium Insights](https://www.ibm.com/docs/en/SSWSZ5_latest/policies.html) policy documentation .
+For more general information about policies, refer to our  [Guardium Data Protection](https://www.ibm.com/docs/en/SSMPHH_latest/com.ibm.guardium.doc.admin/tshoot/policies.html) and [Guardium Insights](https://www.ibm.com/docs/en/SSWSZ5_latest/policies.html) policy documentation.
 
 
 
