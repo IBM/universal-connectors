@@ -28,7 +28,7 @@ As a universal connector plug-in developer, you should be familiar with code cov
 
 - Executing “./gradlew build” executes the Jacoco percentage coverage and the reports output path in your plug-in’s directory.
 
-  - You can add a Makefile with a task that executes the commands as an alternative (see template Makefile bellow)
+  - You can add a Makefile with a task that executes the commands as an alternative (see template Makefile below)
 
 - You can add files to the exclusion list in order to exclude them from the Jacoco reports task jacocoTestReport and the Jacoco percentage coverage task jacocoTestCoverageVerification
 
