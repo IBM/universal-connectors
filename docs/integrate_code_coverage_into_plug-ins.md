@@ -1,6 +1,6 @@
 # Integrate Code Coverage tool into Universal Connector Plug-ins
 ## Introduction
-As a Universal Connector plug-in developer, you should be familiarized with Code Coverage tools targeted at monitoring the plug-in's unit tests folder for percentage coverage that corresponds to our conventions.
+As a universal connector plug-in developer, you should be familiar with code coverage tools targeted at monitoring the plug-in's unit tests folder for percentage coverage that corresponds to our conventions.
 
 <details open="open">
   <summary>Table of contents</summary>
