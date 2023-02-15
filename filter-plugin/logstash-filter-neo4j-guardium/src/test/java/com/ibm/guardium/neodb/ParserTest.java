@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ParserTest {
 
@@ -122,7 +124,6 @@ public class ParserTest {
 					"    \"queryStatement\": \"DETACH DELETE node - {} - runtime=null - {type: 'user-action', app: 'neo4j-browser_v4.2.1'} - Variable `node` not defined (line 1, column 23 (offset: 22))\\\";\"\n" +
 					"  }";
 			Event e = getParsedEvent(neoString_grokOutput, neoString);
-
 	    	JsonObject inputData = inputData(e);
 	        
 	        final ExceptionRecord exceptionRecord = Parser.parseException(inputData);
@@ -257,7 +258,7 @@ public class ParserTest {
 
 	public static Event getParsedEvent(String logEvent_json , String logEvent) {
 
-		Map<String,String> results = jsonToMap(logEvent_json);
+		Map<String,String> results = parseJson(logEvent_json);
 		Event e = new org.logstash.Event();
 		e.setField("mes***REMOVED***ge", logEvent);
 
@@ -274,36 +275,22 @@ public class ParserTest {
 		return e;
 	}
 
-	public static Map<String, String> jsonToMap(String json) {
-		Map<String, String> result = new HashMap<>();
+	public static Map<String, String> parseJson(String jsonString) {
+		Map<String, String> map = new HashMap<>();
 
-		for (String key : getKeys(json)) {
-			String value = getValue(json, key);
-			result.put(key, value);
-		}
+		// Use a regular expression to match each key-value pair in the JSON string
+		String pattern = "\"(.*?)\":\\s*\"(.*?)\"";
+		Pattern r = Pattern.compile(pattern);
+		Matcher m = r.matcher(jsonString);
 
-		return result;
-	}
-
-	private static String getValue(String json, String key) {
-		String pattern = String.format("\"%s\":\\s*\"?([^\",\\]}]*)\"?", key);
-		java.util.regex.Pattern p = java.util.regex.Pattern.compile(pattern);
-		java.util.regex.Matcher m = p.matcher(json);
-		if (m.find()) {
-			return m.group(1);
-		}
-		return null;
-	}
-
-	private static java.util.List<String> getKeys(String json) {
-		String pattern = "\"([^\"]+)\":";
-		java.util.regex.Pattern p = java.util.regex.Pattern.compile(pattern);
-		java.util.regex.Matcher m = p.matcher(json);
-		java.util.List<String> keys = new java.util.ArrayList<>();
 		while (m.find()) {
-			keys.add(m.group(1));
+			// Add each key-value pair to the map
+			String key = m.group(1);
+			String value = m.group(2).replaceAll("(?<!\\\\)\\\\(?!\\\\)", "");
+			map.put(key, value);
 		}
-		return keys;
+
+		return map;
 	}
 }
 

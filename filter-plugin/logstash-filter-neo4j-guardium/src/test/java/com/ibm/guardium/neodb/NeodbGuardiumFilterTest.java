@@ -19,7 +19,6 @@ public class NeodbGuardiumFilterTest {
 	
 	
     final static Context context = new ContextImpl(null, null);
-    final static NeodbGuardiumFilter filter = new NeodbGuardiumFilter("test-id", null, context);
     
 
     /**
@@ -92,9 +91,5 @@ class TestMatchListener implements FilterMatchListener {
     @Override
     public void filterMatched(Event event) {
         matchCount.incrementAndGet();
-    }
-
-    public int getMatchCount() {
-        return matchCount.get();
     }
 }
