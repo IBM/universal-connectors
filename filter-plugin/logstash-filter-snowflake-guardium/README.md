@@ -130,6 +130,8 @@ Here's a screenshot of a report showing Snowflake data in Guardium data protecti
 
 ![Viewing Snowflake data in Guardium Data Protection](Screenshot%202022-12-08%20160128.png)
 
+## Credits
+Converge Technology Solutions (formerly Information Insights) provided the original version of this plug-in. Maintenance of the plug-in has been taken over by IBM to provide improvements, such as integration with Guardium Insights. See the original plug-in [here](https://github.com/infoinsights/guardium-snowflake-uc-filter).
 
 
 
