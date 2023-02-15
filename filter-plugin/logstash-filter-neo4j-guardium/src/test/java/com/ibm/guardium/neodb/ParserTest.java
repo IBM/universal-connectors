@@ -18,19 +18,19 @@ import java.util.regex.Pattern;
 
 public class ParserTest {
 
-	    final String neoSuccessString = "2021-08-06 17:09:40.008+0000 INFO  9 ms: (planning: 1, waiting: 0) - 0 B - 4 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.3.1		client/127.0.0.1:51372	server/127.0.0.1:11004>	neo4j - neo4j - MATCH (Ishant:player {name: \"Ishant Sharma\", YOB: 1988, POB: \"Delhi\"}) DETACH DELETE Ishant - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}";
-		final String neoSuccessString_grokOutput = "{\n" +
-				"    \"ts\": \"2021-08-06 17:09:40.008+0000\",\n" +
-				"    \"log_level\": \"INFO\",\n" +
-				"    \"metadata1\": \" 9 ms: (planning: 1, waiting: 0) - 0 B - 4 page hits, 0 page faults - bolt-session\",\n" +
-				"    \"protocol\": \"bolt\",\n" +
-				"    \"driverVersion\": \"neo4j-browser/v4.3.1\",\n" +
-				"    \"client_ip\": \"client/127.0.0.1:51372\",\n" +
-				"    \"server_ip\": \"server/127.0.0.1:11004\",\n" +
-				"    \"dbname\": \"neo4j \",\n" +
-				"    \"dbuser\": \"neo4j \",\n" +
-				"    \"queryStatement\": \"MATCH (Ishant:player {name: \\\"Ishant Sharma\\\", YOB: 1988, POB: \\\"Delhi\\\"}) DETACH DELETE Ishant - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}\"\n" +
-				"  }";
+	String neoSuccessString = "2021-08-06 17:09:40.008+0000 INFO  9 ms: (planning: 1, waiting: 0) - 0 B - 4 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.3.1		client/127.0.0.1:51372	server/127.0.0.1:11004>	neo4j - neo4j - MATCH (Ishant:player {name: 'Ishant Sharma', YOB: 1988, POB: 'Delhi'}) DETACH DELETE Ishant - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}";
+	String neoSuccessString_grokOutput = "{\n" +
+			"    \"ts\": \"\\\"2021-08-06 17:09:40.008+0000\",\n" +
+			"    \"log_level\": \"INFO\",\n" +
+			"    \"metadata1\": \" 9 ms: (planning: 1, waiting: 0) - 0 B - 4 page hits, 0 page faults - bolt-session\",\n" +
+			"    \"protocol\": \"bolt\",\n" +
+			"    \"driverVersion\": \"neo4j-browser/v4.3.1\",\n" +
+			"    \"client_ip\": \"client/127.0.0.1:51372\",\n" +
+			"    \"server_ip\": \"server/127.0.0.1:11004\",\n" +
+			"    \"dbname\": \"neo4j \",\n" +
+			"    \"dbuser\": \"neo4j \",\n" +
+			"    \"queryStatement\": \"MATCH (Ishant:player {name: 'Ishant Sharma', YOB: 1988, POB: 'Delhi'}) DETACH DELETE Ishant - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}\\\";\"\n" +
+			"  }";
 
 	    @Test
 	    public void testParseAsConstruct_Match() {
@@ -38,11 +38,6 @@ public class ParserTest {
 	    	Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
 	    	
 	    	JsonObject inputData = inputData(e);
-			String arr[] = {"MATCH ", "Ishant:player {..."} ;
-	        int a = arr[1].indexOf(")");
-			int b = arr[1].indexOf(":");
-			String temp[] = arr[1].split("\\)", 2);
-
 			final Construct result = Parser.parseAsConstruct(inputData);
 	        
 	        final Sentence sentence = result.sentences.get(0);
@@ -213,7 +208,7 @@ public class ParserTest {
 	        
 	    	final String redacted = Parser.parseRedactedSensitiveDataSql(inputData);
 	    	
-	        Assert.assertEquals("2021-08-06 17:09:40.008+0000 INFO  9 ms: (planning: 1, waiting: 0) - 0 B - 4 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.3.1		client/127.0.0.1:51372	server/127.0.0.1:11004>	neo4j - neo4j - MATCH (Ishant:player {name: \"Ishant Sharma\", YOB: 1988, POB: \"Delhi\"}) DETACH DELETE Ishant - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}", redacted);
+	        Assert.assertEquals("2021-08-06 17:09:40.008+0000 INFO  9 ms: (planning: 1, waiting: 0) - 0 B - 4 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.3.1		client/127.0.0.1:51372	server/127.0.0.1:11004>	neo4j - neo4j - MATCH (Ishant:player {name: 'Ishant Sharma', YOB: 1988, POB: 'Delhi'}) DETACH DELETE Ishant - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}", redacted);
 
 	    }
 	    
@@ -275,6 +270,7 @@ public class ParserTest {
 		return e;
 	}
 
+
 	public static Map<String, String> parseJson(String jsonString) {
 		Map<String, String> map = new HashMap<>();
 
@@ -289,9 +285,9 @@ public class ParserTest {
 			String value = m.group(2).replaceAll("(?<!\\\\)\\\\(?!\\\\)", "");
 			map.put(key, value);
 		}
-
 		return map;
 	}
+
 }
 
 
