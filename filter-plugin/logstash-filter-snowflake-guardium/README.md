@@ -3,6 +3,9 @@ A Guardium Universal Connector filter plugin for Snowflake. The connector allows
 monitor SQL occuring in their Snowflake environments by providing a feed of events to
 Guardium using the new [V11.3 Universal Connector functionality](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/g_universal_connector.html).
 
+## Credits
+Converge Technology Solutions (formerly Information Insights) provided the original version of this plug-in. Maintenance of the plug-in has been taken over by IBM to provide improvements, such as integration with Guardium Insights. See the original plug-in [here](https://github.com/infoinsights/guardium-snowflake-uc-filter).
+
 ## Building the Plugin
 A good resource for compiling and packaging this plugin is the documentation outlining 
 [IBM's MongoDB filter](https://github.com/IBM/logstash-filter-mongodb-guardium), which 
@@ -128,9 +131,6 @@ Have another question? [Open an issue](https://github.com/infoinsights/guardium-
 Here's a screenshot of a report showing Snowflake data in Guardium data protection:
 
 ![Viewing Snowflake data in Guardium Data Protection](Screenshot%202022-12-08%20160128.png)
-
-## Credits
-Converge Technology Solutions (formerly Information Insights) provided the original version of this plug-in. Maintenance of the plug-in has been taken over by IBM to provide improvements, such as integration with Guardium Insights. See the original plug-in [here](https://github.com/infoinsights/guardium-snowflake-uc-filter).
 
 Author: John Haldeman
 
