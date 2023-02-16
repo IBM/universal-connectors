@@ -132,7 +132,6 @@ Here's a screenshot of a report showing Snowflake data in Guardium data protecti
 
 ![Viewing Snowflake data in Guardium Data Protection](Screenshot%202022-12-08%20160128.png)
 
-Author: John Haldeman
 
 
 
