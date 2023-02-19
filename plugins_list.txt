@@ -17,8 +17,8 @@ SnowflakeOverJbdcPackage.zip
 MongodbOverMongoAtlasPackage.zip
 AzureEventHubsInputPackage.zip
 AzurePostgresqlOverAzureEventHubs.zip
+NeodbOverFilebeatPackage.zip
 SQSInputPackage.zip
 FilebeatInputPackage.zip
 CloudwatchLogsInputPackage.zip
 InputMongoAtlasPackage.zip
-NeodbOverFilebeatPackage.zip
