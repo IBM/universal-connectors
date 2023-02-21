@@ -109,7 +109,7 @@ The inclusion filter mentioned above will be used to view the Audit logs in the 
 * spanner-general.log - `INFO`, `DEFAULT`, `ALERT`,`NOTICE`,`DEBUG`,`WARNING`
 
 ## 4. Limitations
-1. Error Logs are not generated in GCP for spanner and this plugin does not support errors traffic in guardium.
+1. Error Logs are not generated in GCP for spanner and this plug-in does not support errors traffic in Guardium.
 2. The Audit/Data access log doesn't contain a server IP. The default value is set to 0.0.0.0 for the server IP.
 3. Some fields cannot be mapped, as there is no information about them in the logs. The following important fields cannot be mapped:
     - Source program : Not available with logs
