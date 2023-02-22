@@ -21,4 +21,5 @@ NeodbOverFilebeatPackage.zip
 SQSInputPackage.zip
 FilebeatInputPackage.zip
 CloudwatchLogsInputPackage.zip
+S3OverSQSPackage.zip
 InputMongoAtlasPackage.zip
