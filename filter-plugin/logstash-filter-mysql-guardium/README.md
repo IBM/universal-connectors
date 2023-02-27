@@ -6,10 +6,24 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## 1. Configuring the Mysql server
 There are multiple ways to install a MySQL on-premise server. For this example, we will assume that we already have a working MySQL setup.
 ## 2. Installing and enabling auditing
-In order to install the Audit Plug-in, please refer to the official MySQL [documentation](https://dev.mysql.com/doc/mysql-secure-deployment-guide/5.7/en/secure-deployment-audit.html):
-This guide provides detailed information on how to install the Audit Plug-in, as well as best practices for configuring and using it in a secure manner.
-Additional information about configure auditing in MySQL in [here](https://dev.mysql.com/doc/refman/8.0/en/audit-log-logging-configuration.html).
+[Install the audit log plug-in](https://dev.mysql.com/doc/mysql-secure-deployment-guide/5.7/en/secure-deployment-audit.html), and verify the following two lines in the my.cnf file:
+###
+      plugin-load = audit_log.so
+      audit_log_format=JSON
+###
 
+The log file is:
+###
+      /home/<os_user>/mysql/data/audit.log
+###
+
+Restart the mysql daemon.
+Run the following two SQLs to install the default filter to get every log:
+
+###
+      SELECT audit_log_filter_set_filter('log_all', '{ "filter": { "log": true }}');
+      SELECT audit_log_filter_set_user('%', 'log_all');
+###
 
 ## 3. Configuring Filebeat to push logs to Guardium
 
@@ -97,3 +111,4 @@ In the ```Input configuration``` section, refer to the Filebeat section.
 * Events in the filter are not removed, but tagged if not parsed (see [Filter result](#filter-result), below).
 *  If the dbname is not coming from the command line, it will not get populated. If you want to see the dbname, either  send a use statement or send it on command line.
 * *IPv6* addresses are typically supported by the MySQL and filter plug-ins, however this is not fully supported by the Guardium pipeline.
+* It is supported on Enterprise version only
