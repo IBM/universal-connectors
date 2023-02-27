@@ -110,3 +110,4 @@ In the ```Input configuration``` section, refer to the Filebeat section.
 *  If the dbname is not coming from the command line, it will not get populated. If you want to see the dbname, either  send a use statement or send it on command line.
 * *IPv6* addresses are typically supported by the MySQL and filter plug-ins, however this is not fully supported by the Guardium pipeline.
 * It is supported on Enterprise version only
+* Use JSON format for Native logging (configurable in DB server). XML is not supported as of now
