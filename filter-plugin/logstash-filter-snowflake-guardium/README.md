@@ -124,8 +124,6 @@ Yes. The schema and connection behaviour for Snowflake are the ***REMOVED***me a
 providers. You may wish to deploy a Guardium collector in the ***REMOVED***me region as your snowflake instance to
 reduce items such as egress costs.
 
-Have another question? [Open an issue](https://github.com/infoinsights/guardium-snowflake-uc-filter/issues) in this repo and we'll answer and post it here.
-
 
 ## Screenshot
 Here's a screenshot of a report showing Snowflake data in Guardium data protection:
