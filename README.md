@@ -101,9 +101,9 @@ In Guardium Data Protection, the overall workflow for deploying the univer***REM
 5. Configuring the univer***REMOVED***l connector to read the native audit logs.
 
 
-More detailed information about the workflow for GDP can be found [here](docs/uc_config_gdp.md).
+More detailed information about the workflow for GDP can be found [here](docs/Guardium%20Data%20Protection/uc_config_gdp.md).
 
-In Guardium Insights, the workflow for deploying the univer***REMOVED***l connector is slightly different, and can be found [here](docs/UC_Configuration_GI.md)
+In Guardium Insights, the workflow for deploying the univer***REMOVED***l connector is slightly different, and can be found [here](docs/Guardium%20Insights/UC_Configuration_GI.md)
 
 
 **Note that the specific steps for each workflow may differ slightly per different data sources. See our [list of of available plugins](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/available_plugins.md) to view detailed, step-by-step instructions for each supported data source/plug-in**.
@@ -120,15 +120,15 @@ In Guardium Insights, the workflow for deploying the univer***REMOVED***l connec
 
 The Univer***REMOVED***l connector is monitored via tools that are already familiar to Guardium Data Protection and Guardium Insights users. As well as some unique tools that can be found in the following links.
 
- [Monitoring UC connections in Guardium Data Protection](docs/monitoring_GDP.md)
+ [Monitoring UC connections in Guardium Data Protection](docs/Guardium%20Data%20Protection/monitoring_GDP.md)
 
- [Monitoring UC connections in Guardium Insights](/docs/monitoring_GI.MD)
+ [Monitoring UC connections in Guardium Insights](/docs/Guardium%20Insights/3.2.x/monitoring_GI.MD)
 
 ## Policies
 
 With a few exceptions,  using data from the univer***REMOVED***l connector is no different than using data from any other source in Guardium Data Protection or Guardium Insights. For using the univer***REMOVED***l connector in Guardium Data Protection, there are a few unique policies that can be found in this link:
 
-[Configuring Policies for the univer***REMOVED***l connector](docs/uc_policies_gdp.md)
+[Configuring Policies for the univer***REMOVED***l connector](docs/Guardium%20Data%20Protection/uc_policies_gdp.md)
 
 For more general information about policies, refer to our  [Guardium Data Protection](https://www.ibm.com/docs/en/SSMPHH_latest/com.ibm.guardium.doc.admin/tshoot/policies.html) and [Guardium Insights](https://www.ibm.com/docs/en/SSWSZ5_latest/policies.html) policy documentation.
 
@@ -161,9 +161,9 @@ For more general information about policies, refer to our  [Guardium Data Protec
 
 ## FAQs and Troubleshooting
 
-[Here](docs/faqs_troubleshooting_gdp.md) is a list of frequently asked questions and troubleshooting sections for Guardium Data Protection.
+[Here](docs/Guardium%20Data%20Protection/faqs_troubleshooting_gdp.md) is a list of frequently asked questions and troubleshooting sections for Guardium Data Protection.
 
-[Here](docs/faqs_troubleshooting_gi.md) is a list of frequently asked questions and troubleshooting sections for Guardium Insights.
+[Here](docs/Guardium%20Insights/faqs_troubleshooting_gi.md) is a list of frequently asked questions and troubleshooting sections for Guardium Insights.
 
 **Note:**
 For further plug-in designated troubleshooting, see "troubleshooting" section in the plug-in's documentation linked at [Available Plug-ins](/docs/available_plugins.md)
@@ -174,9 +174,9 @@ Users can develop their own univer***REMOVED***l connector plugins, if needed, a
 
 (In order to overwrite old plug-ins, you can upload a new version from the official IBM Github page. Please make sure that the new plug-in has the exact ***REMOVED***me name as the old version.)
 
-[Here](docs/developing_plugins_gdp.md) is a guide for developing new plug-ins for Guardium Data Protection.
+[Here](docs/Guardium%20Data%20Protection/developing_plugins_gdp.md) is a guide for developing new plug-ins for Guardium Data Protection.
 
-[Here](docs/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights.
+[Here](docs/Guardium%20Insights/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights.
 
 
 ### <a name="Ruby-filter"></a> Use Logstash's Ruby filter plug-in
