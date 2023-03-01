@@ -19,19 +19,9 @@
         "default": 5,
         "hidden": true
       },
-      "access_key_id": {
-        "type": "password",
-        "optional": true,
-        "label": "AWS access key id"
-      },
       "region": {
         "type": "text",
         "label": "AWS account region"
-      },
-      "secret_access_key": {
-        "type": "password",
-        "optional": true,
-        "label": "AWS secret access key"
       },
       "event_filter": {
         "type": "text",
@@ -46,6 +36,20 @@
         "type": "text",
         "default": "aws_mysql",
         "hidden": true
+      }
+    }
+  ],
+  "credentials": [
+    {
+      "access_key_id": {
+        "type": "password",
+        "optional": true,
+        "label": "AWS access key id"
+      },
+      "secret_access_key": {
+        "type": "password",
+        "optional": true,
+        "label": "AWS secret access key"
       }
     }
   ],
