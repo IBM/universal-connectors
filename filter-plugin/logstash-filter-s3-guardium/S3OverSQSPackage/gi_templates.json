@@ -14,16 +14,20 @@
         "optional": true,
         "label": "AWS Role ARN (optional)"
       },
-      "access_key_id": {
-        "type": "password",
-        "optional": true,
-        "label": "AWS access key id"
-      },
-      "secret_access_key": {
-        "type": "password",
-        "optional": true,
-        "label": "AWS secret access key"
-      },
+      "credentials": [
+        {
+          "access_key_id": {
+            "type": "password",
+            "optional": true,
+            "label": "AWS access key id"
+          },
+          "secret_access_key": {
+            "type": "password",
+            "optional": true,
+            "label": "AWS secret access key"
+          }
+        }
+      ],
       "type": {
         "type": "text",
         "default": "S3",
