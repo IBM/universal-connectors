@@ -19,20 +19,6 @@
         "default": 5,
         "hidden": true
       },
-      "credentials": [
-        {
-          "access_key_id": {
-            "type": "password",
-            "optional": true,
-            "label": "AWS access key id"
-          },
-          "secret_access_key": {
-            "type": "password",
-            "optional": true,
-            "label": "AWS secret access key"
-          }
-        }
-      ],
       "region": {
         "type": "text",
         "label": "AWS account region"
@@ -50,6 +36,20 @@
         "type": "text",
         "default": "mariadb",
         "hidden": true
+      }
+    }
+  ],
+  "credentials": [
+    {
+      "access_key_id": {
+        "type": "password",
+        "optional": true,
+        "label": "AWS access key id"
+      },
+      "secret_access_key": {
+        "type": "password",
+        "optional": true,
+        "label": "AWS secret access key"
       }
     }
   ],
