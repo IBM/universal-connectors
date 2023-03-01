@@ -1,0 +1,6 @@
+.idea/
+vendor/
+gradle.properties
+bin/
+build/
+lib/
