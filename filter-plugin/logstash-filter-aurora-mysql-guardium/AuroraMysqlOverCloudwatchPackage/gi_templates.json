@@ -19,21 +19,6 @@
         "default": 5,
         "hidden": true
       },
-      "credentials": [
-        {
-          "access_key_id": {
-            "type": "password",
-            "optional": true,
-            "label": "AWS access key id"
-          },
-          "secret_access_key": {
-            "type": "password",
-            "optional": true,
-            "label": "AWS secret access key"
-          }
-        }
-      ],
-
       "region": {
         "type": "text",
         "label": "AWS account region"
@@ -55,6 +40,21 @@
       }
     }
   ],
+  "credentials": [
+    {
+      "access_key_id": {
+        "type": "password",
+        "optional": true,
+        "label": "AWS access key id"
+      },
+      "secret_access_key": {
+        "type": "password",
+        "optional": true,
+        "label": "AWS secret access key"
+      }
+    }
+  ],
+
   "filter_name": "Guardium_AuroraMysql_filter",
   "filter_parameters": [],
   "auth_parameters": [
