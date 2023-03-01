@@ -1,0 +1,37 @@
+{
+  "plugin_name": "Yugabyte Over Filebeat",
+  "help_link": "https://github.ibm.com/Activity-Insights/universal-connectors/tree/master/filter-plugin/logstash-filter-yugabyte-guardium/README.md",
+  "input_name": "Filebeat_input",
+  "input_parameters": [
+    {
+      "port": {
+        "type": "number",
+        "default": 5044,
+        "hidden": true
+      },
+      "is_ssl": {
+        "type": "boolean",
+        "default": true,
+        "hidden": true
+      },
+      "include_codec_tag": {
+        "type": "boolean",
+        "default": false,
+        "hidden": true
+      }
+    }
+  ],
+  "filter_name": "Guardium_Yugabyte_filter",
+  "filter_parameters": [],
+  "auth_parameters": [
+    {
+      "guc_filter_param_datasource_tag": {
+        "param_type": "filter",
+        "type": "text",
+        "label": "Datasource Tag",
+        "description": "Tag that was added to every event sent from the data source."
+      }
+    }
+  ],
+  "supported_platforms": ["on-premise"]
+}
