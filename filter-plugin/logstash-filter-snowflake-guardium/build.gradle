@@ -12,9 +12,8 @@ version                    "${file("VERSION").text.trim()}" // read from require
 description                = "Guardium Univer***REMOVED***l Connector Filter Plugin for Snowflake"
 pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
 pluginInfo.longDescription = "Guardium Univer***REMOVED***l Connector Filter Plugin for Snowflake"
-pluginInfo.authors         = ['Information Insights LLC']
-pluginInfo.email           = ['john.haldeman@infoinsightsllc.com']
-pluginInfo.homepage        = "http://www.infoinsightsllc.com"
+pluginInfo.authors         = ['Information Insights LLC', 'IBM']
+pluginInfo.homepage        = "https://github.com/IBM/univer***REMOVED***l-connectors"
 pluginInfo.pluginType      = "filter"
 pluginInfo.pluginClass     = "GuardiumSnowflakeFilter"
 pluginInfo.pluginName      = "guardium_snowflake_filter" // must match the @LogstashPlugin annotation in the main plugin class
