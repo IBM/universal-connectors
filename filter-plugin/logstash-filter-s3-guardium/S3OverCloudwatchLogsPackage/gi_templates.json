@@ -19,19 +19,23 @@
         "default": 5,
         "hidden": true
       },
-      "access_key_id": {
-        "type": "password",
-        "optional": true,
-        "label": "AWS access key id"
-      },
+      "credentials": [
+        {
+          "access_key_id": {
+            "type": "password",
+            "optional": true,
+            "label": "AWS access key id"
+          },
+          "secret_access_key": {
+            "type": "password",
+            "optional": true,
+            "label": "AWS secret access key"
+          }
+        }
+      ],
       "region": {
         "type": "text",
         "label": "AWS account region"
-      },
-      "secret_access_key": {
-        "type": "password",
-        "optional": true,
-        "label": "AWS secret access key"
       },
       "event_filter": {
         "type": "text",
