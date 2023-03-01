@@ -1,22 +1,6 @@
 import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
-    }
-}
-
-plugins {
-  id 'com.github.johnrengelman.shadow' version '4.0.0'
-  id 'java'
-}
-
 apply plugin: 'java'
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
@@ -39,12 +23,31 @@ pluginInfo.pluginName      = "guardium_snowflake_filter" // must match the @Logs
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.0'
+tasks.register("vendor"){
+    dependsOn shadowJar
+    doLast {
+        String vendorPathPrefix = "vendor/jar-dependencies"
+        String projectGroupPath = project.group.replaceAll('\\.', '/')
+        File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
+        projectJarFile.mkdirs()
+        Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
+        validatePluginJar(projectJarFile, project.group)
+    }
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
@@ -53,27 +56,19 @@ shadowJar {
     classifier = null
 }
 
-dependencies {    
-    compile group: 'commons-validator', name: 'commons-validator', version: '1.4.1'
+dependencies {
+    compile group: 'commons-validator', name: 'commons-validator', version: '1.7'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
     compile 'org.apache.commons:commons-lang3:3.7'
-    compile 'org.apache.logging.log4j:log4j-api:2.9.1'
-    compile 'org.apache.logging.log4j:log4j-core:2.9.1'
-    compile 'com.google.code.gson:gson:2.8.6'
-    compile 'org.jruby:jruby-complete:9.2.7.0'
-    compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-?.?.?.jar")
-    compile fileTree(dir: LOGSTASH_UC_COMMONS_PATH, include: "guardium-universalconnector-commons-1.0.0.jar")
+    compile 'com.google.code.gson:gson:2.8.8'
+    compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
+    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.jruby:jruby-complete:9.2.7.0'
 
-    testCompile fileTree(dir: LOGSTASH_UC_COMMONS_PATH, include: "guardium-universalconnector-commons-1.0.0.jar")
+    testCompile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
 }
-
-shadowJar{
-  transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer)
-}
-
 
 clean {
     delete "${projectDir}/Gemfile"
@@ -89,24 +84,13 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-task vendor(dependsOn: shadowJar) {
-    doLast {
-        String vendorPathPrefix = "vendor/jar-dependencies"
-        String projectGroupPath = project.group.replaceAll('\\.', '/')
-        File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
-        projectJarFile.mkdirs()
-        Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
-        validatePluginJar(projectJarFile, project.group)
-    }
-}
-
-task generateRubySupportFiles() {
+tasks.register("generateRubySupportFiles") {
     doLast {
         generateRubySupportFilesForPlugin(project.description, project.group, version)
     }
 }
 
-task removeObsoleteJars() {
+tasks.register("removeObsoleteJars") {
     doLast {
         new FileNameFinder().getFileNames(
                 projectDir.toString(),
@@ -117,8 +101,17 @@ task removeObsoleteJars() {
     }
 }
 
-task gem(dependsOn: [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]) {
+tasks.register("gem"){
+    dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
     doLast {
         buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
     }
+}
+
+tasks.register("copyDependencyLibs", Copy){
+    into "dependenciesLib"
+    from configurations.compileClasspath
+    from configurations.runtimeClasspath
+    from configurations.testCompileClasspath
+    from configurations.testRuntimeClasspath
 }
