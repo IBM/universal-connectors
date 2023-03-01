@@ -8,6 +8,7 @@ filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage
 filter-plugin/logstash-filter-s3-guardium/S3OverCloudwatchLogsPackage
 filter-plugin/logstash-filter-s3-guardium/S3OverCloudwatchLogsPackage
 filter-plugin/logstash-filter-s3-guardium/S3OverSQSPackage
+filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage
 input-plugin/logstash-input-azure-event-hubs/AzureEventHubsInputPackage
 input-plugin/logstash-input-beats/FilebeatInputPackage
 input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage
