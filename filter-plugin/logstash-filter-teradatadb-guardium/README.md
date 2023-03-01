@@ -113,17 +113,22 @@ For more information on how to check the serverIp from LogonSource, please refer
 
 • Download the required jars as per your database version from URL:- https://downloads.teradata.com/download/connectivity/jdbc-driver
 
+• Download "tdgssconfig.jar" - Go to the URL https://downloads.teradata.com/download/connectivity/jdbc-driver and download the zip/tar for version 16.10.00.07. After extracting the downloaded zip/tar, there will be a file named "tdgssconfig.jar".
+
+• The file "tdgssconfig.jar" is meant for the Teradata database version 16.10.00.07 but it should be compatible with the later database versions also.
+
 
 #### Procedure: 
 
 1. On the collector, go to Setup > Tools and Views > Configure Univer***REMOVED***l Connector.
 2. First enable the Univer***REMOVED***l Guardium connector, if it is di***REMOVED***bled already.
-3. Click Upload File and upload the jar/jars which you downloaded from the teradata website.
-4. Click Upload File and select the offline [Teradata-Offline-Plugin.zip](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/Teradata-Offline-Plugin.zip) plug-in. After it is uploaded, click OK.
-5. Click the Plus sign to open the Connector Configuration dialog box. 
-6. Type a name in the Connector name field.
-7. Update the input section to add the details from the [teradataJDBC.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/teradataJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide required details for DB server name, username and password for making JDBC connectivity.
-8. Update the filter section to add the details from the [teradataJDBC.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/teradataJDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the ***REMOVED***me DB server name as in above step against the Server_Hostname attribute in the filter section.
-9. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
-10. If using two jdbc plug-ins on the ***REMOVED***me machine, the last_run_metadata_path file name should be different.
-11. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, the connector appears in the Configure Univer***REMOVED***l Connector page.
+3. Click ```Upload File``` and upload the jar/jars which you downloaded from the teradata website.
+4. Click ```Upload File``` and upload "tdgssconfig.jar".
+5. Click ```Upload File``` and select the offline [Teradata-Offline-Plugin.zip](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/Teradata-Offline-Plugin.zip) plug-in. After it is uploaded, click ```OK```.
+6. Click the Plus sign to open the ```Connector Configuration``` dialog box. 
+7. Type a name in the Connector name field.
+8. Update the input section to add the details from the [teradataJDBC.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/teradataJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide the details for database server name, username, and password that are required for connecting with JDBC.
+9. Update the filter section to add the details from the [teradataJDBC.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/teradataJDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the ***REMOVED***me database server name that you gave in the above step against the Server_Hostname attribute in the filter section.
+10. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+11. If you are using two JDBC plug-ins on the ***REMOVED***me machine, the last_run_metadata_path file name should be different.
+12. Click ```Save```. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, the connector appears in the ```Configure Univer***REMOVED***l Connector``` page.
