@@ -257,7 +257,7 @@ public class ParserHelper {
 				&& event.getField(ApplicationConstant.OBJECT_KEY).toString().trim() != "") {
 			builder = new StringBuilder(event.getField(ApplicationConstant.OBJECT_KEY).toString().trim());
 			builder.deleteCharAt(builder.length() - 1).deleteCharAt(0);
-			fullSql = builder.toString().replaceAll("\n|\r", " ").replaceAll("\\\\n|\\\\r", " ").replaceAll("\\\\'", "'").replaceAll("\\\\","").replaceAll("\\\\t", "");
+			fullSql = builder.toString().replaceAll("\\\\n","\n").replaceAll("\\\\r","\r").replaceAll("\\\\'", "'").replaceAll("\\\\","").replaceAll("\\\\t","\t");
 			// Check for create user Query - Need to replace the '*' with 'x'.
 			Pattern createUserPattern = Pattern.compile("^create\\s+user", Pattern.CASE_INSENSITIVE);			
 			Matcher matcher = createUserPattern.matcher(fullSql);
