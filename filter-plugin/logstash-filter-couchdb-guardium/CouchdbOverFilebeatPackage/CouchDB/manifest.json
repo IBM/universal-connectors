@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_CouchDB_filter",
+	"alias": "CouchDB",
+	"type": "filter",
+	"pipeline_type":"push",
+	"plugin_version": "1.0.11",
+	"datasourceTypes": [{"type":"CouchDB","supportedVersions": ["3.2.2"]}],
+	"supported_input_plugins": ["Filebeat_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses events and messages from the CouchDB audit log into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-couchdb-guardium/README.md"
+}
