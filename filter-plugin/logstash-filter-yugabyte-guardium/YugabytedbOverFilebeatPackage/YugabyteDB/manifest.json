@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_Yugabyte_filter",
+	"alias": "Yugabyte",
+	"type": "filter",
+	"pipeline_type":"push",
+	"plugin_version": "2.0.0",
+	"datasourceTypes": [{"type":"Yugabyte","supportedVersions": ["2.14"]}],
+	"supported_input_plugins": ["Filebeat_input"],
+	"developer": "IBM",
+	"license": "Apache 2.0",
+	"description": "This package provides the data needed in order to support Yugabyte DB in Guardium Universal Connector.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.ibm.com/Activity-Insights/universal-connectors/tree/master/filter-plugin/logstash-filter-yugabyte-guardium/README.md"
+}
