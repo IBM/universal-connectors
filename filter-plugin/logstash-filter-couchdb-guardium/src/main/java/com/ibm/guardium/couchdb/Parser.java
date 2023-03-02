@@ -21,10 +21,7 @@ import co.elastic.logstash.api.Event;
 
 public class Parser {
 
-	private static final String EXCEPTION_TYPE_AUTHENTICATION_STRING = "LOGIN_FAILED";
-	private static final String EXCEPTION_TYPE_AUTHORIZATION_STRING = "SQL_ERROR";
-	public static final String DATA_PROTOCOL = "CouchDB";
-	public static final String SERVER_TYPE_STRING = "CouchDB";
+	
 	private static Logger log = LogManager.getLogger(Parser.class);
 	private static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
 
@@ -41,14 +38,18 @@ public class Parser {
 	public static Record parseRecord(Event event) throws Exception {
 		Record record = new Record();
 		try {
-			record.setSessionId(event.getField(ApplicationConstant.ID) != null 
-					? event.getField(ApplicationConstant.ID).toString()
-							:ApplicationConstant.NA_STRING);
 			record.setAppUserName(ApplicationConstant.UNKNOWN_STRING);
 			record.setAccessor(parseAccessor(event));
 			record.setDbName(event.getField(ApplicationConstant.DB_NAME).toString());
 			record.setSessionLocator(parseSessionLocator(event));
 			record.setTime(getTime(event));
+			String connectionId=ApplicationConstant.UNKNOWN_STRING;
+			if(event.getField(ApplicationConstant.ID)!=null) {
+				 connectionId=event.getField(ApplicationConstant.ID).toString();
+			}
+			Integer hashCode = (record.getSessionLocator().getServerIp() + record.getSessionLocator().getClientIp()
+					+record.getSessionLocator().getClientPort()+record.getSessionLocator().getServerPort()+record.getDbName()+record.getAccessor().getDbUser()+connectionId).hashCode();
+			record.setSessionId(hashCode.toString());
 			if(event.getField(ApplicationConstant.STATUS)!= null && event.getField(ApplicationConstant.STATUS).toString().startsWith("2"))
 				record.setData(parseData(event));
 			else 
@@ -105,14 +106,14 @@ public class Parser {
 			}
 		}
 		accessor.setDbUser(username);
-		accessor.setServerType(Parser.SERVER_TYPE_STRING);
-		accessor.setDbProtocol(Parser.DATA_PROTOCOL);
+		accessor.setServerType(ApplicationConstant.SERVER_TYPE_STRING);
+		accessor.setDbProtocol(ApplicationConstant.DATA_PROTOCOL);
 		accessor.setDbProtocolVersion(ApplicationConstant.UNKNOWN_STRING);
 		accessor.setSourceProgram(ApplicationConstant.UNKNOWN_STRING);
 		accessor.setServerHostName(event.getField(ApplicationConstant.SERVER_HOSTNAME) != null
 				? event.getField(ApplicationConstant.SERVER_HOSTNAME).toString()
 						: ApplicationConstant.UNKNOWN_STRING);
-		accessor.setServiceName(Parser.SERVER_TYPE_STRING);
+		accessor.setServiceName(ApplicationConstant.SERVER_TYPE_STRING);
 		accessor.setServerDescription(ApplicationConstant.UNKNOWN_STRING);
 		accessor.setLanguage(ApplicationConstant.LANGUAGE);
 		accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
@@ -162,11 +163,11 @@ public class Parser {
 						: ApplicationConstant.UNKNOWN_STRING);
 
 		if(event.getField(ApplicationConstant.STATUS)!=null && event.getField(ApplicationConstant.STATUS).equals("401")) {
-			exception.setExceptionTypeId(Parser.EXCEPTION_TYPE_AUTHENTICATION_STRING);
+			exception.setExceptionTypeId(ApplicationConstant.EXCEPTION_TYPE_AUTHENTICATION_STRING);
 			exception.setDescription("Authentication Failed (401)");
 		}
 		else {
-			exception.setExceptionTypeId(Parser.EXCEPTION_TYPE_AUTHORIZATION_STRING);
+			exception.setExceptionTypeId(ApplicationConstant.EXCEPTION_TYPE_AUTHORIZATION_STRING);
 			exception.setDescription("Error (" + event.getField(ApplicationConstant.STATUS) + ")");
 		}
 
