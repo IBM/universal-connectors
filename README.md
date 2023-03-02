@@ -103,7 +103,7 @@ In Guardium Data Protection, the overall workflow for deploying the universal co
 
 More detailed information about the workflow for GDP can be found [here](docs/Guardium%20Data%20Protection/uc_config_gdp.md).
 
-In Guardium Insights, the workflow for deploying the universal connector is slightly different, and can be found [here](docs/Guardium%20Insights/UC_Configuration_GI.md)
+In Guardium Insights, the workflow for deploying the universal connector is slightly different, and can be found [here](docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 
 **Note that the specific steps for each workflow may differ slightly per different data sources. See our [list of of available plugins](https://github.com/IBM/universal-connectors/blob/main/docs/available_plugins.md) to view detailed, step-by-step instructions for each supported data source/plug-in**.
@@ -163,7 +163,7 @@ For more general information about policies, refer to our  [Guardium Data Protec
 
 [Here](docs/Guardium%20Data%20Protection/faqs_troubleshooting_gdp.md) is a list of frequently asked questions and troubleshooting sections for Guardium Data Protection.
 
-[Here](docs/Guardium%20Insights/faqs_troubleshooting_gi.md) is a list of frequently asked questions and troubleshooting sections for Guardium Insights.
+[Here](docs/Guardium%20Insights/3.2.x/faqs_troubleshooting_gi.md) is a list of frequently asked questions and troubleshooting sections for Guardium Insights.
 
 **Note:**
 For further plug-in designated troubleshooting, see "troubleshooting" section in the plug-in's documentation linked at [Available Plug-ins](/docs/available_plugins.md)
@@ -176,7 +176,7 @@ Users can develop their own universal connector plugins, if needed, and contribu
 
 [Here](docs/Guardium%20Data%20Protection/developing_plugins_gdp.md) is a guide for developing new plug-ins for Guardium Data Protection.
 
-[Here](docs/Guardium%20Insights/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights.
+[Here](docs/Guardium%20Insights/3.2.x/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights.
 
 
 ### <a name="Ruby-filter"></a> Use Logstash's Ruby filter plug-in
