@@ -109,17 +109,17 @@ When UC will start collecting data, It may show two STAP statuses in the pattern
 
  You must have the Log Full Details policy enabled on the collector. The detailed steps can be found in step #4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
  You must have permission for the S-Tap Management role. The admin user includes this role by default.
- Download the [yugabyte-logstash-offline-plugins-1.0.0.zip](https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connectors/blob/master/filter-plugin/logstash-filter-yugabyte-guardium/YugabytedbOverFilebeatPackage/YugabyteDB/yugabytedb-logstash-offline-plugins-1.0.0.zip) plug-in.
+ Download the [yugabyte-logstash-offline-plugins-1.0.0.zip](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-yugabyte-guardium/YugabytedbOverFilebeatPackage/YugabyteDB/yugabytedb-logstash-offline-plugins-1.0.0.zip) plug-in.
 
 # Procedure
 
 1. On the collector, go to Setup > Tools and Views > Configure Univer***REMOVED***l Connector.
 2. First enable the Univer***REMOVED***l Guardium connector, if it is di***REMOVED***bled already.
-3. Click Upload File and select the offline [yugabyte-logstash-offline-plugins-1.0.0.zip](https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connectors/blob/master/filter-plugin/logstash-filter-yugabyte-guardium/YugabytedbOverFilebeatPackage/YugabyteDB/yugabytedb-logstash-offline-plugins-1.0.0.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [yugabyte-logstash-offline-plugins-1.0.0.zip](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-yugabyte-guardium/YugabytedbOverFilebeatPackage/YugabyteDB/yugabytedb-logstash-offline-plugins-1.0.0.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
-6. Update the input section to add the details from the [yugabyteFilebeat.conf](https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connectors/blob/master/filter-plugin/logstash-filter-yugabyte-guardium/yugabyteFilebeat.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7. Update the filter section to add the details from the [yugabyteFilebeat.conf](https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connectors/blob/master/filter-plugin/logstash-filter-Yugabyte-guardium/yugabyteFilebeat.conf)  file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+6. Update the input section to add the details from the [yugabyteFilebeat.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-yugabyte-guardium/yugabyteFilebeat.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from the [yugabyteFilebeat.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-yugabyte-guardium/yugabyteFilebeat.conf)  file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The "type" fields should match in the input and the filter configuration section. This field should be unique for  every individual connector added.
 9. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, it appears in the Configure Univer***REMOVED***l Connector page.
 
