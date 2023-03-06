@@ -3,11 +3,11 @@
 * Tested versions: 5.x
 * Environment: On-premise, Iaas
 * Supported versions:
-   * GDP: 11.3 and above
+   * Guardium Data Protection: 11.3 and above
       * Supported inputs:
          * Syslog (push)
          * Filebeat (push)
-   * GI: 3.2 and above
+   * Guardium Insights: 3.2 and above
       * Supported inputs:
          * Filebeat (push)
 

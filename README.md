@@ -45,8 +45,10 @@ The Guardium univer***REMOVED***l connector is scalable. It provides load-balanc
 Connections to databases that are configured with the Guardium univer***REMOVED***l connector are handled the ***REMOVED***me as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
 
 ## Latest releases
-It is recommended to use our latest product versions for Guardium Data Protection and Guardium Insights
-Our latest product version for Guardium Data Protection is [11.5](docs/Guardium%20Data%20Protection)
+It is recommended to use our latest product versions for Guardium Data Protection and Guardium Insights. 
+
+Our latest product version for Guardium Data Protection is [11.5](docs/Guardium%20Data%20Protection).
+
 Our latest product version for Guardium Insights is [3.2](docs/Guardium%20Insights/3.2.x/README.md)
 
 ## How it works

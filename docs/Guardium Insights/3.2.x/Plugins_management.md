@@ -1,28 +1,28 @@
 # Managing and Installing Plugins
-The Univer***REMOVED***l Connector plugins are shown on **Univer***REMOVED***l Connector plugins** page. 
-1. Open the **Settings** menu.
-2. Click **Connections**.
-3. Click on the **Manage** drop-down button and select the **Univer***REMOVED***l Connector plugins** option.
+The Univer***REMOVED***l Connector plug-ins are shown on `Univer***REMOVED***l Connector plug-ins` page. 
+1. Open the `Settings` menu.
+2. Click `Connections`.
+3. Click on the `Manage` drop-down button and select the `univer***REMOVED***l connector plug-ins` option.
 
 
-## Built in plugins
+## Built-in plug-ins
 
-Guardium Insights supplies the following input plugins: 
+Guardium Insights supplies the following input plug-ins: 
 * [Filebeat](../../../input-plugin/logstash-input-beats/README.md)
 * [SQS](../../../input-plugin/logstash-input-sqs/README.md)
 * [CloudWatch](../../../input-plugin/logstash-input-cloudwatch-logs/README.md)
 
-## How to add a new plugin?
+## Adding a new plug-in
 
-1. Download the plugin for the requested data source from the attached table to your local system.
+1. Download the plug-in for the requested data source from the attached table to your local system.
 
-2. Click **Connections** in the **Settings** menu.
+2. Click `Connections` in the `Settings` menu.
 
-3. Click on the **Manage** drop-down button and select the **Univer***REMOVED***l Connector plugins** option.
+3. Click on the `Manage` drop-down button and select the `univer***REMOVED***l connector plugins` option.
 
-4. Click **Upload plugin** button and select the zip file from your local system.
+4. Click the `Upload plug-in` button and select the zip file from your local system.
 
-5. Verify that the new plugin is shown in the **Univer***REMOVED***l Connector plugins** page.
+5. Verify that the new plugin is shown in the `univer***REMOVED***l connector plug-ins` page.
 
 ## Available plugins
 |                                                    Data source                                                    | Versions tested        | Environments      | Developer | Supported inputs              |                                                    Download                                                    |

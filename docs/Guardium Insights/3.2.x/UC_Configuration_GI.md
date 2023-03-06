@@ -16,9 +16,9 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
 ## Procedure
 
 
-1. Click **Connections** in the **Settings** menu.
+1. Click `Connections` in the `Settings` menu.
     
-2.  Click **Add connection.**  The Connect to new data source page opens, with a card for each available data source type.
+2.  Click `Add connection`. The Connect to new data source page opens, with a card for each available data source type.
     
 3.  Select the data source type. This opens a panel that aids you in initiating the connection.
     
@@ -52,9 +52,9 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
 
 2. Click **Configure**.
         
-3. In the Configuration notes page, click **Download certificate** to download the UC certificate authority to your local system. Copy the certificate to the data source (will be added to filebeat configuration later). All data sources of any one specific type use the ***REMOVED***me certificate.
+3. In the `Configuration notes` page, click `Download certificate` to download the UC certificate authority to your local system. Copy the certificate to the data source (it will be added to filebeat configuration later). All data sources of any one specific type use the ***REMOVED***me certificate.
         
-4. Click **Done**.
+4. Click `Done`.
        
 5. To configure the data source to communicate with Guardium Insights, follow the instructions in the last section on this page: Configuring Filebeat to forward audit logs to Guardium.  Copy the hostname in the Configuration Notes to configure the host in the filebeat.yml file on your datasource.
         
@@ -83,8 +83,8 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
     
   ## Procedure
 prerequisites:
-* A connection was added by the steps in the section: [Filebeat input plug-in configuration](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/Guardium Insights/3.2.x/UC_Configuration_GI.md#filebeat-input-plug-in-configuration). 
-In the configuration notes there are `data source tag` and `host` that are used in these steps. 
+* A connection was added by the steps in the [Filebeat input plug-in configuration](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/Guardium Insights/3.2.x/UC_Configuration_GI.md#filebeat-input-plug-in-configuration) section.
+Refer to the `Configuration notes` page for the `data source tag` and `host` to be used in these steps.
 
 
 1.  Open the Filebeat Configuration. (filebeat.yml). usually located in `/etc/filebeat/filebeat.yml`.
@@ -98,7 +98,7 @@ In the configuration notes there are `data source tag` and `host` that are used 
     ```
 **NOTE**: In GI, whenever using plug-ins that are based on Filebeat as a data shipper, the configured port should be 443. Guardium Insights will map this to an internal port
 
-4. Configure TLS - UC to Datasource:
+4. Configure TLS - UC to the data source:
    1. Download the SSL certificate (`UC certificate authority`) from Guardium Insights and upload it to the datasource server.
    2. Copy the location of the downloaded certificate and enter it as the certificate authority.
     ```
@@ -118,8 +118,8 @@ Summary:
      ssl.certificate_authorities: ["<path-to-UC-CA>/GuardiumInsightsCA.pem"]
    ```
     
-5.  Restart Filebeat to effect these changes
+5.  Restart Filebeat to apply these changes
     
     Linux: Run the command: `sudo service filebeat restart`
     
-6. Windows: Restart in the Services window
+6. Windows: Restart in the `Services` window

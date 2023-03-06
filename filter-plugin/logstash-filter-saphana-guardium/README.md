@@ -3,11 +3,11 @@
 * Tested versions: 2.00.033.00.1535711040
 * Environment: On-premise, Iaas
 * Supported versions:
-	* GDP: 11.4 and above
+	* Guardium Data Protection: 11.4 and above
 		* Supported inputs:
           * Filebeat (push)
           * JDBC (pull)
-	* GI: 3.2 and above
+	* Guardium Insights: 3.2 and above
 		* Supported inputs:
 			* Filebeat (push)
 
