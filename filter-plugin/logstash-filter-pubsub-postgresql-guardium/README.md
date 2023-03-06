@@ -1,4 +1,10 @@
 # Logstash Filter Pub/Sub PostgreSQL Plugin
+### Meet Pub/Sub PostgreSQL
+* Tested versions: 13.0
+* Environment: Google Cloud
+* Supported inputs: Pub/Sub (pull)
+* Supported versions:
+    * GDP: 11.3 and above
 
 This is a Logstash filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses a GCP (Google Cloud Platform) audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
 Generated with Logstash v7.15.0.

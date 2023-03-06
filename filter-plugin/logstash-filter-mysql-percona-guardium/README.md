@@ -1,4 +1,11 @@
 # MySql-Percona-Guardium Logstash filter plug-in
+### Meet MySql-Percona
+* Tested versions: 5.7.31-34
+* Environment: On-premise, Iaas
+* Supported inputs: Filebeat (push)
+* Supported versions:
+    * GDP: 11.3 and above
+    * GI: 3.2 and above
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. 
 It is an extension of MySql-Guardium Logstash filter plug-in. see [MySql-Guardium Logstash filter plug-in](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mysql-guardium/README.md)
