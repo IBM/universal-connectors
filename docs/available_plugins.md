@@ -44,3 +44,4 @@
 * [SAP HANA](../filter-plugin/logstash-filter-***REMOVED***phana-guardium/README.md)
 * [Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter)
 * [Teradata](../filter-plugin/logstash-filter-teradatadb-guardium/README.md)
+* [Yugabyte](../filter-plugin/logstash-filter-yugabyte-guardium/README.md)
