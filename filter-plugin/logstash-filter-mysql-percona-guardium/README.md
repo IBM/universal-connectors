@@ -4,7 +4,7 @@
 * Environment: On-premise, Iaas
 * Supported inputs: Filebeat (push)
 * Supported versions:
-    * GDP: 11.3 and above
+    * GDP: 11.4 and above
     * GI: 3.2 and above
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. 
