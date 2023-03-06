@@ -114,7 +114,17 @@ The inclusion filter mentioned above will be used to view the Audit logs in the 
 ### Supported audit logs
 * spanner-general.log - `INFO`, `DEFAULT`, `ALERT`,`NOTICE`,`DEBUG`,`WARNING`
 
-## 4. Configuring the Spanner filter in Guardium
+## 4. Limitations
+1. Error Logs are not generated in GCP for spanner and this plug-in does not support errors traffic in Guardium.
+2. The Audit/Data access log doesn't contain a server IP. The default value is set to 0.0.0.0 for the server IP.
+3. Some fields cannot be mapped, as there is no information about them in the logs. The following important fields cannot be mapped:
+    - Source program : Not available with logs
+    - OS User : Not available with logs
+    - Client HostName : Not available with logs
+4. Spanner does not require a DDL query for Drop Database, as the Spanner UI only gives an option to delete and if you delete the database you cannot get query parameters in audit logs. Please refer to [Spanner DDL documentation](https://cloud.google.com/spanner/docs/reference/standard-sql/data-definition-language) for more information. Henceforth,this is not captured in the full SQL report.
+5. The parser does not support queries in which a keyword is used as a table name or column name, nor in scenarios of nested parameters inside functions.
+
+## 5. Configuring the Spanner filter in Guardium
 The Guardium univer***REMOVED***l connector is the Guardium entry point for native audit/data_access logs. The Guardium univer***REMOVED***l connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium univer***REMOVED***l connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit/data_access logs by customizing the Spanner template.
 
 ### Before you begin
@@ -135,12 +145,3 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 10. Click Save. Guardium validates the new connector, and enables the univer***REMOVED***l connector if it was di***REMOVED***bled. After it is validated, it appears in the Configure Univer***REMOVED***l Connector page.
 11. After installing the plugins offline package and once the configuration is uploaded and ***REMOVED***ved to your Guardium machine, restart the univer***REMOVED***l connector using the Di***REMOVED***ble/Enable button.
 
-## 5. Limitations
-1. Error Logs are not generated in GCP for spanner and this plugin does not support errors traffic in guardium.
-2. The Audit/Data access log doesn't contain a server IP. The default value is set to 0.0.0.0 for the server IP.
-3. Some fields cannot be mapped, as there is no information about them in the logs. The following important fields cannot be mapped:
-    - Source program : Not available with logs
-    - OS User : Not available with logs
-    - Client HostName : Not available with logs
-4. Spanner does not require a DDL query for Drop Database, as the Spanner UI only gives an option to delete and if you delete the database you cannot get query parameters in audit logs. Please refer to [Spanner DDL documentation](https://cloud.google.com/spanner/docs/reference/standard-sql/data-definition-language) for more information. Henceforth,this is not captured in the full SQL report.
-5. The parser does not support queries in which a keyword is used as a table name or column name, nor in scenarios of nested parameters inside functions.
