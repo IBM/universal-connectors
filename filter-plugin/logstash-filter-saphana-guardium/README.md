@@ -3,7 +3,7 @@
 * Tested versions: 2.00.033.00.1535711040
 * Environment: On-premise, Iaas
 * Supported versions:
-	* GDP: 11.3 and above
+	* GDP: 11.4 and above
 		* Supported inputs:
           * Filebeat (push)
           * JDBC (pull)

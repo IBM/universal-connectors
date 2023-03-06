@@ -4,9 +4,8 @@
 * Environment: AWS
 * Supported inputs: CloudWatch (pull)
 * Supported versions:
-   * GDP: 11.3 and above
+   * GDP: 11.4 and above
    * GI: 3.2 and above
-# MariaDB on Amazon RDS-Guardium Logstash filter plug-in
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses events and mes***REMOVED***ges from the MariaDB audit log into a [Guardium record](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/common/src/main/java/com/ibm/guardium/univer***REMOVED***lconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query and Guardium sniffer parses the MariaDB queries. The MariaDB on Amazon RDS plugin only supports Guardium Data Protection as of now.
 
