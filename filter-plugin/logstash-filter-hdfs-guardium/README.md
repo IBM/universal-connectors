@@ -1,4 +1,11 @@
 # HDFS-Guardium Logstash Filter Plug-in
+### Meet HDFS
+* Tested versions: Hadoop 3.1.x
+* Environment: On-premise, Iaas
+* Supported inputs: Filebeat (push)
+* Supported versions:
+    * GDP: 11.3 and above
+    * GI: 3.2 and above
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses an HDFS audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
 
