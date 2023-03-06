@@ -4,8 +4,8 @@
 * Environment: On-premise, Iaas
 * Supported inputs: Filebeat (push)
 * Supported versions:
-    * GDP: 11.4 and above
-    * GI: 3.2 and above
+    * Guardium Data Protection: 11.4 and above
+    * Guardium Insights: 3.2 and above
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses an HDFS audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
 
