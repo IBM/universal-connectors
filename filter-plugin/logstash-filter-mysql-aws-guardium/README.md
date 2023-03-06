@@ -4,7 +4,7 @@
 * Environment: AWS
 * Supported inputs: CloudWatch (pull)
 * Supported versions:
-    * GDP: 11.3 and above
+    * GDP: 11.4 and above
     * GI: 3.2 and above
 
 This is a Logstash filter configuration. This filter receives CloudWatch audit logs of AWS MySQL instances, and filters those events and parses them into a Guardium record instance. The information is then sent over to Guardium as a JSON GuardRecord.

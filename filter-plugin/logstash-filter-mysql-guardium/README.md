@@ -7,11 +7,9 @@
       * Supported inputs:
          * Syslog (push)
          * Filebeat (push)
-         * MongoDB Atlas (pull)
    * GI: 3.2 and above
       * Supported inputs:
          * Filebeat (push)
-         * MongoDB Atlas (pull)
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the MySQL audit into a Guardium record instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. [Guardium records](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The contstruct details the main action (verb) and collections (objects) involved.
 
