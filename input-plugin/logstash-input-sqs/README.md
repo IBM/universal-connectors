@@ -3,8 +3,8 @@
 * Tested versions: 3.1.3
 * Developed by Elastic
 * Supported versions:
-    * GDP: 11.3 and above
-    * GI: 3.2
+    * Guardium Data Protection: 11.3 and above
+    * Guardium Insights: 3.2
 
 This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It pulls events from the SQS from the Amazon Web Services. The events are then sent over to corresponding filter plugin which transforms these audit logs into a [Guardium record](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/common/src/main/java/com/ibm/guardium/univer***REMOVED***lconnector/commons/structures/Record.java)  instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 

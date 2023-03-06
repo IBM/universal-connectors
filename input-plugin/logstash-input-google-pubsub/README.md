@@ -4,7 +4,7 @@
 * Developed by Elastic
 * Configuration instructions can be found in [Guardium Google Pub/Sub documentation](../input-plugin/logstash-input-google-pubsub/README.md#installation).
 * Supported versions:
-    * GDP: 11.4 and above
+    * Guardium Data Protection: 11.4 and above
 
 This is a [Logstash](https://github.com/elastic/logstash) input plugin for
 [Google Pub/Sub](https://cloud.google.com/pubsub/). The plugin can subscribe
