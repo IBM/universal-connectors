@@ -1,15 +1,21 @@
+# Available Plug-ins
+Univer***REMOVED***l Connector uses plug-ins to connect the different datasources to Guardium. 
+Below all the available plug-ins which are pre-developed and ready for use.
 
-## Input plugins
-* [Azure Event Hubs](../input-plugin/logstash-input-azure-event-hubs/README.md)
-* [Beats](../input-plugin/logstash-input-beats/README.md)
-* [CloudWatch Logs](../input-plugin/logstash-input-cloudwatch-logs/README.md)
-* [Google Pub/Sub](../input-plugin/logstash-input-google-pubsub/README.md)
-* [jdbc](../input-plugin/logstash-input-jdbc/README.md)
-* [Mongo Atlas](../input-plugin/logstash-input-mongo-atlas/README.md)
-* [SQS](../input-plugin/logstash-input-sqs/README.md)   
-* [Syslog](https://www.elastic.co/guide/en/logstash/current/plugins-inputs-syslog.html)
+<details open="open">
+  <summary>Table of contents</summary>
 
-## Filter plugins
+- [Guardium Data Protection](#guardium-data-protection)
+- [Guardium Insights](#guardium-insights)
+- [Developing plug-ins](#developing-plug-ins)
+</details>
+
+## Guardium Data Protection
+Our latest product version for Guardium Data Protection is [11.5](../docs/Guardium%20Data%20Protection)
+
+### Supported Datasources
+The following list is supported by the latest version.
+In case of other version, please refer the supported versions inside the plug-in.
 * [Amazon DynamoDB](../filter-plugin/logstash-filter-dynamodb-guardium/README.md)
 * [Amazon Redshift](../filter-plugin/logstash-filter-redshift-aws-guardium/README.md)
 * [Amazon RDS for MySQL](../filter-plugin/logstash-filter-mysql-aws-guardium/README.md)
@@ -31,7 +37,7 @@
 * [Google Cloud MySQL](../filter-plugin/logstash-filter-pubsub-mysql-guardium/README.md)
 * [HDFS](../filter-plugin/logstash-filter-hdfs-guardium/README.md)
 * [MariaDB](../filter-plugin/logstash-filter-mariadb-guardium/README.md)
-* [MariaDB-AWS](../filter-plugin/logstash-filter-mariadb-aws-guardium/README.md)
+* [Amazon RDS for MariaDB](../filter-plugin/logstash-filter-mariadb-aws-guardium/README.md)
 * [MongoDB](../filter-plugin/logstash-filter-mongodb-guardium/README.md)
 * [MySQL](../filter-plugin/logstash-filter-mysql-guardium/README.md)
 * [MySQL-Percona](../filter-plugin/logstash-filter-mysql-percona-guardium/README.md)
@@ -45,3 +51,30 @@
 * [Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter)
 * [Teradata](../filter-plugin/logstash-filter-teradatadb-guardium/README.md)
 * [Yugabyte](../filter-plugin/logstash-filter-yugabyte-guardium/README.md)
+
+## Guardium Insights 
+Our latest product version for Guardium Insights is [3.2.x](../docs/Guardium%20Insights/3.2.x/Plugins_management.md)
+
+### Supported Datasources
+The following list is supported by the latest version.
+In case of other version, please refer the supported versions inside the plug-in.
+* [Amazon DynamoDB](../filter-plugin/logstash-filter-dynamodb-guardium/README.md)
+* [Amazon RDS for MySQL](../filter-plugin/logstash-filter-mysql-aws-guardium/README.md)
+* [Amazon RDS for Postgres and Aurora Postgres](../filter-plugin/logstash-filter-postgres-guardium/README.md)
+* [Amazon S3](../filter-plugin/logstash-filter-s3-guardium/README.md)
+* [Couchbase](../filter-plugin/logstash-filter-couchbasedb-guardium/README.md)
+* [HDFS](../filter-plugin/logstash-filter-hdfs-guardium/README.md)
+* [Amazon RDS for MariaDB](../filter-plugin/logstash-filter-mariadb-aws-guardium/README.md)
+* [MongoDB](../filter-plugin/logstash-filter-mongodb-guardium/README.md)
+* [MySQL](../filter-plugin/logstash-filter-mysql-guardium/README.md)
+* [MySQL-Percona](../filter-plugin/logstash-filter-mysql-percona-guardium/README.md)
+* [Neptune](../filter-plugin/logstash-filter-neptune-aws-guardium/README.md)
+* [Greenplum](../filter-plugin/logstash-filter-onPremGreenplumdb-guardium/README.md)
+* [SAP HANA](../filter-plugin/logstash-filter-***REMOVED***phana-guardium/README.md)
+
+## Developing Plug-ins
+Users can develop their own univer***REMOVED***l connector plug-ins, if needed, and contribute them back to the open source project, if desired.
+
+[Here](../docs/Guardium%20Data%20Protection/developing_plugins_gdp.md) is a guide for developing new plug-ins for Guardium Data Protection.
+
+[Here](../docs/Guardium%20Insights/3.2.x/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights.
