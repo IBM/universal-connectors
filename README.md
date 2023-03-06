@@ -232,12 +232,12 @@ limitations under the License.
 
 [^1]: See [IBM Guardium System Requirements and Supported Platforms](https://www.ibm.com/support/pages/ibm-guardium-system-requirements-and-supported-platforms)
 [^2]: In GI 3.3.0, SaaS, and GDP 12.0.0 all of the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed upon startup.
-[^3]: with the exception of GI SaaS 1.0.0 where no manual uploads by the customer are allowed.
+[^3]: with the exception of GI SaaS 1.0.0, where no manual uploads by the customer are allowed.
 [^4]: See [Input plugins](docs/available_plugins.md#input-plugins) for the full list and documentation.
 [^5]: See GCP MySQL's [Create the SQL Instance and Configure Logging](filter-plugin/logstash-filter-pubsub-mysql-guardium#create-the-sql-instance-and-configure-logging) section as an example of configuring audit log types via the cloud SQL Instance.
 [^6.1]: See GCP's Pub/Sub input plug-in [load-balancing configuration](input-plugin/logstash-input-google-pubsub#note-2) as an example of a pull method plug-in.
 [^6.2]: See Filebeat input plug-in [load-balancing configuration](https://www.elastic.co/guide/en/beats/filebeat/master/load-balancing.html) as an example of a push method plug-in.
 [^7]: Check [Available Plug-ins](/docs/available_plugins.md) for the list of plug-ins that are pre-installed and do not require any manual uploads.
-[^8]: For some data sources, you can configure either real-time or historic audit logging  via the input plug-in's configuration file in its input scope (e.g., [JDBC Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter#3-configure-the-input-and-filter-plugins))
+[^8]: For some data sources, you can configure either real-time or historic audit logging  via the input plug-in's configuration file in its input scope (e.g., [JDBC Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter#3-configure-the-input-and-filter-plugins)).
 [^9]: GIM is currently supported only for [Filebeat and Syslog on MongoDB](docs/GIM.md#configuring-gim-to-handle-filebeat-and-syslog-on-mongodb).
 [^10]: See [MySQL filter plug-in page](filter-plugin/logstash-filter-mysql-guardium/README.md#mysql-guardium-logstash-filter-plug-in)
