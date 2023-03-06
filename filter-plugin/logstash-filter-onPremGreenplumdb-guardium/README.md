@@ -4,7 +4,7 @@
 * Environment: On-premise
 * Supported inputs: Filebeat (push)
 * Supported versions:
-  * GDP: 11.3 and above
+  * GDP: 11.4 and above
   * GI: 3.2 and above
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the GreenplumDB log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). Information is then sent over to the Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query and the Guardium sniffer parses the Greenplum queries. As of now, the Greenplumdb plug-in only supports the Guardium Data Protection as of now.
