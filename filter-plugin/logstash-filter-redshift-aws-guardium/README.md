@@ -1,4 +1,11 @@
 ## Redshift-Guardium Logstash filter plug-in
+### Meet Redshift
+* Tested versions: 1.0.40182
+* Environment: AWS
+* Supported inputs: CloudWatch (pull)
+* Supported versions:
+    * GDP: 11.3 and above
+
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses events and mes***REMOVED***ges from the AWS Redshift audit log into a [Guardium record](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/common/src/main/java/com/ibm/guardium/univer***REMOVED***lconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The contstruct details the main action (verb) and collections (objects) involved. In this connector we are using "PGRS" Guardium parser as well as custom parser for some scenarios. The Redshift plugin supports only Guardium Data Protection as of now.
 
 This plug-in uses two parsers. It relies on Guardium SQL parser most of the time, while parsing some queries unique to Redshift by itself.

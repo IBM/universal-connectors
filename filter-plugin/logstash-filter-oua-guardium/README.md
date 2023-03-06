@@ -1,4 +1,10 @@
 # Oracle Unified Audit Univer***REMOVED***l Connector
+### Meet Oracle Unified Audit
+* Tested versions: 18,19
+* Environment: On-prem, RDS
+* Supported inputs: Oracle Unified Audit (pull)
+* Supported versions:
+   * GDP: 11.3 and above
 
 ## Requirements
 
