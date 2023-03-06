@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_DocumentDB_filter",
+	"alias": "DocumentDB",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "0.1.22",
+	"datasourceTypes": [{"type":"DocumentDB","supportedVersions": ["4.0"]}],
+	"supported_input_plugins": ["Cloudwatch_logs_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses events and messages from the Amazon DocumentDB audit log into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-documentdb-aws-guardium/README.md"
+}
