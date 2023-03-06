@@ -2,6 +2,7 @@
   <summary>Table of contents</summary>
 
   - [Overview](#overview)
+    * [Releases](#latest-releases)
   - [How it works](#how-it-works)
     * [The Workflows](#the-workflows)
     * [Keep In Mind](#keep-in-mind)
@@ -43,7 +44,10 @@ The Guardium univer***REMOVED***l connector is scalable. It provides load-balanc
 
 Connections to databases that are configured with the Guardium univer***REMOVED***l connector are handled the ***REMOVED***me as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
 
-
+## Latest releases
+It is recommended to use our latest product versions for Guardium Data Protection and Guardium Insights
+Our latest product version for Guardium Data Protection is [11.5](docs/Guardium%20Data%20Protection)
+Our latest product version for Guardium Insights is [3.2](docs/Guardium%20Insights/3.2.x/README.md)
 
 ## How it works
 
@@ -92,7 +96,7 @@ In Guardium Data Protection, the overall workflow for deploying the univer***REM
 
 1. Installing desired policies as instructed in [Policies](#policies)
 
-2. Install and configure a plugin[^7]
+2. Install and configure a plugin[^7]. [Guardium Insights plugins](docs/Guardium%20Insights/3.2.x/Plugins_management.md).
 
 3. Configuring native auditing[^8] on the data source
 
