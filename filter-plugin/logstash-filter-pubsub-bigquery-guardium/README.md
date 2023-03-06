@@ -109,29 +109,7 @@ The inclusion filter mentioned above will be used to view the Audit logs in the 
   1. BigQueryAudit - `ACTIVITY`, `DATA_ACCESS` logs
   2. BigQuery Log - `EMERGENCY`, `ALERT`, `CRITICAL`, `ERROR`, `WARNING`, `NOTICE`, `DEBUG`, `DEFAULT`
 
-
-## 4. Configuring the BigQuery filter in Guardium
-The Guardium universal connector is the Guardium entry point for native audit/data_access logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit/data_access logs by customizing the BigQuery template.
-
-### Before you begin
-* You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://github.com/IBM/universal-connectors/blob/main/docs/developing_plugins_gdp.md).
-* You must have permission for the S-Tap Management role. The admin user includes this role by default
-* Download the [guardium_logstash-offline-plugins-ps-bigQuery.zip](BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip) plug-in.
-
-### Procedure
-1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. Enable the connector if it is disabled before uploading the UC plug-in.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugins-ps-bigQuery.zip](BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip) plug-in. After it is uploaded, click ```OK```.
-4. Click ```Upload File``` and select the key.json file. After it is uploaded, click ```OK```.
-5. Click the Plus sign to open the Connector Configuration dialog box.
-6. Type a name in the Connector name field.
-7. Update the input section to add the details from the [pubsub_big_query.conf](pubsub_big_query.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-8. Update the filter section to add the details from the [pubsub_big_query.conf](pubsub_big_query.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-9. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
-10. Click ```Save```. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
-11. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.
-
-## 5. Limitations
+## 4. Limitations
 1. If no information regarding certain fields is available in the logs, those fields will not be mapped. 
 2. Exception object will be prepared based on severity of the logs.
 3. The data model size is limited to 10 GB per table. If you have a 100 GB reservation per project per location, BigQuery BI Engine limits the reservation per table to 10 GB. The rest of the available reservation is used for other tables in the project.
@@ -152,3 +130,25 @@ project-id_bigquery.googleapis.com.
 (protoPayload.metadata.jobChange.job.jobStatus.jobState = DONE AND -protoPayload.metadata.jobChange.job.jobConfig.queryConfig.statementType = "SCRIPT"))"
 13. The parser does not support queries in which a keyword is used as a table name or column name, or in scenarios of nested parameters inside functions.
 14. The BigQuery audit log doesn’t include login failed logs, so these will not appear in the guardium LOGIN_FAILED report.
+
+## 5. Configuring the BigQuery filter in Guardium
+The Guardium universal connector is the Guardium entry point for native audit/data_access logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit/data_access logs by customizing the BigQuery template.
+
+### Before you begin
+* You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://github.com/IBM/universal-connectors/blob/main/docs/developing_plugins_gdp.md).
+* You must have permission for the S-Tap Management role. The admin user includes this role by default
+* Download the [guardium_logstash-offline-plugins-ps-bigQuery.zip](BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip) plug-in.
+
+### Procedure
+1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
+2. Enable the connector if it is disabled before uploading the UC plug-in.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugins-ps-bigQuery.zip](BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip) plug-in. After it is uploaded, click ```OK```.
+4. Click ```Upload File``` and select the key.json file. After it is uploaded, click ```OK```.
+5. Click the Plus sign to open the Connector Configuration dialog box.
+6. Type a name in the Connector name field.
+7. Update the input section to add the details from the [pubsub_big_query.conf](pubsub_big_query.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+8. Update the filter section to add the details from the [pubsub_big_query.conf](pubsub_big_query.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+9. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
+10. Click ```Save```. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+11. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.
+
