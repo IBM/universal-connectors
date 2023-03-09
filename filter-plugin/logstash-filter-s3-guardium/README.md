@@ -2,7 +2,7 @@
 ### Meet S3
 * Environment: AWS
 * Supported inputs: CloudWatch (pull), SQS (pull)
-* Supported versions:
+* Supported Guardium versions:
    * Guardium Data Protection: 11.3 and above
    * Guardium Insights: 3.2 and above
 

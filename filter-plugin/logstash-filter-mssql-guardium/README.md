@@ -3,7 +3,7 @@
 * Tested versions: 14.0.x
 * Environment: AWS, On-premise
 * Supported inputs: JDBC (pull)
-* Supported versions:
+* Supported Guardium versions:
 	* Guardium Data Protection: 11.4 and above
     * Guardium Insights: coming soon
 

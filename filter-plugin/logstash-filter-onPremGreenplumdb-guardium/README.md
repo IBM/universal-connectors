@@ -3,7 +3,7 @@
 * Tested versions: 6.21.0
 * Environment: On-premise
 * Supported inputs: Filebeat (push)
-* Supported versions:
+* Supported Guardium versions:
   * Guardium Data Protection: 11.4 and above
   * Guardium Insights: 3.2 and above
 

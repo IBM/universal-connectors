@@ -2,8 +2,8 @@
 ### Meet Google Pubsub
 * Tested versions: 1.2.1
 * Developed by Elastic
-* Configuration instructions can be found in [Guardium Google Pub/Sub documentation](../input-plugin/logstash-input-google-pubsub/README.md#installation).
-* Supported versions:
+* Configuration instructions can be found in [Guardium Google Pub/Sub documentation](#installation).
+* Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
 
 This is a [Logstash](https://github.com/elastic/logstash) input plugin for
@@ -22,7 +22,7 @@ are pretty much free to use it however you want in whatever way.
 
 ## Usage:
 
-### a. Prerequisites:
+### Prerequisites:
 
 #### Procedure:
 
@@ -39,7 +39,7 @@ are pretty much free to use it however you want in whatever way.
 	* Stackdriver Logging [documentation](https://cloud.google.com/logging/)
 
 
-### b. Audit Logs Streaming
+### Audit Logs Streaming
 
 #### Procedure:
 
@@ -68,7 +68,7 @@ are pretty much free to use it however you want in whatever way.
    - Create SQL instance users in *SQL > Instances > `instance_name` > Users*
    - Run queries from Cloud Shell:  *SQL > Instances > `instance_name` > Overview page > Connect using `gcloud`*
 
-### b. Installation
+### Installation 
 
 To install this plug-in, you need to download the [offline pack](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/input-plugin/logstash-input-google-pubsub/GooglePubSubPackage/logstash-offline-plugin-input-google_pubsub.zip), and use Upload file in the Guardium machine.
 
@@ -76,7 +76,7 @@ To install this plug-in, you need to download the [offline pack](https://github.
 To install on your local machine that is running Logstash, execute:
 `bin/logstash-plugin install file:///path/to/logstash-offline-plugin-input-google_pubsub.zip`
 
-### c. Parameters:
+### Parameters:
 	
 | Parameter | Input Type | Required | Default |
 |-----------|------------|----------|---------|

@@ -3,7 +3,7 @@
 * Tested versions: 1.0.1
 * Developed by IBM
 * Configuration instructions can be found on [Guardium Mongo Atlas documentation](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-mongo-atlas/README.md)
-* Supported versions:
+* Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
     * Guardium Insights: coming soon
 

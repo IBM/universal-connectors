@@ -2,7 +2,7 @@
 ### Meet SAP HANA
 * Tested versions: 2.00.033.00.1535711040
 * Environment: On-premise, Iaas
-* Supported versions:
+* Supported Guardium versions:
 	* Guardium Data Protection: 11.4 and above
 		* Supported inputs:
           * Filebeat (push)

@@ -2,7 +2,7 @@
 ### Meet Mysql
 * Tested versions: 5.x
 * Environment: On-premise, Iaas
-* Supported versions:
+* Supported Guardium versions:
    * Guardium Data Protection: 11.3 and above
       * Supported inputs:
          * Syslog (push)
