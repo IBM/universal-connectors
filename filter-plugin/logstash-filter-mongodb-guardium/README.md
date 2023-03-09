@@ -2,7 +2,7 @@
 ### Meet MongoDB
 * Tested versions: 4.2, 4.4
 * Environment: On-premise, Iaas
-* Supported versions:
+* Supported Guardium versions:
     * Guardium Data Protection: 11.3 and above
       * Supported inputs:
         * Syslog (push)
