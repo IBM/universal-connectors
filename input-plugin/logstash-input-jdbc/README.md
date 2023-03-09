@@ -3,7 +3,7 @@
 * Tested versions: 5.1.8
 * Developed by Elastic
 * Configuration instructions can be found on every relevant filter plugin readme page. For example: [MSSQL](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium#configuring-the-mssql-filters-in-guardium)
-* Supported versions:
+* Supported Guardium versions:
 	* Guardium Data Protection: 11.3 and above
     * Guardium Insights: coming soon
 

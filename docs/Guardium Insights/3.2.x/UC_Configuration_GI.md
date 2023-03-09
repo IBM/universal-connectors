@@ -83,7 +83,7 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
     
   ## Procedure
 prerequisites:
-* A connection was added by the steps in the [Filebeat input plug-in configuration](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/Guardium Insights/3.2.x/UC_Configuration_GI.md#filebeat-input-plug-in-configuration) section.
+* A connection was added by the steps in the [Filebeat input plug-in configuration](#filebeat-input-plug-in-configuration) section.
 Refer to the `Configuration notes` page for the `data source tag` and `host` to be used in these steps.
 
 
@@ -96,7 +96,7 @@ Refer to the `Configuration notes` page for the `data source tag` and `host` to 
     # The Logstash hosts
     hosts: ["<hostname-URL>:443"]
     ```
-**NOTE**: In GI, whenever using plug-ins that are based on Filebeat as a data shipper, the configured port should be 443. Guardium Insights will map this to an internal port
+    **NOTE**: In GI, whenever using plug-ins that are based on Filebeat as a data shipper, the configured port should be 443. Guardium Insights will map this to an internal port
 
 4. Configure TLS - UC to the data source:
    1. Download the SSL certificate (`UC certificate authority`) from Guardium Insights and upload it to the datasource server.
@@ -105,9 +105,8 @@ Refer to the `Configuration notes` page for the `data source tag` and `host` to 
     # List of root certificates for HTTPS server verifications
     ssl.certificate_authorities: ["/etc/pki/ca-trust/GuardiumInsightsCA.pem"]
     ```
-
-Summary: 
-
+   
+   Summary:
    ```
    tags: ["any-mongodb"]
    

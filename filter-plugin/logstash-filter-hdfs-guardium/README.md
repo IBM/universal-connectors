@@ -3,7 +3,7 @@
 * Tested versions: Hadoop 3.1.x
 * Environment: On-premise, Iaas
 * Supported inputs: Filebeat (push)
-* Supported versions:
+* Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
     * Guardium Insights: 3.2 and above
 

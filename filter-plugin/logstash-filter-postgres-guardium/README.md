@@ -3,7 +3,7 @@
 * Tested versions: 13.x
 * Environment: AWS
 * Supported inputs: CloudWatch (pull)
-* Supported versions:
+* Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
     * Guardium Insights: 3.2 and above
 
