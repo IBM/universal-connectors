@@ -1,9 +1,9 @@
 # Logstash Filter Pub/Sub PostgreSQL Plugin
 ### Meet Pub/Sub PostgreSQL
-* Tested versions: 13.0
-* Environment: Google Cloud
+* Tested versions: 13.0, 14.0
+* Environment: Google Cloud Platform (GCP)
 * Supported inputs: Pub/Sub (pull)
-* Supported versions:
+* Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
 
 This is a Logstash filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses a GCP (Google Cloud Platform) audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
@@ -17,9 +17,9 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## Documentation
 
 ### Prerequisites
-Download the [Logstash Offline package](PubSubPostgreSQLPackage/11_4/logstash-offline-plugins-filter-pubsub-postgresql-guardium.zip) that includes both the Logstash Google PubSub input plugin and the PostgreSQL PubSub filter plugin, and upload it to the gmachine.
+Download the [Logstash Offline package](../../filter-plugin/logstash-filter-pubsub-postgresql-guardium/PubSubPostgreSQLPackage/logstash-offline-plugins-filter-pubsub-postgresql-guardium.zip) that includes both the Logstash Google PubSub input plugin and the PostgreSQL PubSub filter plugin, and upload it to the gmachine.
 #### Note
-This version is compliant with GDP v11.4 and above. The [planned](PubSubPostgreSQLPackage/planned) folder contains the package for future release.
+This version is compliant with GDP v11.4 and above.
 Please refer to the [input plugin's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
 
 ###  Create the SQL instance and Configure Logging
@@ -75,7 +75,7 @@ After you install the plug-in's offline package and upload and save the configur
   ```
 
 ## Troubleshooting
-Refer to the input plugin's [Troubleshooting](../../input-plugin/logstash-input-google-pubsub#troubleshooting) section.
+Refer to the input plugin's [Troubleshooting](../../input-plugin/logstash-input-google-pubsub/README.md#troubleshooting) section.
 
 ## Contributing
 

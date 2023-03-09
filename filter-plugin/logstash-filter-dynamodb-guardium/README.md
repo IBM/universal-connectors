@@ -3,7 +3,7 @@
 * Tested versions: 2019.11.21
 * Environment: AWS
 * Supported inputs: CloudWatch (pull)
-* Supported versions:
+* Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
     * Guardium Insights: 3.2 and above
 
@@ -104,7 +104,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [dynamodb-offline-plugins-7.5.2.zip plug-in.](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudwatchPackage/DynamoDB/dynamodb-offline-plugins-7.5.2.zip)
+• Download the [dynamodb-offline-plugins-7.5.2.zip plug-in.](../../filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudwatchPackage/DynamoDB/dynamodb-offline-plugins-7.5.2.zip)
 
 
 ### Procedure

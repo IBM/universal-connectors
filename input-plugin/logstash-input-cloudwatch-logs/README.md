@@ -2,8 +2,8 @@
 ### Meet Cloudwatch
 * Tested versions: 1.0.3
 * Developed by [Luke Waite](https://github.com/lukewaite)
-* Configuration instructions can be found on every relevant filter plugin readme page. For example: [AWS PostgreSQL](../filter-plugin/logstash-filter-azure-postgresql-guardium#procedure-)
-* Supported versions:
+* Configuration instructions can be found on every relevant filter plugin readme page. For example: [AWS PostgresSQL](../../filter-plugin/logstash-filter-azure-postgresql-guardium/README.md#procedure)
+* Supported Guardium versions:
 	* Guardium Data Protection: 11.3 and above
 	* Guardium Insights: 3.2
 
