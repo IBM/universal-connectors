@@ -2,7 +2,7 @@
 ### Meet SQS
 * Tested versions: 3.1.3
 * Developed by Elastic
-* Supported versions:
+* Supported Guardium versions:
     * Guardium Data Protection: 11.3 and above
     * Guardium Insights: 3.2
 

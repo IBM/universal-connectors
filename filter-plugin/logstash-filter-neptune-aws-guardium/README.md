@@ -3,7 +3,7 @@
 * Tested versions: 1.1
 * Environment: AWS
 * Supported inputs: CloudWatch (pull)
-* Supported versions:
+* Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
     * Guardium Insights: 3.2 and above
 
@@ -113,7 +113,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * You must have permission for the S-Tap Management role. The admin user includes this role by  default.
 
-* Download the [guardium_logstash-offline-plugin-neptune.zip plug-in](NeptuneOverCloudWatchPackage/guardium_logstash-offline-plugin-neptune.zip).
+* Download the [guardium_logstash-offline-plugin-neptune.zip plug-in](../../filter-plugin/logstash-filter-neptune-aws-guardium/NeptuneOverCloudWatchPackage/Neptune/guardium_logstash-offline-plugin-neptune.zip).
 
 
 #### Procedure

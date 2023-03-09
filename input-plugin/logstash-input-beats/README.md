@@ -3,7 +3,7 @@
 * Tested versions: 6.2.5
 * Developed by Elastic
 * Configuration instructions can be found on every relevant filter plugin readme page. For example: [MongoDB](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mongodb-guardium#configuring-audit-logs-on-mongodb-and-forwarding-to-guardium-via-filebeat)
-* Supported versions:
+* Supported Guardium versions:
   * Guardium Data Protection: 11.3 and above
   * Guardium Insights: 3.2 and above
 
