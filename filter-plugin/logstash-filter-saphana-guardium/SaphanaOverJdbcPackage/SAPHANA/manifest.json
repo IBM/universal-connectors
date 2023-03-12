@@ -1,11 +1,11 @@
 {
-	"name": "Guardium_SAPHANA_filter",
+	"name": "Guardium_SAPHANA_JDBC_filter",
 	"alias": "SAPHANA",
 	"type": "filter",
 	"pipeline_type":"pull",
     "plugin_version": "1.0.0",
 	"datasourceTypes": [{"type":"SAP Hana","supportedVersions": ["2.00.033.00.20180925.2"]}],
-	"supported_input_plugins": ["Filebeat_input","JDBC_input"],
+	"supported_input_plugins": ["JDBC_input"],
 	"developer": "IBM",
 	"license": "Apache2.0",
 	"description": "Parses SAP HANA audit log events into Guardium.",
