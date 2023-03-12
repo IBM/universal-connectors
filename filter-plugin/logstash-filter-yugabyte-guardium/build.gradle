@@ -62,13 +62,12 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.7'
     compile 'com.google.code.gson:gson:2.8.8'
     compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
-    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-univer***REMOVED***lconnector-commons-*.*.*.jar")
+    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.jruby:jruby-complete:9.2.7.0'
 
-    testCompile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-univer***REMOVED***lconnector-commons-*.*.*.jar")
-}
+    testCompile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 
 clean {
     delete "${projectDir}/Gemfile"
@@ -116,4 +115,4 @@ tasks.register("copyDependencyLibs", Copy){
     from configurations.runtimeClasspath
     from configurations.testCompileClasspath
     from configurations.testRuntimeClasspath
-}
+}}
