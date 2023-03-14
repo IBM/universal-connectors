@@ -17,6 +17,7 @@ pluginInfo.homepage        = "https://github.com/IBM/univer***REMOVED***l-connec
 pluginInfo.pluginType      = "filter"
 pluginInfo.pluginClass     = "GuardiumSnowflakeFilter"
 pluginInfo.pluginName      = "guardium_snowflake_filter" // must match the @LogstashPlugin annotation in the main plugin class
+pluginInfo.email           = ""
 // ===========================================================================
 
 sourceCompatibility = 1.8
