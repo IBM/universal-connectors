@@ -15,7 +15,7 @@ filter-plugin/logstash-filter-cas***REMOVED***ndra-guardium/Cas***REMOVED***ndra
 filter-plugin/logstash-filter-couchbasedb-guardium/CouchbasedbOverFilebeatPackage
 filter-plugin/logstash-filter-couchdb-guardium/CouchdbOverFilebeatPackage
 filter-plugin/logstash-filter-hdfs-guardium/HdfsOverFilebeatPackage
-#filter-plugin/logstash-filter-mariadb-guardium/MariaDBOverFilebeatPackage
+filter-plugin/logstash-filter-mariadb-guardium/MariaDBOverFilebeatPackage
 filter-plugin/logstash-filter-mongodb-guardium/MongodbOverFilebeatPackage
 filter-plugin/logstash-filter-mysql-guardium/MysqlOverFilebeatPackage
 filter-plugin/logstash-filter-mysql-percona-guardium/MysqlPerconaOverFilebeatPackage
