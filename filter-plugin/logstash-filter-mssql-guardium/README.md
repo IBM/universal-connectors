@@ -109,7 +109,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 		b. Select mssql database that we created. Click on Modify button
 		c. Go to Advance configurations
 		d. Under Database options. Select custom option group from drop down (which we have created in earlier step.)
-		e. Click on Continue. On next window select Apply Immediately and click on Modify DB Instance.
+		e. Click Continue. In the next window, select Apply Immediately and click Modify DB Instance.
 
 
 ## 2. Enabling Auditing
@@ -154,9 +154,9 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 			VI. Click on Ok button.
 			VII. Right click on database audit specification that we have created and select enable to enable it.
 
-	5. Create audit specifications for error capture[This step is only required for OnPrem configuration]:
+	5. Create audit specifications for error capture [This step is only required for on-prem configuration]:
 
-			I. Excute below TSQL to capture error events. 
+			a. Execute the below TSQL to capture error events. 
 
 			CREATE EVENT SESSION [<event_name>] 
 			ON SERVER 
@@ -197,8 +197,8 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 			STATE = START;
 			GO
 
-	Kindly note event name should be same for TSQL Create and Alter event.
-	And xel path name mentioned in TSQL should be matching to SQL statement mentioned in input plugin for 'failure' tag. 
+	** Note that the event name should be the same for TSQL Create and Alter event.**
+	** Note that the xel path name mentioned in TSQL should be matching the one in the SQL statement mentioned in the input plug-in for 'failure' tag. ** 
 
 
 #### Limitations
@@ -226,7 +226,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 #### Before you begin
 
-• You must have LFD policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+• Configure the policies you require. See [policies](/../../#policies) for more information.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
@@ -250,35 +250,35 @@ The Guardium universal connector is the Guardium entry point for native audit lo
    Note :
    • For Guardium Data Protection version 11.3, add the following line to the input section:
    'jdbc_driver_library => "${THIRD_PARTY_PATH}/mssql-jdbc-7.4.1.jre8.jar"'
-   • If auditing is configured way long back and UC is configured at later point of time, still UC will process all the previous older records as well till date, since it is already audited by the DB.
+   • Even if the universal connector was configured a while after auditing was configured, the universal connector  will still process all the previous records as well, since they were already audited by the database.
 9. Update the filter section to add the details from [awsMssqlJDBC.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/awsMssqlJDBC.conf) for AWS MSSQL or [onPremMSSQL.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/on-premMssqlJDBC.conf) for on prem MSSQL setup file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-10. "type" field should match in input and filter configuration section. This field should be unique for  every individual connector added.
-11. If using two jdbc plug-ins on the same machine, the last_run_metadata_path file name should be different.
+10. The "type" fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
+11. If you are using two JDBC plug-ins on the same machine, the last_run_metadata_path file name should be different for each.
 12. Click Save. Guardium validates the new connector, and enables the universal connector if it was
 	disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 ## 4. JDBC Load Balancing Configuration
 
-a. In MSSQL JDBC input plug-in,we distribute load between two machines based on Even and Odd "session_id" for "Success" events.
+a. a. In the MSSQL JDBC input plug-in,we distribute load between two machines based on Even and Odd "session_id" for "Success" events.
 
 #### Procedure:
 
-On First G Machine, in input section for JDBC Plugin update "statement" field in the first jdbc block where tags => ["Success"] like below:
+On the first G Machine, in the input section for the JDBC plug-in, update the "statement" field in the first JDBC block where tags => ["Success"] like below:
 
 	SELECT server_instance_name,event_time, session_id, database_name, client_ip, server_principal_name, application_name, statement, succeeded, DATEDIFF_BIG(ns, ‘1970-01-01 00:00:00.00000’, event_time) AS updatedeventtime FROM sys.fn_get_audit_file(‘E:\Deploy\SQLAudit*.sqlaudit’, DEFAULT, DEFAULT) Where schema_name not in (‘sys’) and object_name NOT IN (‘dbo’,‘syssubsystems’,‘fn_sysdac_is_currentuser_sa’,‘backupmediafamily’,‘backupset’,‘syspolicy_configuration’,‘syspolicy_configuration_internal’,‘syspolicy_system_health_state’,‘syspolicy_system_health_state_internal’,‘fn_syspolicy_is_automation_enabled’,‘spt_values’,‘sysdac_instances_internal’,‘sysdac_instances’) and database_principal_name not in(‘public’) and ((succeeded =1) or (succeeded =0 and statement like ‘%Login failed%’ )) and statement != ‘’ and session_id%2= 0 and DATEDIFF_BIG(ns, ‘1970-01-01 00:00:00.00000’, event_time) > :sql_last_value order by event_time
 
-On Second G Machine, in input section for JDBC Plugin update "statement" field in the first jdbc block where tags => ["Success"] like below:
+On the second G Machine, in the input section for the JDBC plug-in,  update the "statement" field in the first JDBC block where tags => ["Success"] like below:
 
 	SELECT server_instance_name,event_time, session_id, database_name, client_ip, server_principal_name, application_name, statement, succeeded, DATEDIFF_BIG(ns, ‘1970-01-01 00:00:00.00000’, event_time) AS updatedeventtime FROM sys.fn_get_audit_file(‘E:\Deploy\SQLAudit*.sqlaudit’, DEFAULT, DEFAULT) Where schema_name not in (‘sys’) and object_name NOT IN (‘dbo’,‘syssubsystems’,‘fn_sysdac_is_currentuser_sa’,‘backupmediafamily’,‘backupset’,‘syspolicy_configuration’,‘syspolicy_configuration_internal’,‘syspolicy_system_health_state’,‘syspolicy_system_health_state_internal’,‘fn_syspolicy_is_automation_enabled’,‘spt_values’,‘sysdac_instances_internal’,‘sysdac_instances’) and database_principal_name not in(‘public’) and ((succeeded =1) or (succeeded =0 and statement like ‘%Login failed%’ )) and statement != ‘’ and session_id%2= 1 and DATEDIFF_BIG(ns, ‘1970-01-01 00:00:00.00000’, event_time) > :sql_last_value order by event_time
 
-b. In MSSQL JDBC input plug-in , we distribute load between two machines based on Even and Odd "timestamp" for "Failure" events.
+b. In the MSSQL JDBC input plug-in , we distribute load between two machines based on Even and Odd "timestamp" for "Failure" events.
 
 #### Procedure:
 
-On First G Machine, in input section for JDBC Plugin update "statement" field in the second jdbc block where tags => ["Failure"] like below:
+On the first G Machine, in the input section for the JDBC plug-in, update the "statement" field in the second JDBC block where tags => ["Failure"] like below:
 
 	SELECT timestamp_utc,event_data,DATEDIFF_BIG(ns, ‘1970-01-01 00:00:00.00000’, timestamp_utc) AS updated_timestamp FROM sys.fn_xe_file_target_read_file(‘C:\temp\ErrorCapture*.xel’,null,null,null) where DATEDIFF_BIG(ss, ‘1970-01-01 00:00:00.00000’, timestamp_utc)%2 = 1 and DATEDIFF_BIG(ns, ‘1970-01-01 00:00:00.00000’, timestamp_utc) > :sql_last_value order by timestamp_utc
 
-On Second G Machine, in input section for JDBC Plugin update "statement" field in the second jdbc block where tags => ["Failure"] like below:
+On the second G Machine, in the input section for the JDBC plug-in, update the "statement" field in the second JDBC block where tags => ["Failure"] like below:
 
 	SELECT timestamp_utc,event_data,DATEDIFF_BIG(ns, ‘1970-01-01 00:00:00.00000’, timestamp_utc) AS updated_timestamp FROM sys.fn_xe_file_target_read_file(‘C:\temp\ErrorCapture*.xel’,null,null,null) where DATEDIFF_BIG(ss, ‘1970-01-01 00:00:00.00000’, timestamp_utc)%2 = 0 and DATEDIFF_BIG(ns, ‘1970-01-01 00:00:00.00000’, timestamp_utc) > :sql_last_value order by timestamp_utc
