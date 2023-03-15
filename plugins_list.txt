@@ -1,4 +1,5 @@
 AuroraMysqlOverCloudwatchPackage.zip
+ApacheSolrOverFilebeatPackage.zip
 AzureEventHubsInputPackage.zip
 AzurePostgresqlOverAzureEventHub.zip
 AzureSQLOverJdbcPackage.zip
