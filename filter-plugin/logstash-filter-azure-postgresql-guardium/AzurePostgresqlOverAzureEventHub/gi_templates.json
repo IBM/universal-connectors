@@ -1,5 +1,5 @@
 {
-  "plugin_name": "Azure over azure_event_hubs",
+  "plugin_name": "Azure PostgreSQL over azure_event_hubs",
   "help_link": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-azure-postgresql-guardium/README.md",
   "input_name": "Azure_event_hubs_input",
   "input_parameters": [
