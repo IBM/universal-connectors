@@ -14,7 +14,6 @@ GreenplumdbOverFilebeatPackage.zip
 HdfsOverFilebeatPackage.zip
 InputMongoAtlasPackage.zip
 JdbcInputPackage.zip
-MariaDBOverCloudWatchPackage.zip
 MongodbOverFilebeatPackage.zip
 MongodbOverMongoAtlasPackage.zip
 MssqlAWSOverJdbcPackage.zip
