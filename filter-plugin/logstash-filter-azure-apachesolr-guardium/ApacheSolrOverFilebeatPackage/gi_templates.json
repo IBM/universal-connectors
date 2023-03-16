@@ -1,6 +1,6 @@
 {
-  "plugin_name": "SAP HANA Over Filebeat",
-  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-saphana-guardium/README.md",
+  "plugin_name": "Azure Apache Solr over Filebeat",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-azure-apachesolr-guardium/README.md",
   "input_name": "Filebeat_input",
   "input_parameters": [
     {
@@ -21,7 +21,7 @@
       }
     }
   ],
-  "filter_name": "Guardium_SAPHANA_Filebeat_filter",
+  "filter_name": "Guardium_Azure_Solr_filter",
   "filter_parameters": [],
   "auth_parameters": [
     {
@@ -33,5 +33,5 @@
       }
     }
   ],
-  "supported_platforms": ["on-premise"]
+  "supported_platforms": ["Microsoft Azure"]
 }
