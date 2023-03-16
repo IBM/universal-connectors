@@ -1,8 +1,14 @@
 package com.ibm.guardium.mongodb;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.net.ProxySelector;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.zip.GZIPInputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -12,6 +18,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
@@ -21,15 +28,54 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.util.FileUtils;
+
 /**
  * handle calling mongo atlas api
  */
 public class MongoApi {
     private static Logger log = LogManager.getLogger(MongoApi.class);
     private static String MONGO_API_URL= "https://cloud.mongodb.com/api/atlas/v1.0/groups/";
+    private static final String HTTPS_PROXY_HOST = "https_proxy";
+    private static final String HTTPS_PROXY_HOST_UP = "HTTPS_PROXY";
 
+    public static String getHttpsProxyHost() {
+        String gEnv = System.getenv(HTTPS_PROXY_HOST);
+        if (null == gEnv || gEnv.isEmpty()) {
+            gEnv = System.getProperty(HTTPS_PROXY_HOST);
+        }
+        if (null == gEnv || gEnv.isEmpty()) {
+            gEnv = null;
+        }
+        gEnv = System.getenv(HTTPS_PROXY_HOST_UP);
+        if (null == gEnv || gEnv.isEmpty()) {
+            gEnv = System.getProperty(HTTPS_PROXY_HOST_UP);
+        }
+        if (null == gEnv || gEnv.isEmpty()) {
+            gEnv = null;
+        }
+        return gEnv;
+    }
+
+    private static CloseableHttpClient buildHttpClient(URL url){
+        CloseableHttpClient httpClient = null;
+        String proxyHost = getHttpsProxyHost();
+        if (proxyHost!=null) {
+            httpClient = HttpClients
+                    .custom()
+                    .setRoutePlanner(new DefaultProxyRoutePlanner(HttpHost.create(proxyHost)))
+                    .build();
+            if (log.isDebugEnabled()) {
+                log.debug("using proxy "+proxyHost);
+            }
+        } else {
+            httpClient = HttpClients.createDefault();
+        };
+        return httpClient;
+    }
 
     /**
      * get the logs as string after unzipped form mongo atlas - null on error
@@ -54,8 +100,7 @@ public class MongoApi {
             //get the file unzipped from url
             return downloadAndUnzipWithDigestAuth(object, url, publicKey, privateKey);
         } catch (Exception e) {
-            log.error("Failed to downlod logs file",e);
-
+            log.error("Failed to downlod logs file for group id "+groupId+", hostname "+hostname+", fileName "+fileName+", startDateInEpoch "+startDateInEpoch+", endDateInEpoch "+endDateInEpoch,e);
         }
         return null;
     }
@@ -92,23 +137,32 @@ public class MongoApi {
      */
     private static String downloadAndUnzipWithDigestAuth(URL url, String path, String publicKey, String privateKey)
             throws Exception {
-        HttpHost targetHost = new HttpHost(url.getHost(), url.getPort(), url.getProtocol());
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpClientContext context = HttpClientContext.create();
+        if (log.isDebugEnabled()) {
+            log.debug("path path  = " + path);
+        }
+
         CredentialsProvider credsProvider = new BasicCredentialsProvider();
-        credsProvider.setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials(publicKey, privateKey));
-        AuthCache authCache = new BasicAuthCache();
+        credsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(publicKey, privateKey));
+
+        HttpHost targetHost = new HttpHost(url.getHost(), url.getPort(), url.getProtocol());
         DigestScheme digestScheme = new DigestScheme();
+        AuthCache authCache = new BasicAuthCache();
         authCache.put(targetHost, digestScheme);
+
+        HttpClientContext context = HttpClientContext.create();
         context.setCredentialsProvider(credsProvider);
         context.setAuthCache(authCache);
+
+        CloseableHttpClient httpClient =  buildHttpClient(url);
+
         HttpGet httpget = new HttpGet(path);
         httpget.addHeader("Accept", "application/gzip");
+
         CloseableHttpResponse response = httpClient.execute(targetHost, httpget, context);
         if (log.isDebugEnabled()) {
-            log.debug("before unauth response.getStatusLine().getStatusCode() = " + response.getStatusLine().getStatusCode());
+            log.debug("response.getStatusLine().getStatusCode() = " + response.getStatusLine().getStatusCode());
         }
+
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
             Header authHeader = response.getFirstHeader(AUTH.WWW_AUTH);
             digestScheme = new DigestScheme();
@@ -121,15 +175,22 @@ public class MongoApi {
             response.close();
             response = httpClient.execute(targetHost, httpget, context);
             if (log.isDebugEnabled()) {
-                log.debug("before unauth response.getStatusLine().getStatusCode() = " + response.getStatusLine().getStatusCode());
+                log.debug("with digest - response.getStatusLine().getStatusCode() = " + response.getStatusLine().getStatusCode());
             }
         }
-        final HttpEntity entity = response.getEntity();
-        if (entity != null) {
-            try (InputStream inputStream = entity.getContent()) {
-                return unzip(inputStream);
+
+        if (response.getStatusLine().getStatusCode() < HttpStatus.SC_BAD_REQUEST) {
+            final HttpEntity entity = response.getEntity();
+            if (entity != null && response.getEntity().getContentLength()>0) {
+                try (InputStream inputStream = entity.getContent()) {
+                    return unzip(inputStream);
+                }
             }
+            log.debug("no data was recieved on path "+path+", response is "+response.getStatusLine());
+            return null;
         }
+
+        log.error("Failed to get data on path "+path+", response is "+response.getStatusLine());
         return null;
     }
 
