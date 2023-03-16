@@ -1,0 +1,105 @@
+{
+  "plugin_name": "mssql over JDBC",
+  "help_link": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/README.md",
+  "input_name": "JDBC_input",
+  "input_parameters": [
+    {
+      "jdbc_connection_string": {
+        "type": "text",
+        "label": "Connection string"
+      },
+      "last_run_metadata_path": {
+        "type": "text",
+        "label": "Last run metadata path"
+      },
+      "jdbc_driver_class": {
+        "type": "text",
+        "default": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+        "hidden": true
+      },
+      "schedule": {
+        "type": "text",
+        "default": "*/2 * * * *",
+        "hidden": true
+      },
+      "use_column_value": {
+        "type": "boolean",
+        "default": true,
+        "hidden": true
+      },
+      "tracking_column": {
+        "type": "text",
+        "default": "updatedeventtime",
+        "hidden": true
+      },
+      "tracking_column_type": {
+        "type": "text",
+        "default": "numeric",
+        "hidden": true
+      },
+      "statement": {
+        "type": "text",
+        "label": "statement"
+      },
+      "plugin_timezone": {
+        "type": "text",
+        "default": "utc",
+        "hidden": true
+      },
+      "enrollmentId": {
+        "type": "text",
+        "default": "NA",
+        "hidden": true
+      },
+      "server_name": {
+        "type": "text",
+        "label": "Server name"
+      },
+      "account_id": {
+        "type": "text",
+        "default": "NA",
+        "hidden": true
+      },
+      "server_host_name": {
+        "type": "text",
+        "default": "NA",
+        "hidden": true
+      },
+      "jdbc_driver_library": {
+        "type": "text",
+        "default": "${LOGSTASH_DIR}/logstash-core/lib/jars/MSSQL-jdbc.jar",
+        "hidden": true
+      },
+      "jdbc_validate_connection": {
+        "type": "boolean",
+        "default": false,
+        "hidden": true
+      },
+      "type": {
+        "type": "text",
+        "default": "MSSQL",
+        "hidden": true
+      }
+    }
+  ],
+  "credentials": [
+    {
+      "jdbc_password": {
+        "type": "password",
+        "label": "password"
+
+      }
+    }
+  ],
+  "filter_name": "Guardium_Mssql_filter",
+  "filter_parameters": [],
+  "auth_parameters": [
+    {
+      "guc_input_param_jdbc_user": {
+        "type": "text",
+        "label": "jdbc_user"
+      }
+    }
+  ],
+  "supported_platforms": ["on-premise"]
+}
