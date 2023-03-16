@@ -1,0 +1,15 @@
+{
+	"name": "Guardium_AzureSQL_filter",
+	"alias": "AzureSQL",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"Azure SQL","supportedVersions": ["1.0"]}],
+	"supported_input_plugins": ["JDBC_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses AzureSQL events into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-azure-sql-guardium/README.md",
+	"third_parties" : ["Azure-SQL-jdbc.jar"]
+}
