@@ -7,7 +7,7 @@ Our latest product version for Guardium Data Protection is [11.5](../docs/Guardi
 Our latest product version for Guardium Insights is [3.2.x](../docs/Guardium%20Insights/3.2.x/Plugins_management.md)
 ## Supported Datasources
 The following list is supported by the latest versions.
-In case of other version, please refer the supported versions inside the plug-in.
+To see if a particular plug-in is supported by older versions, please refer to the "supported versions" section inside each plug-in page.
 * [Amazon DynamoDB](../filter-plugin/logstash-filter-dynamodb-guardium/README.md)
 * [Amazon Redshift](../filter-plugin/logstash-filter-redshift-aws-guardium/README.md) (soon: GI 3.3/Saas)
 * [Amazon RDS for MySQL](../filter-plugin/logstash-filter-mysql-aws-guardium/README.md)
