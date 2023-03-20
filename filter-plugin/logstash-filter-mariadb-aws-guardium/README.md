@@ -1,6 +1,6 @@
-# MariaDB AWS-Guardium Logstash filter plug-in
+# MariaDB on Amazon RDS-Guardium Logstash filter plug-in
 
-This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses events and mes***REMOVED***ges from the AWS MariaDB audit log into a [Guardium record](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/common/src/main/java/com/ibm/guardium/univer***REMOVED***lconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query and Guardium sniffer parses the AWSMariaDB queries. The AWSMariaDB plugin only supports Guardium Data Protection as of now.
+This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the univer***REMOVED***l connector that is featured in IBM Security Guardium. It parses events and mes***REMOVED***ges from the MariaDB audit log into a [Guardium record](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/common/src/main/java/com/ibm/guardium/univer***REMOVED***lconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query and Guardium sniffer parses the MariaDB queries. The MariaDB on Amazon RDS plugin only supports Guardium Data Protection as of now.
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for the Guardium univer***REMOVED***l connector.
 
@@ -69,12 +69,12 @@ The 'rd***REMOVED***dmin' user queries the database every second to check its he
 2. In Settings sections, confirm the password. Then, under Additional configuration, use the drop-down menu to modify DB parameter group and Option group. 
 3. For the last section, keep the default settings and click Continue.
 
-## 3. Connect to MariaDB AWS instance
+## 3. Connect to MariaDB instance
 
 #### Procedure
 
 1. Download and Install MySQL Workbench.
-2. Copy endpoint and Port of AWS-MariaDB instance.
+2. Copy endpoint and Port of MariaDB instance.
 3. Open MySQL Workbench, choose a database connection, specify endpoint, port, and master credentials, then click ok.
 4. Open MySQL Workbench query editor with instance connection then execute some queries.
    
@@ -91,9 +91,9 @@ By default, each database instance has an associated log group with a name in th
  4. In the left panel, select Logs.
  5. Click Log Groups.
 	 
-## 5.Configuring the MariaDB AWS filter in Guardium
+## 5.Configuring the MariaDB filter in Guardium
 
-The Guardium univer***REMOVED***l connector is the Guardium entry point for native audit logs. The Guardium univer***REMOVED***l connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium univer***REMOVED***l connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the AWSMariaDB template.
+The Guardium univer***REMOVED***l connector is the Guardium entry point for native audit logs. The Guardium univer***REMOVED***l connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium univer***REMOVED***l connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the MariaDB template.
 
 ### Authorizing outgoing traffic from AWS to Guardium
 
@@ -107,14 +107,14 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 
 *  Configure the policies you require. See [policies](/../../#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [Guardium_offline_plugin_awsmariadb.zip](MariaDBOverCloudWatchPackage/AWSMariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in.
+* Download the [logstash-filter-awsmariadb_guardium_filter](MariaDBOverCloudWatchPackage/AWSMariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in.
 * Download the plugin filter configuration file [MariaDBCloudWatch.conf](MariaDBCloudWatch.conf).
 
 #### Procedure
 
 1. On the collector, go to Setup > Tools and Views > Configure Univer***REMOVED***l Connector.
 2. Enable the connector if it is di***REMOVED***bled before uploading the UC plug-in.	
-3. Click Upload File and select [the offline logstash-filter_offline_plugin_mariadb.zip](MariaDBOverCloudWatchPackage/AWSMariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select [logstash-filter-awsmariadb_guardium_filter](MariaDBOverCloudWatchPackage/AWSMariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [MariaDBCloudWatch.conf](MariaDBCloudWatch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
@@ -125,7 +125,7 @@ di***REMOVED***bled. After it is validated, it appears in the Configure Univer**
 
 ## 6. Limitations
 
- - The following important fields could not be mappped with MariaDBAWS audit logs   
+ - The following important fields could not be mappped with MariaDB audit logs   
      - Source program : This field is left blank since this information is not embedded in the mes***REMOVED***ges pulled from AWS Cloudwatch.
      - OS User : Not available with audit logs    
      - Client HostName : Not available with audit logs, when we connect to mariadb instance through SQL standard and third party tools.
