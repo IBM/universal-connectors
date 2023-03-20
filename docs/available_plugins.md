@@ -1,13 +1,14 @@
 # Available Plug-ins
-Universal Connector uses plug-ins to connect the different datasources to Guardium. 
-Below all the available plug-ins which are pre-developed and ready for use.
+The universal connector uses plug-ins to connect the different data sources to Guardium.
+Below are all the available plug-ins, which are pre-developed and ready for use.
 
 Our latest product version for Guardium Data Protection is [11.5](../docs/Guardium%20Data%20Protection)
 
 Our latest product version for Guardium Insights is [3.2.x](../docs/Guardium%20Insights/3.2.x/Plugins_management.md)
 ## Supported data sources
-The following list is supported by the latest versions.
-In cases of other versions, please refer to the supported versions inside the plug-in.
+The following plug-ins are supported by the latest versions. Exceptions are noted next to each plug-in name.
+To see if a particular plug-in is supported by older versions, please refer to the "supported versions" section inside each plug-in page.
+
 * [Amazon DynamoDB](../filter-plugin/logstash-filter-dynamodb-guardium/README.md)
 * [Amazon Redshift](../filter-plugin/logstash-filter-redshift-aws-guardium/README.md) (soon: GI 3.3)
 * [Amazon RDS for MySQL](../filter-plugin/logstash-filter-mysql-aws-guardium/README.md)
