@@ -27,7 +27,7 @@ public class ParserHelperTest {
 		event.setField(ApplicationConstant.DBNAMEPREFIX_KEY, "979326520502:database-mariadbtest:Connector");
 		event.setField(ApplicationConstant.USERNAME_KEY, "admin");
 		event.setField(ApplicationConstantTest.RETCODE_KEY, "0");
-		event.setField(ApplicationConstantTest.OBJECT_KEY, "'show tables'");
+		event.setField(ApplicationConstantTest.OBJECT_KEY, "show tables");
 		event.setField(ApplicationConstantTest.HOSTNAME_KEY, "localhost");
 		event.setField(ApplicationConstant.SERVERHOSTNAMEPREFIX_KEY, "979326520502-database-mariadbtest");
 		event.setField(ApplicationConstantTest.OPERATION_KEY, "QUERY");
@@ -109,7 +109,7 @@ public class ParserHelperTest {
 		assertEquals("", actualResponse.getClientHostName());
 		assertEquals("979326520502-database-mariadbtest.aws.com", actualResponse.getServerHostName());
 		assertEquals(ApplicationConstantTest.USERNAME_VALUE, actualResponse.getDbUser());
-		assertEquals(ApplicationConstant.SOURCEPROGRAM_VALUE, actualResponse.getSourceProgram());
+		assertEquals("", actualResponse.getSourceProgram());
 
 	}
 
@@ -123,7 +123,7 @@ public class ParserHelperTest {
 		Accessor actualResponse = ParserHelper.parseAccessor(event, record);
 		assertNotNull(actualResponse);
 		assertEquals("", actualResponse.getClientHostName());
-		assertEquals("", actualResponse.getServerHostName());
+		assertEquals("mariaDB.aws.com", actualResponse.getServerHostName());
 		assertEquals("NA", actualResponse.getDbUser());
 	}
 
@@ -223,7 +223,7 @@ public class ParserHelperTest {
 	@Test
 	public void parseDataTest() throws Exception {
 		Event event = new org.logstash.Event();
-		event.setField(ApplicationConstantTest.OBJECT_KEY, "'CREATE USER foo2@test1 IDENTIFIED BY *****'");
+		event.setField(ApplicationConstantTest.OBJECT_KEY, "CREATE USER foo2@test1 IDENTIFIED BY *****");
 		Data actualResponse = ParserHelper.parseData(event);
 		assertNotNull(actualResponse);
 		assertEquals("CREATE USER foo2@test1 IDENTIFIED BY xxxxx", actualResponse.getOriginalSqlCommand());
