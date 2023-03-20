@@ -5,7 +5,7 @@ Below all the available plug-ins which are pre-developed and ready for use.
 Our latest product version for Guardium Data Protection is [11.5](../docs/Guardium%20Data%20Protection)
 
 Our latest product version for Guardium Insights is [3.2.x](../docs/Guardium%20Insights/3.2.x/Plugins_management.md)
-## Supported Datasources
+## Supported data sources
 The following list is supported by the latest versions.
 In case of other version, please refer the supported versions inside the plug-in.
 * [Amazon DynamoDB](../filter-plugin/logstash-filter-dynamodb-guardium/README.md)
