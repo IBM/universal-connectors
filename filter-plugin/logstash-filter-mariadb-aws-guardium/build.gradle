@@ -9,7 +9,7 @@ apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 // ===========================================================================
 group                      'com.ibm.guardium.awsmariadb' // must match the package of the main plugin class
 version                    "${file("VERSION").text.trim()}" // read from required VERSION file
-description                = "AWSMariaDB-Guardium filter plugin"
+description                = "MariaDB on Amazon RDS-Guardium filter plugin"
 pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
 pluginInfo.longDescription = "This gem is a Logstash AWSMariadb filter plugin required to be installed as part of IBM Security Guardium, Guardium Univer***REMOVED***l connector configuration. This gem is not a stand-alone program."
 pluginInfo.authors         = ['IBM', '', '']

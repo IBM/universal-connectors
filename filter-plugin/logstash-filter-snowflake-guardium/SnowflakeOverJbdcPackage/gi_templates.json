@@ -1,0 +1,102 @@
+{
+  "plugin_name": "Snowflake over JDBC",
+  "help_link": "https://github.com/infoinsights/guardium-snowflake-uc-filter/blob/main/README.md",
+  "input_name": "JDBC_input",
+  "input_parameters": [
+    {
+      "jdbc_connection_string": {
+        "type": "text",
+        "label": "jdbc_connection_string"
+      },
+      "jdbc_password": {
+        "type": "password",
+        "label": "jdbc_password"
+      },
+      "jdbc_validate_connection": {
+        "type": "boolean",
+        "default": true,
+        "hidden": true
+      },
+      "jdbc_driver_class": {
+        "type": "text",
+        "default": "Java::net.snowflake.client.jdbc.SnowflakeDriver",
+        "hidden": true
+      },
+      "jdbc_driver_library": {
+        "type": "text",
+        "default": "/usr/share/logstash/logstash-core/lib/jars/snowflake-jdbc.jar",
+        "hidden": true
+      },
+      "record_last_run": {
+        "type": "boolean",
+        "default": true,
+        "hidden": true
+      },
+      "schedule": {
+        "type": "text",
+        "default": "* * * * *",
+        "hidden": true
+      },
+      "use_column_value": {
+        "type": "boolean",
+        "default": true,
+        "hidden": true
+      },
+      "tracking_column": {
+        "type": "text",
+        "default": "end_time",
+        "hidden": true
+      },
+      "plugin_timezone": {
+        "type": "text",
+        "default": "local",
+        "hidden": true
+      },
+      "enrollmentId": {
+        "type": "text",
+        "default": "NULL",
+        "hidden": true
+      },
+      "account_id": {
+        "type": "text",
+        "default": "NULL",
+        "hidden": true
+      },
+      "server_name": {
+        "type": "text",
+        "default": "NULL",
+        "hidden": true
+      },
+      "tracking_column_type": {
+        "type": "text",
+        "default": "timestamp",
+        "hidden": true
+      },
+      "server_host_name": {
+        "type": "text",
+        "label": "Server hostname (<id>.<region>.<provider>.snowflakecomputing.com)"
+      },
+      "statement": {
+        "type": "text",
+        "label": "Statement"
+      },
+      "type": {
+        "type": "text",
+        "default": "Snowflake",
+        "hidden": true
+      }
+    }
+  ],
+  "third_parties" : ["snowflake-jdbc.jar"],
+  "filter_name": "Guardium_Snowflake_filter",
+  "filter_parameters": [],
+  "auth_parameters": [
+    {
+      "guc_input_param_jdbc_user": {
+        "type": "text",
+        "label": "jdbc_user"
+      }
+    }
+  ],
+  "supported_platforms": ["on-premise", "Cloud"]
+}
