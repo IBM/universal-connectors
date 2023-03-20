@@ -1,0 +1,15 @@
+{
+	"name": "Guardium_Snowflake_filter",
+	"alias": "Snowflake",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"Snowflake","supportedVersions": ["1.0"]}],
+	"supported_input_plugins": ["JDBC_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Snowflake plugin test",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/infoinsights/guardium-snowflake-uc-filter/blob/main/README.md",
+	"third_parties" : ["snowflake-jdbc.jar"]
+}

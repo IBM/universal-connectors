@@ -124,9 +124,9 @@ public class ParserHelper {
 	public static Accessor parseAccessor(final Event event, final Record record) {
 		Accessor accessor = new Accessor();
 		try {
-			accessor.setServerHostName(event.getField(ApplicationConstant.SERVERHOSTNAMEPREFIX_KEY) != null
+			accessor.setServerHostName(event.getField(ApplicationConstant.SERVERHOSTNAMEPREFIX_KEY) != null && !event.getField(ApplicationConstant.SERVERHOSTNAMEPREFIX_KEY).toString().trim().isEmpty() 
 					? event.getField(ApplicationConstant.SERVERHOSTNAMEPREFIX_KEY).toString() + ".aws.com"
-					: ApplicationConstant.UNKNOWN_STRING);
+					: "mariaDB.aws.com");
 			accessor.setClientHostName(event.getField(ApplicationConstant.HOSTNAME_KEY) != null
 					&& event.getField(ApplicationConstant.HOSTNAME_KEY).toString().contains("localhost")
 							? event.getField(ApplicationConstant.HOSTNAME_KEY).toString()
@@ -282,11 +282,7 @@ public class ParserHelper {
 		if (event.getField(ApplicationConstant.OBJECT_KEY) != null
 				&& event.getField(ApplicationConstant.OBJECT_KEY).toString().trim() != "") {
 			builder = new StringBuilder(event.getField(ApplicationConstant.OBJECT_KEY).toString().trim());
-			builder.deleteCharAt(builder.length() - 1).deleteCharAt(0);
-
-			fullSql = builder.toString().replaceAll("\n|\r", " ").replaceAll("\\\\'", "'")
-					.replaceAll("\\\\n|\\\\r", " ").replaceAll("\\\\t", "").replaceAll("\\\\", "");
-
+			fullSql = builder.toString().replaceAll("\\\\n","\n").replaceAll("\\\\r", "\r").replaceAll("\\\\t", "\t").replaceAll("\\\\'", "'").replaceAll("\\\\", "");
 			// Check for create user Query - Need to replace the '*' with 'x'.
 			Pattern createUserPattern = Pattern.compile("^create|^alter\\s+user", Pattern.CASE_INSENSITIVE);
 			Matcher matcher = createUserPattern.matcher(fullSql);
