@@ -41,7 +41,7 @@ class ParserTest {
 		assertNotNull(record);
 		assertEquals("", record.getAppUserName());
 		assertEquals("fruits", record.getDbName());
-		assertEquals("36fa3c0487",record.getSessionId());
+		assertEquals("234282622",record.getSessionId());
 		assertEquals(1645426990759L,record.getTime().getTimstamp());
 	}
 	
@@ -75,8 +75,8 @@ class ParserTest {
 		Event event = new org.logstash.Event();
 		event.setField(ApplicationConstant.USER_NAME, "sravanthi");
 		event.setField(ApplicationConstant.DB_NAME, "fruits");
-		event.setField(Parser.SERVER_TYPE_STRING, "CouchDB");
-		event.setField(Parser.DATA_PROTOCOL, "CouchDB");
+		event.setField(ApplicationConstant.SERVER_TYPE_STRING, "CouchDB");
+		event.setField(ApplicationConstant.DATA_PROTOCOL, "CouchDB");
 		event.setField(ApplicationConstant.SERVER_IP, "172.31.12.122");
 		event.setField(ApplicationConstant.SERVER_HOSTNAME, "ip-172-31-12-122");
 		final Accessor accessor = Parser.parseAccessor(event);
