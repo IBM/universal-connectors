@@ -9,4 +9,4 @@ Please refer to [Managing plug-ins](../../../docs/Guardium%20Insights/3.2.x/Plug
 
 Once the plug-in is installed you can [create a new connection](../../../docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md). 
 
-The connection initialization can take few minutes, to monitor the current status of connection and the latest traffic click [here](../../../docs/Guardium%20Insights/3.2.x/monitoring_GI.MD).
+The connection initialization can take few minutes. To monitor the current status of connection and the latest traffic, click [here](../../../docs/Guardium%20Insights/3.2.x/monitoring_GI.MD).
