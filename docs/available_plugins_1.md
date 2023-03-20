@@ -1,5 +1,5 @@
 # Available Plug-ins
-Universal Connector uses plug-ins to connect the different datasources to Guardium. 
+The universal connector uses plug-ins to connect the different data sources to Guardium. 
 Below are all the available plug-ins, which are pre-developed and ready for use.
 
 Our latest product version for Guardium Data Protection is [11.5](../docs/Guardium%20Data%20Protection)
