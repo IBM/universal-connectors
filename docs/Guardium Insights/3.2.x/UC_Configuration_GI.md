@@ -10,16 +10,15 @@ Each data source type has a specific plug-in that filters and parses the events 
 
 The univer***REMOVED***l connector configuration has a few parts, all described in this task:
 
-*   Uploading a plug-in that configures the filter or parser to convert the data source events to a standard Guardium format
 *   Configuring the connection between Guardium Insights and the data source
 *   Downloading the certificate (when using Filebeat input type)
 
 ## Procedure
 
 
-1. Click **Connections** in the **Settings** menu.
+1. Click `Connections` in the `Settings` menu.
     
-2.  Click **Add connection.**  The Connect to new data source page opens, with a card for each available data source type.
+2.  Click `Add connection`. The Connect to new data source page opens, with a card for each available data source type.
     
 3.  Select the data source type. This opens a panel that aids you in initiating the connection.
     
@@ -48,27 +47,16 @@ The univer***REMOVED***l connector configuration has a few parts, all described 
     e. Follow the instructions according to the input plug-in type you selected in <em>**step c**</em>.
     
  ## Filebeat input plug-in configuration
-Prerequisite: 
-
-On the data source server, create a **certificate authority** for Filebeat.
-This CA will be used later to create a certificate for signing the events from Filebeat to the univer***REMOVED***l connector.
-
-Run this command:
-```openssl req -x509 -sha256 -days 356 -nodes -newkey r***REMOVED***:2048 -subj "/CN=filebeat.lan/C=IL" -keyout filebeatCA.key -out filebeatCA.crt``` 
-
-Then, copy `filebeatCA.crt` to your local system.
 
 1. In the Additional info page, enter a **Data source tag**: This tag uniquely identifies the incoming Filebeat stream. This tag will be added later to filebeat configuration so filebeat will tag every event with this tag. For example, specify `any-mongodb` in this field.
-      
-2. Click on **upload certificates authorities** button and select the authority created in the prerequisites: `filebeatCA.crt`. You can specify multiple authorities from your local system if needed. The UC will process an event only if its certificate is signed by one the specified authorities. 
 
-3. Click **Configure**.
+2. Click **Configure**.
         
-4.  In the Configuration notes page, click **Download certificate** to download the UC certificate authority to your local system. Copy the certificate to the data source (will be added to filebeat configuration later). All data sources of any one specific type use the ***REMOVED***me certificate.
+3. In the `Configuration notes` page, click `Download certificate` to download the UC certificate authority to your local system. Copy the certificate to the data source (it will be added to filebeat configuration later). All data sources of any one specific type use the ***REMOVED***me certificate.
         
-5.  Click **Done**.
+4. Click `Done`.
        
-6. To configure the data source to communicate with Guardium Insights, follow the instructions in the last section on this page: Configuring Filebeat to forward audit logs to Guardium.  Copy the hostname in the Configuration Notes to configure the host in the filebeat.yml file on your datasource.
+5. To configure the data source to communicate with Guardium Insights, follow the instructions in the last section on this page: Configuring Filebeat to forward audit logs to Guardium.  Copy the hostname in the Configuration Notes to configure the host in the filebeat.yml file on your datasource.
         
  ## CloudWatch input plug-in configuration
         
@@ -95,9 +83,8 @@ Then, copy `filebeatCA.crt` to your local system.
     
   ## Procedure
 prerequisites:
-* On the data source server there is a **certificate authority** (filebeatCA key and certificate).
-* A connection was added by the steps in the section: [Filebeat input plug-in configuration](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/UC_Configuration_GI.md#filebeat-input-plug-in-configuration). 
-In the configuration notes there are `data source tag`, `host` and `UC certificate authority` that are used in these steps. 
+* A connection was added by the steps in the [Filebeat input plug-in configuration](#filebeat-input-plug-in-configuration) section.
+Refer to the `Configuration notes` page for the `data source tag` and `host` to be used in these steps.
 
 
 1.  Open the Filebeat Configuration. (filebeat.yml). usually located in `/etc/filebeat/filebeat.yml`.
@@ -109,74 +96,17 @@ In the configuration notes there are `data source tag`, `host` and `UC certifica
     # The Logstash hosts
     hosts: ["<hostname-URL>:443"]
     ```
-**NOTE**: In GI, whenever using plug-ins that are based on Filebeat as a data shipper, the configured port should be 443. Guardium Insights will map this to an internal port
+    **NOTE**: In GI, whenever using plug-ins that are based on Filebeat as a data shipper, the configured port should be 443. Guardium Insights will map this to an internal port
 
-4. Configure mTLS - Logstash to Filebeat:
-   1. Download the SSL certificate (`UC certificate authority`) from Guardium Insights and upload it to the machine where Filebeat is.
+4. Configure TLS - UC to the data source:
+   1. Download the SSL certificate (`UC certificate authority`) from Guardium Insights and upload it to the datasource server.
    2. Copy the location of the downloaded certificate and enter it as the certificate authority.
     ```
     # List of root certificates for HTTPS server verifications
     ssl.certificate_authorities: ["/etc/pki/ca-trust/GuardiumInsightsCA.pem"]
     ```
-5. Configure mTLS - Filebeat to Logstash:
-   1. Create a Filebeat certificate:
    
-       a. Create a private key: 
-       ```
-       openssl genr***REMOVED*** -out filebeat.key 2048 
-       ```
-       b. Convert private key to pkc8
-       ```
-       openssl pkcs8 -in filebeat.key -topk8 -out filebeat-pkcs8.key -nocrypt
-       ```
-       c. Create a certificate request file.
-       
-      First create filebeat-csr.conf file with
-       ```
-       [ req ]
-       default_bits = 2048
-       prompt = no
-       default_md = sha256
-       req_extensions = req_ext
-       distinguished_name = dn
-    
-       [ dn ]
-       C = IL
-       CN = filebeat.lan
-    
-       [ req_ext ]
-       subjectAltName = @alt_names
-    
-       [ alt_names ]
-       DNS.1 = <SERVER DNS>
-       ```
-       d. Now generate the certificate request file:
-       ```
-       openssl req -new -key filebeat.key -out filebeat.csr -config filebeat-csr.conf
-       ```
-       e. Generate certificate from csr file and CA 
-          Create certificate configuration file (filebeat-cert.conf) like
-       ```
-       authorityKeyIdentifier=keyid,issuer
-       basicConstraints=CA:FALSE
-       keyU***REMOVED***ge = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
-       subjectAltName = @alt_names
-    
-       [alt_names]
-       DNS.1 = <SERVER DNS>
-       ```
-       f. Now generate the certificate
-       ```
-       openssl x509 -req -in filebeat.csr -CA filebeatCA.crt -CAkey filebeatCA.key -CAcreateserial -out filebeat.crt -days 365 -sha256 -extfile filebeat-cert.conf
-       ```
-   2. Locate the `output.logstash` section and add an entry for the certificate:
-      ```
-       ssl.certificate: "<PATH TO>/filebeat.crt"
-       ssl.key: "<PATH TO>/filebeat-pkcs8.key"
-       ```
-
-Summary: 
-
+   Summary:
    ```
    tags: ["any-mongodb"]
    
@@ -184,15 +114,11 @@ Summary:
      # The Logstash hosts
      hosts: ["<hostname-URL>:443"]
      # List of root certificates for HTTPS server verifications
-     ssl.certificate_authorities: ["/etc/pki/ca-trust/GuardiumInsightsCA.pem"]
-     # Certificate for SSL client authentication
-     ssl.certificate: "/etc/pki/certs/filebeat.crt"
-     # Certificate key for SSL client authentication
-     ssl.key: "/etc/pki/certs/filebeat-pkcs8.key"
+     ssl.certificate_authorities: ["<path-to-UC-CA>/GuardiumInsightsCA.pem"]
    ```
     
-6.  Restart Filebeat to effect these changes
+5.  Restart Filebeat to apply these changes
     
     Linux: Run the command: `sudo service filebeat restart`
     
-7. Windows: Restart in the Services window
+6. Windows: Restart in the `Services` window
