@@ -1,7 +1,7 @@
 # Guardium Insights 3.2.x
 The Univer***REMOVED***l Connector uses plug-in to the datasource server.
 
-There are [available plugins](../../../docs/available_plugins.md) that are ready for connecting the datasource to Guardium Insights.
+There are [available plugins](../../../docs/available_plugins.md) that are ready for connecting the data source to Guardium Insights.
 
 In case that the requested datasource isn't available, please refer [how to develop plug-in](../../../docs/Guardium%20Insights/3.2.x/developing_plugins_gi.md).
 
