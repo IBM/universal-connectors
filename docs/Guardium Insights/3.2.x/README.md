@@ -5,7 +5,7 @@ There are [available plugins](../../../docs/available_plugins.md) that are ready
 
 In cases where the requested data source isn't available, please refer tp [Developing a plug-in](../../../docs/Guardium%20Insights/3.2.x/developing_plugins_gi.md).
 
-Please refer [how to manage plug-ins](../../../docs/Guardium%20Insights/3.2.x/Plugins_management.md) to make sure the needed plug-in is installed before configuring a new Univer***REMOVED***l Connector.
+Please refer to [Managing plug-ins](../../../docs/Guardium%20Insights/3.2.x/Plugins_management.md) to make sure the required plug-in is installed before configuring a new univer***REMOVED***l connector.
 
 Once the plug-in is installed you can [create a new connection](../../../docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md). 
 
