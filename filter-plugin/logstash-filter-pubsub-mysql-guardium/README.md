@@ -1,4 +1,10 @@
 # Logstash Filter PubSub MySQL Plugin
+### Meet PubSub MySQL
+* Tested versions: 8.0
+* Environment: Google Cloud Platform (GCP)
+* Supported inputs: Pub/Sub (pull)
+* Supported Guardium versions:
+    * Guardium Data Protection: 11.4 and above
 
 This is a Logstash filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses a GCP (Google Cloud Platform) audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
 Generated with Logstash v7.15.0.
@@ -24,7 +30,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 
 ### Prerequisites
-Download the [Logstash Offline package](PubSubMySQLPackage/logstash-offline-plugins-filter-pubsub-mysql-guardium.zip) that includes both the Logstash Google PubSub input plugin and the MySQL PubSub filter plugin, and upload it to the gmachine.
+Download the [Logstash Offline package](../../filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-offline-plugins-filter-pubsub-mysql-guardium-3.0.3.zip) that includes both the Logstash Google PubSub input plugin and the MySQL PubSub filter plugin, and upload it to the gmachine.
 #### Note
 This version is compliant with GDP v11.4 and above. Please refer to the
 [input plugin's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
