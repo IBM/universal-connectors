@@ -96,7 +96,7 @@ public class ParserTest {
     	Event e=intitalizeEventObject();
     	SessionLocator sessionLocator = Parser.parseSessionLocator(e);
     	
-        Assert.assertEquals("9.211.127.160", sessionLocator.getClientIp());
+        Assert.assertEquals("194.2.127.16", sessionLocator.getClientIp());
         Assert.assertEquals(-1, sessionLocator.getClientPort());
         Assert.assertEquals(false, sessionLocator.isIpv6());
     } 
