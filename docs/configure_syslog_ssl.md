@@ -1,6 +1,6 @@
 # Configuring SSL with syslog
 
-Syslog for universal connector is based on Logstash's tcp input plug-in. In order to enable TCP with SSL, first use the API to generate an SSL certificate. Then, modify the Filebeat configuration file on the MongoDB server with the certificate details and update the connector configuration on the collector.
+Syslog for universal connector is based on Logstash's tcp input plug-in. In order to enable TCP with SSL, first use the API to generate an SSL certificate. Then, modify the rsyslog configuration file on the database server (MySQL or MongoDB) with the certificate details and update the connector configuration on the collector.
 
 ## Procedure
 1.	Generate the certificate. On the collector, run the API
@@ -17,7 +17,7 @@ Syslog for universal connector is based on Logstash's tcp input plug-in. In orde
 
        Create the file with a name, for example ```logstash.crt```, and save it in the database server where rsyslog is installed, for example, in ```/usr/local/etc/``` (depends on the operating system).
 
-3.	Add the certificate file path to the rsyslog configuration file rsyslog.conf (```/usr/local/etc/rsyslog.conf``` for example) on the database server:
+3.	Add the certificate file path to the rsyslog configuration file rsyslog.conf (```/usr/local/etc/rsyslog.conf``` for example) on the database server (example below is with MongoDB):
 
                       ```
                       # make gtls driver the default and set certificate files
@@ -69,8 +69,8 @@ Syslog for universal connector is based on Logstash's tcp input plug-in. In orde
 
      Where ```/path/to``` is the path to the certificate file that was copied to the database server in step 2.
 
-4. Enable UC and add a connector with MongoDB with Syslog template from dropdown menu
-5. Configure the input section to receive MongoDB events over Syslog for example (same is applied to MySQL over syslog) with the same port configured in the rsyslog config file above.
+4. Enable UC and add a connector with MongoDB (MySQL) with Syslog template from dropdown menu
+5. Configure the input section to receive MongoDB (MySQL) events over Syslog for example with the same port configured in the rsyslog config file above. Example with MongoDB:
 
   ```
        tcp {
@@ -87,7 +87,7 @@ Syslog for universal connector is based on Logstash's tcp input plug-in. In orde
 
      a.	On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```
 
-     b.	Click the plus icon, type a name, and select the ```MongoDB using Filebeat``` connector template.
+     b.	Click the plus icon, type a name, and select the ```MongoDB using Syslog``` or  ```MySQL using Syslog``` connector template.
 
      c.	Under input configuration, locate the line:
 
