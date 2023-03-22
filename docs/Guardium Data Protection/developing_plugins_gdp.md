@@ -47,7 +47,7 @@ The easiest way to get started is to use Syslog, since it comes preinstalled in 
 
 Not all DBs allow sending their logs to Syslog, like MysQL, so you might need to configure Syslog to read the log from a file, by using ```$InputFileName /....```.
 
- The Syslog configuration file is usually located in``` /etc/rsyslog.conf.```.
+ The Syslog configuration file is usually located in``` /etc/rsyslog.conf.```
 
 To configure Syslog to send the audit logs to the Guardium Univer***REMOVED***l Connector:
 
