@@ -75,7 +75,6 @@ Syslog for univer***REMOVED***l connector is based on Logstash's tcp input plug-
   ```
        tcp {
             port => 5001 type => "syslog-mongodb" dns_reverse_lookup_enabled => false
-            # For SSL over syslog, uncomment the following lines after generating a SSL key and a certificate using GuardAPI (see documentation), copy the public certificate to your data source and adjust the rsyslog configuration:
             ssl_enable => true
             ssl_cert => "${SSL_DIR}/app.crt"
             ssl_key => "${SSL_DIR}/app.key"
@@ -92,7 +91,7 @@ Syslog for univer***REMOVED***l connector is based on Logstash's tcp input plug-
 
      c.	Under input configuration, locate the line:
 
-      	# For SSL over Filebeat, uncomment the following lines after generating a SSL key and a certificate using GuardAPI (see documentation), copy the public certificate to your data source and adjust Filebeat configuration:
+       # For SSL over syslog, uncomment the following lines after generating a SSL key and a certificate using GuardAPI (see documentation), copy the public certificate to your data source and adjust the rsyslog configuration:
 
     Uncomment the next three lines, and add the certificate location:
 ```
