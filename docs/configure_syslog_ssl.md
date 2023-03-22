@@ -96,8 +96,8 @@ Syslog for univer***REMOVED***l connector is based on Logstash's tcp input plug-
     Uncomment the next three lines, and add the certificate location:
 ```
     ssl => true
-	ssl_certificate => "${SSL_DIR}/logstash-syslog.crt"
-	ssl_key => "${SSL_DIR}/logstash-syslog.key"
+	ssl_certificate => "${SSL_DIR}/syslog.crt"
+	ssl_key => "${SSL_DIR}/syslog.key"
   ```
   d.	Click ```Save```.
 
