@@ -25,4 +25,8 @@ public interface ApplicationConstant {
 	public static final String SERVER_HOSTNAME = "server_host";	
 	public static final String LANGUAGE = "COUCH";
 	public static final String SERVER_PORT = "server_port";
+	public static final String EXCEPTION_TYPE_AUTHENTICATION_STRING = "LOGIN_FAILED";
+	public static final String EXCEPTION_TYPE_AUTHORIZATION_STRING = "SQL_ERROR";
+	public static final String DATA_PROTOCOL = "CouchDB";
+	public static final String SERVER_TYPE_STRING = "CouchDB";
 }

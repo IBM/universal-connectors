@@ -17,6 +17,7 @@ pluginInfo.homepage        = "https://github.com/IBM/universal-connectors"
 pluginInfo.pluginType      = "filter"
 pluginInfo.pluginClass     = "GuardiumSnowflakeFilter"
 pluginInfo.pluginName      = "guardium_snowflake_filter" // must match the @LogstashPlugin annotation in the main plugin class
+pluginInfo.email           = ""
 // ===========================================================================
 
 sourceCompatibility = 1.8
@@ -61,12 +62,12 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.7'
     compile 'com.google.code.gson:gson:2.8.8'
     compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
-    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
+    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.jruby:jruby-complete:9.2.7.0'
 
-    testCompile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
+    testCompile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 }
 
 clean {
