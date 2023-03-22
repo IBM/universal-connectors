@@ -15,7 +15,7 @@ grdapi add_domain_to_univer***REMOVED***l_connector_allowed_domains domain=amazo
 
 To configure DynamoDB and send logs to CloudWatch, follow these steps:
 
- - Configure the service for DynamoDB in AWS
+ - Configure the service for DynamoDB in AWS 
 
  - Enable logging through CloudTrail
 
