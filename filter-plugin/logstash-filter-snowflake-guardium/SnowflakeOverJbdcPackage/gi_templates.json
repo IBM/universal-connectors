@@ -8,10 +8,6 @@
         "type": "text",
         "label": "jdbc_connection_string"
       },
-      "jdbc_password": {
-        "type": "password",
-        "label": "jdbc_password"
-      },
       "jdbc_validate_connection": {
         "type": "boolean",
         "default": true,
@@ -84,6 +80,15 @@
         "type": "text",
         "default": "Snowflake",
         "hidden": true
+      }
+    }
+  ],
+  "credentials": [
+    {
+      "jdbc_password": {
+        "type": "password",
+        "label": "password"
+
       }
     }
   ],
