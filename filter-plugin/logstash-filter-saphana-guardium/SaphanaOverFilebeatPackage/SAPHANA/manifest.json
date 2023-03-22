@@ -1,10 +1,10 @@
 {
-	"name": "Guardium_SAPHANA_filter",
+	"name": "Guardium_SAPHANA_Filebeat_filter",
 	"alias": "SAPHANA",
 	"type": "filter",
 	"pipeline_type":"push",
   "plugin_version": "1.0.0",
-	"datasourceTypes": [{"type":"SAP Hana","supportedVersions": ["2.00.033.00.20180925.2"]}],
+	"datasourceTypes": [{"type":"SAP Hana over Filebeat","supportedVersions": ["2.00.033.00.20180925.2"]}],
 	"supported_input_plugins": ["Filebeat_input"],
 	"developer": "IBM",
 	"license": "Apache2.0",

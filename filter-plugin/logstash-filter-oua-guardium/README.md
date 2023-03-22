@@ -1,4 +1,10 @@
 # Oracle Unified Audit Universal Connector
+### Meet Oracle Unified Audit
+* Tested versions: 18,19
+* Environment: On-prem, RDS
+* Supported inputs: Oracle Unified Audit (pull)
+* Supported Guardium versions:
+   * Guardium Data Protection: 11.4 and above
 
 ## Requirements
 
