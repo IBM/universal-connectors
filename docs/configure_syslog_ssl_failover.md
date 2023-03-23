@@ -76,7 +76,7 @@ if($programname contains "mongod") then {
 ```
 
 
-4. Enable UC and add a connector with MongoDB (MySQL) with Syslog template from dropdown menu
+4. Enable the univer***REMOVED***l connector and add a connector with MongoDB (MySQL) with Syslog template from the drop-down menu.
 5. Configure the input section to receive MongoDB (MySQL) events over Syslog for example with the ***REMOVED***me port configured in the rsyslog config file above. Example with MongoDB:
 
   ```
