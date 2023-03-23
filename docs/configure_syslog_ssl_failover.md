@@ -15,7 +15,7 @@ Syslog for universal connector is based on Logstash's TCP input plug-in. In orde
 
 2.	Copy the certificate from the console output in step 1 (including ```Begin``` and ```End```) to a new certificate file.
 
-       Create the file with a name, for example ```logstash.crt```, and save it in the database server where rsyslog is installed, for example, in ```/usr/local/etc/``` (depends on the operating system).
+       Create the file with a name, for example ```logstash.crt```, and save it in the database server where rsyslog is installed. For example, in ```/usr/local/etc/``` (this varies per operating system).
 
 3.	Add the certificate file path to the rsyslog configuration file rsyslog.conf (```/usr/local/etc/rsyslog.conf``` for example) on the database server (example below is with MongoDB):
       ```
