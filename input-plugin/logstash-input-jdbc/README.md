@@ -118,7 +118,7 @@ SELECT <parameters> FROM <Audit_tables> WHERE (session_id % 2 = 0) <tracking_col
 
 **Note:** this will prevent deduplication completely when there are 2 pods in the set.
 
-**Note:** since all configurations are equal for all pods per Connection added, there's no option to enable failover
+**Note:** since all configurations are equal for all pods per connection added, there's no option to enable failover
 
 ### Guardium Data Protection
 
