@@ -1,6 +1,6 @@
 # Configuring SSL with syslog
 
-Syslog for universal connector is based on Logstash's tcp input plug-in. In order to enable TCP with SSL, first use the API to generate an SSL certificate. Then, modify the rsyslog configuration file on the database server (MySQL or MongoDB) with the certificate details and update the connector configuration on the collector.
+Syslog for universal connector is based on Logstash's TCP input plug-in. In order to enable TCP with SSL, first use the API to generate an SSL certificate. Then, modify the rsyslog configuration file on the database server (MySQL or MongoDB) with the certificate details and update the connector configuration on the collector.
 
 ## Procedure
 1.	Generate the certificate. On the collector, run the API
