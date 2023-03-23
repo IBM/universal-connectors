@@ -1,26 +1,22 @@
 # Developing new plug-ins for Guardium Insights 
 
- ## Packaging Guardium Insights Univer***REMOVED***l Connector plug-ins
+ ## Packaging Guardium Insights univer***REMOVED***l connector plug-ins
 
 ***Note: Pre-packaged plug-ins can be downloaded from [here](https://github.com/IBM/univer***REMOVED***l-connectors/releases)***
 
-1) **Clone univer***REMOVED***l-connectors project**: git clone https://github.com/IBM/univer***REMOVED***l-connectors.git
+1) Clone the univer***REMOVED***l-connectors project: git clone https://github.com/IBM/univer***REMOVED***l-connectors.git
 
-2) **Enter univer***REMOVED***l-connector project folder**: cd /path/to/univer***REMOVED***l-connectors
+2) Enter the univer***REMOVED***l-connector project folder: cd /path/to/univer***REMOVED***l-connectors
 
-3) **Run packagePluginsForGuardiumInsights.sh script**: sh packagePluginsForGuardiumInsights.sh
+3) Run the packagePluginsForGuardiumInsights.sh script: sh packagePluginsForGuardiumInsights.sh
 
-4) **Find required plug-ins in packagedPlugins**: ls packagedPlugins
+4) Find the required plug-ins in packagedPlugins: ls packagedPlugins
 
-#### Creating custom Univer***REMOVED***l Connector plug-ins
-- [Configuring native audit on the data source](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-configuring-native-audit-data-source)
-- [Developing a filter plug-in](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-developing-filter-plug-in)
-- [Create](https://www.elastic.co/guide/en/logstash/current/input-new-plugin.html) or use an [existing (recommended)](https://www.elastic.co/guide/en/logstash/current/input-plugins.html) input plugin
-- [Testing a filter plug-in in a development environment](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-testing-filter-in-dev-environment)
-- [Installing and testing the filter or input plug-in on a staging Guardium system](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system)
-- [Publishing your plug-in](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-publishing-your-plug-in); see also [Contributing](#Contributing) section, below
+## Creating custom univer***REMOVED***l connector plug-ins
 
-Then, to make package a plug-in that is suitable for Guardium Insights, you also need to include additional files, in this structure: 
+First, follow the steps in [Developing a plug-in for Guardium Data Protection](../../Guardium%20Data%20Protection/developing_plugins_gdp.md)
+
+Then, to package a plug-in that is suitable for Guardium Insights, you also need to include additional files, in this structure: 
 
     datasourceManifest.json
     config.json
