@@ -122,7 +122,7 @@ SELECT <parameters> FROM <Audit_tables> WHERE (session_id % 2 = 0) <tracking_col
 
 ### Guardium Data Protection
 
-To enable Load Balancing, set a _`weight`_ property and to enable failover, set a _`priority`_ property as in the following jdbc_connection_string URL:
+To enable load balancing, set a _`weight`_ property. To enable failover, set a _`priority`_ property as in the following jdbc_connection_string URL:
 
 ```
 jdbc_connection_string => "jdbc:sqlserver://[serverName[\instanceName][:portNumber]];weight=<NUM>;priority=<PRIO>;databaseName=<db_name>;user=<usr_name>;password=<pwd>!;"
