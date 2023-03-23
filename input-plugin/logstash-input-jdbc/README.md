@@ -18,7 +18,7 @@ Specify the "Select" query with the required parameters, to pull the Events from
 ## U***REMOVED***ge:
 
 ### Parameters:
-	
+
 | Parameter | Input Type | Required | Default |
 |-----------|------------|----------|---------|
 | jdbc_driver_class  | String | Yes |   |
@@ -99,9 +99,38 @@ Other standard logstash parameters are available such as:
 		}
 	}
 
-## JDBC Load Balancing Configuration
+## JDBC Load Balancing and Failover Configuration
 
-In JDBC input plug-ins , we distribute load between two machines based on even and odd sessionIds or any other Primary Key of the Audit Table.
+### Guardium Insights
+
+To enable Load Balancing, set a _`weight`_ property to 1 in the `jdbc_connection_string` field URL as seen below:
+
+```
+jdbc_connection_string => "jdbc:sqlserver://[serverName[\instanceName][:portNumber]];weight=1;databaseName=<db_name>;user=<usr_name>;password=<pwd>!;"
+```
+	
+Add the following condition to the query encoded in the `statement` field to the `WHERE` clause:
+
+
+```
+SELECT <parameters> FROM <Audit_tables> WHERE (session_id % 2 = 0) <tracking_column> > :sql_last_value;
+```
+
+**Note:** this will prevent deduplication completely when there are 2 pods in the set.
+
+**Note:** since all configurations are equal for all pods per connection added, there's no option to enable failover
+
+### Guardium Data Protection
+
+To enable load balancing, set a _`weight`_ property. To enable failover, set a _`priority`_ property as in the following jdbc_connection_string URL:
+
+```
+jdbc_connection_string => "jdbc:sqlserver://[serverName[\instanceName][:portNumber]];weight=<NUM>;priority=<PRIO>;databaseName=<db_name>;user=<usr_name>;password=<pwd>!;"
+```
+
+`priority` - this parameter is the priority of the target host. A lower value indicates a more preferred priority. The range is 0 to 65535.
+
+`weight` - this parameter is a relative weight between 0 and 65535 for records with the ***REMOVED***me priority.
 
 ### Procedure
 
