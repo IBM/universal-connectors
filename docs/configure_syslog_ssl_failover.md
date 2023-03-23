@@ -49,7 +49,7 @@ Where `/path/to` is the path to the certificate file that was copied to the data
 
 **Note:** `/path/to/mongo_audit_rsyslog_buffer_file` is the path defined in mongod.conf for routing audit logs
 
-**Note:** more `ruleset`s can be added specifying more collectors if failover is required. Otherwise, the there will be event duplication.
+**Note:** more `ruleset`s can be added specifying more collectors if failover is required. Otherwise, there will be event duplication.
 
 ### Example with failover enabled:
 
