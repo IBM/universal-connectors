@@ -1,8 +1,8 @@
 # Managing and Installing Plugins
-The Universal Connector plug-ins are shown on `Universal Connector plug-ins` page. 
-1. Open the `Settings` menu.
-2. Click `Connections`.
-3. Click on the `Manage` drop-down button and select the `universal connector plug-ins` option.
+The universal connector plug-ins are shown on the **Universal Connector plug-ins** page. 
+1. Open the **Settings** menu.
+2. Click **Connections**.
+3. Click the **Manage** drop-down button and select the **universal connector plug-ins** option.
 
 
 ## Built-in plug-ins
@@ -16,13 +16,13 @@ Guardium Insights supplies the following input plug-ins:
 
 1. Download the plug-in for the requested data source from the attached table to your local system.
 
-2. Click `Connections` in the `Settings` menu.
+2. Click **Connections** in the **Settings** menu.
 
-3. Click on the `Manage` drop-down button and select the `universal connector plugins` option.
+3. Click the **Manage** drop-down button and select the **universal connector plug-ins** option.
 
-4. Click the `Upload plug-in` button and select the zip file from your local system.
+4. Click the **Upload plug-in** button and select the zip file from your local system.
 
-5. Verify that the new plugin is shown in the `universal connector plug-ins` page.
+5. Verify that the new plug-in is shown in the **universal connector plug-ins** page.
 
 ## Available plugins
 |                                                    Data source                                                    | Versions tested        | Environments      | Developer | Supported inputs              |                                                    Download                                                    |
