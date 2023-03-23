@@ -105,13 +105,13 @@ Other standard logstash parameters are available such as:
 
 To enable Load Balancing, set a _`weight`_ property to 1 in the `jdbc_connection_string` field URL as seen below:
 
-	```
-		        jdbc_connection_string => "jdbc:sqlserver://[serverName[\instanceName][:portNumber]];weight=1;databaseName=<db_name>;user=<usr_name>;password=<pwd>!;"
-	```
+			```
+				jdbc_connection_string => "jdbc:sqlserver://[serverName[\instanceName][:portNumber]];weight=1;databaseName=<db_name>;user=<usr_name>;password=<pwd>!;"
+			```
 	Add the following condition to the query encoded in `statement` field to the `WHERE` clause:
-		```
-		SELECT <parameters> FROM <Audit_tables> WHERE (session_id % 2 = 0) <tracking_column> > :sql_last_value;
-		```
+
+		`SELECT <parameters> FROM <Audit_tables> WHERE (session_id % 2 = 0) <tracking_column> > :sql_last_value;`
+
 	**Note:** this will prevent deduplication completely when there are 2 pods in the set.
 	**Note:** since all configurations are equal per Connetion added, there's no option to enable failover
 
@@ -119,12 +119,13 @@ To enable Load Balancing, set a _`weight`_ property to 1 in the `jdbc_connection
 
 To enable Load Balancing, set a _`weight`_ property and to enable failover, set a _`priority`_ property as in the following jdbc_connection_string URL:
 
-	```
-		        jdbc_connection_string => "jdbc:sqlserver://[serverName[\instanceName][:portNumber]];weight=<NUM>;priority-<PRIO>;databaseName=<db_name>;user=<usr_name>;password=<pwd>!;"
-	```
+			```
+				jdbc_connection_string => "jdbc:sqlserver://[serverName[\instanceName][:portNumber]];weight=<NUM>;priority-<PRIO>;databaseName=<db_name>;user=<usr_name>;password=<pwd>!;"
+			```
+
 	**Note:**
-	Priority: This parameter is the priority of the target host. A lower value indicates a more preferred priority. The range is 0 to 65535.
-	Weight: This parameter is a relative weight between 0 and 65535 for records with the ***REMOVED***me priority.
+	`priority`: This parameter is the priority of the target host. A lower value indicates a more preferred priority. The range is 0 to 65535.
+	`weight`: This parameter is a relative weight between 0 and 65535 for records with the ***REMOVED***me priority.
 
 ### Procedure
 
