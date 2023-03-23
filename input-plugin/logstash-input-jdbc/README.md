@@ -125,7 +125,7 @@ SELECT <parameters> FROM <Audit_tables> WHERE (session_id % 2 = 0) <tracking_col
 To enable Load Balancing, set a _`weight`_ property and to enable failover, set a _`priority`_ property as in the following jdbc_connection_string URL:
 
 ```
-jdbc_connection_string => "jdbc:sqlserver://[serverName[\instanceName][:portNumber]];weight=<NUM>;priority-<PRIO>;databaseName=<db_name>;user=<usr_name>;password=<pwd>!;"
+jdbc_connection_string => "jdbc:sqlserver://[serverName[\instanceName][:portNumber]];weight=<NUM>;priority=<PRIO>;databaseName=<db_name>;user=<usr_name>;password=<pwd>!;"
 ```
 
 `priority` - this parameter is the priority of the target host. A lower value indicates a more preferred priority. The range is 0 to 65535.
