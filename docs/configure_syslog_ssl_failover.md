@@ -17,7 +17,7 @@ Syslog for univer***REMOVED***l connector is based on Logstash's TCP input plug-
 
        Create the file with a name, for example ```logstash.crt```, and ***REMOVED***ve it in the database server where rsyslog is installed. For example, in ```/usr/local/etc/``` (this varies per operating system).
 
-3.	Add the certificate file path to the rsyslog configuration file rsyslog.conf (```/usr/local/etc/rsyslog.conf``` for example) on the database server (example below is with MongoDB):
+3.	Add the certificate file path to the rsyslog configuration file rsyslog.conf (for example, ```/usr/local/etc/rsyslog.conf```) on the database server. The example below is with MongoDB:
       ```
             # certificate files - just CA for a client
             global(DefaultNetstreamDriverCAFile="/path/to/logstash.crt")
