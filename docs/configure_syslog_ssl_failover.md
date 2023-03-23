@@ -18,63 +18,62 @@ Syslog for univer***REMOVED***l connector is based on Logstash's tcp input plug-
        Create the file with a name, for example ```logstash.crt```, and ***REMOVED***ve it in the database server where rsyslog is installed, for example, in ```/usr/local/etc/``` (depends on the operating system).
 
 3.	Add the certificate file path to the rsyslog configuration file rsyslog.conf (```/usr/local/etc/rsyslog.conf``` for example) on the database server (example below is with MongoDB):
+      ```
+            # certificate files - just CA for a client
+            global(DefaultNetstreamDriverCAFile="/path/to/logstash.crt")
+            
+            # set up the action for all mes***REMOVED***ges
+            action(type="omfwd" protocol="tcp" port="6514"
+                   StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="anon")
+            
+            # In this example, transmitting the data is done via the imfile module with mongod
+            $FileCreateMode 0640
+            
+            
+            module(load="imfile")
+            
+            input(type="imfile" Tag="mongod: " File="/path/to/mongo_audit_rsyslog_buffer_file" ruleset="pRuleset")
+            
+            
+            ruleset(name="pRuleset") {
+            action(type="omfwd"
+                keepalive="on"
+                    protocol="tcp"
+                    target="<COLLECTOR_IP>"
+                    port="<COL_PORT>"
+               StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="anon")
+            }
+      ```
+      
+Where `/path/to` is the path to the certificate file that was copied to the database server in step 2.
 
-                      ```
-                        # certificate files - just CA for a client
-                        global(DefaultNetstreamDriverCAFile="/path/to/logstash.crt")
+**Note:** `/path/to/mongo_audit_rsyslog_buffer_file` is the path defined in mongod.conf for routing audit logs
 
-                        # set up the action for all mes***REMOVED***ges
-                        action(type="omfwd" protocol="tcp" port="6514"
-                               StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="anon")
+**Note:** more `ruleset`s can be added specifying more collectors if failover is required. Otherwise, the there will be event duplication.
 
-                      # In this example, transmitting the data is done via the imfile module with mongod
-                       $FileCreateMode 0640
+### Example with failover enabled:
 
-
-                       module(load="imfile")
-
-                       input(type="imfile" Tag="mongod: " File="/path/to/mongo_audit_rsyslog_buffer_file" ruleset="pRuleset")
-
-
-                       ruleset(name="pRuleset") {
-                      	action(type="omfwd"
-                       		keepalive="on"
-                      			protocol="tcp"
-                      			target="<COLLECTOR_IP>"
-                      			port="<COL_PORT>"
-                           StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="anon")
-                      }
-                      ```
-
-     Where ```/path/to``` is the path to the certificate file that was copied to the database server in step 2.
-
-     **Note:** `/path/to/mongo_audit_rsyslog_buffer_file` is the path defined in mongod.conf for routing audit logs
-
-     **Note:** more `ruleset`s can be added specifying more collectors if failover is required. Otherwise, the there will be event duplication.
-
-     ## Example with failover enabled:
-
-     ```
-     ruleset(name="pRuleset") {
-       action(type="omfwd"
-                       keepalive="on"
-                       protocol="tcp"
-                       target="primary collector IP"
-                       port="5000")
-       action(type="omfwd"
-               keepalive="on"
-               protocol="tcp"
-               target="Secondary collector IP"
-               port="5000"
-               action.execOnlyWhenPreviousIsSuspended= "on")
-       action(type="omfile"
-       file="Path_TO_Local_BUFFER_FILE/mongo_audit_rsyslog_buffer" ## -->LOCAL machine
-       action.execOnlyWhenPreviousIsSuspended= "on")
-      }
-      if($programname contains "mongod") then {
-          call pRuleset
-      }
-     ```
+```
+ruleset(name="pRuleset") {
+ action(type="omfwd"
+                 keepalive="on"
+                 protocol="tcp"
+                 target="primary collector IP"
+                 port="5000")
+ action(type="omfwd"
+         keepalive="on"
+         protocol="tcp"
+         target="Secondary collector IP"
+         port="5000"
+         action.execOnlyWhenPreviousIsSuspended= "on")
+ action(type="omfile"
+ file="Path_TO_Local_BUFFER_FILE/mongo_audit_rsyslog_buffer" ## -->LOCAL machine
+ action.execOnlyWhenPreviousIsSuspended= "on")
+}
+if($programname contains "mongod") then {
+    call pRuleset
+}
+```
 
 
 4. Enable UC and add a connector with MongoDB (MySQL) with Syslog template from dropdown menu
@@ -93,15 +92,16 @@ Syslog for univer***REMOVED***l connector is based on Logstash's tcp input plug-
 
 4.	Create a connector in Guardium:
 
-     a.	On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Univer***REMOVED***l Connector```
+      a.	On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Univer***REMOVED***l Connector```
 
-     b.	Click the plus icon, type a name, and select the ```MongoDB using Syslog``` or  ```MySQL using Syslog``` connector template.
+      b.	Click the plus icon, type a name, and select the ```MongoDB using Syslog``` or  ```MySQL using Syslog``` connector template.
 
-     c.	Under input configuration, locate the line:
-
-       # For SSL over syslog, uncomment the following lines after generating a SSL key and a certificate using GuardAPI (see documentation), copy the public certificate to your data source and adjust the rsyslog configuration:
-
-    Uncomment the next three lines, and add the certificate location:
+      c.	Under input configuration, locate the line:
+      
+``` 
+For SSL over syslog, uncomment the following lines after generating a SSL key and a certificate using GuardAPI (see documentation), copy the public certificate to your data source and adjust the rsyslog configuration:
+```
+Uncomment the next three lines, and add the certificate location:
 ```
     ssl => true
 	ssl_certificate => "${SSL_DIR}/syslog.crt"
