@@ -109,7 +109,7 @@ To enable Load Balancing, set a _`weight`_ property to 1 in the `jdbc_connection
 jdbc_connection_string => "jdbc:sqlserver://[serverName[\instanceName][:portNumber]];weight=1;databaseName=<db_name>;user=<usr_name>;password=<pwd>!;"
 ```
 	
-Add the following condition to the query encoded in `statement` field to the `WHERE` clause:
+Add the following condition to the query encoded in the `statement` field to the `WHERE` clause:
 
 
 ```
