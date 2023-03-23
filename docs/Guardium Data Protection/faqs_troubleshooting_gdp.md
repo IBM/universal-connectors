@@ -19,6 +19,7 @@ Find answers to commonly asked questions about the Guardium universal connector.
     1.  Run the API: grdapi get\_universal\_connector\_status
     2.  If the status is ok, run the API: grdapi stop\_universal\_connector
     3.  Run the API: grdapi run\_universal\_connector
+    
 -   **Does MustGather support the Guardium universal connector?**
 
     Yes, every MustGather option includes logs for the Guardium universal connector. See [Basic information for IBM Support](https://www.ibm.com/docs/en/guardium/11.4?topic=problems-basic-information-support).
@@ -31,7 +32,7 @@ Find answers to commonly asked questions about the Guardium universal connector.
             1.  Disable and enable in the GUI \(or by using the APIs grdapi get\_universal\_connector\_status and grdapi run\_universal\_connector\).
             2.  If the status is still **Disabled**, run the MustGather.
         -   Status in UI is green. The universal connector is OK.
-            1.  Verify that policy that is installed on managed unit allows saving data in Guardium \(see [Configuring policies for the universal connector](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-configuring-policies-universal))
+            1.  Verify that policy that is installed on managed unit allows saving data in Guardium \(see [Configuring policies for the universal connector](/docs/Guardium%20Data%20Protection/uc_policies_gdp.md))
             2.  Check the MustGather logs that data is coming in from the data source for the universal connector to capture.
             3.  Check that communication between the database server and the managed unit is not blocked \(managed unit is accessible from the database server\).
     3.  User plug-ins.
@@ -42,21 +43,23 @@ Find answers to commonly asked questions about the Guardium universal connector.
     4.  Run MustGather, collect the information, and send to Guardium support.
 -   **The Universal connector started but Guardium is not showing any events.**
 
-    Verify that a Policy with a **Log full details** rule is installed, and that no other policy blocks it.
+    Verify that a Policy with a **log full details** rule is installed, and that no other policy blocks it.
 
-    Create a MustGather and look for the universal connector log \(uc-logstash.log\), or Logstash log \(logstash\_stdout\_stderr.log\), after you perform a MustGather command \(see [Developing a filter plug-in](https://www.ibm.com/docs/en/guardium/11.4?topic=ins-developing-filter-plug-in)). By default, the log level reports only errors. Raise the log level, if needed, by entering: grdapi run\_universal\_connector uc\_debug\_level="debug"If the log seems normal, try to restart the inspection core by entering: restart inspection-core
+    Create a MustGather and look for the universal connector log \(uc-logstash.log\), or Logstash log \(logstash\_stdout\_stderr.log\), after you perform a MustGather command. See the section for developing a filter plug-in in [Developing new plug-ins for Guardium Data Protection](/docs/Guardium%20Data%20Protection/developing_plugins_gdp.md). 
+    
+    By default, the log level reports only errors. Raise the log level, if needed, by entering: grdapi run\_universal\_connector uc\_debug\_level="debug"If the log seems normal, try to restart the inspection core by entering: restart inspection-core
 
 
 ## Plug-in questions
 
--   **Universal connector does not start with your plug-in or configuration**
+1.   **The universal connector does not start with your plug-in or configuration**
 
-    See [Installing and testing the filter or input plug-in on a staging Guardium system](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system) for details on how to collect diagnostic data by running a `must gather` command.
+See the section [here](/docs/Guardium%20Data%20Protection/developing_plugins_gdp.md) about installing and testing the filter or input plug-in on a staging Guardium system.  for details on how to collect diagnostic data by running a `must gather` command.
 
--   **Is Java required to create a plug-in?**
+2.    **Is Java required to create a plug-in?**
 
-    No, you can develop by using Ruby, especially when Guardium knows how to parse your data source commands. However, if you need to parse the commands for a new data source type, Java is the best choice.
+No, you can develop by using Ruby, especially when Guardium knows how to parse your data source commands. However, if you need to parse the commands for a new data source type, Java is the best choice.
 
--   **How much time does it take to develop a plug-in?**
+3.    **How much time does it take to develop a plug-in?**
 
-    Give yourself 4 - 5 weeks, maybe a bit more to perfect it.
+Give yourself 4 - 5 weeks, maybe a bit more to perfect it.
