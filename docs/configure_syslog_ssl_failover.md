@@ -20,54 +20,62 @@ Syslog for universal connector is based on Logstash's tcp input plug-in. In orde
 3.	Add the certificate file path to the rsyslog configuration file rsyslog.conf (```/usr/local/etc/rsyslog.conf``` for example) on the database server (example below is with MongoDB):
 
                       ```
-                      # make gtls driver the default and set certificate files
-                      global(
-                      DefaultNetstreamDriver="gtls"
-                      # DefaultNetstreamDriverCAFile="/path/to/rootCA.crt"
-                      DefaultNetstreamDriverCertFile="/path/to/rsyslog.crt"
-                      DefaultNetstreamDriverKeyFile="/path/to/rsyslog.key"
-                      )
+                        # certificate files - just CA for a client
+                        global(DefaultNetstreamDriverCAFile="/path/to/logstash.crt")
 
-                      # load TCP listener
-                      module(
-                      load="imtcp"
-                      StreamDriver.Name="gtls"
-                      StreamDriver.Mode="1"
-                      StreamDriver.Authmode="anon"
-                      )
-                      # choose a method to transmit data into rsyslog (via socket or straight from a file)
+                        # set up the action for all messages
+                        action(type="omfwd" protocol="tcp" port="6514"
+                               StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="anon")
 
-                      # For socket method uncomment lines below
-                      # start up listener at port <PORT>
-                      # input(
-                      # type="imtcp"
-                      # port="<PORT>"
-                      # )
-
-                      # For file method uncomment lines below
-                      # $FileCreateMode 0640
+                      # In this example, transmitting the data is done via the imfile module with mongod
+                       $FileCreateMode 0640
 
 
-                      # module(load="imfile")
+                       module(load="imfile")
 
-                      # input(type="imfile" Tag="mongod: " File="/var/lib/mongo/auditLog.json" ruleset="pRuleset")
+                       input(type="imfile" Tag="mongod: " File="/path/to/mongo_audit_rsyslog_buffer_file" ruleset="pRuleset")
 
 
-                      # ruleset(name="pRuleset") {
-                      #	action(type="omfwd"
-                      # 		keepalive="on"
-                      #			protocol="tcp"
-                      #			target="127.0.0.1"
-                      #			port="5142")
-                      #}
-
-                      # ### begin forwarding rule ###
-
-                      # Forward to Guardium collector
-                      authpriv.* @@<COLLECTOR_IP>:<COL_PORT>
+                       ruleset(name="pRuleset") {
+                      	action(type="omfwd"
+                       		keepalive="on"
+                      			protocol="tcp"
+                      			target="<COLLECTOR_IP>"
+                      			port="<COL_PORT>"
+                           StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="anon")
+                      }
                       ```
 
      Where ```/path/to``` is the path to the certificate file that was copied to the database server in step 2.
+
+     **Note:** `/path/to/mongo_audit_rsyslog_buffer_file` is the path defined in mongod.conf for routing audit logs
+
+     **Note:** more `ruleset`s can be added specifying more collectors if failover is required. Otherwise, the there will be event duplication.
+
+     ## Example with failover enabled:
+
+     ```
+     ruleset(name="pRuleset") {
+       action(type="omfwd"
+                       keepalive="on"
+                       protocol="tcp"
+                       target="primary collector IP"
+                       port="5000")
+       action(type="omfwd"
+               keepalive="on"
+               protocol="tcp"
+               target="Secondary collector IP"
+               port="5000"
+               action.execOnlyWhenPreviousIsSuspended= "on")
+       action(type="omfile"
+       file="Path_TO_Local_BUFFER_FILE/mongo_audit_rsyslog_buffer" ## -->LOCAL machine
+       action.execOnlyWhenPreviousIsSuspended= "on")
+      }
+      if($programname contains "mongod") then {
+          call pRuleset
+      }
+     ```
+
 
 4. Enable UC and add a connector with MongoDB (MySQL) with Syslog template from dropdown menu
 5. Configure the input section to receive MongoDB (MySQL) events over Syslog for example with the same port configured in the rsyslog config file above. Example with MongoDB:
