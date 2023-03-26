@@ -278,6 +278,6 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
 
 ## 7. Configuring the Greenplum filter in Guardium Insights
 
-To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/docs/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 In the input configuration section, refer to the Filebeat section.
