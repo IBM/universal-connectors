@@ -24,19 +24,19 @@ To create a new MySQL instance, follow the instructions described [here](https:/
 ### Create and modify a new parameter group
 To publish logs to CloudWatch, create a new parameter group and set the log_output parameter to FILE. When you create a database instance, it is associated with the default parameter group and cannot be modified. To create a new parameter group follow these steps:
 ### Procedure
-	1. Open the Amazon RDS console (https://console.aws.amazon.com/rds).
-	2. In the navigation pane, choose Parameter groups.
-	3. Choose Create parameter group to open the Create parameter group dialog box.
-	4. In the Parameter group family list, choose your engine version.
-	5. In the Group name box, enter the name of the new DB parameter group.
-	6. In the Description box, enter a description for the new DB parameter group.
-	7. Select Create.
-	8. Go back to Parameter groups from the navigation pane.
-	9. In the Parameter groups list, choose the parameter group that you just created.
-	10. Choose Parameter group actions, and then choose Edit.
-	11. Use the Filter parameters field to search for the log_output parameter.
-	12. Set the value of the log_output parameter to FILE.
-	13. Choose Save changes.
+1. Open the Amazon RDS console (https://console.aws.amazon.com/rds).
+2. In the navigation pane, choose Parameter groups.
+3. Choose Create parameter group to open the Create parameter group dialog box.
+4. In the Parameter group family list, choose your engine version.
+5. In the Group name box, enter the name of the new DB parameter group.
+6. In the Description box, enter a description for the new DB parameter group.
+7. Select Create.
+8. Go back to Parameter groups from the navigation pane.
+9. In the Parameter groups list, choose the parameter group that you just created.
+10. Choose Parameter group actions, and then choose Edit.
+11. Use the Filter parameters field to search for the log_output parameter.
+12. Set the value of the log_output parameter to FILE.
+13. Choose Save changes.
 
 ### Enable audit logs using the MariaDB plugin
 To add the MariaDB plug-in to a MySQL instance, follow the instructions described [here](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.AuditPlugin.html).
@@ -45,24 +45,24 @@ The 'rdsadmin' user queries the database every second to check its health. This 
 
 ## Configuring the AWS MySQL filters in Guardium
 ### Before you begin
-	• You must have permissions for the S-TAP Management role. The admin user includes this role by default.
-	• Download the json-encode-offline-plugin.zip plug-in.
+• You must have permissions for the S-TAP Management role. The admin user includes this role by default.
+• Download the json-encode-offline-plugin.zip plug-in.
 ## Authorizing outgoing traffic from AWS to Guardium
-	1. Log in to the Guardium API.
-	2. Issue these commands:
+1. Log in to the Guardium API.
+2. Issue these commands:
 		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
 		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 ## Procedure
-	1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-	2. Click Upload File and select the offline json-encode-offline-plugin.zip plug-in. After it is uploaded, click OK.
-	3. Click the Plus sign to open the Connector Configuration dialog box.
-	4. Type a name in the Connector name field.
-	5. Update the input section to add the details from the mysqlCloudwatch.conf file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-	6. Update the filter section to add the details from the mysqlCloudwatch.conf file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-	7. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
+2. Click Upload File and select the offline json-encode-offline-plugin.zip plug-in. After it is uploaded, click OK.
+3. Click the Plus sign to open the Connector Configuration dialog box.
+4. Type a name in the Connector name field.
+5. Update the input section to add the details from the mysqlCloudwatch.conf file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+6. Update the filter section to add the details from the mysqlCloudwatch.conf file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+7. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 ## Configuring the AWS MySQL Guardium Logstash filters in Guardium Insights
 
-To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/universal-connectors/blob/main/docs/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 In the input configuration section, refer to the CloudWatch_logs section.
