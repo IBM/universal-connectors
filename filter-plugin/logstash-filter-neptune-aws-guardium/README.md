@@ -139,7 +139,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	
 ## 6. Configuring the AWS Neptune Guardium Logstash filters in Guardium Insights
 
-To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/universal-connectors/blob/main/docs/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 In the input configuration section, refer to the CloudWatch_logs section.
 

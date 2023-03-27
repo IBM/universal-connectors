@@ -91,11 +91,6 @@ You can filter out any native audit events that are irrelelvant before inputting
     sudo service rsyslog restart
     ```
 
-## What to do next
-
-
-Enable the universal connector on your collector. [Enabling the Guardium universal connector on collectors](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-enabling-guardium-universal-collectors)
-
 
 # Configuring audit logs on MongoDB and forwarding to Guardium via Filebeat
 
@@ -282,10 +277,6 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
 
 - Windows: Restart in the Services window
 
-## What to do next
-
-Enable the universal connector on your collector. [Enabling the Guardium universal connector on collectors](https://www.ibm.com/docs/en/SSMPHH_11.4.0/com.ibm.guardium.doc.stap/guc/cfg_guc_input_filters.html)
-
 
 # Configuring audit logs on MySQL and forwarding to Guardium via Syslog
 
@@ -336,13 +327,11 @@ This feature requires the Enterprise version of MySQL.
 -   The rsyslog server IP must follow `local6`, for example: `local6.* @@<Guardium IP>:10514`. Do not use port 5141 since this conflicts with the MongoDB default configuration.
 -   Use `@<Guardium IP>:port_num` for UDP. Use `@@<Guardium IP>:port_num` for TCP. For example:`local6.* @@<gmachine_ip>:5000 ### To send to logstash using tcp local6.* @<gmachine_ip>:5142 ### To send to logstash using UDP`
 
-6.Restart Syslog by entering the command:
+6. Restart Syslog by entering the command:
 `sudo service rsyslog restart`
 
 
 
-## What to do next
-Enable the universal connector on your collector. [Enabling the Guardium universal connector on collectors](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-enabling-guardium-universal-collectors).
 
 # Configuring audit logs on MySQL and forwarding to Guardium via Filebeat
 
@@ -395,6 +384,78 @@ This feature requires the Enterprise version of MySQL.
     -   `hosts: ["[2620:1f7:807:a080:946:9600:0:d]:5045"]` \(the IPV6 address of this collector\)
     -   `hosts: ["<IPV6 collector hostname>:5045"]`
 
-## What to do next
 
-Enable the universal connector on your collector. [Enabling the Guardium universal connector on collectors](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-enabling-guardium-universal-collectors)
+# Using Filebeat as a non-root user
+
+## Before you begin
+
+Change /etc/filebeat/filebeat.yml to log all Filebeat logs to a file specified in the config:
+
+```
+
+# ================================== Logging ===================================# Sets log level. The default log level is info.
+# Available log levels are: error, warning, info, debug
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: /var/log/filebeat
+  name: filebeat.log
+  keepfiles: 7
+  permissions: 0640# At debug level, you can selectively enable logging only for some components.
+# To enable all selectors use ["*"]. Examples of other selectors are "beat",
+# "publisher", "service".
+logging.selectors: ["*"] 
+
+ ```
+ 
+ ## Procedure
+
+1. Change the /usr/lib/systemd/system/filebeat.service file to add a non-root user and group to the file:
+
+```
+[Service]
+User=non-root-user
+Group=non-root-user-group
+Environment="GODEBUG='madvdontneed=1'"
+....
+```
+
+2. Change the following file's owner to a non-root-user:non-root-user-group
+
+```
+/etc/filebeat/filebeat.yml
+/var/lib/filebeat (all files and directories under filebeat, include /var/lib/filebeat directory)
+/var/log/filebeat (all files and directories under filebeat, include /var/log/filebeat directory) 
+```
+
+3. Restart the Filebeat service
+
+```
+root>systemctl restart filebeat
+```
+
+Note that that restarting the Filebeat service requires a root user or sudo
+
+4. Make sure that Filebeat is starting ok
+
+```
+root>systemctl status filebeat
+```
+
+5. To capture the traffic, you also need to provide the executable permission to the audit.log file (Ex: MariaDB: server_audit.log)
+
+If earlier permissions looked like this:
+
+```
+-rw-rw---- 1 mariadb10 mariadb    942156 Feb  3 02:08 server_audit.log
+```
+
+Then new permissions should look like this: 
+
+```
+[root@sys-uctest11 data]# chmod 777 server_audit.log 
+[root@sys-uctest11 data]# ls -lrt server_audit.log 
+-rwxrwxrwx 1 mariadb10 mariadb 950180 Feb  3 02:18 server_audit.log 
+[root@sys-uctest11 data]#
+```
+ 
