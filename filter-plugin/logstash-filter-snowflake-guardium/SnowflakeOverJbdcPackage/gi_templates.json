@@ -74,7 +74,8 @@
       },
       "statement": {
         "type": "text",
-        "label": "Statement"
+        "default": " SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.query_history QH, SNOWFLAKE.ACCOUNT_USAGE.LOGIN_HISTORY LH, SNOWFLAKE.ACCOUNT_USAGE.SESSIONS S   WHERE QH.SESSION_ID = S.SESSION_ID AND LH.EVENT_ID = S.LOGIN_EVENT_ID AND QH.execution_status <> 'RUNNING' AND QH.end_time > :sql_last_value  || ' -0000'  AND QH.end_time < DATEADD(HOUR, -1, CURRENT_TIMESTAMP)  ORDER BY QH.END_TIME ",
+        "hidden": true
       },
       "type": {
         "type": "text",
