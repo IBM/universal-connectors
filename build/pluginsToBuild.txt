@@ -4,3 +4,4 @@ filter-plugin/logstash-filter-snowflake-guardium
 filter-plugin/logstash-filter-yugabyte-guardium
 filter-plugin/logstash-filter-teradatadb-guardium
 input-plugin/logstash-input-mongo-atlas
+
