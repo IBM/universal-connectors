@@ -46,7 +46,7 @@ shadowJar {
 
 dependencies {
 
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'org.apache.commons:commons-lang3:3.7'
      
     testImplementation group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
@@ -56,9 +56,7 @@ dependencies {
     
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-master-?.?.?.jar")
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-?.?.?.jar")
-    
-	//implementation group: 'log4j', name: 'log4j', version: '1.2.17'
-	//implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.0'
+
 	implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.2'
 
 
