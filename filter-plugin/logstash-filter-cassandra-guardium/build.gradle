@@ -71,7 +71,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.9'
     compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
     compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
-    //implementation 'com.google.code.gson:gson:2.8.6'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.jruby:jruby-complete:9.2.7.0'
