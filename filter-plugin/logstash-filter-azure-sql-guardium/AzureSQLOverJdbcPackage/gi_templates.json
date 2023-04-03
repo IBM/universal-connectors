@@ -39,7 +39,8 @@
       },
       "statement": {
         "type": "text",
-        "label": "Statement"
+        "default": "SELECT event_time,succeeded,session_id,database_name,client_ip,server_principal_name,application_name,statement,server_instance_name,host_name,DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) AS updatedeventtime,additional_information  FROM sys.fn_get_audit_file('https://<storage-account-name>.blob.core.windows.net/sqldbauditlogs/<server_instance_name>/<DB-NAME>', DEFAULT, DEFAULT) where action_id='BCM' and statement not like '%xproc%' and statement not like '%SPID%' and statement not like '%DEADLOCK_PRIORITY%' and application_name not like '%Microsoft SQL Server Management Studio - Tran***REMOVED***ct-SQL IntelliSense%' and DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) > :sql_last_value",
+        "hidden": true
       },
       "plugin_timezone": {
         "type": "text",
