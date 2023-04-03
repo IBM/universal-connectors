@@ -18,5 +18,5 @@
   "pluginConfigTemplateStrings": null,
   "uploadDate": null,
   "uploadUser": null,
-  "auto_scaling": true
+  "auto_scaling": false
 }
