@@ -1,3 +1,6 @@
+filter-plugin/logstash-filter-azure-sql-guardium/logstash-filter-azuresql_guardium_plugin_filter
+filter-plugin/logstash-filter-neo4j-guardium/logstash-filter-neodb_guardium_filter
+filter-plugin/logstash-filter-snowflake-guardium/logstash-filter-guardium_snowflake_filter
 filter-plugin/logstash-filter-yugabyte-guardium/logstash-filter-yugabytedb_guardium_filter
 filter-plugin/logstash-filter-teradatadb-guardium/logstash-filter-teradatadb_guardium_plugin_filter
 input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input
