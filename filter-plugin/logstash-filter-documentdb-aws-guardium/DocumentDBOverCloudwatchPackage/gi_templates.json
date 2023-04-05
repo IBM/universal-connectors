@@ -1,7 +1,7 @@
 {
   "plugin_name": "DocumentDB over CloudWatch_Logs",
   "help_link": "https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-documentdb-aws-guardium/README.md",
-  "input_name": "CloudWatch_logs_input",
+  "input_name": "Cloudwatch_logs_input",
   "input_parameters": [
     {
       "role-arn": {
