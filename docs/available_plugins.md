@@ -44,7 +44,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter) (soon: GI 3.3)
 * [Teradata](../filter-plugin/logstash-filter-teradatadb-guardium/README.md) (Future GI releases)
 * [Yugabyte](../filter-plugin/logstash-filter-yugabyte-guardium/README.md) (soon: GI 3.3)
-* [ProgressDB](../filter-plugin/logstash-filter-progressdb-guardium/README.md)
+* [ProgressDB](../filter-plugin/logstash-filter-progressdb-guardium/README.md) (Future GI releases)
 
 ## Developing Plug-ins
 Users can develop their own universal connector plug-ins, if needed, and contribute them back to the open source project, if desired.
