@@ -2,7 +2,6 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
-apply plugin: 'jacoco'
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
 // ===========================================================================
@@ -21,74 +20,39 @@ pluginInfo.pluginClass     = "NeptuneGuardiumFilter"
 pluginInfo.pluginName      = "neptune_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
-
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+def jacocoVersion = '0.8.4'
+// minimumCoverage can be set by Travis ENV
+def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
+if (minimumCoverageStr.endsWith("%")) {
+    minimumCoverageStr = minimumCoverageStr.substring(0, minimumCoverageStr.length() - 1)
+}
+def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
+
 buildscript {
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
-  }
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
+
+    }
 }
 
 repositories {
     mavenCentral()
 }
 
-apply plugin: "com.github.johnrengelman.shadow"
-
-shadowJar {
-    classifier = null
-}
-
-dependencies {
-    implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
-	implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.2'
-	implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.2'
-	implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.9'
-	implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
-	implementation group: 'org.apache.tinkerpop', name: 'tinkergraph-gremlin', version: '3.6.2'
-    implementation group: 'org.eclipse.rdf4j', name: 'rdf4j-queryparser-sparql', version: '4.2.3'
-	
-
-    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
-    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
- 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
-    testImplementation 'org.jruby:jruby-complete:9.2.19.0'
-    
-    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-univer***REMOVED***lconnector-commons-master-?.?.?.jar")
-    
-   
-   
-   
-    
-}
-
-tasks.named('test') {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
-}
-
-
-clean {
-    delete "${projectDir}/Gemfile"
-    delete "${projectDir}/" + pluginInfo.pluginFullName() + ".gemspec"
-    delete "${projectDir}/lib/"
-    delete "${projectDir}/vendor/"
-    new FileNameFinder().getFileNames(projectDir.toString(), pluginInfo.pluginFullName() + "-?.?.?.gem").each { filename ->
-        delete filename
-    }
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
-
-task vendor(dependsOn: shadowJar) {
+tasks.register("vendor"){
+    dependsOn shadowJar
     doLast {
         String vendorPathPrefix = "vendor/jar-dependencies"
         String projectGroupPath = project.group.replaceAll('\\.', '/')
@@ -99,13 +63,55 @@ task vendor(dependsOn: shadowJar) {
     }
 }
 
-task generateRubySupportFiles() {
+apply plugin: 'com.github.johnrengelman.shadow'
+
+shadowJar {
+    classifier = null
+}
+
+dependencies {
+    implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.2'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.2'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.9'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
+    implementation group: 'org.apache.tinkerpop', name: 'tinkergraph-gremlin', version: '3.6.2'
+    implementation group: 'org.eclipse.rdf4j', name: 'rdf4j-queryparser-sparql', version: '4.2.3'
+
+    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
+    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-univer***REMOVED***lconnector-commons-*.*.*.jar")
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    testImplementation 'org.jruby:jruby-complete:9.2.19.0'
+
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-univer***REMOVED***lconnector-commons-*.*.*.jar")
+
+}
+
+
+clean {
+    delete "${projectDir}/Gemfile"
+    delete "${projectDir}/" + pluginInfo.pluginFullName() + ".gemspec"
+    delete "${projectDir}/lib/"
+    delete "${projectDir}/vendor/"
+    new FileNameFinder().getFileNames(projectDir.toString(), pluginInfo.pluginFullName() + "-*.*.*.gem").each { filename ->
+        delete filename
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+
+
+tasks.register("generateRubySupportFiles") {
     doLast {
         generateRubySupportFilesForPlugin(project.description, project.group, version)
     }
 }
 
-task removeObsoleteJars() {
+tasks.register("removeObsoleteJars") {
     doLast {
         new FileNameFinder().getFileNames(
                 projectDir.toString(),
@@ -116,25 +122,71 @@ task removeObsoleteJars() {
     }
 }
 
-task gem(dependsOn: [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]) {
+tasks.register("gem"){
+    dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
     doLast {
         buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
     }
 }
+
+tasks.register("copyDependencyLibs", Copy){
+    into "dependenciesLib"
+    from configurations.compileClasspath
+    from configurations.runtimeClasspath
+    from configurations.testCompileClasspath
+    from configurations.testRuntimeClasspath
+}
+
+apply plugin: 'jacoco'
+//apply plugin: 'org.barfuin.gradle.jacocolog' version '2.0.0'
+apply plugin: "org.barfuin.gradle.jacocolog"
+// ------------------------------------
+// JaCoCo is a code coverage tool
+// ------------------------------------
+jacoco {
+    toolVersion = "${jacocoVersion}"
+    reportsDir = file("$buildDir/reports/jacoco")
+}
 jacocoTestReport {
+    // You will see "Report -> file://...." at the end of a JaCoCo build
+    // If no output, run this first:   ./gradlew test
     reports {
-        xml.enabled false
         html.enabled true
-        csv.enabled false
+        xml.enabled true
+        csv.enabled true
+        html.destination file("${buildDir}/reports/jacoco")
+        csv.destination file("${buildDir}/reports/jacoco/all.csv")
     }
-    
-     afterEvaluate { // (optional) : to exclude classes / packages from coverage
-        classDirectories.from = files(classDirectories.files.collect {
-            fileTree(
-                dir: it,
-                exclude: [ 'com/ibm/neptune/connector/constant', 'com/ibm/neptune/connector/config', 'com/ibm/neptune/connector/util'])
-        })
+    executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: [
+            '**/*.exec'
+    ])
+    afterEvaluate {
+        // objective is to test TicketingService class
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [])
+        }))
+    }
+    doLast {
+        println "Report -> file://${buildDir}/reports/jacoco/index.html"
     }
 }
 test.finalizedBy jacocoTestReport
-
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = minimumCoverage
+            }
+        }
+    }
+    executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: [
+            '**/*.exec'
+    ])
+    afterEvaluate {
+        // objective is to test TicketingService class
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [])
+        }))
+    }
+}
+project.tasks.check.dependsOn(jacocoTestCoverageVerification, jacocoTestReport)
