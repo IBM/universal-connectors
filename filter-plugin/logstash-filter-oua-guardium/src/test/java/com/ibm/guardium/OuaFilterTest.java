@@ -55,9 +55,9 @@ public class OuaFilterTest {
 
         Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 
-        Assert.assertEquals(1, results.size());
+        Assert.assertEquals(2, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
-        Assert.assertEquals(1, matchListener.getMatchCount());
+        Assert.assertEquals(2, matchListener.getMatchCount());
     }
 }
 
