@@ -62,7 +62,7 @@
       },
       "statement_from": {
         "type": "text",
-        "default": "msdb.dbo.rds_fn_get_audit_file('D:\\\\rdsdbdata\\\\SQLAudit\\\\*.sqlaudit', default, default )",
+        "default": "msdb.dbo.rds_fn_get_audit_file('D:\\rdsdbdata\\SQLAudit\\*.sqlaudit', default, default )",
         "label": "FROM"
       },
       "statement_where": {
