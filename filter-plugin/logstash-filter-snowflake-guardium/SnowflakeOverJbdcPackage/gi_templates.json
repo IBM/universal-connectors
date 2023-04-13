@@ -18,6 +18,10 @@
         "default": "Java::net.snowflake.client.jdbc.SnowflakeDriver",
         "hidden": true
       },
+      "last_run_metadata_path": {
+        "type": "text",
+        "label": "Last run metadata path"
+      },
       "jdbc_driver_library": {
         "type": "text",
         "default": "/usr/share/logstash/logstash-core/lib/jars/snowflake-jdbc.jar",
@@ -72,10 +76,20 @@
         "type": "text",
         "label": "Server hostname (<id>.<region>.<provider>.snowflakecomputing.com)"
       },
-      "statement": {
+      "statement_select": {
         "type": "text",
-        "default": " SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.query_history QH, SNOWFLAKE.ACCOUNT_USAGE.LOGIN_HISTORY LH, SNOWFLAKE.ACCOUNT_USAGE.SESSIONS S   WHERE QH.SESSION_ID = S.SESSION_ID AND LH.EVENT_ID = S.LOGIN_EVENT_ID AND QH.execution_status <> 'RUNNING' AND QH.end_time > :sql_last_value  || ' -0000'  AND QH.end_time < DATEADD(HOUR, -1, CURRENT_TIMESTAMP)  ORDER BY QH.END_TIME ",
-        "hidden": true
+        "default": "*",
+        "label": "SELECT"
+      },
+      "statement_from": {
+        "type": "text",
+        "default": "SNOWFLAKE.ACCOUNT_USAGE.query_history QH, SNOWFLAKE.ACCOUNT_USAGE.LOGIN_HISTORY LH, SNOWFLAKE.ACCOUNT_USAGE.SESSIONS S ",
+        "label": "FROM"
+      },
+      "statement_where": {
+        "type": "text",
+        "default": "QH.SESSION_ID = S.SESSION_ID AND LH.EVENT_ID = S.LOGIN_EVENT_ID AND QH.execution_status <> 'RUNNING' AND QH.end_time > :sql_last_value  || ' -0000'  AND QH.end_time < DATEADD(HOUR, -1, CURRENT_TIMESTAMP)  ORDER BY QH.END_TIME",
+        "label": "WHERE"
       },
       "type": {
         "type": "text",
