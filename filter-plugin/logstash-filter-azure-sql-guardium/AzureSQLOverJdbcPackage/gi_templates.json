@@ -44,7 +44,7 @@
       },
       "statement_from": {
         "type": "text",
-        "default": "sys.fn_get_audit_file('https:\/\/<storage-account-name>.blob.core.windows.net\/sqldbauditlogs\/<server_instance_name>\/<DB-NAME>', DEFAULT, DEFAULT)",
+        "default": "sys.fn_get_audit_file('https:\\/\\/<storage-account-name>.blob.core.windows.net\\/sqldbauditlogs\\/<server_instance_name>\\/<DB-NAME>', DEFAULT, DEFAULT)",
         "label": "FROM"
       },
       "statement_where": {

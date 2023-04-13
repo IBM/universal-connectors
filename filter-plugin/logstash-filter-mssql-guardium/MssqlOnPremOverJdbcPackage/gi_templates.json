@@ -44,7 +44,7 @@
       },
       "statement_from": {
         "type": "text",
-        "default": "sys.fn_get_audit_file('C:\\AuditLogFiles\\*.sqlaudit', DEFAULT, DEFAULT)",
+        "default": "sys.fn_get_audit_file('C:\\\\AuditLogFiles\\\\*.sqlaudit', DEFAULT, DEFAULT)",
         "label": "FROM"
       },
       "statement_where": {
