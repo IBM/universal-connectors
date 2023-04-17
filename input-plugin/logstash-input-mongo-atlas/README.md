@@ -52,7 +52,7 @@ In order to support a few features one zip has to be added with the name "guardi
   For more information, https://www.mongodb.com/docs/atlas/configure-api-access/#add-an-api-access-list-entry.
 
 Note:
-On GI/SaaS environments, if no traffic is observed and the API Key configured properly, revalidate the IP in the allowed access list by removing and adding it again, and recreate the UC connection. 
+If no traffic is observed and the API Key configured properly, revalidate the IP in the allowed access list by removing and adding it again, and recreate the UC connection. 
 
 
 ##  Setup Database Auditing.
