@@ -291,8 +291,15 @@ public class MySqlFilterGuardium implements Filter {
         if (data.has("account")) {
             JsonObject login = data.getAsJsonObject("account");
             String user = login.get("user").getAsString();
+            if ("".equals(user) || user == null)
+            {
+                accessor.setDbUser("NA");
+            }
+            else
+            {
+                accessor.setDbUser(user);
+            }
 
-            accessor.setDbUser(user);
         }
         
        if (data.has(DATA_TYPE_CONNECTION)) {

@@ -10,6 +10,8 @@ import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
 import co.elastic.logstash.api.FilterMatchListener;
+import com.google.gson.Gson;
+import com.ibm.guardium.univer***REMOVED***lconnector.commons.structures.Record;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ConfigurationImpl;
@@ -40,7 +42,27 @@ public class MySqlFilterGuardiumTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         Assert.assertEquals(1, matchListener.getMatchCount());
+    }
 
+    @Test
+    public void testParseExceptionNoUserMySqlSyslog() {
+        final String mysql_mes***REMOVED***ge = "mysql_audit_log: { \"timestamp\": \"2023-04-14 07:10:47\", \"id\": 0, \"class\": \"connection\", \"event\": \"connect\", \"connection_id\": 100391, \"account\": { \"user\": \"\", \"host\": \"localhost\" }, \"login\": { \"user\": \"guardium_qa1\", \"os\": \"\", \"ip\": \"\", \"proxy\": \"\" }, \"connection_data\": { \"connection_type\": \"socket\", \"status\": 1045, \"db\": \"\" } }";
+        Configuration config = new ConfigurationImpl(Collections.singletonMap("source", "mes***REMOVED***ge"));
+        Context context = new ContextImpl(null, null);
+        MySqlFilterGuardium filter = new MySqlFilterGuardium("test-id", config, context);
+
+        Event e = new org.logstash.Event();
+        TestMatchListener matchListener = new TestMatchListener();
+
+        e.setField("mes***REMOVED***ge", mysql_mes***REMOVED***ge);
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+        Assert.assertEquals(1, matchListener.getMatchCount());
+
+        Record record = new Gson().fromJson((String)e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME), Record.class);
+        Assert.assertEquals("NA", record.getAccessor().getDbUser());
 
     }
 
