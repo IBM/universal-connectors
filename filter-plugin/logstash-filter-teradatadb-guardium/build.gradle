@@ -23,27 +23,34 @@ pluginInfo.pluginName      = "teradatadb_guardium_plugin_filter" // must match t
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+def jacocoVersion = '0.8.4'
+
+// minimumCoverage can be set by Travis ENV
+def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
+if (minimumCoverageStr.endsWith("%")) {
+    minimumCoverageStr = minimumCoverageStr.substring(0, minimumCoverageStr.length() - 1)
+}
+def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
+
+
 buildscript {
     repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
         mavenCentral()
         jcenter()
     }
 
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
+
     }
 }
 
 repositories {
     mavenCentral()
-}
-
-task copyDependencyLibs(type: Copy) {
-    into "dependenciesLib"
-    from configurations.compileClasspath
-    from configurations.runtimeClasspath
-    from configurations.testCompileClasspath
-    from configurations.testRuntimeClasspath
 }
 
 tasks.register("vendor"){
@@ -65,24 +72,26 @@ shadowJar {
 }
 
 dependencies {
-    compile group: 'commons-validator', name: 'commons-validator', version: '1.7'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
-    compile 'org.apache.commons:commons-lang3:3.7'
-    compile 'com.google.code.gson:gson:2.8.9'
-    compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
-    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
+    implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
+    implementation 'org.apache.commons:commons-lang3:3.7'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
+    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
     //implementation 'com.google.code.gson:gson:2.8.9'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.jruby:jruby-complete:9.2.7.0'
 
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.jruby:jruby-complete:9.2.7.0'
+
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-univer***REMOVED***lconnector-commons-?.?.?.jar")
 }
+
 
 clean {
     delete "${projectDir}/Gemfile"
     delete "${projectDir}/" + pluginInfo.pluginFullName() + ".gemspec"
     delete "${projectDir}/lib/"
-    delete "${projectDir}/dependenciesLib/"
     delete "${projectDir}/vendor/"
     new FileNameFinder().getFileNames(projectDir.toString(), pluginInfo.pluginFullName() + "-*.*.*.gem").each { filename ->
         delete filename
@@ -92,6 +101,8 @@ clean {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+
+
 
 tasks.register("generateRubySupportFiles") {
     doLast {
@@ -116,3 +127,65 @@ tasks.register("gem"){
         buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
     }
 }
+
+apply plugin: 'jacoco'
+//apply plugin: 'org.barfuin.gradle.jacocolog' version '2.0.0'
+apply plugin: "org.barfuin.gradle.jacocolog"
+
+// ------------------------------------
+// JaCoCo is a code coverage tool
+// ------------------------------------
+
+jacoco {
+    toolVersion = "${jacocoVersion}"
+    reportsDir = file("$buildDir/reports/jacoco")
+}
+
+jacocoTestReport {
+    // You will see "Report -> file://...." at the end of a JaCoCo build
+    // If no output, run this first:   ./gradlew test
+    reports {
+        html.enabled true
+        xml.enabled true
+        csv.enabled true
+        html.destination file("${buildDir}/reports/jacoco")
+        csv.destination file("${buildDir}/reports/jacoco/all.csv")
+    }
+    executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: [
+            '**/*.exec'
+    ])
+
+    afterEvaluate {
+        // objective is to test TicketingService class
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [])
+        }))
+    }
+
+    doLast {
+        println "Report -> file://${buildDir}/reports/jacoco/index.html"
+    }
+}
+
+test.finalizedBy jacocoTestReport
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = minimumCoverage
+            }
+        }
+    }
+    executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: [
+            '**/*.exec'
+    ])
+    afterEvaluate {
+        // objective is to test TicketingService class
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [])
+        }))
+    }
+}
+
+project.tasks.check.dependsOn(jacocoTestCoverageVerification, jacocoTestReport)
