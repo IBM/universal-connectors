@@ -17,7 +17,7 @@
       "interval": {
         "type": "number",
         "default": 5,
-        "hidden": true
+        "label": "Interval"
       },
       "region": {
         "type": "text",
