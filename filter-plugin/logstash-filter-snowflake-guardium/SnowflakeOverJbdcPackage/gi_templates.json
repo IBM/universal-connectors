@@ -18,10 +18,6 @@
         "default": "Java::net.snowflake.client.jdbc.SnowflakeDriver",
         "hidden": true
       },
-      "last_run_metadata_path": {
-        "type": "text",
-        "label": "Last run metadata path"
-      },
       "jdbc_driver_library": {
         "type": "text",
         "default": "/usr/share/logstash/logstash-core/lib/jars/snowflake-jdbc.jar",
