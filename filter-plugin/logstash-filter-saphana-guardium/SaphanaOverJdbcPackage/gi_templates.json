@@ -8,10 +8,6 @@
         "type": "text",
         "label": "Connection string"
       },
-      "last_run_metadata_path": {
-        "type": "text",
-        "label": "Last run metadata path"
-      },
       "jdbc_driver_class": {
         "type": "text",
         "default": "com.sap.db.jdbc.Driver",
