@@ -8,7 +8,7 @@ apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 // ===========================================================================
 // plugin info
 // ===========================================================================
-group                      'org.logstashplugins' // must match the package of the main plugin class
+group                      'com.ibm.guardium' // must match the package of the main plugin class
 version                    "${file("VERSION").text.trim()}" // read from required VERSION file
 description                = "Example Java filter"
 pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
