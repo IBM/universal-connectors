@@ -1,22 +1,17 @@
-package org.logstashplugins;
+package com.ibm.guardium;
 
-//import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
 import co.elastic.logstash.api.FilterMatchListener;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import org.junit.Assert;
 import org.junit.Test;
-//import org.logstash.plugins.ConfigurationImpl;
 import org.logstash.plugins.ContextImpl;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.google.gson.Gson;
+
 
 public class OuaFilterTest {
     @Test
@@ -34,6 +29,9 @@ public class OuaFilterTest {
 		final String source_program = "sqlplus@rh7u1x64t-ktap.guard.swg.usma.ibm.com (";
 		final String timestamp = "+000017794 22:56:57.111795";
 		final String sql_text = "  alter user QA_TEST default role ALL";
+        final int server_port = 1521;
+
+
 
         Context context = new ContextImpl(null, null);
         OuaFilter filter = new OuaFilter("test-id", null, context);
@@ -49,6 +47,7 @@ public class OuaFilterTest {
         e.setField(OuaFilter.SERVER_IP_TAG, server_ip);
         e.setField(OuaFilter.CLIENT_HOST_TAG, client_host);
         e.setField(OuaFilter.SERVER_HOST_TAG, server_host);
+        e.setField(OuaFilter.SERVER_HOST_PORT, server_port);
         e.setField(OuaFilter.SOURCE_PROGRAM_TAG, source_program);
         e.setField(OuaFilter.TIMESTAMP_TAG, timestamp);
         e.setField(OuaFilter.SQL_TAG, sql_text);
