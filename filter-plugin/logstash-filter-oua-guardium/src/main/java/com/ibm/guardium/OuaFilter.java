@@ -1,4 +1,4 @@
-package org.logstashplugins;
+package com.ibm.guardium;
 
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
@@ -60,10 +60,13 @@ public class OuaFilter implements Filter {
 	public static final String DATA_PROTOCOL_STRING = "Oracle Unified Audit";
 	public static final String LANGUAGE_STRING = "ORACLE";
 	public static final String UNKNOWN_STRING = "";
+
 	public static final String CLIENT_IP_TAG = "client_host_ip";
 	public static final String SERVER_IP_TAG = "server_host_ip";
 	public static final String CLIENT_HOST_TAG = "client_host_name";
-	public static final String SERVER_HOST_TAG = "server_host_name";
+	public static final String SERVER_HOST_TAG = "HostName";
+
+	public static final String SERVER_HOST_PORT = "PortNumber";
 	public static final String OS_USER_TAG = "os_user";
 	public static final String SOURCE_PROGRAM_TAG = "client_program_name";
 	public static final String DB_NAME_TAG = "dbname";
@@ -290,7 +293,14 @@ public class OuaFilter implements Filter {
 			}
 		}
 
-        return sessionLocator;
+		if (event.getField(OuaFilter.SERVER_HOST_PORT) instanceof String) {
+			sessionLocator.setServerPort(Integer.parseInt(event.getField(OuaFilter.SERVER_HOST_PORT).toString()));
+		} else {
+			sessionLocator.setServerPort(-1);
+		}
+
+
+		return sessionLocator;
     }
 
 	private static Accessor parseAccessor(final Event event) {
