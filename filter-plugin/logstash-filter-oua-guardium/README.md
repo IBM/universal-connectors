@@ -1,5 +1,12 @@
 # Oracle Unified Audit Univer***REMOVED***l Connector
 
+## Meet Oracle Unified Audit
+
+* Tested versions: 18,19
+* Environment: On-prem, RDS
+* Supported inputs: Oracle Unified Audit (pull)
+* Supported Guardium versions: Guardium Data Protection: 11.4 and above
+
 ## Requirements
 
 1. Unified auditing must be enabled in an Oracle database that will be monitored by this method
@@ -50,7 +57,7 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 
        - Type any unique name in the "Connector name" field
 
-         - Paste content of "[ouaPipe.conf](https://github.ibm.com/Activity-Insights/univer***REMOVED***l-connectors/blob/master/filter-plugin/logstash-filter-oua-guardium/ouaPipe.conf)" in the **Input configuration** field
+         - Paste content of "[ouaPipe.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-oua-guardium/ouaPipe.conf)" in the **Input configuration** field
 
              ```
            pipe {
@@ -60,7 +67,7 @@ Update the variables in Makefile for your environment's Java home and Logstash l
                              add_field => {"SERVER_PORT" => "<Enter_Server_Port>"} }
            ```
 
-       - Paste content of "[ouaPipe.conf](ohttps://github.ibm.com/Activity-Insights/univer***REMOVED***l-connectors/blob/master/filter-plugin/logstash-filter-oua-guardium/ouaPipe.conf)" in the **Filter configuration** field
+       - Paste content of "[ouaPipe.conf](https://github.com/IBM/univer***REMOVED***l-connectors/blob/main/filter-plugin/logstash-filter-oua-guardium/ouaPipe.conf)" in the **Filter configuration** field
 
            ```
               if [type] == "oua" {
