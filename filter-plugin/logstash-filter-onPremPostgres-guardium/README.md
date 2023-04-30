@@ -26,3 +26,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 	• Pgaudit logs Failed queries twice, one as success and one with actual Failure reason, so expect Failed queries to be seen in Full Sql Report
 	• The log entries which are generated even before the user is logged in or before the session starts, are currently not seen in SQL Error report
 	• When the database is created using UI option from pgadmin, currently sniffer fails to parse that audit log, so the entry cannot be seen in the Full Sql report
+
+## 5. Configuring the Postgres filters in Guardium Insights
+To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+In the ```Input configuration``` section, refer to the Filebeat section
