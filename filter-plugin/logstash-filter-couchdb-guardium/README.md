@@ -122,3 +122,6 @@ di***REMOVED***bled. After it is validated, it appears in the Configure Univer**
     - Client port : Not available with logs
     - Client HostName : Not available with logs  
 
+## 5. Configuring the Couchdb filters in Guardium Insights
+To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+In the ```Input configuration``` section, refer to the Filebeat section
