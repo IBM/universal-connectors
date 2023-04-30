@@ -63,6 +63,6 @@ The 'rdsadmin' user queries the database every second to check its health. This 
 
 ## Configuring the AWS MySQL Guardium Logstash filters in Guardium Insights
 
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-cloudwatch-input-plug-in)
 
 In the input configuration section, refer to the CloudWatch_logs section.
