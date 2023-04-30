@@ -293,3 +293,7 @@ In SAP HANA JDBC input plug-ins , we distribute load between two machines based 
     ```
     select audit_log.event_status,audit_log.client_ip,audit_log.connection_id,audit_log.client_port,audit_log.timestamp,audit_log.event_action,audit_log.user_name,audit_log.port,audit_log.client_host,audit_log.service_name,audit_log.statement_string,audit_log.application_name,audit_log.host,audit_log.application_user_name,M_DATABASE.database_name from M_DATABASE,audit_log where M_DATABASE.HOST = audit_log.HOST and audit_policy_name not in ('MandatoryAuditPolicy') and mod(connection_id,2) = 1 and timestamp > :sql_last_value;
     ```
+
+## 5. Configuring the SAP HANA filters in Guardium Insights
+To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+In the ```Input configuration``` section, refer to the Filebeat section
