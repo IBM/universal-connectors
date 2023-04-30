@@ -195,4 +195,4 @@ di***REMOVED***bled. After it is validated, it appears in the Configure Univer**
 
 ## 5. Configuring the Mariadb filters in Guardium Insights
 To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
-In the ```Input configuration``` section, refer to the Filebeat section
+For the input configuration step, refer to the [Filebeat section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#Filebeat-input-plug-in-configuration).
