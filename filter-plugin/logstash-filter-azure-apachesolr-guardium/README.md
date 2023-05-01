@@ -195,3 +195,7 @@ The Guardium univer***REMOVED***l connector is the Guardium entry point for nati
   - LOGIN_FAILED    : Not available with logs
 
 - While launching Solr in SolrCloud mode, multiple logs will be generated for single query execution as a call to shard(In SolrCloud, a logical partition of a single Collection) and replica(A core that acts as a physical copy of a shard in a SolrCloud Collection). 
+
+## 5. Configuring the Apache Solr filters in Guardium Insights
+To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+For the input configuration step, refer to the [Filebeat section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#Filebeat-input-plug-in-configuration).
