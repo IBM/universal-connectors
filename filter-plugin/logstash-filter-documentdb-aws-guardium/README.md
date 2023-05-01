@@ -123,3 +123,9 @@ di***REMOVED***bled. After it is validated, it appears in the Configure Univer**
      - Client HostName : Not available with Audit/Profier logs
 - Server IPs are also not reported because they are not part of the audit stream. That ***REMOVED***id, the "add_field" clause in the configuration adds a user defined Server Host Name that can be used in reports and policies if desired.
 - Because Sniffer ***REMOVED***ves the DB name once when a new session is created, and not with every event, DB name will be updated and populated correctly in Guardium only when everytime a new database connection is established with database name. If Database connection is established without database name, then the database on which the first query for that session runs, will be retained in Guardium. Even if user switches between the databases for the ***REMOVED***me session.     
+
+## Configuring the DocumentDB Guardium Logstash filters in Guardium Insights
+
+To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+
+For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).
