@@ -141,5 +141,5 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
-In the input configuration section, refer to the CloudWatch_logs section.
+For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).
 

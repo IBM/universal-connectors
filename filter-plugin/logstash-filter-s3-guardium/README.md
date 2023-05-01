@@ -148,12 +148,6 @@ grdapi add_domain_to_universal_connector_allowed_domain
 
  ![Connector configuration 2](/docs/images/cloudwatch/connector_configuration_2.png)
 
-## Configuring the Amazon S3 over Cloudwatch_logs in Guardium Insights
-
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
-
-In the input configuration section, refer to the CloudWatch_logs section.
-
 ## Contribute
 
 The documentation for the Logstash Java plug-ins is available [here](https://www.elastic.co/guide/en/logstash/current/contributing-java-plugin.html).
@@ -167,3 +161,10 @@ To build and create an updated GEM of this filter plug-in which can be installed
     ```LOGSTASH_CORE_PATH=/Users/taldan/logstash76/logstash-core```
 
 3. Run ```$ ./gradlew.unix gem --info``` to create the GEM (ensure you have JRuby installed beforehand, as described [here](https://www.ibm.com/docs/en/guardium/11.3?topic=connector-developing-plug-ins)).
+
+
+## Configuring the Amazon S3 over Cloudwatch_logs in Guardium Insights
+
+To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+
+For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).

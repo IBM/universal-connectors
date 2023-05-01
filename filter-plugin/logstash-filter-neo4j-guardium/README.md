@@ -136,3 +136,6 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 8. The "type" fields should match in the input and the filter configuration section. This field should be unique for  every individual connector added
 9. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
+## 5. Configuring the Neo4j filters in Guardium Insights
+To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+For the input configuration step, refer to the [Filebeat section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#Filebeat-input-plug-in-configuration).
