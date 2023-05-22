@@ -16,7 +16,7 @@
       },
       "interval": {
         "type": "number",
-        "default": 5,
+        "default": 900,
         "label": "Interval"
       },
       "region": {
