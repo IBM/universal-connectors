@@ -67,6 +67,8 @@ After you install the plug-in's offline package and upload and save the configur
 ### Sample Configuration
 
   Below is a copy of the filter scope included in `postgresqlGooglePubsub.conf` [file](PubSubPostgreSQLPackage/postgresqlGooglePubsub.conf) that shows a basic configuration for this plugin.
+  **Note** The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+
 #### Filter part:
   ```
   filter {

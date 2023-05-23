@@ -147,6 +147,7 @@ grdapi add_domain_to_universal_connector_allowed_domain
 4. Fill in the log group and the role_arn that were assigned to the ec2
 
  ![Connector configuration 2](/docs/images/cloudwatch/connector_configuration_2.png)
+5. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 
 ## Contribute
 

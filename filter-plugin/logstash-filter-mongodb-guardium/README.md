@@ -52,6 +52,7 @@ The filter plug-in also supports sending errors. For this, MongoDB access contro
 * If events with "(NONE)" local/remote IP addresses are not filtered, the filter plug-in will convert the IP to "0.0.0.0", as a valid format for IP is needed. However, this is atypical, since as messages without users are filtered out.
 * Events in the filter are not removed, but tagged if not parsed (see [Filter result](#filter-result), below).
 * The filter also masks the audit messages of type MongoDB authCheck: Currently, most field values are replaced with "?" in a naïve process, where most command arguments are redacted, apart from the _command_, _$db_, and _$lookup_ & _$graphLookup_ required arguments (_from_, _localField_, _foreignField_, _as_, _connectFromField_, _connectToField_).
+* The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 
 ## Example 
 ### Filebeat input
