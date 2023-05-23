@@ -90,5 +90,6 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	4. Type a name in the Connector name field.
 	5. Update the input section to add the details that can help fetch the audit events from the datasource. Depending upon the auditing feature that is selected, the audit logs can be stored either in audit-files, database tables or on Cloudwatch like cloud service. To fetch the data from these respective sources, one can make use of Filebeat, JDBC input plugin or cloudwatch_logs plugin respectively. Accordingly one must add otehr required parameters as well to connect to that datasource and fetch the events.
 	6. Update the filter section to parse the fetched audit event. Here one must make use of Logstash internal functions and extract the different parts of the audit event into variables.
-	7. Click Save. Guardium validates the new connector, and enables the universal connector if it was
+    7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.  
+	8. Click Save. Guardium validates the new connector, and enables the universal connector if it was
 	disabled. After it is validated, it appears in the Configure Universal Connector page.
