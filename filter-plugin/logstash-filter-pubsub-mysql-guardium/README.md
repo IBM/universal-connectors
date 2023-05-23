@@ -146,6 +146,8 @@ To install on your local machine that is running Logstash, execute:
 
 Below is a copy of the filter scope included `mysqlGooglePubsub.conf` [file](PubSubMySQLPackage/mysqlGooglePubsub.conf) that shows a basic
 configuration for this plugin.
+**Note** The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+
 #### Filter part:
 ```
 pubsub-mysql-guardium{}
