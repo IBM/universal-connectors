@@ -102,7 +102,7 @@ if [type] == "filebeat" and "hdfs" in [tags] and "_dissectfailure" not in [tags]
 #               add_tag => "metric"
 #       }
 ```
-
+**Note** The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 ## Configuring the HDFS filters in Guardium Insights
 
 To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/universal-connectors/blob/main/docs/UC_Configuration_GI.md)

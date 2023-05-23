@@ -59,7 +59,8 @@ The 'rdsadmin' user queries the database every second to check its health. This 
 4. Type a name in the Connector name field.
 5. Update the input section to add the details from the mysqlCloudwatch.conf file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 6. Update the filter section to add the details from the mysqlCloudwatch.conf file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-7. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+8. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 ## Configuring the AWS MySQL Guardium Logstash filters in Guardium Insights
 

@@ -8,7 +8,7 @@
     * Guardium Insights: 3.2 and above
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. 
-It is an extension of MySql-Guardium Logstash filter plug-in. see [MySql-Guardium Logstash filter plug-in](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mysql-guardium/README.md)
+It is an extension of MySql-Guardium Logstash filter plug-in. see [MySql-Guardium Logstash filter plug-in](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mysql-guardium/README.md)
 <div>
 <section class="section" role="region" aria-labelledby="d27740e34" id="concept_unt_dlb_2nb__filebeat_cfg"><h2 class="sectiontitle bx--type-expressive-heading-04" id="d27740e34">Filebeat configuration</h2>
 
