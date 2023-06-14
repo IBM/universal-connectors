@@ -198,5 +198,5 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 - While launching Solr in SolrCloud mode, multiple logs will be generated for single query execution as a call to shard(In SolrCloud, a logical partition of a single Collection) and replica(A core that acts as a physical copy of a shard in a SolrCloud Collection). 
 
 ## 5. Configuring the Apache Solr filters in Guardium Insights
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Insights, follow [this guide.](../docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 In the ```Input configuration``` section, refer to the Filebeat section.
