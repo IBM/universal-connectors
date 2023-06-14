@@ -89,13 +89,13 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
 
 *  Configure the policies you require. See [policies](/../../#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [logstash-filter-redshift_guardium_connector.zip](S3OverRedshiftPackage/logstash-filter-redshift_guardium_connector.zip) plug-in.
+* Download the [logstash-filter-redshift_guardium_connector.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-redshift-aws-guardium/S3OverRedshiftPackage/logstash-filter-redshift_guardium_connector.zip) plug-in.
 * Download the plugin filter configuration file [redshift.conf](redshift.conf).
 
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is already disabled, before proceeding to upload the UC.
-3. Click Upload File and select the [logstash-filter-redshift_guardium_connector.zip](S3OverRedshiftPackage/logstash-filter-redshift_guardium_connector.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the [logstash-filter-redshift_guardium_connector.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-redshift-aws-guardium/S3OverRedshiftPackage/logstash-filter-redshift_guardium_connector.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [redshift.conf](redshift.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
