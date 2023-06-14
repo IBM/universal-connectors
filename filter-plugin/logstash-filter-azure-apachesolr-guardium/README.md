@@ -171,7 +171,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * Configure the policies you require. See [policies](/../../#policies) for more information. 
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugin-apache-solr-azure.zip](ApacheSolrOverFilebeatPackage/guardium_logstash-offline-plugin-apache-solr-azure.zip) plug-in.
+* Download the [guardium_logstash-offline-plugin-apache-solr-azure.zip](../filter-plugin/logstash-filter-azure-apachesolr-guardium/ApacheSolrOverFilebeatPackage/AzureSolr/guardium_logstash-offline-plugin-apache-solr-azure.zip) plug-in.
 
 ### Procedure
 
