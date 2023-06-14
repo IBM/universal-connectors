@@ -194,7 +194,7 @@ the native audit logs by customizing the Progress template.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip)file.
+• Download the [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip) file.
 
 • Download the `openedge.jar` file based on your platform and database version.
 

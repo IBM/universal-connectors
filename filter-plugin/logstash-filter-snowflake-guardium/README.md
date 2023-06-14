@@ -4,7 +4,7 @@
     * Guardium Data Protection: 11.4 and above
         * Supported inputs:
             * JDBC (pull)
-    * Guardium Insights: 3.2.6 and above
+    * Guardium Insights: SaaS 1.0
 
 A Guardium Universal Connector filter plugin for Snowflake. The connector allows people to
 monitor SQL occuring in their Snowflake environments by providing a feed of events to
