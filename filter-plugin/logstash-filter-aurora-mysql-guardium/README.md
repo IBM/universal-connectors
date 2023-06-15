@@ -128,7 +128,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 	
-• Download the [Aurora-Mysql-offlinePlugin.zip plug-in.](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-aurora-mysql-guardium/AuroraMysqlOverCloudwatchPackage/AuroraMysql/Aurora-Mysql-offlinePlugin.zip)
+• Download the [Aurora-Mysql-offlinePlugin.zip plug-in.](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-aurora-mysql-guardium/AuroraMysqlOverCloudwatchPackage/AuroraMysql/Aurora-Mysql-offlinePlugin.zip)
 
 #### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
