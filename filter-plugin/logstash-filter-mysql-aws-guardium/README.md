@@ -54,11 +54,11 @@ The 'rdsadmin' user queries the database every second to check its health. This 
 		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. Click Upload File and select the offline json-encode-offline-plugin.zip plug-in. After it is uploaded, click OK.
+2. Click Upload File and select the [offline json-encode-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-aws-guardium/json-encode-offline-plugin.zip) plug-in. After it is uploaded, click OK.
 3. Click the Plus sign to open the Connector Configuration dialog box.
 4. Type a name in the Connector name field.
-5. Update the input section to add the details from the mysqlCloudwatch.conf file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-6. Update the filter section to add the details from the mysqlCloudwatch.conf file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+5. Update the input section to add the details from the [mysqlCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-aws-guardium/mysqlCloudwatch.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+6. Update the filter section to add the details from the [mysqlCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-aws-guardium/mysqlCloudwatch.conf) file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 8. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
