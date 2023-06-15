@@ -114,8 +114,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 *  Configure the policies you require. See [policies](/../../#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [logstash-filter-awsmariadb_guardium_filter](MariaDBOverCloudWatchPackage/AWSMariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in.
-* Download the plugin filter configuration file [MariaDBCloudWatch.conf](MariaDBCloudWatch.conf).
+* Download the [logstash-filter-awsmariadb_guardium_filter](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBOverCloudWatchPackage/MariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in.
+* Download the plugin filter configuration file [MariaDBCloudWatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBCloudWatch.conf).
 
 #### Procedure
 
@@ -124,8 +124,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 3. Click Upload File and select [logstash-filter-awsmariadb_guardium_filter](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBOverCloudWatchPackage/MariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
-6. Update the input section to add the details from [MariaDBCloudWatch.conf](MariaDBCloudWatch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7. Update the filter section to add the details from [MariaDBCloudWatch.conf](MariaDBCloudWatch.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+6. Update the input section to add the details from [MariaDBCloudWatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBCloudWatch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from [MariaDBCloudWatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBCloudWatch.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. In the "type" fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
 9. Click Save. Guardium validates the new connector, and enables the universal connector if it was 
 disabled. After it is validated, it appears in the Configure Universal Connector page.
