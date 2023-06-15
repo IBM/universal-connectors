@@ -1,4 +1,3 @@
-[
   {
     "protoPayload": {
       "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
