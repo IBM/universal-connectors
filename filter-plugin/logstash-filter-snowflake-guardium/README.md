@@ -1,4 +1,10 @@
 # Guardium Snowflake filter plug-in
+* Environment: AWS, Azure, GCP
+* Supported inputs: JDBC (pull)
+* Supported Guardium versions:
+    * Guardium Data Protection: 11.4 and above
+    * Guardium Insights SaaS: 1.0
+
 A Guardium Universal Connector filter plugin for Snowflake. The connector allows people to
 monitor SQL occuring in their Snowflake environments by providing a feed of events to
 Guardium using the new [V11.3 Universal Connector functionality](https://www.ibm.com/support/knowledgecenter/SSMPHH_11.3.0/com.ibm.guardium.doc.stap/guc/g_universal_connector.html).

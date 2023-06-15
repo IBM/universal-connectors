@@ -5,6 +5,7 @@
 * Supported inputs: CloudWatch (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
+    * Guardium Insights SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the DocumentDB audit and profiler logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved. 
 The DocumentDB plugin supports only Guardium Data Protection as of now. 
@@ -100,17 +101,17 @@ The Guardium universal connector is the Guardium entry point for native audit/pr
 ### Before you begin
 * Configure the policies you require. See [policies](/../../#policies) for more information.
 * You must have permission for the S-Tap Management role.The admin user includes this role by     default.
-* Download the [guardium_logstash-offline-plugin-documentdb.zip](DocumentDBOverCloudwatchPackage/guardium_logstash-offline-plugin-documentdb.zip) plug-in.
-* Download the plugin filter configuration file [ documentDBCloudwatch.conf](DocumentDBOverCloudwatchPackage/documentDBCloudwatch.conf).
+* Download the [guardium_logstash-offline-plugin-documentdb.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-documentdb-aws-guardium/DocumentDBOverCloudwatchPackage/DocumentDB/guardium_logstash-offline-plugin-documentdb.zip) plug-in.
+* Download the plugin filter configuration file [ documentDBCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-documentdb-aws-guardium/documentDBCloudwatch.conf).
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First Enable the Universal Guardium connector, if it is disabled already.
-3. Click Upload File and select the [offline guardium_logstash-offline-plugin-documentdb.zip](DocumentDBOverCloudwatchPackage/guardium_logstash-offline-plugin-documentdb.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the [offline guardium_logstash-offline-plugin-documentdb.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-documentdb-aws-guardium/DocumentDBOverCloudwatchPackage/DocumentDB/guardium_logstash-offline-plugin-documentdb.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
-6. Update the input section to add the details from [documentDBCloudwatch.conf](DocumentDBOverCloudwatchPackage/documentDBCloudwatch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7. Update the filter section to add the details from [documentDBCloudwatch.conf](DocumentDBOverCloudwatchPackage/documentDBCloudwatch.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+6. Update the input section to add the details from [documentDBCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-documentdb-aws-guardium/documentDBCloudwatch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from [documentDBCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-documentdb-aws-guardium/documentDBCloudwatch.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The "type" field should match in the input and filter configuration sections. This field should be unique for  every individual connector added.
 9. Click Save. Guardium validates the new connector, and enables the universal connector if it was
 disabled. After it is validated, it appears in the Configure Universal Connector page.

@@ -5,6 +5,7 @@
 * Supported inputs: Azure Event Hub (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
+    * Guardium Insights SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the azure postgreSQL audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
@@ -157,16 +158,16 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 																	
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [azure-postgresql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plug-in.		 
+• Download the [azure-postgresql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plug-in.		 
 
 #### Procedure : 
 
 1.	On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2.	First enable the Universal Guardium connector, if it is disabled already.
-3.	Click Upload File and select the offline [azure-postgresql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plugin. After it is uploaded,click OK.
+3.	Click Upload File and select the offline [azure-postgresql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plugin. After it is uploaded,click OK.
 4.	Click the Plus sign to open the Connector Configuration dialog box.
 5.	Type a name in the Connector name field.
-6.	Update the input section to add the details from [azurepostgresql.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-azure-postgresql-guardium/azurepostgresql.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+6.	Update the input section to add the details from [azurepostgresql.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-postgresql-guardium/azurepostgresql.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 7.	The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
-8.	Update the filter section to add the details from [azurepostgresql.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-azure-postgresql-guardium/azurepostgresql.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+8.	Update the filter section to add the details from [azurepostgresql.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-postgresql-guardium/azurepostgresql.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 9.	Click **Save**. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.

@@ -5,7 +5,7 @@
 * Supported inputs: CloudWatch (pull)
 * Supported Guardium versions:
    * Guardium Data Protection: 11.4 and above
-   * Guardium Insights: 3.2 and above
+   * Guardium Insights: 3.2
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the MariaDB audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query and Guardium sniffer parses the MariaDB queries. The MariaDB on Amazon RDS plugin only supports Guardium Data Protection as of now.
 
@@ -114,18 +114,18 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 *  Configure the policies you require. See [policies](/../../#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [logstash-filter-awsmariadb_guardium_filter](MariaDBOverCloudWatchPackage/AWSMariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in.
-* Download the plugin filter configuration file [MariaDBCloudWatch.conf](MariaDBCloudWatch.conf).
+* Download the [logstash-filter-awsmariadb_guardium_filter](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBOverCloudWatchPackage/MariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in.
+* Download the plugin filter configuration file [MariaDBCloudWatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBCloudWatch.conf).
 
 #### Procedure
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is disabled before uploading the UC plug-in.	
-3. Click Upload File and select [logstash-filter-awsmariadb_guardium_filter](MariaDBOverCloudWatchPackage/AWSMariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select [logstash-filter-awsmariadb_guardium_filter](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBOverCloudWatchPackage/MariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
-6. Update the input section to add the details from [MariaDBCloudWatch.conf](MariaDBCloudWatch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7. Update the filter section to add the details from [MariaDBCloudWatch.conf](MariaDBCloudWatch.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+6. Update the input section to add the details from [MariaDBCloudWatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBCloudWatch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from [MariaDBCloudWatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBCloudWatch.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. In the "type" fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
 9. Click Save. Guardium validates the new connector, and enables the universal connector if it was 
 disabled. After it is validated, it appears in the Configure Universal Connector page.
@@ -142,6 +142,7 @@ disabled. After it is validated, it appears in the Configure Universal Connector
  
 ## 7. Configuring the AWS MariaDB Guardium Logstash filters in Guardium Insights
 
-To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/universal-connectors/blob/main/docs/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
-In the input configuration section, refer to the CloudWatch_logs section.
+For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).
+
