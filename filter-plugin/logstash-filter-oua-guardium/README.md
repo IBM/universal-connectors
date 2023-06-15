@@ -57,7 +57,7 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 
       - Type any unique name in the **Connector name** field.
 
-         - Paste the content from the  "[ouaPipe.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-oua-guardium/ouaPipe.conf)" in the **Input configuration** field
+         - Paste the content from the  "[ouaPipe.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-oua-guardium/ouaPipe.conf)" in the **Input configuration** field
 
              ```
            pipe {
@@ -67,7 +67,7 @@ Update the variables in Makefile for your environment's Java home and Logstash l
                              add_field => {"SERVER_PORT" => "<Enter_Server_Port>"} }
            ```
 
-         - Paste the content from the  "[ouaPipe.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-oua-guardium/ouaPipe.conf)" in the **Filter configuration** field
+         - Paste the content from the  "[ouaPipe.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-oua-guardium/ouaPipe.conf)" in the **Filter configuration** field
 
              ```
                 if [type] == "oua" {
