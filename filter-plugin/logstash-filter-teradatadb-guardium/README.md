@@ -6,7 +6,7 @@
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
 
-This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Teradata audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure comprised of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
+This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Teradata audit log into a [Guardium record](https://github.com/IBM/universal-connectors/raw/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure comprised of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
@@ -115,7 +115,7 @@ For more information on how to check the serverIp from LogonSource, please refer
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [Teradata-Offline-Plugin.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/Teradata-Offline-Plugin.zip) plug-in.
+• Download the [Teradata-Offline-Plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/Teradata-Offline-Plugin.zip) plug-in.
 
 • Download the required jars as per your database version from URL:- https://downloads.teradata.com/download/connectivity/jdbc-driver
 
@@ -130,11 +130,11 @@ For more information on how to check the serverIp from LogonSource, please refer
 2. First enable the Universal Guardium connector, if it is disabled already.
 3. Click ```Upload File``` and upload the jar/jars which you downloaded from the teradata website.
 4. Click ```Upload File``` and upload "tdgssconfig.jar".
-5. Click ```Upload File``` and select the offline [Teradata-Offline-Plugin.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/Teradata-Offline-Plugin.zip) plug-in. After it is uploaded, click ```OK```.
+5. Click ```Upload File``` and select the offline [Teradata-Offline-Plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/Teradata-Offline-Plugin.zip) plug-in. After it is uploaded, click ```OK```.
 6. Click the Plus sign to open the ```Connector Configuration``` dialog box. 
 7. Type a name in the Connector name field.
-8. Update the input section to add the details from the [teradataJDBC.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/teradataJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide the details for database server name, username, and password that are required for connecting with JDBC.
-9. Update the filter section to add the details from the [teradataJDBC.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/teradataJDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the same database server name that you gave in the above step against the Server_Hostname attribute in the filter section.
+8. Update the input section to add the details from the [teradataJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/teradataJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide the details for database server name, username, and password that are required for connecting with JDBC.
+9. Update the filter section to add the details from the [teradataJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/teradataJDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the same database server name that you gave in the above step against the Server_Hostname attribute in the filter section.
 10. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 11. If you are using two JDBC plug-ins on the same machine, the last_run_metadata_path file name should be different.
 12. Click ```Save```. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the ```Configure Universal Connector``` page.

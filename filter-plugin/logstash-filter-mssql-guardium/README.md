@@ -213,26 +213,26 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * Configure the policies you require. See [policies](/../../#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [mssql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in.
-* Download the [logstash-filter-xml.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml.zip) plug-in.[This zip is not required for AWS MSSQL]
+* Download the [mssql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in.
+* Download the [logstash-filter-xml.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml.zip) plug-in.[This zip is not required for AWS MSSQL]
 * Download the [mssql-jdbc-7.4.1.jre8](https://jar-download.com/artifacts/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8) jar.
 
 #### Procedure:
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First Enable the Universal Guardium connector, if it is Disabled already.
-3. Click Upload File and select the offline [mssql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK.
-4. Click Upload File and select the offline [logstash-filter-xml.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [mssql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK.
+4. Click Upload File and select the offline [logstash-filter-xml.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml.zip) plug-in. After it is uploaded, click OK.
 5. Click Upload File and select the [mssql-jdbc-7.4.1.jre8](https://jar-download.com/artifacts/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8) jar. After it is uploaded, click OK.
 
 6. Click the Plus sign to open the Connector Configuration dialog box.
 7. Type a name in the Connector name field.
-8. Update the input section to add the details from [awsMssqlJDBC.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/awsMssqlJDBC.conf) for AWS MSSQL or [onPremMSSQL.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/on-premMssqlJDBC.conf) for on prem MSSQL setup file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+8. Update the input section to add the details from [awsMssqlJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/awsMssqlJDBC.conf) for AWS MSSQL or [onPremMSSQL.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/on-premMssqlJDBC.conf) for on prem MSSQL setup file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
    Note :
    • For Guardium Data Protection version 11.3, add the following line to the input section:
    'jdbc_driver_library => "${THIRD_PARTY_PATH}/mssql-jdbc-7.4.1.jre8.jar"'
    • Even if the universal connector was configured a while after auditing was configured, the universal connector  will still process all the previous records as well, since they were already audited by the database.
-9. Update the filter section to add the details from [awsMssqlJDBC.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/awsMssqlJDBC.conf) for AWS MSSQL or [onPremMSSQL.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/on-premMssqlJDBC.conf) for on prem MSSQL setup file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+9. Update the filter section to add the details from [awsMssqlJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/awsMssqlJDBC.conf) for AWS MSSQL or [onPremMSSQL.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/on-premMssqlJDBC.conf) for on prem MSSQL setup file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 10. The "type" fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
 11. If you are using two JDBC plug-ins on the same machine, the last_run_metadata_path file name should be different for each.
 12. Click Save. Guardium validates the new connector, and enables the universal connector if it was
