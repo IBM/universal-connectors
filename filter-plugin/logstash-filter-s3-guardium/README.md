@@ -3,11 +3,18 @@
 * Environment: AWS
 * Supported inputs: CloudWatch (pull), SQS (pull)
 * Supported Guardium versions:
-   * Guardium Data Protection: 11.3 and above
-   * Guardium Insights: 3.2 and above
-       * Supported inputs:
-           * Cloudwatch logs (pull)
-           * SQS (pull)
+  * Guardium Data Protection: 11.3 and above
+    * Supported inputs:
+      * Cloudwatch logs (pull)
+      * SQS (pull)
+  * Guardium Insights: 3.2
+    * Supported inputs:
+      * Cloudwatch logs (pull)
+      * SQS (pull)
+  * Guardium Insights SaaS: 1.0
+    * Supported inputs:
+      * Cloudwatch logs (pull)
+      * SQS (pull)
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses S3 database events into a Guardium record instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved. 
 
