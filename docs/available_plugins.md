@@ -52,4 +52,4 @@ Users can develop their own universal connector plug-ins, if needed, and contrib
 
 [Here](../docs/Guardium%20Data%20Protection/developing_plugins_gdp.md) is a guide for developing new plug-ins for Guardium Data Protection.
 
-[Here](../docs/Guardium%20Insights/3.2.x/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights (for 3.2.x versions only).
+[Here](../docs/Guardium%20Insights/3.2.x/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights (version 3.2.x only).
