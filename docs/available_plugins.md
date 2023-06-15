@@ -4,7 +4,7 @@ Below are all the available plug-ins, which are installed and ready for use.
 
 Our latest product version for Guardium Data Protection is [11.5](../docs/Guardium%20Data%20Protection)
 
-Our latest product version for Guardium Insights is [SaaS 1.0](../docs/Guardium_Insights/SaaS_1.0/Plugins_management.md)
+Our latest product version for Guardium Insights is [SaaS 1.0](../docs/Guardium%20Insights/SaaS_1.0/Plugins_management.md)
 
 ## Supported data sources
 The following plug-ins are supported by the latest versions. Exceptions are noted next to each plug-in name.
