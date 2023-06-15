@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_GCP_MySQL_filter",
+	"alias": "MySQL_GCP",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"MySQL on GCP","supportedVersions": [""]}],
+	"supported_input_plugins": ["Google_PubSub_input"],
+	"developer": "IBM",
+	"license": "Apache 2.0",
+	"description": "This package provides the data needed in order to support MySQL on GCP in Guardium Universal Connector.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/README.md"
+}
