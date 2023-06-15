@@ -135,7 +135,7 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 
 
 ## Installation
-To install this plug-in, you need to download the [offline pack](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-offline-plugins-filter-pubsub-mysql-guardium-3.0.3.zip).
+To install this plug-in, you need to download the [offline pack](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-offline-plugins-filter-pubsub-mysql-guardium-3.0.3.zip).
 
 ### Note
 To install on your local machine that is running Logstash, execute:

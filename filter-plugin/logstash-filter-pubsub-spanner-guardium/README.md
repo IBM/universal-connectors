@@ -6,7 +6,7 @@
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
 
-This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from Spanner audit/activity logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then pushed into Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
+This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from Spanner audit/activity logs into a [Guardium record](https://github.com/IBM/universal-connectors/raw/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then pushed into Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 As of now, the Spanner filter plug-in only supports Guardium Data Protection.
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for the Guardium universal connector.
@@ -128,7 +128,7 @@ The inclusion filter mentioned above will be used to view the Audit logs in the 
 The Guardium universal connector is the Guardium entry point for native audit/data_access logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit/data_access logs by customizing the Spanner template.
 
 ### Before you begin
-* You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step 4 under section Installing and testing the filter or input plug-in on a staging Guardium system on [this page](https://github.com/IBM/universal-connectors/blob/main/docs/developing_plugins_gdp.md).
+* You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step 4 under section Installing and testing the filter or input plug-in on a staging Guardium system on [this page](https://github.com/IBM/universal-connectors/raw/main/docs/developing_plugins_gdp.md).
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
 * Download the [guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip](SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in.
 
