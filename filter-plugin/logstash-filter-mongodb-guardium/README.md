@@ -8,8 +8,11 @@
         * Syslog (push)
         * Filebeat (push)
         * MongoDB Atlas (pull)
-    * Guardium Insights: 3.2 and above
+    * Guardium Insights: 3.2
       * Supported inputs: 
+        * Filebeat (push)
+    * Guardium Insights SaaS: 1.0
+      * Supported inputs:
         * Filebeat (push)
         * MongoDB Atlas (pull)
 

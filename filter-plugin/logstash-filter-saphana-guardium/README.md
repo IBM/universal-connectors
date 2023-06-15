@@ -4,12 +4,16 @@
 * Environment: On-premise, Iaas
 * Supported Guardium versions:
 	* Guardium Data Protection: 11.4 and above
-		* Supported inputs:
-          * Filebeat (push)
-          * JDBC (pull)
-	* Guardium Insights: 3.2 and above
-		* Supported inputs:
-			* Filebeat (push)
+      * Supported inputs:
+        * Filebeat (push)
+        * JDBC (pull)
+	* Guardium Insights: 3.2
+      * Supported inputs:
+        * Filebeat (push)
+    * Guardium Insights SaaS: 1.0
+      * Supported inputs:
+        * Filebeat (push)
+        * JDBC (pull)
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the SAP HANA audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
@@ -245,31 +249,31 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * Download the required (ngdbc)jars as per your database version from URL https://tools.hana.ondemand.com/#hanatools .
 
-* For CSVTEXTFILE-based auditing, refer to this [package](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage) and download the [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in.
+* For CSVTEXTFILE-based auditing, refer to this [package](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage) and download the [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in.
 
 
-* For CSTABLE based auditing, refer to this [package](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage)	and download the [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/SAPHANA-offline-plugin.zip) plug-in.
+* For CSTABLE based auditing, refer to this [package](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage)	and download the [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/SAPHANA-offline-plugin.zip) plug-in.
 
 
 # Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First enable the Universal Guardium connector, if it is disabled already.
 3. For CSVTEXTFILE-based auditing, follow these steps:-
-    1. Click "Upload File" and select the [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK".
+    1. Click "Upload File" and select the [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK".
     2. Click the Plus sign to open the Connector Configuration dialog box.
     3. Type a name in the Connector name field.
-    4. Update the input section. Use the [saphanaFilebeat.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-saphana-guardium/saphanaFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-    5. Update the filter section. Use the [saphanaFilebeat.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-saphana-guardium/saphanaFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+    4. Update the input section. Use the [saphanaFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/saphanaFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+    5. Update the filter section. Use the [saphanaFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/saphanaFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
     6. The "type" field should match in the input and filter configuration section. This field should be unique for every individual connector added.
     7. Click "Save". Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 4. For CSTABLE-based auditing, follow these steps:
-    1. Click "Upload File" and select the offline [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK".
+    1. Click "Upload File" and select the offline [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK".
     2. Click "Upload File" again and select the ngdbc-2.9.12 jar file. After it is uploaded, click "OK".
     3. Click the Plus sign to open the Connector Configuration dialog box.
     4. Type a name in the Connector name field.
-    5. Update the input section . Use the [saphanaJDBC.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/saphanaJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-    6. Update the filter section for JDBC Plugin. Use the [saphanaJDBC.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/saphanaJDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+    5. Update the input section . Use the [saphanaJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/saphanaJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+    6. Update the filter section for JDBC Plugin. Use the [saphanaJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/saphanaJDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
     7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
     8. If using two jdbc plug-ins on same machine , the last_run_metadata_path file name should be different.
 

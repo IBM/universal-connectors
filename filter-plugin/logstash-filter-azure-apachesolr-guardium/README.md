@@ -4,7 +4,8 @@
 * Environment: Azure
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
-    * Guardium Data Protection: 11.4 and above
+  * Guardium Data Protection: 11.4 and above
+  * Guardium Insights SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Apache Solr logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.The Apache Solr Azure plugin only supports Guardium Data Protection as of now.
 
@@ -170,13 +171,13 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * Configure the policies you require. See [policies](/../../#policies) for more information. 
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugin-apache-solr-azure.zip](ApacheSolrOverFilebeatPackage/guardium_logstash-offline-plugin-apache-solr-azure.zip) plug-in.
+* Download the [guardium_logstash-offline-plugin-apache-solr-azure.zip](https://github.com/IBM/universal-connectors/raw/INS-30373/filter-plugin/logstash-filter-azure-apachesolr-guardium/ApacheSolrOverFilebeatPackage/AzureSolr/guardium_logstash-offline-plugin-apache-solr-azure.zip) plug-in.
 
 ### Procedure
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First, enable the Universal Guardium connector, if it is currently disabled.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugin-apache-solr-azure.zip](ApacheSolrOverFilebeatPackage/guardium_logstash-offline-plugin-apache-solr-azure.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugin-apache-solr-azure.zip](https://github.com/IBM/universal-connectors/raw/INS-30373/filter-plugin/logstash-filter-azure-apachesolr-guardium/ApacheSolrOverFilebeatPackage/AzureSolr/guardium_logstash-offline-plugin-apache-solr-azure.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus icon to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from the [solrazure.conf](solrazure.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
