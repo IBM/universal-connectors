@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_Big_Query_filter",
+	"alias": "Big_Query",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"Big Query","supportedVersions": [""]}],
+	"supported_input_plugins": ["Google_PubSub_input"],
+	"developer": "IBM",
+	"license": "Apache 2.0",
+	"description": "This package provides the data needed in order to support GCP Big Query DB in Guardium Universal Connector.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-bigquery-guardium/README.md"
+}
