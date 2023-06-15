@@ -88,7 +88,7 @@ Connect to the new audit-enabled database using the Data Administrator tool.
 
   1. Under **Tools**, select **Audit Policy Maintaince** and click **Import Policy**.
 
-  2. Import the Policy File. A predefined audit policy [policies.xml](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/policies.xml.zip),which is provided by Progress, can be imported to any database which is enabled for auditing.
+  2. Import the Policy File. A predefined audit policy [policies.xml](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/policies.xml.zip),which is provided by Progress, can be imported to any database which is enabled for auditing.
 
   3. Extract the zip file. After extracting the downloaded zip, there will be a file named "policies.xml". Select the policies.xml.
 
@@ -194,7 +194,7 @@ the native audit logs by customizing the Progress template.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip)file.
+• Download the [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip) file.
 
 • Download the `openedge.jar` file based on your platform and database version.
 
@@ -207,15 +207,15 @@ the native audit logs by customizing the Progress template.
 
 3. Click **Upload File** and upload the `openedge.jar` file that is included in the enterprise version. 
 
-4. Click **Upload File** and select the offline [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip) file. After it is uploaded, click **OK**.
+4. Click **Upload File** and select the offline [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip) file. After it is uploaded, click **OK**.
 
 5. Click the Plus icon to open the Connector Configuration dialog box.
     
 6. Type a name in the Connector name field.
     
-7. Update the input section to add the details from the [Progress-JDBC.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/Progress-JDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide the required details for database server name, username, and password for JDBC connectivity.
+7. Update the input section to add the details from the [Progress-JDBC.conf](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/Progress-JDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide the required details for database server name, username, and password for JDBC connectivity.
 
-8. Update the filter section to add the details from the [Progress-JDBC.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/Progress-JDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the same database server name as in the above step for the Server_Hostname attribute in the filter section.
+8. Update the filter section to add the details from the [Progress-JDBC.conf](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/Progress-JDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the same database server name as in the above step for the Server_Hostname attribute in the filter section.
 
 9. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
     
