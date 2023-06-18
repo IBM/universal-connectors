@@ -1,0 +1,35 @@
+{
+  "plugin_name": "MongoDB over tcp input with syslog",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-postgres-guardium/README.md",
+  "input_name": "syslog_input",
+  "input_parameters": [
+    {
+      "port": {
+        "type": "number",
+        "default": 5001,
+        "hidden": true
+      },
+      "ssl_enable": {
+        "type": "boolean",
+        "default": true,
+        "hidden": true
+      },
+      "ssl_verify": {
+        "type": "boolean",
+        "default": true,
+        "hidden": true
+      },
+      "ssl_certificate_authorities": {
+      },
+      "type": {
+        "type": "text",
+        "default": "syslog-mysql",
+        "hidden": true
+      }
+    }
+  ],
+  "filter_name": "Guardium_MongoDB_Syslog_filter",
+  "filter_parameters": [],
+  "auth_parameters": [],
+  "supported_platforms": []
+}
