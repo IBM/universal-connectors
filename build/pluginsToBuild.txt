@@ -1,7 +1,7 @@
 filter-plugin/logstash-filter-mongodb-guardium
 filter-plugin/logstash-filter-mysql-guardium
 filter-plugin/logstash-filter-s3-guardium
-filter-plugin/logstash-filter-pubsub-apachesolr-guardiu
+filter-plugin/logstash-filter-pubsub-apachesolr-guardium
 filter-plugin/logstash-filter-hdfs-guardium
 filter-plugin/logstash-filter-mysql-percona-guardium
 filter-plugin/logstash-filter-generic-guardium
