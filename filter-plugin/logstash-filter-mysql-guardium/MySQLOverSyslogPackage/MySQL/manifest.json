@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_MySQL__Syslog_filter",
+	"alias": "MySQL",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"MySQL","supportedVersions": [""]}],
+	"supported_input_plugins": ["syslog_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses syslog MySQL database events into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mysql-guardium/README.md"
+}
