@@ -25,11 +25,19 @@
         "type": "text",
         "default": "syslog-mysql",
         "hidden": true
+      },
+      "ssl_cert": {
+        "type": "text",
+        "label": "Certificate file name (example.cert)"
+      },
+      "ssl_key": {
+        "type": "text",
+        "label": "Key file name (example.key)"
       }
     }
   ],
   "filter_name": "Guardium_MongoDB_Syslog_filter",
   "filter_parameters": [],
   "auth_parameters": [],
-  "supported_platforms": []
+  "supported_platforms": ["on-premise"]
 }
