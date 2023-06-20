@@ -1,5 +1,5 @@
 {
-	"name": "Guardium_MySQL__Syslog_filter",
+	"name": "Guardium_MySQL_Syslog_filter",
 	"alias": "MySQL",
 	"type": "filter",
 	"pipeline_type":"pull",
