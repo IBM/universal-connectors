@@ -35,19 +35,19 @@ public class AppUserNameTest {
         return Arrays.asList(new Object[][] {
                 {"{\n" +
                         "  \"type\": \"IAMUser\",\n" +
-                        "  \"principalId\": \"AIDAJ45Q7YFFAREXAMPLE\",\n" +
+                        "  \"principalId\": \"<dummy_principal_id>\",\n" +
                         "  \"arn\": \"arn:aws:iam::123456789012:user/Alice\",\n" +
                         "  \"accountId\": \"123456789012\",\n" +
-                        "  \"accessKeyId\": \"AKIAIOSFODNN7EXAMPLE\",\n" +
+                        "  \"accessKeyId\": \"<dummy_access_key_id>\",\n" +
                         "  \"userName\": \"Alice\"\n" +
                         "}", "Alice" },
 
                 { "{\n" +
                         "    \"type\": \"AssumedRole\",\n" +
-                        "    \"principalId\": \"AROAIDPPEZS35WEXAMPLE:AssumedRoleSessionName\",\n" +
+                        "    \"principalId\": \"<dummy_principal_id>:AssumedRoleSessionName\",\n" +
                         "    \"arn\": \"arn:aws:sts::123456789012:assumed-role/RoleToBeAssumed/MySessionName\",\n" +
                         "    \"accountId\": \"123456789012\",\n" +
-                        "    \"accessKeyId\": \"AKIAIOSFODNN7EXAMPLE\",\n" +
+                        "    \"accessKeyId\": \"<dummy_access_key_id>\",\n" +
                         "    \"sessionContext\": {\n" +
                         "      \"attributes\": {\n" +
                         "        \"mfaAuthenticated\": \"false\",\n" +
@@ -55,7 +55,7 @@ public class AppUserNameTest {
                         "      },\n" +
                         "      \"sessionIssuer\": {\n" +
                         "        \"type\": \"Role\",\n" +
-                        "        \"principalId\": \"AROAIDPPEZS35WEXAMPLE\",\n" +
+                        "        \"principalId\": \"<dummy_principal_id>\",\n" +
                         "        \"arn\": \"arn:aws:iam::123456789012:role/RoleToBeAssumed\",\n" +
                         "        \"accountId\": \"123456789012\",\n" +
                         "        \"userName\": \"RoleToBeAssumed\"\n" +
@@ -69,7 +69,7 @@ public class AppUserNameTest {
                         "}",  "AWSService"},
 
                 { "{\n" +
-                        "    \"accessKeyId\": \"ASIA6LUS2AO7QFH4D34Z\",\n" +
+                        "    \"accessKeyId\": \"<dummy_access_key_id>\",\n" +
                         "    \"sessionContext\": {\n" +
                         "      \"attributes\": {\n" +
                         "        \"creationDate\": \"2020-07-09T14:31:10Z\",\n" +
@@ -77,7 +77,7 @@ public class AppUserNameTest {
                         "      }\n" +
                         "    },\n" +
                         "    \"accountId\": \"987076625343\",\n" +
-                        "    \"principalId\": \"AIDAJWW2XAIOY2WN3KAAM\",\n" +
+                        "    \"principalId\": \"<dummy_principal_id>\",\n" +
                         "    \"userName\": \"ProxyTest\",\n" +
                         "    \"type\": \"IAMUser\",\n" +
                         "    \"arn\": \"arn:aws:iam::987076625343:user/ProxyTest\"\n" +
