@@ -34,6 +34,14 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
       uname = message['uname']
       timestamp = message['ts']
 
+      if uname.nil? || uname.empty? || uname == "[unknown]"
+        uname = "N/A"
+      end
+
+      if db_name.nil? || db_name.empty? || db_name == "[unknown]"
+        db_name = "N/A"
+      end
+
       event.set('[GuardRecord][dbName]', db_name)
       event.set('[GuardRecord][sessionId]', session_id)
       event.set('[GuardRecord][accessor][dbUser]', uname)
@@ -41,14 +49,15 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
       login_failed_substr = 'password authentication failed'
       aborted_connection = 'Aborted connection'
       wait_timeout_exceeded = 'The wait_timeout'
+      unsupported_protocol ='unsupported frontend protocol'
 
-      if %w[EMERGENCY ALERT CRITICAL ERROR].include?(severity)
+      if %w[EMERGENCY ALERT CRITICAL ERROR FATAL].include?(severity)
         exception_type = case msg
                          when /#{login_failed_substr}.*/
                            'LOGIN_FAILED'
                          when /#{aborted_connection}.*/
                            'PREMATURE_CLOSE'
-                         when /#{wait_timeout_exceeded}.*/
+                         when /#{wait_timeout_exceeded}|#{unsupported_protocol}.*/
                            'SESSION_ERROR'
                          else
                            'SQL_ERROR'
@@ -56,7 +65,7 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
         event.set('[GuardRecord][exception][exceptionTypeId]', exception_type)
         event.set('[GuardRecord][exception][description]', msg)
         event.set('[GuardRecord][exception][sqlString]', '')
-        event.set('[GuardRecord][data][originalSqlCommand]', nil)
+        event.set('[GuardRecord][data]', nil)
       else
         event.set('[GuardRecord][exception]', nil)
         event.set('[GuardRecord][data][originalSqlCommand]', msg)
@@ -83,6 +92,14 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
       db_name = request['database']
       uname = request['user']
       timestamp = event.get('timestamp')
+
+      if uname.nil? || uname.empty? || uname == "[unknown]"
+        uname = "N/A"
+      end
+
+      if db_name.nil? || db_name.empty? || db_name == "[unknown]"
+        db_name = "N/A"
+      end
 
       event.set('[GuardRecord][data][originalSqlCommand]', original_sql)
       event.set('[GuardRecord][dbName]', db_name)
@@ -135,7 +152,7 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
       event.set('[GuardRecord][time][minOffsetFromGMT]', 0)
       event.set('[GuardRecord][time][minDst]', 0)
 
-      event.set('[GuardRecord][data][construct]', nil)
+      event.set('[GuardRecord][data]', nil)
 
       event.set('[GuardRecord][sessionLocator][clientIp]', '0.0.0.0')
       event.set('[GuardRecord][sessionLocator][clientPort]', 0)
