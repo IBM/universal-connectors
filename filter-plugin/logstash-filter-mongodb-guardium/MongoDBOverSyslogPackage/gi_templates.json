@@ -19,8 +19,6 @@
         "default": true,
         "hidden": true
       },
-      "ssl_certificate_authorities": {
-      },
       "type": {
         "type": "text",
         "default": "syslog-mysql",
