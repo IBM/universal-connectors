@@ -1,0 +1,11 @@
+{
+  "plugin_name": "syslog_input",
+  "help_link": "",
+  "input_name": "syslog_input",
+  "input_parameters": [
+  ],
+  "filter_name": "",
+  "filter_parameters": [],
+  "auth_parameters": [
+  ]
+}
