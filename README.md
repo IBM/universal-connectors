@@ -55,7 +55,7 @@ Our latest product version for Guardium Insights is [3.2](docs/Guardium%20Insigh
 ## Supported data sources
 Connecting a data source to Guardium requires a designated plug-in. 
 
-Please refer [available plugins](docs/available_plugins.md) to see the full list. 
+Please refer to the [available plugins](docs/available_plugins.md) to see the full list. 
 
 ## How it works
 
