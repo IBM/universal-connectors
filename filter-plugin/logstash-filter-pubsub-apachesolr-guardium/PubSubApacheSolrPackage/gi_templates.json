@@ -1,0 +1,43 @@
+{
+  "plugin_name": "Apache solr Over Pub Sub",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-apachesolr-guardium/README.md",
+  "input_name": "Google_PubSub_input",
+  "input_parameters": [
+    {
+      "project_id": {
+        "type": "text",
+        "label": "Project ID"
+      },
+      "topic": {
+        "type": "text",
+        "label": "Topic"
+      },
+      "subscription": {
+        "type": "text",
+        "label": "Subscription"
+      },
+      "include_metadata": {
+        "type": "boolean",
+        "default": false,
+        "hidden": true
+      },
+      "json_key_file_name": {
+        "type": "text",
+        "label": "Json key file name (For example: file_name.json)"
+      }
+    }
+  ],
+  "filter_name": "Guardium_GCP_Apache_Solr_filter",
+  "filter_parameters": [],
+  "auth_parameters": [
+    {
+      "guc_filter_param_type": {
+        "param_type": "filter",
+        "type": "text",
+        "label": "Type",
+        "description": "Type field categorizes and filters incoming data."
+      }
+    }
+  ],
+  "supported_platforms": ["Google Cloud"]
+}
