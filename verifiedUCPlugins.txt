@@ -30,6 +30,17 @@ filter-plugin/logstash-filter-azure-sql-guardium/AzureSQLOverJdbcPackage
 filter-plugin/logstash-filter-mssql-guardium/MssqlAWSOverJdbcPackage
 filter-plugin/logstash-filter-mssql-guardium/MssqlOnPremOverJdbcPackage
 filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage
+#GCP plug-ins
+filter-plugin/logstash-filter-pubsub-apachesolr-guardium/PubSubApacheSolrPackage
+filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage
+filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/PubSubFirebasePackage
+filter-plugin/logstash-filter-pubsub-firestore-guardium/PubSubFireStorePackage
+filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage
+
+
+#Syslog plug-ins
+filter-plugin/logstash-filter-mongodb-guardium/MongoDBOverSyslogPackage
+filter-plugin/logstash-filter-mysql-guardium/MySQLOverSyslogPackage
 #Other
 filter-plugin/logstash-filter-mongodb-guardium/MongodbOverMongoAtlasPackage
 filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub
@@ -40,3 +51,5 @@ input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage
 input-plugin/logstash-input-jdbc/JdbcInputPackage
 input-plugin/logstash-input-mongo-atlas/InputMongoAtlasPackage
 input-plugin/logstash-input-sqs/SQSInputPackage
+input-plugin/logstash-input-tcp-syslog/SyslogInputPackage
+input-plugin/logstash-input-google-pubsub/GooglePubSubPackage
