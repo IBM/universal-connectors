@@ -11,6 +11,9 @@ VERIFIED_UC_GI_PLUGINS_FILE="verifiedUCPlugins_gi.txt"
 PACKAGED_PLUGINS_DIR=dist/plugins
 GI_PLUGINS_DIR=dist/temp
 PLUGINS_LISTS_DIR=build/
+
+GI_PLUGINS_TEMPLATES="gi_plugins_templates.zip"
+GDP_PLUGINS_TEMPLATES="gdp_plugins_templates.zip"
 originalPath=$(pwd)
 
 function zipPackage {
@@ -42,8 +45,8 @@ ls | grep -v '/$' | grep -v 'plugins_list.txt' > "plugins_list.txt"
 
 # zip all plugins zips and the names list into one zip
 cd ${originalPath}
-zip -j -r "gdp_plugins.zip" "${PACKAGED_PLUGINS_DIR}"
-zip -j -r "plugins.zip" "${GI_PLUGINS_DIR}"
+zip -j -r "${GDP_PLUGINS_TEMPLATES}" "${PACKAGED_PLUGINS_DIR}"
+zip -j -r "${GI_PLUGINS_TEMPLATES}" "${GI_PLUGINS_DIR}"
 
 # remove temporary direction
 rm -r ${originalPath}/${GI_PLUGINS_DIR}
