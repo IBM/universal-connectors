@@ -20,6 +20,8 @@ See our Guardium Insights SaaS documentation [here](/docs/Guardium%20Insights/Sa
 
 [Integrating the Code Coverage tool into universal connector Plug-ins](/docs/integrate_code_coverage_into_plug-ins.md)
 
+[Sample configuration: MySQL with Filebeat](/docs/cfg_mysql_filebeat.md)
+
 [Sample data source configurations](/docs/sample_data_sources_configurations.md)
 
 [Suggested configurations to optimize database performance](/docs/suggested_configurations_to_optimize_database_performance.md)
