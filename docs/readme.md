@@ -6,7 +6,7 @@
 -   [Guardium Insights](#guardium-insights)
 -   [Guardium Insights SaaS](#guardium-insights-saas)
 -   [General topics](#general-topics)
--   [A little bit more about the universal connector](#a-little-bit-more-about-the-universal-connector)
+-   [Overview](#overview)
 -   [How it works](#how-it-works)
     * [The Workflows](#the-workflows)
     * [Keep In Mind](#keep-in-mind)
@@ -24,6 +24,10 @@
 </details>
 
 # Universal Connector documentation
+
+<details open="open">
+
+<summary>Shortcut links</summary>
 
 ## Available plug-ins
 See available plug-ins [here](/docs/available_plugins.md). 
@@ -51,7 +55,12 @@ See our Guardium Insights SaaS documentation [here](/docs/Guardium%20Insights/Sa
 
 [Suggested configurations to optimize database performance](/docs/suggested_configurations_to_optimize_database_performance.md)
 
-## A little bit more about the Universal Connector
+</details>
+
+<details open="open">
+<summary>A little bit more about the universal connector</summary>
+
+## Overview
 
 The Guardium universal connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using S-TAPs. It includes support for various plug-in packages, requiring minimal configuration. You can easily develop plug-ins for other data sources and install them in Guardium.
 
@@ -214,10 +223,12 @@ For adding a parser to the filter section of the configuration file as a pre-pro
 ### Develop an input plug-in
 * For developing a Ruby input plug-in, use [How to write a Logstash input plugin](https://www.elastic.co/guide/en/logstash/current/input-new-plugin.html)
 * For developing a Java input plug-in, use [How to write a Java filter plugin](https://www.elastic.co/guide/en/logstash/current/java-input-plugin.html)
-
+* 
 **Note:**
 It is the developer's responsibility to maintain and update the database's supported versions
 
 ***
 **Useful links:**
  - [Integrate Code Coverage tool into Universal Connector Plug-ins](/docs/integrate_code_coverage_into_plug-ins.md)
+
+  </details>
