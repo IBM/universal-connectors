@@ -49,7 +49,7 @@ See our Guardium Insights SaaS documentation [here](/docs/Guardium%20Insights/Sa
 
 The Guardium universal connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using S-TAPs. It includes support for various plug-in packages, requiring minimal configuration. You can easily develop plug-ins for other data sources and install them in Guardium.
 
-The captured events embed messages of any type that is supported by the configured data source. That includes: information and administrative system logs (e.g.: login logs, various data lake platform native plug-in related data), DDLs and DMLs, errors of varying subtypes, etc. The incoming events received by the universal connector can be configured to arrive either encrypted or as plain text.
+The captured events embed messages of any type that is supported by the configured data source. That includes: information and administrative system logs (e.g., login logs, various data lake platform native plug-in related data), DDLs and DMLs, errors of varying subtypes, etc. The incoming events received by the universal connector can be configured to arrive either encrypted or as plain text.
 
 Figure 1. Guardium universal connector architecture
 
