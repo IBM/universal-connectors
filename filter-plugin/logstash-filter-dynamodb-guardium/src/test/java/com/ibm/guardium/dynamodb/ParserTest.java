@@ -33,6 +33,7 @@ public class ParserTest {
 
         Assert.assertEquals("CreateTable", sentence.getVerb());
         Assert.assertEquals("Employee", sentence.getObjects().get(0).name);
+        Assert.assertEquals(record.getDbName(),record.getAccessor().getServiceName());
 
     }
 
@@ -43,6 +44,7 @@ public class ParserTest {
         final JsonObject dynamoJson = JsonParser.parseString(dynamoString).getAsJsonObject();
 
         final Record record = Parser.parseRecord(dynamoJson);
+
         Assert.assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
         Assert.assertEquals("Requested resource not found: Table: Music12 not found", record.getException().getDescription());
     }
@@ -91,23 +93,20 @@ public class ParserTest {
         Assert.assertEquals("Students", sentence.getObjects().get(0).name);
     }
 
-
-	@Test
-    public void testSessionLocator_validIP() throws ParseException{
+    @Test
+    public void testSessionLocator_validIP() {
         final String dynamoString = "{\"eventVersion\": \"1.08\", \"userIdentity\": { \"type\": \"IAMUser\", \"principalId\": \"<dummy_principal_id>\", \"arn\": \"arn:aws:iam::346824953529:user/rasika.shete\", \"accountId\": \"346824953529\", \"accessKeyId\": \"<dummy_access_key_id>\", \"userName\": \"rasika.shete\", \"sessionContext\": {   \"attributes\": {   \"creationDate\": \"2020-12-28T06:58:12Z\",   \"mfaAuthenticated\": \"false\"   } } }, \"eventTime\": \"2020-12-28T08:18:45Z\", \"eventSource\": \"dynamodb.amazonaws.com\", \"eventName\": \"DeleteTable\", \"awsRegion\": \"ap-south-1\", \"sourceIPAddress\": \"103.62.17.201\", \"userAgent\": \"console.amazonaws.com\", \"requestParameters\": { \"tableName\": \"Students\" }, \"responseElements\": { \"tableDescription\": {   \"tableId\": \"97916744-b891-4756-a966-ca73720eaa73\",   \"provisionedThroughput\": {   \"readCapacityUnits\": 5,   \"writeCapacityUnits\": 5,   \"numberOfDecreasesToday\": 0   },   \"tableName\": \"Students\",   \"tableSizeBytes\": 0,   \"tableStatus\": \"DELETING\",   \"tableArn\": \"arn:aws:dynamodb:ap-south-1:346824953529:table/Students\",   \"itemCount\": 0 } }, \"requestID\": \"QKK5BIUO639AHVDAR1NIFO2UJ3VV4KQNSO5AEMVJF66Q9ASUAAJG\", \"eventID\": \"420dc42a-369a-46f4-b9ea-d7b8867bd86b\", \"readOnly\": false, \"resources\": [ {   \"accountId\": \"346824953529\",   \"type\": \"AWS::DynamoDB::Table\",   \"ARN\": \"arn:aws:dynamodb:ap-south-1:346824953529:table/Students\" } ], \"eventType\": \"AwsApiCall\", \"apiVersion\": \"2012-08-10\", \"managementEvent\": true, \"recipientAccountId\": \"346824953529\", \"eventCategory\": \"Management\"}";
         final JsonObject dynamoJson = JsonParser.parseString(dynamoString).getAsJsonObject();
-        final Record record = Parser.parseRecord(dynamoJson);
-        final SessionLocator result = record.getSessionLocator();
+        final SessionLocator result = Parser.parseSessionLocator(dynamoJson);
 
         Assert.assertEquals("103.62.17.201", result.getClientIp());
     }
 
     @Test
-    public void testSessionLocator_invalidIP() throws ParseException {
+    public void testSessionLocator_invalidIP() {
         final String dynamoString = "{\"eventVersion\": \"1.08\", \"userIdentity\": { \"type\": \"IAMUser\", \"principalId\": \"<dummy_principal_id>\", \"arn\": \"arn:aws:iam::346824953529:user/rasika.shete\", \"accountId\": \"346824953529\", \"accessKeyId\": \"<dummy_access_key_id>\", \"userName\": \"rasika.shete\", \"sessionContext\": {   \"attributes\": {   \"creationDate\": \"2020-12-28T06:58:12Z\",   \"mfaAuthenticated\": \"false\"   } } }, \"eventTime\": \"2020-12-28T08:18:45Z\", \"eventSource\": \"dynamodb.amazonaws.com\", \"eventName\": \"DeleteTable\", \"awsRegion\": \"ap-south-1\", \"sourceIPAddress\": \"dynamodb.application-autoscaling.amazonaws.com\", \"userAgent\": \"console.amazonaws.com\", \"requestParameters\": { \"tableName\": \"Students\" }, \"responseElements\": { \"tableDescription\": {   \"tableId\": \"97916744-b891-4756-a966-ca73720eaa73\",   \"provisionedThroughput\": {   \"readCapacityUnits\": 5,   \"writeCapacityUnits\": 5,   \"numberOfDecreasesToday\": 0   },   \"tableName\": \"Students\",   \"tableSizeBytes\": 0,   \"tableStatus\": \"DELETING\",   \"tableArn\": \"arn:aws:dynamodb:ap-south-1:346824953529:table/Students\",   \"itemCount\": 0 } }, \"requestID\": \"QKK5BIUO639AHVDAR1NIFO2UJ3VV4KQNSO5AEMVJF66Q9ASUAAJG\", \"eventID\": \"420dc42a-369a-46f4-b9ea-d7b8867bd86b\", \"readOnly\": false, \"resources\": [ {   \"accountId\": \"346824953529\",   \"type\": \"AWS::DynamoDB::Table\",   \"ARN\": \"arn:aws:dynamodb:ap-south-1:346824953529:table/Students\" } ], \"eventType\": \"AwsApiCall\", \"apiVersion\": \"2012-08-10\", \"managementEvent\": true, \"recipientAccountId\": \"346824953529\", \"eventCategory\": \"Management\"}";
         final JsonObject dynamoJson = JsonParser.parseString(dynamoString).getAsJsonObject();
-        final Record record = Parser.parseRecord(dynamoJson);
-        final SessionLocator result = record.getSessionLocator();
+        final SessionLocator result = Parser.parseSessionLocator(dynamoJson);
 
         Assert.assertEquals("0.0.0.0", result.getClientIp());
     }
@@ -120,8 +119,6 @@ public class ParserTest {
 
         Assert.assertEquals(Constants.DATA_PROTOCOL_STRING, actual.getDbProtocol());
         Assert.assertEquals(Constants.SERVER_TYPE_STRING, actual.getServerType());
-
-        Assert.assertEquals("083406524166:root", actual.getDbUser());
 
     }
 
@@ -136,7 +133,7 @@ public class ParserTest {
         String dateString = Parser.parseTimestamp(dynamoJson);
         long time = Parser.getTime(dateString).getTimstamp();
 
-        final String testString = "{\"eventVersion\": \"1.08\", \"userIdentity\": {\"type\": \"Root\", \"principalId\": \"083406524166\", \"arn\": \"arn:aws:iam::083406524166:root\", \"accountId\": \"083406524166\", \"accessKeyId\": \"<dummy_access_key_id>\", \"sessionContext\": { \"attributes\": {  \"creationDate\": \"2020-12-28T07:15:10Z\", \"mfaAuthenticated\": \"false\" } } },\"eventTime\": \"2020-12-28T09:35:21Z\",\"eventSource\": \"dynamodb.amazonaws.com\",   \"eventName\": \"CreateTable\",    \"awsRegion\": \"ap-south-1\", \"sourceIPAddress\": \"103.62.17.201\", \"userAgent\": \"console.mazonaws.com\", \"requestParameters\": {\"attributeDefinitions\": [{ \"attributeName\": \"Employee Number\", \"attributeType\": \"N\" }], \"tableName\": \"Employee\", \"keySchema\": [ {\"attributeName\": \"Employee Number\", \"keyType\": \"HASH\" } ],\"billingMode\": \"PROVISIONED\", \"provisionedThroughput\": { \"readCapacityUnits\": 5,  \"writeCapacityUnits\": 5 }, \"sSESpecification\": { \"enabled\": false } }, \"responseElements\": { \"tableDescription\": {  \"attributeDefinitions\": [ {  \"attributeName\": \"Employee Number\",\"attributeType\": \"N\"} ],   \"tableName\": \"Employee\",  \"keySchema\": [{ \"attributeName\": \"Employee Number\", \"keyType\": \"HASH\"  } ], \"tableStatus\": \"CREATING\", \"creationDateTime\": \"Dec 28, 2020, 7:35:21 AM\",  \"provisionedThroughput\": { \"numberOfDecreasesToday\": 0, \"readCapacityUnits\": 5, \"writeCapacityUnits\": 5},\"tableSizeBytes\": 0,\"itemCount\": 0,\"tableArn\": \"arn:aws:dynamodb:ap-south-1:083406524166:table/Employee\",\"tableId\": \"0bbd1d31-624b-4a0a-b804-4a7bc7351e3e\"}},\"requestID\": \"4NR3PQIDKFSKJGELV8EBNN1BNJVV4KQNSO5AEMVJF66Q9ASUAAJG\",\"eventID\": \"79151c71-058e-4031-8f2d-adbac87198a2\",\"readOnly\": false,\"resources\": [{\"accountId\": \"083406524166\",\"type\": \"AWS::DynamoDB::Table\",\"ARN\": \"arn:aws:dynamodb:ap-south-1:083406524166:table/Employee\"}],\"eventType\": \"AwsApiCall\",\"apiVersion\": \"2012-08-10\",\"managementEvent\": true,\"recipientAccountId\": \"083406524166\",\"eventCategory\": \"Management\"}";
+        final String testString = "{\"eventVersion\": \"1.08\", \"userIdentity\": {\"type\": \"Root\", \"principalId\": \"<dummy_principal_id>\", \"arn\": \"arn:aws:iam::083406524166:root\", \"accountId\": \"083406524166\", \"accessKeyId\": \"<dummy_access_key_id>\", \"sessionContext\": { \"attributes\": {  \"creationDate\": \"2020-12-28T07:15:10Z\", \"mfaAuthenticated\": \"false\" } } },\"eventTime\": \"2020-12-28T09:35:21Z\",\"eventSource\": \"dynamodb.amazonaws.com\",   \"eventName\": \"CreateTable\",    \"awsRegion\": \"ap-south-1\", \"sourceIPAddress\": \"103.62.17.201\", \"userAgent\": \"console.mazonaws.com\", \"requestParameters\": {\"attributeDefinitions\": [{ \"attributeName\": \"Employee Number\", \"attributeType\": \"N\" }], \"tableName\": \"Employee\", \"keySchema\": [ {\"attributeName\": \"Employee Number\", \"keyType\": \"HASH\" } ],\"billingMode\": \"PROVISIONED\", \"provisionedThroughput\": { \"readCapacityUnits\": 5,  \"writeCapacityUnits\": 5 }, \"sSESpecification\": { \"enabled\": false } }, \"responseElements\": { \"tableDescription\": {  \"attributeDefinitions\": [ {  \"attributeName\": \"Employee Number\",\"attributeType\": \"N\"} ],   \"tableName\": \"Employee\",  \"keySchema\": [{ \"attributeName\": \"Employee Number\", \"keyType\": \"HASH\"  } ], \"tableStatus\": \"CREATING\", \"creationDateTime\": \"Dec 28, 2020, 7:35:21 AM\",  \"provisionedThroughput\": { \"numberOfDecreasesToday\": 0, \"readCapacityUnits\": 5, \"writeCapacityUnits\": 5},\"tableSizeBytes\": 0,\"itemCount\": 0,\"tableArn\": \"arn:aws:dynamodb:ap-south-1:083406524166:table/Employee\",\"tableId\": \"0bbd1d31-624b-4a0a-b804-4a7bc7351e3e\"}},\"requestID\": \"4NR3PQIDKFSKJGELV8EBNN1BNJVV4KQNSO5AEMVJF66Q9ASUAAJG\",\"eventID\": \"79151c71-058e-4031-8f2d-adbac87198a2\",\"readOnly\": false,\"resources\": [{\"accountId\": \"083406524166\",\"type\": \"AWS::DynamoDB::Table\",\"ARN\": \"arn:aws:dynamodb:ap-south-1:083406524166:table/Employee\"}],\"eventType\": \"AwsApiCall\",\"apiVersion\": \"2012-08-10\",\"managementEvent\": true,\"recipientAccountId\": \"083406524166\",\"eventCategory\": \"Management\"}";
         final JsonObject testJson = JsonParser.parseString(testString).getAsJsonObject();
         String dateString2 = Parser.parseTimestamp(testJson);
         long time2 = Parser.getTime(dateString2).getTimstamp();

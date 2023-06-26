@@ -101,7 +101,7 @@ public class Parser {
 
 	//----------- Session Locator 
 	
-	private static SessionLocator parseSessionLocator(JsonObject data) {
+	public static SessionLocator parseSessionLocator(JsonObject data) {
 		SessionLocator sessionLocator = new SessionLocator();
 		sessionLocator.setIpv6(false);
 
@@ -185,7 +185,7 @@ public class Parser {
 		accessor.setOsUser(Constants.UNKNOWN_STRING);
 		accessor.setServerDescription(Constants.UNKNOWN_STRING);
 		accessor.setServerOs(Constants.UNKNOWN_STRING);
-		accessor.setServiceName(Constants.UNKNOWN_STRING);
+		accessor.setServiceName(Parser.parseDbName(data));
 
 		return accessor;
 	}
@@ -282,6 +282,19 @@ public class Parser {
 			data.remove(Constants.USER_IDENTITY);
 			data.add(Constants.USER_IDENTITY, userIdentity);
     	}
+
+		if(data.has(Constants.REQUEST_PARAMETERS) && data.get(Constants.REQUEST_PARAMETERS) != null && !(data.get(Constants.REQUEST_PARAMETERS).isJsonNull())) {
+			JsonObject requestPara = data.getAsJsonObject(Constants.REQUEST_PARAMETERS);
+			if (requestPara.has(Constants.KEY) && requestPara.get(Constants.KEY).getAsJsonObject() != null) {
+				requestPara.remove(Constants.KEY);
+				requestPara.addProperty(Constants.KEY, Constants.MASK_STRING);
+			}
+
+			if (requestPara.has(Constants.CONDITION_EXPRESSION) && requestPara.get(Constants.CONDITION_EXPRESSION).getAsString() != null) {
+				requestPara.remove(Constants.CONDITION_EXPRESSION);
+				requestPara.addProperty(Constants.CONDITION_EXPRESSION, Constants.MASK_STRING);
+			}
+		}
 
     	if(data.has(Constants.REQUEST_ID)) {
     		data.remove(Constants.REQUEST_ID);
