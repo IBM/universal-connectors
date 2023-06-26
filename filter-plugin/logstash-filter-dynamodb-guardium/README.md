@@ -91,7 +91,10 @@ There are different ways for auditing and logging. We will use CloudTrail for th
 
 ### Limitations
 
-The dynamodb plug-in does not support IPV6.
+1. The Dynamo DB plug-in does not support IPV6.
+
+2. You may need to disable management events in order to avoid heavy traffic and data loss in Guardium. Disabling management events disables logging of the following events: CreateTable, DeleteTable, ListTable, UpdateTable, DescribeTable, All Error events.
+
 
 ## 4. Configuring the Dynamodb filters in Guardium
 
