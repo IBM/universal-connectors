@@ -1,3 +1,24 @@
+<details open="open">
+  <summary>Table of contents</summary>
+
+  - [Available plug-ins](#available-plug-ins)
+-   [Guardium Data Protection](#guardium-data-protection)
+-   [Guardium Insights](#guardium-insights)
+-   [Guardium Insights SaaS](#guardium-insights-saas)
+-   [General topics](#general-topics)
+-   [A little bit more about the universal connector](#a-little-bit-more-about-the-universal-connector)
+-   [How it works](#how-it-works)
+    * [The Workflows](#the-workflows)
+    * [Keep In Mind](#keep-in-mind)
+    * [Enabling Load-balancing and Fail-Over](#enabling-load-balancing-and-fail-over)
+  - [Deploying universal connector](#deploying-universal-connector)
+  - [Monitoring universal connector  connections](#monitoring-uc-connections)
+  - [Policies](#policies)
+  - [Known limitations](#known-limitations)
+  - [FAQs and Troubleshooting](#faqs-and-troubleshooting)
+
+</details>
+
 # Universal Connector documentation
 
 ## Available plug-ins
@@ -36,7 +57,7 @@ Figure 1. Guardium universal connector architecture
 
 ![Universal Connector](/docs/images/guc.jpg)
 
-<sub> Data flow from input plugin to guardium sniffer </sub>
+<sub> Data flow from input plugin to guardium sniffer in Guardium Data Protection </sub>
 
 The Guardium universal connector supports many platforms and connectivity options. It supports pull and push modes, multi-protocols, on-premises, and cloud platforms. For the data sources with pre-defined plug-ins, you configure Guardium to accept audit logs from the data source.
 
@@ -89,7 +110,7 @@ Using the given out-of-the-box mechanisms in both Guardium Data Protection and G
 
 
 
-## Deploying Universal Connector
+## Deploying the Universal Connector
 
 In Guardium Data Protection, the overall workflow for deploying the universal connector is as follows:
 
@@ -134,9 +155,6 @@ With a few exceptions,  using data from the universal connector is no different 
 [Configuring Policies for the universal connector](docs/Guardium%20Data%20Protection/uc_policies_gdp.md)
 
 For more general information about policies, refer to our  [Guardium Data Protection](https://www.ibm.com/docs/en/SSMPHH_latest/com.ibm.guardium.doc.admin/tshoot/policies.html) and [Guardium Insights](https://www.ibm.com/docs/en/SSWSZ5_latest/policies.html) policy documentation.
-
-
-
 
 ## Known limitations
 
