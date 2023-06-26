@@ -5,14 +5,14 @@
 package com.ibm.guardium.dynamodb;
 
 public interface Constants {
-
+	
 	public static final String NOT_AVAILABLE = "NA";
 	public static final String DATA_PROTOCOL_STRING = "AMAZON DYNAMODB";
 	public static final String UNKNOWN_STRING = "";
 	public static final String SERVER_TYPE_STRING = "DYNAMODB";
-	public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_dynamoguardium_json_parse_error";
+    public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_dynamoguardium_json_parse_error";
 
-
+	
 	public static final String REQUEST_ID = "requestID";
 	public static final String ERROR_MESSAGE = "errorMessage";
 	public static final String ERROR_CODE = "errorCode";
@@ -34,6 +34,8 @@ public interface Constants {
 	public static final String EVENT_SOURCE = "eventSource";
 	public static final String ARN = "arn";
 	public static final String RESOURCES = "resources";
+	public static final String KEY = "key";
+	public static final String CONDITION_EXPRESSION = "conditionExpression";
 
 	//constants
 	public static final int CLIENT_PORT = -1;
@@ -44,5 +46,5 @@ public interface Constants {
 	public static final String SERVER_HOSTNAME = "dynamodb.amazonaws.com";
 	public static final String SQL_ERROR = "SQL_ERROR";
 
-
+	
 }
