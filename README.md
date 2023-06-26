@@ -1,15 +1,16 @@
-<details open="open">
+<details closed="closed">
   <summary>Table of contents</summary>
 
-  - [Overview](#overview)
-    * [Releases](#latest-releases)
+  - [Guardium universal connector](#guardium-universal-connector)
+  - [Product versions](#product-versions)
+  - [Supported data sources](#supported-data-sources)
   - [Contributing](#contributing)
   - [Contact us](#contact-us)
   - [Licensing](#licensing)
 
 </details>
 
-## Overview
+# Guardium universal connector
 
 The Guardium universal connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using S-TAPs. It includes support for various plug-in packages, requiring minimal configuration. You can easily develop plug-ins for other data sources and install them in Guardium.
 
@@ -25,7 +26,7 @@ Our latest product version for Guardium Insights SaaS is [1.0](docs/Guardium%20I
 ## Supported data sources
 Connecting a data source to Guardium requires a designated plug-in. 
 
-Please refer [available plugins](docs/available_plugins.md) to see the full list.
+Please refer to [available plugins](docs/available_plugins.md) to see the full list.
 
 
 ***
