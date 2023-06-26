@@ -16,6 +16,10 @@
   - [Policies](#policies)
   - [Known limitations](#known-limitations)
   - [FAQs and Troubleshooting](#faqs-and-troubleshooting)
+  - [Developing plug-ins](#developing-plug-ins)
+    * [Use Logstash Ruby filter plug-in](#use-logstash-ruby-filter-plug-in)
+    * [Develop a filter plug-in](#develop-a-filter-plug-in)
+    * [Develop an input plug-in](#develop-an-input-plug-in)
 
 </details>
 
@@ -179,7 +183,6 @@ For more general information about policies, refer to our  [Guardium Data Protec
 * MongoDB plug-ins do not send the client source program to Guardium.
 
 
-
 ## FAQs and Troubleshooting
 
 [Here](docs/Guardium%20Data%20Protection/faqs_troubleshooting_gdp.md) is a list of frequently asked questions and troubleshooting sections for Guardium Data Protection.
@@ -190,3 +193,31 @@ For more general information about policies, refer to our  [Guardium Data Protec
 For further plug-in designated troubleshooting, see "troubleshooting" section in the plug-in's documentation linked at [Available Plug-ins](/docs/available_plugins.md)
 
 
+## Developing plug-ins
+
+Users can develop their own universal connector plugins, if needed, and contribute them back to the open source project, if desired.
+
+(In order to overwrite old plug-ins, you can upload a new version from the official IBM GitHub page. Please make sure that the new plug-in has the exact same name as the old version.)
+
+[Here](docs/Guardium%20Data%20Protection/developing_plugins_gdp.md) is a guide for developing new plug-ins for Guardium Data Protection.
+
+[Here](docs/Guardium%20Insights/3.2.x/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights.
+
+
+### Use Logstash Ruby filter plug-in 
+For adding a parser to the filter section of the configuration file as a pre-processing stage prior to executing the filter plug-in, use the [Ruby filter plugin](https://www.elastic.co/guide/en/logstash/current/plugins-filters-ruby.html).
+
+### Develop a filter plug-in 
+* For developing a Ruby filter plug-in, use [How to write a Logstash filter plugin](https://www.elastic.co/guide/en/logstash/current/filter-new-plugin.html)
+* For developing a Java filter plug-in, use [How to write a Java filter plugin](https://www.elastic.co/guide/en/logstash/current/java-filter-plugin.html)
+
+### Develop an input plug-in
+* For developing a Ruby input plug-in, use [How to write a Logstash input plugin](https://www.elastic.co/guide/en/logstash/current/input-new-plugin.html)
+* For developing a Java input plug-in, use [How to write a Java filter plugin](https://www.elastic.co/guide/en/logstash/current/java-input-plugin.html)
+
+**Note:**
+It is the developer's responsibility to maintain and update the database's supported versions
+
+***
+**Useful links:**
+ - [Integrate Code Coverage tool into Universal Connector Plug-ins](/docs/integrate_code_coverage_into_plug-ins.md)
