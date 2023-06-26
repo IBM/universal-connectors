@@ -45,12 +45,14 @@ The Guardium universal connector is scalable. It provides load-balancing and fai
 
 Connections to databases that are configured with the Guardium universal connector are handled the same as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
 
-## Latest releases
-It is recommended to use our latest product versions for Guardium Data Protection and Guardium Insights. 
+## Product versions
+Workflows differ for Guardium Data Protection and Guardium Insights. It is recommended to use our latest product versions. 
 
 Our latest product version for Guardium Data Protection is [11.5](docs/Guardium%20Data%20Protection).
 
 Our latest product version for Guardium Insights is [3.2](docs/Guardium%20Insights/3.2.x/README.md)
+
+Our latest product version for Guardium Insights SaaS is [1.0](docs/Guardium%20Insights/SaaS_1.0)
 
 ## Supported data sources
 Connecting a data source to Guardium requires a designated plug-in. 
