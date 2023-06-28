@@ -24,7 +24,8 @@ Our latest product version for Guardium Insights is [3.2](docs/Guardium%20Insigh
 Our latest product version for Guardium Insights SaaS is [1.0](docs/Guardium%20Insights/SaaS_1.0)
 
 ## Supported data sources
-Connecting a data source to Guardium requires a designated plug-in. 
+
+Guardium can collect events using a variety of input and filter plug-in combinations.
 
 Please refer to [available plugins](docs/available_plugins.md) to see the full list.
 
