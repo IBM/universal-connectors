@@ -41,7 +41,13 @@ See our Guardium Insights SaaS documentation [here](/docs/Guardium%20Insights/Sa
   - [Developing plug-ins](#developing-plug-ins)
     * [Use Logstash Ruby filter plug-in](#use-logstash-ruby-filter-plug-in)
     * [Develop a filter plug-in](#develop-a-filter-plug-in)
-    * [Develop an input plug-in](#develop-an-input-plug-in)
+    * [Develop an input plug-in](#develop-an-input-plug-in)   
+  - [Contributing](#contributing)
+  - [Contact us](#contact-us)
+  - [Licensing](#licensing)
+  - [References](#references)
+ 
+
 
 </details>
 
@@ -245,12 +251,19 @@ you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
     http://www.apache.org/licenses/LICENSE-2.0
-
+    
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+
+<details closed="closed">
+  
+  <summary><b>References</b></summary>
+
+## References
 
 [^1]: See [IBM Guardium System Requirements and Supported Platforms](https://www.ibm.com/support/pages/ibm-guardium-system-requirements-and-supported-platforms)
 [^2]: In GI 3.3.0, SaaS, and GDP 12.0.0 all the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed upon startup.
