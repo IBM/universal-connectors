@@ -12,7 +12,7 @@
 
 # Guardium universal connector
 
-The Guardium universal connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using software taps. It includes support for various plug-in packages, requiring minimal configuration. You can easily develop plug-ins for other data sources and install them in Guardium.
+The Guardium universal connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using software taps (S-TAPs- the software agent usually used in Guardium). The universal connector includes support for various plug-in packages, requiring minimal configuration. You can easily develop plug-ins for other data sources and install them in Guardium.
 
 ## Product versions
 Workflows differ for Guardium Data Protection and Guardium Insights. It is recommended to use our latest product versions. 
