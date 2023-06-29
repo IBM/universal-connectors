@@ -1,8 +1,9 @@
-
+# Universal connector documentation
+This is the documentation for the universal connector. Get started right away by viewing available plug-ins and documentation per product version. Or read more about the universal connector and how it works. 
 
 <details closed="closed">
 
-<summary><b>Get started quickly..</b></summary>
+<summary><b>Getting started</b></summary>
 
 ## Available plug-ins
 See available plug-ins [here](/docs/available_plugins.md). 
@@ -19,7 +20,7 @@ See our Guardium Insights SaaS documentation [here](/docs/Guardium%20Insights/Sa
 
 <details closed="closed">
   
-  <summary><b>Or read a little more about the universal connector</b></summary>
+  <summary><b>Learn more</b></summary>
   
 # Universal Connector documentation
 
