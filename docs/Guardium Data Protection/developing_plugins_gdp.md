@@ -267,7 +267,7 @@ if [type]== syslogMongoDB{...
   * ***Use the tag as the identifier in the Filter configuration:***
  ```if [type] == "filebeat" and "mongodb" in [tags] {  ```
 
-4. Set the policies you require. Refer to the Policies section of our main universal connector documentation for more details. 
+4. Set the policies you require. See the [Policies](/docs/Guardium%20Data%20Protection/uc_policies_gdp.md) topic for Guardium Data Protection. 
 
 5. Enable the Guardium universal connector.
 
