@@ -1,4 +1,4 @@
-# Guardium Insights SaaS 1.0
+# Guardium Insights SaaS 
 
 The universal connector uses plug-ins to connect to the datasource server.
 
