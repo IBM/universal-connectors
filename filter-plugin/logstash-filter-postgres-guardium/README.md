@@ -20,7 +20,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## Follow the below link to setup and use Aurora Postgres
 
-[Aurora Postgres README](./AuroraPostgres_README.md) 
+[Aurora Postgres README](./AuroraPostgres_README.md) (Serverless support is also available)
 
 ## Limitations
 	• The postgres plug-in does not support IPV6.
