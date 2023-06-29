@@ -11,6 +11,7 @@ The universal connector uses plug-ins to connect to the datasource server.
 3.  Once the plug-in is installed, you can [create a new connection](../../../docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md). 
 
 4. The connection initialization can take few minutes. To monitor the current status of connection and the latest traffic, click [here](../../../docs/Guardium%20Insights/3.2.x/monitoring_GI.MD).
+5. See our FAQs [here](/docs/Guardium%20Insights/3.2.x/faqs_troubleshooting_gi.md).
 
 
 
