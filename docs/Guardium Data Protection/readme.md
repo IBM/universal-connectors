@@ -10,3 +10,4 @@ The universal connector uses plug-ins to connect to the datasource server.
 2. Once the plug-in is installed, you can [create a new connection](/docs/Guardium%20Data%20Protection/uc_config_gdp.md). 
 
 3. The connection initialization can take few minutes. To monitor the current status of connection and the latest traffic, click [here](/docs/Guardium%20Data%20Protection/monitoring_GDP.md).
+4. See our FAQs for Guardium Data Protection [here](/docs/Guardium%20Data%20Protection/faqs_troubleshooting_gdp.md).
