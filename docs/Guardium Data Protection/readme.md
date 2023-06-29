@@ -1,4 +1,4 @@
-# Guardium Data Protection 11.5
+# Guardium Data Protection 
 
 The universal connector uses plug-ins to connect to the datasource server. 
 ## Procedure
