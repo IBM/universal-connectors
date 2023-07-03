@@ -26,20 +26,20 @@ Converge Technology Solutions (formerly Information Insights) provided the origi
 Maintenance of the plug-in has been taken over by IBM to provide improvements, such as integration with Guardium 
 Insights. See the original plug-in [here](https://github.com/infoinsights/guardium-snowflake-uc-filter).
 
-## 1. Configuring the snowflake database
+## 1. Configuring the Snowflake database
 Create the required type of Snowflake account [here](https://signup.snowflake.com/) by providing the information.
-The database will be created and the details will be provided over a mail. Snowflake also provide the option to choose
-the cloud provider to host the database. Find the reference document [here](https://docs.snowflake.com/).
+The database will be created and the details will be provided over e-mail. Snowflake also provides the option to choose
+a cloud provider to host the database. For more information, see [here](https://docs.snowflake.com/).
 
 ## 2. Enabling audit logs
-It is enabled by default. Snowflake manages some data Views for audit data that could be simply queries by a `select`
-statement.
-### Provide permissions to JDBC user.
+Audit logs are enabled by default. Some data views that Snowflake manages for audit data might 
+simply be from `select` queries.
+### Providing permissions to a JDBC user
 The user you define below in the jdbc_user parameter must have enough permissions
-to execute the SQL in statement area. You are encouraged to test this first by replacing :sql_last_value with an
+to execute the SQL in the statement area. You are encouraged to test this first by replacing `:sql_last_value` with an
 epoch time value and running this against Snowflake with the user in question. In particular, make sure the
-user [has access to the "SNOWFLAKE" database](https://docs.snowflake.com/en/sql-reference/account-usage.html#enabling-snowflake-database-usage-for-other-roles).
-below are the reference queries to execute to provide access to a particular role,
+user has access to the [Snowflake database](https://docs.snowflake.com/en/sql-reference/account-usage.html#enabling-snowflake-database-usage-for-other-roles).
+Below are the reference queries to execute to provide access to a particular role.
 ```sql
   use role accountadmin;
 
@@ -52,16 +52,14 @@ below are the reference queries to execute to provide access to a particular rol
 ``` 
 
 ## 3. Viewing the audit logs
-To view the audit logs, need to query these tables, SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY, SNOWFLAKE.ACCOUNT_USAGE.
-SESSIONS and SNOWFLAKE.ACCOUNT_USAGE.LOGIN_HISTORY.
-
+To view the audit logs, query the tables `SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY` , `SNOWFLAKE.ACCOUNT_USAGE.SESSIONS` 
+and `SNOWFLAKE.ACCOUNT_USAGE.LOGIN_HISTORY`. 
 ### Limitations
 
-1. Since SNOWFLAKE.ACCOUNT_USAGE is a Data view and the plugin is dependent on the tables of it for the logs, some time
-   delay has been seen.
-2. The server port will stay 443 always, the support of configuring is deprecated. Refer the [link](https://docs.snowflake.com/en/user-guide/snowsql-start#p-port-deprecated).
+1. Since `SNOWFLAKE.ACCOUNT_USAGE` is a data view and the plug-in is dependent on its tables for the logs, There may be a slight delay in refreshing the data view which may result in a slight delay in retrieving the audit data.
+2. The server portal must remain at 443, as configuration support is deprecated. For more information, see [here](https://docs.snowflake.com/en/user-guide/snowsql-start#p-port-deprecated).
 
-## 4. Configuring the snowflake filter in Guardium
+## 4. Configuring the Snowflake filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector
 identifies and parses received events, and then converts them to a standard Guardium format. The output of the
 universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements.
@@ -77,17 +75,16 @@ Configure Guardium to read the native audit logs by customizing the Snowflake te
    • grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
     ```
 **NOTE**
-Snowflake auditing will also capture the query executed to retrieve audit logs. Audit tables will have so many entries
-for the audit select statement (the query mentioned in the `statement` of JDBC input. If there is no need of tracking
-this specific select statement, it could be turned off. There are two fields found in Filter configurations,
+Snowflake auditing will also capture the query executed to retrieve audit logs. Audit tables will have many entries
+for the audit select statement (the query mentioned in the `statement` of JDBC input). If you don't need to track this specific select statement, 
+you can turn it off. To do this, set the value to `false` for the following two fields in the Filter configurations section: 
 1. `skip_logging_audit_query` - setting the value of this field to `"false"` will stop capturing the particular
 `select` query that fetches the query logs.
 2. `skip_logging_auth_audit_query` - setting the value of this field to `"false"` will stop capturing the particular
 `select` query that fetches the authentication logs.
 
 ### Before you begin
-1. You must have the Log Full Details policy enabled on the collector. The detailed steps can be found in 
-step #4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+1. Configure the policies you require. See [policies](/../../#policies) for more information. 
 2. You must have permission for the S-Tap Management role. The admin user includes this role by default.
 3. Download the [logstash-filter-guardium_snowflake_filter-1.0.0.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-7.12.1.zip)
 plug-in.
@@ -96,37 +93,37 @@ Download the jdbc driver `jar` file from the maven repository [here](https://rep
 
 ### Procedure
 
-1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. First enable the Universal Guardium connector, if it is disabled already.
-3. Click Upload File and select the downloaded .jar jdbc driver file. After it is uploaded, click OK.
-4. Click Upload File and select the offline [logstash-offline-plugins-7.12.1.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-7.12.1.zip) 
-   plug-in. After it is uploaded, click OK.
+1. On the collector, go to `Setup` > `Tools and Views` > `Configure Universal Connector`.
+2. Enable the universal connector if it is disabled.
+3. Click `Upload File` and select the downloaded .jar jdbc driver file. After it is uploaded, click `OK`.
+4. Click `Upload File` and select the offline [logstash-offline-plugins-7.12.1.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-7.12.1.zip) 
+   plug-in. After it is uploaded, click `OK`.
 5. Click the Plus sign to open the Connector Configuration dialog box.
-6. Type a name in the Connector name field.
+6. Type a name in the `Connector name` field.
 7. Update the input section to add the details from the [snowflakeJDBC.conf](snowflakeJDBC.conf) file input section, 
 omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 8. Update the filter section to add the details from the [snowflakeJDBC.conf](snowflakeJDBC.conf)  file filter section, 
 omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 9. The "type" fields should match in the input and the filter configuration section. This field should be unique for  
 every individual connector added.
-10. If using two jdbc plug-ins on same machine , the last_run_metadata_path file name should be different. <br />
+10. If you are using two JDBC plug-ins on same machine, the `last_run_metadata_path` file name should be different.
     **NOTE: For moderate to large amounts of data, include pagination to facilitate the audit and to avoid out of 
 memory errors. Use the parameters below in the input section when using a JDBC connector, and remove the concluding 
-semicolon ';' from the jdbc statement:**<br />
+semicolon ';' from the JDBC statement:**
     ```text
     jdbc_paging_enabled => true 
     jdbc_page_size => 1000
     ```
-11. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled.
+11. Click `Save`. Guardium validates the new connector, and enables the universal connector if it was disabled.
     After it is validated, it appears in the Configure Universal Connector page.
  
 
-## 5. JDBC Load Balancing Configuration,
+## 5. JDBC load-balancing configuration,
 1. For Query auditing,
-   * The load could be distributed between two machines based on Even and Odd value of `EXECUTION_TIME`.
+   * the load can be distributed between two machines based on the even and the odd values of `EXECUTION_TIME`.
    * **Procedure**,
-     * On First G Machine, in input section for JDBC Plugin update `statement` field in the first jdbc block where
-       `"event_type" => "login_success"` found inside the `add_field` section like below,
+     * In the input section for the JDBC plug-in on the first G machine,  update the `statement` field in the first JDBC block where
+       `"event_type" => "login_success"` is found inside the `add_field` section, as below.
        ```text
         SELECT
               QH.DATABASE_NAME as DATABASE_NAME,QH.SESSION_ID as SESSION_ID,
@@ -150,8 +147,8 @@ semicolon ';' from the jdbc statement:**<br />
               AND QH.EXECUTION_TIME%2=0
           ORDER BY QH.END_TIME
        ``` 
-     * On Second G Machine, in input section for JDBC Plugin update `statement` field in the first jdbc block where
-       `"event_type" => "login_success"` found inside the `add_field` section like below,
+     * In the input section for the JDBC plug-in on the second G machine,  update the `statement` field in the first JDBC block where
+       `"event_type" => "login_success"` is found inside the `add_field` section, as below.
        ```text
        SELECT
             QH.DATABASE_NAME as DATABASE_NAME,QH.SESSION_ID as SESSION_ID,
@@ -176,10 +173,10 @@ semicolon ';' from the jdbc statement:**<br />
         ORDER BY QH.END_TIME
        ``` 
 2. For Authentication/Login specific auditing.
-   * The load could be distributed between two machines based on Even and Odd values of Login `EVENT_TIMESTAMP`.
+   * The load can be distributed between two machines based on the even and odd values of Login `EVENT_TIMESTAMP`.
    * **Procedure**,
-     * On First G Machine, in input section for JDBC Plugin update `statement` field in the first jdbc block where
-     `"event_type" => "login_failed"` found inside the `add_field` section like below,
+     * In the input section for the JDBC plug-in on the first G machine,  update the `statement` field in the first JDBC block where
+       `"event_type" => "login_failed"` is found inside the `add_field` section, as below.
        ```text
         SELECT
           LH.USER_NAME AS USER_NAME,
@@ -197,8 +194,8 @@ semicolon ';' from the jdbc statement:**<br />
            AND (DATE_PART(epoch_millisecond, LH.EVENT_TIMESTAMP))%2 = 0
         ORDER BY LH.EVENT_TIMESTAMP
        ``` 
-     * On Second G Machine, in input section for JDBC Plugin update `statement` field in the first jdbc block where
-       `"event_type" => "login_failed"` found inside the `add_field` section like below, 
+     * In the input section for the JDBC plug-in on the second G machine,  update the `statement` field in the first JDBC block where
+       `"event_type" => "login_failed"` is found inside the `add_field` section, as below.
        ```text
        SELECT
           LH.USER_NAME AS USER_NAME,
@@ -220,7 +217,7 @@ semicolon ';' from the jdbc statement:**<br />
 ### Does this work with AWS, Azure, and GCP instances of Snowflake?
 
 Yes. The schema and connection behaviour for Snowflake are the same across all those cloud service
-providers. You may wish to deploy a Guardium collector in the same region as your snowflake instance to
+providers. You may wish to deploy a Guardium collector in the same region as your Snowflake instance to
 reduce items such as egress costs.
 
 
