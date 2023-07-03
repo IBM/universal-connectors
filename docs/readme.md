@@ -1,8 +1,9 @@
-
+# Universal connector documentation
+This is the documentation for the universal connector. Get started right away by viewing available plug-ins and documentation per product version. Or read more about the universal connector and how it works. 
 
 <details closed="closed">
 
-<summary><b>Get started quickly..</b></summary>
+<summary><b>Getting started</b></summary>
 
 ## Available plug-ins
 See available plug-ins [here](/docs/available_plugins.md). 
@@ -19,7 +20,7 @@ See our Guardium Insights SaaS documentation [here](/docs/Guardium%20Insights/Sa
 
 <details closed="closed">
   
-  <summary><b>Or read a little more about the universal connector</b></summary>
+  <summary><b>Learn more</b></summary>
   
 # Universal Connector documentation
 
@@ -228,16 +229,16 @@ It is the developer's responsibility to maintain and update the database's suppo
  
 ***
 ## Contributing
-**To make your connector plug-in available to the community, submit your connector to this repository for IBM Certification. We also accept updates or bug fixes to existing plug-ins, to keep them current:**
+To make your connector plug-in available to the community, submit your connector to this repository for IBM Certification. We also accept updates or bug fixes to existing plug-ins, to keep them current:
 
-- **[Guidelines for contributing](CONTRIBUTING.md)**
-- **Benefits include:**
+- [Guidelines for contributing](CONTRIBUTING.md)
+- Benefits include:
 
-  **- Free, comprehensive testing and certification.**
+  - Free, comprehensive testing and certification.
 
-  **- Expanding the reach of product APIs.**
+  - Expanding the reach of product APIs.
 
-  **- Driving usage of a product or solution.**
+  - Driving usage of a product or solution.
 ***
 
 ## Contact Us
