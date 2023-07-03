@@ -37,7 +37,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [PostgreSQL](../filter-plugin/logstash-filter-onPremPostgres-guardium/README.md)
 * [ProgressDB](../filter-plugin/logstash-filter-progressdb-guardium/README.md) (Future GI releases)
 * [SAP HANA](../filter-plugin/logstash-filter-saphana-guardium/README.md)
-* [Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter)
+* [Snowflake](../filter-plugin/logstash-filter-snowflake-guardium/README.md)
 * [Teradata](../filter-plugin/logstash-filter-teradatadb-guardium/README.md) (Future GI releases)
 * [Yugabyte](../filter-plugin/logstash-filter-yugabyte-guardium/README.md)
 
