@@ -6,26 +6,27 @@
     {
       "port": {
         "type": "number",
-        "default": 5001,
+        "default": 5044,
         "label": "Port"
-      },
-      "ssl_cert": {
-        "type": "text",
-        "label": "Certificate file name (example.cert)"
-      },
-      "ssl_key": {
-        "type": "text",
-        "label": "Key file name (example.key)"
       },
       "type": {
         "type": "text",
         "default": "syslog-mongodb",
-        "label": "Type"
+        "hidden": true
       }
     }
   ],
   "filter_name": "Guardium_MongoDB_Syslog_filter",
   "filter_parameters": [],
-  "auth_parameters": [],
+  "auth_parameters": [
+    {
+      "guc_filter_param_datasource_tag": {
+        "param_type": "filter",
+        "type": "text",
+        "label": "Datasource Tag",
+        "description": "Tag that was added to every event sent from the data source."
+      }
+    }
+  ],
   "supported_platforms": ["on-premise"]
 }
