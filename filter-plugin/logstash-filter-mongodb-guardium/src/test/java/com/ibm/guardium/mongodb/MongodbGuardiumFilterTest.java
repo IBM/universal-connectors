@@ -53,6 +53,145 @@ public class MongodbGuardiumFilterTest {
     }
 
     @Test
+    public void testParseICDMongo_nomessage() {
+    	Context context = new ContextImpl(null, null);
+        MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        TestMatchListener matchListener = new TestMatchListener();
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+        Assert.assertNotNull(results);
+    }
+    
+    @Test
+    public void testParseICDMongo_dbname_prefix_Empty() {
+    	final String mongosString ="2023-02-06T14:24:55.125865418Z stdout F  mongod: { 'atype' : 'createCollection', 'ts' : { '$date' : '2022-12-15T06:19:23.284+00:00' }, 'local' : { 'ip' : '172.30.23.154', 'port' : 31040 }, 'remote' : { 'ip' : '172.30.175.28', 'port' : 55068 }, 'users' : [ { 'user' : 'admin', 'db' : 'admin' } ], 'roles' : [ { 'role' : 'dbAdminAnyDatabase', 'db' : 'admin' }, { 'role' : 'readWriteAnyDatabase', 'db' : 'admin' }, { 'role' : 'userAdminAnyDatabase', 'db' : 'admin' } ], 'param' : { 'ns' : 'testdatabase.testcollection1' }, 'result' : 0 }";
+    	Context context = new ContextImpl(null, null);
+        MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        TestMatchListener matchListener = new TestMatchListener();
+
+        e.setField("message", mongosString);
+        e.setField("dbname_prefix","");
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
+        Record record = (new Gson()).fromJson(recordString, Record.class);
+        Assert.assertNotNull(record);
+        Assert.assertEquals("testdatabase",record.getDbName());
+    }
+    
+    @Test
+    public void testParseICDMongo_DbName_NotAvailable() {
+    	final String mongosString ="2023-02-06T14:10:39.305086948Z stdout F  mongod: { 'atype' : 'createUser', 'ts' : { '$date' : '2022-12-16T07:07:48.710+00:00' }, 'local' : { 'ip' : '172.30.93.219', 'port' : 32298 }, 'remote' : { 'ip' : '172.30.28.157', 'port' : 49350 }, 'users' : [ { 'user' : 'admin', 'db' : 'admin' } ], 'roles' : [ { 'role' : 'readWriteAnyDatabase', 'db' : 'admin' }, { 'role' : 'dbAdminAnyDatabase', 'db' : 'admin' }, { 'role' : 'userAdminAnyDatabase', 'db' : 'admin' } ], 'param' : { 'user' : 'myadmin1', 'db' : '', 'roles' : [ { 'role' : 'readWrite', 'db' : 'config' }, { 'role' : 'read', 'db' : 'orders' }, { 'role' : 'read', 'db' : 'test' } ] }, 'result' : 0 }";
+    	Context context = new ContextImpl(null, null);
+        MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        TestMatchListener matchListener = new TestMatchListener();
+
+        e.setField("message", mongosString);
+        e.setField("server_hostname","testid44505a917e8fcb952c4ce-test75b-776c-486e-8ee7-f6a0ddd5a1cb.ibm.com");
+        e.setField("dbname_prefix","testid44505a917e8fcb952c4ce-test75b-776c-486e-8ee7-f6a0ddd5a1cb");
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
+        Record record = (new Gson()).fromJson(recordString, Record.class);
+        Assert.assertNotNull(record);
+        Assert.assertEquals("testid44505a917e8fcb952c4ce-test75b-776c-486e-8ee7-f6a0ddd5a1cb",record.getDbName() );
+    }
+ 
+    @Test
+    public void testParseICDMongo_authenticate_LoginFailedLog() {
+    	final String mongosString = "2023-02-07T09:09:58.256243217Z stdout F  mongod: { 'atype' : 'authenticate', 'ts' : { '$date' : '2023-03-30T13:33:43.676+00:00' }, 'local' : { 'ip' : '172.30.135.140', 'port' : 30137 }, 'remote' : { 'ip' : '172.30.3.142', 'port' : 50710 }, 'users' : [ { 'user' : 'admin', 'db' : 'admin' }, { 'user' : 'IBMuser', 'db' : 'ec2db' } ], 'roles' : [ { 'role' : 'dbAdminAnyDatabase', 'db' : 'admin' }, { 'role' : 'readWriteAnyDatabase', 'db' : 'admin' }, { 'role' : 'userAdminAnyDatabase', 'db' : 'admin' } ], 'param' : { 'user' : 'IBMuser', 'db' : 'ec2db', 'mechanism' : 'SCRAM-SHA-256' }, 'result' : 18 }"; 	
+    	Context context = new ContextImpl(null, null);
+        MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        TestMatchListener matchListener = new TestMatchListener();
+
+        e.setField("message", mongosString);
+        e.setField("server_hostname","testid44505a917e8fcb952c4ce-test75b-776c-486e-8ee7-f6a0ddd5a1cb.ibm.com");
+        e.setField("dbname_prefix","testid44505a917e8fcb952c4ce-test75b-776c-486e-8ee7-f6a0ddd5a1cb");
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
+        Record record = (new Gson()).fromJson(recordString, Record.class);
+        Assert.assertNotNull(record);
+        Assert.assertEquals(Parser.EXCEPTION_TYPE_AUTHENTICATION_STRING, record.getException().getExceptionTypeId());
+        Assert.assertEquals("admin IBMuser",record.getAccessor().getDbUser());
+    }
+    
+    @Test
+    public void testParseICDMongo_IPV6() {
+    	final String mongosString ="2023-02-06T14:12:33.410775871Z stdout F  mongod: { 'atype' : 'createRole', 'ts' : { '$date' : '2022-12-16T06:38:59.589+00:00' }, 'local' : { 'ip' : '2001:0db8:85a3:0000:0000:8a2e:0370:7334', 'port' : 32298 }, 'remote' : { 'ip' : '2001:0db8:85a3:0000:0000:8a2e:0370:7337', 'port' : 49350 }, 'users' : [ { 'user' : 'admin', 'db' : 'admin' } ], 'roles' : [ { 'role' : 'userAdminAnyDatabase', 'db' : 'admin' }, { 'role' : 'dbAdminAnyDatabase', 'db' : 'admin' }, { 'role' : 'readWriteAnyDatabase', 'db' : 'admin' } ], 'param' : { 'role' : 'newroll', 'db' : 'admin', 'roles' : [ { 'role' : 'readWrite', 'db' : 'config' }, { 'role' : 'read', 'db' : 'orders' }, { 'role' : 'read', 'db' : 'test' } ], 'privileges' : [ { 'resource' : { 'cluster' : true }, 'actions' : [ 'addShard' ] }, { 'resource' : { 'db' : 'config', 'collection' : '' }, 'actions' : [ 'find', 'insert', 'remove', 'update' ] }, { 'resource' : { 'db' : 'users', 'collection' : 'usersCollection' }, 'actions' : [ 'insert', 'remove', 'update' ] }, { 'resource' : { 'db' : 'admin', 'collection' : '' }, 'actions' : [ 'find' ] } ] }, 'result' : 0 }";
+    	Context context = new ContextImpl(null, null);
+        MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        TestMatchListener matchListener = new TestMatchListener();
+
+        e.setField("message", mongosString);
+        e.setField("server_hostname","testid44505a917e8fcb952c4ce-test75b-776c-486e-8ee7-f6a0ddd5a1cb.ibm.com");
+        e.setField("dbname_prefix","testid44505a917e8fcb952c4ce-test75b-776c-486e-8ee7-f6a0ddd5a1cb");
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
+        Record record = (new Gson()).fromJson(recordString, Record.class);
+        Assert.assertNotNull(record);
+        Assert.assertEquals(true,record.getSessionLocator().isIpv6());
+    }
+       
+    @Test
+    public void testParseICDMongo_authenticate_UnknownErrorLog() {
+    	final String mongosString ="2023-02-07T09:09:58.256243217Z stdout F  mongod: { 'atype' : 'authenticate', 'ts' : { '$date' : '2022-12-16T08:47:36.788+00:00' }, 'local' : { 'ip' : '172.30.93.219', 'port' : 32298 }, 'remote' : { 'ip' : '172.30.28.157', 'port' : 45730 }, 'users' : [], 'roles' : [], 'param' : { 'user' : 'admin', 'db' : 'admin', 'mechanism' : 'SCRAM-SHA-256' }, 'result' : 20 }";
+    	Context context = new ContextImpl(null, null);
+        MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        TestMatchListener matchListener = new TestMatchListener();
+
+        e.setField("message", mongosString);
+        e.setField("server_hostname","testid44505a917e8fcb952c4ce-test75b-776c-486e-8ee7-f6a0ddd5a1cb.ibm.com");
+        e.setField("dbname_prefix","testid44505a917e8fcb952c4ce-test75b-776c-486e-8ee7-f6a0ddd5a1cb");
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
+        Record record = (new Gson()).fromJson(recordString, Record.class);
+        Assert.assertNotNull(record);
+        Assert.assertEquals(Parser.EXCEPTION_TYPE_AUTHORIZATION_STRING, record.getException().getExceptionTypeId());
+    	Assert.assertEquals("Error (20)", record.getException().getDescription());
+    }
+    
+    @Test
+    public void testParseICDMongo_IPNotAvailable() {
+    	final String mongosString ="2023-02-07T09:09:58.256243217Z stdout F  mongod: { 'atype' : 'authenticate', 'ts' : { '$date' : '2022-12-16T08:47:36.788+00:00' }, 'users' : [], 'roles' : [], 'param' : { 'user' : 'admin', 'db' : 'admin', 'mechanism' : 'SCRAM-SHA-256' }, 'result' : 18 }";
+    	Context context = new ContextImpl(null, null);
+        MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        TestMatchListener matchListener = new TestMatchListener();
+
+        e.setField("message", mongosString);
+        e.setField("server_hostname","testid44505a917e8fcb952c4ce-test75b-776c-486e-8ee7-f6a0ddd5a1cb.ibm.com");
+        e.setField("dbname_prefix","testid44505a917e8fcb952c4ce-test75b-776c-486e-8ee7-f6a0ddd5a1cb");
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
+        Record record = (new Gson()).fromJson(recordString, Record.class);
+        Assert.assertNotNull(record);
+        Assert.assertEquals("", record.getSessionLocator().getClientIp());
+    	Assert.assertEquals(-1, record.getSessionLocator().getClientPort());  
+    }
+    
+    @Test
     public void testFieldGuardRecord_mongos() {
         final String mongosString = "mongos: { \"atype\" : \"authCheck\", \"ts\" : { \"$date\" : \"2020-10-08T13:58:00.222+0300\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 28017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 45824 }, \"users\" : [ { \"user\" : \"admin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"root\", \"db\" : \"admin\" } ], \"param\" : { \"command\" : \"replSetGetStatus\", \"ns\" : \"admin\", \"args\" : { \"replSetGetStatus\" : 1, \"forShell\" : 1, \"$clusterTime\" : { \"clusterTime\" : { \"$timestamp\" : { \"t\" : 1602154677, \"i\" : 1 } }, \"signature\" : { \"hash\" : { \"$binary\" : \"LYKHSxxbXvcIDvX3FAhpam1SdYk=\", \"$type\" : \"00\" }, \"keyId\" : { \"$numberLong\" : \"6880241122304589825\" } } }, \"$db\" : \"admin\" } }, \"result\" : 0 }";
                 //"mongod: { \"atype\" : \"authCheck\", \"ts\" : { \"$date\" : \"2020-08-19T11:52:27.495-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 10688 }, \"users\" : [ { \"user\" : \"realAdmin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"readWriteAnyDatabase\", \"db\" : \"admin\" }, { \"role\" : \"readWrite\", \"db\" : \"newDB02\" }, { \"role\" : \"userAdminAnyDatabase\", \"db\" : \"admin\" } ], \"param\" : { \"command\" : \"getCmdLineOpts\", \"ns\" : \"admin\", \"args\" : { \"getCmdLineOpts\" : 1, \"lsid\" : { \"id\" : { \"$binary\" : \"9d5Ezoo2ROy/uYNsTpGJww==\", \"$type\" : \"04\" } }, \"$db\" : \"admin\" } }, \"result\" : 13 }";
