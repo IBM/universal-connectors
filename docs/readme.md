@@ -95,7 +95,9 @@ Using the given out-of-the-box mechanisms in both Guardium Data Protection and G
 
 <details closed="closed">
 <summary>Deploying the universal connector</summary>
-  
+
+# Deploying the universal connector
+
 In Guardium Data Protection, the overall workflow for deploying the universal connector is as follows:
 
 1. Installing desired policies as instructed in [Policies](#policies)
@@ -138,13 +140,12 @@ The Universal connector is monitored via tools that are already familiar to Guar
 
    </details>
    
-   <details closed="closed>
-     
+   <details closed="closed">
      <summary>Policies</summary>
      
-     # Policies
+# Policies
      
-     With a few exceptions,  using data from the universal connector is no different from using data from any other source in Guardium Data Protection or Guardium Insights. For using the universal connector in Guardium Data Protection, there are a few unique policies that can be found in this link:
+With a few exceptions, using data from the universal connector is no different from using data from any other source in Guardium Data Protection or Guardium Insights. For using the universal connector in Guardium Data Protection, there are a few unique policies that can be found in this link:
 
 [Configuring Policies for the universal connector](/docs/Guardium%20Data%20Protection/uc_policies_gdp.md)
 
@@ -155,9 +156,11 @@ For more general information about policies, refer to our  [Guardium Data Protec
 <details closed="closed">
 
   <summary>Known limitations</summary>
-  ***Please note: limitations associated with specific datasources are described in the UC plugin readme files for each datasource.***
 
-**See [Available Plug-ins](/docs/available_plugins.md) for more information.**
+# Known limitations
+
+  ***Please note: limitations associated with specific datasources are described in the universal connector plug-in readme files for each datasource. See [Available Plug-ins](/docs/available_plugins.md) for more information.***
+
 
 ### Guardium Data Protection
 
@@ -180,27 +183,112 @@ For more general information about policies, refer to our  [Guardium Data Protec
 <details closed="closed">
 
   <summary>FAQs and troubleshooting</summary>
+  
+  # FAQs 
+  
+[Here](/docs/Guardium%20Data%20Protection/faqs_troubleshooting_gdp.md) is a list of frequently asked questions and troubleshooting sections for Guardium Data Protection.
 
+[Here](/docs/Guardium%20Insights/3.2.x/faqs_troubleshooting_gi.md) is a list of frequently asked questions and troubleshooting sections for Guardium Insights.
+
+**Note:**
+For further plug-in designated troubleshooting, see "troubleshooting" section in the plug-in's documentation linked at [Available Plug-ins](/docs/available_plugins.md)
   </details>
   
 <details closed= "closed">
   <summary>Developing plug-ins</summary>
+
+  # Developing plug-ins
+  
+Users can develop their own universal connector plugins, if needed, and contribute them back to the open source project, if desired.
+
+(In order to overwrite old plug-ins, you can upload a new version from the official IBM GitHub page. Please make sure that the new plug-in has the exact same name as the old version.)
+
+[Here](/docs/Guardium%20Data%20Protection/developing_plugins_gdp.md) is a guide for developing new plug-ins for Guardium Data Protection.
+
+[Here](/docs/Guardium%20Insights/3.2.x/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights.
+
+
+### Use Logstash Ruby filter plug-in 
+For adding a parser to the filter section of the configuration file as a pre-processing stage prior to executing the filter plug-in, use the [Ruby filter plugin](https://www.elastic.co/guide/en/logstash/current/plugins-filters-ruby.html).
+
+### Develop a filter plug-in 
+* For developing a Ruby filter plug-in, use [How to write a Logstash filter plugin](https://www.elastic.co/guide/en/logstash/current/filter-new-plugin.html)
+* For developing a Java filter plug-in, use [How to write a Java filter plugin](https://www.elastic.co/guide/en/logstash/current/java-filter-plugin.html)
+
+### Develop an input plug-in
+* For developing a Ruby input plug-in, use [How to write a Logstash input plugin](https://www.elastic.co/guide/en/logstash/current/input-new-plugin.html)
+* For developing a Java input plug-in, use [How to write a Java filter plugin](https://www.elastic.co/guide/en/logstash/current/java-input-plugin.html)
+* 
+***Note:***
+It is the developer's responsibility to maintain and update the database's supported versions
+
+***
+**Useful links:**
+ - [Integrate Code Coverage tool into Universal Connector Plug-ins](/docs/integrate_code_coverage_into_plug-ins.md)
 </details>
 
 <details closed= "closed">
   <summary>Contributing</summary>
+  
+  # Contributing
+  
+  To make your connector plug-in available to the community, submit your connector to this repository for IBM Certification. We also accept updates or bug fixes to existing plug-ins, to keep them current:
+
+- [Guidelines for contributing](CONTRIBUTING.md)
+- Benefits include:
+
+  - Free, comprehensive testing and certification.
+
+  - Expanding the reach of product APIs.
+
+  - Driving usage of a product or solution.
 </details>
 
 <details closed= "closed">
   <summary>Contact us</summary>
+  
+  # Contact us 
+  
+  If you find any problems or want to make suggestions for future features, please create [issues and suggestions on GitHub](https://github.com/IBM/universal-connectors/issues).
+
 </details>
 
 <details closed= "closed">
   <summary>Licensing</summary>
+
+  # Licensing
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 </details>
 
 <details closed= "closed">
   <summary>References</summary>
+  
+  # References
+
+[^1]: See [IBM Guardium System Requirements and Supported Platforms](https://www.ibm.com/support/pages/ibm-guardium-system-requirements-and-supported-platforms)
+[^2]: In GI 3.3.0, SaaS, and GDP 12.0.0 all the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed upon startup.
+[^3]: except GI SaaS 1.0.0, where no manual uploads by the customer are allowed.
+[^4]: See GCP MySQL [Create the SQL Instance and Configure Logging](filter-plugin/logstash-filter-pubsub-mysql-guardium#create-the-sql-instance-and-configure-logging) section as an example of configuring audit log types via the cloud SQL Instance.
+[^5.1]: See GCP Pub/Sub input plug-in [load-balancing configuration](input-plugin/logstash-input-google-pubsub#note-2) as an example of a pull method plug-in.
+[^5.2]: See Filebeat input plug-in [load-balancing configuration](https://www.elastic.co/guide/en/beats/filebeat/master/load-balancing.html) as an example of a push method plug-in.
+[^6]: Check [Available Plug-ins](/docs/available_plugins.md) for the list of plug-ins that are pre-installed and do not require any manual uploads.
+[^7]: For some data sources, you can configure either real-time or historic audit logging  via the input plug-in's configuration file in its input scope (e.g., [JDBC Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter#3-configure-the-input-and-filter-plugins)).
+[^8]: GIM is currently supported only for [Filebeat and Syslog on MongoDB](docs/GIM.md#configuring-gim-to-handle-filebeat-and-syslog-on-mongodb).
+[^9]: See [MySQL filter plug-in page](filter-plugin/logstash-filter-mysql-guardium/README.md#mysql-guardium-logstash-filter-plug-in)
+
+  </details>
+
 </details>
 
 <details open="open">
