@@ -45,7 +45,7 @@ For data sources that do not have pre-defined plug-ins, you can customize the fi
 
 The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. The Guardium policy, as usual, determines whether the activities are legitimate or not, when to alert, and the auditing level per activity.
 
-The Guardium universal connector is scalable. It provides load-balancing and fail-over mechanisms among a deployment of universal connector instances, that either conform to Guardium Data Protection as a set of Guardium Collectors, or to Guardium Insights as a set of universal connector pods. The load-balancing mechanism distributes the events sent from the data source among a collection of universal connector instances installed on the Guardium endpoints (i.e., Guardium Data Protection collectors or Guardium Insights pods). For more information, see [Enabling Load-Balancing and Fail-Over](#enabling-load-balancing-and-fail-over).
+The Guardium universal connector is scalable. It provides load-balancing and fail-over mechanisms among a deployment of universal connector instances, that either conform to Guardium Data Protection as a set of Guardium Collectors, or to Guardium Insights as a set of universal connector pods. The load-balancing mechanism distributes the events sent from the data source among a collection of universal connector instances installed on the Guardium endpoints (i.e., Guardium Data Protection collectors or Guardium Insights pods). For more information, see [Enabling Load-Balancing and Fail-Over](#enabling-load-balancing-and_fail-over).
 
 Connections to databases that are configured with the Guardium universal connector are handled the same as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
 
@@ -54,7 +54,7 @@ Connections to databases that are configured with the Guardium universal connect
 <details closed="closed">
 <summary> How it works</summary>
 
-  # How it works
+ # How it works
 Under the hood, the universal connector is a Logstash pipeline comprised of a series of three plug-ins:
 
 1. Input plug-in. This plug-in ingests events. Depending on the type of plug-in, there are settings to either pull events from APIs or receive a push of events.
@@ -79,7 +79,7 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
 ## Keep In Mind:
 
-  1. The pre-defined and pre-installed plug-ins do not require any manual uploads or other such prerequisites on the user's end, as opposed to user-made plug-ins or other available Logstash plug-ins. You can simply use a ready-made template for plugging in values to the input and filter sections of their respective configuration files, expand these sections by using online pre-installed Logstash plug-ins, or write your own Ruby code parser using the [Ruby filter plug-in](#use-logstash-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter plug-ins.
+  1. The pre-defined and pre-installed plug-ins do not require any manual uploads or other such prerequisites on the user's end, as opposed to user-made plug-ins or other available Logstash plug-ins. You can simply use a ready-made template for plugging in values to the input and filter sections of their respective configuration files, expand these sections by using online pre-installed Logstash plug-ins, or write your own Ruby code parser using the [Ruby filter plug-in](#use-a-logstash-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter plug-ins.
   2.  It is recommended to use one of the input plug-ins already in the repository and modify its config file input section. But if the input plug-ins already in the repository are insufficient for your needs, you can add a new one.
   3. You can choose to configure either pull or push methods via the messaging middleware service installed on the data lake platform that is used by the input plug-in. Messages can be received with pull or push delivery. In pull mode, the universal connector instance initiates requests to the remote service to retrieve messages. In push mode, the remote service initiates requests to the universal connector instance to deliver messages.
   4. The specific audit log types transmitted into the universal connector from the data source are configurable via the SQL instance settings installed on the data lake platform. This can vary depending on the installed data lake platform native plug-ins and the utilized messaging middleware service[^4].
@@ -87,8 +87,7 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
 
 
-
-## Enabling Load Balancing and Fail-over
+## Enabling load balancing and fail-over
 Using the given out-of-the-box mechanisms in both Guardium Data Protection and Guardium Insights might implicate distribution of the whole set of ingested events to each of the Guardium instances (i.e., Guardium collectors and universal connector pods respectively) in the set. This could cause duplications and redundant event processing. To properly avoid this fallback default behavior, configure these mechanisms as part of the input scope of the installed connector's configuration file. This is configurable via both pull[^5.1] and push[^5.2] methods. Note that the push method on Guardium Data Protection requires configuring the full set of collectors as part of the said input scope. For detailed information regarding each plug-in, check the [Available Plug-ins](/docs/available_plugins.md) page.
 
 </details>
@@ -102,7 +101,7 @@ In Guardium Data Protection, the overall workflow for deploying the universal co
 
 1. Installing desired policies as instructed in [Policies](#policies)
 
-2. Install and configure a plugin[^6]. [Guardium Insights plugins](/docs/Guardium%20Insights/3.2.x/Plugins_management.md).
+2. Install and configure a plugin[^6].
 
 3. Configuring native auditing[^7] on the data source
 
@@ -208,7 +207,7 @@ Users can develop their own universal connector plugins, if needed, and contribu
 [Here](/docs/Guardium%20Insights/3.2.x/developing_plugins_gi.md) is a guide for developing new plug-ins for Guardium Insights.
 
 
-### Use Logstash Ruby filter plug-in 
+### Use a Logstash Ruby filter plug-in 
 For adding a parser to the filter section of the configuration file as a pre-processing stage prior to executing the filter plug-in, use the [Ruby filter plugin](https://www.elastic.co/guide/en/logstash/current/plugins-filters-ruby.html).
 
 ### Develop a filter plug-in 
