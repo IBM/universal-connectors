@@ -97,7 +97,7 @@ For example:
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the CouchDB template.
 
 ## Before you begin
-* You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+* Configure the policies you require. See [policies](/../../#policies) for more information.
 * You must have permission for the S-Tap Management role.The admin user includes this role by default.
 * Download the [guardium_logstash-offline-plugin-couchDB.zip](CouchdbOverFilebeatPackage/guardium_logstash-offline-plugins-couchDB.zip) plug-in.
 * Download the plugin filter configuration file [couchdb.conf](couchdb.conf).
