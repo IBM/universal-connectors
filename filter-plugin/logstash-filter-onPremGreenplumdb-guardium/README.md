@@ -253,7 +253,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 ### Before you begin
 
-*  Configure the policies you require. See [policies](/../../#policies) for more information.
+*  Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role.The admin user includes this role by default.
 * Download the [guardium_logstash-offline-plugin-greenplumdb.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-onPremGreenplumdb-guardium/GreenplumdbOverFilebeatPackage/GreenPlumDB/guardium_logstash-offline-plugin-greenplumdb.zip) plug-in file.
 
