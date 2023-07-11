@@ -9,7 +9,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 1. Go to https://cloud.ibm.com/login.
 2. On the home page, search and select **Databases for MongoDB**.
 3. Then,  create a database by following the below steps-
-      - In the **Platform** field, select "IBM Cloud".
+      - In the **Platform** field, select **IBM Cloud**.
       - In **Service Details**,  define your service name (e.g.: MongoDB-test1). 
       - Make the relevant selection in the **Resource Group** drop-down menu. 
       - Choose your location in the **Location** field.
@@ -45,7 +45,7 @@ You will receive a prompt asking "Are you sure you want to continue?".  Select *
 ### Creating an instance of IBM log analysis on IBM Cloud.
 1. On the home page, search and select **IBM Log Analysis** to create an instance.
 2. Choose your location in the **Location** field.
-3. In the **Pricing Plan** field, select 7 days Log Search.
+3. In the **Pricing Plan** field, select **7 days Log Search**.
 4. In the **Service Name** field, type a name for the service (e.g., IBM Log Analysis Test-1).
 5. Choose **Resource Group**.
 6. Click the **T&C** checkbox.
@@ -88,9 +88,9 @@ You will receive a prompt asking "Are you sure you want to continue?".  Select *
 ## 3. Creating an instance of event streams on IBM Cloud
 ### Procedure:
 1. On the home page, search and select **Event Streams** to create the instance.
-2. In the **Platform** field, select "IBM Cloud".
+2. In the **Platform** field, select **IBM Cloud**.
 3. Choose your location in the **Location** field
-4. In the **Pricing plan** field, select Standard.
+4. In the **Pricing plan** field, select **Standard**.
 5. Type a name in the **Service Name** field (e.g., IBM Log Analysis Test-1).
 6. Make the relevant selection in the **Resource Group** drop-down menu 
 7. Click **Create**.
