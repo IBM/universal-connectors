@@ -84,7 +84,7 @@ you can turn it off. To do this, set the value to `false` for the following two 
 `select` query that fetches the authentication logs.
 
 ### Before you begin
-1. Configure the policies you require. See [policies](/../../#policies) for more information. 
+1. Configure the policies you require. See [policies](/docs/#policies) for more information. 
 2. You must have permission for the S-Tap Management role. The admin user includes this role by default.
 3. Download the [logstash-filter-guardium_snowflake_filter-1.0.0.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-7.12.1.zip)
 plug-in.
