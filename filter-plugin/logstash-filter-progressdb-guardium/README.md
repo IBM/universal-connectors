@@ -190,7 +190,7 @@ the native audit logs by customizing the Progress template.
 
 ### Before you begin
 
-• Configure the policies you require. See ([policies](/../../#policies)) for more information.
+• Configure the policies you require. See [policies](/docs/#policies) for more information.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
