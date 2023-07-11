@@ -48,7 +48,7 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 
    - If there are no errors that means you can use this new user for this UC method
 
-2. Enable the universal collector feature on the designated Guardium collectors or the stand-alone system. See [here](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-enabling-guardium-universal-collectors)
+2. Enable the universal collector feature on the designated Guardium collectors or the stand-alone system. See [here](/docs/Guardium%20Data%20Protection/uc_config_gdp.md).
 
 3. On the collector, go to Setup > Tools and Views > Configure Universal Connector
 
