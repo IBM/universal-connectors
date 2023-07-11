@@ -128,7 +128,7 @@ The inclusion filter mentioned above will be used to view the Audit logs in the 
 The Guardium universal connector is the Guardium entry point for native audit/data_access logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit/data_access logs by customizing the Spanner template.
 
 ### Before you begin
-* Configure the policies you require. See [policies](/../../#policies) for more information.
+* Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
 * Download the [guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip](SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in.
 
