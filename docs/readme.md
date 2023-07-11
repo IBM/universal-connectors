@@ -1,7 +1,7 @@
 # Universal connector documentation
 This is the documentation for the universal connector. Get started right away by viewing available plug-ins and documentation per product version. Or read more about the universal connector and how it works. 
 
-<details closed="closed">
+<details open="open">
 
 <summary><b>Getting started</b></summary>
 
@@ -18,13 +18,13 @@ See our Guardium Insights SaaS documentation [here](/docs/Guardium%20Insights/Sa
 
 </details>
 
-<details closed="closed">
+<details open="open">
   
   <summary><b>Learn more</b></summary>
   
 # Universal Connector documentation
 
-<details closed="closed">
+<details open="open">
 <summary>Overview</summary>
 
 # Overview
@@ -51,7 +51,7 @@ Connections to databases that are configured with the Guardium universal connect
 
 </details>
 
-<details closed="closed">
+<details open="open">
 <summary> How it works</summary>
 
  # How it works
@@ -61,7 +61,7 @@ Under the hood, the universal connector is a Logstash pipeline comprised of a se
 
 2. Filter plug-in. This plug-in filters the events captured by the input plug-in. The filter plug-in parses, filters, and modifies event logs into a Guardium-digestible format.
 
-3. Output plug-in. This plug-in receives the formatted event logs from the filter plug-in and transmits them to IBM Guardium (either Guardium Data Protection or Guardium Insights).
+3. Output plug-in. This plug-in receives the formatted event logs from the filter plug-in and transmits them to IBM Guardium (either Guardium Data Protection or Guardium Insights). [policies](/docs/readme.md/#policies) 
 
 ***Note: the output plug-in is presented here as an internal component of the universal connector pipeline and is not to be accessed or modified by the user.***
 
@@ -92,7 +92,7 @@ Using the given out-of-the-box mechanisms in both Guardium Data Protection and G
 
 </details>
 
-<details closed="closed">
+<details open="open">
 <summary>Deploying the universal connector</summary>
 
 # Deploying the universal connector
@@ -128,7 +128,7 @@ In Guardium Insights, the workflow for deploying the universal connector is slig
 
    </details>
 
-   <details closed="closed">
+   <details open="open">
    <summary>Monitoring universal connector connections</summary>
 # Monitoring universal connector connections
 The Universal connector is monitored via tools that are already familiar to Guardium Data Protection and Guardium Insights users. As well as some unique tools that can be found in the following links.
@@ -139,7 +139,7 @@ The Universal connector is monitored via tools that are already familiar to Guar
 
    </details>
    
-   <details closed="closed">
+   <details open="open">
      <summary>Policies</summary>
      
 # Policies
@@ -152,7 +152,7 @@ For more general information about policies, refer to our  [Guardium Data Protec
 
 </details>
 
-<details closed="closed">
+<details open="open">
 
   <summary>Known limitations</summary>
 
@@ -179,7 +179,7 @@ For more general information about policies, refer to our  [Guardium Data Protec
 
 </details>
 
-<details closed="closed">
+<details open="open">
 
   <summary>FAQs and troubleshooting</summary>
   
@@ -193,7 +193,7 @@ For more general information about policies, refer to our  [Guardium Data Protec
 For further plug-in designated troubleshooting, see "troubleshooting" section in the plug-in's documentation linked at [Available Plug-ins](/docs/available_plugins.md)
   </details>
   
-<details closed= "closed">
+<details open= "open">
   <summary>Developing plug-ins</summary>
 
   # Developing plug-ins
@@ -226,7 +226,7 @@ It is the developer's responsibility to maintain and update the database's suppo
  - [Integrate Code Coverage tool into Universal Connector Plug-ins](/docs/integrate_code_coverage_into_plug-ins.md)
 </details>
 
-<details closed= "closed">
+<details open= "open">
   <summary>Contributing</summary>
   
   # Contributing
@@ -243,7 +243,7 @@ It is the developer's responsibility to maintain and update the database's suppo
   - Driving usage of a product or solution.
 </details>
 
-<details closed= "closed">
+<details open= "open">
   <summary>Contact us</summary>
   
   # Contact us 
@@ -252,7 +252,7 @@ It is the developer's responsibility to maintain and update the database's suppo
 
 </details>
 
-<details closed= "closed">
+<details open= "open">
   <summary>Licensing</summary>
 
   # Licensing
@@ -270,7 +270,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </details>
 
-<details closed="closed">
+<details open="open">
   
   <summary>References</summary>
   
