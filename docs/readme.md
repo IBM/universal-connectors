@@ -1,7 +1,7 @@
 # Universal connector documentation
 This is the documentation for the universal connector. Get started right away by viewing available plug-ins and documentation per product version. Or read more about the universal connector and how it works. 
 
-<details closed="closed">
+<details open="open">
 
 <summary><b>Getting started</b></summary>
 
@@ -18,13 +18,13 @@ See our Guardium Insights SaaS documentation [here](/docs/Guardium%20Insights/Sa
 
 </details>
 
-<details closed="closed">
+<details open="open">
   
   <summary><b>Learn more</b></summary>
   
 # Universal Connector documentation
 
-<details closed="closed">
+<details open="open">
 <summary>Overview</summary>
 
 # Overview
@@ -45,13 +45,13 @@ For data sources that do not have pre-defined plug-ins, you can customize the fi
 
 The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. The Guardium policy, as usual, determines whether the activities are legitimate or not, when to alert, and the auditing level per activity.
 
-The Guardium universal connector is scalable. It provides load-balancing and fail-over mechanisms among a deployment of universal connector instances, that either conform to Guardium Data Protection as a set of Guardium Collectors, or to Guardium Insights as a set of universal connector pods. The load-balancing mechanism distributes the events sent from the data source among a collection of universal connector instances installed on the Guardium endpoints (i.e., Guardium Data Protection collectors or Guardium Insights pods). For more information, see [Enabling Load-Balancing and Fail-Over](#enabling-load-balancing-and_fail-over).
+The Guardium universal connector is scalable. It provides load-balancing and fail-over mechanisms among a deployment of universal connector instances, that either conform to Guardium Data Protection as a set of Guardium Collectors, or to Guardium Insights as a set of universal connector pods. The load-balancing mechanism distributes the events sent from the data source among a collection of universal connector instances installed on the Guardium endpoints (i.e., Guardium Data Protection collectors or Guardium Insights pods). For more information, see [Enabling Load-Balancing and Fail-Over](/docs/readme.md/#enabling-load-balancing-and-fail-over).
 
 Connections to databases that are configured with the Guardium universal connector are handled the same as all other datasources in Guardium. You can apply policies, view reports, monitor connections, for example.
 
 </details>
 
-<details closed="closed">
+<details open="open">
 <summary> How it works</summary>
 
  # How it works
@@ -61,7 +61,7 @@ Under the hood, the universal connector is a Logstash pipeline comprised of a se
 
 2. Filter plug-in. This plug-in filters the events captured by the input plug-in. The filter plug-in parses, filters, and modifies event logs into a Guardium-digestible format.
 
-3. Output plug-in. This plug-in receives the formatted event logs from the filter plug-in and transmits them to IBM Guardium (either Guardium Data Protection or Guardium Insights).
+3. Output plug-in. This plug-in receives the formatted event logs from the filter plug-in and transmits them to IBM Guardium (either Guardium Data Protection or Guardium Insights). 
 
 ***Note: the output plug-in is presented here as an internal component of the universal connector pipeline and is not to be accessed or modified by the user.***
 
@@ -74,12 +74,12 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
   1. Utilize the out-of-the-box, pre-installed plug-in packages[^2] that require minimal configuration on the client's end by either plugging suited values into their respective template configuration files in the input and filter sections, or by adding a Ruby code subsection to the said filter section in case a more complex parsing method is necessary as a pre-processing stage to be executed prior to the execution of the respective filter plug-in. See each plug-in's user manual via [Available Plug-ins](/docs/available_plugins.md).
 
-  2. For data sources that are not yet supported, you can either upload an IBM-approved filter plug-in or [develop your own](#developing-plug-ins) and add it to our plug-in repository. You can also clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)[^3]. You can optionally either let the parsing operations be executed by your filter plug-in, or assign this task to the Guardium Sniffer by transferring the event to the output plug-in in a designated structure as part of the filter plug-in development, as instructed in the links in the [Developers Guide](#developing-plug-ins).
+  2. For data sources that are not yet supported, you can either upload an IBM-approved filter plug-in or [develop your own](/docs/readme.md/#developing-plug-ins) and add it to our plug-in repository. You can also clone and modify the existing plug-ins as a template for your convenience (either in Ruby or Java)[^3]. You can optionally either let the parsing operations be executed by your filter plug-in, or assign this task to the Guardium Sniffer by transferring the event to the output plug-in in a designated structure as part of the filter plug-in development, as instructed in the links in the [Developers Guide](/docs/readme.md/#developing-plug-ins).
 
 
 ## Keep In Mind:
 
-  1. The pre-defined and pre-installed plug-ins do not require any manual uploads or other such prerequisites on the user's end, as opposed to user-made plug-ins or other available Logstash plug-ins. You can simply use a ready-made template for plugging in values to the input and filter sections of their respective configuration files, expand these sections by using online pre-installed Logstash plug-ins, or write your own Ruby code parser using the [Ruby filter plug-in](#use-a-logstash-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter plug-ins.
+  1. The pre-defined and pre-installed plug-ins do not require any manual uploads or other such prerequisites on the user's end, as opposed to user-made plug-ins or other available Logstash plug-ins. You can simply use a ready-made template for plugging in values to the input and filter sections of their respective configuration files, expand these sections by using online pre-installed Logstash plug-ins, or write your own Ruby code parser using the [Ruby filter plug-in](/docs/readme.md/#use-a-logstash-ruby-filter-plug-in) as a pre-processing stage prior to executing the filter plug-ins.
   2.  It is recommended to use one of the input plug-ins already in the repository and modify its config file input section. But if the input plug-ins already in the repository are insufficient for your needs, you can add a new one.
   3. You can choose to configure either pull or push methods via the messaging middleware service installed on the data lake platform that is used by the input plug-in. Messages can be received with pull or push delivery. In pull mode, the universal connector instance initiates requests to the remote service to retrieve messages. In push mode, the remote service initiates requests to the universal connector instance to deliver messages.
   4. The specific audit log types transmitted into the universal connector from the data source are configurable via the SQL instance settings installed on the data lake platform. This can vary depending on the installed data lake platform native plug-ins and the utilized messaging middleware service[^4].
@@ -92,14 +92,14 @@ Using the given out-of-the-box mechanisms in both Guardium Data Protection and G
 
 </details>
 
-<details closed="closed">
+<details open="open">
 <summary>Deploying the universal connector</summary>
 
 # Deploying the universal connector
 
 In Guardium Data Protection, the overall workflow for deploying the universal connector is as follows:
 
-1. Installing desired policies as instructed in [Policies](#policies)
+1. Installing desired policies as instructed in [Policies](/docs/readme.md/#policies)
 
 2. Install and configure a plugin[^6].
 
@@ -128,7 +128,7 @@ In Guardium Insights, the workflow for deploying the universal connector is slig
 
    </details>
 
-   <details closed="closed">
+   <details open="open">
    <summary>Monitoring universal connector connections</summary>
 # Monitoring universal connector connections
 The Universal connector is monitored via tools that are already familiar to Guardium Data Protection and Guardium Insights users. As well as some unique tools that can be found in the following links.
@@ -139,7 +139,7 @@ The Universal connector is monitored via tools that are already familiar to Guar
 
    </details>
    
-   <details closed="closed">
+   <details open="open">
      <summary>Policies</summary>
      
 # Policies
@@ -152,7 +152,7 @@ For more general information about policies, refer to our  [Guardium Data Protec
 
 </details>
 
-<details closed="closed">
+<details open="open">
 
   <summary>Known limitations</summary>
 
@@ -179,7 +179,7 @@ For more general information about policies, refer to our  [Guardium Data Protec
 
 </details>
 
-<details closed="closed">
+<details open="open">
 
   <summary>FAQs and troubleshooting</summary>
   
@@ -193,7 +193,7 @@ For more general information about policies, refer to our  [Guardium Data Protec
 For further plug-in designated troubleshooting, see "troubleshooting" section in the plug-in's documentation linked at [Available Plug-ins](/docs/available_plugins.md)
   </details>
   
-<details closed= "closed">
+<details open= "open">
   <summary>Developing plug-ins</summary>
 
   # Developing plug-ins
@@ -226,7 +226,7 @@ It is the developer's responsibility to maintain and update the database's suppo
  - [Integrate Code Coverage tool into Universal Connector Plug-ins](/docs/integrate_code_coverage_into_plug-ins.md)
 </details>
 
-<details closed= "closed">
+<details open= "open">
   <summary>Contributing</summary>
   
   # Contributing
@@ -243,7 +243,7 @@ It is the developer's responsibility to maintain and update the database's suppo
   - Driving usage of a product or solution.
 </details>
 
-<details closed= "closed">
+<details open= "open">
   <summary>Contact us</summary>
   
   # Contact us 
@@ -252,7 +252,7 @@ It is the developer's responsibility to maintain and update the database's suppo
 
 </details>
 
-<details closed= "closed">
+<details open= "open">
   <summary>Licensing</summary>
 
   # Licensing
@@ -270,7 +270,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </details>
 
-<details closed="closed">
+<details open="open">
   
   <summary>References</summary>
   
