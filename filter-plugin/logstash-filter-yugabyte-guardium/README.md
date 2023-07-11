@@ -17,39 +17,55 @@ Hence, a developer can take advantage of SQL syntax, NoSQL syntax, or both. Yuga
 ## 1. Configuring the Yugabyte database
 
 ### Procedure
-```
-1. Install the flavor of Yugabyte database according to the environment by following the instructions in the documentation.(https://docs.yugabyte.com/stable/quick-start/).
+
+1. Install the flavor of Yugabyte database according to the environment by following the instructions in the [documentation](https://docs.yugabyte.com/stable/quick-start/).
 2. The Yugabyte DB can be managed using a provided utility named yb-ctl(https://docs.yugabyte.com/preview/admin/yb-ctl/).
 3. To connect with the Database there are two types of APIs available, `ysql` and `ycql`.
-```
+
 ## 2. Enabling the audit logs:
 
 ### Procedure
-```
+
 1. Yugabyte supports the below log types :
+   
 		a. postgres-*.log: The logs related to the operations performed using the API `ysql`.
+
 		b. yb-tserver.*.*.log.(WARNING|INFO|ERROR|FATAL).*-*.*: The logs related to the operations performed using the API `ycql`.
-2. These instructions will use both types of files for the Guardium filter, as it contains all database-related log events.
-3. Log configuration: 
+
+ These instructions will use both types of files for the Guardium filter, as it contains all database-related log events.
+   
+Log configuration:
+   
     a. YugabyteDB YSQL -
-        uses PostgreSQL Audit Extension (pgAudit)
+   
+   uses PostgreSQL Audit Extension (pgAudit)
+   
         1. By using and providing value to the flag `--ysql_pg_conf_csv`, log output can be configured.
+   
         2. This flag should be passed while starting the YB server using the utility `ybctl`.
+   
     b. Yugabyte DB YCQL -
+   
         1. Logs can be enables by setting the flag `--ycql_enable_audit_log=true` for ycql APIs.
-    c. The minimum settings are mentioned here so that Guardium can collect minimum data to serve useful information,
+   
+    c. The minimum settings are mentioned here so that Guardium can collect minimum data to serve useful information.
+    
+   ```
         --ysql_pg_conf_csv=pgaudit.log='ALL',pgaudit.log_level=INFO,pgaudit.log_parameter=true,pgaudit.log_relation=on,log_line_prefix='%n %r [%p] %a %u %d %c %x '
         --ycql_enable_audit_log=true
         --ycql_audit_included_categories=QUERY,DML,DDL,DCL,AUTH,PREPARE,ERROR,OTHER
         --ycql_audit_log_level=INFO
-    d. Create a configuration file with the content in the step 3(c) and start the Yugabyte server as this,
-        bin/yugabyted start --tserver_flags=flagfile=path/to/created/conf/file
+   ```
+    d. Create a configuration file with the content in the step 3(c) and start the Yugabyte server as follows:
+   
+             bin/yugabyted start --tserver_flags=flagfile=path/to/created/conf/file
+   
     e. A detailed documentation can be found [here](https://docs.yugabyte.com/preview/secure/audit-logging/	audit-logging-ysql/#enable-audit-logging).
-```
+
 ## 3. Viewing the audit logs
-```
+
 To view the logs, go to the path `yb_data/logs` relative to Yugabyte installation directory.
-```
+
 ## 4. Configuring Filebeat to push logs to Guardium
 
 ## a. Filebeat installation
@@ -65,7 +81,7 @@ To use Logstash to perform additional processing on the data collected by Filebe
 
 ### Procedure:
 
-1. Configuring the input section :-
+1. Configuring the input section :
 
 * Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
 ```
@@ -114,14 +130,14 @@ When UC will start collecting data, It may show two STAP statuses in the pattern
 
 ### Before you begin
 
- You must have the Log Full Details policy enabled on the collector. The detailed steps can be found in step #4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
- You must have permission for the S-Tap Management role. The admin user includes this role by default.
- Download the [yugabyte-logstash-offline-plugins-1.0.0.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-yugabyte-guardium/YugabytedbOverFilebeatPackage/YugabyteDB/yugabytedb-logstash-offline-plugins-1.0.0.zip) plug-in.
+• Configure the policies you require. See [policies](/docs/#policies) for more information.
+-  You must have permission for the S-Tap Management role. The admin user includes this role by default.
+ - Download the [yugabyte-logstash-offline-plugins-1.0.0.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-yugabyte-guardium/YugabytedbOverFilebeatPackage/YugabyteDB/yugabytedb-logstash-offline-plugins-1.0.0.zip) plug-in.
 
 # Procedure
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. First enable the Universal Guardium connector, if it is disabled already.
+2. First enable the Universal Guardium connector if it is disabled.
 3. Click Upload File and select the offline [yugabyte-logstash-offline-plugins-1.0.0.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-yugabyte-guardium/YugabytedbOverFilebeatPackage/YugabyteDB/yugabytedb-logstash-offline-plugins-1.0.0.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
