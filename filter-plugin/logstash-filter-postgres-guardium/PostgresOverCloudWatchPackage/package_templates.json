@@ -1,6 +1,6 @@
 {
-  "plugin_name": "S3 over Cloudwatch_Logs",
-  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-s3-guardium/README.md",
+  "plugin_name": "Postgres over Cloudwatch_Logs",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-postgres-guardium/README.md",
   "input_name": "Cloudwatch_logs_input",
   "input_parameters": [
     {
@@ -28,13 +28,18 @@
         "optional": true,
         "label": "Event filter (optional)"
       },
-      "account_id": {
-      "type": "text",
-      "label": "Account id"
-    },
-      "type": {
+      "codec": {
         "type": "text",
-        "default": "S3",
+        "optional": true,
+        "label": "codec (optional)"
+      },
+      "account_id": {
+        "type": "text",
+        "label": "Account id"
+      },
+      "pair_id": {
+        "type": "text",
+        "default": "postgreOverCloudwatch",
         "hidden": true
       }
     }
@@ -53,8 +58,16 @@
       }
     }
   ],
-  "filter_name": "Guardium_S3_filter",
-  "filter_parameters": [],
+  "filter_name": "Guardium_Postgres_filter",
+  "filter_parameters": [
+    {
+      "pair_id": {
+        "type": "text",
+        "default": "postgreOverCloudwatch",
+        "hidden": true
+      }
+    }
+  ],
   "auth_parameters": [
     {
       "guc_input_param_log_group": {

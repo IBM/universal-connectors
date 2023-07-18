@@ -6,37 +6,73 @@
     {
       "port": {
         "type": "number",
-        "default": 5044,
-        "hidden": true
+        "gi": {
+          "default": 5044,
+          "hidden": true
+        },
+        "gdp": {
+          "default": 5044,
+          "hidden": false
+        }
       },
       "is_ssl": {
         "type": "boolean",
-        "default": true,
-        "hidden": true
+        "gi": {
+          "default": true,
+          "hidden": true
+        },
+        "gdp": {
+          "default": false,
+          "hidden": false
+        }
       },
       "include_codec_tag": {
         "type": "boolean",
-        "default": true,
-        "hidden": true
+        "gi": {
+          "default": true,
+          "hidden": true
+        },
+        "gdp": {
+          "default": true,
+          "hidden": true
+        }
       },
       "ssl_cert_auth": {
         "type": "text",
-        "default": "SSL_CERT_AUTH",
-        "hidden": true
+        "gi": {
+          "default": "SSL_CERT_AUTH",
+          "hidden": true
+        },
+        "gdp": {
+          "hidden": true,
+          "optional": true
+        }
       },
       "ssl_crt_path": {
         "type": "text",
-        "default": "/service/certs/external/tls.crt",
-        "hidden": true
+        "gi": {
+          "default": "/service/certs/external/tls.crt",
+          "hidden": true
+        },
+        "gdp": {
+          "hidden": true,
+          "optional": true
+        }
       },
       "ssl_key_path": {
         "type": "text",
-        "default": "/service/certs/external/tls.key",
-        "hidden": true
+        "gi": {
+          "default": "/service/certs/external/tls.key",
+          "hidden": true
+        },
+        "gdp": {
+          "hidden": true,
+          "optional": true
+        }
       },
       "pair_id": {
         "type": "text",
-        "default": "filebeat",
+        "default": "mongoOverFilebeat",
         "hidden": true
       }
     }
@@ -46,7 +82,7 @@
     {
       "pair_id": {
         "type": "text",
-        "default": "filebeat",
+        "default": "mongoOverFilebeat",
         "hidden": true
       }
     }
