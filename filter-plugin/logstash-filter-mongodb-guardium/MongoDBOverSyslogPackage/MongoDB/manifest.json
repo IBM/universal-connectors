@@ -2,7 +2,7 @@
 	"name": "Guardium_MongoDB_Syslog_filter",
 	"alias": "MongoDB",
 	"type": "filter",
-	"pipeline_type":"pull",
+	"pipeline_type":"push",
 	"plugin_version": "1.0.0",
 	"datasourceTypes": [{"type":"MongoDB","supportedVersions": [""]}],
 	"supported_input_plugins": ["syslog_input"],
