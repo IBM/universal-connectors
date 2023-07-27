@@ -63,8 +63,8 @@ The universal connector configuration has a few parts, all described in this tas
 1. On the **Additional info** page, specify the details of the connection you want to create:
 
 *   **AWS Role ARN (optional)** - this is used to generate temporary credentials, typically for cross-account access. See the [AssumeRole API documentation](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) for more information.
-    
-*   **AWS access key ID** and **AWS secret access key** - your AWS user account access key and the secret access key (for more information, click [here](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html)).
+
+*   **AWS access key ID** and **AWS secret access key** - your AWS user account access key and the secret access key (for more information, click [here](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html)). These parameters are mandatory if you are using the CloudWatch or SQS input plug-ins in Guardium Insights. Note that unlike other Guardium deployments, in GI configuring only role_arn without access_key_id and secret_access_key is not a valid option.
     
 *   **AWS account region** - for example, "us-east-1".
     
