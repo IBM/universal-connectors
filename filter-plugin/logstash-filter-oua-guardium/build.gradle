@@ -86,7 +86,6 @@ dependencies {
     testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 }
 
-}
 
 clean {
     delete "${projectDir}/Gemfile"
