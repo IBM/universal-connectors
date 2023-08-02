@@ -1,5 +1,8 @@
 filter-plugin/logstash-filter-mongodb-guardium
 filter-plugin/logstash-filter-oua-guardium
+filter-plugin/logstash-filter-mariadb-aws-guardium
+filter-plugin/logstash-filter-redshift-aws-guardium
+filter-plugin/logstash-filter-progressdb-guardium
 filter-plugin/logstash-filter-mysql-guardium
 filter-plugin/logstash-filter-s3-guardium
 filter-plugin/logstash-filter-hdfs-guardium
