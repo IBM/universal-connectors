@@ -2,7 +2,7 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
-apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
+gradle (10).propertiesapply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
 // ===========================================================================
 //                             plugin info
