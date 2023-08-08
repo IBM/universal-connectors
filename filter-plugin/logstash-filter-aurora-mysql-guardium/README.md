@@ -17,7 +17,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## Enabling auditing
 
-1. Click **Parameter Groups**.
+1. In Aurora for MySQL, click **Parameter Groups**.
 2. Click **Create Parameter Groups**.
 3. Provide the following details:
 		• Parameter group family : Provide aurora-mysql version
@@ -43,9 +43,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## Viewing the Audit logs
 
 The Audit logs can be seen in log files in RDS, and also on CloudWatch.
-	• “Viewing the auditing details in RDS log files”
-	• “Viewing the logs entries on CloudWatch”
-
+	
 ### Viewing the auditing details in RDS log files
 
 The RDS log files can be viewed, watched, and downloaded. The name of the RDS log file is modifiable and is controlled by parameter log_filename.
