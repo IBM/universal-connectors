@@ -47,7 +47,7 @@ The 'rdsadmin' user queries the database every second to check its health. This 
 ## Configuring the AWS MySQL filters in Guardium
 ### Before you begin
 • You must have permissions for the S-TAP Management role. The admin user includes this role by default.
-• Download the json-encode-offline-plugin.zip plug-in. **This is not necessary for Guardium Data Protection v12.0 and later**.
+• Download the json-encode-offline-plugin.zip plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
 ## Authorizing outgoing traffic from AWS to Guardium
 1. Log in to the Guardium API.
 2. Issue these commands:
@@ -55,7 +55,7 @@ The 'rdsadmin' user queries the database every second to check its health. This 
 		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. Click Upload File and select the [offline json-encode-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-aws-guardium/json-encode-offline-plugin.zip) plug-in. After it is uploaded, click OK. **This is not necessary for Guardium Data Protection v12.0 and later**.
+2. Click Upload File and select the [offline json-encode-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-aws-guardium/json-encode-offline-plugin.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v12.0 and later.
 3. Click the Plus sign to open the Connector Configuration dialog box.
 4. Type a name in the Connector name field.
 5. Update the input section to add the details from the [mysqlCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-aws-guardium/mysqlCloudwatch.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
