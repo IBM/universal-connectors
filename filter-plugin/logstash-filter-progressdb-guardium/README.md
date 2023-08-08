@@ -194,7 +194,7 @@ the native audit logs by customizing the Progress template.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip) file.
+• Download the [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip) file. This is not necessary for Guardium Data Protection v12.0 and later.
 
 • Download the `openedge.jar` file based on your platform and database version.
 
@@ -207,7 +207,7 @@ the native audit logs by customizing the Progress template.
 
 3. Click **Upload File** and upload the `openedge.jar` file that is included in the enterprise version. 
 
-4. Click **Upload File** and select the offline [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip) file. After it is uploaded, click **OK**.
+4. Click **Upload File** and select the offline [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip) file. After it is uploaded, click **OK**. This is not necessary for Guardium Data Protection v12.0 and later.
 
 5. Click the Plus icon to open the Connector Configuration dialog box.
     
