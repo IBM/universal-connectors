@@ -142,9 +142,9 @@ Pre-defined plug-ins: Guardium has a few pre-defined plug-ins for specific data 
 
 •	The default MongoDB connector is the preferred method of ingesting data. It does not require any additional configuration on Guardium if you use the default configuration. By default, the Guardium universal connector listens for MongoDB audit log events that are sent over Syslog (TCP port 5000, UDP port 5141) and Filebeat (port 5044). If you cannot use these ports, or if a parameter does not display in the reports as you expect, update the MongoDB connector configuration to match your system.
 
-**Important: Each connector requires unique ports. Do not use the default ports for a customized connector configuration.**
+**Important: Each connector requires unique ports. Do not use the default ports for a customized connector configuration. Also, each connector must have a unique type, and the filter configuration must use that type.**
 
-•	Each MongDB connector on any one collector must have a unique type, and the filter configuration must use that type. For example, if the input configuration includes:
+For example, if the input configuration includes:
 ```
 udp { port => 5141 type => "syslogMongoDB" }
 ```

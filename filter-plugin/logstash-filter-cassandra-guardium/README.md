@@ -119,12 +119,12 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • You must have permission for the S-Tap Management role. The admin user includes this role, by default.
 
-• Download the [cassandra-offline-plugins-7.5.2.zip plug-in.](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-cassandra-guardium/CassandraOverFilebeatPackage/Cassandra/cassandra-offline-plugins-7.5.2.zip)																	
+• Download the [cassandra-offline-plugins-7.5.2.zip plug-in.](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-cassandra-guardium/CassandraOverFilebeatPackage/Cassandra/cassandra-offline-plugins-7.5.2.zip) This is not necessary for Guardium Data Protection v12.0 and later.													
 ### Procedure
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First enable the Universal Guardium connector, if it is disabled already.
-3. Click Upload File and select the offline [cassandra-offline-plugins-7.5.2.zip plug-in.](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-cassandra-guardium/CassandraOverFilebeatPackage/Cassandra/cassandra-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [cassandra-offline-plugins-7.5.2.zip plug-in.](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-cassandra-guardium/CassandraOverFilebeatPackage/Cassandra/cassandra-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from the [filter-test-beats.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-cassandra-guardium/filter-test-beats.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
