@@ -171,13 +171,13 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * Configure the policies you require. See [policies](/docs/#policies) for more information. 
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugin-apache-solr-azure.zip](https://github.com/IBM/universal-connectors/raw/INS-30373/filter-plugin/logstash-filter-azure-apachesolr-guardium/ApacheSolrOverFilebeatPackage/AzureSolr/guardium_logstash-offline-plugin-apache-solr-azure.zip) plug-in.
+* Download the [guardium_logstash-offline-plugin-apache-solr-azure.zip](https://github.com/IBM/universal-connectors/raw/INS-30373/filter-plugin/logstash-filter-azure-apachesolr-guardium/ApacheSolrOverFilebeatPackage/AzureSolr/guardium_logstash-offline-plugin-apache-solr-azure.zip) plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
 
 ### Procedure
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First, enable the Universal Guardium connector, if it is currently disabled.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugin-apache-solr-azure.zip](https://github.com/IBM/universal-connectors/raw/INS-30373/filter-plugin/logstash-filter-azure-apachesolr-guardium/ApacheSolrOverFilebeatPackage/AzureSolr/guardium_logstash-offline-plugin-apache-solr-azure.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugin-apache-solr-azure.zip](https://github.com/IBM/universal-connectors/raw/INS-30373/filter-plugin/logstash-filter-azure-apachesolr-guardium/ApacheSolrOverFilebeatPackage/AzureSolr/guardium_logstash-offline-plugin-apache-solr-azure.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus icon to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from the [solrazure.conf](solrazure.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.

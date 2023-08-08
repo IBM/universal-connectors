@@ -255,13 +255,13 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 *  Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role.The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugin-greenplumdb.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-onPremGreenplumdb-guardium/GreenplumdbOverFilebeatPackage/GreenPlumDB/guardium_logstash-offline-plugin-greenplumdb.zip) plug-in file.
+* Download the [guardium_logstash-offline-plugin-greenplumdb.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-onPremGreenplumdb-guardium/GreenplumdbOverFilebeatPackage/GreenPlumDB/guardium_logstash-offline-plugin-greenplumdb.zip) plug-in file. This is not necessary for Guardium Data Protection v12.0 and later.
 
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is already disabled, before uploading the UC.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugin-greenplumdb.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-onPremGreenplumdb-guardium/GreenplumdbOverFilebeatPackage/GreenPlumDB/guardium_logstash-offline-plugin-greenplumdb.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugin-greenplumdb.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-onPremGreenplumdb-guardium/GreenplumdbOverFilebeatPackage/GreenPlumDB/guardium_logstash-offline-plugin-greenplumdb.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus icon to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from the [greenplumdb.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-onPremGreenplumdb-guardium/greenplumdb.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
