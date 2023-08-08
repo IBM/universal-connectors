@@ -241,12 +241,12 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 ## Before you begin
 *  Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip](PubSubApacheSolrPackage/guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip) plug-in.
+* Download the [guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip](PubSubApacheSolrPackage/guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip) plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
 
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is disabled before uploading the UC plug-in.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip](PubSubApacheSolrPackage/guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip](PubSubApacheSolrPackage/guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v12.0 and later.
 4. Click Upload File and select the key.json file(which was generated above for the service account). After it is uploaded, click OK.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
