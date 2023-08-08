@@ -9,27 +9,27 @@
     * Guardium Insights: 3.2
     * Guardium Insights SaaS: 1.0
 
-This is a Logstash filter configuration. This filter receives CloudWatch audit logs of AWS MySQL instances, and filters those events and parses them into a Guardium record instance. The information is then sent over to Guardium as a JSON GuardRecord.
+This is a Logstash filter configuration. This filter receives CloudWatch audit logs of AWS MySQL instances, filters those events, and parses them into a Guardium record instance. The information is then sent over to Guardium as a JSON GuardRecord.
 This filter is a script written in Ruby. It should be copied directly into the Guardium universal connector configuration. There is no need to modify the filter section (changes in the filter section may affect proper filtering).
 
 
 ## Create and modify a new parameter group
-To publish logs to CloudWatch, create a new parameter group and set the log_output parameter to FILE. When you create a database instance, it is associated with the default parameter group and cannot be modified. To create a new parameter group follow these steps:
+To publish logs to CloudWatch, create a new parameter group and set the `log_output` parameter to `FILE`. When you create a database instance, it is associated with the default parameter group and cannot be modified. To create a new parameter group follow these steps:
 
 ### Procedure
 1. Open the Amazon RDS console (https://console.aws.amazon.com/rds).
-2. In the navigation pane, choose Parameter groups.
-3. Choose Create parameter group to open the Create parameter group dialog box.
-4. In the Parameter group family list, choose your engine version.
-5. In the Group name box, enter the name of the new DB parameter group.
-6. In the Description box, enter a description for the new DB parameter group.
-7. Select Create.
-8. Go back to Parameter groups from the navigation pane.
-9. In the Parameter groups list, choose the parameter group that you just created.
-10. Choose Parameter group actions, and then choose Edit.
-11. Use the Filter parameters field to search for the log_output parameter.
-12. Set the value of the log_output parameter to FILE.
-13. Choose Save changes.
+2. In the navigation pane, choose **Parameter groups**.
+3. Choose **Create parameter group** to open the Create parameter group dialog box.
+4. In the **Parameter group family** list, choose your engine version.
+5. In the **Group name** box, enter the name of the new database parameter group.
+6. In the **Description** box, enter a description for the new database parameter group.
+7. Select **Create**.
+8. Go back to **Parameter groups** from the navigation pane.
+9. In the **Parameter groups** list, choose the parameter group that you just created.
+10. Choose **Parameter group actions**, and then choose **Edit**.
+11. Use the **Filter parameters** field to search for the `log_output` parameter.
+12. Set the value of the `log_output` parameter to `FILE`.
+13. Choose **Save changes**.
 
 ## Enable audit logs using the MariaDB plug-in
 To add the MariaDB plug-in to a MySQL instance, follow the instructions described [here](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.AuditPlugin.html).
