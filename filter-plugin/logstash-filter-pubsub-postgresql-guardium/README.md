@@ -22,13 +22,8 @@ Download the [Logstash Offline package](../../filter-plugin/logstash-filter-pubs
 This version is compliant with GDP v11.4 and above.
 Please refer to the [input plugin's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
 
-###  Create the SQL instance and Configure Logging
-#### Create a SQL instance
-1. [Prerequisites](https://cloud.google.com/sql/docs/postgres/create-instance#before_you_begin)
-2. [Creating a PostgreSQL instance](https://cloud.google.com/sql/docs/postgres/create-instance#create-2nd-gen)
-3. Set and save the admin user `postgres`'s password
-4. Enable message ordering option
-#### Configure Logging
+### Configuring Logging
+
 1. Login to the instance with `gcloud` in *SQL Instance > connect using Cloud Shell* (password of admin user "postgres" is defined upon instance creation)
 2. *SQL Instances > Select & Edit instance >* add the following flags:
    - **cloudsql.enable_pgaudit**: on
