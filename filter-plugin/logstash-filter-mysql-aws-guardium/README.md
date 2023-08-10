@@ -51,13 +51,14 @@ To add the MariaDB plug-in to a MySQL instance, follow the instructions describe
 		• `grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com`
 ### Procedure
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
-2. Click **Upload File** and select the [offline json-encode-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-aws-guardium/json-encode-offline-plugin.zip) plug-in. After it is uploaded, click **OK**. This is not necessary for Guardium Data Protection v12.0 and later.
-3. Click the Plus sign to open the Connector Configuration dialog box.
-4. Type a name in the **Connector name** field.
-5. Update the input section to add the details from the [mysqlCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-aws-guardium/mysqlCloudwatch.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-6. Update the filter section to add the details from the [mysqlCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-aws-guardium/mysqlCloudwatch.conf) file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
-8. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+2. Enable the universal connector if it is disabled.
+3. Click **Upload File** and select the [offline json-encode-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-aws-guardium/json-encode-offline-plugin.zip) plug-in. After it is uploaded, click **OK**. This is not necessary for Guardium Data Protection v12.0 and later.
+4. Click the Plus sign to open the Connector Configuration dialog box.
+5. Type a name in the **Connector name** field.
+6. Update the input section to add the details from the [mysqlCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-aws-guardium/mysqlCloudwatch.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from the [mysqlCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-aws-guardium/mysqlCloudwatch.conf) file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+9. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 
 ## Limitations
 * For CloudWatch to monitor your RDS instance, the MariaDB audit plug-in must be running on the instance. For information about this plug-in and version compatibilty, refer to [MariaDB Audit Plugin support](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.AuditPlugin.html).
