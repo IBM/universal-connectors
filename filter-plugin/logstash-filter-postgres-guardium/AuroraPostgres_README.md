@@ -130,9 +130,9 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 1. Log in to the Guardium Collector's API.
 2. Issue these commands:
    
-		• `grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com`
+   • `grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com`
 
-		• `grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com`
+   • `grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com`
 
 #### Before you begin
 •  Configure the policies you require. See [policies](/docs/#policies) for more information.
@@ -144,10 +144,11 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 #### Procedure
 
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
+2. Enable the universal connector if it is disabled.
 3. Click **Upload File** and select the [offline postgres-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/Postgres/postgres-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click **OK**. This is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the **Connector name** field.
 6. Update the input section to add the details from the [postgresCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-postgres-guardium/postgresCloudwatch.conf)  file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 7. Update the filter section to add the details from the [postgresCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-postgres-guardium/postgresCloudwatch.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for  every individual connector added.
-9. Click **Save**. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+9. Click **Save**. Guardium validates the new connector and displays it in the Configure Universal Connector page.
