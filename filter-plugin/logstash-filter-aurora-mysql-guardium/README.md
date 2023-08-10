@@ -100,8 +100,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 6. Update the input section to add the details from [auroraMysqlCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-aurora-mysql-guardium/auroraMysqlCloudwatch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 7. Update the filter section to add the details from [auroraMysqlCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-aurora-mysql-guardium/auroraMysqlCloudwatch.conf)  file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
-9. Click **Save**. Guardium validates the new connector, and enables the universal connector if it was
-	disabled. After it is validated, it appears in the Configure Universal Connector page.
+9. Click **Save**. Guardium validates the new connector, and displays it in the Configure Universal Connector page.
 
 ## Configuring the Aurora-MySQL Guardium Logstash filters in Guardium Insights
 
