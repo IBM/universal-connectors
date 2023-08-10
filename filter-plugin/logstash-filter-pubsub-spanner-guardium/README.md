@@ -16,21 +16,11 @@ This plug-in contains a runtime dependency of Logstash Google PubSub input plug-
 
 This version is compliant with GDP v11.4 and above. Please refer to the [input plug-in's repository](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub) for more information.
 
-## 1. Configuring the Spanner on GCP
+## Configuring the Spanner on GCP
 
-#### Spanner Instance Setup
-1. [Prerequisites](https://cloud.google.com/spanner/docs/quickstart-console#before-you-begin)
-2. Enable the Cloud Spanner API for Spanner. Please refer to [Enable the Cloud Spanner API](https://console.cloud.google.com/flows/enableapi?apiid=spanner.googleapis.com&_ga=2.69819094.793489055.1640153775-1810232467.1637833560&_gac=1.255824122.1639012036.Cj0KCQiAzMGNBhCyARIsANpUkzMIfXsi2xH-E172b_5yWbsy04K8iAVkti5E0AX18B4JbIVhDgn3S58aAl3NEALw_wcB) for more information
-3. Creating a Spanner instance. Please refer to [Create an instance](https://cloud.google.com/spanner/docs/quickstart-console#create_an_instance) for more information 
-4. Creating a Spanner database. Please refer to [Create a database](https://cloud.google.com/spanner/docs/quickstart-console#create_a_database) for more information 
-5. Creating a schema for your database. Please refer to [Create a database schema](https://cloud.google.com/spanner/docs/quickstart-console#create_a_schema_for_your_database) for more information
-6. Insert and modify data. Please refer to [Insert and modify data](https://cloud.google.com/spanner/docs/quickstart-console#insert_and_modify_data) for more information 
-7. Run a query. Please refer to [Run a query](https://cloud.google.com/spanner/docs/quickstart-console#run_a_query) for more information 
+### Permissions and Roles Details
 
-
-#### Permissions and Roles Details
-
-##### Grant Permission Required for log view / download
+#### Grant Permission Required for log view / download
 You can view and download the generated logs. 
 The following identity and access management roles are required to view and download logs:
 * Logs view:
@@ -41,21 +31,21 @@ roles/logging.admin (Logging Admin)
 roles/logging.viewAccessor (Logs View Accessor)
 
 
-## 2. Configuration on GCP for the input plug-in
+## Configuration on GCP for the input plug-in
 
-##### Creating a topic in Pub/Sub
+### Creating a topic in Pub/Sub
 * Go to the Pub/Sub topics page in the Cloud Console. 
 * Click ```Create a topic```
 * In the Topic ID field, provide a unique topic name, for example, MyTopic.
 * Click the Create Topic button.
 
-##### Creating a subscription in Pub/Sub
+#### Creating a subscription in Pub/Sub
 * Display the menu for the topic created in the previous step and click ```New subscription```.
 * Type a name for the subscription, such as MySub.
 * Leave the delivery type as Pull.
 * Click the Create button
 
-##### Creating a log sink in Pub/Sub
+#### Creating a log sink in Pub/Sub
 * In the Cloud Console, go to the Logging > Log Router page. 
 * Click the Create sink button.
 * In the Sink details panel, enter the following details:
@@ -107,14 +97,14 @@ AND operation.producer="spanner.googleapis.com"
 AND -protoPayload.request.sql="SELECT 1"
 
 ```
-## 3. Viewing the Audit logs
+## Viewing the Audit logs
 
 The inclusion filter mentioned above will be used to view the Audit logs in the GCP Logs Explorer.
 
 ### Supported audit logs
 * spanner-general.log - `INFO`, `DEFAULT`, `ALERT`,`NOTICE`,`DEBUG`,`WARNING`
 
-## 4. Limitations
+## Limitations
 1. Error Logs are not generated in GCP for spanner and this plug-in does not support errors traffic in Guardium.
 2. The Audit/Data access log doesn't contain a server IP. The default value is set to 0.0.0.0 for the server IP.
 3. Some fields cannot be mapped, as there is no information about them in the logs. The following important fields cannot be mapped:
@@ -124,7 +114,7 @@ The inclusion filter mentioned above will be used to view the Audit logs in the 
 4. Spanner does not require a DDL query for Drop Database, as the Spanner UI only gives an option to delete and if you delete the database you cannot get query parameters in audit logs. Please refer to [Spanner DDL documentation](https://cloud.google.com/spanner/docs/reference/standard-sql/data-definition-language) for more information. Henceforth,this is not captured in the full SQL report.
 5. The parser does not support queries in which a keyword is used as a table name or column name, nor in scenarios of nested parameters inside functions.
 
-## 5. Configuring the Spanner filter in Guardium
+## Configuring the Spanner filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit/data_access logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit/data_access logs by customizing the Spanner template.
 
 ### Before you begin
@@ -134,7 +124,7 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. Enable the connector if it is already disabled, before uploading the universal connector.
+2. Enable the universal connector if it is disabled.
 3. Click upload File and select the [guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip](SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v12.0 and later.
 4. Click Upload File and select the key.json file. After it is uploaded, click OK.
 5. Click the Plus sign to open the Connector Configuration dialog box.
@@ -142,6 +132,6 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 7. Update the input section to add the details from [spanner_with_pubsub.conf](spanner_with_pubsub.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 8. Update the filter section to add the details from [spanner_with_pubsub.conf](spanner_with_pubsub.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 9.  The 'type' fields should match in input and filter configuration sections. This field should be unique for every individual connector added.
-10. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+10. Click Save.Guardium validates the new connector and displays it in the Configure Universal Connector page.
 11. After installing the plugins offline package and once the configuration is uploaded and saved to your Guardium machine, restart the universal connector using the Disable/Enable button.
 
