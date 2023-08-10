@@ -98,13 +98,14 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ### Procedure
 
 1. On the collector, navigate to **Setup** > **Tools and Views** > **Configure Universal Connector**.
+2. Enable the universal collector if it is disabled.
 3. Click **Upload File** and select the offline plug-in named [dynamodb-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudwatchPackage/DynamoDB/dynamodb-offline-plugins-7.5.2.zip). After it uploads, click **OK**. This is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus sign to open the Connector Configuration dialog box
 5. Type a name in the **Connector name** field.
 6. Update the input section to add the details from the [dynamodbCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-dynamodb-guardium/dynamodbCloudwatch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end
 7. Update the filter section to add the details from the [dynamodbCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-dynamodb-guardium/dynamodbCloudwatch.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end
 8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
-9. Click **Save**. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page
+9. Click **Save**. Guardium validates the new connector and displays it in the Configure Universal Connector page. 
 
 ## Configuring the dynamoDB filters in Guardium Insights
 
