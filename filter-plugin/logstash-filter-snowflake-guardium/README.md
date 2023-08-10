@@ -26,12 +26,8 @@ Converge Technology Solutions (formerly Information Insights) provided the origi
 Maintenance of the plug-in has been taken over by IBM to provide improvements, such as integration with Guardium 
 Insights. See the original plug-in [here](https://github.com/infoinsights/guardium-snowflake-uc-filter).
 
-## 1. Configuring the Snowflake database
-Create the required type of Snowflake account [here](https://signup.snowflake.com/) by providing the information.
-The database will be created and the details will be provided over e-mail. Snowflake also provides the option to choose
-a cloud provider to host the database. For more information, see [here](https://docs.snowflake.com/).
 
-## 2. Enabling audit logs
+## Enabling audit logs
 Audit logs are enabled by default. Some data views that Snowflake manages for audit data might 
 simply be from `select` queries.
 ### Providing permissions to a JDBC user
@@ -51,7 +47,7 @@ Below are the reference queries to execute to provide access to a particular rol
   select database_name, database_owner from snowflake.account_usage.databases;
 ``` 
 
-## 3. Viewing the audit logs
+## Viewing the audit logs
 To view the audit logs, query the tables `SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY` , `SNOWFLAKE.ACCOUNT_USAGE.SESSIONS` 
 and `SNOWFLAKE.ACCOUNT_USAGE.LOGIN_HISTORY`. 
 ### Limitations
@@ -59,7 +55,7 @@ and `SNOWFLAKE.ACCOUNT_USAGE.LOGIN_HISTORY`.
 1. Since `SNOWFLAKE.ACCOUNT_USAGE` is a data view and the plug-in is dependent on its tables for the logs, There may be a slight delay in refreshing the data view which may result in a slight delay in retrieving the audit data.
 2. The server portal must remain at 443, as configuration support is deprecated. For more information, see [here](https://docs.snowflake.com/en/user-guide/snowsql-start#p-port-deprecated).
 
-## 4. Configuring the Snowflake filter in Guardium
+## Configuring the Snowflake filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector
 identifies and parses received events, and then converts them to a standard Guardium format. The output of the
 universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements.
@@ -114,8 +110,7 @@ semicolon ';' from the JDBC statement:**
     jdbc_paging_enabled => true 
     jdbc_page_size => 1000
     ```
-11. Click `Save`. Guardium validates the new connector, and enables the universal connector if it was disabled.
-    After it is validated, it appears in the Configure Universal Connector page.
+11. Click `Save`. Guardium validates the new connector and displays it in the Configure Universal Connector page.
  
 
 ## 5. JDBC load-balancing configuration,
