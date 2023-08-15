@@ -56,6 +56,16 @@ Multi-region
 * In cases of multiple regions, you need to do the same set of configurations per each region.
 Based on the region, different configuration files will be used for the input plug-in
 
+#### Set destination (TOPIC & SUBSCRIPTION) permissions
+
+To set permissions for the log sink to route to its destination, do the following:
+* Obtain the sink's writer identity—an email address—from the new sink.
+   1. Go to the Log Router page, and select ```menu```  > ```View sink details```.
+   2. The writer identity appears in the Sink details panel.
+* If you have owner access to the destination:
+   1. add the sink's writer identity to topic and give it the Pub/Sub Publisher role and subscriber role.
+   2. add the sink's writer identity to subscription and give it the Pub/Sub subscriber role.
+   3. 
 ## Viewing the Audit logs
 
 The inclusion filter mentioned above will be used to view the Audit logs in the GCP Logs Explorer.
