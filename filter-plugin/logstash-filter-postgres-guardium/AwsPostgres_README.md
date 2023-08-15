@@ -1,4 +1,8 @@
+# AWS postgres
 
+## Configuring native logging
+
+ If desired, enable encryption on the database instances. In **Additional configuration** > **Log exports**, select the Postgresql log type to publish to Amazon CloudWatch.
 
 ## Enabling the PGAudit extension
 
