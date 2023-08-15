@@ -43,6 +43,18 @@ roles/logging.privateLogViewer (Private Logs Viewer)
 roles/logging.admin (Logging Admin)
 roles/logging.viewAccessor (Logs View Accessor)
 
+### Create a log sink in Pub/Sub
+* In the Cloud Console, go to the Logging > Log Router page.
+* Click ```Create sink```.
+* In the Sink details panel, enter the following details:
+* Sink name: Provide an identifier for the sink. Note that after you create the sink you cannot rename it. However, you can delete a sink and create a new one.
+* Sink description (optional): Describe the purpose or use case for the sink.
+* In the Sink destination panel, select the Pub/Sub topic as sink service and destination.
+* Choose logs to include in the sink in the Build inclusion filter panel.
+* You can filter the logs by log name, resource, and  severity.
+Multi-region
+* In cases of multiple regions, you need to do the same set of configurations per each region.
+Based on the region, different configuration files will be used for the input plug-in
 
 ## Viewing the Audit logs
 
