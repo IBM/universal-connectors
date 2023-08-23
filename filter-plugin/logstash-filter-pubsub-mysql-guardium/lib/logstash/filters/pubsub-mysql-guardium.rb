@@ -29,36 +29,55 @@ class LogStash::Filters::PubsubMysql < LogStash::Filters::Base
 
   def parse_err_log(event)
     begin
-      message = event.get('textPayload').match(/(?<ts>(\d*-){2}(\d*)T(\d*:){2}(\d*.\d*)Z)(\s)(?<session_id>\d*)(\s)\[(?<severity_type>[A-Za-z]*)\](\s)\[(?<type_db>[A-Za-z]*-\d*)\](\s)\[(?<type_host>.*)\](\s)(?<msg>.*)/)
 
+      errMsg = event.get('message')
+      parse = JSON.parse(errMsg)
+      tax_payload = parse["textPayload"]
+       pattern = /(?<ts>(\d*-){2}(\d*)T(\d*:){2}(\d*.\d*)Z)(\s)(?<session_id>\d*)(\s)\[(?<severity_type>[A-Za-z]*)\](\s)\[(?<type_db>[A-Za-z]*-\d*)\](\s)\[(?<type_host>.*)\](\s)(?<msg>.*)/
+
+         match_data = tax_payload.match(pattern)
+
+         if match_data
+           timestamp = match_data["ts"]
+           session_id = match_data["session_id"]
+           severity_type = match_data["severity_type"]
+           type_db = match_data["type_db"]
+           type_host = match_data["type_host"]
+           message = match_data["msg"]
+         else
+           puts "No match found."
+         end
       session_id = message['session_id']
       event.set('[GuardRecord][sessionId]', session_id)
 
-      login_failed_substr = 'Access denied for user'
+      login_failed = 'Access denied for user'
       aborted_connection = 'Aborted connection'
       wait_timeout_exceeded = 'wait_timeout'
-      msg = message['msg']
+      reading_communication = 'Got an error reading communication'
+      packet_out_of_order = 'Got packets out of order'
 
     rescue FilterException::FilterError
       raise FilterException::ErrorLogParserErr
     end
 
-    exception_type = case msg
-                     when /#{login_failed_substr}/
-                       'LOGIN_FAILED'
-                     when /#{aborted_connection}/
-                       'PREMATURE_CLOSE'
-                     when /#{wait_timeout_exceeded}/
-                       'SESSION_ERROR'
-                     else
-                       'SQL_ERROR'
-                     end
+      exception_type = case message
+                        when /#{Regexp.escape(login_failed)}/i
+                          'LOGIN_FAILED'
+                        when /#{Regexp.escape(aborted_connection)}|#{Regexp.escape(reading_communication)}/i
+                          'PREMATURE_CLOSE'
+                        when /#{Regexp.escape(wait_timeout_exceeded)}/i
+                          'SESSION_ERROR'
+                        when /#{Regexp.escape(packet_out_of_order)}/i
+                           'PACKET_OUT_OF_ORDER'
+                        else
+                           'SQL_ERROR'
+                        end
 
     svc_name = "cloudsql.googleapis.com"
     event.set('[GuardRecord][exception][exceptionTypeId]', exception_type)
-    event.set('[GuardRecord][exception][description]', msg)
+    event.set('[GuardRecord][exception][description]', tax_payload)
     event.set('[GuardRecord][exception][sqlString]', 'Undisclosed')
-    event.set('[GuardRecord][data][originalSqlCommand]', nil)
+    event.set('[GuardRecord][data][originalSqlCommand]', '')
     event.set('[GuardRecord][accessor][dbUser]', 'Undisclosed')
     event.set('[GuardRecord][sessionLocator][clientIp]', '0.0.0.0')
     event.set('[GuardRecord][accessor][serviceName]', svc_name)
@@ -71,64 +90,67 @@ class LogStash::Filters::PubsubMysql < LogStash::Filters::Base
 
   def filter(event)
     @logger.debug("Incoming Google Cloud Platform event: #{event.to_json}")
+
     begin
-      log_name = event.get('logName').match(/.*%2F(?<log_type>.*)/)
-      log_type = log_name['log_type']
-      resource = event.get('resource')
-      labels = resource['labels']
-      database_id = labels['database_id']
-      server_hostname = "#{labels["region"]}:#{database_id}"
-      timestamp = event.get('timestamp')
-      ts_epoch_u = TimestampFormatter.parse(timestamp)
+        message1 = event.get('message')
+        parse = JSON.parse(message1)
 
+        log_name = parse["logName"]
+        logtype = log_name.match(/.*%2F(?<log_type>.*)/)
+        log_type = ''
+        if logtype
+           log_type = logtype["log_type"]
+        else
+            puts "No match found."
+        end
 
-      @logger.debug('Parsing by log type')
-      case log_type
-      when 'data_access'
-        @parser.parse(event)
-      when 'mysql.err'
-        parse_err_log(event)
-      else
-        raise FilterException::UnsupportedLogType
-      end
+        resource = parse["resource"]
+        labels = resource['labels']
+        database_id = labels['database_id']
+        server_hostname = "#{labels["region"]}:#{database_id}"
+        timestamp = parse["timestamp"]
+        ts_epoch_u = TimestampFormatter.parse(timestamp)
 
-      matched = true
+        @logger.debug("Parsing by log type")
+        case log_type
+        when 'data_access'
+          @parser.parse(event)
+        when 'mysql.err'
+          parse_err_log(event)
+        else
+          raise FilterException::UnsupportedLogType
+        end
 
-      event.set('[GuardRecord][time][timstamp]', ts_epoch_u)
-      event.set('[GuardRecord][time][minOffsetFromGMT]', 0)
-      event.set('[GuardRecord][time][minDst]', 0)
+        matched = true
 
+        event.set('[GuardRecord][time][timstamp]', ts_epoch_u)
+        event.set('[GuardRecord][time][minOffsetFromGMT]', 0)
+        event.set('[GuardRecord][time][minDst]', 0)
 
-      event.set('[GuardRecord][data][construct]', nil)
+        event.set('[GuardRecord][data][construct]', nil)
 
-      event.set('[GuardRecord][sessionLocator][clientPort]', nil)
-      event.set('[GuardRecord][sessionLocator][clientIpv6]', nil)
-      event.set('[GuardRecord][sessionLocator][serverIpv6]', nil)
+        event.set('[GuardRecord][sessionLocator][clientPort]', nil)
+        event.set('[GuardRecord][sessionLocator][clientIpv6]', nil)
+        event.set('[GuardRecord][sessionLocator][serverIpv6]', nil)
+        event.set('[GuardRecord][sessionLocator][clientIp]', '127.0.0.1')
+        event.set('[GuardRecord][sessionLocator][serverPort]', 3306)
+        event.set('[GuardRecord][sessionLocator][isIpv6]', false)
 
-
-      
-      event.set('[GuardRecord][sessionLocator][clientIp]', '127.0.0.1')
-      event.set('[GuardRecord][sessionLocator][serverPort]', 3306)
-      event.set('[GuardRecord][sessionLocator][isIpv6]', false)
-
-      event.set('[GuardRecord][accessor][serverType]', 'MySQL')
-      event.set('[GuardRecord][accessor][serverOS]', '')
-      event.set('[GuardRecord][accessor][clientOs]', '')
-      event.set('[GuardRecord][accessor][clientHostName]', '')
-      event.set('[GuardRecord][accessor][serverHostName]', server_hostname)
-      event.set('[GuardRecord][accessor][commProtocol]', '')
-      event.set('[GuardRecord][accessor][dbProtocol]', 'MYSQL')
-      event.set('[GuardRecord][accessor][dbProtocolVersion]', '')
-      event.set('[GuardRecord][accessor][osUser]', '')
-      event.set('[GuardRecord][accessor][clientMac]', '')
-      event.set('[GuardRecord][accessor][serverDescription]', '')
-      event.set('[GuardRecord][accessor][language]', 'MYSQL')
-      event.set('[GuardRecord][accessor][dataType]', 'TEXT')
-
-
-      remove_redundant_fields(event)
-
-      event.set('GuardRecord', event.get('GuardRecord').to_json)
+        event.set('[GuardRecord][accessor][serverType]', 'MySQL')
+        event.set('[GuardRecord][accessor][serverOS]', '')
+        event.set('[GuardRecord][accessor][clientOs]', '')
+        event.set('[GuardRecord][accessor][clientHostName]', '')
+        event.set('[GuardRecord][accessor][serverHostName]', server_hostname)
+        event.set('[GuardRecord][accessor][commProtocol]', '')
+        event.set('[GuardRecord][accessor][dbProtocol]', 'MYSQL')
+        event.set('[GuardRecord][accessor][dbProtocolVersion]', '')
+        event.set('[GuardRecord][accessor][osUser]', '')
+        event.set('[GuardRecord][accessor][clientMac]', '')
+        event.set('[GuardRecord][accessor][serverDescription]', '')
+        event.set('[GuardRecord][accessor][language]', 'MYSQL')
+        event.set('[GuardRecord][accessor][dataType]', 'TEXT')
+        remove_redundant_fields(event)
+        event.set('GuardRecord', event.get('GuardRecord').to_json)
 
     rescue StandardError => e
       @logger.error("#{e.class.name}: #{e.message}")

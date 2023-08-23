@@ -6,7 +6,9 @@ module DataAccessLogParser
   class DataAccessLogParserType
 
     def self.parse(event, is_proxy)
-      proto_payload = event.get('protoPayload')
+      datamsg = event.get('message')
+      parse = JSON.parse(datamsg)
+      proto_payload = parse["protoPayload"]
       svc_name = proto_payload['serviceName']
       request = proto_payload['request']
 
@@ -26,6 +28,7 @@ module DataAccessLogParser
       if app_uname == nil
         app_uname = 'Undisclosed'
       end
+
 
       query = request['query']
       begin
@@ -86,7 +89,7 @@ module DataAccessLogParser
         event.set('[GuardRecord][exception][exceptionTypeId]', 'SQL_ERROR')
         event.set('[GuardRecord][exception][description]', 'Undisclosed')
         event.set('[GuardRecord][exception][sqlString]', original_sql)
-        event.set('[GuardRecord][data][originalSqlCommand]', nil)
+        event.set('[GuardRecord][data][originalSqlCommand]', '')
       else
         event.set('[GuardRecord][exception]', nil)
         event.set('[GuardRecord][data][originalSqlCommand]', original_sql)
