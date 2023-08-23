@@ -7,7 +7,7 @@ apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 // ===========================================================================
 // plugin info
 // ===========================================================================
-group                      'com.infoinsightsllc.guardium' // must match the package of the main plugin class
+group                      'com.ibm.guardium.snowflakedb' // must match the package of the main plugin class
 version                    "${file("VERSION").text.trim()}" // read from required VERSION file
 description                = "Guardium Universal Connector Filter Plugin for Snowflake"
 pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
