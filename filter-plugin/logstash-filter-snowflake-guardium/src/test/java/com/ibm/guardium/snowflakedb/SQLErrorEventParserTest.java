@@ -64,7 +64,7 @@ public class SQLErrorEventParserTest {
                     event.get(Constants.CLIENT_APPLICATION_ID).toString());
             Assert.assertEquals(record.getAccessor().getClient_mac(), Constants.UNKNOWN_STRING);
             Assert.assertEquals(record.getAccessor().getServerDescription(), Constants.UNKNOWN_STRING);
-            Assert.assertEquals(record.getAccessor().getServiceName(), event.get(Constants.WAREHOUSE_NAME).toString());
+            Assert.assertEquals(record.getAccessor().getServiceName(), event.get(Constants.DATABASE_NAME).toString());
             Assert.assertEquals(record.getAccessor().getLanguage(), Constants.LANGUAGE_SNOWFLAKE);
             Assert.assertEquals(record.getAccessor().getDataType(),Constants.TEXT);
 
