@@ -2,10 +2,6 @@
 
 The troubleshooting tool helps you identify and resolve issues in UC connections. The troubleshooting tool scans your Logstash log files and searches for known errors. Once it finds errors, it notifies you along with a description of the problem. . Additionally, the troubleshooting tool checks the status of Sniffer and Squid services and informs you if either of them is inactive.
 
-## How it works
-
-To avoid  old or irrelevent messages, the tool scans for errors in the Logstash logs file starting from the last time you ran troubleshooting.For example, if you last ran troubleshooting 3 hours ago, the troubleshooting tool will now only scan for errors from the past 3 hours. If this is your first time running the troubleshooting tool,  it will scan from the beginning of the Logstash logs file. 
-
 ## Supported errors
 
 Currently, only the following error patterns are supported:
