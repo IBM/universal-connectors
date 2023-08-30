@@ -120,7 +120,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [mssql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in.
+* Download the [mssql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in.This is not necessary for Guardium Data Protection v12.0 and later.
 * Download the [logstash-filter-xml.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml.zip) plug-in.[This zip is not required for AWS MSSQL]. This is not necessary for Guardium Data Protection v12.0 and later.
 * Download the [mssql-jdbc-7.4.1.jre8](https://jar-download.com/artifacts/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8) jar.
 
@@ -129,7 +129,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the universal connector if it is disabled.
 3. Click Upload File and select the offline [mssql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v12.0 and later.
-4. Click Upload File and select the offline [logstash-filter-xml.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml.zip) plug-in. After it is uploaded, click OK.
+4. Click Upload File and select the offline [logstash-filter-xml.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v12.0 and later.
 5. Click Upload File and select the [mssql-jdbc-7.4.1.jre8](https://jar-download.com/artifacts/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8) jar. After it is uploaded, click OK.
 
 6. Click the Plus sign to open the Connector Configuration dialog box.
