@@ -31,8 +31,11 @@ Example:
 
 2. Run the toubleshooting tool through the Guardium Data Protection UI:A new Run troubleshooting button is now available in GDP 12.0.
    Go to the configure universal connector page and click **Run troubleshooting**.
+<img width="1338" alt="Screenshot 2023-08-03 at 13 56 57" src="https://github.com/AlexaNahum/universal-connectors/assets/94283854/df93cb28-73e1-403d-851d-3b2e8d6e4e17">
 
    Example:
+   <img width="1132" alt="Screenshot 2023-08-03 at 14 05 12" src="https://github.com/AlexaNahum/universal-connectors/assets/94283854/b7ed7d0e-389f-4452-a9da-f2d12b300dab">
+
 
 ## Notes & Limitations
 
