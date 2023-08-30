@@ -11,4 +11,4 @@ The universal connector uses plug-ins to connect to the datasource server.
 
 3. The connection initialization can take few minutes. To monitor the current status of connection and the latest traffic, click [here](/docs/Guardium%20Data%20Protection/monitoring_GDP.md).
 4. See our FAQs for Guardium Data Protection [here](/docs/Guardium%20Data%20Protection/faqs_troubleshooting_gdp.md).
-5. Read aboutour troubleshooting tool available for 12.0 and above [here](/docs/Guardium%20Data%20Protection/troubleshooting_tool.md).
+5. Read about our troubleshooting tool available for 12.0 and above [here](/docs/Guardium%20Data%20Protection/troubleshooting_tool.md).
