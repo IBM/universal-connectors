@@ -131,12 +131,12 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 ### Before you begin
    * Configure the policies you require. See [policies](/../../#policies) for more information.
    * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-   * Download the [guardium_logstash-offline-plugins-ps-firestore.zip](PubSubFireStorePackage/guardium_logstash-offline-plugins-ps-firestore.zip) plug-in.
+   * Download the [guardium_logstash-offline-plugins-ps-firestore.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-firestore-guardium/PubSubFireStorePackage/guardium_logstash-offline-plugins-ps-firestore.zip) plug-in.
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First, enable the Universal Guardium connector if it is disabled.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugins-ps-firestore.zip](PubSubFireStorePackage/guardium_logstash-offline-plugins-ps-firestore.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugins-ps-firestore.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-firestore-guardium/PubSubFireStorePackage/guardium_logstash-offline-plugins-ps-firestore.zip) plug-in. After it is uploaded, click OK.
 3. Click the plus icon to open the Connector Configuration dialog box.
 4. Type a name in the Connector name field.
 5. Update the input section to add the details from the [firestore_pubsub_run.conf](PubSubFireStorePackage/firestore_pubsub_run.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.

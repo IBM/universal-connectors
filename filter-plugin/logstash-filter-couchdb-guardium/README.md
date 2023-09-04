@@ -99,13 +99,13 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ## Before you begin
 * You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
 * You must have permission for the S-Tap Management role.The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugin-couchDB.zip](CouchdbOverFilebeatPackage/guardium_logstash-offline-plugins-couchDB.zip) plug-in.
+* Download the [guardium_logstash-offline-plugin-couchDB.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-couchbasedb-guardium/CouchbasedbOverFilebeatPackage/CouchbaseDB/couchbase-offline-pack.zip) plug-in.
 * Download the plugin filter configuration file [couchdb.conf](couchdb.conf).
 
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is disabled before uploading the UC plug-in.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugin-couchdb.zip](CouchdbOverFilebeatPackage/guardium_logstash-offline-plugins-couchDB.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugin-couchdb.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-couchbasedb-guardium/CouchbasedbOverFilebeatPackage/CouchbaseDB/couchbase-offline-pack.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [couchdb.conf](couchdb.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.

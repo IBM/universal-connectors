@@ -137,12 +137,12 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 ### Before you begin
 *  Configure the policies you require. See [policies](/../../#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default. 
-* Download the [guardium_logstash-offline-plugin-Firebase.zip](PubSubFirebasePackage/guardium_logstash-offline-plugin-Firebase.zip) plug-in.
+* Download the [guardium_logstash-offline-plugin-Firebase.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/PubSubFirebasePackage/guardium_logstash-offline-plugin-Firebase.zip) plug-in.
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First, enable the Universal Guardium Connector, if it is disabled.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugin-Firebase.zip](PubSubFirebasePackage/guardium_logstash-offline-plugin-Firebase.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugin-Firebase.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/PubSubFirebasePackage/guardium_logstash-offline-plugin-Firebase.zip) plug-in. After it is uploaded, click OK.
 4. Click Upload File and select the key.json file(which was generated above for Service Account). After it is uploaded, click OK.
 5. Click the plus icon to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.

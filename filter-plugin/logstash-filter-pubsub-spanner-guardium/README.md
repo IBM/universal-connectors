@@ -130,12 +130,12 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 ### Before you begin
 * You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step 4 under section Installing and testing the filter or input plug-in on a staging Guardium system on [this page](https://github.com/IBM/universal-connectors/raw/main/docs/developing_plugins_gdp.md).
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip](SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in.
+* Download the [guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-spanner-guardium/SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in.
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is already disabled, before uploading the universal connector.
-3. Click upload File and select the [guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip](SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in. After it is uploaded, click OK.
+3. Click upload File and select the [guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-spanner-guardium/SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in. After it is uploaded, click OK.
 4. Click Upload File and select the key.json file. After it is uploaded, click OK.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
