@@ -18,7 +18,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ### Prerequisites
 
-Download the [Logstash Offline package](PubSubApacheSolrPackage/guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip) for the Google Cloud Apache Solr PubSub filter plugin, and upload it to the Guardium Data Protection collector.
+Download the [Logstash Offline package](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-apachesolr-guardium/PubSubApacheSolrPackage/guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip) for the Google Cloud Apache Solr PubSub filter plugin, and upload it to the Guardium Data Protection collector.
 
 #### Note
 This version is for GDP v11.4, i.e., stable version. Please refer to the
