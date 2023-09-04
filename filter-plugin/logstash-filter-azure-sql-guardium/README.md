@@ -125,7 +125,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-sql-guardium/AzureSQLOverJdbcPackage/AzureSQL/Azure-SQL-Offline-Package.zip) plug-in.
+• Download the [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-azure-sql-guardium/AzureSQLOverJdbcPackage/AzureSQL/Azure-SQL-Offline-Package.zip) plug-in.
 
 • Download the mssql-jdbc-7.4.1.jre8 from [here](https://jar-download.com/artifacts/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8)
 
@@ -133,7 +133,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First enable the Universal Guardium connector, if it is disabled already.
-3. Click Upload File and select the offline [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-sql-guardium/AzureSQLOverJdbcPackage/AzureSQL/Azure-SQL-Offline-Package.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-azure-sql-guardium/AzureSQLOverJdbcPackage/AzureSQL/Azure-SQL-Offline-Package.zip) plug-in. After it is uploaded, click OK.
 4. Again click Upload File and select the offline mssql-jdbc-7.4.1.jre8 file. After it is uploaded, click OK. . 
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.

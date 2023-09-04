@@ -122,13 +122,13 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • You must have permission for the S-Tap Management role. The admin user includes this role, by default.
 
-• Download the [neo4j-logstash-offline-plugins-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage/Neo4jDB/neo4j-logstash-offline-plugins-7.16.3.zip) plug-in.
+• Download the [neo4j-logstash-offline-plugins-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage/Neo4jDB/neo4j-logstash-offline-plugins-7.16.3.zip) plug-in.
 
 # Procedure
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First enable the Universal Guardium connector, if it is disabled already.
-3. Click Upload File and select the offline [neo4j-logstash-offline-plugins-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage/Neo4jDB/neo4j-logstash-offline-plugins-7.16.3.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [neo4j-logstash-offline-plugins-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage/Neo4jDB/neo4j-logstash-offline-plugins-7.16.3.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from the [neo4jFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-neo4j-guardium/neo4jFilebeat.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
