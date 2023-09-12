@@ -1,0 +1,45 @@
+{
+  "plugin_name": "MySQL over tcp input with syslog",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mysql-guardium/README.md",
+  "input_name": "syslog_input",
+  "input_parameters": [
+    {
+      "port": {
+        "type": "number",
+        "default": 5002,
+        "hidden": true
+      },
+      "ssl_enable": {
+        "type": "boolean",
+        "default": true,
+        "hidden": true
+      },
+      "ssl_verify": {
+        "type": "boolean",
+        "default": true,
+        "hidden": true
+      },
+      "ssl_certificate_authorities": {
+        "type": "text",
+        "label": "ssl certificate authorities (example.cert)"
+      },
+      "type": {
+        "type": "text",
+        "default": "syslog-mysql",
+        "hidden": true
+      },
+      "ssl_cert": {
+        "type": "text",
+        "label": "Certificate file name (example.cert)"
+      },
+      "ssl_key": {
+        "type": "text",
+        "label": "Key file name (example.key)"
+      }
+    }
+  ],
+  "filter_name": "Guardium_MySQL_Syslog_filter",
+  "filter_parameters": [],
+  "auth_parameters": [],
+  "supported_platforms": ["on-premise"]
+}

@@ -110,6 +110,7 @@ semicolon ';' from the JDBC statement:**
     jdbc_paging_enabled => true 
     jdbc_page_size => 1000
     ```
+
 11. Click `Save`. Guardium validates the new connector and displays it in the Configure Universal Connector page.
  
 
