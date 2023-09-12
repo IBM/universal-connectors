@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'logstash-filter-pubsub-mysql-guardium'
-  s.version       = '3.0.3'
+  s.version       = '3.0.4'
   s.licenses      = ['Apache-2.0']
   s.summary       = 'This filter plugin parses GCP Pub/Sub events recevied from MySQL'
   s.description   = 'This filter plugin parses GCP Pub/Sub events recevied from MySQL and maps to GuardRecord'
@@ -20,5 +20,5 @@ Gem::Specification.new do |s|
   # Gem dependencies
   s.add_runtime_dependency "logstash-core-plugin-api", "~> 2.0"
   s.add_runtime_dependency "logstash-input-google_pubsub", "~> 1.2.1"
-  s.add_development_dependency "logstash-devutils", "~> 2"
+  s.add_development_dependency 'logstash-devutils'
 end
