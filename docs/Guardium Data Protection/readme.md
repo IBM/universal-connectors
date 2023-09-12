@@ -1,6 +1,6 @@
 # Guardium Data Protection 
 
-The universal connector uses plug-ins to connect to the datasource server. 
+The Guardium universal connector enables Guardium Data Protection to get data from potentially any data source's native activity logs without using software taps (S-TAPs- the software agent usually used in Guardium). The universal connector includes support for various plug-in packages, requiring minimal configuration. You can easily develop plug-ins for other data sources and install them in Guardium.
 ## Procedure
 
 1. There are a number of available plugins that can connect various data sources to Guardium Data Protection. Select a plug-in from [this](/docs/available_plugins.md)  list of available plug-ins and follow the procedure written for the plug-in of your choice. 
