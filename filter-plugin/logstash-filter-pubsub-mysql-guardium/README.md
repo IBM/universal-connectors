@@ -1,10 +1,4 @@
 # Logstash Filter PubSub MySQL Plugin
-### Meet PubSub MySQL
-* Tested versions: 8.0
-* Environment: Google Cloud Platform (GCP)
-* Supported inputs: Pub/Sub (pull)
-* Supported Guardium versions:
-    * Guardium Data Protection: 11.4 and above
 
 This is a Logstash filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses a GCP (Google Cloud Platform) audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
 Generated with Logstash v7.15.0.
@@ -30,7 +24,11 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 
 ### Prerequisites
-Download the [Logstash Offline package](../../filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-offline-plugins-filter-pubsub-mysql-guardium-3.0.3.zip) that includes both the Logstash Google PubSub input plugin and the MySQL PubSub filter plugin, and upload it to the gmachine.
+Download the relevant plugin based on the version of the Guardium.
+    1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip).
+    2. For the Guardium 12.x, download [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
+
+
 #### Note
 This version is compliant with GDP v11.4 and above. Please refer to the
 [input plugin's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
@@ -76,7 +74,7 @@ In case you wish to use **Cloud SQL proxy**, use the following steps:
 
 6. Setup your SQL client application with **DBeaver** as an example:
     1. Click _Database > New Database Connection > MySQL > Next_
-    2. You’ll then get to a connection form where you specify host, port, database, user, and password. Leave the
+    2. You’ll then get to a connection form where you specify host, port, database, user, and password. Leave the 
        defaults and add the user and password from GCP. Also click Show all databases
     3. Then you can click the Test Connection button, and you should see a success pop-up message
     4. Click OK twice, and you are up and running
@@ -92,7 +90,7 @@ For **Cloud SQL proxy**:
 resource.type="cloudsql_database" resource.labels.database_id="<PROJECT_ID>:<SQL_Instance_name>"
 ((logName="projects/<PROJECT_ID>/logs/cloudaudit.googleapis.com%2Fdata_access" AND protoPayload.methodName="cloudsql.instances.query" AND protoPayload.request.query:"/*" AND
 protoPayload.request.query:"SQLEditor")
-OR
+OR 
 logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 ```
 **DataGrip:**
@@ -100,14 +98,14 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 resource.type="cloudsql_database" resource.labels.database_id="<PROJECT_ID>:<SQL_Instance_name>"
 ((logName="projects/<PROJECT_ID>/logs/cloudaudit.googleapis.com%2Fdata_access" AND protoPayload.methodName="cloudsql.instances.query" AND protoPayload.request.query:"/*" AND
  protoPayload.request.query:"DataGrip")
-OR
+OR 
 logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 ```
 **All client applications:**
 ```
 resource.type="cloudsql_database" resource.labels.database_id="<PROJECT_ID>:<SQL_Instance_name>"
 ((logName="projects/<PROJECT_ID>/logs/cloudaudit.googleapis.com%2Fdata_access" AND protoPayload.methodName="cloudsql.instances.query")
-OR
+OR 
 logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 ```
 
@@ -135,7 +133,9 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 
 
 ## Installation
-To install this plug-in, you need to download the [offline pack](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-offline-plugins-filter-pubsub-mysql-guardium-3.0.3.zip).
+To install this plug-in, you need to download the relevant plugin based on the version of the Guardium.
+1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip).
+2. For the Guardium 12.x, download [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
 
 ### Note
 To install on your local machine that is running Logstash, execute:
@@ -144,10 +144,8 @@ To install on your local machine that is running Logstash, execute:
 
 ### Sample Configuration
 
-Below is a copy of the filter scope included `mysqlGooglePubsub.conf` [file](PubSubMySQLPackage/mysqlGooglePubsub.conf) that shows a basic
+Below is a copy of the filter scope included `googlepubsub.conf` [file](PubSubMySQLPackage/googlepubsub.conf) that shows a basic
 configuration for this plugin.
-**Note** The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
-
 #### Filter part:
 ```
 pubsub-mysql-guardium{}
@@ -159,9 +157,9 @@ pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 **Note:** `cloudsqlproxy_enabled` will default to `false` if not explicitly used in filter scope.
 
 ## Limitations
-1. Some internal system queries for client apps other than DBeaver might be ingested by the plug-in. You could easily filter them out by using the
-   GCP logs routing sink's exclusion filter, as seen in the Exclusion filter section above (simply append to it an `OR` followed by your expression). For more information, check
-   [Exclusion filters](https://cloud.google.com/logging/docs/routing/overview#exclusions) and
+1. Some internal system queries for client apps other than DBeaver might be ingested by the plug-in. You could easily filter them out by using the 
+   GCP logs routing sink's exclusion filter, as seen in the Exclusion filter section above (simply append to it an `OR` followed by your expression). For more information, check 
+   [Exclusion filters](https://cloud.google.com/logging/docs/routing/overview#exclusions) and 
    [Logging query language](https://cloud.google.com/logging/docs/view/logging-query-language).
 2. mysql-slow.log logs aren't supported in this version
 3. `SQLEditor` is the event type identifying user queries on DBeaver. For DataGrip, there's no type embedded in the event's comment, meaning some internal system queries will be ingested by this plug-in.
