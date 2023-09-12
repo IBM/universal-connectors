@@ -243,7 +243,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 																	
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [azure-postgresql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plug-in. This is not necessary for Guardium Data Protection v12.0 and later. 
+
+• Download the [azure-postgresql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plug-in.		 
 
 #### Procedure : 
 
@@ -251,7 +252,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 2.	Enable the universal connector if it is disabled.
 
-3.	Click Upload File and select the offline [azure-postgresql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plugin. After it is uploaded,click OK. This is not necessary for Guardium Data Protection v12.0 and later.
+3.	Click Upload File and select the offline [azure-postgresql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plugin. After it is uploaded,click OK. This is not necessary for Guardium Data Protection v12.0 and later.
 
 4.	Click the Plus sign to open the Connector Configuration dialog box.
 
