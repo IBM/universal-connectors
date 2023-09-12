@@ -224,6 +224,33 @@ public class ParserTest {
         Assert.assertEquals("newDB01", record.getDbName());
     }
 
+    @Test
+    public void testParseICDMongoRecord_IPNotAvailable() throws ParseException {
+    	final String mongoString = "{ 'atype' : 'createCollection', 'ts' : { '$date' : '2022-12-15T06:19:23.284+00:00' }, 'users' : [ { 'user' : 'admin', 'db' : 'admin' } ], 'roles' : [ { 'role' : 'dbAdminAnyDatabase', 'db' : 'admin' }, { 'role' : 'readWriteAnyDatabase', 'db' : 'admin' }, { 'role' : 'userAdminAnyDatabase', 'db' : 'admin' } ], 'param' : { 'ns' : 'testdatabase.testcollection1' }, 'result' : 0 }";    	
+        final JsonObject mongoJson = JsonParser.parseString(mongoString).getAsJsonObject();    	
+    	Record record = Parser.parseRecord(mongoJson);
+    	SessionLocator sessionLocator = record.getSessionLocator();
+    	
+    	Assert.assertEquals("", sessionLocator.getClientIp());
+    	Assert.assertEquals(-1, sessionLocator.getClientPort());
+    	Assert.assertEquals(null, sessionLocator.getServerIp());
+    	Assert.assertEquals(-1, sessionLocator.getServerPort());
+    }
+    
+   @Test
+    public void testParseICDMongoRecord_Unknown_error_log() throws ParseException {
+    	final String mongoString ="{ 'atype' : 'authenticate', 'ts' : { '$date' : '2022-12-16T08:47:36.788+00:00' }, 'local' : { 'ip' : '172.30.93.219', 'port' : 32298 }, 'remote' : { 'ip' : '172.30.28.157', 'port' : 45730 }, 'users' : [], 'roles' : [], 'param' : { 'user' : 'admin', 'db' : 'admin', 'mechanism' : 'SCRAM-SHA-256' }, 'result' : 20 }";
+    	final JsonObject mongoJson = JsonParser.parseString(mongoString).getAsJsonObject();
+    	Record record = Parser.parseRecord(mongoJson);
+    	ExceptionRecord exceptionRecord = record.getException();
+    	Accessor accessor = record.getAccessor();
+    	
+    	Assert.assertEquals("admin", record.getDbName());    	
+    	Assert.assertEquals("admin" , accessor.getDbUser());
+    	Assert.assertEquals(Parser.EXCEPTION_TYPE_AUTHORIZATION_STRING, exceptionRecord.getExceptionTypeId());
+    	Assert.assertEquals("Error (20)", exceptionRecord.getDescription());
+    	Assert.assertEquals("{\"atype\":\"authenticate\",\"ts\":{\"$date\":\"2022-12-16T08:47:36.788+00:00\"},\"local\":{\"ip\":\"172.30.93.219\",\"port\":32298},\"remote\":{\"ip\":\"172.30.28.157\",\"port\":45730},\"users\":[],\"roles\":[],\"param\":{\"user\":\"admin\",\"db\":\"admin\",\"mechanism\":\"SCRAM-SHA-256\"},\"result\":20}", exceptionRecord.getSqlString());
+    }
 
     @Test
     public void testParseRecord_createCollection_v4_4() throws ParseException {
