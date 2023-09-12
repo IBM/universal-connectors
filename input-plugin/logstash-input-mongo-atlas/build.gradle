@@ -24,13 +24,18 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
+    buildscript {
+        repositories {
+            maven {
+                url "https://plugins.gradle.org/m2/"
+            }
+            mavenCentral()
+            jcenter()
+        }
 
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        dependencies {
+            classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        }
     }
 }
 
@@ -45,20 +50,18 @@ shadowJar {
 }
 
 dependencies {
-    compile group: 'commons-validator', name: 'commons-validator', version: '1.7'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
+    implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
     implementation 'org.apache.httpcomponents:httpclient:4.5.13'
-    compile 'org.apache.commons:commons-lang3:3.7'
-    compile 'com.google.code.gson:gson:2.8.9'
-    compile fileTree(dir: LOGSTASH_CORE_PATH, include: "**/logstash-core-*.*.*.jar")
-    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-?.?.?.jar")
+    implementation 'org.apache.commons:commons-lang3:3.7'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core.jar")
+    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
 
-    //implementation 'com.google.code.gson:gson:2.8.9'
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'org.jruby:jruby-complete:9.3.2.0'
 
-    testCompile 'junit:junit:4.13.1'
-    testCompile 'org.jruby:jruby-complete:9.3.2.0'
-
-    testCompile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-?.?.?.jar")
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
 }
 
 clean {
