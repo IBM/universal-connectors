@@ -1,13 +1,7 @@
 # Available Plug-ins
-The universal connector uses plug-ins to connect the different data sources to Guardium.
-Below are all the available plug-ins, which are installed and ready for use.
-
-Our latest product version for Guardium Data Protection is [11.5](../docs/Guardium%20Data%20Protection)
-
-Our latest product version for Guardium Insights is [SaaS 1.0](../docs/Guardium%20Insights/SaaS_1.0/Plugins_management.md)
 
 ## Supported data sources
-The following plug-ins are supported by the latest versions. Exceptions are noted next to each plug-in name.
+The following plug-ins are supported by the latest product versions. Exceptions are noted next to each plug-in name.
 To see if a particular plug-in is supported by older versions, please refer to the "supported versions" section inside each plug-in page.
 
 * [Amazon Aurora MySQL](../filter-plugin/logstash-filter-aurora-mysql-guardium/README.md)
@@ -43,7 +37,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [PostgreSQL](../filter-plugin/logstash-filter-onPremPostgres-guardium/README.md)
 * [ProgressDB](../filter-plugin/logstash-filter-progressdb-guardium/README.md) (Future GI releases)
 * [SAP HANA](../filter-plugin/logstash-filter-saphana-guardium/README.md)
-* [Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter)
+* [Snowflake](../filter-plugin/logstash-filter-snowflake-guardium/README.md)
 * [Teradata](../filter-plugin/logstash-filter-teradatadb-guardium/README.md) (Future GI releases)
 * [Yugabyte](../filter-plugin/logstash-filter-yugabyte-guardium/README.md)
 

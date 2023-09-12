@@ -7,20 +7,15 @@
 	* Guardium Data Protection: 11.4 and above
 	* Guardium Insights: SaaS 1.0
 
-This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Neo4j audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The contstruct details the main action (verb) and collections (objects) involved.
+This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Neo4j audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
 Currently, this plug-in will work only with IBM Security Guardium Data Protection, and not Guardium Insights.
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
-## 1. Configuring the Neo4j database
 
-### Procedure
 
-	1. Download “neo4j-community-4.2.1.zip”. Extract the archive file and then install Neo4j.
-	2. Add a database from the console.
-
-## 2. Enabling the audit logs:
+## Enabling the audit logs:
 
 ### Procedure
 
@@ -118,11 +113,12 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 ### Before you begin
 
-• Configure the policies you require. See [policies](/../../#policies) for more information.
+• Configure the policies you require. See [policies](/docs/#policies) for more information.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role, by default.
 
 • Download the [neo4j-logstash-offline-plugins-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage/Neo4jDB/neo4j-logstash-offline-plugins-7.16.3.zip) plug-in.
+
 
 # Procedure
 
@@ -134,8 +130,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 6. Update the input section to add the details from the [neo4jFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-neo4j-guardium/neo4jFilebeat.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 7. Update the filter section to add the details from the [neo4jFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-neo4j-guardium/neo4jFilebeat.conf)  file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The "type" fields should match in the input and the filter configuration section. This field should be unique for  every individual connector added
-9. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+9. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 
-## 5. Configuring the Neo4j filters in Guardium Insights
+## 6. Configuring the Neo4j filters in Guardium Insights
 To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 For the input configuration step, refer to the [Filebeat section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#Filebeat-input-plug-in-configuration).

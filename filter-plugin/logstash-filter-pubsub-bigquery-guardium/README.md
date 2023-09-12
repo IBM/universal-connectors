@@ -13,7 +13,7 @@ This plug-in contains a runtime dependency of Logstash Google PubSub input plug-
 
 This version is compliant with Guardium Data Protection v11.4 and above. Please refer to the [input plug-in repository](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub) for more information.
 
-## 1. Configuring the BigQuery on GCP
+## Configuring BigQuery on GCP
 ### BigQuery Setup
 1. [Prerequisites](https://cloud.google.com/bigquery/docs/quickstarts/quickstart-cloud-console)
 2. BigQuery is automatically enabled in new projects. To activate BigQuery in an existing project, enable the BigQuery API.  Please refer to [Enable the BigQuery API](https://cloud.google.com/bigquery-transfer/docs/enable-transfer-service#creating_a_project_and_enabling_the_api) for more information.
@@ -43,20 +43,6 @@ roles/logging.privateLogViewer (Private Logs Viewer)
 roles/logging.admin (Logging Admin)
 roles/logging.viewAccessor (Logs View Accessor)
 
-## 2. Configure GCP for the input plug-in
-
-### Create a topic in Pub/Sub
-* Go to the Pub/Sub topics page in the Cloud Console. 
-* Click ```Create a topic```
-* In the Topic ID field, provide a unique topic name, for example, MyTopic.
-* Click ```Create Topic```.
-
-### Create a subscription in Pub/Sub
-* Display the menu for the topic created in the previous step and click ```New subscription```.
-* Type a name for the subscription, such as MySub.
-* Leave the delivery type as Pull.
-* Click ```Create```
-
 ### Create a log sink in Pub/Sub
 * In the Cloud Console, go to the Logging > Log Router page.
 * Click ```Create sink```.
@@ -79,29 +65,8 @@ To set permissions for the log sink to route to its destination, do the followin
 * If you have owner access to the destination:
    1. add the sink's writer identity to topic and give it the Pub/Sub Publisher role and subscriber role.
    2. add the sink's writer identity to subscription and give it the Pub/Sub subscriber role.
-
-### Create service account credentials
-* Go to the Service accounts section of the IAM & Admin console.
-* Select ```project``` and click ```Create Service Account```.
-* Enter a Service account name, such as Bigquery-pubsub.
-* Click ```Create```.
-* The owner role is required for the service account. Select the owner role from the drop-down menu
-* Click ```Continue```. You do not need to grant users access to this service account.
-* Click ```Create Key```. The key is used by the Logstash input plug-in configuration file.
-* Select JSON and click ```Create```.
-
-### Inclusion Filter
-Edit the Sink via *Logs Router > Sink Inclusion Filter*:
-#### Description  
-The purpose of this inclusion filter is to exclude unnecessary logs and include required logs with resource types and metadata reason as DELETE,TABLE_INSERT_REQUEST,TABLE_DELETE_REQUEST or CREATE and metadtata jobStatus.
-```    
-(resource.type=("bigquery_project") AND protoPayload.authenticationInfo.principalEmail:* AND
-(protoPayload.metadata.jobChange.job.jobStatus.jobState = DONE AND -protoPayload.metadata.jobChange.job.jobConfig.queryConfig.statementType = "SCRIPT"))
-OR
-(protoPayload.metadata.datasetDeletion.reason = "DELETE") OR (protoPayload.metadata.tableCreation.reason = "TABLE_INSERT_REQUEST") OR (protoPayload.metadata.tableDeletion.reason = "TABLE_DELETE_REQUEST") OR (protoPayload.metadata.datasetCreation.reason = "CREATE")
-
-```
-## 3. Viewing the Audit logs
+   3. 
+## Viewing the Audit logs
 
 The inclusion filter mentioned above will be used to view the Audit logs in the GCP Logs Explorer.
 
@@ -131,24 +96,24 @@ project-id_bigquery.googleapis.com.
 13. The parser does not support queries in which a keyword is used as a table name or column name, or in scenarios of nested parameters inside functions.
 14. The BigQuery audit log doesn’t include login failed logs, so these will not appear in the guardium LOGIN_FAILED report.
 
-## 5. Configuring the BigQuery filter in Guardium
+## Configuring the BigQuery filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit/data_access logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit/data_access logs by customizing the BigQuery template.
 
 ### Before you begin
-* You must have Log Full Details policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://github.com/IBM/universal-connectors/blob/main/docs/developing_plugins_gdp.md).
+* Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default
-* Download the [guardium_logstash-offline-plugins-ps-bigQuery.zip](BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip) plug-in.
+* Download the [guardium_logstash-offline-plugins-ps-bigQuery.zip](BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip) plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. Enable the connector if it is disabled before uploading the UC plug-in.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugins-ps-bigQuery.zip](BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip) plug-in. After it is uploaded, click ```OK```.
+2. Enable the universal connector if it is disabled.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugins-ps-bigQuery.zip](BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip) plug-in. After it is uploaded, click ```OK```. This is not necessary for Guardium Data Protection v12.0 and later.
 4. Click ```Upload File``` and select the key.json file. After it is uploaded, click ```OK```.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
 7. Update the input section to add the details from the [pubsub_big_query.conf](pubsub_big_query.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 8. Update the filter section to add the details from the [pubsub_big_query.conf](pubsub_big_query.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 9. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
-10. Click ```Save```. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+10. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 11. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.
 

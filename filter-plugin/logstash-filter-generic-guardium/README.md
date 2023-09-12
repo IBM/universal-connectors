@@ -83,7 +83,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	• You must have permission for the S-Tap Management role. The admin user includes this role by default.
 	• Download the generic-offline-plugins-7.5.2.zip plug-in.
 
-# Procedure
+## Procedure
 	1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 	2. Click Upload File and select the offline generic-offline-plugins-7.5.2.zip plug-in. After it is uploaded, click OK.
 	3. Click the Plus sign to open the Connector Configuration dialog box.
@@ -93,3 +93,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
     7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.  
 	8. Click Save. Guardium validates the new connector, and enables the universal connector if it was
 	disabled. After it is validated, it appears in the Configure Universal Connector page.
+
+## Further learning
+Further learning on how to build and test universal connector filter plug-ins can be found on the Security Learning Academy:\
+[Tech Day: Build and use universal connector plug-ins to agentlessly monitor databases](https://www.securitylearningacademy.com/course/view.php?id=6361)

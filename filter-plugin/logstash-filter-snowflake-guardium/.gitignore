@@ -1,1 +1,9 @@
 .idea/
+*.gemspec
+*.gem
+gradle.properties
+vendor/
+Gemfile
+build/
+.gradle/
+lib/
