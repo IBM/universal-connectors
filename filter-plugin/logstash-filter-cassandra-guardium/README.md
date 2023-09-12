@@ -17,10 +17,15 @@ There are multiple ways to install a Cassandra server. For this example, we will
 
 ## 2. Enabling Auditing
     1. Edit /etc/cassandra/conf/cassandra.yaml.
-		• In 'audit_logging_options' Change enabled: false to true
-		• Set logger: class_name: FileAuditLogger
+    
+	• In 'audit_logging_options' Change enabled: false to true
+ 
+	• Set logger: class_name: FileAuditLogger
+ 
     2. Edit /etc/cassandra/conf/logback.xml. 
-		• Uncomment below section
+    
+	• Uncomment below section
+ 
        <appender name="AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
 	   <file>${cassandra.logdir}/audit/audit.log</file>
 	   <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -41,11 +46,11 @@ There are multiple ways to install a Cassandra server. For this example, we will
       <appender-ref ref="AUDIT"/>
       </logger>
 	  
-    After saving files, restart the Cassandra service
+    After saving the files, restart the Cassandra service
 	
 ## 3. Viewing the audit logs
 
-The audit logs can be viewed under the parameter "${cassandra.logdir}/audit/" under the file name "audit.log" in the /etc/cassandra/conf/logback.xml file.
+The audit logs can be viewed under the parameter `"${cassandra.logdir}/audit/"` under the file name `audit.log` in the `/etc/cassandra/conf/logback.xml` file.
 
 ## 4. Configuring Filebeat to push logs to Guardium
 
@@ -63,9 +68,9 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 ### Procedure:
 
-1. Configuring the input section :-
+1. Configure the input section :
 
-    • Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
+    • Locate "filebeat.inputs" in the filebeat.yml file, and then add the following parameters.
 
 		filebeat.inputs:
 			- type: log   
@@ -74,7 +79,7 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 			- <path_of_log_file as specified in /etc/cassandra/conf/logback.xml file>
 			- exclude_lines: ['AuditLogManager']
 
-	where path_of_log_file is the same path that was used when enabling Cassandra auditing (${cassandra.logdir}/audit/audit.log). For example, /var/log/cassandra/audit/audit.log.
+	where `path_of_log_file` is the same path that was used when enabling Cassandra auditing (${cassandra.logdir}/audit/audit.log). For example, `/var/log/cassandra/audit/audit.log`.
 	
 	• To process multi-line audit events, add the settings in same inputs section.
 	
@@ -107,7 +112,7 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 ### Limitations
 
-Cassandra audit logs do not provide 'Source program' value, hence it is kept blank.	
+Cassandra audit logs do not provide a value for `Source program' value`, hence it is kept blank.	
 
 ## 5. Configuring the Cassandra filters in Guardium
 
@@ -115,22 +120,22 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 ### Before you begin
 
-•  Configure the policies you require. See [policies](/../../#policies) for more information.
+•  Configure the policies you require. See [policies](/docs/#policies) for more information.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role, by default.
 
-• Download the [cassandra-offline-plugins-7.5.2.zip plug-in.](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-cassandra-guardium/CassandraOverFilebeatPackage/Cassandra/cassandra-offline-plugins-7.5.2.zip)																	
+• Download the [cassandra-offline-plugins-7.5.2.zip plug-in.](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-cassandra-guardium/CassandraOverFilebeatPackage/Cassandra/cassandra-offline-plugins-7.5.2.zip) This is not necessary for Guardium Data Protection v12.0 and later.													
 ### Procedure
 
-1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. First enable the Universal Guardium connector, if it is disabled already.
-3. Click Upload File and select the offline [cassandra-offline-plugins-7.5.2.zip plug-in.](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-cassandra-guardium/CassandraOverFilebeatPackage/Cassandra/cassandra-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK.
+1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
+2. Enable the universal connector if it is disabled.
+3. Click Upload File and select the offline [cassandra-offline-plugins-7.5.2.zip plug-in.](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-cassandra-guardium/CassandraOverFilebeatPackage/Cassandra/cassandra-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
-5. Type a name in the Connector name field.
+5. Type a name in the **Connector name** field.
 6. Update the input section to add the details from the [filter-test-beats.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-cassandra-guardium/filter-test-beats.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 7. Update the filter section to add the details from the [filter-test-beats.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-cassandra-guardium/filter-test-beats.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for  every individual connector added.
-9. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+9. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 
 ## 5. Configuring the Cassandra filters in Guardium Insights
 To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)

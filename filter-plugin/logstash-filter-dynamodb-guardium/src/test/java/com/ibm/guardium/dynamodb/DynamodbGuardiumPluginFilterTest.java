@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 IBM Inc. All rights reserved
+// Copyright 2023 IBM Inc. All rights reserved
 // SPDX-License-Identifier: Apache2.0
 //
 package com.ibm.guardium.dynamodb;
@@ -31,10 +31,10 @@ public class DynamodbGuardiumPluginFilterTest {
 
     /**
      * To feed Guardium universal connector, a "GuardRecord" fields must exist. 
-     *
+     * 
      * Filter should add field "GuardRecord" to the Event, which Universal connector then inserts into Guardium.   
      */
-
+    
     //event string
     @Test
     public void testFieldGuardRecord_dynamodb() {
@@ -46,10 +46,9 @@ public class DynamodbGuardiumPluginFilterTest {
 
         Event e = new org.logstash.Event();
         TestMatchListener matchListener = new TestMatchListener();
-
+        
         e.setField("message", mongodString2);
-        e.setField("account_id", "123456789");
-        e.setField("host", "test.com");
+        e.setField("account_id", "ABCD");
         Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 
         Assert.assertEquals(1, results.size());

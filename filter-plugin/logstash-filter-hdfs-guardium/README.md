@@ -151,6 +151,11 @@ In the input configuration section, refer to the Filebeat section.
 2020-11-29 10:44:07,550 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/10.11.18.117	cmd=listStatus	src=/hbase/MasterProcWALs	dst=null	perm=null	proto=rpc	callerContext=CLI
 ```
 
+## Limitations
+
+Database name is seen as blank.
+
+
 ## License
 
 The license is Apache 2.0. Please refer to the included LICENSE file for more information.

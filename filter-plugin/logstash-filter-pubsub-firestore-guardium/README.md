@@ -16,19 +16,6 @@ This plug-in contains a runtime dependency of Logstash Google PubSub input plug-
 This version is for GDP v11.4, i.e. a stable version.Please refer to the [input plug-in repository](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub) for more information.
 
 ## 1. Configuring the FireStore on GCP
-### FireStore Setup 
-1. [Prerequisites](https://firebase.google.com/docs/projects/api/workflow_set-up-and-manage-project?authuser=0#before-you-begin)
-2. To activate  Firebase, enable the  Firebase Management API. Please refer to [Enable the  Firebase Management API](https://firebase.google.com/docs/projects/api/workflow_set-up-and-manage-project?authuser=0#enable-api) for more information.
-3. Add Firebase services to your project(Optional). Please refer to [ Add Firebase to Project](https://firebase.google.com/docs/projects/api/workflow_set-up-and-manage-project?authuser=0#add-firebase) for more information.
-4. Add Firebase Apps to your Firebase project(Optional). Please refer to [Add Firebase Apps to Firebase project](https://firebase.google.com/docs/projects/api/workflow_set-up-and-manage-project?authuser=0#enable-api) for more information.
-5. Link your Firebase project to a Google Analytics account (Optional). Please refer to [Firebase project to Google Analytics account](https://firebase.google.com/docs/projects/api/workflow_set-up-and-manage-project?authuser=0#link-ga-account) for more information.
-6. Finalize your project's default location (Optional). Please refer to [Finalize project's default location](https://firebase.google.com/docs/projects/api/workflow_set-up-and-manage-project?authuser=0#finalize-default-location) for more information.
-7. Access the GCP console either by searching for "Firestore" via the search box, or by using this URL: https://console.cloud.google.com/firestore/data?referrer=search&project="<project-Id>"
-       
-        7.1) In the GCP console, click on "Firestore" to see the Firestore console.
-        7.2) In the Firebase console, go to Build>Firestore Database to create a Firestore collection. 
-        7.3) Enter the collection_id, document_id, field_name, field_type and field_value.
-        7.4. Click on Save.
 
 ### Access Permission for Firestore  
 Ensure you have Firebase Admin permissions set up in your profile to access Firestore:
@@ -129,22 +116,22 @@ The inclusion filter mentioned above will be used to view the Audit logs in the 
 The Guardium universal connector is the Guardium entry point for native audit/data_access logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit/data_access logs by customizing the Firestore template.
 
 ### Before you begin
-   * Configure the policies you require. See [policies](/../../#policies) for more information.
+   * Configure the policies you require. See [policies](/docs/#policies) for more information.
    * You must have permission for the S-Tap Management role. The admin user includes this role by default.
+
    * Download the [guardium_logstash-offline-plugins-ps-firestore.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-firestore-guardium/PubSubFireStorePackage/guardium_logstash-offline-plugins-ps-firestore.zip) plug-in.
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First, enable the Universal Guardium connector if it is disabled.
 3. Click Upload File and select the offline [guardium_logstash-offline-plugins-ps-firestore.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-firestore-guardium/PubSubFireStorePackage/guardium_logstash-offline-plugins-ps-firestore.zip) plug-in. After it is uploaded, click OK.
-3. Click the plus icon to open the Connector Configuration dialog box.
-4. Type a name in the Connector name field.
-5. Update the input section to add the details from the [firestore_pubsub_run.conf](PubSubFireStorePackage/firestore_pubsub_run.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-6. Update the filter section to add the details from the [firestore_pubsub_run.conf](PubSubFireStorePackage/firestore_pubsub_run.conf) file's filter part, omitting the keyword "filter {" at the beginning and its corresponding "}" at the end.
-7. The "type" fields should match in the input and filter configuration sections. This field should be unique for  every individual connector added.
-8. Click Save. Guardium validates the new connector, and enables the universal connector if it was
-disabled. After it is validated, it appears in the Configure Universal Connector page.
-9. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.
+4. Click the plus icon to open the Connector Configuration dialog box.
+5. Type a name in the Connector name field.
+6. Update the input section to add the details from the [firestore_pubsub_run.conf](PubSubFireStorePackage/firestore_pubsub_run.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from the [firestore_pubsub_run.conf](PubSubFireStorePackage/firestore_pubsub_run.conf) file's filter part, omitting the keyword "filter {" at the beginning and its corresponding "}" at the end.
+8. The "type" fields should match in the input and filter configuration sections. This field should be unique for  every individual connector added.
+9. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+10. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.
 
 ## 5. Limitations 
 - LOGIN FAILED logs are not generated in GCP for Firestore.

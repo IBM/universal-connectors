@@ -272,8 +272,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
     2. Click "Upload File" again and select the ngdbc-2.9.12 jar file. After it is uploaded, click "OK".
     3. Click the Plus sign to open the Connector Configuration dialog box.
     4. Type a name in the Connector name field.
-    5. Update the input section . Use the [saphanaJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/saphanaJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-    6. Update the filter section for JDBC Plugin. Use the [saphanaJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/saphanaJDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+    5. Update the input section . Use the [saphanaJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/saphanaJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+    6. Update the filter section for JDBC Plugin. Use the [saphanaJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/saphanaJDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
     7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
     8. If using two jdbc plug-ins on same machine , the last_run_metadata_path file name should be different.
 

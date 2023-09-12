@@ -97,11 +97,19 @@ public class MongodbGuardiumFilter implements Filter {
                             continue;
                         }
 
-                        // server_hostname
+                        // server_hostname not to be left empty
                         if (e.getField("server_hostname") instanceof String) {
                             String serverHost = e.getField("server_hostname").toString();
                             if (serverHost != null)
                                 record.getAccessor().setServerHostName(serverHost);
+                        }
+                        
+                        // DbName
+                        if (e.getField("dbname_prefix")!=null && !e.getField("dbname_prefix").toString().isEmpty()) {
+                        	String dbPrefix = e.getField("dbname_prefix").toString();
+                        	String dbName = record.getDbName();
+                        	record.setDbName(!dbName.isEmpty()?dbPrefix+":"+dbName:dbPrefix);
+                        	record.getAccessor().setServiceName(record.getDbName());
                         }
 
                         this.correctIPs(e, record);
