@@ -3,7 +3,7 @@
 * Environment: AWS
 * Supported inputs: CloudWatch (pull), SQS (pull)
 * Supported Guardium versions:
-  * Guardium Data Protection: 11.3 and above
+  * Guardium Data Protection: 11.4 and above
     * Supported inputs:
       * Cloudwatch logs (pull)
       * SQS (pull)
@@ -150,14 +150,29 @@ grdapi add_domain_to_universal_connector_allowed_domain
 
 2. Go to `Configure Universal Connector`
 
-3. Select Connector template as Amazon S3 using CloudWatch
+3. If the audit logs are to be fetched from s3 directly,
+    1. Select Connector template as Amazon S3 using CloudWatch
 
- ![Connector configuration 1](/docs/images/cloudwatch/connector_configuration_1.png)
+       ![Connector configuration 1](/docs/images/cloudwatch/connector_configuration_1.png)
 
-4. Fill in the log group and the role_arn that were assigned to the ec2
+    2. Fill in the log group and the role_arn that were assigned to the ec2
 
- ![Connector configuration 2](/docs/images/cloudwatch/connector_configuration_2.png)
-5. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+       ![Connector configuration 2](/docs/images/cloudwatch/connector_configuration_2.png)
+
+4.  Note :To configure SQS on AWS, follow the steps mentioned in the [SQS input plug-in](/input-plugin/logstash-input-sqs/README.md) readme file.</br>
+    If the audit logs are to be fetched from S3 directly,
+    1. Select **Amazon S3 using SQS** in **Connector template**.
+
+       ![Connector configuration 3](/docs/images/cloudwatch/connector_configuration_3.png)
+
+    2. Fill in the queue name and relevant details
+
+       ![Connector configuration 4](/docs/images/cloudwatch/connector_configuration_4.png)
+
+5. The "type" fields should match in input and filter configuration sections. This field should be unique for every individual connector added.
+6. Click **Save**. Guardium validates the new connector, and enables the universal connector if it was
+   disabled. After it is validated, it appears in the Configure Universal Connector page.
+
 
 ## Contribute
 
