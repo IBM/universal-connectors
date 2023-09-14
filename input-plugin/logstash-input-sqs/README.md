@@ -3,7 +3,7 @@
 * Tested versions: 3.1.3
 * Developed by Elastic
 * Supported Guardium versions:
-    * Guardium Data Protection: 11.3 and above
+    * Guardium Data Protection: 11.4 and above
     * Guardium Insights: 3.2
 
 This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the universal connector that is featured in IBM Security Guardium. It pulls events from the SQS from the Amazon Web Services. The events are then sent over to corresponding filter plugin which transforms these audit logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java)  instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
@@ -15,59 +15,70 @@ This plugin pulls events from an Amazon Web Services Simple Queue Service (SQS) 
 
 SQS is a simple, scalable queue system that is part of the Amazon Web Services suite of tools.
 
+### Creating the SQS queue
+**_Procedure_**
+1. Go to https://console.aws.amazon.com/
+2. Click **Services**
+3. Search for SQS and click on **Simple Queue Services**
+4. Click **Create Queue**.
+5. Select the type as **Standard**.
+6. Enter the name for the queue
+7. Keep the rest of the default settings
+
+
 ## Usage:
 
 ### a. Prerequisites:
 
 1. Have an AWS account
 
-2. Setup an SQS queue
+2. Setup an SQS queue as mentioned above.
 
 3. Create an identity that has access to consume messages from the queue.
 
 4. The "consumer" identity must have the following permissions on the queue:
 
-	sqs:ChangeMessageVisibility
-	
-	sqs:ChangeMessageVisibilityBatch
-	
-	sqs:DeleteMessage
-	
-	sqs:DeleteMessageBatch
-	
-	sqs:GetQueueAttributes
-	
-	sqs:GetQueueUrl
-	
-	sqs:ListQueues
-	
-	sqs:ReceiveMessage
+   sqs:ChangeMessageVisibility
+
+   sqs:ChangeMessageVisibilityBatch
+
+   sqs:DeleteMessage
+
+   sqs:DeleteMessageBatch
+
+   sqs:GetQueueAttributes
+
+   sqs:GetQueueUrl
+
+   sqs:ListQueues
+
+   sqs:ReceiveMessage
 
 5. Create a user and apply the below IAM Policy  to the user
 
-	{
-      "Statement": [
-        {
-          "Action": [
-            "sqs:ChangeMessageVisibility",
-            "sqs:ChangeMessageVisibilityBatch",
-            "sqs:DeleteMessage",
-            "sqs:DeleteMessageBatch",
-            "sqs:GetQueueAttributes",
-            "sqs:GetQueueUrl",
-            "sqs:ListQueues",
-            "sqs:ReceiveMessage"
-          ],
-          "Effect": "Allow",
-          "Resource": [
-            "arn:aws:sqs:us-east-1:123456789012:Logstash"
-          ]
-        }
-      ]
-    }
+   {
+   "Statement": [
+   {
+   "Action": [
+   "sqs:ChangeMessageVisibility",
+   "sqs:ChangeMessageVisibilityBatch",
+   "sqs:DeleteMessage",
+   "sqs:DeleteMessageBatch",
+   "sqs:GetQueueAttributes",
+   "sqs:GetQueueUrl",
+   "sqs:ListQueues",
+   "sqs:ReceiveMessage"
+   ],
+   "Effect": "Allow",
+   "Resource": [
+   "arn:aws:sqs:us-east-1:123456789012:Logstash"
+   ]
+   }
+   ]
+   }
 
 ### b. Parameters:
-	
+
 | Parameter | Input Type | Required | Default |
 |-----------|------------|----------|---------|
 | access_key_id | String  | No |  |
@@ -126,5 +137,5 @@ Other standard logstash parameters are available such as:
 #### Procedure
 1. Log in to the Guardium Collector's API.
 2. Issue these commands:
-		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
-		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
+   • grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
+   • grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
