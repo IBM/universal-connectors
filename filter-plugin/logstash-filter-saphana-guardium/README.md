@@ -259,7 +259,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First enable the Universal Guardium connector, if it is disabled already.
 3. For CSVTEXTFILE-based auditing, follow these steps:-
-    1. Click "Upload File" and select the [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK".
+    1. Click "Upload File" and select the [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK". This is not necessary for Guardium Data Protection v12.0 and later.
     2. Click the Plus sign to open the Connector Configuration dialog box.
     3. Type a name in the Connector name field.
     4. Update the input section. Use the [saphanaFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/saphanaFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
