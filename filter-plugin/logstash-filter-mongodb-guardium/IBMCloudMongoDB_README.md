@@ -147,13 +147,13 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ### Before you begin
 * Configure the policies you require. See [policies](/../../#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugins-mongo.zip](MongoDBOverIBMCloudKafkaStreams/guardium_logstash-offline-plugins-mongo.zip) plug-in.
+* Download the [guardium_logstash-offline-plugins-mongo.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-mongodb-guardium/MongodbOverFilebeatPackage/MongoDB/guardium_logstash-offline-plugins-mongo.zip)) plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
 * Download the plug-in filter configuration file [IBMCloudMongoDB.conf](IBMCloudMongoDB.conf).
 
 ### Procedure
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. Before you upload the universal connector, enable the connector if it is disabled.
-3. Click **Upload File** and select the offline [guardium_logstash-offline-plugins-mongo.zip](MongoDBOverIBMCloudKafkaStreams/guardium_logstash-offline-plugins-mongo.zip) plug-in. After it is uploaded, click **OK**.
+3. Click **Upload File** and select the offline [guardium_logstash-offline-plugins-mongo.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-mongodb-guardium/MongodbOverFilebeatPackage/MongoDB/guardium_logstash-offline-plugins-mongo.zip)) plug-in. After it is uploaded, click **OK**. This is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the **Connector name** field.
 6. Update the input section to add the details from the [IBMCloudMongoDB.conf](IBMCloudMongoDB.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.

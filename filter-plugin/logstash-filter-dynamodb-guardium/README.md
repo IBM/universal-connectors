@@ -92,7 +92,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [dynamodb-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudwatchPackage/DynamoDB/dynamodb-offline-plugins-7.5.2.zip) plug-in.
+• Download the [dynamodb-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudwatchPackage/DynamoDB/dynamodb-offline-plugins-7.5.2.zip) plug-in.This is not necessary for Guardium Data Protection v12.0 and later.
 
 
 
