@@ -3,7 +3,7 @@ package com.ibm.guardium.auroramysql;
 public interface Constants {
 	
 	public static final String NOT_AVAILABLE = "NA";
-	public static final int NOT_AVAILABLE_INT = 0;
+	public static final int PORT = -1;
 	public static final String UNKNOWN_STRING = "";
     public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_auroraMysql_guardium_json_parse_error";
     public static final String TIMESTAMP = "ts";

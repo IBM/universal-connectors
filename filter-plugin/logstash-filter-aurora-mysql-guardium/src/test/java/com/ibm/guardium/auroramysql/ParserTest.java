@@ -8,8 +8,8 @@ import java.text.ParseException;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.auroramysql.Constants;
 import com.ibm.guardium.auroramysql.Parser;
-import com.ibm.guardium.univer***REMOVED***lconnector.commons.structures.*;
-import com.ibm.guardium.univer***REMOVED***lconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,6 +40,7 @@ public class ParserTest {
 		Assert.assertEquals(
 				"CREATE TABLE Orders (OrderID int NOT NULL,OrderNumber int NOT NULL,PersonID int,PRIMARY KEY (OrderID))",
 				record.getData().getOriginalSqlCommand());
+		Assert.assertEquals(record.getDbName(), record.getAccessor().getServiceName());
 	}
 
 	// Exception handling

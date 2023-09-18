@@ -8,8 +8,8 @@ import co.elastic.logstash.api.FilterMatchListener;
 import co.elastic.logstash.api.LogstashPlugin;
 import co.elastic.logstash.api.PluginConfigSpec;
 import com.google.gson.*;
-import com.ibm.guardium.univer***REMOVED***lconnector.commons.GuardConstants;
-import com.ibm.guardium.univer***REMOVED***lconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.GuardConstants;
+import com.ibm.guardium.universalconnector.commons.structures.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,13 +30,13 @@ public class AuroraMysqlGuardiumPluginFilter implements Filter {
 			File file = new File(uc_etc + File.separator + LOG42_CONF);
 			context.setConfigLocation(file.toURI());
 		} catch (Exception e) {
-			System.err.println("Failed to load log4j configuration " + e.getMes***REMOVED***ge());
+			System.err.println("Failed to load log4j configuration " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
 	private String id;
-	public static final PluginConfigSpec<String> SOURCE_CONFIG = PluginConfigSpec.stringSetting("source", "mes***REMOVED***ge");
+	public static final PluginConfigSpec<String> SOURCE_CONFIG = PluginConfigSpec.stringSetting("source", "message");
 	private static Logger log = LogManager.getLogger(AuroraMysqlGuardiumPluginFilter.class);
 
 	public AuroraMysqlGuardiumPluginFilter(String id, Configuration config, Context context) {
@@ -49,7 +49,7 @@ public class AuroraMysqlGuardiumPluginFilter implements Filter {
 
 		for (Event e : events) {
 
-			if (e.getField("mes***REMOVED***ge") instanceof String) {
+			if (e.getField("message") instanceof String) {
 				JsonObject data = new JsonObject();
 				data = inputData(e);
 				try {
@@ -65,7 +65,7 @@ public class AuroraMysqlGuardiumPluginFilter implements Filter {
 				}
 
 			} else {
-				log.error("AWS_AURORA_MYSQL filter: Event has been skipped: " + e.getField("mes***REMOVED***ge"));
+				log.error("AWS_AURORA_MYSQL filter: Event has been skipped: " + e.getField("message"));
 				e.tag("_guardium_skip_not_AWS_AURORA_MYSQ");
 			}
 		}
