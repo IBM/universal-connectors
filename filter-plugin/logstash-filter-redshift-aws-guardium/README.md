@@ -117,7 +117,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ## Procedure
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. Enable the connector if it is disabled.
-3. Click **Upload File** and select the [logstash-filter-redshift_guardium_connector.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-redshift-aws-guardium/S3OverRedshiftPackage/logstash-filter-redshift_guardium_connector.zip) plug-in. After it is uploaded, click **OK**. This is not necessary for Guardium Data Protection v12.0 and later.
+3. Click **Upload File** and select the [logstash-filter-redshift_guardium_connector.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-redshift-aws-guardium/S3OverRedshiftPackage/logstash-filter-redshift_guardium_connector.zip) plug-in. After it is uploaded, click **OK**. This is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the **Connector name** field.
 6. Update the input section to add the details from [redshift.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-redshift-aws-guardium/redshift.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
