@@ -11,7 +11,7 @@ import co.elastic.logstash.api.FilterMatchListener;
 
 import com.ibm.guardium.auroramysql.AuroraMysqlGuardiumPluginFilter;
 import com.ibm.guardium.auroramysql.Constants;
-import com.ibm.guardium.univer***REMOVED***lconnector.commons.GuardConstants;
+import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import org.junit.Assert;
 import org.junit.Test;
 //import org.logstash.plugins.ConfigurationImpl;
@@ -27,9 +27,9 @@ public class AuroraMysqlGuardiumPluginFilterTest {
 	final static AuroraMysqlGuardiumPluginFilter filter = new AuroraMysqlGuardiumPluginFilter("test-id", null, context);
 
 	/**
-	 * To feed Guardium univer***REMOVED***l connector, a "GuardRecord" fields must exist.
+	 * To feed Guardium universal connector, a "GuardRecord" fields must exist.
 	 * 
-	 * Filter should add field "GuardRecord" to the Event, which Univer***REMOVED***l connector
+	 * Filter should add field "GuardRecord" to the Event, which Universal connector
 	 * then inserts into Guardium.
 	 */
 
@@ -45,7 +45,7 @@ public class AuroraMysqlGuardiumPluginFilterTest {
 		Event e = new org.logstash.Event();
 		TestMatchListener matchListener = new TestMatchListener();
 
-		e.setField("mes***REMOVED***ge", s1);
+		e.setField("message", s1);
 		e.setField(Constants.TIMESTAMP, "1636962255474405");
 		e.setField(Constants.CLIENT_IP, "192.168.56.1");
 		e.setField(Constants.SESSION_ID, "1234");
