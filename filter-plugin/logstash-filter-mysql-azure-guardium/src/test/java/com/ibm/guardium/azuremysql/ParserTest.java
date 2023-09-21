@@ -1,3 +1,7 @@
+/*
+Copyright IBM Corp. 2023 All rights reserved.
+SPDX-License-Identifier: Apache-2.0
+*/
 package com.ibm.guardium.azuremysql;
 
 import static org.junit.Assert.*;
