@@ -152,13 +152,13 @@ The Guardium universal connector is the Guardium entry point for native audit lo
  
 ## Before you begin
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [logstash-filter-mariadb_guardium_filter.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-mariadb-guardium/MariaDBOverFilebeatPackage/MariaDB/logstash-filter-mariadb_guardium_filter.zip) plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
+* Download the [logstash-filter-mariadb_guardium_filter.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-mariadb-guardium/MariaDBOverFilebeatPackage/MariaDB/logstash-filter-mariadb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 * Download the filter plug-in configuration file [MariaDB.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-guardium/MariaDB.conf).
 
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the universal connector if it is disabled.
-3. Click **Upload File** and select the offline [logstash-filter-mariadb_guardium_filter.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-mariadb-guardium/MariaDBOverFilebeatPackage/MariaDB/logstash-filter-mariadb_guardium_filter.zip) plug-in. After it is uploaded, click **OK**. This is not necessary for Guardium Data Protection v12.0 and later.
+3. Click **Upload File** and select the offline [logstash-filter-mariadb_guardium_filter.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-mariadb-guardium/MariaDBOverFilebeatPackage/MariaDB/logstash-filter-mariadb_guardium_filter.zip) plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [mariadb.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-guardium/MariaDB.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
