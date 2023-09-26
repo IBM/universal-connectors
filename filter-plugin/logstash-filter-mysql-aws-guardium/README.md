@@ -41,7 +41,7 @@ To add the MariaDB plug-in to a MySQL instance, follow the instructions describe
 
 #### Before you begin
 • You must have permissions for the S-TAP Management role. The admin user includes this role by default.
-• Download the json-encode-offline-plugin.zip plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
+• Download the json-encode-offline-plugin.zip plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 
 #### Authorizing outgoing traffic from AWS to Guardium
 
