@@ -121,12 +121,12 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 * Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-* Download the [guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-spanner-guardium/SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in.This is not necessary for Guardium Data Protection v12.0 and later.
+* Download the [guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-spanner-guardium/SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is already disabled, before uploading the universal connector.
-3. Click upload File and select the [guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-spanner-guardium/SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in. After it is uploaded, click OK.This is not necessary for Guardium Data Protection v12.0 and later. This is not necessary for Guardium Data Protection v12.0 and later.
+3. Click upload File and select the [guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-spanner-guardium/SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in. After it is uploaded, click OK.This is not necessary for Guardium Data Protection v12.0 and later. This step is not necessary for Guardium Data Protection v12.0 and later.
 4. Click Upload File and select the key.json file. After it is uploaded, click OK.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
