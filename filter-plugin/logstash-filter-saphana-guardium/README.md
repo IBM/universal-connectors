@@ -249,10 +249,10 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * Download the required (ngdbc)jars as per your database version from URL https://tools.hana.ondemand.com/#hanatools .
 
-* For CSVTEXTFILE-based auditing, refer to this [package](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage) and download the [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in.
+* For CSVTEXTFILE-based auditing, refer to this [package](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage) and download the [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in.(Do not unzip the offline-package file throughout the procedure).This step is not necessary for Guardium Data Protection v12.0 and later.
 
 
-* For CSTABLE based auditing, refer to this [package](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage)	and download the [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/SAPHANA-offline-plugin.zip) plug-in.
+* For CSTABLE based auditing, refer to this [package](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage) and download the [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/SAPHANA-offline-plugin.zip) plug-in.(Do not unzip the offline-package file throughout the procedure).This step is not necessary for Guardium Data Protection v12.0 and later.
 
 
 # Procedure
@@ -268,7 +268,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
     7. Click "Save". Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 4. For CSTABLE-based auditing, follow these steps:
-    1. Click "Upload File" and select the offline [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK".
+    1. Click "Upload File" and select the offline [SAPHANA-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK". This step is not necessary for Guardium Data Protection v12.0 and later.
     2. Click "Upload File" again and select the ngdbc-2.9.12 jar file. After it is uploaded, click "OK".
     3. Click the Plus sign to open the Connector Configuration dialog box.
     4. Type a name in the Connector name field.
