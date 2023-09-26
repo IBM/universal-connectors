@@ -1,6 +1,6 @@
 # Azure MySQL-Guardium Logstash filter plug-in
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Azure MySQL audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the 
-data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
+data contains SQL commands are not parsed by this plug-in but rather forwarded as it is to Guardium to do the SQL parsing.
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for the Guardium universal connector.
 
@@ -144,20 +144,20 @@ In this plugin we have used Azure Event Hub.
 3. You will successfully able to connect Mysql and execute queries.
 
 ## 7. Limitations 
-1. The Audit log doesn't contain a server IP. The default value is set to `0.0.0.0` for the `server IP`.
+1. The Audit log doesn't contain a server IP. The default value is set to __0.0.0.0__ for the __Server IP__.
 2. Error events will cause a duplicated success events in Guardium due to duplicate events in the Azure EventHub audit log.
-3. Azure EventHub is not capturing `syntactical error` queries logs, `Login Failed` logs, and logs using `az commands` (Ex below) and `REST API`.
+3. Azure EventHub is not capturing __Syntactical error__ queries logs, __Login Failed__ logs, and logs using __az commands__ (Ex below) and __REST API__.
       - Ex: az mysql flexible-server db create --resource-group <testresgroup> --server-name <testserver> --database-name <db>  
 4. There are certain [limited privilages](https://learn.microsoft.com/en-us/azure/mysql/how-to-create-users) given by Azure MYSQL to users.
-5. We are getting below extra logs while executing `USE <databasename>` command:
+5. We are getting below extra logs while executing __USE <databasename>__ command:
 	  - show tables
 	  - show databses
 6. The following important fields cannot be mapped with Azure Mysql logs:
 	  - Source program
 	  - Client HostName
-7. Database name is not available in `general logs`, it only avialable at the time of `Disconnect` and `Connect`(We must use `database name` at the time of connection to get the database name).
+7. Database name is not available in __General logs__, it only avialable at the time of __Disconnect__ and __Connect__(We must use __database name__ at the time of connection to get the database name).
 8. Eventhub capturing identical duplicate logs for each query and same has been carrying to Guardium reports.
-9. `Database name` and `Service name` are not identical when user execute queries using Third party tool (DB Visualizer/ MySQL Workbench).
+9. __Database name__ and __Service name__ are not identical when user execute queries using Third party tool (DB Visualizer/ MySQL Workbench).
 
 ## 7. Configuring the Azure MySQL filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Azure MySQL template.
