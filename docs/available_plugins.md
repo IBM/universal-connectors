@@ -20,6 +20,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [DocumentDB](../filter-plugin/logstash-filter-documentdb-aws-guardium/README.md)
 * [Google Cloud Apache Solr](../filter-plugin/logstash-filter-pubsub-apachesolr-guardium/README.md) (Future GI releases)
 * [Google Cloud BigQuery](../filter-plugin/logstash-filter-pubsub-bigquery-guardium/README.md) (Future GI releases)
+* [Google Cloud Firebase](../filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/README.md) 
 * [Google Cloud Firestore](../filter-plugin/logstash-filter-pubsub-firestore-guardium/README.md) (Future GI releases)
 * [Google Cloud MySQL](../filter-plugin/logstash-filter-pubsub-mysql-guardium/README.md) (Future GI releases)
 * [Google Cloud PostgreSQL](../filter-plugin/logstash-filter-pubsub-postgresql-guardium/README.md) (Future GI releases)
