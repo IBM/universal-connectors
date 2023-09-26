@@ -115,8 +115,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 *  Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-* Download the [logstash-filter-awsmariadb_guardium_filter](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBOverCloudWatchPackage/MariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in.
-* Download the plug-in filter configuration file [MariaDBCloudWatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBCloudWatch.conf). This is not necessary for Guardium Data Protection v12.0 and later.
+* Download the [logstash-filter-awsmariadb_guardium_filter](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBOverCloudWatchPackage/MariaDB/logstash-filter-awsmariadb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+* Download the plug-in filter configuration file [MariaDBCloudWatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBCloudWatch.conf). 
 
 #### Procedure
 
