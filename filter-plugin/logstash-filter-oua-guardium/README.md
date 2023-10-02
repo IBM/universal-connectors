@@ -101,4 +101,4 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 
 ## Limitation
 - Normally, the "statement type" attribute for the "FULL SQL" entity in Guardium reports shows us whether a full SQL statement is a prepared statement. However, because OUA doesn't give us information about whether a statement is a prepared statement or not, the "Statement type" attribute is not applicable for the OUA universal connector plug-in.
-- Record affected field is not supported for Oracle UC. 
+- The "record affected" field is not supported when using Oracle with the universal connector.
