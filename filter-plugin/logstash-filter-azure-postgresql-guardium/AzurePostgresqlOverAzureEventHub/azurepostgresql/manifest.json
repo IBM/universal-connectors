@@ -1,5 +1,5 @@
 {
-	"name": "Guardium_Azure_Postgresql_filter",
+	"name": "Azure_Postgresql_Guardium_Plugin_filter",
 	"alias": "Postgresql",
 	"type": "filter",
 	"pipeline_type":"pull",
