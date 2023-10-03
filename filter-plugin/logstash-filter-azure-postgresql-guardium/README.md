@@ -9,35 +9,35 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## 1.	Configuring the Azure PostgreSQL service
 
-There are following ways to get Azure PostgreSQL audit data:
+You can retrieve Azure PostgreSQL audit data in the following ways:
 1. Azure Event Hub
 2. Azure Storage
 3. Log Analytics Workspace
 4. Azure Partner Solution
 
-In this plugin we have used Azure Event Hub.
+For this plug-in, we used Azure Event Hub.
 
 
 ###	Procedure:
 1. Go to https://portal.azure.com/.
-2. Click search bar.
+2. Click the search bar.
 3. Search for azure database for postgreSQL servers.
-4. Click on 'Create' button.
-5. Select resource type.(here we use single server.)
-6. Select Single server and click on create button and fill details in basic option.
+4. Click on **Create**.
+5. Select a resource type. (Here we selected single server.)
+6. Select **Single server** > **create** and fill in the details for the **basic** option.
 7. In Basic option:
    1. Select your subscription name.
-   2. Select existing resource group or create new one.
-   3. For new resource group click on create button  and enter name for resource group.
-   4. Provide 'Server Name'. Keep 'Data source' as none ,select appropriate location and set 'Version=11'.
-   5. Keep compute + storage as 'General Purpose, 4 vCore(s), 100 GB'.
-   6. Provide server admin username and password.
-8.	Click 'Review + Create' Button.
-9.	Verify the configuration and then click on 'Create' Button.
-10.	After successful creation of resource group, select resource button.
-11.	From settings,select connection security.
-12.	In firewall rules,select allow access to azure services to 'Yes'.
-13. Click on add current client IP address, and then click on Save.
+   2. Select an existing resource group or create a new one.
+   3. For a new resource group, click **create**  and enter a name for **resource group**.
+   4. Fille in the **Server Name** field. Keep **Data source** as **none** ,select the appropriate location, and set **Version=11**. 
+   5. Keep **compute + storage** as **General Purpose, 4 vCore(s), 100 GB**.
+   6. Provide a server admin username and password.
+8. Click 'Review + Create' Button.
+9. Verify the configuration and then click **Create**.
+10. After you successfully create a resource group, select **resource**.
+11. From **settings**, select **connection security**.
+12. In **firewall rules**, select **Yes** for **allow access to azure services**.
+13. Click **add current client IP address**, and then click **Save**.
 	
 	
 ## 2. Enabling Auditing
@@ -47,7 +47,7 @@ In this plugin we have used Azure Event Hub.
 3.	Select shared_preload_libraries as PGAUDIT and save.
 4.	Go to overview and restart the server to apply the changes.
 5.	After installation of pgAudit, you can configure its parameters to start logging.
-      1. Under Settings, select server parameters and set server parameters as follows:
+      1. In **Settings**, select **server parameters** and set the server parameters as follows:
          * log_checkpoints = off
          * log_connections = off
          * log_disconnections = off
@@ -61,14 +61,14 @@ In this plugin we have used Azure Event Hub.
          * pgaudit.log_catalog = off 
          * pgaudit.log_client = off 
          * pgaudit.log_parameter = off 
-6. Click save.
+6. Click **save**.
 			
 
 ## 3. Viewing the Audit logs
 		
 ### Azure Event Hub Connection:
 
-1. Search Storage Accounts in the search bar of the Azure portal.
+1. Search for Storage Accounts in the search bar of the Azure portal.
    (If you need your plug-in to read events from multiple Event Hubs, you need a storage account.)
     1. Click **Create**.
     2. Enter the required details in the presented form.
@@ -98,17 +98,17 @@ In this plugin we have used Azure Event Hub.
 6. Connection string for a eventhub:
     1. In the list of event hubs, select your event hub.
     2. On the Event Hubs instance page, go to **settings**  >  **shared access policies** > **Add**.
-    3. In shared access policies click on add button from top.
+    3. In shared access policies click **add**.
     4. Provide the name to policy and choose **manage** from the permissions and create the policy.
     5. Take the value of the primary key - connection string from the policy (this is required for an input plug-in).
-    6. The value of the Primary Key - Connection String will be used in the parameter **event_hub_connections** in the input of the plugin.
+    6. The value of the primary key - connection string will be used in the parameter **event_hub_connections** in the input of the plug-in.
 
 7. Stream logs to an event hub:
     1. Go to the server in your Azure portal.
     2. From **Monitoring**, select **Diagnostics settings** and do either of the following:
         1. Change existing settings by selecting **Edit setting**.
         2. Add new settings by selecting **Add diagnostics setting**.
-        3. To add new settings, do following:
+        3. To add new settings, do the following:
             1. Give the setting a name.
             2. Select **PostgreSQLLogs** from **categories**.
             3. In **Destination details**, choose **stream to an event hub**.
@@ -150,10 +150,10 @@ Not following this recommendation may result into data loss.
 ## 4. Connecting to Azure postgreSQL Database:
 
 1. Start the psql and provide connection details.
-2. Enter the **server name** (from overview window of server in azure portal)
+2. Enter the **server name** (from the overview window of the server in the Azure portal).
 3. Enter the database name as 'postgres'.
 4. Enter 'port' as 5432.
-5. Provide the 'username' (you will get it from azure portal,click on overview and copy admin username) and ‘password’ that we had set while creating the database.
+5. Provide the 'username' (you can get it from the Azure portal. Click **overview** and copy the admin username and ‘password’ that you set when you created the database).
 6. Click enter.
 7. Enter command to give access to pgaudit.
     ```text
@@ -163,10 +163,10 @@ Not following this recommendation may result into data loss.
     ```
 
 #### Limitations
-* The azure postgreSQL plug-in does not support IPV6.
-* For sql errors and login failed,sql string is not available.
-* For primary or foreign key constraints violation, entry would be added to sql error report as well as full sql report.
-* Source program will be seen as blank in report for some clients(here for psql and pgadmin we get value but for visual studio it is blank).
+* The Azure PostgreSQL plug-in does not support IPV6.
+* For SQL errors and failed logins, SQL string is not available.
+* For primary or foreign key constraints violations, entry are added to both the SQL error report and the full SQL report.
+* The source program will be seen as blank in the report for some clients (in this case, values appear for psql and pgadmin but visual studio is blank).
 
 ## 5. Configuring the Azure PostgreSQL filters in Guardium
 
@@ -174,19 +174,18 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 
 #### Before you begin
-* You must have LFD policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
-* You must have permission for the S-Tap Management role. The admin user includes this role by default. 
-* Download the [azure-postgresql-offline-plugins-7.5.2.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plug-in.
-
+* Configure the policies you require. See [policies](/docs/#policies) for more information.
+* You must have permission for the S-Tap Management role. The admin user includes this role by default.
+* Download the [azure-postgresql-offline-plugins-7.5.2.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 
 #### Procedure : 
 
-1.	On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2.	First enable the Universal Guardium connector, if it is disabled already.
-3.	Click Upload File and select the offline [azure-postgresql-offline-plugins-7.5.2.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plugin. After it is uploaded,click OK.
-4.	Click the Plus sign to open the Connector Configuration dialog box.
-5.	Type a name in the Connector name field.
-6.	Update the input section to add the details from [azurepostgresql.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azurepostgresql.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7.	The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
-8.	Update the filter section to add the details from [azurepostgresql.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azurepostgresql.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-9.	Click **Save**. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.
+1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
+2. First enable the universal connector if it is currently disabled.
+3. Click Upload File and select the offline [azure-postgresql-offline-plugins-7.5.2.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azure-postgresql-offline-plugins-7.5.2.zip) plugin. After it is uploaded,click OK. This is not necessary for Guardium Data Protection v12.0 and later.
+4. Click the Plus sign to open the Connector Configuration dialog box.
+5. Type a name in the Connector name field.
+6. Update the input section to add the details from [azurepostgresql.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azurepostgresql.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+8. Update the filter section to add the details from [azurepostgresql.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azurepostgresql.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+9. Click **Save**. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.
