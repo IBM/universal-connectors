@@ -52,7 +52,9 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 
 3. On the collector, go to Setup > Tools and Views > Configure Universal Connector
 
-4. Click on the "UPLOAD” button and upload downloaded `oracle-instantclient-basic-21.1.0.0.0-1.x86_64.rpm` and then `guardium-oua-uc.zip`. This step is not necessary for Guardium Data Protection v12.0 and later.
+4. Click on the "UPLOAD” button and upload the downloaded `oracle-instantclient-basic-21.1.0.0.0-1.x86_64.rpm`.
+   
+6.  Then, upload the `guardium-oua-uc.zip` file. This step is not necessary for Guardium Data Protection v12.0 and later.
 
    5. Click on the "+". The Connector Configuration dialog opens.
 
