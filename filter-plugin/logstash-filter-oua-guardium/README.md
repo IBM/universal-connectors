@@ -65,7 +65,7 @@ Update the variables in Makefile for your environment's Java home and Logstash l
              ```
            pipe {
              type => "oua"
-             command => "${OUA_BINARY_PATH} -c ${THIRD_PARTY_PATH} -s ${THIRD_PARTY_PATH} -r 1 -t 1000 -p 10 -j <USER>/${OUA_USER_PASS}@<SERVER_ADDRESS>:<SERVER_PORT>/<INSTANCE_NAME>"
+             command => "${OUA_BINARY_PATH} -c ${THIRD_PARTY_PATH} -s ${THIRD_PARTY_PATH} -r 100 -t 1000 -p 10 -j <USER>/${OUA_USER_PASS}@<SERVER_ADDRESS>:<SERVER_PORT>/<INSTANCE_NAME>"
                          add_field => {"SERVER_ADDRESS" => "<Enter_Server_Address>"}
                              add_field => {"SERVER_PORT" => "<Enter_Server_Port>"} }
            ```
