@@ -97,7 +97,8 @@ The universal connector identifies and parses received events, and converts them
 The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements.
 
 ### Before you begin
-• You must have permission for the S-Tap Management role. The admin user includes this role, by default.
+* You must have permission for the S-Tap Management role. The admin user includes this role, by default.
+* Download the [logstash-filter-mysql_filter_guardium.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-mysql_filter_guardium.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 
 ### Procedure
 
