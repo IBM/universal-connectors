@@ -16,11 +16,6 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 # Documentation
 
-### Prerequisites
-Download the relevant plugin based on the version of the Guardium.
-1. For the Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-apachesolr-guardium/PubSubApacheSolrPackage/guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip)
-2. For the Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-apache_solr_gcp_connector.zip)
-
 [input plugin's repository](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub) for more information.
 
 #### Permissions and Roles Details
@@ -155,6 +150,10 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 ## Before you begin
 *  Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
+* Download the relevant plugin based on the version of the Guardium.
+1. For the Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-apachesolr-guardium/PubSubApacheSolrPackage/guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip)
+2. For the Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-apache_solr_gcp_connector.zip)
+
  
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
