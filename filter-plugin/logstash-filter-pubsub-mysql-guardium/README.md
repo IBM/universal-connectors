@@ -25,8 +25,8 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ### Prerequisites
 Download the relevant plugin based on the version of the Guardium.
-    1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip).
-    2. For the Guardium 12.x, download [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
+1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip).
+2. For the Guardium 12.x, download [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
 
 
 #### Note
