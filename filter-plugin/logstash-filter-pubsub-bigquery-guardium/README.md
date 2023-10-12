@@ -102,12 +102,14 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 ### Before you begin
 * Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default
-* Download the [logstash-filter-big_query_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-big_query_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+* Download the relevant plugin based on the version of the Guardium.
+1. For the Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip)
+2. For the Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-big_query_guardium_filter.zip)
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the universal connector if it is disabled.
-3. Click Upload File and select the offline [logstash-filter-big_query_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-big_query_guardium_filter.zip) plug-in. After it is uploaded, click ```OK```. This step is not necessary for Guardium Data Protection v12.0 and later.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugins-ps-bigQuery.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip) plug-in. After it is uploaded, click ```OK```. This step is not necessary for Guardium Data Protection v12.0 and later.
 4. Click ```Upload File``` and select the key.json file. After it is uploaded, click ```OK```.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.

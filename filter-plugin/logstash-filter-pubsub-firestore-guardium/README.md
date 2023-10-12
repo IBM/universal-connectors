@@ -118,13 +118,14 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 ### Before you begin
    * Configure the policies you require. See [policies](/docs/#policies) for more information.
    * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-
-   * Download the [logstash-filter-fire_store_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-fire_store_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+   * Download the relevant plugin based on the version of the Guardium.
+1. For the Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-firestore-guardium/PubSubFireStorePackage/guardium_logstash-offline-plugins-ps-firestore.zip)
+2. For the Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-fire_base_guardium_filter.zip)
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First, enable the Universal Guardium connector if it is disabled.
-3. Click Upload File and select the offline [logstash-filter-fire_store_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-fire_store_guardium_filter.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v12.0 and later.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugins-ps-firestore.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-firestore-guardium/PubSubFireStorePackage/guardium_logstash-offline-plugins-ps-firestore.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the plus icon to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from the [firestore_pubsub_run.conf](PubSubFireStorePackage/firestore_pubsub_run.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
