@@ -2,7 +2,7 @@
 ### Meet Redshift
 * Tested versions: 1.0.40182
 * Environment: AWS
-* Supported inputs: CloudWatch (pull)
+* Supported inputs: S3 (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
 
