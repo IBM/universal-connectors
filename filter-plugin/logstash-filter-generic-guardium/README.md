@@ -80,12 +80,12 @@ This configuration file generates an Event and send it thru the installed filter
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the aurora-mysql template.
 
 ## Before you begin
-	• You must have permission for the S-Tap Management role. The admin user includes this role by default.
-	• Download the generic-offline-plugins-7.5.2.zip plug-in.
+• You must have permission for the S-Tap Management role. The admin user includes this role by default.
+• Download the [logstash-filter-generic_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-generic_guardium_filter.zip). plug-in.
 
 ## Procedure
 	1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-	2. Click Upload File and select the offline generic-offline-plugins-7.5.2.zip plug-in. After it is uploaded, click OK.
+	2. Click Upload File and select the logstash-filter-generic_guardium_filter.zip plug-in. After it is uploaded, click OK.
 	3. Click the Plus sign to open the Connector Configuration dialog box.
 	4. Type a name in the Connector name field.
 	5. Update the input section to add the details that can help fetch the audit events from the datasource. Depending upon the auditing feature that is selected, the audit logs can be stored either in audit-files, database tables or on Cloudwatch like cloud service. To fetch the data from these respective sources, one can make use of Filebeat, JDBC input plugin or cloudwatch_logs plugin respectively. Accordingly one must add otehr required parameters as well to connect to that datasource and fetch the events.
