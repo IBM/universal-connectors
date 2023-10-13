@@ -136,8 +136,10 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 
 ### Before you begin
 *  Configure the policies you require. See [policies](/../../#policies) for more information.
-* You must have permission for the S-Tap Management role. The admin user includes this role by default. 
-* Download the [guardium_logstash-offline-plugin-Firebase.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/PubSubFirebasePackage/guardium_logstash-offline-plugin-Firebase.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+* You must have permission for the S-Tap Management role. The admin user includes this role by default.
+* Download the relevant plugin based on the version of the Guardium.
+1. For the Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/PubSubFirebasePackage/guardium_logstash-offline-plugin-Firebase.zip)
+2. For the Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-fire_base_guardium_filter.zip)
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.

@@ -22,13 +22,6 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ###### Note: all of the above comply with Cloud SQL Proxy authentication, except for `gcloud`
 ###### Note: `.NET` wasn't tested, but is assumed to have the same event structure as `JDBC`
 
-
-### Prerequisites
-Download the relevant plugin based on the version of the Guardium.
-    1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip).
-    2. For the Guardium 12.x, download [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
-
-
 #### Note
 This version is compliant with GDP v11.4 and above. Please refer to the
 [input plugin's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
@@ -134,8 +127,8 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 
 ## Installation
 To install this plug-in, you need to download the relevant plugin based on the version of the Guardium.
-1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip).
-2. For the Guardium 12.x, download [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
+1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip)
+2. For the Guardium 12.x, download [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
 
 ### Note
 To install on your local machine that is running Logstash, execute:

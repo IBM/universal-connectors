@@ -82,7 +82,7 @@ you can turn it off. To do this, set the value to `false` for the following two 
 ### Before you begin
 1. Configure the policies you require. See [policies](/docs/#policies) for more information. 
 2. You must have permission for the S-Tap Management role. The admin user includes this role by default.
-3. Download the [logstash-filter-guardium_snowflake_filter-1.0.0.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-7.12.1.zip)
+3. Download the [logstash-filter-guardium_snowflake_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-guardium_snowflake_filter.zip)
 plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 4. The plugin is tested with Snowflake JDBC driver v3.13.30.
 Download the jdbc driver `jar` file from the maven repository [here](https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/).
@@ -92,7 +92,7 @@ Download the jdbc driver `jar` file from the maven repository [here](https://rep
 1. On the collector, go to `Setup` > `Tools and Views` > `Configure Universal Connector`.
 2. Enable the universal connector if it is disabled.
 3. Click **Upload File** and select the downloaded .jar jdbc driver file. After it is uploaded, click **OK**. 
-4. Click **Upload File** and select the offline [logstash-offline-plugins-7.12.1.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-7.12.1.zip) plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v12.0 and later.
+4. Click **Upload File** and select the offline [logstash-filter-guardium_snowflake_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-guardium_snowflake_filter.zip) plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v12.0 and later.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the `Connector name` field.
 7. Update the input section to add the details from the [snowflakeJDBC.conf](snowflakeJDBC.conf) file input section, 
