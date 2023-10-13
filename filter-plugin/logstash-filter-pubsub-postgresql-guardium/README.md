@@ -16,8 +16,6 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## Documentation
 
-### Prerequisites
-Download the [Logstash Offline package](../../filter-plugin/logstash-filter-pubsub-postgresql-guardium/PubSubPostgreSQLPackage/logstash-offline-plugins-filter-pubsub-postgresql-guardium.zip) that includes both the Logstash Google PubSub input plugin and the PostgreSQL PubSub filter plugin, and upload it to the gmachine.
 #### Note
 This version is compliant with GDP v11.4 and above.
 Please refer to the [input plugin's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
@@ -55,7 +53,9 @@ Please refer to the [input plugin's repository](../../input-plugin/logstash-inpu
 - `clientIP` and `serverIP` fields are populated with `0.0.0.0`, as this information is not embedded in the messages pulled from Google Cloud.
 
 ## Installation
-To install this plug-in, you need to download the [offline pack](PubSubPostgreSQLPackage/logstash-offline-plugins-filter-pubsub-postgresql-guardium.zip) and upload the file to the gmachine
+To install this plug-in, you need to download the relevant plugin based on the version of the Guardium.
+1. For the Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-postgresql-guardium/PubSubPostgreSQLPackage/logstash-offline-plugins-filter-pubsub-postgresql-guardium.zip)
+2. For the Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-pubsub-postgresql-guardium.zip)
 
 After you install the plug-in's offline package and upload and save the configuration to your Guardium machine, restart the Universal Connector using the Disable/Enable button or CLI.
 
