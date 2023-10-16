@@ -20,6 +20,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## 1. Configuring the Mysql server
 There are multiple ways to install a MySQL on-premise server. For this example, we will assume that we already have a working MySQL setup.
+
 ## 2. Installing and enabling auditing
 [Install the audit log plug-in](https://dev.mysql.com/doc/mysql-secure-deployment-guide/5.7/en/secure-deployment-audit.html), and verify the following two lines in the my.cnf file:
 ####
