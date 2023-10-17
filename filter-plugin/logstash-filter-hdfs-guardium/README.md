@@ -6,8 +6,9 @@
 * Supported Guardium versions:
   * Guardium Data Protection: 11.4 and above
   * Guardium Insights: 3.2 and above
+  * Guardium Insights: 1.0
 
-This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses an HDFS audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
+This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in Guardium.
 
 
 ## 1. Configuring the HDFS
@@ -32,7 +33,7 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 ### Procedure:
 
-1. Configuring the input section :-
+1. Configuring the input section :
 
    • Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
 
@@ -76,8 +77,11 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
    In addition, events are configured with the add_locale, add_host_metadata, and add_tags processors (to add an "hdfs" tag).
 
 
-3. To learn more about Filebeat processors [here](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html#using-processors).
+3. To learn more about Filebeat processors, click [here](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html#using-processors).
 
+## Limitations:
+
+1. Database name is seen as blank.
 
 ## 4. Configuring the HDFS filters in Guardium Data Protection (GDP)
 
@@ -87,11 +91,11 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 
 ### Before you begin
-• You must have LFD policy enabled on the collector. The detailed steps can be found in step 4 [on this page](https://www.ibm.com/docs/en/guardium/11.4).
+•Configure the policies you require. See [policies](/docs/#policies) for more information.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [guardium-hdfs-uc.zip](./HdfsOverFilebeatPackage/guardium-hdfs-uc.zip).
+• Download the [guardium-hdfs-uc.zip](./HdfsOverFilebeatPackage/guardium-hdfs-uc.zip)(Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 
 ### Procedure
 
