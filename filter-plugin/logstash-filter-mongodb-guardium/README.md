@@ -7,7 +7,7 @@
       * Supported inputs:
         * Syslog (push)
         * Filebeat (push)
-        * MongoDB Atlas (pull)
+        * [MongoDB Atlas](../../input-plugin/logstash-input-mongo-atlas/README.md) (pull)
 		* IBM Cloud KafkaStreams (pull)
     * Guardium Insights: 3.2 and above
       * Supported inputs: 
