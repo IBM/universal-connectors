@@ -1,12 +1,12 @@
 # Snowflake-Guardium Logstash filter plug-in
 
 ## Meet Snowflake
-- Tested versions: 7.x
-- Environment: On-premise, Iaas
-- Supported Guardium versions:
-  - Guardium Data Protection: 11.4 and above 
-    - Supported inputs:
-      - JDBC (pull)
+* Tested versions: 7.x
+* Environment: On-premise, Iaas
+* Supported inputs: JDBC (pull)
+* Supported Guardium versions:
+    * Guardium Data Protection: 11.4 and above
+    * Guardium Insights SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured 
 in IBM Security Guardium. It parses events and messages from the Snowflake database audit log into a 
