@@ -174,21 +174,6 @@ grdapi add_domain_to_universal_connector_allowed_domain
    disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 
-## Contribute
-
-The documentation for the Logstash Java plug-ins is available [here](https://www.elastic.co/guide/en/logstash/current/contributing-java-plugin.html).
-
-You can enhance this filter and open a pull request with suggested changes - or you can use the project to create a different filter plug-in for Guardium that supports other data sources.
-
-To build and create an updated GEM of this filter plug-in which can be installed onto Logstash: 
-1. Build Logstash from the repository source.
-2. Create or edit _gradle.properties_ and add the LOGSTASH_CORE_PATH variable with the path to the logstash-core folder. For example: 
-    
-    ```LOGSTASH_CORE_PATH=/Users/taldan/logstash76/logstash-core```
-
-3. Run ```$ ./gradlew.unix gem --info``` to create the GEM (ensure you have JRuby installed beforehand, as described [here](https://www.ibm.com/docs/en/guardium/11.3?topic=connector-developing-plug-ins)).
-
-
 ## Configuring the Amazon S3 over Cloudwatch_logs in Guardium Insights
 
 To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
