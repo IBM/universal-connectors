@@ -8,8 +8,7 @@
   * Guardium Insights: 3.2 and above
   * Guardium Insights: 1.0
 
-This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in Guardium.
-
+This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses an HDFS audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
 
 ## 1. Configuring the HDFS
 
@@ -79,16 +78,15 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 3. To learn more about Filebeat processors, click [here](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html#using-processors).
 
-## Limitations:
-
-1. Database name is seen as blank.
-
 ## 4. Configuring the HDFS filters in Guardium Data Protection (GDP)
 
 The Guardium universal connector is the Guardium entry point for native audit logs.
 The universal connector identifies and parses received events, and converts them to a standard Guardium format.
 The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements.
 
+## Limitations:
+
+1. Database name is seen as blank.
 
 ### Before you begin
 •Configure the policies you require. See [policies](/docs/#policies) for more information.
