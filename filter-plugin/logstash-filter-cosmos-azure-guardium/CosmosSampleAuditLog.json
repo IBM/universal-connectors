@@ -1,0 +1,228 @@
+{
+    "records": [
+      {
+        "time": "2023-06-26T12:00:41.4942131Z",
+        "resourceId": "/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/COSMOS-RESOURCE-DEV/PROVIDERS/MICROSOFT.DOCUMENTDB/DATABASEACCOUNTS/COSMOSDEV",
+        "subscriptionId": "083de1fb-cd2d-4b7c-895a-2b5af1d091e8",
+        "operationName": "SqlSqldatabasesDelete",
+        "category": "ControlPlaneRequests",
+        "properties": {
+          "activityId": "755a14cf-6534-4813-9e78-d5ba2681bcce",
+          "httpstatusCode": "204",
+          "result": "OK",
+          "httpMethod": "DELETE",
+          "apiKind": "Sql",
+          "apiKindResourceType": "Sqldatabases",
+          "operationType": "Delete",
+          "resourceUri": "sqlDatabases/cosmosDatabase",
+          "resourceDetails": ""
+        }
+      }
+    ],
+    "EventProcessedUtcTime": "2023-06-26T12:11:13.8325687Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2023-06-26T12:07:36.1340000Z"
+  }
+  {
+    "records": [
+      {
+        "time": "2023-06-26T12:01:42.6855623Z",
+        "resourceId": "/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/COSMOS-RESOURCE-DEV/PROVIDERS/MICROSOFT.DOCUMENTDB/DATABASEACCOUNTS/COSMOSDEV",
+        "subscriptionId": "083de1fb-cd2d-4b7c-895a-2b5af1d091e8",
+        "operationName": "SqlSqldatabasesCreate",
+        "category": "ControlPlaneRequests",
+        "properties": {
+          "activityId": "0e4e927f-9d15-477e-a634-ca56ae425388",
+          "httpstatusCode": "201",
+          "result": "OK",
+          "httpMethod": "POST",
+          "apiKind": "Sql",
+          "apiKindResourceType": "Sqldatabases",
+          "operationType": "Create",
+          "resourceUri": "sqlDatabases/cosmosDatabse",
+          "resourceDetails": "{id:cosmosDatabse}"
+        }
+      }
+    ],
+    "EventProcessedUtcTime": "2023-06-26T12:11:13.8325687Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2023-06-26T12:06:16.2110000Z"
+  }
+{
+    "records": [
+      {
+        "time": "2023-06-26T12:03:57.0436924Z",
+        "resourceId": "/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/COSMOS-RESOURCE-DEV/PROVIDERS/MICROSOFT.DOCUMENTDB/DATABASEACCOUNTS/COSMOSDEV",
+        "category": "DataPlaneRequests",
+        "operationName": "Create",
+        "properties": {
+          "activityId": "d2f88e2c-6559-4244-9d82-beefb699fef8",
+          "requestResourceType": "DocumentFeed",
+          "requestResourceId": "/dbs/cosmosDatabse/colls/cosmosContainer/docs",
+          "collectionRid": "",
+          "databaseRid": "",
+          "statusCode": "201",
+          "duration": "4.347800",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+          "clientIpAddress": "117.216.254.41",
+          "requestCharge": "7.810000",
+          "requestLength": "281",
+          "responseLength": "493",
+          "resourceTokenPermissionId": "",
+          "resourceTokenPermissionMode": "",
+          "resourceTokenUserRid": "",
+          "region": "Central India",
+          "partitionId": "",
+          "aadAppliedRoleAssignmentId": "",
+          "aadPrincipalId": "",
+          "authTokenType": "PrimaryMasterKey",
+          "keyType": "PrimaryMasterKey",
+          "connectionMode": "Gateway",
+          "subscriptionId": "083de1fb-cd2d-4b7c-895a-2b5af1d091e8",
+          "databaseName": "cosmosDatabse",
+          "collectionName": "cosmosContainer"
+        }
+      }
+    ],
+    "EventProcessedUtcTime": "2023-06-26T12:11:13.8325687Z",
+    "PartitionId": 0,
+    "EventEnqueuedUtcTime": "2023-06-26T12:05:08.2150000Z"
+  }
+  {
+    "records": [
+      {
+        "time": "2023-06-26T12:04:47.4481956Z",
+        "resourceId": "/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/COSMOS-RESOURCE-DEV/PROVIDERS/MICROSOFT.DOCUMENTDB/DATABASEACCOUNTS/COSMOSDEV",
+        "category": "DataPlaneRequests",
+        "operationName": "Update",
+        "properties": {
+          "activityId": "0898fc84-719f-476e-b32e-79611db1a13d",
+          "requestResourceType": "Document",
+          "requestResourceId": "/dbs/cosmosDatabse/colls/cosmosContainer/docs/baaa4d2d-5ebe-45fb-9a5c-d06876f408e0",
+          "collectionRid": "",
+          "databaseRid": "",
+          "statusCode": "200",
+          "duration": "4.726000",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+          "clientIpAddress": "117.216.254.41",
+          "requestCharge": "12.570000",
+          "requestLength": "458",
+          "responseLength": "465",
+          "resourceTokenPermissionId": "",
+          "resourceTokenPermissionMode": "",
+          "resourceTokenUserRid": "",
+          "region": "Central India",
+          "partitionId": "",
+          "aadAppliedRoleAssignmentId": "",
+          "aadPrincipalId": "",
+          "authTokenType": "PrimaryMasterKey",
+          "keyType": "PrimaryMasterKey",
+          "connectionMode": "Gateway",
+          "subscriptionId": "083de1fb-cd2d-4b7c-895a-2b5af1d091e8",
+          "databaseName": "cosmosDatabse",
+          "collectionName": "cosmosContainer"
+        }
+      }
+    ],
+    "EventProcessedUtcTime": "2023-06-26T12:11:13.8325687Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2023-06-26T12:06:10.8030000Z"
+  }
+  {
+    "records": [
+      {
+        "time": "2023-06-26T12:04:56.3392171Z",
+        "resourceId": "/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/COSMOS-RESOURCE-DEV/PROVIDERS/MICROSOFT.DOCUMENTDB/DATABASEACCOUNTS/COSMOSDEV",
+        "category": "DataPlaneRequests",
+        "operationName": "Delete",
+        "properties": {
+          "activityId": "96534681-13f4-4b38-8644-af0fbb57d395",
+          "requestResourceType": "Document",
+          "requestResourceId": "/dbs/cosmosDatabse/colls/cosmosContainer/docs/baaa4d2d-5ebe-45fb-9a5c-d06876f408e0",
+          "collectionRid": "",
+          "databaseRid": "",
+          "statusCode": "204",
+          "duration": "5.122700",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+          "clientIpAddress": "117.216.254.41",
+          "requestCharge": "7.810000",
+          "requestLength": "0",
+          "responseLength": "0",
+          "resourceTokenPermissionId": "",
+          "resourceTokenPermissionMode": "",
+          "resourceTokenUserRid": "",
+          "region": "Central India",
+          "partitionId": "",
+          "aadAppliedRoleAssignmentId": "",
+          "aadPrincipalId": "",
+          "authTokenType": "PrimaryMasterKey",
+          "keyType": "PrimaryMasterKey",
+          "connectionMode": "Gateway",
+          "subscriptionId": "083de1fb-cd2d-4b7c-895a-2b5af1d091e8",
+          "databaseName": "cosmosDatabse",
+          "collectionName": "cosmosContainer"
+        }
+      }
+    ],
+    "EventProcessedUtcTime": "2023-06-26T12:11:13.8325687Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2023-06-26T12:06:10.8030000Z"
+  }
+  {
+    "records": [
+      {
+        "time": "2023-07-10T05:44:14.4239944Z",
+        "resourceId": "/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/COSMOS-RESOURCE-DEV/PROVIDERS/MICROSOFT.DOCUMENTDB/DATABASEACCOUNTS/COSMOSDEV",
+        "category": "QueryRuntimeStatistics",
+        "properties": {
+          "activityId": "533510e0-184e-434c-aaa0-cfd88cf737eb",
+          "databasename": "cosmosDatabse",
+          "collectionname": "cosmosContainer",
+          "partitionkeyrangeid": "0",
+          "useragent": "Microsoft.Azure.Documents.Common/2.14.0RoutingGateway",
+          "subscriptionid": "083de1fb-cd2d-4b7c-895a-2b5af1d091e8",
+          "resourcegroupname": "cosmos-resource-dev",
+          "partialipaddress": "10.0.1.4",
+          "regionname": "Central India",
+          "authtype": "1",
+          "numberofrowsreturned": "0",
+          "signature": "4036375829063283830",
+          "shapesignature": "-8612658657970479756",
+          "queryexecutionstatus": "Finished",
+          "querytext": "{\"query\":\"SELECT *\\r\\n    FROM Families f\\r\\n    WHERE f.id = 'AndersenFamily'\",\"parameters\":[]}"
+        }
+      }
+    ],
+    "EventProcessedUtcTime": "2023-07-10T05:46:32.2471125Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2023-07-10T05:46:15.1980000Z"
+  }
+  {
+    "records": [
+      {
+        "time": "2023-07-10T05:43:28.2443618Z",
+        "resourceId": "/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/COSMOS-RESOURCE-DEV/PROVIDERS/MICROSOFT.DOCUMENTDB/DATABASEACCOUNTS/COSMOSDEV",
+        "category": "QueryRuntimeStatistics",
+        "properties": {
+          "activityId": "9ac78e65-6ef4-42b8-9d4a-ff8e18809c11",
+          "databasename": "cosmosDatabse",
+          "collectionname": "cosmosContainer",
+          "partitionkeyrangeid": "0",
+          "useragent": "Microsoft.Azure.Documents.Common/2.14.0RoutingGateway",
+          "subscriptionid": "083de1fb-cd2d-4b7c-895a-2b5af1d091e8",
+          "resourcegroupname": "cosmos-resource-dev",
+          "partialipaddress": "10.0.1.4",
+          "regionname": "Central India",
+          "authtype": "1",
+          "numberofrowsreturned": "0",
+          "signature": "4258675957007683450",
+          "shapesignature": "-9157199261320249330",
+          "queryexecutionstatus": "Finished",
+          "querytext": "{\"query\":\"SELECT * FROM c\",\"parameters\":[]}"
+        }
+      }
+    ],
+    "EventProcessedUtcTime": "2023-07-10T05:46:32.2471125Z",
+    "PartitionId": 1,
+    "EventEnqueuedUtcTime": "2023-07-10T05:45:10.0180000Z"
+  }
