@@ -5,173 +5,173 @@ data contains details about the query "construct". The construct details the mai
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for the Guardium universal connector.
 
 ## 1. Configuring the Azure-Cosmos service
-### There are following ways to get Azure Cosmos audit data:
+### You can get the Azure Cosmos audit data from the following two locations:
 1. Azure Event Hub
 2. Log Analytics Workspace
 
-In this plugin we have used Azure Event Hub.
+In this example, we used Azure Event Hub.
 
 ### Procedure:
 1. Login to https://portal.azure.com.
-2. From the Azure portal menu or the Home page, user can create Azure Cosmos DB Account by following below steps-
-      - In Home page, select Create a resource.
-	  - On the New page, search for and select Azure Cosmos DB.
-	  - On the Select API option page, click on Create option within the NoSQL.
-3. On the Create Azure Cosmos DB Account page, provide the below details.
+2. From the Azure portal menu or the home page, create an Azure Cosmos DB account by following these steps-
+      - If you are on the home page, select **Create a resource**.
+	  - On the new page, search for and select **Azure Cosmos DB**.
+	  - On the Select API option page, click **Create option** in NoSQL.
+3. If you are on the **Create Azure Cosmos DB Account** page, provide the following details.
       - Subscription: Select a valid subscription to create an Azure Cosmos DB account.​
-      - Resource group: Choose the existing resource group or create a new one by clicking the “Create New” option.​ 
-      - Account name: User need to provide a name for their Azure Cosmos DB account.​
+      - Resource group: Choose the existing resource group or create a new one by clicking **Create New**.​ 
+      - Account name: Provide a name for your Azure Cosmos DB account.​
       - Region: Select the region or location.​
-      - Capacity Mode: Select Provisioned Throughput to create an account in provisioned throughput mode. Select Serverless to create  an account in serverless mode.
-	  -	Apply Azure Cosmos DB free tier discount: Apply or Do not apply.	
-4. Keep the other tab values as it is, Finally click on the Review+Create button.
-5. Review the settings you provide, and then select Create. It takes a few minutes to create the account. Wait for the portal page to display Your deployment is complete before moving on.
-6. Select Go to resource to go to the Azure Cosmos DB account page.
+      - Capacity Mode: Select **Provisioned Throughput** to create an account in provisioned throughput mode. Select **Serverless** to create  an account in serverless mode.
+	  -	Apply Azure Cosmos DB free tier discount: Click **Apply** or **Do not apply**.	
+4. Keep the other tab values as is. Finally, click on **Review+Create**.
+5. Review the settings you provided, and then select **Create**. It takes a few minutes to create the account. Wait for the portal page to display "Your deployment is complete" before moving on.
+6. Select **Go to resource** to go to the Azure Cosmos DB account page.
 
 ## 2. Enabling Auditing
 ### Enable full-text query for logging query text
-1. By enabling full-text query, user will be able to view the deobfuscated query for all requests within your Azure Cosmos DB account.
+1. By enabling full-text query, you will be able to view the deobfuscated query for all requests within your Azure Cosmos DB account.
 	  - To enable this feature, navigate to the Features page in the Azure Cosmos DB Account.
-	  - Click on Diagnostics full-text query, then it will show full-text query panel on right side.
-	  - Select Enable, this setting will then be applied withing the next few minutes.
+	  - Click on **Diagnostics full-text query**. A full-text query panel appears.
+	  - Select **Enable**. It can take a few minutes before your selection is applied. 
 	
-Note: By default, the query text and its parameters are obfuscated to avoid logging personal data.
+***Note: By default, the query text and its parameters are obfuscated to avoid logging personal data.***
 
-### Monitor Azure Cosmos DB data by using diagnostic settings in Azure
+### Monitoring Azure Cosmos DB data by using diagnostic settings in Azure
 1. Login to https://portal.azure.com.
 2. Navigate to your Azure Cosmos DB account. Open the Diagnostic settings pane under the Monitoring section.
 3. After the page opens, you will be prompted to enable or disable the full-text query
-according to your preference. You can choose to do so, or simply click on the 'Not
-now' option, and then select the 'Add diagnostic setting' option.
-4. In the Diagnostic settings pane, fill the form with the preferred categories. Provided here's a list of log categories.
-	  - DataPlaneRequests: Logs back-end requests as data plane operations, which are requests executed to create, update, delete or retrieve data within the account.
-	  - QueryRuntimeStatistics: This table details query operations executed against an API for NoSQL account. By default, the query text and its parameters are obfuscated to avoid logging personal data with full text query logging available by request.
-	  - ControlPlaneRequests: Logs details on control plane operations, which include, creating an account, adding or removing a region, updating account replication settings etc.
-5. Once you select your Categories details, then send your Logs to your preferred destination.
+according to your preference. You can choose to do so, or click **'Not
+now** and then select **Add diagnostic setting**.
+4. In the Diagnostic settings pane, fill in the form with your preferred categories. Here is a list of log categories.
+	  - DataPlaneRequests: Logs back-end requests as data plane operations, which are requests executed to create, update, delete, or retrieve data within the account.
+	  - QueryRuntimeStatistics: This table details query operations executed against an API for a NoSQL account. By default, the query text and its parameters are obfuscated to avoid logging personal data with full text query logging available by request.
+	  - ControlPlaneRequests: Logs details on control plane operations, which include creating an account, adding or removing a region, updating account replication settings, etc.
+5. Select your categories details, and then send your logs to your preferred destination.
 
 ## 3. Viewing the Audit logs
 ### Azure Event Hub Connection:
-    1. Search event hub in search bar.
-    2. Select create event hubs namespace button.
+    1. Search "event hub" in the search bar.
+    2. Select **create event hubs namespace**.
 
-    3. To create namespace:
-           - Select the Subscription in which you want to create the namespace.
-	       - Select the Resource group you created in the previous step.
+    3. To create a namespace:
+           - Select the subscription in which you want to create the namespace.
+	       - Select the resource group you created in the previous step.
 	       - Enter a unique name for the namespace.
 	       - Select a location for the namespace.
-	       - Choose appropriate pricing tier.(here selected basic)
-	       - Leave the throughput units (or processing units for standard and premium tier) settings as it is.
-	       - Select Review + Create at the bottom of the page.Review the settings and select Create.
-	       - After successful creation recently created namespace will appear in resource group.
+	       - Choose the appropriate pricing tier. (In this example, we selected basic).
+	       - Leave the throughput units (or processing units for standard and premium tier) settings as is.
+	       - Select **Review + Create**. Review the settings and select **Create**.
+	       - Your recently created namespace appears in **resource group**.
 	
-	4. To create event hub :
+	4. To create an event hub:
 	       - Go to the Event Hubs Namespace page.
-           - Click on '+ Event Hub' to add event hub.
-           - Enter unique name for event hub.
-           - Choose at least as many partitions as you expect that are required during the peak load  of  your application for that particular event hub.
-    	 Ex: If user wants to generate traffic from 2 DB instances then partition count should be at least 2 OR more than that.
-           - Click on Review+create.
-           - Review the settings and click on Create button.  
+           - Click **+ Event Hub**.
+           - Enter a unique name for the event hub.
+           - Choose at least the maximum number of partitions that you expect to require during peak usage for this event hub.
+    	 For example, if you want to generate traffic from 2 DB instances, then choose at least 2 partitions if not more.
+           - Click **Review+create**.
+           - Review the settings and click **Create**.  
 	  
-    5. Connection string for a event hub:
+    5. Connection string for an event hub:
 	       - In the list of event hubs, select your event hub.
-	       - On the Event Hubs instance page, from Settings select Shared access policies on the left menu.
-	       - In shared access policies click on Add button from top.Give the name to policy and provide permission 'manage' and create the policy.  
+	       - On the Event Hubs instance page, go to **Settings** > **Shared access policies** > **Add**.
+	       - Name the policy, click **manage** to provide permissions, and create the policy.  
 	       - Select Connection string–primary key string from policy (it would be required in input plugin).
            
 	6. Azure Storage Accounts Creation:
 	         - Login to https://portal.azure.com.
 		 - Search Storage accounts in search bar.
-		 - Click on Create button.
+		 - Click **Create**.
 		 - Basic Tab:
-		        - Select the Subscription in which you want to create the Storage account.
-	                - Select or create new Resource group.
-	                - Enter a unique name for Storage account.
-	                - Select same region for the storage account which you selected for server.
-	                - Choose any Performance type.
-	                - Select Geo-redundant(GRS) Redundancy configuration.
-	                - Select Make read access to data option.
-	                - Click on Next:Advance button.	
+		        - Select the subscription in which you want to create the storage account.
+	                - Select an existing resource group or create a new one.
+	                - Enter a unique name for the storage account.
+	                - Select the same region for the storage account that you selected for the server.
+	                - Choose any performance type.
+	                - Select **Geo-redundant(GRS) Redundancy configuration**.
+	                - Select **Make read access to data**.
+	                - Click **Next:Advance**.	
 		 - Advanced tab:
-		        - Require secure transfer option should be selected.
-	                - Allow enabling public access option should be selected.
-	                - Enable storage account key access option should be selected.
-	                - Select latest TLS version.
-	                - Permitted scope should be the default value(From any storage account).
-	                - Other parameters Hierarchical Namespace, Access protocols, Blob storage and Azure Files should be default value provided by azure.
-		        - Click on Next:Networking button.
+		        - **Require secure transfer** should already be selected.
+	                - **Allow enabling public access** should already be selected.
+	                - **Enable storage account key access** should already be selected.
+	                - Select the latest TLS version.
+	                - Permitted scope should display the default value (from any storage account).
+	                - The remaining parameters (Hierarchical Namespace, Access protocols, Blob storage, and Azure Files) should display the default values provided by Azure.
+		        - Click **Next:Networking**.
 		 - Networking tab:
-	                - Enable public access from all networks for Network access.
-	                - Select Microsoft network routing option for Routing preference.
-	                - Click on Next:Data protection button.	
+	                - Enable public access from all networks for **Network access**.
+	                - Select **Microsoft network routing** for **Routing preference**.
+	                - Click **Next:Data protection**.	
 		 - Data protection tab:
-		            - Using by default values provided by azure.
-			    - Click on Next:Encryption button.
+		            - Keep the default values provided by Azure.
+			    - Click **Next:Encryption**.
 		 - Encryption tab:
-		            - Encryption type should be Microsoft-managed key(MMK).
-			    - Enable support for customer-managed keys option should be by default value(blobs and files).
-			    - By default, infrastructure encryption should not be enabled.
-			    - Click on Next:Tags button.
-		 - On the Tags tab no need to select anything and click Next:Review button.
-		 - Click on Create button after review all the parameters.
+		            - **Encryption type** should already be set to **Microsoft-managed key(MMK)**.
+			    - **Enable support for customer-managed keys** should be set to the default value (**blobs and files**).
+			    - By default, **Infrastructure encryption** should not be enabled.
+			    - Click **Next:Tags**.
+		 - For the Tags tab, make no changes and click **Next:Review**.
+		 - Click **Create** after you review all the parameters.
 	7. Stream logs to an event hub:
             - Login to https://portal.azure.com.
-            - Navigate to your Azure Cosmos DB account. From Monitoring, select Diagnostics settings option and do either of the following:
-		       - To change existing settings, select Edit setting.
-		       - To add new settings, select Add diagnostics setting.
-            - For adding new settings do following:
-		       - Give name to setting.	
-		       - Select DataPlaneRequests, QueryRuntimeStatistics, ControlPlaneRequests from categories.
-		       - In Destination details choose Archive to a storage account.
-	               - In Archive to a storage account, select Storage account as created above.
-		       - In Destination details choose Stream to an event hub.
-		       - In stream to event hub, select namespace name and event hub name as created above. Keep event hub policy name as it is.		
-		       - Select Save to save the setting.	 						   
+            - Navigate to your Azure Cosmos DB account. From **Monitoring**, select **Diagnostics settings** and do either of the following:
+		       - To change existing settings, select **Edit setting**.
+		       - To add new settings, select **Add diagnostics setting**.
+            - To add new settings, do the following:
+		       - Name the setting.	
+		       - In **Categories**, select **DataPlaneRequests**, **QueryRuntimeStatistics**, and **ControlPlaneRequests**.
+		       - In **Destination details**, choose **Archive to a storage account**.
+	               - In **Archive to a storage account**, select the storage account you created previously.
+		       - In **Destination details**, choose **Stream to an event hub**.
+		       - In **Stream to event hub**, select the namespace name and event hub name that you created previously. Keep the event hub policy name as is.		
+		       - Click **Save**.	 						   
     8. After about 15 minutes, verify that events are displayed in your event hub.
-	9. Configurations needed to monitor traffic from single Event Hub, when UC is configured on single Collectors 
-	        - For a single machine, in the input section of the configuration file, in the consumer group field can be given the name as $Default.
-	10. Configurations needed to monitor traffic from single Event Hub, when UCs are configred on two separate Collectors
-		Procedure :-
-		We need to do the following steps:
-			- We can create namespace in azure event hub as per given above but select standard pricing tier instead of basic in pricing tier configuration.
-			- After creation of namespace we can create eventhub and connection string as per mention above.
-			- After successful creation of eventhub we can add a consumer group to event hub as follows:
-				- In the list of event hubs, select your event hub.
-				- On the Event Hubs instance page, from entities select consumer group.
-				- In consumer group click on add button from top.
-				- Give the name to consumer group and create the consumer group.
-			- Stream logs to event hub as mentioned as above.
-			- For gmachine , We have to use these consumer group name in input section of configuration file as follows:
-				- On one machine in input section of configuration file in consumer group field give name as $Default.
-				- On other machine in input section of configuration file in consumer group field give name of other consumer group.
-				- Keep all other configurations as it is.
+	9. You need the following configurations to monitor traffic from a single event hub when the universal connector is configured on single collectors: 
+	        - For a single machine- use the name $Default in the input section of the configuration file in the consumer group field.
+	10. You need the following configurations to monitor traffic from a single event hub when universal connectors are configured on two separate collectors:
+		Procedure:
+		
+			- Create a namespace in Azure event hub with the details provided previously, but select the standard pricing tier instead of basic in the pricing tier configuration.
+			- After you create a namespace, create an event hub and connection strings as described previously.
+			- Then, add a consumer group to the event hub as follows:
+				- Select your event hub from the list of event hubs.
+				- on the Event Hubs instance page, select **consumer group** from **entities**.
+				- In **consumer group**, click **Add**.
+				- Name and create the consumer group.
+			- Stream logs to the event hub as described previously.
+			- For the gmachine , use these consumer group names in the input section of the configuration file as follows:
+				- For one machine, use the name $Default.
+				- For the other machine, use the name of the other consumer group.
+				- Keep all other configurations as is.
 
-## 4. Connect to Azure Cosmos Database
+## 4. Connecting to the Azure Cosmos Database
 ### Insert/Update data through Data Explorer
 1. Login to https://portal.azure.com.
-2. Navigate to your Azure Cosmos DB account. Open the Data Explorer pane and then select New Container to create a container.
-3. After the container is created, use the Data Structures browser to find and open it. For example, a container with the name Families has been created in the image below.
-4. In  Families container, you will see the Items option right below the name of the container. Open this option and you'll see a button, in the menu bar in center of the screen, to create a 'New Item'. You will use this feature to create the JSON items.
+2. Navigate to your Azure Cosmos DB account. Open the Data Explorer pane, and then select **New Container** to create a container.
+3. After the container is created, use the Data Structures browser to find and open it. 
+4. In  the container you created, click **Items** > **New Item**. Use this feature to create the JSON items.
 
 ### Query Execution through Data Explorer
-1. Select New SQL Query.
-2. Write the SQL query and select Execute Query.
+1. Select **New SQL Query**.
+2. Write the SQL query and click **Execute Query**.
 
 ## 5. Limitations
 1. The following important fields couldn't be mapped with Azure-Cosmos audit logs:
-   - Source program : field is left blank, as this information is not embedded in the messages pulled from Azure.
-   - ServerIP : field is populated with 0.0.0.0, as this information is not embedded in the messages pulled from Azure.
-   - Client HostName : Not available with logs
-   - dbUser : field is populated with NA, as it is not available in ControlPlaneRequest, QueryRuntimeStatistics logs.
-   - Exception > sqlString : field is populated with NA, as it is not available in Error logs.
-2. Logs will not capture for Failed login attempts.
-3. For DataPlaneRequest dbUser is NA when AADPrincipalId is Empty.
-4. Data Explorer and CLI doesn't support Creation, Updation and Deletion for User and Permission Operations; only the REST API does.
-5. REST API doesn't support Creation, Updation and Deletion for Role Definition and Role Assignment Operations; But the Data Explorer and CLI does.
-6. Data Explorer, CLI and REST API doesn't support Trigger execution; It can only be called via programs.
+   - Source program : this field is left blank, as this information is not embedded in the messages pulled from Azure.
+   - ServerIP : this field is populated with 0.0.0.0, as this information is not embedded in the messages pulled from Azure.
+   - Client HostName : Not available with logs.
+   - dbUser : this field is populated with NA, as it is not available in ControlPlaneRequest, QueryRuntimeStatistics logs.
+   - Exception > sqlString : this field is populated with NA, as it is not available in Error logs.
+2. Logs are not captured for failed login attempts.
+3. For DataPlaneRequest, dbUser is NA when AADPrincipalId is empty.
+4. Data Explorer and CLI don't support creation, updating, and deletion for user and permission operations; only the REST API does.
+5. REST API doesn't support creation, updating, and deletion for role definition and role assignment operations; But the Data Explorer and CLI does.
+6. Data Explorer, CLI and REST API don't support trigger execution; It can only be called via programs.
 7. In case of REST API, ControlPlaneRequest logs will not generate.
-8. To get an Azure Active Directory(AAD) token, we need to give few permissions that disable read-write keys and only allows read-only keys.
-9. Through AAD token, we cannot use any Azure Cosmos DB data plane SDK to authenticate management operations(create/delete database, container, triggers, Stored procedures, user defined functions) with an Azure AD identity.Instead, you must use Azure role-based access control through one of the following options:
+8. To get an Azure Active Directory(AAD) token, you need to give a few permissions that disable read-write keys and only allow read-only keys.
+9. With the AAD token, you cannot use any Azure Cosmos DB data plane SDK to authenticate management operations (create/delete database, container, triggers, stored procedures, user-defined functions) with an Azure AD identity. Instead, use Azure role-based access control through one of the following options:
    - Azure Resource Manager templates (ARM templates)
    - Azure PowerShell scripts
    - Azure CLI scripts
@@ -183,19 +183,19 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ### Before you begin
 * Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugin-azure-cosmos.zip](AzureCosmosOverAzureEventHub/guardium_logstash-offline-plugin-azure-cosmos.zip) plug-in.
-* Download the plugin filter configuration file [azure_cosmos.conf](azure_cosmos.conf).
+* Download the [guardium_logstash-offline-plugin-azure-cosmos.zip](AzureCosmosOverAzureEventHub/guardium_logstash-offline-plugin-azure-cosmos.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+* Download the plug-in filter configuration file [azure_cosmos.conf](azure_cosmos.conf).
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. Enable the connector if it is already disabled, before proceeding uploading of the UC.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugin-azure-cosmos.zip](AzureCosmosOverAzureEventHub/guardium_logstash-offline-plugin-azure-cosmos.zip) plug-in. After it is uploaded, click OK.
+2. Enable the connector if it is disabled.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugin-azure-cosmos.zip](AzureCosmosOverAzureEventHub/guardium_logstash-offline-plugin-azure-cosmos.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [azure_cosmos.conf](azure_cosmos.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-    - Insert the Connection string in storage_connection from the Access Keys present in the Storage account from azure portal.
+    - Insert the Connection string in storage_connection from the Access Keys present in the Storage account from the Azure portal.
 7. Update the filter section to add the details from [azure_cosmos.conf](azure_cosmos.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-8. The "type" field should match in the input and filter configuration section. This field should be unique for every individual connector added.
+8. The "type" fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
 9. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 
