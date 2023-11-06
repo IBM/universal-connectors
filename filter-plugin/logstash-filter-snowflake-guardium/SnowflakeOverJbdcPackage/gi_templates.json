@@ -40,7 +40,7 @@
       },
       "tracking_column": {
         "type": "text",
-        "default": "end_time",
+        "default": "query_timestamp_epoch",
         "hidden": true
       },
       "plugin_timezone": {
@@ -65,7 +65,7 @@
       },
       "tracking_column_type": {
         "type": "text",
-        "default": "timestamp",
+        "default": "numeric",
         "hidden": true
       },
       "server_host_name": {
