@@ -93,7 +93,7 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [guardium-hdfs-uc.zip](./HdfsOverFilebeatPackage/guardium-hdfs-uc.zip)(Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+• Download the [guardium-hdfs-uc.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-hdfs_guardium_filter.zip)(Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 
 ### Procedure
 
@@ -101,12 +101,12 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 2. First enable the Universal Guardium connector, if it is disabled already.
 
-4. Click **Upload File** and select the offline [guardium-hdfs-uc.zip](./HdfsOverFilebeatPackage/guardium-hdfs-uc.zip) file. After it is uploaded, click OK.
+4. Click **Upload File** and select the offline [guardium-hdfs-uc.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-hdfs_guardium_filter.zip) file. After it is uploaded, click OK.
 
 5. Click the Plus sign to open the Connector Configuration dialog box.
 
 6. Type a name in the Connector name field.
-
+c
 7. Update the input section to add the details from the [hdfsFilebeat.conf](./hdfsFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide required details for DB server name, username and password for making JDBC connectivity.
 
 8. Update the filter section to add the details from the [hdfsFilebeat.conf](./hdfsFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the same DB server name as in above step against the Server_Hostname attribute in the filter section.
