@@ -1,5 +1,5 @@
 //
-// Copyright 2023 IBM Inc. All rights reserved
+// Copyright 2020-2021 IBM Inc. All rights reserved
 // SPDX-License-Identifier: Apache2.0
 //
 package com.ibm.guardium.dynamodb;
@@ -45,6 +45,10 @@ public interface Constants {
 	public static final String MASK_STRING = "?";
 	public static final String SERVER_HOSTNAME = "dynamodb.amazonaws.com";
 	public static final String SQL_ERROR = "SQL_ERROR";
+
+	public static final String LOGIN_ERROR = "LOGIN_FAILED";
+
+	public static final String ERROR_CODE_ACCESS_DENIED = "AccessDenied";
 
 	
 }
