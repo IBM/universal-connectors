@@ -106,7 +106,7 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 5. Click the Plus sign to open the Connector Configuration dialog box.
 
 6. Type a name in the Connector name field.
-c
+
 7. Update the input section to add the details from the [hdfsFilebeat.conf](./hdfsFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide required details for DB server name, username and password for making JDBC connectivity.
 
 8. Update the filter section to add the details from the [hdfsFilebeat.conf](./hdfsFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the same DB server name as in above step against the Server_Hostname attribute in the filter section.
