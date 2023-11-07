@@ -63,6 +63,11 @@
         "default": "NA",
         "hidden": true
       },
+      "event_type": {
+        "type": "text",
+        "default": "NA",
+        "hidden": true
+      },
       "server_name": {
         "type": "text",
         "default": "NA",
