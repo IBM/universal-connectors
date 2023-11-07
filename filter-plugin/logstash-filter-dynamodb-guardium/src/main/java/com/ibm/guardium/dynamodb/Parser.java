@@ -1,5 +1,5 @@
 //
-// Copyright 2023 IBM Inc. All rights reserved
+// Copyright 2021-2023 IBM Inc. All rights reserved
 // SPDX-License-Identifier: Apache2.0
 //
 package com.ibm.guardium.dynamodb;
@@ -21,6 +21,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonParser;
 import com.ibm.guardium.universalconnector.commons.Util;
 import com.ibm.guardium.universalconnector.commons.structures.*;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
@@ -32,6 +33,8 @@ import org.apache.logging.log4j.Logger;
 public class Parser {
 
 	private static Logger log = LogManager.getLogger(Parser.class);
+	
+	private static JsonParser jsonParser = new JsonParser();
 
 	public static Record parseRecord(final JsonObject data) throws ParseException {
 		Record record = new Record();
@@ -70,18 +73,44 @@ public class Parser {
 	private static String parseDbName(JsonObject data) {
 
 		String dbName = Constants.UNKNOWN_STRING;
-		if(data.has(Constants.RESOURCES) && data.get(Constants.RESOURCES) != null) {
-			JsonArray resources = (JsonArray) data.get(Constants.RESOURCES);
-			JsonObject obj = (JsonObject) resources.get(0);
-			String arn = obj.get("ARN").getAsString();
-			String arns[] = arn.split(":");
-			String acc_no = arns[4];
-			String tableNames = arns[5];
-			String tableString[] = tableNames.split("/");
-			String tableName = tableString[1];
-			dbName = acc_no + ":" + tableName;
+		String account_id = Constants.UNKNOWN_STRING;
+		
+		String tableName = getTableName(data);
+		
+		if(data.has(Constants.ACCOUNT_ID)) {
+			account_id = data.get(Constants.ACCOUNT_ID).getAsString();
 		}
+		dbName = account_id + ":" + tableName;
+		
 		return dbName;
+	}
+	
+	protected static String getTableName (JsonObject data) {
+		String tableName = Constants.UNKNOWN_STRING;
+		if(data.has(Constants.REQUEST_PARAMETERS) && data.get(Constants.REQUEST_PARAMETERS) != null && !(data.get(Constants.REQUEST_PARAMETERS).isJsonNull())) {
+			
+			JsonObject requestParam = new JsonObject();
+			JsonObject requestParameters = new JsonObject();
+			try {
+				requestParam = data.getAsJsonObject(Constants.REQUEST_PARAMETERS);
+			}
+			catch (ClassCastException ccex) {
+				//This part of code is added to handle the Events coming from CloudTrail
+				String jsonPrimitiveString = data.get(Constants.REQUEST_PARAMETERS).getAsString();
+				jsonPrimitiveString = jsonPrimitiveString.trim();
+				jsonPrimitiveString = jsonPrimitiveString.replaceAll("([A-Za-z0-9]+)=([^,\\}]+)", "\"$1\":\"$2\"");
+				JsonObject innerJsonObject = jsonParser.parse(jsonPrimitiveString).getAsJsonObject();
+				requestParameters.add(Constants.REQUEST_PARAMETERS, innerJsonObject);
+			}
+			if(requestParameters.get(Constants.REQUEST_PARAMETERS) != null && !(requestParameters.get(Constants.REQUEST_PARAMETERS).isJsonNull())) {
+				requestParam = requestParameters.getAsJsonObject(Constants.REQUEST_PARAMETERS);
+        	}
+			
+			if(requestParam.has(Constants.TABLE_NAME)){
+				tableName = requestParam.get(Constants.TABLE_NAME).getAsString();
+			}
+	    }
+		return tableName;
 	}
 
 	//----------- TIME
@@ -142,11 +171,27 @@ public class Parser {
 		String clientHostName = Constants.UNKNOWN_STRING;
 
 		if(data.has(Constants.USER_IDENTITY) && data.get(Constants.USER_IDENTITY) != null && !(data.get(Constants.USER_IDENTITY).isJsonNull())) {
-			JsonObject userIdentity = data.getAsJsonObject(Constants.USER_IDENTITY);
+			
+			JsonObject userIdentity = new JsonObject();
+			JsonObject userIdentityParam = new JsonObject();
+			try {
+				userIdentity = data.getAsJsonObject(Constants.USER_IDENTITY);
+			}
+			catch (ClassCastException ccex) {
+				// This part of code is added to handle CloudTrail Events
+				String jsonPrimitiveString = data.get(Constants.USER_IDENTITY).getAsString();
+				jsonPrimitiveString = jsonPrimitiveString.trim();
+				jsonPrimitiveString = jsonPrimitiveString.replaceAll("([A-Za-z0-9]+)=([^,\\}]+)", "\"$1\":\"$2\"");
+				JsonObject innerJsonObject = jsonParser.parse(jsonPrimitiveString).getAsJsonObject();
+				userIdentityParam.add(Constants.USER_IDENTITY, innerJsonObject);
+			}
+
+			if(userIdentityParam.get(Constants.USER_IDENTITY) != null && !(userIdentityParam.get(Constants.USER_IDENTITY).isJsonNull())) {
+				userIdentity = userIdentityParam.getAsJsonObject(Constants.USER_IDENTITY);
+        	}
 
 			if(userIdentity.has(Constants.ARN) && userIdentity.get(Constants.ARN).getAsString() != null) {
-				String arnNumber = userIdentity.get(Constants.ARN).getAsString();
-
+				String arnNumber = userIdentity.get(Constants.ARN).getAsString();	
 				String arnNumbers[] = arnNumber.split("::");
 				dbUsers = arnNumbers[1];
 			}
@@ -154,7 +199,7 @@ public class Parser {
 			if(userIdentity.has(Constants.ACCOUNT_ID) && userIdentity.get(Constants.ACCOUNT_ID).getAsString() != null) 
 				clientHostName = userIdentity.get(Constants.ACCOUNT_ID).getAsString();
 		}
-
+		
 		accessor.setDbUser(dbUsers);
 		accessor.setClientHostName(clientHostName);
 
@@ -173,11 +218,10 @@ public class Parser {
 
 		if(data.has(Constants.USER_AGENT) && data.get(Constants.USER_AGENT) != null)
 			sourceProgram = data.get(Constants.USER_AGENT).getAsString();
+		
 		accessor.setSourceProgram(sourceProgram);
-
 		accessor.setLanguage(Accessor.LANGUAGE_FREE_TEXT_STRING);
 		accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL);
-
 		accessor.setClient_mac(Constants.UNKNOWN_STRING);
 		accessor.setClientOs(Constants.UNKNOWN_STRING);
 		accessor.setCommProtocol(Constants.UNKNOWN_STRING);
@@ -220,7 +264,7 @@ public class Parser {
             final Construct construct = new Construct();
             construct.sentences.add(sentence);
             
-            construct.setFullSql(data.toString());
+            construct.setFullSql(parseFullSql(data));
             
             construct.setRedactedSensitiveDataSql(Parser.parseRedactedSensitiveDataSql(data));
             return construct;
@@ -228,6 +272,39 @@ public class Parser {
             throw e;
         }
     }
+	
+	public static String parseFullSql (final JsonObject data) {
+		
+		JsonObject fullSql = new JsonObject ();
+		
+		if(data.has(Constants.EVENT_NAME)) {
+        	String eventName = data.get(Constants.EVENT_NAME).getAsString();
+        	if(eventName != null || !eventName.isEmpty())
+        		fullSql.addProperty(Constants.EVENT_NAME, eventName);
+        }
+		if(data.has(Constants.REQUEST_PARAMETERS) && data.get(Constants.REQUEST_PARAMETERS) != null && !(data.get(Constants.REQUEST_PARAMETERS).isJsonNull())) {
+			
+			JsonObject requestPara = new JsonObject();
+			JsonObject requestParameters = new JsonObject();
+			try {
+				requestPara = data.getAsJsonObject(Constants.REQUEST_PARAMETERS);
+			}
+			catch (ClassCastException ccex) {
+				// This part of code is added to handle CloudTrail Events
+				String jsonPrimitiveString = data.get(Constants.REQUEST_PARAMETERS).getAsString();
+				jsonPrimitiveString = jsonPrimitiveString.trim();
+				jsonPrimitiveString = jsonPrimitiveString.replaceAll("([A-Za-z0-9]+)=([^,\\}]+)", "\"$1\":\"$2\"");
+				JsonObject innerJsonObject = jsonParser.parse(jsonPrimitiveString).getAsJsonObject();
+				requestParameters.add(Constants.REQUEST_PARAMETERS, innerJsonObject);
+			}
+			if(requestParameters.get(Constants.REQUEST_PARAMETERS) != null && !(requestParameters.get(Constants.REQUEST_PARAMETERS).isJsonNull())) {
+				requestPara = requestParameters.getAsJsonObject(Constants.REQUEST_PARAMETERS);
+        	}
+			fullSql.add(Constants.REQUEST_PARAMETERS, requestPara);
+		}
+		return fullSql.toString();
+		
+	}
     
     protected static Sentence parseSentence(final JsonObject data) {
         
@@ -244,18 +321,8 @@ public class Parser {
 
         sentence = new Sentence(verb);
 
-        if(data.has(Constants.REQUEST_PARAMETERS) && data.get(Constants.REQUEST_PARAMETERS) != null && !(data.get(Constants.REQUEST_PARAMETERS).isJsonNull())) {
-        	String tableName = Constants.UNKNOWN_STRING;
-
-			JsonObject requestParam = data.getAsJsonObject(Constants.REQUEST_PARAMETERS);
-			if(requestParam.has(Constants.TABLE_NAME))
-				tableName = requestParam.get(Constants.TABLE_NAME).getAsString();
-			if(tableName != null || !tableName.isEmpty())
-				name = tableName;
-	    }
-
         SentenceObject sentenceObject = null;
-        sentenceObject = new SentenceObject(name);
+        sentenceObject = new SentenceObject(getTableName(data));
         sentenceObject.setType(Constants.OBJECT_TYPE);
 
         sentence.getObjects().add(sentenceObject);
@@ -265,26 +332,32 @@ public class Parser {
 
     protected static String parseRedactedSensitiveDataSql(JsonObject data) {
 
-    	if(data.has(Constants.USER_IDENTITY) && data.get(Constants.USER_IDENTITY) != null && !(data.get(Constants.REQUEST_PARAMETERS).isJsonNull())) {
-			JsonObject userIdentity = data.getAsJsonObject(Constants.USER_IDENTITY);
-			if(userIdentity.has(Constants.PRINCIPAL_ID) && userIdentity.get(Constants.PRINCIPAL_ID).getAsString() != null) {
-				userIdentity.remove(Constants.PRINCIPAL_ID);
-				userIdentity.addProperty(Constants.PRINCIPAL_ID, Constants.MASK_STRING);
-			}
-			if(userIdentity.has(Constants.ACCOUNT_ID) && userIdentity.get(Constants.ACCOUNT_ID).getAsString() != null) {
-				userIdentity.remove(Constants.ACCOUNT_ID);
-				userIdentity.addProperty(Constants.ACCOUNT_ID, Constants.MASK_STRING);
-			}
-			if(userIdentity.has(Constants.ACCESS_KEY_ID) && userIdentity.get(Constants.ACCESS_KEY_ID).getAsString() != null) {
-				userIdentity.remove(Constants.ACCESS_KEY_ID);
-				userIdentity.addProperty(Constants.ACCESS_KEY_ID, Constants.MASK_STRING);
-			}
-			data.remove(Constants.USER_IDENTITY);
-			data.add(Constants.USER_IDENTITY, userIdentity);
-    	}
-
+		JsonObject redactedData = new JsonObject ();
+		
+		if(data.has(Constants.EVENT_NAME)) {
+        	String eventName = data.get(Constants.EVENT_NAME).getAsString();
+        	if(eventName != null || !eventName.isEmpty())
+        		redactedData.addProperty(Constants.EVENT_NAME, eventName);
+        }
+		
 		if(data.has(Constants.REQUEST_PARAMETERS) && data.get(Constants.REQUEST_PARAMETERS) != null && !(data.get(Constants.REQUEST_PARAMETERS).isJsonNull())) {
-			JsonObject requestPara = data.getAsJsonObject(Constants.REQUEST_PARAMETERS);
+			
+			JsonObject requestPara = new JsonObject();
+			JsonObject requestParameters = new JsonObject();
+			try {
+				requestPara = data.getAsJsonObject(Constants.REQUEST_PARAMETERS);
+			}
+			catch (ClassCastException ccex) {
+				// This part of code is added to handle CloudTrail Events
+				String jsonPrimitiveString = data.get(Constants.REQUEST_PARAMETERS).getAsString();
+				jsonPrimitiveString = jsonPrimitiveString.replaceAll("([A-Za-z0-9]+)=([^,\\}]+)", "\"$1\":\"$2\"");
+				JsonObject innerJsonObject = jsonParser.parse(jsonPrimitiveString).getAsJsonObject();
+				requestParameters.add(Constants.REQUEST_PARAMETERS, innerJsonObject);
+			}
+			if(requestParameters.get(Constants.REQUEST_PARAMETERS) != null && !(requestParameters.get(Constants.REQUEST_PARAMETERS).isJsonNull())) {
+				requestPara = requestParameters.getAsJsonObject(Constants.REQUEST_PARAMETERS);
+        	}
+			
 			if (requestPara.has(Constants.KEY) && requestPara.get(Constants.KEY).getAsJsonObject() != null) {
 				requestPara.remove(Constants.KEY);
 				requestPara.addProperty(Constants.KEY, Constants.MASK_STRING);
@@ -294,19 +367,10 @@ public class Parser {
 				requestPara.remove(Constants.CONDITION_EXPRESSION);
 				requestPara.addProperty(Constants.CONDITION_EXPRESSION, Constants.MASK_STRING);
 			}
+			redactedData.add(Constants.REQUEST_PARAMETERS, requestPara);
 		}
 
-    	if(data.has(Constants.REQUEST_ID)) {
-    		data.remove(Constants.REQUEST_ID);
-    		data.addProperty(Constants.REQUEST_ID, Constants.MASK_STRING);
-    	}
-
-    	if(data.has(Constants.EVENT_ID)) {
-    		data.remove(Constants.EVENT_ID);
-    		data.addProperty(Constants.EVENT_ID, Constants.MASK_STRING);
-    	}
-
-    	return data.toString();
+    	return redactedData.toString();
 
     }
     
@@ -315,18 +379,24 @@ public class Parser {
     private static ExceptionRecord parseException(JsonObject data) {
 
     	ExceptionRecord exceptionRecord = new ExceptionRecord();
-    	exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
+
+		String errorCode = data.get(Constants.ERROR_CODE).getAsString();
+
+		if(!errorCode.isEmpty() && errorCode.equalsIgnoreCase(Constants.ERROR_CODE_ACCESS_DENIED)){
+			exceptionRecord.setExceptionTypeId(Constants.LOGIN_ERROR);
+		} else {
+			exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
+		}
+
     	exceptionRecord.setDescription(data.get(Constants.ERROR_MESSAGE).getAsString());
 
     	String query = Constants.UNKNOWN_STRING;
         if(data.has(Constants.REQUEST_PARAMETERS) && data.has(Constants.EVENT_NAME)) {
         	String tableName = Constants.UNKNOWN_STRING;
         	String eventName = Constants.UNKNOWN_STRING;
-        	if(data.get(Constants.REQUEST_PARAMETERS) != null && !(data.get(Constants.REQUEST_PARAMETERS).isJsonNull())) {
-				JsonObject remote = data.getAsJsonObject(Constants.REQUEST_PARAMETERS);
-				if(remote.has(Constants.TABLE_NAME))
-					tableName = remote.get(Constants.TABLE_NAME).getAsString();
-        	}
+			
+			tableName = getTableName(data);
+			
         	if(data.get(Constants.EVENT_NAME) != null)
         		eventName = data.get(Constants.EVENT_NAME).getAsString();
 			query = eventName + tableName;
