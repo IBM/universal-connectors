@@ -4,7 +4,7 @@
 	"type": "filter",
 	"pipeline_type":"push",
 	"plugin_version": "1.0.0",
-	"datasourceTypes": [{"type":"NEO4J","supportedVersions": ["4.2.11"]}],
+	"datasourceTypes": [{"type":"Neo4j","supportedVersions": ["4.2.11"]}],
 	"supported_input_plugins": ["Filebeat_input"],
 	"developer": "IBM",
 	"license": "Apache 2.0",
