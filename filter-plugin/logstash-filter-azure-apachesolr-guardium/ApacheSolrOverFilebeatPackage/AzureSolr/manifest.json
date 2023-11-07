@@ -4,7 +4,7 @@
 	"type": "filter",
 	"pipeline_type":"push",
 	"plugin_version": "4.0.13",
-	"datasourceTypes": [{"type":"Apache Solr","supportedVersions": ["8.6.0"]}],
+	"datasourceTypes": [{"type":"Azure Apache Solr","supportedVersions": ["8.6.0"]}],
 	"supported_input_plugins": ["Filebeat_input"],
 	"developer": "IBM",
 	"license": "Apache2.0",

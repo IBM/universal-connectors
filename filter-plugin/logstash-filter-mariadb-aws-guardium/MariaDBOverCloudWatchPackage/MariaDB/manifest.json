@@ -4,7 +4,7 @@
 	"type": "filter",
 	"pipeline_type":"pull",
 	"plugin_version": "1.0.13",
-	"datasourceTypes": [{"type":"MariaDB-AWS","supportedVersions": ["10.6.10"]}],
+	"datasourceTypes": [{"type":"Amazon RDS for MariaDB","supportedVersions": ["10.6.10"]}],
 	"supported_input_plugins": ["Cloudwatch_logs_input", "Filebeat_input"],
 	"developer": "IBM",
 	"license": "Apache2.0",
