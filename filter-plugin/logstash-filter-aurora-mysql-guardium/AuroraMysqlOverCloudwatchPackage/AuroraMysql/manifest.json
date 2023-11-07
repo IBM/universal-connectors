@@ -4,7 +4,7 @@
 	"type": "filter",
 	"pipeline_type":"pull",
 	"plugin_version": "0.0.1",
-	"datasourceTypes": [{"type":"AuroraMysql","supportedVersions": ["Aurora(MySQL5.7)2.07.2"]}],
+	"datasourceTypes": [{"type":"Amazon Aurora MySQL","supportedVersions": ["Aurora(MySQL5.7)2.07.2"]}],
 	"supported_input_plugins": ["Cloudwatch_logs"],
 	"developer": "IBM",
 	"license": "Apache2.0",
