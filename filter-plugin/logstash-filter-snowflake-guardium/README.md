@@ -207,6 +207,8 @@ semicolon ';' from the JDBC statement:**
            AND DATE_PART(epoch_millisecond, LH.EVENT_TIMESTAMP) > :sql_last_value
            AND (DATE_PART(epoch_millisecond, LH.EVENT_TIMESTAMP))%2 = 1
        ORDER BY LH.EVENT_TIMESTAMP
+       
+***NOTE: To support authentication/login-specific auditing on Guardium Insights/SaaS, create a new Snowflake connection and enter the previously mentioned input details in the connection settings.***
 
 ## FAQ
 ### Does this work with AWS, Azure, and GCP instances of Snowflake?
