@@ -1,5 +1,5 @@
 //
-// Copyright 2023 IBM Inc. All rights reserved
+// Copyright 2021-2023 IBM Inc. All rights reserved
 // SPDX-License-Identifier: Apache2.0
 //
 package com.ibm.guardium.dynamodb;
@@ -72,6 +72,7 @@ public class DynamodbGuardiumPluginFilter implements Filter{
 	            }
 	        }
 			else {
+				log.error("Dynamodb filter: Not a Dynamo Event so skipping it.");
 				e.tag(Constants.LOGSTASH_TAG_SKIP_NOT_DYNAMO);
 				}
 	        }
