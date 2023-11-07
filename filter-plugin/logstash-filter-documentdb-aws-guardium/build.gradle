@@ -83,7 +83,7 @@ dependencies {
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
 
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")    // This dependency is exported to consumers, that is to say found on their compile classpath.
-    implementation 'com.google.guava:guava:30.1-jre'
+    implementation 'com.google.guava:guava:32.1.3-jre'
 }
 
 
