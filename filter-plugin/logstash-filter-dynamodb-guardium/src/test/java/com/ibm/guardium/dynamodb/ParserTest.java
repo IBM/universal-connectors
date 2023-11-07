@@ -1,5 +1,5 @@
 //
-// Copyright 2023 IBM Inc. All rights reserved
+// Copyright 2021-2023 IBM Inc. All rights reserved
 // SPDX-License-Identifier: Apache2.0
 //
 package com.ibm.guardium.dynamodb;
@@ -139,6 +139,18 @@ public class ParserTest {
         long time2 = Parser.getTime(dateString2).getTimstamp();
 
         Assert.assertNotEquals(time, time2);
+    }
+
+    @Test
+    public void testParseRecord_LoginFailed() throws ParseException {
+        final String dynamoString = "{\"eventVersion\":\"1.08\",\"userIdentity\":{\"type\":\"IAMUser\",\"principalId\":\"AIDAVBQDAZ24X5HC7KJQ7\",\"arn\":\"arn:aws:iam::346824953529:user\\/uc-no-dynamodb-access\",\"accountId\":\"346824953529\",\"accessKeyId\":\"AKIAVBQDAZ245SXSVYXG\",\"userName\":\"uc-no-dynamodb-access\"},\"eventTime\":\"2023-06-26T11:17:15Z\",\"eventSource\":\"dynamodb.amazonaws.com\",\"eventName\":\"ListTables\",\"awsRegion\":\"us-east-1\",\"sourceIPAddress\":\"103.161.98.19\",\"userAgent\":\"aws-cli\\/2.11.3 Python\\/3.11.2 Darwin\\/22.4.0 exe\\/x86_64 prompt\\/off command\\/dynamodb.list-tables\",\"errorCode\":\"AccessDenied\",\"errorMessage\":\"User: arn:aws:iam::346824953529:user\\/uc-no-dynamodb-access is not authorized to perform: dynamodb:ListTables on resource: arn:aws:dynamodb:us-east-1:346824953529:table\\/* because no identity-based policy allows the dynamodb:ListTables action\",\"requestParameters\":null,\"responseElements\":null,\"requestID\":\"4VO62N9BI88GUKMINUSTNET1G3VV4KQNSO5AEMVJF66Q9ASUAAJG\",\"eventID\":\"f8a32cc9-579e-4f60-874a-62bbe8b4ac3e\",\"readOnly\":true,\"eventType\":\"AwsApiCall\",\"managementEvent\":true,\"recipientAccountId\":\"346824953529\",\"eventCategory\":\"Management\",\"tlsDetails\":{\"tlsVersion\":\"TLSv1.2\",\"cipherSuite\":\"ECDHE-RSA-AES128-GCM-SHA256\",\"clientProvidedHostHeader\":\"dynamodb.us-east-1.amazonaws.com\"}}";
+        final JsonObject dynamoJson = JsonParser.parseString(dynamoString).getAsJsonObject();
+
+        String errorMessage = dynamoJson.get(Constants.ERROR_MESSAGE).getAsString();
+        final Record record = Parser.parseRecord(dynamoJson);
+
+        Assert.assertEquals(Constants.LOGIN_ERROR, record.getException().getExceptionTypeId());
+        Assert.assertEquals(errorMessage, record.getException().getDescription());
     }
 
 
