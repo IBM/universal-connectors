@@ -119,27 +119,27 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 2. Enable the connector if it is disabled.
 3. Click **Upload File**,
     * If the audit logs are to be fetched from CloudWatch directly, select the
-      [logstash-filter-dynamodb_guardium_plugin_filter.zip](./DynamodbOverCloudwatchPackage/DynamoDB/logstash-filter-dynamodb_guardium_plugin_filter.zip)
+      [logstash-filter-dynamodb_guardium_plugin_filter.zip](./logstash-filter-dynamodb_guardium_plugin_filter.zip)
       plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v12.0 and later.
 	* If the audit logs are to be fetched from CloudTrail, select the
 		1.  [cloudtrail_codec_plugin.zip](./DynamodbOverCloudtrailPackage/DynamoDB/cloudtrail_codec_plugin.zip)
       plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v12.0 and later.
-		2.  [logstash-filter-dynamodb_guardium_plugin_filter.zip](DynamodbOverCloudtrailPackage/DynamoDB/dynamodb-offline-plugins-7.5.2.zip)
+		2.  [logstash-filter-dynamodb_guardium_plugin_filter.zip](./logstash-filter-dynamodb_guardium_plugin_filter.zip)
       plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v12.0 and later.
       
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the **Connector name** field.
 6. Update the input section to add the details from the corresponding file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" 
 	at the end.
-	1. If the audit logs are to be fetched from CloudWatch, use the details from the [dynamodbCloudwatch.conf](DynamodbOverCloudwatchPackage/DynamoDB/dynamodbCloudwatch.conf)
+	1. If the audit logs are to be fetched from CloudWatch, use the details from the [dynamodbCloudwatch.conf](./dynamodbCloudwatch.conf)
     	file. More details on how to configure the relevant input plug-in can be found [here](../../input-plugin/logstash-input-cloudwatch-logs/README.md).
-    2. If the audit logs are to be fetched from CloudTrail, use the details from the [dynamodbCloudtrail.conf](DynamodbOverCloudtrailPackage/DynamoDB/dynamodbCloudtrail.conf) 
+    2. If the audit logs are to be fetched from CloudTrail, use the details from the [dynamodbCloudtrail.conf](./dynamodbCloudtrail.conf) 
     	file. 
 7. Update the filter section to add the details from the corresponding file's input part, omitting the keyword "filter{" at the beginning and its corresponding "}"
    at the end. 
-	1. If the audit logs are to be fetched from CloudWatch, use the details from the [dynamodbCloudwatch.conf](DynamodbOverCloudwatchPackage/DynamoDB/dynamodbCloudwatch.conf)
+	1. If the audit logs are to be fetched from CloudWatch, use the details from the [dynamodbCloudwatch.conf](./dynamodbCloudwatch.conf)
 		file.
-	2. If the audit logs are to be fetched from CloudTrail, use the details from the [dynamodbCloudtrail.conf](DynamodbOverCloudtrailPackage/DynamoDB/dynamodbCloudtrail.conf) 		file. 
+	2. If the audit logs are to be fetched from CloudTrail, use the details from the [dynamodbCloudtrail.conf](./dynamodbCloudtrail.conf) 		file. 
 9. The "type" fields should match in input and filter configuration sections. This field should be unique for every individual connector added.
 10. Click **Save**. Guardium validates the new connector, and enables the universal connector if it was
    disabled. After it is validated, it appears in the Configure Universal Connector page.
