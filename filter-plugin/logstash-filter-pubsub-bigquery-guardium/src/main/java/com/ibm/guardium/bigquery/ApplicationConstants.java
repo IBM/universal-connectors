@@ -10,7 +10,7 @@ public class ApplicationConstants {
 
 	public static final String LOGSTASH_TAG_SKIP_NOT_GCP = "_GCPguardium_skip_not_GCP";
 	public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_bigqueryguardium_json_parse_error";
-	public static final String DATA_PROTOCOL_STRING = "BigQuery";
+	public static final String DATA_PROTOCOL_STRING = "BigQuery(GCP)";
 	public static final String SERVER_TYPE_STRING = "BigQuery";
 	public static final String UNKOWN_STRING = StringUtils.EMPTY;
 	public static final String COMPOUND_OBJECT_STRING = "[json-object]";
