@@ -84,7 +84,7 @@ dependencies {
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 
     testImplementation group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter' + versions.dependencies.junitJupiter
     testImplementation 'junit:junit:' + versions.dependencies.junit
     testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
 
