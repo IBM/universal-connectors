@@ -80,7 +80,7 @@ dependencies {
 
     // Use JUnit Jupiter for testing.
     testImplementation group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:' + versions.dependencies.junitJupiter
 
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
