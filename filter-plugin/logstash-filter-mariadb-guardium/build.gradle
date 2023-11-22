@@ -81,7 +81,7 @@ dependencies {
 
     testImplementation 'junit:junit:' + versions.dependencies.junit
     testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:' + versions.dependencies.junitJupiter
 
     testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 }

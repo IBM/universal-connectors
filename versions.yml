@@ -6,4 +6,5 @@ dependencies:
   gson: 2.8.9
   junit: 4.12
   jrubyComplete: 9.2.7.0
+  junitJupiter: 5.7.1
 
