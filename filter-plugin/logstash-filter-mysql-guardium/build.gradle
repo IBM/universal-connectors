@@ -188,14 +188,3 @@ jacocoTestCoverageVerification {
     }
 }
 project.tasks.check.dependsOn(jacocoTestCoverageVerification, jacocoTestReport)
-
-task printLogMessage {
-    doLast {
-        println "build report is: ${buildDir}" +
-                "project dir is: ${projectDir}" +
-                "UCS: universalConnectorDir " + universalConnectorDir
-    }
-}
-
-// This makes your custom task run before the 'build' task
-build.dependsOn printLogMessage
