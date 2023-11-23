@@ -7,4 +7,5 @@ dependencies:
   junit: 4.12
   jrubyComplete: 9.2.7.0
   junitJupiter: 5.7.1
+  mockitoAll: 2.0.2-beta
 

@@ -82,7 +82,7 @@ dependencies {
 
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:' + versions.dependencies.junitJupiter
-    testImplementation group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
+    testImplementation group: 'org.mockito', name: 'mockito-all', version: versions.dependencies.mockitoAll
 
     testImplementation 'junit:junit:' + versions.dependencies.junit
     testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
