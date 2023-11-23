@@ -47,9 +47,13 @@ buildscript {
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
         classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
-
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '1.19'
     }
 }
+
+def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
+
 
 repositories {
     mavenCentral()
@@ -79,7 +83,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:' + versions.dependencies.commonsLang
     implementation 'commons-validator:commons-validator:' + versions.dependencies.commonsValidator
 
-    testImplementation group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
+    testImplementation group: 'org.mockito', name: 'mockito-all', version: versions.dependencies.mockitoAll
     testImplementation 'org.junit.jupiter:junit-jupiter:' + versions.dependencies.junitJupiter
     testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
