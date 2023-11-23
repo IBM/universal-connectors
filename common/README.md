@@ -17,7 +17,3 @@ We want your feedback: Let us know of any errors, or if you have an improvement 
 
 <!-- references -->
 [logstash-filter-mongodb-guardium]: https://github.com/IBM/logstash-filter-mongodb-guardium
-
-
-
-

@@ -79,7 +79,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:' + versions.dependencies.commonsLang
     implementation 'commons-validator:commons-validator:' + versions.dependencies.commonsValidator
 
-    testImplementation group: 'org.mockito', name: 'mockito-all', version: versions.dependencies.mockitoAll
+    testImplementation group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
     testImplementation 'org.junit.jupiter:junit-jupiter:' + versions.dependencies.junitJupiter
     testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
