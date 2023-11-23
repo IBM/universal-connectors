@@ -81,7 +81,7 @@ dependencies {
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
 
     testImplementation group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
-    testImplementation 'org.junit.jupiter:junit-jupiter' + versions.dependencies.junitJupiter
+    testImplementation 'org.junit.jupiter:junit-jupiter:' + versions.dependencies.junitJupiter
     testImplementation 'junit:junit:' + versions.dependencies.junit
     testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
 
