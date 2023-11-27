@@ -112,19 +112,19 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 
 • Download the [cloudtrail_codec_plugin.zip](DynamodbOverCloudtrailPackage/DynamoDB/cloudtrail_codec_plugin.zip) plug-in, if the logs are to be pulled directly from CloudTrail. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 
-• Download the [logstash-filter-dynamodb_guardium_plugin_filter.zip plug-in.](./logstash-filter-dynamodb_guardium_plugin_filter.zip). (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+• Download the [logstash-filter-dynamodb_guardium_plugin_filter.zip plug-in.](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-dynamodb_guardium_plugin_filter.zip) (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 
 ### Procedure
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. Enable the connector if it is disabled.
 3. Click **Upload File**,
     * If the audit logs are to be fetched from CloudWatch directly, select the
-      [logstash-filter-dynamodb_guardium_plugin_filter.zip](./logstash-filter-dynamodb_guardium_plugin_filter.zip)
+      [logstash-filter-dynamodb_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-dynamodb_guardium_plugin_filter.zip)
       plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v12.0 and later.
 	* If the audit logs are to be fetched from CloudTrail, select the
 		1.  [cloudtrail_codec_plugin.zip](./DynamodbOverCloudtrailPackage/DynamoDB/cloudtrail_codec_plugin.zip)
       plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v12.0 and later.
-		2.  [logstash-filter-dynamodb_guardium_plugin_filter.zip](./logstash-filter-dynamodb_guardium_plugin_filter.zip)
+		2.  [logstash-filter-dynamodb_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-dynamodb_guardium_plugin_filter.zip)
       plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v12.0 and later.
       
 4. Click the Plus sign to open the Connector Configuration dialog box.
