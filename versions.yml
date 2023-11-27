@@ -10,3 +10,4 @@ dependencies:
   mockitoAll: 2.0.2-beta
   json: 20231013
   parboiledJava: 1.1.8
+  javaxJson: 1.1.4
