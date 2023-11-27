@@ -47,7 +47,7 @@ buildscript {
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
         classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
-        classpath group: 'org.yaml', name: 'snakeyaml', version: '1.19'
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
 }
 
@@ -89,7 +89,7 @@ dependencies {
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
-    implementation group: 'org.json', name: 'json', version: '20210307'
+    implementation group: 'org.json', name: 'json', version: versions.dependencies.json
 // https://mvnrepository.com/artifact/org.parboiled/parboiled-java
     implementation group: 'org.parboiled', name: 'parboiled-java', version: '1.1.8'
 // https://mvnrepository.com/artifact/org.glassfish/javax.json
