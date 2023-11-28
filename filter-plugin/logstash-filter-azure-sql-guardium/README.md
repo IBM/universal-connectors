@@ -1,4 +1,5 @@
 # AzureSQL-Guardium Logstash filter plug-in
+
 ### Meet AzureSQL
 * Tested versions: 12.0.2000.8
 * Environment: Azure
@@ -8,77 +9,55 @@
     * Guardium Insights SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the azureSQL audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
-
-Currently, this plug-in will work only on IBM Security Guardium Data Protection, not Guardium Insights.
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
 
-## 1. Configuring the AzureSQL service
 
-There are two ways to get AzureSQL audit data:
+##  Enabling Auditing
 
-1. Universal Connector using Azure object storage plus a JDBC feed or
-2. Guardium Streams using a Azure Event Hub
+1. Click on Tap left Corner Menu button.
+	
+ 2. Go to "Resource groups" tab.
+	
+ 3. Click on Resource Group:
+    
+      a. Select SQL Server you have created
 
-In this plugin we have used Object Storage
-If the customer wants to get more insights into these options, they can reach out to Guardium Offering Managers.
+	b. Click on "Show Firewall setting" options.
 
-### Procedure:
-	1. Go to https://portal.azure.com/.
-	2. Click Search Bar.
-	3. Search for AzureSQL.
-	4. Click on "Create" Button.
-		<The button name is 'Create'>
-	5. Select SQL databases option.
-	6. Choose Resource Type depending on requirements(Single database,Elastic pool).
-	7. Click on "Create" Button.
-	8. Select Existing Resource group or Create New one.
-	9. Provide Database Name.
-	10. Click on "Create New" Server Button.
-		<The button name is 'Create new' under server field>
-	11. Provide Server Name and Select appropriate Location .
-	12. Select appropriate Authentication method as per requirement.
-	13. Provide "Server admin login name and Password.
-	14. Click on "OK" Button.
-	15. Select the "Compute + storage" Configuration depending on requirement.
-	16. Click "Review + Create" Button.
-	17. Verify the Configuration and then Click on "Create" Button.
-	18. Again Click on Search Bar:
-			a. Search for Storage Account
-			b. Click on "create" to create new storage account
-			c. Select resource group which you have created.
-			d. Provide Storage Account Name.
-			e. Select appropriate location.
-			f. Choose additional configuration as per requirement.
-			g. Click on "Review + create" Button.
-			h. After Review Click on "Create" Button	
+	c. Add Client IPaddress by clicking "Add Client IP" Button.
 
-## 2. Enabling Auditing
+	d. Add Public IPaddress of gmachine which is required to capture traffic.
 
-	1. Click on Tap left Corner Menu button.
-	2. Go to "Resource groups" tab.
-	3. Click on Resource Group:
-			a. Select SQL Server you have created
-			b. Click on "Show Firewall setting" options.
-			c. Add Client IPaddress by clicking "Add Client IP" Button.
-			d. Add Public IPaddress of gmachine which is required to capture traffic.
-				Use below command for getting public IPaddress of gmachine:
-				curl ipinfo.io/ip
-			e. Click on "Save" Button.
-	4. To enable auditing:
-			a. Select your SQL Database .
-			b. In search bar search for 'auditing'.
-			c. In Auditing, Click on "Enable Azure SQL Auditing" Button.
-			d. Select "Storage" Audit log destination Check box.
-			e. Select Storage Account which you have created.
-			f. Click on "Advanced properties", And select " Retention (Days)"
-	5. Then ,Click on "Save" Button.
+          Use the below command for getting public IPaddress of gmachine:
+
+           `curl ipinfo.io/ip`
+
+	e. Click on "Save" Button.
+
+5. To enable auditing:
+    
+	a. Select your SQL Database .
+
+	b. In search bar search for 'auditing'.
+
+	c. In Auditing, Click on "Enable Azure SQL Auditing" Button.
+
+	d. Select "Storage" Audit log destination Check box.
+
+	e. Select Storage Account which you have created.
+
+	f. Click on "Advanced properties", And select " Retention (Days)"
+
+	g. Then ,click on "Save" Button.
 	
 		
 ## 3. Connecting to AzureSQL Database:
 		
 		a. Start the SQL Server Management Studio and provide connection details. Enter the ‘server name’ and Provide the ‘username’ and the master ‘password’ that we had set while creating the database.
+  
 		b. Click on Connect.
+
 		
 ## 4. Viewing the Audit logs
 
@@ -125,15 +104,15 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-sql-guardium/AzureSQLOverJdbcPackage/AzureSQL/Azure-SQL-Offline-Package.zip) plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
+• Download the [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-azuresql_guardium_plugin_filter.zip) plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
 
 • Download the mssql-jdbc-7.4.1.jre8 from [here](https://jar-download.com/artifacts/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8)
 
 #### Procedure : 
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. First enable the Universal Guardium connector, if it is disabled already.
-3. Click Upload File and select the offline [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-sql-guardium/AzureSQLOverJdbcPackage/AzureSQL/Azure-SQL-Offline-Package.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v12.0 and later.
+2. Enable the universal connector if it is disabled.
+3. Click Upload File and select the offline [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-azuresql_guardium_plugin_filter.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v12.0 and later.
 4. Again click Upload File and select the offline mssql-jdbc-7.4.1.jre8 file. After it is uploaded, click OK. . 
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
@@ -147,7 +126,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 9. If using two jdbc plug-ins on the same machine, the last_run_metadata_path file name should be different.
 10. Update the filter section to add the details from [azureSQLJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-sql-guardium/azureSQLJDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-11. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.
+11. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 
 
 ## 8. JDBC Load Balancing Configuration

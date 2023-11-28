@@ -1,4 +1,5 @@
 # Apache Solr Azure-Guardium Logstash filter plug-in
+
 ### Meet Apache Solr Azure
 * Tested versions: 8.6.0
 * Environment: Azure
@@ -11,83 +12,12 @@ This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
-## 1. Installing Apache Solr
+## Viewing the Apache Solr logs
 
-Create a Linux virtual machine in the Azure portal.
+Go to the Solr dashboard. Under **Java Properties**, search for solr.​log.​dir
 
-You can learn more about Virtual Machine Creation [here](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal)
+To view logs, go to **Location**:
 
-### Procedure
-```
-1.Install Java by running the following command:
-        $ sudo apt install default-jre
-2.Run the below command to check the java version:
-        $ java –version
-3.In order for Solr to work as expected, the user needs to have the lsof command installed as well.
-        The lsof command stands for "list open files".  Run the following command for lsof installation:
-        $ sudo apt install lsof
-4.Run the following commands to download the Solr installation files:
-        $ cd /usr/src
-        $ sudo apt install wget
-        $ sudo apt-get install wget
-        $ sudo wget https://archive.apache.org/dist/lucene/solr/8.6.0/solr-8.6.0.tgz
-        $ sudo tar -xzvf solr-8.6.0.tgz
-5.Run the Solr installation script
-        $ cd solr-8.6.0/bin
-        $ sudo ./install_solr_service.sh ../../solr-8.6.0.tgz
-```
-### Launching Apache Solr
-```
-1.Once the script completes, Solr will be installed as a service and run in the background on the user's server (on port 8983). To verify, run:
-       $ sudo service solr status
-2.The Solr can be run in 2 different modes, You can only use one mode at a time:
-2.1.Standalone mode :An index is stored on a single computer and the setup is called a core.There can be multiple cores or indexes here.
-To Launch Solr in Standalone Mode:
-       $ cd /opt/solr-8.6.0
-       $ sudo bin/solr start -force 
-2.2.SolrCloud mode:  An index is distributed across multiple computers or even multiple server instances on one computer. Groups of documents here are called collections.
- To Launch Solr in SolrCloud Mode:
-       $ cd /opt/solr-8.6.0
-       $ sudo bin/solr start -e cloud -force
-```
-
-### Adding an inbound port rule
-1. Go to the virtual machine.
-2. In the left-nav, select Networking.
-3. The rules will be displayed on right side of the portal.
-4. Select Inbound port rules ,then select Add.
-5. Add your port(on which solr is running, default is 8983) under Destination Port ranges.
-6. Click Add to create the rule.
-
-### Login to the Solr Dashboard
-To access the Solr admin panel, visit the hostname or IP address on the port (on which Solr is running):
-    http://ip_address:port/solr/
-
-### Core Creation in Standalone mode
-```
-1.Create a new Solr core with the following command:
-  $ sudo bin/solr create -c core_name -force
-  For example: Core Created named as new_core:
-  $ sudo bin/solr create -c new_core -force
-2.The created core will reflect in the core drop-down menu on the Solr admin console.
-```
-### Collection Creation in SolrCloud mode
-```
-1.Create a new Solr collection with the following command with the default shard and replica count:
-  $ sudo bin/solr create -c collection_name -force
-To create a collection with a customized shard and replica count. 
-  $ sudo bin/solr create -c collection_name -s <count> -rf <count> -force
-  For example: Collection Created named as new_collection respectively.
-  $ sudo bin/solr create -c new_collection -force
-  $ sudo bin/solr create -c new_collection -s 1 -rf 2 -force
-2.The created collection will reflect in the collection drop-down menu on the Solr admin console.
-
-```    
-
-## 2. Viewing the Apache Solr logs
-
-Go to the Solr dashboard. Under Java Properties, search for solr.​log.​dir<br>
-To view logs, go to Location:<br>
 * When Solr runs in Standalone mode - /var/solr/logs/solr.log<br>
 * When Solr runs in SolrCloud mode<br>
  -/opt/solr-8.6.0/example/cloud/node1/logs/solr.log<br>
@@ -113,8 +43,8 @@ In addition, events are configured with the include_lines, exclude_lines, and ad
 
 ### Procedure:
 
-1. Configuring the input section :-
-```
+1. Configuring the input section :
+
     • Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
 
             filebeat.inputs:
@@ -142,9 +72,9 @@ In addition, events are configured with the include_lines, exclude_lines, and ad
     • Add the tags to uniquely identify the ApacheSolr events from the rest.    
       
             tags: ["apache_solr_on_azure"]
-```
+
 2. Configuring the output section:-
-```
+
     • Locate "output" in the filebeat.yml file, then add the following parameters.
 
     • Disable Elasticsearch output by commenting it out.
@@ -158,7 +88,7 @@ In addition, events are configured with the include_lines, exclude_lines, and ad
     • The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections.
 
     • You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
-```
+
 
 3. To learn how to start FileBeat, see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
 
@@ -171,20 +101,22 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * Configure the policies you require. See [policies](/docs/#policies) for more information. 
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugin-apache-solr-azure.zip](https://github.com/IBM/universal-connectors/raw/INS-30373/filter-plugin/logstash-filter-azure-apachesolr-guardium/ApacheSolrOverFilebeatPackage/AzureSolr/guardium_logstash-offline-plugin-apache-solr-azure.zip) plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
 
+* Download the [guardium_logstash-offline-plugin-apache-solr-azure.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-apache_solr_azure_connector.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+  
 ### Procedure
 
+
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. First, enable the Universal Guardium connector, if it is currently disabled.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugin-apache-solr-azure.zip](https://github.com/IBM/universal-connectors/raw/INS-30373/filter-plugin/logstash-filter-azure-apachesolr-guardium/ApacheSolrOverFilebeatPackage/AzureSolr/guardium_logstash-offline-plugin-apache-solr-azure.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v12.0 and later.
+2. Enable the universal connector if it is disabled.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugin-apache-solr-azure.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-apache_solr_azure_connector.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus icon to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from the [solrazure.conf](solrazure.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 7. Update the filter section to add the details from the [solrazure.conf](solrazure.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
 9. The tag added in the filebeat.yml file should match the "[tags]" specified in the filter part.
-10. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears on the Configure Universal Connector page.
+10. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page..
 
 ## 5. Limitations    
 - The following important fields couldn't be mapped with ApacheSolr qtp logs:

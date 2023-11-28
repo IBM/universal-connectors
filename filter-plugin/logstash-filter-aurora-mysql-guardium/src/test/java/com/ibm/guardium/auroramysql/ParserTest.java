@@ -40,6 +40,7 @@ public class ParserTest {
 		Assert.assertEquals(
 				"CREATE TABLE Orders (OrderID int NOT NULL,OrderNumber int NOT NULL,PersonID int,PRIMARY KEY (OrderID))",
 				record.getData().getOriginalSqlCommand());
+		Assert.assertEquals(record.getDbName(), record.getAccessor().getServiceName());
 	}
 
 	// Exception handling

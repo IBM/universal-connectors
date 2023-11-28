@@ -20,6 +20,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## 1. Configuring the Mysql server
 There are multiple ways to install a MySQL on-premise server. For this example, we will assume that we already have a working MySQL setup.
+
 ## 2. Installing and enabling auditing
 [Install the audit log plug-in](https://dev.mysql.com/doc/mysql-secure-deployment-guide/5.7/en/secure-deployment-audit.html), and verify the following two lines in the my.cnf file:
 ####
@@ -97,7 +98,8 @@ The universal connector identifies and parses received events, and converts them
 The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements.
 
 ### Before you begin
-• You must have permission for the S-Tap Management role. The admin user includes this role, by default.
+* You must have permission for the S-Tap Management role. The admin user includes this role, by default.
+* Download the [logstash-filter-mysql_filter_guardium.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-mysql_filter_guardium.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 
 ### Procedure
 

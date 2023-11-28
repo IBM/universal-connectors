@@ -1,161 +1,122 @@
-# HDFS-Guardium Logstash Filter Plug-in
 ### Meet HDFS
 * Tested versions: Hadoop 3.1.x
+* HDFS Versions- Cloudera 7.1
 * Environment: On-premise, Iaas
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
-    * Guardium Data Protection: 11.4 and above
-    * Guardium Insights: 3.2
-    * Guardium Insights: 1.0
+  * Guardium Data Protection: 11.4 and above
+  * Guardium Insights: 3.2 and above
+  * Guardium Insights: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses an HDFS audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
 
-
-## HDFS Configuration
+## 1. Configuring the HDFS
 
 HDFS needs to be configured to write HDFS audits to a file on the system. In most HDFS installations, this is enabled and configured by default. All NameNodes will write audits to a log on their hosts.
 
+## 2. Installing and enabling auditing
+
 Once the HDFS audit log is enabled and configured properly, Filebeat will need to be installed and configured on the system.
 
-## Filebeat Configuration
+## 3. Configuring Filebeat to push logs to Guardium
 
-Filebeat must be configured to send the output to the chosen Logstash host and port. In addition, events are configured with the add_locale, add_host_metadata, and add_tags processors (to add an "hdfs" tag). You can learn more about Filebeat processors [here](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html#using-processors).
+### Procedure:
 
-```
-filebeat.inputs:
-- type: log
-  enabled: true
-  paths:
-    - /var/log/hadoop-hdfs/hdfs-audit.log*
+1. To install Filebeat on your system, follow the steps in this topic:
+   https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#installation
 
-filebeat.config.modules:
-  path: ${path.config}/modules.d/*.yml
-  reload.enabled: false
+## b. Filebeat configuration:
 
-setup.template.settings:
-  index.number_of_shards: 1
+To use Logstash to perform additional processing on the data collected by Filebeat, we need to configure Filebeat to use Logstash. To do this, modify the filebeat.yml file which you can find inside the folder where Filebeat is installed. Follow these instructions for finding the installation directory:
+https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
-output.logstash:
-  hosts: ["universal-connector-host:5046"]
+### Procedure:
 
-processors:
-  - add_host_metadata: ~
-  - add_locale: ~
-  - add_tags:
-      tags: [hdfs]
-```
+1. Configuring the input section :
 
-## Universal Connector Configuration
+   • Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
 
-### Input Configuration
+    ```
+    filebeat.inputs:
+   - type: log
+     enabled: true
+     paths:
+       - /var/log/hadoop-hdfs/hdfs-audit.log*
 
-```
-### Change the port to match the Filebeat configuration of your data source. The port should not be 5000, 5141, or 5044 - as Guardium universal connector reserves these ports for MongoDB events. If the port appears in other connector configurations on this Guardium system, make sure it flags events as type "filebeat":
+    filebeat.config.modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
 
-beats {
-    port => 5046
-    type => "filebeat"
-    # For SSL over Filebeat, uncomment the following lines after generating a SSL key and a certificate using GuardAPI (see documentation), copy the public certificate to your data source and adjust Filebeat    configuration:
-    #ssl => true
-    #ssl_certificate => "\${SSL_DIR}/logstash-beats.crt"
-    #ssl_key => "\${SSL_DIR}/logstash-beats.key"
-}
-```
+    setup.template.settings:
+    index.number_of_shards: 1
+  
+    ```
 
-### Filter Configuration
+2. Configuring the output section:
 
-```
-# For this to work, the Filebeat configuration on your data source should tag the events it is sending.
-if [type] == "filebeat" and "hdfs" in [tags] {
-    if "callerContext=" in [message] and "trackingId=" in [message] {
-        dissect {
-            mapping => {
-                "message" => "%{timestamp} INFO FSNamesystem.audit: allowed=%{allowed}	ugi=%{ugi}	ip=%{hostname}/%{ip}	cmd=%{cmd}	src=%{src}	dst=%{dst}	perm=%{perm}	trackingId=%{tracking_id}	proto=%{proto}	callerContext=%{call_ctx}"
-            }
-        }
-    } else if "trackingId=" in [message] {
-        dissect {
-            mapping => {
-                "message" => "%{timestamp} INFO FSNamesystem.audit: allowed=%{allowed}	ugi=%{ugi}	ip=%{hostname}/%{ip	cmd=%{cmd}	src=%{src}	dst=%{dst}	perm=%{perm}	trackingId=%{tracking_id}	proto=%{proto}"
-            }
-        }
-    } else if "callerContext=" in [message] {
-        dissect {
-            mapping => {
-                "message" => "%{timestamp} INFO FSNamesystem.audit: allowed=%{allowed}	ugi=%{ugi}	ip=%{hostname}/%{ip}	cmd=%{cmd}	src=%{src}	dst=%{dst}	perm=%{perm}	proto=%{proto}	callerContext=%{call_ctx}"
-            }
-        }
-    } else {
-        dissect {
-            mapping => {
-                "message" => "%{timestamp} INFO FSNamesystem.audit: allowed=%{allowed}	ugi=%{ugi}	ip=%{hostname}/%{ip}	cmd=%{cmd}	src=%{src}	dst=%{dst}	perm=%{perm}	proto=%{proto}"
-            }
-        }
-    }
-}
-if [type] == "filebeat" and "hdfs" in [tags] and "_dissectfailure" not in [tags] {
-        hdfs_guardium_filter {}
-}
+   • Locate "output" in the filebeat.yml file, then add the following parameters.
 
-# uncomment to test events/sec
-#       metrics {
-#               meter => "events"
-#               add_tag => "metric"
-#       }
-```
-**Note** The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+   • Disable Elasticsearch output by commenting it out.
+
+   • Enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
+
+   For example:
+
+    ```
+    output.logstash:
+    hosts: ["universal-connector-host:5046"]
+
+    processors:
+     - add_host_metadata: ~
+     - add_locale: ~
+     - add_tags:
+    tags: [hdfs]
+
+    ```
+   In addition, events are configured with the add_locale, add_host_metadata, and add_tags processors (to add an "hdfs" tag).
+
+
+3. To learn more about Filebeat processors, click [here](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html#using-processors).
+
+## 4. Configuring the HDFS filters in Guardium Data Protection (GDP)
+
+The Guardium universal connector is the Guardium entry point for native audit logs.
+The universal connector identifies and parses received events, and converts them to a standard Guardium format.
+The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements.
+
+## Limitations:
+
+1. Database name is seen as blank.
+
+### Before you begin
+•Configure the policies you require. See [policies](/docs/#policies) for more information.
+
+• You must have permission for the S-Tap Management role. The admin user includes this role by default.
+
+• Download the [guardium-hdfs-uc.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-hdfs_guardium_filter.zip)(Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+
+### Procedure
+
+1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
+
+2. First enable the Universal Guardium connector, if it is disabled already.
+
+4. Click **Upload File** and select the offline [guardium-hdfs-uc.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-hdfs_guardium_filter.zip) file. After it is uploaded, click OK.
+
+5. Click the Plus sign to open the Connector Configuration dialog box.
+
+6. Type a name in the Connector name field.
+
+7. Update the input section to add the details from the [hdfsFilebeat.conf](./hdfsFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide required details for DB server name, username and password for making JDBC connectivity.
+
+8. Update the filter section to add the details from the [hdfsFilebeat.conf](./hdfsFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the same DB server name as in above step against the Server_Hostname attribute in the filter section.
+
+9. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+
+
 ## Configuring the HDFS filters in Guardium Insights
 
 To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/universal-connectors/blob/main/docs/UC_Configuration_GI.md)
 
 In the input configuration section, refer to the Filebeat section.
 
-## Tested HDFS Versions
-
-- Cloudera 7.1
-
-## Tested Guardium Versions
-
-- v11.3
-
-## Universal Connector Commons Version
-
-- 1.0.0
-
-## Logstash Core Version
-
-- 7.5.3
-
-## HDFS Example Audits
-
-```
-2020-11-29 10:44:07,035 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=getfileinfo	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.cdh713-a-2.x.com%2C16020%2C1606673870978.regiongroup-0.1606675447034	dst=null	perm=null	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,037 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=create	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.cdh713-a-2.x.com%2C16020%2C1606673870978.regiongroup-0.1606675447034	dst=null	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,060 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=setTimes	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.cdh713-a-2.x.com%2C16020%2C1606673870978.regiongroup-0.1606673886016	dst=null	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,062 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=rename	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.cdh713-a-2.x.com%2C16020%2C1606673870978.regiongroup-0.1606673886016	dst=/hbase/oldWALs/cdh713-a-2.x.com%2C16020%2C1606673870978.cdh713-a-2.x.com%2C16020%2C1606673870978.regiongroup-0.1606673886016	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,065 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=setTimes	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.cdh713-a-2.x.com%2C16020%2C1606673870978.regiongroup-0.1606673948128	dst=null	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,068 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=rename	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.cdh713-a-2.x.com%2C16020%2C1606673870978.regiongroup-0.1606673948128	dst=/hbase/oldWALs/cdh713-a-2.x.com%2C16020%2C1606673870978.cdh713-a-2.x.com%2C16020%2C1606673870978.regiongroup-0.1606673948128	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,090 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=getfileinfo	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.meta.1606675447089.meta	dst=null	perm=null	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,092 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=create	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.meta.1606675447089.meta	dst=null	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,137 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=setTimes	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.meta.1606675446889.meta	dst=null	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,139 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=rename	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.meta.1606675446889.meta	dst=/hbase/oldWALs/cdh713-a-2.x.com%2C16020%2C1606673870978.meta.1606675446889.meta	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,142 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=getfileinfo	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.cdh713-a-2.x.com%2C16020%2C1606673870978.regiongroup-0.1606675447142	dst=null	perm=null	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,146 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=create	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.cdh713-a-2.x.com%2C16020%2C1606673870978.regiongroup-0.1606675447142	dst=null	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,167 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=setTimes	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.cdh713-a-2.x.com%2C16020%2C1606673870978.regiongroup-0.1606675447034	dst=null	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,170 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/x.x.x.x	cmd=rename	src=/hbase/WALs/cdh713-a-2.x.com,16020,1606673870978/cdh713-a-2.x.com%2C16020%2C1606673870978.cdh713-a-2.x.com%2C16020%2C1606673870978.regiongroup-0.1606675447034	dst=/hbase/oldWALs/cdh713-a-2.x.com%2C16020%2C1606673870978.cdh713-a-2.x.com%2C16020%2C1606673870978.regiongroup-0.1606675447034	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,489 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/10.11.18.117	cmd=create	src=/hbase/MasterProcWALs/pv2-00000000000000000003.log	dst=null	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,497 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/10.11.18.117	cmd=listStatus	src=/hbase/MasterProcWALs	dst=null	perm=null	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,519 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/10.11.18.117	cmd=create	src=/hbase/MasterProcWALs/pv2-00000000000000000004.log	dst=null	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,523 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/10.11.18.117	cmd=listStatus	src=/hbase/MasterProcWALs	dst=null	perm=null	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,544 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/10.11.18.117	cmd=create	src=/hbase/MasterProcWALs/pv2-00000000000000000005.log	dst=null	perm=hbase:hbase:rw-r--r--	proto=rpc	callerContext=CLI
-2020-11-29 10:44:07,550 INFO FSNamesystem.audit: allowed=true	ugi=hbase (auth:SIMPLE)	ip=/10.11.18.117	cmd=listStatus	src=/hbase/MasterProcWALs	dst=null	perm=null	proto=rpc	callerContext=CLI
-```
-
-## Limitations
-
-Database name is seen as blank.
-
-
-## License
-
-The license is Apache 2.0. Please refer to the included LICENSE file for more information.

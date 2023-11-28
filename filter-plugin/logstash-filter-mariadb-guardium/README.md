@@ -12,29 +12,8 @@ This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
-## 1. Installing MariaDB on Linux
 
-### Procedure:
-1. Install MariaDB on the server with the yum command
-```
-Yum install mariadb* -y
-```
-2. Start the MariaDB service on the server with the systemctl command.
-```
-systemctl start mariadb
-```
-3. Enable the MariaDB service to start at boot on the server.
-```
-systemctl enable mariadb
-```
-4. Generate Password​ by executing "mysql_secure_installation"​ command After providing the new password user will be asked for following,  
-- Remove test Database and access to it? [y/n].​User need to type ‘y’​,
-- Reload privilege tables now?[y/n]​.User need to type ‘y’​.
-- Enter password for connecting to MariaDB server
-
-  [Click Here](https://computingforgeeks.com/how-to-install-mariadb-on-kali-linux/) for learn more about MariaDB configuration
-
-## 2. Enabling the audit logs:
+## Enabling the audit logs
 
 ### Procedure:
 1. To install MariaDB Audit Plugin execute the INSTALL command
@@ -119,7 +98,7 @@ For example:
  ```
 
 3. To learn how to start FileBeat, see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
-### Known issues and Solution.
+### Known issues and solutions
 
 #### Duplicate Records in Guardium for a single event.
 
@@ -173,21 +152,20 @@ The Guardium universal connector is the Guardium entry point for native audit lo
  
 ## Before you begin
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [logstash-filter-mariadb_guardium_filter.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-guardium/MariaDBOverFilebeatPackage/MariaDB/logstash-filter-mariadb_guardium_filter.zip) plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
+* Download the [logstash-filter-mariadb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-mariadb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 * Download the filter plug-in configuration file [MariaDB.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-guardium/MariaDB.conf).
 
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. Enable the connector if it is disabled before uploading the UC plug-in.	
-3. Click **Upload File** and select the offline [logstash-filter-mariadb_guardium_filter.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-guardium/MariaDBOverFilebeatPackage/MariaDB/logstash-filter-mariadb_guardium_filter.zip) plug-in. After it is uploaded, click **OK**. This is not necessary for Guardium Data Protection v12.0 and later.
+2. Enable the universal connector if it is disabled.
+3. Click **Upload File** and select the offline [logstash-filter-mariadb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-mariadb_guardium_filter.zip) plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [mariadb.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-guardium/MariaDB.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 7. Update the filter section to add the details from [mariadb.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-guardium/MariaDB.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The "type" field should match in input and filter configuration section. This field should be unique for every individual connector added.
 9. The "tags" parameter in the filter configuration should match the value of the attribute tags configured in the Filebeat configuration for a connector.
-10. Click Save. Guardium validates the new connector, and enables the universal connector if it was
-disabled. After it is validated, it appears in the Configure Universal Connector page.
+10. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 
 ## 6. Limitations
  - The following important fields could not be mappped with MariaDB audit logs.
@@ -195,6 +173,6 @@ disabled. After it is validated, it appears in the Configure Universal Connector
     - ClientIP - Not avaiable in Audit Logs
     - Source Program - Not available in Audit Logs
 
-## 5. Configuring the Mariadb filters in Guardium Insights
+## 7. Configuring the Mariadb filters in Guardium Insights
 To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 For the input configuration step, refer to the [Filebeat section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#Filebeat-input-plug-in-configuration).

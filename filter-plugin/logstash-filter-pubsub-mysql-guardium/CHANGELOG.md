@@ -1,3 +1,5 @@
+## 3.0.4
+ - Adjusted error logs handling to suit the output plug-in recent patch v1.0.4
 ## 3.0.3
  - Bug fix for improper digestion of `--`, `#` comment styles in queries
  - Added missing `serverIp` for error events

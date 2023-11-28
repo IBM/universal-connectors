@@ -126,7 +126,9 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [Teradata-Offline-Plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/Teradata-Offline-Plugin.zip) plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
+
+• Download the [logstash-filter-teradatadb_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-teradatadb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+
 
 • Download the required jars as per your database version from URL:- https://downloads.teradata.com/download/connectivity/jdbc-driver
 
@@ -141,7 +143,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 2. First enable the Universal Guardium connector, if it is disabled already.
 3. Click ```Upload File``` and upload the jar/jars which you downloaded from the teradata website.
 4. Click ```Upload File``` and upload "tdgssconfig.jar".
-5. Click ```Upload File``` and select the offline [Teradata-Offline-Plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/Teradata-Offline-Plugin.zip) plug-in. After it is uploaded, click ```OK```. This is not necessary for Guardium Data Protection v12.0 and later.
+5. Click ```Upload File``` and select the offline [logstash-filter-teradatadb_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-teradatadb_guardium_plugin_filter.zip) plug-in. After it is uploaded, click ```OK```. This step is not necessary for Guardium Data Protection v12.0 and later.
 6. Click the Plus sign to open the ```Connector Configuration``` dialog box. 
 7. Type a name in the Connector name field.
 8. Update the input section to add the details from the [teradataJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-teradatadb-guardium/TeradataOverJdbcPackage/teradataJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide the details for database server name, username, and password that are required for connecting with JDBC.

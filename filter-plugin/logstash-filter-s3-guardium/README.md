@@ -3,7 +3,7 @@
 * Environment: AWS
 * Supported inputs: CloudWatch (pull), SQS (pull)
 * Supported Guardium versions:
-  * Guardium Data Protection: 11.3 and above
+  * Guardium Data Protection: 11.4 and above
     * Supported inputs:
       * Cloudwatch logs (pull)
       * SQS (pull)
@@ -150,28 +150,28 @@ grdapi add_domain_to_universal_connector_allowed_domain
 
 2. Go to `Configure Universal Connector`
 
-3. Select Connector template as Amazon S3 using CloudWatch
+3. If the audit logs are to be fetched from s3 directly,
+    1. Select Connector template as Amazon S3 using CloudWatch
 
- ![Connector configuration 1](/docs/images/cloudwatch/connector_configuration_1.png)
+       ![Connector configuration 1](/docs/images/cloudwatch/connector_configuration_1.png)
 
-4. Fill in the log group and the role_arn that were assigned to the ec2
+    2. Fill in the log group and the role_arn that were assigned to the ec2
 
- ![Connector configuration 2](/docs/images/cloudwatch/connector_configuration_2.png)
-5. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+       ![Connector configuration 2](/docs/images/cloudwatch/connector_configuration_2.png)
 
-## Contribute
+4.  Note :To configure SQS on AWS, follow the steps mentioned in the [SQS input plug-in](/input-plugin/logstash-input-sqs/README.md) readme file.</br>
+    If the audit logs are to be fetched from S3 directly,
+    1. Select **Amazon S3 using SQS** in **Connector template**.
 
-The documentation for the Logstash Java plug-ins is available [here](https://www.elastic.co/guide/en/logstash/current/contributing-java-plugin.html).
+       ![Connector configuration 3](/docs/images/cloudwatch/connector_configuration_3.png)
 
-You can enhance this filter and open a pull request with suggested changes - or you can use the project to create a different filter plug-in for Guardium that supports other data sources.
+    2. Fill in the queue name and relevant details
 
-To build and create an updated GEM of this filter plug-in which can be installed onto Logstash: 
-1. Build Logstash from the repository source.
-2. Create or edit _gradle.properties_ and add the LOGSTASH_CORE_PATH variable with the path to the logstash-core folder. For example: 
-    
-    ```LOGSTASH_CORE_PATH=/Users/taldan/logstash76/logstash-core```
+       ![Connector configuration 4](/docs/images/cloudwatch/connector_configuration_4.png)
 
-3. Run ```$ ./gradlew.unix gem --info``` to create the GEM (ensure you have JRuby installed beforehand, as described [here](https://www.ibm.com/docs/en/guardium/11.3?topic=connector-developing-plug-ins)).
+5. The "type" fields should match in input and filter configuration sections. This field should be unique for every individual connector added.
+6. Click **Save**. Guardium validates the new connector, and enables the universal connector if it was
+   disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 
 ## Configuring the Amazon S3 over Cloudwatch_logs in Guardium Insights

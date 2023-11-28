@@ -13,7 +13,7 @@
 1. Unified auditing must be enabled in an Oracle database that will be monitored by this method
 2. Download the Basic Instant client package from Oracle.
    **Note:** : In this release,only specific instance clients will be supported from starting v21.1.0.0.0 Download [here](https://download.oracle.com/otn_software/linux/instantclient/211000/oracle-instantclient-basic-21.1.0.0.0-1.x86_64.rpm)
-3. Download the OUA universal connector plug-in  `guardium-oua-uc.zip` from [here](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-oua-guardium/OracleUnifiedAuditPackage/OracleUnifiedAudit/guardium-oua-uc.zip)
+3. Download the OUA universal connector plug-in  `guardium-oua-uc.zip` from [here](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-oua-guardium/OracleUnifiedAuditPackage/OracleUnifiedAudit/guardium-oua-uc.zip). (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 4. A designated user for OUA UC should be created for Oracle database access. An existing user with sysdba privileges can also be used
 5. You must create a secret containing your OUA universal connector password.
    - Example: `grdapi universal_connector_keystore_add key=OUA_USER_PASS password=<PASSWORD>` where `<PASSWORD>` is the OUA universal connector user’s password for the database. `OUA_USER_PASS` will be used in the plug-in configuration as a variable for the password secret.
@@ -52,7 +52,9 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 
 3. On the collector, go to Setup > Tools and Views > Configure Universal Connector
 
-4. Click on the "UPLOAD” button and upload downloaded `oracle-instantclient-basic-21.1.0.0.0-1.x86_64.rpm` and then `guardium-oua-uc.zip`
+4. Click on the "UPLOAD” button and upload the downloaded `oracle-instantclient-basic-21.1.0.0.0-1.x86_64.rpm`.
+   
+6.  Then, upload the `guardium-oua-uc.zip` file. This step is not necessary for Guardium Data Protection v12.0 and later.
 
    5. Click on the "+". The Connector Configuration dialog opens.
 
@@ -63,7 +65,7 @@ Update the variables in Makefile for your environment's Java home and Logstash l
              ```
            pipe {
              type => "oua"
-             command => "${OUA_BINARY_PATH} -c ${THIRD_PARTY_PATH} -s ${THIRD_PARTY_PATH} -r 1 -t 1000 -p 10 -j <USER>/${OUA_USER_PASS}@<SERVER_ADDRESS>:<SERVER_PORT>/<INSTANCE_NAME>"
+             command => "${OUA_BINARY_PATH} -c ${THIRD_PARTY_PATH} -s ${THIRD_PARTY_PATH} -r 100 -t 1000 -p 10 -j <USER>/${OUA_USER_PASS}@<SERVER_ADDRESS>:<SERVER_PORT>/<INSTANCE_NAME>"
                          add_field => {"SERVER_ADDRESS" => "<Enter_Server_Address>"}
                              add_field => {"SERVER_PORT" => "<Enter_Server_Port>"} }
            ```
@@ -100,5 +102,5 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 - -j : output audits in JSON format
 
 ## Limitation
-
-Normally, the "statement type" attribute for the "FULL SQL" entity in Guardium reports shows us whether a full SQL statement is a prepared statement. However, because OUA doesn't give us information about whether a statement is a prepared statement or not, the "Statement type" attribute is not applicable for the OUA universal connector plug-in.
+- Normally, the "statement type" attribute for the "FULL SQL" entity in Guardium reports shows us whether a full SQL statement is a prepared statement. However, because OUA doesn't give us information about whether a statement is a prepared statement or not, the "Statement type" attribute is not applicable for the OUA universal connector plug-in.
+- The "record affected" field is not supported when using Oracle with the universal connector.

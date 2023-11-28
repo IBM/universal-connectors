@@ -7,7 +7,7 @@
       * Supported inputs:
         * Syslog (push)
         * Filebeat (push)
-        * MongoDB Atlas (pull)
+        * [MongoDB Atlas](../../input-plugin/logstash-input-mongo-atlas/README.md) (pull)
 		* IBM Cloud KafkaStreams (pull)
     * Guardium Insights: 3.2 and above
       * Supported inputs: 
@@ -343,14 +343,3 @@ In the input configuration section, refer to the Filebeat section.
 ### Not yet supported
 1. Support fields.
 2. Embedded documents as inner objects.
-
-
-## Contribute
-You can enhance this filter and open a pull request with suggested changes - or you can use the project to create a different filter plug-in for Guardium that supports other data sources.
-
-
-## References
-See [documentation for Logstash Java plug-ins](https://www.elastic.co/guide/en/logstash/current/contributing-java-plugin.html).
-
-See [Guardium Universal connector commons](https://www.github.com/IBM/guardium-universalconnector-commons) library for more details regarding the standard Guardium Record object.
-

@@ -68,11 +68,21 @@ public class Parser {
 		sessionLocator.setIpv6(false);
 
 		if (data.has(Constants.CLIENT_IP) && !data.get(Constants.CLIENT_IP).isJsonNull())
-			sessionLocator.setClientIp(data.get(Constants.CLIENT_IP).getAsString());
-		else
-			sessionLocator.setClientIp(Constants.NOT_AVAILABLE);
 
-		sessionLocator.setServerPort(Constants.NOT_AVAILABLE_INT);
+		{
+			String clientAdd = data.get(Constants.CLIENT_IP).getAsString();
+			if (clientAdd.equalsIgnoreCase("localhost") || clientAdd.equals("%")) {
+				sessionLocator.setClientIp(Constants.IP); // Set the appropriate IP for localhost
+			} else {
+				sessionLocator.setClientIp(clientAdd);
+			}
+		}
+		else {
+			sessionLocator.setClientIp(Constants.IP);
+		}
+
+		sessionLocator.setServerPort(Constants.PORT);
+		sessionLocator.setClientPort(Constants.PORT);
 		sessionLocator.setServerIp(Constants.IP);
 		sessionLocator.setClientIpv6(Constants.UNKNOWN_STRING);
 		sessionLocator.setServerIpv6(Constants.UNKNOWN_STRING);
@@ -88,7 +98,16 @@ public class Parser {
 		accessor.setDbProtocol(Constants.DB_PROTOCOL);
 		accessor.setServerType(Constants.SERVER_TYPE);
 		accessor.setServerHostName(data.get(Constants.SERVERHOSTNAME).getAsString());
-		accessor.setServiceName(Constants.UNKNOWN_STRING);
+
+		if (data.has(Constants.SERVER_INSTANCE) && !data.get(Constants.SERVER_INSTANCE).isJsonNull()) {
+			if (data.has(Constants.DB_NAME) && !data.get(Constants.DB_NAME).isJsonNull())
+				accessor.setServiceName(data.get(Constants.SERVER_INSTANCE).getAsString() + ":"
+						+ data.get(Constants.DB_NAME).getAsString());
+			else
+				accessor.setServiceName(
+						data.get(Constants.SERVER_INSTANCE).getAsString() + ":" + Constants.UNKNOWN_STRING);
+		}
+
 		accessor.setClientHostName(Constants.UNKNOWN_STRING);
 
 		if (data.has(Constants.DB_USER) && !data.get(Constants.DB_USER).isJsonNull())

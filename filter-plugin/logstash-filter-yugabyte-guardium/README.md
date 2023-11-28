@@ -15,8 +15,6 @@ The plug-in is free and open-source (Apache 2.0). The plug-in is written in Java
 Yugabyte DB re-uses Postgres Query language (PSQL) and Cassandra Query Language (CQL) just for database interactions. PSQL is renamed as `ysql` and CQL is renamed as `ycql`. However, the YB database engine is not built on Postgres or Cassandra. 
 Hence, a developer can take advantage of SQL syntax, NoSQL syntax, or both. Yugabyte is a distributed SQL database that supports distributed transactions.
 
-## 1. Configuring the Yugabyte database
-
 ### Procedure
 
 1. Install the flavor of Yugabyte database according to the environment by following the instructions in the documentation.(https://docs.yugabyte.com/stable/quick-start/).
@@ -53,11 +51,11 @@ contains all database-related log events.
    5. A detailed documentation can be 
    found [here](https://docs.yugabyte.com/preview/secure/audit-logging/audit-logging-ysql/#enable-audit-logging). <br/><br/>
 
-## 3. Viewing the audit logs
+## Viewing the audit logs
 
 To view the logs, go to the path `yb_data/logs` relative to Yugabyte installation directory.
 
-## 4. Configuring Filebeat to push logs to Guardium
+## Configuring Filebeat to push logs to Guardium
 
 ## a. Filebeat installation
 
@@ -167,7 +165,7 @@ content below in the snippet and change give the values of `target` and `port`,
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector identifies and parses received events, and then converts them to a standard Guardium format. The output of the universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Yugabyte template.
 
 ### Limitations
-When UC will start collecting data, It may show two STAP statuses in the pattern "postgres_<server-host-name>" and "cassandra_<server-host-name>" based on what type of logs it is collecting.
+When the universal collector starts to collect data, it may show two S-TAP statuses in the pattern "postgres_<server-host-name>" and "cassandra_<server-host-name>" based on what type of logs it is collecting.
 
 ### Before you begin
 * Configure the policies you require. See [policies](/docs/#policies) for more information.
@@ -197,6 +195,6 @@ every individual connector added.
 9. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. 
 After it is validated, it appears in the Configure Universal Connector page.
 
-## 5. Configuring the Yugabyte filters in Guardium Insights
+## Configuring the Yugabyte filters in Guardium Insights
 To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 For the input configuration step, refer to the [Filebeat section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#Filebeat-input-plug-in-configuration).

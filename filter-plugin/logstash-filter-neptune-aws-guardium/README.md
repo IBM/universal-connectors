@@ -15,14 +15,7 @@ Neptune plug-in supports the Apache TinkerPop Gremlin and W3C's SPARQL queries.
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for the Guardium universal connector.
 
 
-## 1. Configuring the AWS Neptune service/cluster
-
-### Procedure:
-
- 1. Go to https://console.aws.amazon.com/.
- 2. Search for and navigate to the AWS Neptune management Console. Click on _Launch Amazon  Neptune_.​
-
-## 2. Enabling the Neptune Audit extension
+## Enabling the Neptune Audit extension
 
 The only way to enable the audit logs is by setting the value from 0 to 1 in the parameter confuguration. After that, the audit logs will be enabled.
 
@@ -77,7 +70,7 @@ When you create a database instance, it is associated with the default parameter
 
  7. Finally, click on the Create database button. It will take a few minutes to finish the process. You can connect to this cluster when both the cluster and instance status show as Available.
 
-## 3. Viewing the Neptune Audit logs
+## Viewing the Neptune Audit logs
 
 The Neptune Audit can be seen via CloudWatch only.
 
@@ -103,9 +96,11 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 #### Procedure
 
  1. Log in to the Guardium API.
- 2. Issue these commands:<br>
-      • grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com <br>
-		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
+ 2. Issue these commands:
+    
+      • grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com 
+      
+      • grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
     
 
 #### Before you begin
@@ -114,22 +109,23 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * You must have permission for the S-Tap Management role. The admin user includes this role by  default.
 
-* Download the [guardium_logstash-offline-plugin-neptune.zip plug-in](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-neptune-aws-guardium/NeptuneOverCloudWatchPackage/Neptune/guardium_logstash-offline-plugin-neptune.zip). This is not necessary for Guardium Data Protection v12.0 and later.
+
+* Download the [logstash-filter-neptune_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-neptune_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+
 
 
 #### Procedure
 
  1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
  2. Enable the connector if it is already disabled, before uploading the UC.
- 3. Click Upload File and select the offline [guardium_logstash-offline-plugin-neptune.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-neptune-aws-guardium/NeptuneOverCloudWatchPackage/Neptune/guardium_logstash-offline-plugin-neptune.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v12.0 and later.
+ 3. Click Upload File and select the offline [logstash-filter-neptune_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-neptune_guardium_filter.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v12.0 and later.
  4. Click the Plus icon to open the Connector Configuration dialog box.
  5. Type a name in the Connector name field.
  6. Update the input section to add the details from [Neptune.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-neptune-aws-guardium/neptune.conf) file's input  part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
  7. Update the filter section to add the details from [Neptune.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-neptune-aws-guardium/neptune.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
  8. The _"type"_ field should match in the input and filter configuration sections. This field should be unique for every individual connector added.
- 9. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
-
-## 5. Limitations
+ 9. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+## Limitations
 
 1. The following important fields couldn't be mapped with Neptune audit logs
      - SourceProgram  : field is left blank since this information is not embedded in the  messages pulled from AWS Cloudwatch. 
@@ -138,7 +134,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
      - The Neptune audit log doesn’t include error logs, so in Guardium we will not be able to show this in the in SQL_ERROR & LOGIN_FAILED report.In cases of invalid queries, an error message will appear in the Guardium logs instead of records.
 
 	
-## 6. Configuring the AWS Neptune Guardium Logstash filters in Guardium Insights
+## Configuring the AWS Neptune Guardium Logstash filters in Guardium Insights
 
 To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
