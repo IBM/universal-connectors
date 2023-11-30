@@ -1,3 +1,4 @@
+filter-plugin/logstash-filter-cosmos-azure-guardium
 filter-plugin/logstash-filter-mongodb-guardium
 filter-plugin/logstash-filter-mysql-guardium
 filter-plugin/logstash-filter-s3-guardium
