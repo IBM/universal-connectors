@@ -1,0 +1,6131 @@
+{
+	"type": "grammar",
+	"rules": [
+		{
+			"type": "rule",
+			"name": "Grammar",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "rule_ref",
+							"name": "__"
+						},
+						{
+							"type": "labeled",
+							"label": "topLevelInitializer",
+							"expression": {
+								"type": "optional",
+								"expression": {
+									"type": "group",
+									"expression": {
+										"type": "sequence",
+										"elements": [
+											{
+												"type": "labeled",
+												"label": null,
+												"pick": true,
+												"expression": {
+													"type": "rule_ref",
+													"name": "TopLevelInitializer"
+												}
+											},
+											{
+												"type": "rule_ref",
+												"name": "__"
+											}
+										]
+									}
+								}
+							}
+						},
+						{
+							"type": "labeled",
+							"label": "initializer",
+							"expression": {
+								"type": "optional",
+								"expression": {
+									"type": "group",
+									"expression": {
+										"type": "sequence",
+										"elements": [
+											{
+												"type": "labeled",
+												"label": null,
+												"pick": true,
+												"expression": {
+													"type": "rule_ref",
+													"name": "Initializer"
+												}
+											},
+											{
+												"type": "rule_ref",
+												"name": "__"
+											}
+										]
+									}
+								}
+							}
+						},
+						{
+							"type": "labeled",
+							"label": "rules",
+							"expression": {
+								"type": "one_or_more",
+								"expression": {
+									"type": "group",
+									"expression": {
+										"type": "sequence",
+										"elements": [
+											{
+												"type": "labeled",
+												"label": null,
+												"pick": true,
+												"expression": {
+													"type": "rule_ref",
+													"name": "Rule"
+												}
+											},
+											{
+												"type": "rule_ref",
+												"name": "__"
+											}
+										]
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "TopLevelInitializer",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "literal",
+							"value": "{",
+							"ignoreCase": false
+						},
+						{
+							"type": "labeled",
+							"label": "code",
+							"expression": {
+								"type": "rule_ref",
+								"name": "CodeBlock"
+							}
+						},
+						{
+							"type": "literal",
+							"value": "}",
+							"ignoreCase": false
+						},
+						{
+							"type": "rule_ref",
+							"name": "EOS"
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Initializer",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "labeled",
+							"label": "code",
+							"expression": {
+								"type": "rule_ref",
+								"name": "CodeBlock"
+							}
+						},
+						{
+							"type": "rule_ref",
+							"name": "EOS"
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Rule",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "labeled",
+							"label": "name",
+							"expression": {
+								"type": "rule_ref",
+								"name": "IdentifierName"
+							}
+						},
+						{
+							"type": "rule_ref",
+							"name": "__"
+						},
+						{
+							"type": "labeled",
+							"label": "displayName",
+							"expression": {
+								"type": "optional",
+								"expression": {
+									"type": "group",
+									"expression": {
+										"type": "sequence",
+										"elements": [
+											{
+												"type": "labeled",
+												"label": null,
+												"pick": true,
+												"expression": {
+													"type": "rule_ref",
+													"name": "StringLiteral"
+												}
+											},
+											{
+												"type": "rule_ref",
+												"name": "__"
+											}
+										]
+									}
+								}
+							}
+						},
+						{
+							"type": "literal",
+							"value": "=",
+							"ignoreCase": false
+						},
+						{
+							"type": "rule_ref",
+							"name": "__"
+						},
+						{
+							"type": "labeled",
+							"label": "expression",
+							"expression": {
+								"type": "rule_ref",
+								"name": "ChoiceExpression"
+							}
+						},
+						{
+							"type": "rule_ref",
+							"name": "EOS"
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Expression",
+			"expression": {
+				"type": "rule_ref",
+				"name": "ChoiceExpression"
+			}
+		},
+		{
+			"type": "rule",
+			"name": "ChoiceExpression",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "labeled",
+							"label": "head",
+							"expression": {
+								"type": "rule_ref",
+								"name": "ActionExpression"
+							}
+						},
+						{
+							"type": "labeled",
+							"label": "tail",
+							"expression": {
+								"type": "zero_or_more",
+								"expression": {
+									"type": "group",
+									"expression": {
+										"type": "sequence",
+										"elements": [
+											{
+												"type": "rule_ref",
+												"name": "__"
+											},
+											{
+												"type": "literal",
+												"value": "/",
+												"ignoreCase": false
+											},
+											{
+												"type": "rule_ref",
+												"name": "__"
+											},
+											{
+												"type": "labeled",
+												"label": null,
+												"pick": true,
+												"expression": {
+													"type": "rule_ref",
+													"name": "ActionExpression"
+												}
+											}
+										]
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "ActionExpression",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "labeled",
+							"label": "expression",
+							"expression": {
+								"type": "rule_ref",
+								"name": "SequenceExpression"
+							}
+						},
+						{
+							"type": "labeled",
+							"label": "code",
+							"expression": {
+								"type": "optional",
+								"expression": {
+									"type": "group",
+									"expression": {
+										"type": "sequence",
+										"elements": [
+											{
+												"type": "rule_ref",
+												"name": "__"
+											},
+											{
+												"type": "labeled",
+												"label": null,
+												"pick": true,
+												"expression": {
+													"type": "rule_ref",
+													"name": "CodeBlock"
+												}
+											}
+										]
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "SequenceExpression",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "labeled",
+							"label": "head",
+							"expression": {
+								"type": "rule_ref",
+								"name": "LabeledExpression"
+							}
+						},
+						{
+							"type": "labeled",
+							"label": "tail",
+							"expression": {
+								"type": "zero_or_more",
+								"expression": {
+									"type": "group",
+									"expression": {
+										"type": "sequence",
+										"elements": [
+											{
+												"type": "rule_ref",
+												"name": "__"
+											},
+											{
+												"type": "labeled",
+												"label": null,
+												"pick": true,
+												"expression": {
+													"type": "rule_ref",
+													"name": "LabeledExpression"
+												}
+											}
+										]
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "LabeledExpression",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "action",
+						"expression": {
+							"type": "sequence",
+							"elements": [
+								{
+									"type": "labeled",
+									"label": "pluck",
+									"expression": {
+										"type": "rule_ref",
+										"name": "Pluck"
+									}
+								},
+								{
+									"type": "labeled",
+									"label": "label",
+									"expression": {
+										"type": "optional",
+										"expression": {
+											"type": "rule_ref",
+											"name": "LabelColon"
+										}
+									}
+								},
+								{
+									"type": "labeled",
+									"label": "expression",
+									"expression": {
+										"type": "rule_ref",
+										"name": "PrefixedExpression"
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "action",
+						"expression": {
+							"type": "sequence",
+							"elements": [
+								{
+									"type": "labeled",
+									"label": "label",
+									"expression": {
+										"type": "rule_ref",
+										"name": "LabelColon"
+									}
+								},
+								{
+									"type": "rule_ref",
+									"name": "__"
+								},
+								{
+									"type": "labeled",
+									"label": "expression",
+									"expression": {
+										"type": "rule_ref",
+										"name": "PrefixedExpression"
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "rule_ref",
+						"name": "PrefixedExpression"
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Pluck",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "literal",
+					"value": "@",
+					"ignoreCase": false
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "LabelColon",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "labeled",
+							"label": "label",
+							"expression": {
+								"type": "rule_ref",
+								"name": "IdentifierName"
+							}
+						},
+						{
+							"type": "rule_ref",
+							"name": "__"
+						},
+						{
+							"type": "literal",
+							"value": ":",
+							"ignoreCase": false
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "PrefixedExpression",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "action",
+						"expression": {
+							"type": "sequence",
+							"elements": [
+								{
+									"type": "labeled",
+									"label": "operator",
+									"expression": {
+										"type": "rule_ref",
+										"name": "PrefixedOperator"
+									}
+								},
+								{
+									"type": "rule_ref",
+									"name": "__"
+								},
+								{
+									"type": "labeled",
+									"label": "expression",
+									"expression": {
+										"type": "rule_ref",
+										"name": "SuffixedExpression"
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "rule_ref",
+						"name": "SuffixedExpression"
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "PrefixedOperator",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "literal",
+						"value": "$",
+						"ignoreCase": false
+					},
+					{
+						"type": "literal",
+						"value": "&",
+						"ignoreCase": false
+					},
+					{
+						"type": "literal",
+						"value": "!",
+						"ignoreCase": false
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "SuffixedExpression",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "action",
+						"expression": {
+							"type": "sequence",
+							"elements": [
+								{
+									"type": "labeled",
+									"label": "expression",
+									"expression": {
+										"type": "rule_ref",
+										"name": "PrimaryExpression"
+									}
+								},
+								{
+									"type": "rule_ref",
+									"name": "__"
+								},
+								{
+									"type": "labeled",
+									"label": "operator",
+									"expression": {
+										"type": "rule_ref",
+										"name": "SuffixedOperator"
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "rule_ref",
+						"name": "PrimaryExpression"
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "SuffixedOperator",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "literal",
+						"value": "?",
+						"ignoreCase": false
+					},
+					{
+						"type": "literal",
+						"value": "*",
+						"ignoreCase": false
+					},
+					{
+						"type": "literal",
+						"value": "+",
+						"ignoreCase": false
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "PrimaryExpression",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "rule_ref",
+						"name": "LiteralMatcher"
+					},
+					{
+						"type": "rule_ref",
+						"name": "CharacterClassMatcher"
+					},
+					{
+						"type": "rule_ref",
+						"name": "AnyMatcher"
+					},
+					{
+						"type": "rule_ref",
+						"name": "RuleReferenceExpression"
+					},
+					{
+						"type": "rule_ref",
+						"name": "SemanticPredicateExpression"
+					},
+					{
+						"type": "action",
+						"expression": {
+							"type": "sequence",
+							"elements": [
+								{
+									"type": "literal",
+									"value": "(",
+									"ignoreCase": false
+								},
+								{
+									"type": "rule_ref",
+									"name": "__"
+								},
+								{
+									"type": "labeled",
+									"label": "expression",
+									"expression": {
+										"type": "rule_ref",
+										"name": "ChoiceExpression"
+									}
+								},
+								{
+									"type": "rule_ref",
+									"name": "__"
+								},
+								{
+									"type": "literal",
+									"value": ")",
+									"ignoreCase": false
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "RuleReferenceExpression",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "labeled",
+							"label": "name",
+							"expression": {
+								"type": "rule_ref",
+								"name": "IdentifierName"
+							}
+						},
+						{
+							"type": "simple_not",
+							"expression": {
+								"type": "group",
+								"expression": {
+									"type": "sequence",
+									"elements": [
+										{
+											"type": "rule_ref",
+											"name": "__"
+										},
+										{
+											"type": "optional",
+											"expression": {
+												"type": "group",
+												"expression": {
+													"type": "sequence",
+													"elements": [
+														{
+															"type": "rule_ref",
+															"name": "StringLiteral"
+														},
+														{
+															"type": "rule_ref",
+															"name": "__"
+														}
+													]
+												}
+											}
+										},
+										{
+											"type": "literal",
+											"value": "=",
+											"ignoreCase": false
+										}
+									]
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "SemanticPredicateExpression",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "labeled",
+							"label": "operator",
+							"expression": {
+								"type": "rule_ref",
+								"name": "SemanticPredicateOperator"
+							}
+						},
+						{
+							"type": "rule_ref",
+							"name": "__"
+						},
+						{
+							"type": "labeled",
+							"label": "code",
+							"expression": {
+								"type": "rule_ref",
+								"name": "CodeBlock"
+							}
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "SemanticPredicateOperator",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "literal",
+						"value": "&",
+						"ignoreCase": false
+					},
+					{
+						"type": "literal",
+						"value": "!",
+						"ignoreCase": false
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "SourceCharacter",
+			"expression": {
+				"type": "any"
+			}
+		},
+		{
+			"type": "rule",
+			"name": "WhiteSpace",
+			"expression": {
+				"type": "named",
+				"name": "whitespace",
+				"expression": {
+					"type": "choice",
+					"alternatives": [
+						{
+							"type": "literal",
+							"value": "\t",
+							"ignoreCase": false
+						},
+						{
+							"type": "literal",
+							"value": "\u000b",
+							"ignoreCase": false
+						},
+						{
+							"type": "literal",
+							"value": "\f",
+							"ignoreCase": false
+						},
+						{
+							"type": "literal",
+							"value": " ",
+							"ignoreCase": false
+						},
+						{
+							"type": "literal",
+							"value": " ",
+							"ignoreCase": false
+						},
+						{
+							"type": "literal",
+							"value": "﻿",
+							"ignoreCase": false
+						},
+						{
+							"type": "rule_ref",
+							"name": "Zs"
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "LineTerminator",
+			"expression": {
+				"type": "class",
+				"parts": [
+					"\n",
+					"\r",
+					" ",
+					" "
+				],
+				"inverted": false,
+				"ignoreCase": false
+			}
+		},
+		{
+			"type": "rule",
+			"name": "LineTerminatorSequence",
+			"expression": {
+				"type": "named",
+				"name": "end of line",
+				"expression": {
+					"type": "choice",
+					"alternatives": [
+						{
+							"type": "literal",
+							"value": "\n",
+							"ignoreCase": false
+						},
+						{
+							"type": "literal",
+							"value": "\r\n",
+							"ignoreCase": false
+						},
+						{
+							"type": "literal",
+							"value": "\r",
+							"ignoreCase": false
+						},
+						{
+							"type": "literal",
+							"value": " ",
+							"ignoreCase": false
+						},
+						{
+							"type": "literal",
+							"value": " ",
+							"ignoreCase": false
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Comment",
+			"expression": {
+				"type": "named",
+				"name": "comment",
+				"expression": {
+					"type": "choice",
+					"alternatives": [
+						{
+							"type": "rule_ref",
+							"name": "MultiLineComment"
+						},
+						{
+							"type": "rule_ref",
+							"name": "SingleLineComment"
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "MultiLineComment",
+			"expression": {
+				"type": "sequence",
+				"elements": [
+					{
+						"type": "literal",
+						"value": "/*",
+						"ignoreCase": false
+					},
+					{
+						"type": "zero_or_more",
+						"expression": {
+							"type": "group",
+							"expression": {
+								"type": "sequence",
+								"elements": [
+									{
+										"type": "simple_not",
+										"expression": {
+											"type": "literal",
+											"value": "*/",
+											"ignoreCase": false
+										}
+									},
+									{
+										"type": "rule_ref",
+										"name": "SourceCharacter"
+									}
+								]
+							}
+						}
+					},
+					{
+						"type": "literal",
+						"value": "*/",
+						"ignoreCase": false
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "MultiLineCommentNoLineTerminator",
+			"expression": {
+				"type": "sequence",
+				"elements": [
+					{
+						"type": "literal",
+						"value": "/*",
+						"ignoreCase": false
+					},
+					{
+						"type": "zero_or_more",
+						"expression": {
+							"type": "group",
+							"expression": {
+								"type": "sequence",
+								"elements": [
+									{
+										"type": "simple_not",
+										"expression": {
+											"type": "choice",
+											"alternatives": [
+												{
+													"type": "literal",
+													"value": "*/",
+													"ignoreCase": false
+												},
+												{
+													"type": "rule_ref",
+													"name": "LineTerminator"
+												}
+											]
+										}
+									},
+									{
+										"type": "rule_ref",
+										"name": "SourceCharacter"
+									}
+								]
+							}
+						}
+					},
+					{
+						"type": "literal",
+						"value": "*/",
+						"ignoreCase": false
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "SingleLineComment",
+			"expression": {
+				"type": "sequence",
+				"elements": [
+					{
+						"type": "literal",
+						"value": "//",
+						"ignoreCase": false
+					},
+					{
+						"type": "zero_or_more",
+						"expression": {
+							"type": "group",
+							"expression": {
+								"type": "sequence",
+								"elements": [
+									{
+										"type": "simple_not",
+										"expression": {
+											"type": "rule_ref",
+											"name": "LineTerminator"
+										}
+									},
+									{
+										"type": "rule_ref",
+										"name": "SourceCharacter"
+									}
+								]
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "IdentifierName",
+			"expression": {
+				"type": "named",
+				"name": "identifier",
+				"expression": {
+					"type": "action",
+					"expression": {
+						"type": "sequence",
+						"elements": [
+							{
+								"type": "labeled",
+								"label": "head",
+								"expression": {
+									"type": "rule_ref",
+									"name": "IdentifierStart"
+								}
+							},
+							{
+								"type": "labeled",
+								"label": "tail",
+								"expression": {
+									"type": "zero_or_more",
+									"expression": {
+										"type": "rule_ref",
+										"name": "IdentifierPart"
+									}
+								}
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "IdentifierStart",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "rule_ref",
+						"name": "UnicodeLetter"
+					},
+					{
+						"type": "literal",
+						"value": "$",
+						"ignoreCase": false
+					},
+					{
+						"type": "literal",
+						"value": "_",
+						"ignoreCase": false
+					},
+					{
+						"type": "sequence",
+						"elements": [
+							{
+								"type": "literal",
+								"value": "\\",
+								"ignoreCase": false
+							},
+							{
+								"type": "labeled",
+								"label": null,
+								"pick": true,
+								"expression": {
+									"type": "rule_ref",
+									"name": "UnicodeEscapeSequence"
+								}
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "IdentifierPart",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "rule_ref",
+						"name": "IdentifierStart"
+					},
+					{
+						"type": "rule_ref",
+						"name": "UnicodeCombiningMark"
+					},
+					{
+						"type": "rule_ref",
+						"name": "UnicodeDigit"
+					},
+					{
+						"type": "rule_ref",
+						"name": "UnicodeConnectorPunctuation"
+					},
+					{
+						"type": "literal",
+						"value": "‌",
+						"ignoreCase": false
+					},
+					{
+						"type": "literal",
+						"value": "‍",
+						"ignoreCase": false
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "UnicodeLetter",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "rule_ref",
+						"name": "Lu"
+					},
+					{
+						"type": "rule_ref",
+						"name": "Ll"
+					},
+					{
+						"type": "rule_ref",
+						"name": "Lt"
+					},
+					{
+						"type": "rule_ref",
+						"name": "Lm"
+					},
+					{
+						"type": "rule_ref",
+						"name": "Lo"
+					},
+					{
+						"type": "rule_ref",
+						"name": "Nl"
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "UnicodeCombiningMark",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "rule_ref",
+						"name": "Mn"
+					},
+					{
+						"type": "rule_ref",
+						"name": "Mc"
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "UnicodeDigit",
+			"expression": {
+				"type": "rule_ref",
+				"name": "Nd"
+			}
+		},
+		{
+			"type": "rule",
+			"name": "UnicodeConnectorPunctuation",
+			"expression": {
+				"type": "rule_ref",
+				"name": "Pc"
+			}
+		},
+		{
+			"type": "rule",
+			"name": "LiteralMatcher",
+			"expression": {
+				"type": "named",
+				"name": "literal",
+				"expression": {
+					"type": "action",
+					"expression": {
+						"type": "sequence",
+						"elements": [
+							{
+								"type": "labeled",
+								"label": "value",
+								"expression": {
+									"type": "rule_ref",
+									"name": "StringLiteral"
+								}
+							},
+							{
+								"type": "labeled",
+								"label": "ignoreCase",
+								"expression": {
+									"type": "optional",
+									"expression": {
+										"type": "literal",
+										"value": "i",
+										"ignoreCase": false
+									}
+								}
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "StringLiteral",
+			"expression": {
+				"type": "named",
+				"name": "string",
+				"expression": {
+					"type": "choice",
+					"alternatives": [
+						{
+							"type": "action",
+							"expression": {
+								"type": "sequence",
+								"elements": [
+									{
+										"type": "literal",
+										"value": "\"",
+										"ignoreCase": false
+									},
+									{
+										"type": "labeled",
+										"label": "chars",
+										"expression": {
+											"type": "zero_or_more",
+											"expression": {
+												"type": "rule_ref",
+												"name": "DoubleStringCharacter"
+											}
+										}
+									},
+									{
+										"type": "literal",
+										"value": "\"",
+										"ignoreCase": false
+									}
+								]
+							}
+						},
+						{
+							"type": "action",
+							"expression": {
+								"type": "sequence",
+								"elements": [
+									{
+										"type": "literal",
+										"value": "'",
+										"ignoreCase": false
+									},
+									{
+										"type": "labeled",
+										"label": "chars",
+										"expression": {
+											"type": "zero_or_more",
+											"expression": {
+												"type": "rule_ref",
+												"name": "SingleStringCharacter"
+											}
+										}
+									},
+									{
+										"type": "literal",
+										"value": "'",
+										"ignoreCase": false
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "DoubleStringCharacter",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "text",
+						"expression": {
+							"type": "group",
+							"expression": {
+								"type": "sequence",
+								"elements": [
+									{
+										"type": "simple_not",
+										"expression": {
+											"type": "choice",
+											"alternatives": [
+												{
+													"type": "literal",
+													"value": "\"",
+													"ignoreCase": false
+												},
+												{
+													"type": "literal",
+													"value": "\\",
+													"ignoreCase": false
+												},
+												{
+													"type": "rule_ref",
+													"name": "LineTerminator"
+												}
+											]
+										}
+									},
+									{
+										"type": "rule_ref",
+										"name": "SourceCharacter"
+									}
+								]
+							}
+						}
+					},
+					{
+						"type": "sequence",
+						"elements": [
+							{
+								"type": "literal",
+								"value": "\\",
+								"ignoreCase": false
+							},
+							{
+								"type": "labeled",
+								"label": null,
+								"pick": true,
+								"expression": {
+									"type": "rule_ref",
+									"name": "EscapeSequence"
+								}
+							}
+						]
+					},
+					{
+						"type": "rule_ref",
+						"name": "LineContinuation"
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "SingleStringCharacter",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "text",
+						"expression": {
+							"type": "group",
+							"expression": {
+								"type": "sequence",
+								"elements": [
+									{
+										"type": "simple_not",
+										"expression": {
+											"type": "choice",
+											"alternatives": [
+												{
+													"type": "literal",
+													"value": "'",
+													"ignoreCase": false
+												},
+												{
+													"type": "literal",
+													"value": "\\",
+													"ignoreCase": false
+												},
+												{
+													"type": "rule_ref",
+													"name": "LineTerminator"
+												}
+											]
+										}
+									},
+									{
+										"type": "rule_ref",
+										"name": "SourceCharacter"
+									}
+								]
+							}
+						}
+					},
+					{
+						"type": "sequence",
+						"elements": [
+							{
+								"type": "literal",
+								"value": "\\",
+								"ignoreCase": false
+							},
+							{
+								"type": "labeled",
+								"label": null,
+								"pick": true,
+								"expression": {
+									"type": "rule_ref",
+									"name": "EscapeSequence"
+								}
+							}
+						]
+					},
+					{
+						"type": "rule_ref",
+						"name": "LineContinuation"
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "CharacterClassMatcher",
+			"expression": {
+				"type": "named",
+				"name": "character class",
+				"expression": {
+					"type": "action",
+					"expression": {
+						"type": "sequence",
+						"elements": [
+							{
+								"type": "literal",
+								"value": "[",
+								"ignoreCase": false
+							},
+							{
+								"type": "labeled",
+								"label": "inverted",
+								"expression": {
+									"type": "optional",
+									"expression": {
+										"type": "literal",
+										"value": "^",
+										"ignoreCase": false
+									}
+								}
+							},
+							{
+								"type": "labeled",
+								"label": "parts",
+								"expression": {
+									"type": "zero_or_more",
+									"expression": {
+										"type": "choice",
+										"alternatives": [
+											{
+												"type": "rule_ref",
+												"name": "ClassCharacterRange"
+											},
+											{
+												"type": "rule_ref",
+												"name": "ClassCharacter"
+											}
+										]
+									}
+								}
+							},
+							{
+								"type": "literal",
+								"value": "]",
+								"ignoreCase": false
+							},
+							{
+								"type": "labeled",
+								"label": "ignoreCase",
+								"expression": {
+									"type": "optional",
+									"expression": {
+										"type": "literal",
+										"value": "i",
+										"ignoreCase": false
+									}
+								}
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "ClassCharacterRange",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "labeled",
+							"label": "begin",
+							"expression": {
+								"type": "rule_ref",
+								"name": "ClassCharacter"
+							}
+						},
+						{
+							"type": "literal",
+							"value": "-",
+							"ignoreCase": false
+						},
+						{
+							"type": "labeled",
+							"label": "end",
+							"expression": {
+								"type": "rule_ref",
+								"name": "ClassCharacter"
+							}
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "ClassCharacter",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "text",
+						"expression": {
+							"type": "group",
+							"expression": {
+								"type": "sequence",
+								"elements": [
+									{
+										"type": "simple_not",
+										"expression": {
+											"type": "choice",
+											"alternatives": [
+												{
+													"type": "literal",
+													"value": "]",
+													"ignoreCase": false
+												},
+												{
+													"type": "literal",
+													"value": "\\",
+													"ignoreCase": false
+												},
+												{
+													"type": "rule_ref",
+													"name": "LineTerminator"
+												}
+											]
+										}
+									},
+									{
+										"type": "rule_ref",
+										"name": "SourceCharacter"
+									}
+								]
+							}
+						}
+					},
+					{
+						"type": "sequence",
+						"elements": [
+							{
+								"type": "literal",
+								"value": "\\",
+								"ignoreCase": false
+							},
+							{
+								"type": "labeled",
+								"label": null,
+								"pick": true,
+								"expression": {
+									"type": "rule_ref",
+									"name": "EscapeSequence"
+								}
+							}
+						]
+					},
+					{
+						"type": "rule_ref",
+						"name": "LineContinuation"
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "LineContinuation",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "literal",
+							"value": "\\",
+							"ignoreCase": false
+						},
+						{
+							"type": "rule_ref",
+							"name": "LineTerminatorSequence"
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "EscapeSequence",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "rule_ref",
+						"name": "CharacterEscapeSequence"
+					},
+					{
+						"type": "action",
+						"expression": {
+							"type": "sequence",
+							"elements": [
+								{
+									"type": "literal",
+									"value": "0",
+									"ignoreCase": false
+								},
+								{
+									"type": "simple_not",
+									"expression": {
+										"type": "rule_ref",
+										"name": "DecimalDigit"
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "rule_ref",
+						"name": "HexEscapeSequence"
+					},
+					{
+						"type": "rule_ref",
+						"name": "UnicodeEscapeSequence"
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "CharacterEscapeSequence",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "rule_ref",
+						"name": "SingleEscapeCharacter"
+					},
+					{
+						"type": "rule_ref",
+						"name": "NonEscapeCharacter"
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "SingleEscapeCharacter",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "literal",
+						"value": "'",
+						"ignoreCase": false
+					},
+					{
+						"type": "literal",
+						"value": "\"",
+						"ignoreCase": false
+					},
+					{
+						"type": "literal",
+						"value": "\\",
+						"ignoreCase": false
+					},
+					{
+						"type": "action",
+						"expression": {
+							"type": "literal",
+							"value": "b",
+							"ignoreCase": false
+						}
+					},
+					{
+						"type": "action",
+						"expression": {
+							"type": "literal",
+							"value": "f",
+							"ignoreCase": false
+						}
+					},
+					{
+						"type": "action",
+						"expression": {
+							"type": "literal",
+							"value": "n",
+							"ignoreCase": false
+						}
+					},
+					{
+						"type": "action",
+						"expression": {
+							"type": "literal",
+							"value": "r",
+							"ignoreCase": false
+						}
+					},
+					{
+						"type": "action",
+						"expression": {
+							"type": "literal",
+							"value": "t",
+							"ignoreCase": false
+						}
+					},
+					{
+						"type": "action",
+						"expression": {
+							"type": "literal",
+							"value": "v",
+							"ignoreCase": false
+						}
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "NonEscapeCharacter",
+			"expression": {
+				"type": "text",
+				"expression": {
+					"type": "group",
+					"expression": {
+						"type": "sequence",
+						"elements": [
+							{
+								"type": "simple_not",
+								"expression": {
+									"type": "choice",
+									"alternatives": [
+										{
+											"type": "rule_ref",
+											"name": "EscapeCharacter"
+										},
+										{
+											"type": "rule_ref",
+											"name": "LineTerminator"
+										}
+									]
+								}
+							},
+							{
+								"type": "rule_ref",
+								"name": "SourceCharacter"
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "EscapeCharacter",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "rule_ref",
+						"name": "SingleEscapeCharacter"
+					},
+					{
+						"type": "rule_ref",
+						"name": "DecimalDigit"
+					},
+					{
+						"type": "literal",
+						"value": "x",
+						"ignoreCase": false
+					},
+					{
+						"type": "literal",
+						"value": "u",
+						"ignoreCase": false
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "HexEscapeSequence",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "literal",
+							"value": "x",
+							"ignoreCase": false
+						},
+						{
+							"type": "labeled",
+							"label": "digits",
+							"expression": {
+								"type": "text",
+								"expression": {
+									"type": "group",
+									"expression": {
+										"type": "sequence",
+										"elements": [
+											{
+												"type": "rule_ref",
+												"name": "HexDigit"
+											},
+											{
+												"type": "rule_ref",
+												"name": "HexDigit"
+											}
+										]
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "UnicodeEscapeSequence",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "literal",
+							"value": "u",
+							"ignoreCase": false
+						},
+						{
+							"type": "labeled",
+							"label": "digits",
+							"expression": {
+								"type": "text",
+								"expression": {
+									"type": "group",
+									"expression": {
+										"type": "sequence",
+										"elements": [
+											{
+												"type": "rule_ref",
+												"name": "HexDigit"
+											},
+											{
+												"type": "rule_ref",
+												"name": "HexDigit"
+											},
+											{
+												"type": "rule_ref",
+												"name": "HexDigit"
+											},
+											{
+												"type": "rule_ref",
+												"name": "HexDigit"
+											}
+										]
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "DecimalDigit",
+			"expression": {
+				"type": "class",
+				"parts": [
+					[
+						"0",
+						"9"
+					]
+				],
+				"inverted": false,
+				"ignoreCase": false
+			}
+		},
+		{
+			"type": "rule",
+			"name": "HexDigit",
+			"expression": {
+				"type": "class",
+				"parts": [
+					[
+						"0",
+						"9"
+					],
+					[
+						"a",
+						"f"
+					]
+				],
+				"inverted": false,
+				"ignoreCase": true
+			}
+		},
+		{
+			"type": "rule",
+			"name": "AnyMatcher",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "literal",
+					"value": ".",
+					"ignoreCase": false
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "CodeBlock",
+			"expression": {
+				"type": "named",
+				"name": "code block",
+				"expression": {
+					"type": "sequence",
+					"elements": [
+						{
+							"type": "literal",
+							"value": "{",
+							"ignoreCase": false
+						},
+						{
+							"type": "labeled",
+							"label": null,
+							"pick": true,
+							"expression": {
+								"type": "rule_ref",
+								"name": "BareCodeBlock"
+							}
+						},
+						{
+							"type": "literal",
+							"value": "}",
+							"ignoreCase": false
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "BareCodeBlock",
+			"expression": {
+				"type": "action",
+				"expression": {
+					"type": "labeled",
+					"label": "code",
+					"expression": {
+						"type": "rule_ref",
+						"name": "Code"
+					}
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Code",
+			"expression": {
+				"type": "text",
+				"expression": {
+					"type": "zero_or_more",
+					"expression": {
+						"type": "choice",
+						"alternatives": [
+							{
+								"type": "one_or_more",
+								"expression": {
+									"type": "group",
+									"expression": {
+										"type": "sequence",
+										"elements": [
+											{
+												"type": "simple_not",
+												"expression": {
+													"type": "class",
+													"parts": [
+														"{",
+														"}"
+													],
+													"inverted": false,
+													"ignoreCase": false
+												}
+											},
+											{
+												"type": "rule_ref",
+												"name": "SourceCharacter"
+											}
+										]
+									}
+								}
+							},
+							{
+								"type": "sequence",
+								"elements": [
+									{
+										"type": "literal",
+										"value": "{",
+										"ignoreCase": false
+									},
+									{
+										"type": "rule_ref",
+										"name": "Code"
+									},
+									{
+										"type": "literal",
+										"value": "}",
+										"ignoreCase": false
+									}
+								]
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Ll",
+			"expression": {
+				"type": "class",
+				"parts": [
+					[
+						"a",
+						"z"
+					],
+					"µ",
+					[
+						"ß",
+						"ö"
+					],
+					[
+						"ø",
+						"ÿ"
+					],
+					"ā",
+					"ă",
+					"ą",
+					"ć",
+					"ĉ",
+					"ċ",
+					"č",
+					"ď",
+					"đ",
+					"ē",
+					"ĕ",
+					"ė",
+					"ę",
+					"ě",
+					"ĝ",
+					"ğ",
+					"ġ",
+					"ģ",
+					"ĥ",
+					"ħ",
+					"ĩ",
+					"ī",
+					"ĭ",
+					"į",
+					"ı",
+					"ĳ",
+					"ĵ",
+					[
+						"ķ",
+						"ĸ"
+					],
+					"ĺ",
+					"ļ",
+					"ľ",
+					"ŀ",
+					"ł",
+					"ń",
+					"ņ",
+					[
+						"ň",
+						"ŉ"
+					],
+					"ŋ",
+					"ō",
+					"ŏ",
+					"ő",
+					"œ",
+					"ŕ",
+					"ŗ",
+					"ř",
+					"ś",
+					"ŝ",
+					"ş",
+					"š",
+					"ţ",
+					"ť",
+					"ŧ",
+					"ũ",
+					"ū",
+					"ŭ",
+					"ů",
+					"ű",
+					"ų",
+					"ŵ",
+					"ŷ",
+					"ź",
+					"ż",
+					[
+						"ž",
+						"ƀ"
+					],
+					"ƃ",
+					"ƅ",
+					"ƈ",
+					[
+						"ƌ",
+						"ƍ"
+					],
+					"ƒ",
+					"ƕ",
+					[
+						"ƙ",
+						"ƛ"
+					],
+					"ƞ",
+					"ơ",
+					"ƣ",
+					"ƥ",
+					"ƨ",
+					[
+						"ƪ",
+						"ƫ"
+					],
+					"ƭ",
+					"ư",
+					"ƴ",
+					"ƶ",
+					[
+						"ƹ",
+						"ƺ"
+					],
+					[
+						"ƽ",
+						"ƿ"
+					],
+					"ǆ",
+					"ǉ",
+					"ǌ",
+					"ǎ",
+					"ǐ",
+					"ǒ",
+					"ǔ",
+					"ǖ",
+					"ǘ",
+					"ǚ",
+					[
+						"ǜ",
+						"ǝ"
+					],
+					"ǟ",
+					"ǡ",
+					"ǣ",
+					"ǥ",
+					"ǧ",
+					"ǩ",
+					"ǫ",
+					"ǭ",
+					[
+						"ǯ",
+						"ǰ"
+					],
+					"ǳ",
+					"ǵ",
+					"ǹ",
+					"ǻ",
+					"ǽ",
+					"ǿ",
+					"ȁ",
+					"ȃ",
+					"ȅ",
+					"ȇ",
+					"ȉ",
+					"ȋ",
+					"ȍ",
+					"ȏ",
+					"ȑ",
+					"ȓ",
+					"ȕ",
+					"ȗ",
+					"ș",
+					"ț",
+					"ȝ",
+					"ȟ",
+					"ȡ",
+					"ȣ",
+					"ȥ",
+					"ȧ",
+					"ȩ",
+					"ȫ",
+					"ȭ",
+					"ȯ",
+					"ȱ",
+					[
+						"ȳ",
+						"ȹ"
+					],
+					"ȼ",
+					[
+						"ȿ",
+						"ɀ"
+					],
+					"ɂ",
+					"ɇ",
+					"ɉ",
+					"ɋ",
+					"ɍ",
+					[
+						"ɏ",
+						"ʓ"
+					],
+					[
+						"ʕ",
+						"ʯ"
+					],
+					"ͱ",
+					"ͳ",
+					"ͷ",
+					[
+						"ͻ",
+						"ͽ"
+					],
+					"ΐ",
+					[
+						"ά",
+						"ώ"
+					],
+					[
+						"ϐ",
+						"ϑ"
+					],
+					[
+						"ϕ",
+						"ϗ"
+					],
+					"ϙ",
+					"ϛ",
+					"ϝ",
+					"ϟ",
+					"ϡ",
+					"ϣ",
+					"ϥ",
+					"ϧ",
+					"ϩ",
+					"ϫ",
+					"ϭ",
+					[
+						"ϯ",
+						"ϳ"
+					],
+					"ϵ",
+					"ϸ",
+					[
+						"ϻ",
+						"ϼ"
+					],
+					[
+						"а",
+						"џ"
+					],
+					"ѡ",
+					"ѣ",
+					"ѥ",
+					"ѧ",
+					"ѩ",
+					"ѫ",
+					"ѭ",
+					"ѯ",
+					"ѱ",
+					"ѳ",
+					"ѵ",
+					"ѷ",
+					"ѹ",
+					"ѻ",
+					"ѽ",
+					"ѿ",
+					"ҁ",
+					"ҋ",
+					"ҍ",
+					"ҏ",
+					"ґ",
+					"ғ",
+					"ҕ",
+					"җ",
+					"ҙ",
+					"қ",
+					"ҝ",
+					"ҟ",
+					"ҡ",
+					"ң",
+					"ҥ",
+					"ҧ",
+					"ҩ",
+					"ҫ",
+					"ҭ",
+					"ү",
+					"ұ",
+					"ҳ",
+					"ҵ",
+					"ҷ",
+					"ҹ",
+					"һ",
+					"ҽ",
+					"ҿ",
+					"ӂ",
+					"ӄ",
+					"ӆ",
+					"ӈ",
+					"ӊ",
+					"ӌ",
+					[
+						"ӎ",
+						"ӏ"
+					],
+					"ӑ",
+					"ӓ",
+					"ӕ",
+					"ӗ",
+					"ә",
+					"ӛ",
+					"ӝ",
+					"ӟ",
+					"ӡ",
+					"ӣ",
+					"ӥ",
+					"ӧ",
+					"ө",
+					"ӫ",
+					"ӭ",
+					"ӯ",
+					"ӱ",
+					"ӳ",
+					"ӵ",
+					"ӷ",
+					"ӹ",
+					"ӻ",
+					"ӽ",
+					"ӿ",
+					"ԁ",
+					"ԃ",
+					"ԅ",
+					"ԇ",
+					"ԉ",
+					"ԋ",
+					"ԍ",
+					"ԏ",
+					"ԑ",
+					"ԓ",
+					"ԕ",
+					"ԗ",
+					"ԙ",
+					"ԛ",
+					"ԝ",
+					"ԟ",
+					"ԡ",
+					"ԣ",
+					"ԥ",
+					"ԧ",
+					"ԩ",
+					"ԫ",
+					"ԭ",
+					"ԯ",
+					[
+						"ա",
+						"և"
+					],
+					[
+						"ᏸ",
+						"ᏽ"
+					],
+					[
+						"ᴀ",
+						"ᴫ"
+					],
+					[
+						"ᵫ",
+						"ᵷ"
+					],
+					[
+						"ᵹ",
+						"ᶚ"
+					],
+					"ḁ",
+					"ḃ",
+					"ḅ",
+					"ḇ",
+					"ḉ",
+					"ḋ",
+					"ḍ",
+					"ḏ",
+					"ḑ",
+					"ḓ",
+					"ḕ",
+					"ḗ",
+					"ḙ",
+					"ḛ",
+					"ḝ",
+					"ḟ",
+					"ḡ",
+					"ḣ",
+					"ḥ",
+					"ḧ",
+					"ḩ",
+					"ḫ",
+					"ḭ",
+					"ḯ",
+					"ḱ",
+					"ḳ",
+					"ḵ",
+					"ḷ",
+					"ḹ",
+					"ḻ",
+					"ḽ",
+					"ḿ",
+					"ṁ",
+					"ṃ",
+					"ṅ",
+					"ṇ",
+					"ṉ",
+					"ṋ",
+					"ṍ",
+					"ṏ",
+					"ṑ",
+					"ṓ",
+					"ṕ",
+					"ṗ",
+					"ṙ",
+					"ṛ",
+					"ṝ",
+					"ṟ",
+					"ṡ",
+					"ṣ",
+					"ṥ",
+					"ṧ",
+					"ṩ",
+					"ṫ",
+					"ṭ",
+					"ṯ",
+					"ṱ",
+					"ṳ",
+					"ṵ",
+					"ṷ",
+					"ṹ",
+					"ṻ",
+					"ṽ",
+					"ṿ",
+					"ẁ",
+					"ẃ",
+					"ẅ",
+					"ẇ",
+					"ẉ",
+					"ẋ",
+					"ẍ",
+					"ẏ",
+					"ẑ",
+					"ẓ",
+					[
+						"ẕ",
+						"ẝ"
+					],
+					"ẟ",
+					"ạ",
+					"ả",
+					"ấ",
+					"ầ",
+					"ẩ",
+					"ẫ",
+					"ậ",
+					"ắ",
+					"ằ",
+					"ẳ",
+					"ẵ",
+					"ặ",
+					"ẹ",
+					"ẻ",
+					"ẽ",
+					"ế",
+					"ề",
+					"ể",
+					"ễ",
+					"ệ",
+					"ỉ",
+					"ị",
+					"ọ",
+					"ỏ",
+					"ố",
+					"ồ",
+					"ổ",
+					"ỗ",
+					"ộ",
+					"ớ",
+					"ờ",
+					"ở",
+					"ỡ",
+					"ợ",
+					"ụ",
+					"ủ",
+					"ứ",
+					"ừ",
+					"ử",
+					"ữ",
+					"ự",
+					"ỳ",
+					"ỵ",
+					"ỷ",
+					"ỹ",
+					"ỻ",
+					"ỽ",
+					[
+						"ỿ",
+						"ἇ"
+					],
+					[
+						"ἐ",
+						"ἕ"
+					],
+					[
+						"ἠ",
+						"ἧ"
+					],
+					[
+						"ἰ",
+						"ἷ"
+					],
+					[
+						"ὀ",
+						"ὅ"
+					],
+					[
+						"ὐ",
+						"ὗ"
+					],
+					[
+						"ὠ",
+						"ὧ"
+					],
+					[
+						"ὰ",
+						"ώ"
+					],
+					[
+						"ᾀ",
+						"ᾇ"
+					],
+					[
+						"ᾐ",
+						"ᾗ"
+					],
+					[
+						"ᾠ",
+						"ᾧ"
+					],
+					[
+						"ᾰ",
+						"ᾴ"
+					],
+					[
+						"ᾶ",
+						"ᾷ"
+					],
+					"ι",
+					[
+						"ῂ",
+						"ῄ"
+					],
+					[
+						"ῆ",
+						"ῇ"
+					],
+					[
+						"ῐ",
+						"ΐ"
+					],
+					[
+						"ῖ",
+						"ῗ"
+					],
+					[
+						"ῠ",
+						"ῧ"
+					],
+					[
+						"ῲ",
+						"ῴ"
+					],
+					[
+						"ῶ",
+						"ῷ"
+					],
+					"ℊ",
+					[
+						"ℎ",
+						"ℏ"
+					],
+					"ℓ",
+					"ℯ",
+					"ℴ",
+					"ℹ",
+					[
+						"ℼ",
+						"ℽ"
+					],
+					[
+						"ⅆ",
+						"ⅉ"
+					],
+					"ⅎ",
+					"ↄ",
+					[
+						"ⰰ",
+						"ⱞ"
+					],
+					"ⱡ",
+					[
+						"ⱥ",
+						"ⱦ"
+					],
+					"ⱨ",
+					"ⱪ",
+					"ⱬ",
+					"ⱱ",
+					[
+						"ⱳ",
+						"ⱴ"
+					],
+					[
+						"ⱶ",
+						"ⱻ"
+					],
+					"ⲁ",
+					"ⲃ",
+					"ⲅ",
+					"ⲇ",
+					"ⲉ",
+					"ⲋ",
+					"ⲍ",
+					"ⲏ",
+					"ⲑ",
+					"ⲓ",
+					"ⲕ",
+					"ⲗ",
+					"ⲙ",
+					"ⲛ",
+					"ⲝ",
+					"ⲟ",
+					"ⲡ",
+					"ⲣ",
+					"ⲥ",
+					"ⲧ",
+					"ⲩ",
+					"ⲫ",
+					"ⲭ",
+					"ⲯ",
+					"ⲱ",
+					"ⲳ",
+					"ⲵ",
+					"ⲷ",
+					"ⲹ",
+					"ⲻ",
+					"ⲽ",
+					"ⲿ",
+					"ⳁ",
+					"ⳃ",
+					"ⳅ",
+					"ⳇ",
+					"ⳉ",
+					"ⳋ",
+					"ⳍ",
+					"ⳏ",
+					"ⳑ",
+					"ⳓ",
+					"ⳕ",
+					"ⳗ",
+					"ⳙ",
+					"ⳛ",
+					"ⳝ",
+					"ⳟ",
+					"ⳡ",
+					[
+						"ⳣ",
+						"ⳤ"
+					],
+					"ⳬ",
+					"ⳮ",
+					"ⳳ",
+					[
+						"ⴀ",
+						"ⴥ"
+					],
+					"ⴧ",
+					"ⴭ",
+					"ꙁ",
+					"ꙃ",
+					"ꙅ",
+					"ꙇ",
+					"ꙉ",
+					"ꙋ",
+					"ꙍ",
+					"ꙏ",
+					"ꙑ",
+					"ꙓ",
+					"ꙕ",
+					"ꙗ",
+					"ꙙ",
+					"ꙛ",
+					"ꙝ",
+					"ꙟ",
+					"ꙡ",
+					"ꙣ",
+					"ꙥ",
+					"ꙧ",
+					"ꙩ",
+					"ꙫ",
+					"ꙭ",
+					"ꚁ",
+					"ꚃ",
+					"ꚅ",
+					"ꚇ",
+					"ꚉ",
+					"ꚋ",
+					"ꚍ",
+					"ꚏ",
+					"ꚑ",
+					"ꚓ",
+					"ꚕ",
+					"ꚗ",
+					"ꚙ",
+					"ꚛ",
+					"ꜣ",
+					"ꜥ",
+					"ꜧ",
+					"ꜩ",
+					"ꜫ",
+					"ꜭ",
+					[
+						"ꜯ",
+						"ꜱ"
+					],
+					"ꜳ",
+					"ꜵ",
+					"ꜷ",
+					"ꜹ",
+					"ꜻ",
+					"ꜽ",
+					"ꜿ",
+					"ꝁ",
+					"ꝃ",
+					"ꝅ",
+					"ꝇ",
+					"ꝉ",
+					"ꝋ",
+					"ꝍ",
+					"ꝏ",
+					"ꝑ",
+					"ꝓ",
+					"ꝕ",
+					"ꝗ",
+					"ꝙ",
+					"ꝛ",
+					"ꝝ",
+					"ꝟ",
+					"ꝡ",
+					"ꝣ",
+					"ꝥ",
+					"ꝧ",
+					"ꝩ",
+					"ꝫ",
+					"ꝭ",
+					"ꝯ",
+					[
+						"ꝱ",
+						"ꝸ"
+					],
+					"ꝺ",
+					"ꝼ",
+					"ꝿ",
+					"ꞁ",
+					"ꞃ",
+					"ꞅ",
+					"ꞇ",
+					"ꞌ",
+					"ꞎ",
+					"ꞑ",
+					[
+						"ꞓ",
+						"ꞕ"
+					],
+					"ꞗ",
+					"ꞙ",
+					"ꞛ",
+					"ꞝ",
+					"ꞟ",
+					"ꞡ",
+					"ꞣ",
+					"ꞥ",
+					"ꞧ",
+					"ꞩ",
+					"ꞵ",
+					"ꞷ",
+					"ꟺ",
+					[
+						"ꬰ",
+						"ꭚ"
+					],
+					[
+						"ꭠ",
+						"ꭥ"
+					],
+					[
+						"ꭰ",
+						"ꮿ"
+					],
+					[
+						"ﬀ",
+						"ﬆ"
+					],
+					[
+						"ﬓ",
+						"ﬗ"
+					],
+					[
+						"ａ",
+						"ｚ"
+					]
+				],
+				"inverted": false,
+				"ignoreCase": false
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Lm",
+			"expression": {
+				"type": "class",
+				"parts": [
+					[
+						"ʰ",
+						"ˁ"
+					],
+					[
+						"ˆ",
+						"ˑ"
+					],
+					[
+						"ˠ",
+						"ˤ"
+					],
+					"ˬ",
+					"ˮ",
+					"ʹ",
+					"ͺ",
+					"ՙ",
+					"ـ",
+					[
+						"ۥ",
+						"ۦ"
+					],
+					[
+						"ߴ",
+						"ߵ"
+					],
+					"ߺ",
+					"ࠚ",
+					"ࠤ",
+					"ࠨ",
+					"ॱ",
+					"ๆ",
+					"ໆ",
+					"ჼ",
+					"ៗ",
+					"ᡃ",
+					"ᪧ",
+					[
+						"ᱸ",
+						"ᱽ"
+					],
+					[
+						"ᴬ",
+						"ᵪ"
+					],
+					"ᵸ",
+					[
+						"ᶛ",
+						"ᶿ"
+					],
+					"ⁱ",
+					"ⁿ",
+					[
+						"ₐ",
+						"ₜ"
+					],
+					[
+						"ⱼ",
+						"ⱽ"
+					],
+					"ⵯ",
+					"ⸯ",
+					"々",
+					[
+						"〱",
+						"〵"
+					],
+					"〻",
+					[
+						"ゝ",
+						"ゞ"
+					],
+					[
+						"ー",
+						"ヾ"
+					],
+					"ꀕ",
+					[
+						"ꓸ",
+						"ꓽ"
+					],
+					"ꘌ",
+					"ꙿ",
+					[
+						"ꚜ",
+						"ꚝ"
+					],
+					[
+						"ꜗ",
+						"ꜟ"
+					],
+					"ꝰ",
+					"ꞈ",
+					[
+						"ꟸ",
+						"ꟹ"
+					],
+					"ꧏ",
+					"ꧦ",
+					"ꩰ",
+					"ꫝ",
+					[
+						"ꫳ",
+						"ꫴ"
+					],
+					[
+						"ꭜ",
+						"ꭟ"
+					],
+					"ｰ",
+					[
+						"ﾞ",
+						"ﾟ"
+					]
+				],
+				"inverted": false,
+				"ignoreCase": false
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Lo",
+			"expression": {
+				"type": "class",
+				"parts": [
+					"ª",
+					"º",
+					"ƻ",
+					[
+						"ǀ",
+						"ǃ"
+					],
+					"ʔ",
+					[
+						"א",
+						"ת"
+					],
+					[
+						"װ",
+						"ײ"
+					],
+					[
+						"ؠ",
+						"ؿ"
+					],
+					[
+						"ف",
+						"ي"
+					],
+					[
+						"ٮ",
+						"ٯ"
+					],
+					[
+						"ٱ",
+						"ۓ"
+					],
+					"ە",
+					[
+						"ۮ",
+						"ۯ"
+					],
+					[
+						"ۺ",
+						"ۼ"
+					],
+					"ۿ",
+					"ܐ",
+					[
+						"ܒ",
+						"ܯ"
+					],
+					[
+						"ݍ",
+						"ޥ"
+					],
+					"ޱ",
+					[
+						"ߊ",
+						"ߪ"
+					],
+					[
+						"ࠀ",
+						"ࠕ"
+					],
+					[
+						"ࡀ",
+						"ࡘ"
+					],
+					[
+						"ࢠ",
+						"ࢴ"
+					],
+					[
+						"ऄ",
+						"ह"
+					],
+					"ऽ",
+					"ॐ",
+					[
+						"क़",
+						"ॡ"
+					],
+					[
+						"ॲ",
+						"ঀ"
+					],
+					[
+						"অ",
+						"ঌ"
+					],
+					[
+						"এ",
+						"ঐ"
+					],
+					[
+						"ও",
+						"ন"
+					],
+					[
+						"প",
+						"র"
+					],
+					"ল",
+					[
+						"শ",
+						"হ"
+					],
+					"ঽ",
+					"ৎ",
+					[
+						"ড়",
+						"ঢ়"
+					],
+					[
+						"য়",
+						"ৡ"
+					],
+					[
+						"ৰ",
+						"ৱ"
+					],
+					[
+						"ਅ",
+						"ਊ"
+					],
+					[
+						"ਏ",
+						"ਐ"
+					],
+					[
+						"ਓ",
+						"ਨ"
+					],
+					[
+						"ਪ",
+						"ਰ"
+					],
+					[
+						"ਲ",
+						"ਲ਼"
+					],
+					[
+						"ਵ",
+						"ਸ਼"
+					],
+					[
+						"ਸ",
+						"ਹ"
+					],
+					[
+						"ਖ਼",
+						"ੜ"
+					],
+					"ਫ਼",
+					[
+						"ੲ",
+						"ੴ"
+					],
+					[
+						"અ",
+						"ઍ"
+					],
+					[
+						"એ",
+						"ઑ"
+					],
+					[
+						"ઓ",
+						"ન"
+					],
+					[
+						"પ",
+						"ર"
+					],
+					[
+						"લ",
+						"ળ"
+					],
+					[
+						"વ",
+						"હ"
+					],
+					"ઽ",
+					"ૐ",
+					[
+						"ૠ",
+						"ૡ"
+					],
+					"ૹ",
+					[
+						"ଅ",
+						"ଌ"
+					],
+					[
+						"ଏ",
+						"ଐ"
+					],
+					[
+						"ଓ",
+						"ନ"
+					],
+					[
+						"ପ",
+						"ର"
+					],
+					[
+						"ଲ",
+						"ଳ"
+					],
+					[
+						"ଵ",
+						"ହ"
+					],
+					"ଽ",
+					[
+						"ଡ଼",
+						"ଢ଼"
+					],
+					[
+						"ୟ",
+						"ୡ"
+					],
+					"ୱ",
+					"ஃ",
+					[
+						"அ",
+						"ஊ"
+					],
+					[
+						"எ",
+						"ஐ"
+					],
+					[
+						"ஒ",
+						"க"
+					],
+					[
+						"ங",
+						"ச"
+					],
+					"ஜ",
+					[
+						"ஞ",
+						"ட"
+					],
+					[
+						"ண",
+						"த"
+					],
+					[
+						"ந",
+						"ப"
+					],
+					[
+						"ம",
+						"ஹ"
+					],
+					"ௐ",
+					[
+						"అ",
+						"ఌ"
+					],
+					[
+						"ఎ",
+						"ఐ"
+					],
+					[
+						"ఒ",
+						"న"
+					],
+					[
+						"ప",
+						"హ"
+					],
+					"ఽ",
+					[
+						"ౘ",
+						"ౚ"
+					],
+					[
+						"ౠ",
+						"ౡ"
+					],
+					[
+						"ಅ",
+						"ಌ"
+					],
+					[
+						"ಎ",
+						"ಐ"
+					],
+					[
+						"ಒ",
+						"ನ"
+					],
+					[
+						"ಪ",
+						"ಳ"
+					],
+					[
+						"ವ",
+						"ಹ"
+					],
+					"ಽ",
+					"ೞ",
+					[
+						"ೠ",
+						"ೡ"
+					],
+					[
+						"ೱ",
+						"ೲ"
+					],
+					[
+						"അ",
+						"ഌ"
+					],
+					[
+						"എ",
+						"ഐ"
+					],
+					[
+						"ഒ",
+						"ഺ"
+					],
+					"ഽ",
+					"ൎ",
+					[
+						"ൟ",
+						"ൡ"
+					],
+					[
+						"ൺ",
+						"ൿ"
+					],
+					[
+						"අ",
+						"ඖ"
+					],
+					[
+						"ක",
+						"න"
+					],
+					[
+						"ඳ",
+						"ර"
+					],
+					"ල",
+					[
+						"ව",
+						"ෆ"
+					],
+					[
+						"ก",
+						"ะ"
+					],
+					[
+						"า",
+						"ำ"
+					],
+					[
+						"เ",
+						"ๅ"
+					],
+					[
+						"ກ",
+						"ຂ"
+					],
+					"ຄ",
+					[
+						"ງ",
+						"ຈ"
+					],
+					"ຊ",
+					"ຍ",
+					[
+						"ດ",
+						"ທ"
+					],
+					[
+						"ນ",
+						"ຟ"
+					],
+					[
+						"ມ",
+						"ຣ"
+					],
+					"ລ",
+					"ວ",
+					[
+						"ສ",
+						"ຫ"
+					],
+					[
+						"ອ",
+						"ະ"
+					],
+					[
+						"າ",
+						"ຳ"
+					],
+					"ຽ",
+					[
+						"ເ",
+						"ໄ"
+					],
+					[
+						"ໜ",
+						"ໟ"
+					],
+					"ༀ",
+					[
+						"ཀ",
+						"ཇ"
+					],
+					[
+						"ཉ",
+						"ཬ"
+					],
+					[
+						"ྈ",
+						"ྌ"
+					],
+					[
+						"က",
+						"ဪ"
+					],
+					"ဿ",
+					[
+						"ၐ",
+						"ၕ"
+					],
+					[
+						"ၚ",
+						"ၝ"
+					],
+					"ၡ",
+					[
+						"ၥ",
+						"ၦ"
+					],
+					[
+						"ၮ",
+						"ၰ"
+					],
+					[
+						"ၵ",
+						"ႁ"
+					],
+					"ႎ",
+					[
+						"ა",
+						"ჺ"
+					],
+					[
+						"ჽ",
+						"ቈ"
+					],
+					[
+						"ቊ",
+						"ቍ"
+					],
+					[
+						"ቐ",
+						"ቖ"
+					],
+					"ቘ",
+					[
+						"ቚ",
+						"ቝ"
+					],
+					[
+						"በ",
+						"ኈ"
+					],
+					[
+						"ኊ",
+						"ኍ"
+					],
+					[
+						"ነ",
+						"ኰ"
+					],
+					[
+						"ኲ",
+						"ኵ"
+					],
+					[
+						"ኸ",
+						"ኾ"
+					],
+					"ዀ",
+					[
+						"ዂ",
+						"ዅ"
+					],
+					[
+						"ወ",
+						"ዖ"
+					],
+					[
+						"ዘ",
+						"ጐ"
+					],
+					[
+						"ጒ",
+						"ጕ"
+					],
+					[
+						"ጘ",
+						"ፚ"
+					],
+					[
+						"ᎀ",
+						"ᎏ"
+					],
+					[
+						"ᐁ",
+						"ᙬ"
+					],
+					[
+						"ᙯ",
+						"ᙿ"
+					],
+					[
+						"ᚁ",
+						"ᚚ"
+					],
+					[
+						"ᚠ",
+						"ᛪ"
+					],
+					[
+						"ᛱ",
+						"ᛸ"
+					],
+					[
+						"ᜀ",
+						"ᜌ"
+					],
+					[
+						"ᜎ",
+						"ᜑ"
+					],
+					[
+						"ᜠ",
+						"ᜱ"
+					],
+					[
+						"ᝀ",
+						"ᝑ"
+					],
+					[
+						"ᝠ",
+						"ᝬ"
+					],
+					[
+						"ᝮ",
+						"ᝰ"
+					],
+					[
+						"ក",
+						"ឳ"
+					],
+					"ៜ",
+					[
+						"ᠠ",
+						"ᡂ"
+					],
+					[
+						"ᡄ",
+						"ᡷ"
+					],
+					[
+						"ᢀ",
+						"ᢨ"
+					],
+					"ᢪ",
+					[
+						"ᢰ",
+						"ᣵ"
+					],
+					[
+						"ᤀ",
+						"ᤞ"
+					],
+					[
+						"ᥐ",
+						"ᥭ"
+					],
+					[
+						"ᥰ",
+						"ᥴ"
+					],
+					[
+						"ᦀ",
+						"ᦫ"
+					],
+					[
+						"ᦰ",
+						"ᧉ"
+					],
+					[
+						"ᨀ",
+						"ᨖ"
+					],
+					[
+						"ᨠ",
+						"ᩔ"
+					],
+					[
+						"ᬅ",
+						"ᬳ"
+					],
+					[
+						"ᭅ",
+						"ᭋ"
+					],
+					[
+						"ᮃ",
+						"ᮠ"
+					],
+					[
+						"ᮮ",
+						"ᮯ"
+					],
+					[
+						"ᮺ",
+						"ᯥ"
+					],
+					[
+						"ᰀ",
+						"ᰣ"
+					],
+					[
+						"ᱍ",
+						"ᱏ"
+					],
+					[
+						"ᱚ",
+						"ᱷ"
+					],
+					[
+						"ᳩ",
+						"ᳬ"
+					],
+					[
+						"ᳮ",
+						"ᳱ"
+					],
+					[
+						"ᳵ",
+						"ᳶ"
+					],
+					[
+						"ℵ",
+						"ℸ"
+					],
+					[
+						"ⴰ",
+						"ⵧ"
+					],
+					[
+						"ⶀ",
+						"ⶖ"
+					],
+					[
+						"ⶠ",
+						"ⶦ"
+					],
+					[
+						"ⶨ",
+						"ⶮ"
+					],
+					[
+						"ⶰ",
+						"ⶶ"
+					],
+					[
+						"ⶸ",
+						"ⶾ"
+					],
+					[
+						"ⷀ",
+						"ⷆ"
+					],
+					[
+						"ⷈ",
+						"ⷎ"
+					],
+					[
+						"ⷐ",
+						"ⷖ"
+					],
+					[
+						"ⷘ",
+						"ⷞ"
+					],
+					"〆",
+					"〼",
+					[
+						"ぁ",
+						"ゖ"
+					],
+					"ゟ",
+					[
+						"ァ",
+						"ヺ"
+					],
+					"ヿ",
+					[
+						"ㄅ",
+						"ㄭ"
+					],
+					[
+						"ㄱ",
+						"ㆎ"
+					],
+					[
+						"ㆠ",
+						"ㆺ"
+					],
+					[
+						"ㇰ",
+						"ㇿ"
+					],
+					[
+						"㐀",
+						"䶵"
+					],
+					[
+						"一",
+						"鿕"
+					],
+					[
+						"ꀀ",
+						"ꀔ"
+					],
+					[
+						"ꀖ",
+						"ꒌ"
+					],
+					[
+						"ꓐ",
+						"ꓷ"
+					],
+					[
+						"ꔀ",
+						"ꘋ"
+					],
+					[
+						"ꘐ",
+						"ꘟ"
+					],
+					[
+						"ꘪ",
+						"ꘫ"
+					],
+					"ꙮ",
+					[
+						"ꚠ",
+						"ꛥ"
+					],
+					"ꞏ",
+					"ꟷ",
+					[
+						"ꟻ",
+						"ꠁ"
+					],
+					[
+						"ꠃ",
+						"ꠅ"
+					],
+					[
+						"ꠇ",
+						"ꠊ"
+					],
+					[
+						"ꠌ",
+						"ꠢ"
+					],
+					[
+						"ꡀ",
+						"ꡳ"
+					],
+					[
+						"ꢂ",
+						"ꢳ"
+					],
+					[
+						"ꣲ",
+						"ꣷ"
+					],
+					"ꣻ",
+					"ꣽ",
+					[
+						"ꤊ",
+						"ꤥ"
+					],
+					[
+						"ꤰ",
+						"ꥆ"
+					],
+					[
+						"ꥠ",
+						"ꥼ"
+					],
+					[
+						"ꦄ",
+						"ꦲ"
+					],
+					[
+						"ꧠ",
+						"ꧤ"
+					],
+					[
+						"ꧧ",
+						"ꧯ"
+					],
+					[
+						"ꧺ",
+						"ꧾ"
+					],
+					[
+						"ꨀ",
+						"ꨨ"
+					],
+					[
+						"ꩀ",
+						"ꩂ"
+					],
+					[
+						"ꩄ",
+						"ꩋ"
+					],
+					[
+						"ꩠ",
+						"ꩯ"
+					],
+					[
+						"ꩱ",
+						"ꩶ"
+					],
+					"ꩺ",
+					[
+						"ꩾ",
+						"ꪯ"
+					],
+					"ꪱ",
+					[
+						"ꪵ",
+						"ꪶ"
+					],
+					[
+						"ꪹ",
+						"ꪽ"
+					],
+					"ꫀ",
+					"ꫂ",
+					[
+						"ꫛ",
+						"ꫜ"
+					],
+					[
+						"ꫠ",
+						"ꫪ"
+					],
+					"ꫲ",
+					[
+						"ꬁ",
+						"ꬆ"
+					],
+					[
+						"ꬉ",
+						"ꬎ"
+					],
+					[
+						"ꬑ",
+						"ꬖ"
+					],
+					[
+						"ꬠ",
+						"ꬦ"
+					],
+					[
+						"ꬨ",
+						"ꬮ"
+					],
+					[
+						"ꯀ",
+						"ꯢ"
+					],
+					[
+						"가",
+						"힣"
+					],
+					[
+						"ힰ",
+						"ퟆ"
+					],
+					[
+						"ퟋ",
+						"ퟻ"
+					],
+					[
+						"豈",
+						"舘"
+					],
+					[
+						"並",
+						"龎"
+					],
+					"יִ",
+					[
+						"ײַ",
+						"ﬨ"
+					],
+					[
+						"שׁ",
+						"זּ"
+					],
+					[
+						"טּ",
+						"לּ"
+					],
+					"מּ",
+					[
+						"נּ",
+						"סּ"
+					],
+					[
+						"ףּ",
+						"פּ"
+					],
+					[
+						"צּ",
+						"ﮱ"
+					],
+					[
+						"ﯓ",
+						"ﴽ"
+					],
+					[
+						"ﵐ",
+						"ﶏ"
+					],
+					[
+						"ﶒ",
+						"ﷇ"
+					],
+					[
+						"ﷰ",
+						"ﷻ"
+					],
+					[
+						"ﹰ",
+						"ﹴ"
+					],
+					[
+						"ﹶ",
+						"ﻼ"
+					],
+					[
+						"ｦ",
+						"ｯ"
+					],
+					[
+						"ｱ",
+						"ﾝ"
+					],
+					[
+						"ﾠ",
+						"ﾾ"
+					],
+					[
+						"ￂ",
+						"ￇ"
+					],
+					[
+						"ￊ",
+						"ￏ"
+					],
+					[
+						"ￒ",
+						"ￗ"
+					],
+					[
+						"ￚ",
+						"ￜ"
+					]
+				],
+				"inverted": false,
+				"ignoreCase": false
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Lt",
+			"expression": {
+				"type": "class",
+				"parts": [
+					"ǅ",
+					"ǈ",
+					"ǋ",
+					"ǲ",
+					[
+						"ᾈ",
+						"ᾏ"
+					],
+					[
+						"ᾘ",
+						"ᾟ"
+					],
+					[
+						"ᾨ",
+						"ᾯ"
+					],
+					"ᾼ",
+					"ῌ",
+					"ῼ"
+				],
+				"inverted": false,
+				"ignoreCase": false
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Lu",
+			"expression": {
+				"type": "class",
+				"parts": [
+					[
+						"A",
+						"Z"
+					],
+					[
+						"À",
+						"Ö"
+					],
+					[
+						"Ø",
+						"Þ"
+					],
+					"Ā",
+					"Ă",
+					"Ą",
+					"Ć",
+					"Ĉ",
+					"Ċ",
+					"Č",
+					"Ď",
+					"Đ",
+					"Ē",
+					"Ĕ",
+					"Ė",
+					"Ę",
+					"Ě",
+					"Ĝ",
+					"Ğ",
+					"Ġ",
+					"Ģ",
+					"Ĥ",
+					"Ħ",
+					"Ĩ",
+					"Ī",
+					"Ĭ",
+					"Į",
+					"İ",
+					"Ĳ",
+					"Ĵ",
+					"Ķ",
+					"Ĺ",
+					"Ļ",
+					"Ľ",
+					"Ŀ",
+					"Ł",
+					"Ń",
+					"Ņ",
+					"Ň",
+					"Ŋ",
+					"Ō",
+					"Ŏ",
+					"Ő",
+					"Œ",
+					"Ŕ",
+					"Ŗ",
+					"Ř",
+					"Ś",
+					"Ŝ",
+					"Ş",
+					"Š",
+					"Ţ",
+					"Ť",
+					"Ŧ",
+					"Ũ",
+					"Ū",
+					"Ŭ",
+					"Ů",
+					"Ű",
+					"Ų",
+					"Ŵ",
+					"Ŷ",
+					[
+						"Ÿ",
+						"Ź"
+					],
+					"Ż",
+					"Ž",
+					[
+						"Ɓ",
+						"Ƃ"
+					],
+					"Ƅ",
+					[
+						"Ɔ",
+						"Ƈ"
+					],
+					[
+						"Ɖ",
+						"Ƌ"
+					],
+					[
+						"Ǝ",
+						"Ƒ"
+					],
+					[
+						"Ɠ",
+						"Ɣ"
+					],
+					[
+						"Ɩ",
+						"Ƙ"
+					],
+					[
+						"Ɯ",
+						"Ɲ"
+					],
+					[
+						"Ɵ",
+						"Ơ"
+					],
+					"Ƣ",
+					"Ƥ",
+					[
+						"Ʀ",
+						"Ƨ"
+					],
+					"Ʃ",
+					"Ƭ",
+					[
+						"Ʈ",
+						"Ư"
+					],
+					[
+						"Ʊ",
+						"Ƴ"
+					],
+					"Ƶ",
+					[
+						"Ʒ",
+						"Ƹ"
+					],
+					"Ƽ",
+					"Ǆ",
+					"Ǉ",
+					"Ǌ",
+					"Ǎ",
+					"Ǐ",
+					"Ǒ",
+					"Ǔ",
+					"Ǖ",
+					"Ǘ",
+					"Ǚ",
+					"Ǜ",
+					"Ǟ",
+					"Ǡ",
+					"Ǣ",
+					"Ǥ",
+					"Ǧ",
+					"Ǩ",
+					"Ǫ",
+					"Ǭ",
+					"Ǯ",
+					"Ǳ",
+					"Ǵ",
+					[
+						"Ƕ",
+						"Ǹ"
+					],
+					"Ǻ",
+					"Ǽ",
+					"Ǿ",
+					"Ȁ",
+					"Ȃ",
+					"Ȅ",
+					"Ȇ",
+					"Ȉ",
+					"Ȋ",
+					"Ȍ",
+					"Ȏ",
+					"Ȑ",
+					"Ȓ",
+					"Ȕ",
+					"Ȗ",
+					"Ș",
+					"Ț",
+					"Ȝ",
+					"Ȟ",
+					"Ƞ",
+					"Ȣ",
+					"Ȥ",
+					"Ȧ",
+					"Ȩ",
+					"Ȫ",
+					"Ȭ",
+					"Ȯ",
+					"Ȱ",
+					"Ȳ",
+					[
+						"Ⱥ",
+						"Ȼ"
+					],
+					[
+						"Ƚ",
+						"Ⱦ"
+					],
+					"Ɂ",
+					[
+						"Ƀ",
+						"Ɇ"
+					],
+					"Ɉ",
+					"Ɋ",
+					"Ɍ",
+					"Ɏ",
+					"Ͱ",
+					"Ͳ",
+					"Ͷ",
+					"Ϳ",
+					"Ά",
+					[
+						"Έ",
+						"Ί"
+					],
+					"Ό",
+					[
+						"Ύ",
+						"Ώ"
+					],
+					[
+						"Α",
+						"Ρ"
+					],
+					[
+						"Σ",
+						"Ϋ"
+					],
+					"Ϗ",
+					[
+						"ϒ",
+						"ϔ"
+					],
+					"Ϙ",
+					"Ϛ",
+					"Ϝ",
+					"Ϟ",
+					"Ϡ",
+					"Ϣ",
+					"Ϥ",
+					"Ϧ",
+					"Ϩ",
+					"Ϫ",
+					"Ϭ",
+					"Ϯ",
+					"ϴ",
+					"Ϸ",
+					[
+						"Ϲ",
+						"Ϻ"
+					],
+					[
+						"Ͻ",
+						"Я"
+					],
+					"Ѡ",
+					"Ѣ",
+					"Ѥ",
+					"Ѧ",
+					"Ѩ",
+					"Ѫ",
+					"Ѭ",
+					"Ѯ",
+					"Ѱ",
+					"Ѳ",
+					"Ѵ",
+					"Ѷ",
+					"Ѹ",
+					"Ѻ",
+					"Ѽ",
+					"Ѿ",
+					"Ҁ",
+					"Ҋ",
+					"Ҍ",
+					"Ҏ",
+					"Ґ",
+					"Ғ",
+					"Ҕ",
+					"Җ",
+					"Ҙ",
+					"Қ",
+					"Ҝ",
+					"Ҟ",
+					"Ҡ",
+					"Ң",
+					"Ҥ",
+					"Ҧ",
+					"Ҩ",
+					"Ҫ",
+					"Ҭ",
+					"Ү",
+					"Ұ",
+					"Ҳ",
+					"Ҵ",
+					"Ҷ",
+					"Ҹ",
+					"Һ",
+					"Ҽ",
+					"Ҿ",
+					[
+						"Ӏ",
+						"Ӂ"
+					],
+					"Ӄ",
+					"Ӆ",
+					"Ӈ",
+					"Ӊ",
+					"Ӌ",
+					"Ӎ",
+					"Ӑ",
+					"Ӓ",
+					"Ӕ",
+					"Ӗ",
+					"Ә",
+					"Ӛ",
+					"Ӝ",
+					"Ӟ",
+					"Ӡ",
+					"Ӣ",
+					"Ӥ",
+					"Ӧ",
+					"Ө",
+					"Ӫ",
+					"Ӭ",
+					"Ӯ",
+					"Ӱ",
+					"Ӳ",
+					"Ӵ",
+					"Ӷ",
+					"Ӹ",
+					"Ӻ",
+					"Ӽ",
+					"Ӿ",
+					"Ԁ",
+					"Ԃ",
+					"Ԅ",
+					"Ԇ",
+					"Ԉ",
+					"Ԋ",
+					"Ԍ",
+					"Ԏ",
+					"Ԑ",
+					"Ԓ",
+					"Ԕ",
+					"Ԗ",
+					"Ԙ",
+					"Ԛ",
+					"Ԝ",
+					"Ԟ",
+					"Ԡ",
+					"Ԣ",
+					"Ԥ",
+					"Ԧ",
+					"Ԩ",
+					"Ԫ",
+					"Ԭ",
+					"Ԯ",
+					[
+						"Ա",
+						"Ֆ"
+					],
+					[
+						"Ⴀ",
+						"Ⴥ"
+					],
+					"Ⴧ",
+					"Ⴭ",
+					[
+						"Ꭰ",
+						"Ᏽ"
+					],
+					"Ḁ",
+					"Ḃ",
+					"Ḅ",
+					"Ḇ",
+					"Ḉ",
+					"Ḋ",
+					"Ḍ",
+					"Ḏ",
+					"Ḑ",
+					"Ḓ",
+					"Ḕ",
+					"Ḗ",
+					"Ḙ",
+					"Ḛ",
+					"Ḝ",
+					"Ḟ",
+					"Ḡ",
+					"Ḣ",
+					"Ḥ",
+					"Ḧ",
+					"Ḩ",
+					"Ḫ",
+					"Ḭ",
+					"Ḯ",
+					"Ḱ",
+					"Ḳ",
+					"Ḵ",
+					"Ḷ",
+					"Ḹ",
+					"Ḻ",
+					"Ḽ",
+					"Ḿ",
+					"Ṁ",
+					"Ṃ",
+					"Ṅ",
+					"Ṇ",
+					"Ṉ",
+					"Ṋ",
+					"Ṍ",
+					"Ṏ",
+					"Ṑ",
+					"Ṓ",
+					"Ṕ",
+					"Ṗ",
+					"Ṙ",
+					"Ṛ",
+					"Ṝ",
+					"Ṟ",
+					"Ṡ",
+					"Ṣ",
+					"Ṥ",
+					"Ṧ",
+					"Ṩ",
+					"Ṫ",
+					"Ṭ",
+					"Ṯ",
+					"Ṱ",
+					"Ṳ",
+					"Ṵ",
+					"Ṷ",
+					"Ṹ",
+					"Ṻ",
+					"Ṽ",
+					"Ṿ",
+					"Ẁ",
+					"Ẃ",
+					"Ẅ",
+					"Ẇ",
+					"Ẉ",
+					"Ẋ",
+					"Ẍ",
+					"Ẏ",
+					"Ẑ",
+					"Ẓ",
+					"Ẕ",
+					"ẞ",
+					"Ạ",
+					"Ả",
+					"Ấ",
+					"Ầ",
+					"Ẩ",
+					"Ẫ",
+					"Ậ",
+					"Ắ",
+					"Ằ",
+					"Ẳ",
+					"Ẵ",
+					"Ặ",
+					"Ẹ",
+					"Ẻ",
+					"Ẽ",
+					"Ế",
+					"Ề",
+					"Ể",
+					"Ễ",
+					"Ệ",
+					"Ỉ",
+					"Ị",
+					"Ọ",
+					"Ỏ",
+					"Ố",
+					"Ồ",
+					"Ổ",
+					"Ỗ",
+					"Ộ",
+					"Ớ",
+					"Ờ",
+					"Ở",
+					"Ỡ",
+					"Ợ",
+					"Ụ",
+					"Ủ",
+					"Ứ",
+					"Ừ",
+					"Ử",
+					"Ữ",
+					"Ự",
+					"Ỳ",
+					"Ỵ",
+					"Ỷ",
+					"Ỹ",
+					"Ỻ",
+					"Ỽ",
+					"Ỿ",
+					[
+						"Ἀ",
+						"Ἇ"
+					],
+					[
+						"Ἐ",
+						"Ἕ"
+					],
+					[
+						"Ἠ",
+						"Ἧ"
+					],
+					[
+						"Ἰ",
+						"Ἷ"
+					],
+					[
+						"Ὀ",
+						"Ὅ"
+					],
+					"Ὑ",
+					"Ὓ",
+					"Ὕ",
+					"Ὗ",
+					[
+						"Ὠ",
+						"Ὧ"
+					],
+					[
+						"Ᾰ",
+						"Ά"
+					],
+					[
+						"Ὲ",
+						"Ή"
+					],
+					[
+						"Ῐ",
+						"Ί"
+					],
+					[
+						"Ῠ",
+						"Ῥ"
+					],
+					[
+						"Ὸ",
+						"Ώ"
+					],
+					"ℂ",
+					"ℇ",
+					[
+						"ℋ",
+						"ℍ"
+					],
+					[
+						"ℐ",
+						"ℒ"
+					],
+					"ℕ",
+					[
+						"ℙ",
+						"ℝ"
+					],
+					"ℤ",
+					"Ω",
+					"ℨ",
+					[
+						"K",
+						"ℭ"
+					],
+					[
+						"ℰ",
+						"ℳ"
+					],
+					[
+						"ℾ",
+						"ℿ"
+					],
+					"ⅅ",
+					"Ↄ",
+					[
+						"Ⰰ",
+						"Ⱞ"
+					],
+					"Ⱡ",
+					[
+						"Ɫ",
+						"Ɽ"
+					],
+					"Ⱨ",
+					"Ⱪ",
+					"Ⱬ",
+					[
+						"Ɑ",
+						"Ɒ"
+					],
+					"Ⱳ",
+					"Ⱶ",
+					[
+						"Ȿ",
+						"Ⲁ"
+					],
+					"Ⲃ",
+					"Ⲅ",
+					"Ⲇ",
+					"Ⲉ",
+					"Ⲋ",
+					"Ⲍ",
+					"Ⲏ",
+					"Ⲑ",
+					"Ⲓ",
+					"Ⲕ",
+					"Ⲗ",
+					"Ⲙ",
+					"Ⲛ",
+					"Ⲝ",
+					"Ⲟ",
+					"Ⲡ",
+					"Ⲣ",
+					"Ⲥ",
+					"Ⲧ",
+					"Ⲩ",
+					"Ⲫ",
+					"Ⲭ",
+					"Ⲯ",
+					"Ⲱ",
+					"Ⲳ",
+					"Ⲵ",
+					"Ⲷ",
+					"Ⲹ",
+					"Ⲻ",
+					"Ⲽ",
+					"Ⲿ",
+					"Ⳁ",
+					"Ⳃ",
+					"Ⳅ",
+					"Ⳇ",
+					"Ⳉ",
+					"Ⳋ",
+					"Ⳍ",
+					"Ⳏ",
+					"Ⳑ",
+					"Ⳓ",
+					"Ⳕ",
+					"Ⳗ",
+					"Ⳙ",
+					"Ⳛ",
+					"Ⳝ",
+					"Ⳟ",
+					"Ⳡ",
+					"Ⳣ",
+					"Ⳬ",
+					"Ⳮ",
+					"Ⳳ",
+					"Ꙁ",
+					"Ꙃ",
+					"Ꙅ",
+					"Ꙇ",
+					"Ꙉ",
+					"Ꙋ",
+					"Ꙍ",
+					"Ꙏ",
+					"Ꙑ",
+					"Ꙓ",
+					"Ꙕ",
+					"Ꙗ",
+					"Ꙙ",
+					"Ꙛ",
+					"Ꙝ",
+					"Ꙟ",
+					"Ꙡ",
+					"Ꙣ",
+					"Ꙥ",
+					"Ꙧ",
+					"Ꙩ",
+					"Ꙫ",
+					"Ꙭ",
+					"Ꚁ",
+					"Ꚃ",
+					"Ꚅ",
+					"Ꚇ",
+					"Ꚉ",
+					"Ꚋ",
+					"Ꚍ",
+					"Ꚏ",
+					"Ꚑ",
+					"Ꚓ",
+					"Ꚕ",
+					"Ꚗ",
+					"Ꚙ",
+					"Ꚛ",
+					"Ꜣ",
+					"Ꜥ",
+					"Ꜧ",
+					"Ꜩ",
+					"Ꜫ",
+					"Ꜭ",
+					"Ꜯ",
+					"Ꜳ",
+					"Ꜵ",
+					"Ꜷ",
+					"Ꜹ",
+					"Ꜻ",
+					"Ꜽ",
+					"Ꜿ",
+					"Ꝁ",
+					"Ꝃ",
+					"Ꝅ",
+					"Ꝇ",
+					"Ꝉ",
+					"Ꝋ",
+					"Ꝍ",
+					"Ꝏ",
+					"Ꝑ",
+					"Ꝓ",
+					"Ꝕ",
+					"Ꝗ",
+					"Ꝙ",
+					"Ꝛ",
+					"Ꝝ",
+					"Ꝟ",
+					"Ꝡ",
+					"Ꝣ",
+					"Ꝥ",
+					"Ꝧ",
+					"Ꝩ",
+					"Ꝫ",
+					"Ꝭ",
+					"Ꝯ",
+					"Ꝺ",
+					"Ꝼ",
+					[
+						"Ᵹ",
+						"Ꝿ"
+					],
+					"Ꞁ",
+					"Ꞃ",
+					"Ꞅ",
+					"Ꞇ",
+					"Ꞌ",
+					"Ɥ",
+					"Ꞑ",
+					"Ꞓ",
+					"Ꞗ",
+					"Ꞙ",
+					"Ꞛ",
+					"Ꞝ",
+					"Ꞟ",
+					"Ꞡ",
+					"Ꞣ",
+					"Ꞥ",
+					"Ꞧ",
+					"Ꞩ",
+					[
+						"Ɦ",
+						"Ɬ"
+					],
+					[
+						"Ʞ",
+						"Ꞵ"
+					],
+					"Ꞷ",
+					[
+						"Ａ",
+						"Ｚ"
+					]
+				],
+				"inverted": false,
+				"ignoreCase": false
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Mc",
+			"expression": {
+				"type": "class",
+				"parts": [
+					"ः",
+					"ऻ",
+					[
+						"ा",
+						"ी"
+					],
+					[
+						"ॉ",
+						"ौ"
+					],
+					[
+						"ॎ",
+						"ॏ"
+					],
+					[
+						"ং",
+						"ঃ"
+					],
+					[
+						"া",
+						"ী"
+					],
+					[
+						"ে",
+						"ৈ"
+					],
+					[
+						"ো",
+						"ৌ"
+					],
+					"ৗ",
+					"ਃ",
+					[
+						"ਾ",
+						"ੀ"
+					],
+					"ઃ",
+					[
+						"ા",
+						"ી"
+					],
+					"ૉ",
+					[
+						"ો",
+						"ૌ"
+					],
+					[
+						"ଂ",
+						"ଃ"
+					],
+					"ା",
+					"ୀ",
+					[
+						"େ",
+						"ୈ"
+					],
+					[
+						"ୋ",
+						"ୌ"
+					],
+					"ୗ",
+					[
+						"ா",
+						"ி"
+					],
+					[
+						"ு",
+						"ூ"
+					],
+					[
+						"ெ",
+						"ை"
+					],
+					[
+						"ொ",
+						"ௌ"
+					],
+					"ௗ",
+					[
+						"ఁ",
+						"ః"
+					],
+					[
+						"ు",
+						"ౄ"
+					],
+					[
+						"ಂ",
+						"ಃ"
+					],
+					"ಾ",
+					[
+						"ೀ",
+						"ೄ"
+					],
+					[
+						"ೇ",
+						"ೈ"
+					],
+					[
+						"ೊ",
+						"ೋ"
+					],
+					[
+						"ೕ",
+						"ೖ"
+					],
+					[
+						"ം",
+						"ഃ"
+					],
+					[
+						"ാ",
+						"ീ"
+					],
+					[
+						"െ",
+						"ൈ"
+					],
+					[
+						"ൊ",
+						"ൌ"
+					],
+					"ൗ",
+					[
+						"ං",
+						"ඃ"
+					],
+					[
+						"ා",
+						"ෑ"
+					],
+					[
+						"ෘ",
+						"ෟ"
+					],
+					[
+						"ෲ",
+						"ෳ"
+					],
+					[
+						"༾",
+						"༿"
+					],
+					"ཿ",
+					[
+						"ါ",
+						"ာ"
+					],
+					"ေ",
+					"း",
+					[
+						"ျ",
+						"ြ"
+					],
+					[
+						"ၖ",
+						"ၗ"
+					],
+					[
+						"ၢ",
+						"ၤ"
+					],
+					[
+						"ၧ",
+						"ၭ"
+					],
+					[
+						"ႃ",
+						"ႄ"
+					],
+					[
+						"ႇ",
+						"ႌ"
+					],
+					"ႏ",
+					[
+						"ႚ",
+						"ႜ"
+					],
+					"ា",
+					[
+						"ើ",
+						"ៅ"
+					],
+					[
+						"ះ",
+						"ៈ"
+					],
+					[
+						"ᤣ",
+						"ᤦ"
+					],
+					[
+						"ᤩ",
+						"ᤫ"
+					],
+					[
+						"ᤰ",
+						"ᤱ"
+					],
+					[
+						"ᤳ",
+						"ᤸ"
+					],
+					[
+						"ᨙ",
+						"ᨚ"
+					],
+					"ᩕ",
+					"ᩗ",
+					"ᩡ",
+					[
+						"ᩣ",
+						"ᩤ"
+					],
+					[
+						"ᩭ",
+						"ᩲ"
+					],
+					"ᬄ",
+					"ᬵ",
+					"ᬻ",
+					[
+						"ᬽ",
+						"ᭁ"
+					],
+					[
+						"ᭃ",
+						"᭄"
+					],
+					"ᮂ",
+					"ᮡ",
+					[
+						"ᮦ",
+						"ᮧ"
+					],
+					"᮪",
+					"ᯧ",
+					[
+						"ᯪ",
+						"ᯬ"
+					],
+					"ᯮ",
+					[
+						"᯲",
+						"᯳"
+					],
+					[
+						"ᰤ",
+						"ᰫ"
+					],
+					[
+						"ᰴ",
+						"ᰵ"
+					],
+					"᳡",
+					[
+						"ᳲ",
+						"ᳳ"
+					],
+					[
+						"〮",
+						"〯"
+					],
+					[
+						"ꠣ",
+						"ꠤ"
+					],
+					"ꠧ",
+					[
+						"ꢀ",
+						"ꢁ"
+					],
+					[
+						"ꢴ",
+						"ꣃ"
+					],
+					[
+						"ꥒ",
+						"꥓"
+					],
+					"ꦃ",
+					[
+						"ꦴ",
+						"ꦵ"
+					],
+					[
+						"ꦺ",
+						"ꦻ"
+					],
+					[
+						"ꦽ",
+						"꧀"
+					],
+					[
+						"ꨯ",
+						"ꨰ"
+					],
+					[
+						"ꨳ",
+						"ꨴ"
+					],
+					"ꩍ",
+					"ꩻ",
+					"ꩽ",
+					"ꫫ",
+					[
+						"ꫮ",
+						"ꫯ"
+					],
+					"ꫵ",
+					[
+						"ꯣ",
+						"ꯤ"
+					],
+					[
+						"ꯦ",
+						"ꯧ"
+					],
+					[
+						"ꯩ",
+						"ꯪ"
+					],
+					"꯬"
+				],
+				"inverted": false,
+				"ignoreCase": false
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Mn",
+			"expression": {
+				"type": "class",
+				"parts": [
+					[
+						"̀",
+						"ͯ"
+					],
+					[
+						"҃",
+						"҇"
+					],
+					[
+						"֑",
+						"ֽ"
+					],
+					"ֿ",
+					[
+						"ׁ",
+						"ׂ"
+					],
+					[
+						"ׄ",
+						"ׅ"
+					],
+					"ׇ",
+					[
+						"ؐ",
+						"ؚ"
+					],
+					[
+						"ً",
+						"ٟ"
+					],
+					"ٰ",
+					[
+						"ۖ",
+						"ۜ"
+					],
+					[
+						"۟",
+						"ۤ"
+					],
+					[
+						"ۧ",
+						"ۨ"
+					],
+					[
+						"۪",
+						"ۭ"
+					],
+					"ܑ",
+					[
+						"ܰ",
+						"݊"
+					],
+					[
+						"ަ",
+						"ް"
+					],
+					[
+						"߫",
+						"߳"
+					],
+					[
+						"ࠖ",
+						"࠙"
+					],
+					[
+						"ࠛ",
+						"ࠣ"
+					],
+					[
+						"ࠥ",
+						"ࠧ"
+					],
+					[
+						"ࠩ",
+						"࠭"
+					],
+					[
+						"࡙",
+						"࡛"
+					],
+					[
+						"ࣣ",
+						"ं"
+					],
+					"ऺ",
+					"़",
+					[
+						"ु",
+						"ै"
+					],
+					"्",
+					[
+						"॑",
+						"ॗ"
+					],
+					[
+						"ॢ",
+						"ॣ"
+					],
+					"ঁ",
+					"়",
+					[
+						"ু",
+						"ৄ"
+					],
+					"্",
+					[
+						"ৢ",
+						"ৣ"
+					],
+					[
+						"ਁ",
+						"ਂ"
+					],
+					"਼",
+					[
+						"ੁ",
+						"ੂ"
+					],
+					[
+						"ੇ",
+						"ੈ"
+					],
+					[
+						"ੋ",
+						"੍"
+					],
+					"ੑ",
+					[
+						"ੰ",
+						"ੱ"
+					],
+					"ੵ",
+					[
+						"ઁ",
+						"ં"
+					],
+					"઼",
+					[
+						"ુ",
+						"ૅ"
+					],
+					[
+						"ે",
+						"ૈ"
+					],
+					"્",
+					[
+						"ૢ",
+						"ૣ"
+					],
+					"ଁ",
+					"଼",
+					"ି",
+					[
+						"ୁ",
+						"ୄ"
+					],
+					"୍",
+					"ୖ",
+					[
+						"ୢ",
+						"ୣ"
+					],
+					"ஂ",
+					"ீ",
+					"்",
+					"ఀ",
+					[
+						"ా",
+						"ీ"
+					],
+					[
+						"ె",
+						"ై"
+					],
+					[
+						"ొ",
+						"్"
+					],
+					[
+						"ౕ",
+						"ౖ"
+					],
+					[
+						"ౢ",
+						"ౣ"
+					],
+					"ಁ",
+					"಼",
+					"ಿ",
+					"ೆ",
+					[
+						"ೌ",
+						"್"
+					],
+					[
+						"ೢ",
+						"ೣ"
+					],
+					"ഁ",
+					[
+						"ു",
+						"ൄ"
+					],
+					"്",
+					[
+						"ൢ",
+						"ൣ"
+					],
+					"්",
+					[
+						"ි",
+						"ු"
+					],
+					"ූ",
+					"ั",
+					[
+						"ิ",
+						"ฺ"
+					],
+					[
+						"็",
+						"๎"
+					],
+					"ັ",
+					[
+						"ິ",
+						"ູ"
+					],
+					[
+						"ົ",
+						"ຼ"
+					],
+					[
+						"່",
+						"ໍ"
+					],
+					[
+						"༘",
+						"༙"
+					],
+					"༵",
+					"༷",
+					"༹",
+					[
+						"ཱ",
+						"ཾ"
+					],
+					[
+						"ྀ",
+						"྄"
+					],
+					[
+						"྆",
+						"྇"
+					],
+					[
+						"ྍ",
+						"ྗ"
+					],
+					[
+						"ྙ",
+						"ྼ"
+					],
+					"࿆",
+					[
+						"ိ",
+						"ူ"
+					],
+					[
+						"ဲ",
+						"့"
+					],
+					[
+						"္",
+						"်"
+					],
+					[
+						"ွ",
+						"ှ"
+					],
+					[
+						"ၘ",
+						"ၙ"
+					],
+					[
+						"ၞ",
+						"ၠ"
+					],
+					[
+						"ၱ",
+						"ၴ"
+					],
+					"ႂ",
+					[
+						"ႅ",
+						"ႆ"
+					],
+					"ႍ",
+					"ႝ",
+					[
+						"፝",
+						"፟"
+					],
+					[
+						"ᜒ",
+						"᜔"
+					],
+					[
+						"ᜲ",
+						"᜴"
+					],
+					[
+						"ᝒ",
+						"ᝓ"
+					],
+					[
+						"ᝲ",
+						"ᝳ"
+					],
+					[
+						"឴",
+						"឵"
+					],
+					[
+						"ិ",
+						"ួ"
+					],
+					"ំ",
+					[
+						"៉",
+						"៓"
+					],
+					"៝",
+					[
+						"᠋",
+						"᠍"
+					],
+					"ᢩ",
+					[
+						"ᤠ",
+						"ᤢ"
+					],
+					[
+						"ᤧ",
+						"ᤨ"
+					],
+					"ᤲ",
+					[
+						"᤹",
+						"᤻"
+					],
+					[
+						"ᨗ",
+						"ᨘ"
+					],
+					"ᨛ",
+					"ᩖ",
+					[
+						"ᩘ",
+						"ᩞ"
+					],
+					"᩠",
+					"ᩢ",
+					[
+						"ᩥ",
+						"ᩬ"
+					],
+					[
+						"ᩳ",
+						"᩼"
+					],
+					"᩿",
+					[
+						"᪰",
+						"᪽"
+					],
+					[
+						"ᬀ",
+						"ᬃ"
+					],
+					"᬴",
+					[
+						"ᬶ",
+						"ᬺ"
+					],
+					"ᬼ",
+					"ᭂ",
+					[
+						"᭫",
+						"᭳"
+					],
+					[
+						"ᮀ",
+						"ᮁ"
+					],
+					[
+						"ᮢ",
+						"ᮥ"
+					],
+					[
+						"ᮨ",
+						"ᮩ"
+					],
+					[
+						"᮫",
+						"ᮭ"
+					],
+					"᯦",
+					[
+						"ᯨ",
+						"ᯩ"
+					],
+					"ᯭ",
+					[
+						"ᯯ",
+						"ᯱ"
+					],
+					[
+						"ᰬ",
+						"ᰳ"
+					],
+					[
+						"ᰶ",
+						"᰷"
+					],
+					[
+						"᳐",
+						"᳒"
+					],
+					[
+						"᳔",
+						"᳠"
+					],
+					[
+						"᳢",
+						"᳨"
+					],
+					"᳭",
+					"᳴",
+					[
+						"᳸",
+						"᳹"
+					],
+					[
+						"᷀",
+						"᷵"
+					],
+					[
+						"᷼",
+						"᷿"
+					],
+					[
+						"⃐",
+						"⃜"
+					],
+					"⃡",
+					[
+						"⃥",
+						"⃰"
+					],
+					[
+						"⳯",
+						"⳱"
+					],
+					"⵿",
+					[
+						"ⷠ",
+						"ⷿ"
+					],
+					[
+						"〪",
+						"〭"
+					],
+					[
+						"゙",
+						"゚"
+					],
+					"꙯",
+					[
+						"ꙴ",
+						"꙽"
+					],
+					[
+						"ꚞ",
+						"ꚟ"
+					],
+					[
+						"꛰",
+						"꛱"
+					],
+					"ꠂ",
+					"꠆",
+					"ꠋ",
+					[
+						"ꠥ",
+						"ꠦ"
+					],
+					"꣄",
+					[
+						"꣠",
+						"꣱"
+					],
+					[
+						"ꤦ",
+						"꤭"
+					],
+					[
+						"ꥇ",
+						"ꥑ"
+					],
+					[
+						"ꦀ",
+						"ꦂ"
+					],
+					"꦳",
+					[
+						"ꦶ",
+						"ꦹ"
+					],
+					"ꦼ",
+					"ꧥ",
+					[
+						"ꨩ",
+						"ꨮ"
+					],
+					[
+						"ꨱ",
+						"ꨲ"
+					],
+					[
+						"ꨵ",
+						"ꨶ"
+					],
+					"ꩃ",
+					"ꩌ",
+					"ꩼ",
+					"ꪰ",
+					[
+						"ꪲ",
+						"ꪴ"
+					],
+					[
+						"ꪷ",
+						"ꪸ"
+					],
+					[
+						"ꪾ",
+						"꪿"
+					],
+					"꫁",
+					[
+						"ꫬ",
+						"ꫭ"
+					],
+					"꫶",
+					"ꯥ",
+					"ꯨ",
+					"꯭",
+					"ﬞ",
+					[
+						"︀",
+						"️"
+					],
+					[
+						"︠",
+						"︯"
+					]
+				],
+				"inverted": false,
+				"ignoreCase": false
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Nd",
+			"expression": {
+				"type": "class",
+				"parts": [
+					[
+						"0",
+						"9"
+					],
+					[
+						"٠",
+						"٩"
+					],
+					[
+						"۰",
+						"۹"
+					],
+					[
+						"߀",
+						"߉"
+					],
+					[
+						"०",
+						"९"
+					],
+					[
+						"০",
+						"৯"
+					],
+					[
+						"੦",
+						"੯"
+					],
+					[
+						"૦",
+						"૯"
+					],
+					[
+						"୦",
+						"୯"
+					],
+					[
+						"௦",
+						"௯"
+					],
+					[
+						"౦",
+						"౯"
+					],
+					[
+						"೦",
+						"೯"
+					],
+					[
+						"൦",
+						"൯"
+					],
+					[
+						"෦",
+						"෯"
+					],
+					[
+						"๐",
+						"๙"
+					],
+					[
+						"໐",
+						"໙"
+					],
+					[
+						"༠",
+						"༩"
+					],
+					[
+						"၀",
+						"၉"
+					],
+					[
+						"႐",
+						"႙"
+					],
+					[
+						"០",
+						"៩"
+					],
+					[
+						"᠐",
+						"᠙"
+					],
+					[
+						"᥆",
+						"᥏"
+					],
+					[
+						"᧐",
+						"᧙"
+					],
+					[
+						"᪀",
+						"᪉"
+					],
+					[
+						"᪐",
+						"᪙"
+					],
+					[
+						"᭐",
+						"᭙"
+					],
+					[
+						"᮰",
+						"᮹"
+					],
+					[
+						"᱀",
+						"᱉"
+					],
+					[
+						"᱐",
+						"᱙"
+					],
+					[
+						"꘠",
+						"꘩"
+					],
+					[
+						"꣐",
+						"꣙"
+					],
+					[
+						"꤀",
+						"꤉"
+					],
+					[
+						"꧐",
+						"꧙"
+					],
+					[
+						"꧰",
+						"꧹"
+					],
+					[
+						"꩐",
+						"꩙"
+					],
+					[
+						"꯰",
+						"꯹"
+					],
+					[
+						"０",
+						"９"
+					]
+				],
+				"inverted": false,
+				"ignoreCase": false
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Nl",
+			"expression": {
+				"type": "class",
+				"parts": [
+					[
+						"ᛮ",
+						"ᛰ"
+					],
+					[
+						"Ⅰ",
+						"ↂ"
+					],
+					[
+						"ↅ",
+						"ↈ"
+					],
+					"〇",
+					[
+						"〡",
+						"〩"
+					],
+					[
+						"〸",
+						"〺"
+					],
+					[
+						"ꛦ",
+						"ꛯ"
+					]
+				],
+				"inverted": false,
+				"ignoreCase": false
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Pc",
+			"expression": {
+				"type": "class",
+				"parts": [
+					"_",
+					[
+						"‿",
+						"⁀"
+					],
+					"⁔",
+					[
+						"︳",
+						"︴"
+					],
+					[
+						"﹍",
+						"﹏"
+					],
+					"＿"
+				],
+				"inverted": false,
+				"ignoreCase": false
+			}
+		},
+		{
+			"type": "rule",
+			"name": "Zs",
+			"expression": {
+				"type": "class",
+				"parts": [
+					" ",
+					" ",
+					" ",
+					[
+						" ",
+						" "
+					],
+					" ",
+					" ",
+					"　"
+				],
+				"inverted": false,
+				"ignoreCase": false
+			}
+		},
+		{
+			"type": "rule",
+			"name": "__",
+			"expression": {
+				"type": "zero_or_more",
+				"expression": {
+					"type": "choice",
+					"alternatives": [
+						{
+							"type": "rule_ref",
+							"name": "WhiteSpace"
+						},
+						{
+							"type": "rule_ref",
+							"name": "LineTerminatorSequence"
+						},
+						{
+							"type": "rule_ref",
+							"name": "Comment"
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "_",
+			"expression": {
+				"type": "zero_or_more",
+				"expression": {
+					"type": "choice",
+					"alternatives": [
+						{
+							"type": "rule_ref",
+							"name": "WhiteSpace"
+						},
+						{
+							"type": "rule_ref",
+							"name": "MultiLineCommentNoLineTerminator"
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "rule",
+			"name": "EOS",
+			"expression": {
+				"type": "choice",
+				"alternatives": [
+					{
+						"type": "sequence",
+						"elements": [
+							{
+								"type": "rule_ref",
+								"name": "__"
+							},
+							{
+								"type": "literal",
+								"value": ";",
+								"ignoreCase": false
+							}
+						]
+					},
+					{
+						"type": "sequence",
+						"elements": [
+							{
+								"type": "rule_ref",
+								"name": "_"
+							},
+							{
+								"type": "optional",
+								"expression": {
+									"type": "rule_ref",
+									"name": "SingleLineComment"
+								}
+							},
+							{
+								"type": "rule_ref",
+								"name": "LineTerminatorSequence"
+							}
+						]
+					},
+					{
+						"type": "sequence",
+						"elements": [
+							{
+								"type": "rule_ref",
+								"name": "__"
+							},
+							{
+								"type": "rule_ref",
+								"name": "EOF"
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"type": "rule",
+			"name": "EOF",
+			"expression": {
+				"type": "simple_not",
+				"expression": {
+					"type": "any"
+				}
+			}
+		}
+	]
+}
