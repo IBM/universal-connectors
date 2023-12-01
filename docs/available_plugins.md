@@ -29,6 +29,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [Google Cloud Spanner](../filter-plugin/logstash-filter-pubsub-spanner-guardium/README.md) (Future GI releases)
 * [Greenplum](../filter-plugin/logstash-filter-onPremGreenplumdb-guardium/README.md)
 * [HDFS](../filter-plugin/logstash-filter-hdfs-guardium/README.md)
+* [Intersystems IRIS](../filter-plugin/logstash-filter-intersystems-iris-guardium/README.md)
 * [MariaDB](../filter-plugin/logstash-filter-mariadb-guardium/README.md)
 * [Microsoft SQL Server](../filter-plugin/logstash-filter-mssql-guardium/README.md)
 * [MongoDB](../filter-plugin/logstash-filter-mongodb-guardium/README.md)
