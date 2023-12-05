@@ -16,6 +16,7 @@ import com.ibm.guardium.snowflakedb.utils.Constants;
 import com.ibm.guardium.snowflakedb.utils.DefaultGuardRecordBuilder;
 import com.ibm.guardium.snowflakedb.exceptions.ParseException;
 import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,7 +24,7 @@ public class SuccessEventParser implements Parser{
     private static Logger log = LogManager.getLogger(SuccessEventParser.class);
 
     private Map<String, Object> eventMap;
-    private Record guardRecord;
+    private com.ibm.guardium.universalconnector.commons.structures.Record guardRecord;
 
     public SuccessEventParser() {
         DefaultGuardRecordBuilder builder = new DefaultGuardRecordBuilder();
@@ -155,7 +156,7 @@ public class SuccessEventParser implements Parser{
         String ts = getStringValueOf(Constants.QUERY_TIMESTAMP);
         Time t = guardRecord.getTime();
         try {
-            LocalDateTime date = LocalDateTime.parse(ts,DATE_TIME_FORMATTER);
+            LocalDateTime date = Parser.parseTime(ts);
 
             t.setTimstamp(date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()); //Snowflake supplies the date in UTC
             t.setMinOffsetFromGMT(0);

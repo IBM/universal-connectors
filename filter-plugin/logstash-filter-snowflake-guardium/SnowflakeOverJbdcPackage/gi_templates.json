@@ -40,7 +40,7 @@
       },
       "tracking_column": {
         "type": "text",
-        "default": "query_timestamp_epoch",
+        "default": "end_time",
         "hidden": true
       },
       "plugin_timezone": {
@@ -50,27 +50,22 @@
       },
       "enrollmentId": {
         "type": "text",
-        "default": "NA",
+        "default": "NULL",
         "hidden": true
       },
       "account_id": {
         "type": "text",
-        "default": "NA",
+        "default": "NULL",
         "hidden": true
       },
       "server_name": {
         "type": "text",
-        "default": "NA",
+        "default": "NULL",
         "hidden": true
-      },
-      "event_type": {
-        "type": "text",
-        "label": "event type (login_success/login_failed)",
-        "default": "login_success"
       },
       "tracking_column_type": {
         "type": "text",
-        "default": "numeric",
+        "default": "timestamp",
         "hidden": true
       },
       "server_host_name": {
@@ -79,17 +74,17 @@
       },
       "statement_select": {
         "type": "text",
-        "default": "QH.DATABASE_NAME as DATABASE_NAME,QH.SESSION_ID as SESSION_ID,\\r\\n                TO_TIMESTAMP_LTZ(QH.END_TIME) as QUERY_TIMESTAMP,\\r\\n                LH.CLIENT_IP as CLIENT_IP, CURRENT_IP_ADDRESS() as SERVER_IP,\\r\\n                QH.USER_NAME as USER_NAME, S.CLIENT_ENVIRONMENT,\\r\\n                QH.QUERY_ID, QH.QUERY_TEXT, QH.QUERY_TYPE, QH.QUERY_TAG ,\\r\\n                QH.ROLE_NAME, S.CLIENT_APPLICATION_ID, QH.WAREHOUSE_NAME,\\r\\n                QH.ERROR_CODE AS QUERY_ERROR_CODE, QH.ERROR_MESSAGE AS QUERY_ERROR_MESSAGE,\\r\\n                QH.EXECUTION_STATUS AS QUERY_EXECUTION_STATUS,\\r\\n                DATE_PART(epoch_millisecond, QH.END_TIME) AS QUERY_TIMESTAMP_EPOCH",
+        "default": "*",
         "label": "SELECT"
       },
       "statement_from": {
         "type": "text",
-        "default": " SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY QH\\r\\n            LEFT JOIN SNOWFLAKE.ACCOUNT_USAGE.SESSIONS S\\r\\n                ON S.SESSION_ID = QH.SESSION_ID\\r\\n            LEFT JOIN SNOWFLAKE.ACCOUNT_USAGE.LOGIN_HISTORY LH\\r\\n                ON S.LOGIN_EVENT_ID = LH.EVENT_ID",
+        "default": "SNOWFLAKE.ACCOUNT_USAGE.query_history QH, SNOWFLAKE.ACCOUNT_USAGE.LOGIN_HISTORY LH, SNOWFLAKE.ACCOUNT_USAGE.SESSIONS S ",
         "label": "FROM"
       },
       "statement_where": {
         "type": "text",
-        "default": "(QH.EXECUTION_STATUS <> :execution_status)\\r\\n                AND DATE_PART(epoch_millisecond, QH.END_TIME) > :sql_last_value\\r\\n            ORDER BY QH.END_TIME",
+        "default": "QH.SESSION_ID = S.SESSION_ID AND LH.EVENT_ID = S.LOGIN_EVENT_ID AND QH.execution_status <> 'RUNNING' AND QH.end_time > :sql_last_value  || ' -0000'  AND QH.end_time < DATEADD(HOUR, -1, CURRENT_TIMESTAMP)  ORDER BY QH.END_TIME",
         "label": "WHERE"
       },
       "type": {
@@ -119,5 +114,5 @@
       }
     }
   ],
-  "supported_platforms": ["Microsoft Azure","Amazon Web Services", "Google Cloud Platform"]
+  "supported_platforms": ["on-premise", "Cloud"]
 }
