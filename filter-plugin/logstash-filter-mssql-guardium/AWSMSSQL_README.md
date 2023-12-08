@@ -15,7 +15,7 @@
 		i. Choose Dev/Test template
 		j. Provide database name, master username and password. (this username and password will be used as an input in jdbc connection details for universal connector)
 		k. Export logs: error logs can be selected.
-		l. To access DB from outside, select public access to yes under Connectivity section.
+		l. To access DB from outside, change public access to yes under Connectivity section.
 		m. Select create database.
 	
 	2. Accessing database instance from outside
@@ -30,7 +30,7 @@
 			f. Click on Add rule button and add following two rules for MSSQL.
 				I. Select type MSSQL from first drop down, in source column keep custom as default, click on search icon and select rule ‘0.0.0.0/0’.
 				II. Select type MSSQL from first drop down, in source column keep custom as default, click on search icon and select rule ‘::/0’.
-			g. We will be requiring “Microsoft MSSQL Management Studio” to connect with the database and do DB operations. To connect with DB, use endpoint and port which we will get under ‘Connectivity & security’ tab in rds instance.
+			g. "Microsoft SQL Management Studio" must connect with the database and do DB operations. To connect with the database, use the endpoint and port from the Connectivity & security tab in the RDS instance.
 
 	3. Assign parameter group to database instance.
 	
@@ -63,7 +63,7 @@
 		g. Select SQLSERVER_AUDIT as an option name.
 		h. Set S3 bucket that we created in previous step.
 		i. Create new IAM role.
-		j. Need to create policy which we will be attaching to the IAM role. Use following JSON for same.
+		j. Create a policy that you will attach to the IAM role as shown in the following JSON.
 			{
 				"Version": "2012-10-17",
 				"Statement": [
@@ -189,7 +189,7 @@
 			STATE = START;
 			GO
 
-	Kindly note event name should be same for TSQL Create and Alter event.
+	Note: Use the same event name for the TSQL Create and Alter events. In addition, make sure that the in the SQL statement is the same path as in the input plugin for the failure tag.
 	And xel path name mentioned in TSQL should be matching to SQL statement mentioned in input plugin for 'failure' tag. 
 
 
@@ -207,7 +207,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 #### Before you begin
 
-• You must have LFD policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+• Configure any policies that you need. The log full details policy is required. See policies for more information.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 

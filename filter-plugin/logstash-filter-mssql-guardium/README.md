@@ -1,7 +1,7 @@
 # MSSQL-Guardium Logstash filter plug-in
 ### Meet MSSQL
 * Tested versions: 14.0.x
-* Environment: AWS, On-premise, GCP
+* Environment: AWS, On-premises, GCP
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
