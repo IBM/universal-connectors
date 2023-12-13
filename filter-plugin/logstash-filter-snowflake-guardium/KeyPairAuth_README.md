@@ -11,7 +11,7 @@ Below are the steps brief to enable Key Pair Authentication.
 
 1. Generate a private key using the command,
     ```shell
-    openssl genrsa 2048 | openssl pkcs8 -topk8 -v2 des3 -inform PEM -out <file_name> --nocrypt 
+    openssl genrsa 2048 | openssl pkcs8 -topk8 -v2 des3 -inform PEM -out <file_name> -nocrypt 
     ```
    The key is created in PEM format.
 2. From the created private key, use the following command to generate a public key.
