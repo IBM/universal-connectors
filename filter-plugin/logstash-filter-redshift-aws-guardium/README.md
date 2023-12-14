@@ -2,7 +2,7 @@
 ### Meet Redshift
 * Tested versions: 1.0.40182
 * Environment: AWS
-* Supported inputs: S3 (pull)
+* Supported inputs: S3 (pull), Cloudwatch(pull)
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
 
@@ -97,6 +97,14 @@ Go to the S3 buckets from the search box and find the details of the generated l
 
 `s3`/<`bucket`>/<`prefix/`>/`AWSLogs/`/<`Account ID`>`redshift/`/<`region/`>/`<Year/>`/`<Month/>`/`<Day/>`/ See the generated UserActivity/Connection logs here.
 
+## Viewing the logs entries on Cloudwatch
+
+### Procedure
+Go to Cloudwatch from the search box and find the details of the generated logs (UserActivity/Connection) in the following log groups:
+`/aws/redshift/cluster/ds-redshift-cluster/connectionlog`
+`/aws/redshift/cluster/ds-redshift-cluster/useractivitylog`
+Note : We are not capturing logs from cloudwatch `/aws/redshift/cluster/ds-redshift-cluster/userlog` group.
+
 ## Configuring the Redshift filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Redshift template.
 
@@ -112,7 +120,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
 * Download the [logstash-filter-redshift_guardium_connector.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-redshift-aws-guardium/S3OverRedshiftPackage/logstash-filter-redshift_guardium_connector.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
-* Download the plugin filter configuration file [redshift.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-redshift-aws-guardium/redshift.conf). 
+* Download the plugin filter configuration file [redshift-over-s3.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-redshift-aws-guardium/redshift-over-s3.conf) or [redshift-over-cloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-redshift-aws-guardium/redshift-over-cloudwatch.conf) based on input used.
+
 
 ## Procedure
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
@@ -120,8 +129,10 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 3. Click **Upload File** and select the [logstash-filter-redshift_guardium_connector.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-redshift-aws-guardium/S3OverRedshiftPackage/logstash-filter-redshift_guardium_connector.zip) plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the **Connector name** field.
-6. Update the input section to add the details from [redshift.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-redshift-aws-guardium/redshift.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7. Update the filter section to add the details from [redshift.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-redshift-aws-guardium/redshift.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+6. To fetch the audit logs from s3 directly, use the details from the [redshift-over-s3.conf](redshift-over-s3.conf) file. To fetch the audit logs from Cloudwatch, use the details from the [redshift-over-cloudwatch.conf](redshift-over-cloudwatch.conf) file. Update the input section to add the details
+    from the corresponding file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. To fetch the audit logs from s3 directly, use the details from the [redshift-over-s3.conf](redshift-over-s3.conf) file. To fetch the audit logs from Cloudwatch, use the details from the [redshift-over-cloudwatch.conf](redshift-over-cloudwatch.conf) file. Update the filter section to add the details
+    from the corresponding file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The "type" fields should match in input and filter configuration sections. This field should be unique for every individual connector added.
 9. Click **Save**. Guardium validates the new connector. After it is validated, it appears in the Configure Universal Connector page.
 
