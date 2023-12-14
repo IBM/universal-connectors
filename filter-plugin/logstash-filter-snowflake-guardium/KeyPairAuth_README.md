@@ -5,7 +5,7 @@ and Guardium. The detailed procedure is described in the official Snowflake docu
 1. To generate a key pair and update the Snowflake user, https://docs.snowflake.com/en/user-guide/key-pair-auth
 2. To configure JDBC to use the key pair, https://docs.snowflake.com/en/developer-guide/jdbc/jdbc
 
-Below are the steps brief to enable Key Pair Authentication.
+The following steps are required to enable Key Pair authentication.
 
 ### Procedure
 
