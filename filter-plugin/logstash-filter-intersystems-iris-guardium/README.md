@@ -6,12 +6,12 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## 1. IRIS Environment Setup and Installation
 
-### Create ubuntu 22.04 Instance using AWS EC2 instance
+### Create ubuntu Instance using AWS EC2 instance
 
 #### Procedure:
 1. Click Launch Instances button at top right corner
 2. Give the name for the instance.
-3. Choose Ubuntu 22.04
+3. Choose Ubuntu.
 4. Click on new pair -- choose .pem radio button
 5. Click on create the new key pair (.pem)
 6. Now Launch the instance.
@@ -25,7 +25,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 4. Select the community edition.
 5. Select the below options in Download page
     - Choose a Product - InterSystems IRIS Community
-    - Choose a Platform - Ubuntu 22.04
+    - Choose a Platform - Ubuntu
     - Choose a Version - 2023.1 
 6. Select I agree to Accept the policy.
 7. Click on the Download InterSystems IRIS button to download.
