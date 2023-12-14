@@ -117,7 +117,7 @@ public class AuthFailedEventParser implements Parser{
         String ts = getStringValueOf(Constants.LOGIN_TIMESTAMP);
         Time t = guardRecord.getTime();
         try {
-            LocalDateTime date = LocalDateTime.parse(ts,DATE_TIME_FORMATTER);
+            LocalDateTime date = Parser.parseTime(ts);
 
             t.setTimstamp(date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()); //Snowflake supplies the date in UTC
             t.setMinOffsetFromGMT(0);
