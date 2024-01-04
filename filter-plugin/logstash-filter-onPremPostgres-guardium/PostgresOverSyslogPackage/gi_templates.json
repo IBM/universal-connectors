@@ -1,6 +1,6 @@
 {
-  "plugin_name": "MySQL over tcp input with syslog",
-  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mysql-guardium/README.md",
+  "plugin_name": "PostgreSQL over tcp input with syslog",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-onPremPostgres-guardium/EDBPostgres_README.md",
   "input_name": "syslog_input",
   "input_parameters": [
     {
