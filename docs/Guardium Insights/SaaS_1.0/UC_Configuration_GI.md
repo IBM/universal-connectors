@@ -106,9 +106,9 @@ These certificates will be used later to establish secured connections between t
 6. To configure the data source to communicate with Guardium Insights, follow the instructions in the last section on this page: [Configuring Filebeat to forward audit logs to Guardium.](../SaaS_1.0/UC_Configuration_GI.md#configuring-filebeat-to-forward-audit-logs-to-guardium)  Copy the hostname in the Configuration Notes to configure the host in the filebeat.yml file on your datasource.
 7. Persistent queue is disabled by default in the universal conenctor and must be enabled manually. Persistent queue can only be enabled for Filebeat and it can cause the universal connector to work more slowly.To enable it, go to **Settings** > **Global settings** > **Connection settings**. Click **Universal connector: enable persistent queue**.
 
-## TCP Input Plug-in Configuration (for Connection with Syslog)
+# TCP Input Plug-in Configuration (for Connection with Syslog)
 
-### Prerequisites:
+## Prerequisites:
 
 To enable a secure connection with Syslog on the data source server, you need to create a **certificate authority** and **certificate**. Follow the steps below:
 
@@ -131,9 +131,9 @@ To enable a secure connection with Syslog on the data source server, you need to
       ./create_certificates.sh /path/to/store datasource.server.dns.com
       ```
 
-4. Copy `ucCA.crt` to your local system.
+4. **Copy `ucCA.crt` to your local system.**
 
-### Configuring a Syslog Connection:
+## Configuring a Syslog Connection:
 
 1. **Initiate Configuration:**
     - For this input type, simply click on configure without entering additional details.
@@ -172,6 +172,28 @@ To enable a secure connection with Syslog on the data source server, you need to
         $DefaultNetstreamDriverKeyFile <PATH TO>/ucCA-pkcs8.key
         ```
 
+      Example:
+         ```conf
+        $DefaultNetstreamDriverCAFile /root/uc/cert/GuardiumInsightsCA.pem
+        #certs for mTls connection
+        $DefaultNetstreamDriverCertFile <PATH TO>/ucCA.crt
+        $DefaultNetstreamDriverKeyFile <PATH TO>/ucCA-pkcs8.key
+
+        module(load="imfile")
+        input(type="imfile"
+        ## To configure this section, follow the filter plug-in's readme 
+        Tag="Syslog"
+        ruleset="imfile_to_GI")
+       
+        ruleset(name="imfile_to_GI") {
+        action(type="omfwd"
+        protocol="tcp"
+        StreamDriver="gtls"
+        StreamDriverMode="1"
+        StreamDriverAuthMode="x509/certvalid"
+        target="<hostname>"
+        port="443")
+        ```
 7. **Restart rsyslog to Apply Changes:**
     - **Linux:**
       Run the command:
