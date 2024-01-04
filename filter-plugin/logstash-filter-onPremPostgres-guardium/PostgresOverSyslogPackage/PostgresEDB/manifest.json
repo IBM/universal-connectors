@@ -4,11 +4,11 @@
 	"type": "filter",
 	"pipeline_type":"push",
 	"plugin_version": "1.0.0",
-	"datasourceTypes": [{"type":"PostgresEDB over Syslog","supportedVersions": ["1.x"]}],
+	"datasourceTypes": [{"type":"PostgreSQL","supportedVersions": ["1.x"]}],
 	"supported_input_plugins": ["syslog_input"],
 	"developer": "IBM",
 	"license": "Apache2.0",
-	"description": "Parses EDB Postgres database events into Guardium via Syslog conection.",
+	"description": "Parses EDB Postgres database events into Guardium via Syslog connection.",
 	"configuration_notes": "",
-	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mysql-guardium/README.md"
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-onPremPostgres-guardium/EDBPostgres_README.md"
 }
