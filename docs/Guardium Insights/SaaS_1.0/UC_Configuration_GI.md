@@ -104,11 +104,11 @@ These certificates will be used later to establish secured connections between t
 5.  Click **Done**. It may take up to 15 minutes to create the connection.
 
 6. To configure the data source to communicate with Guardium Insights, follow the instructions in the last section on this page: [Configuring Filebeat to forward audit logs to Guardium.](../SaaS_1.0/UC_Configuration_GI.md#configuring-filebeat-to-forward-audit-logs-to-guardium)  Copy the hostname in the Configuration Notes to configure the host in the filebeat.yml file on your datasource.
-7. Persistent queue is disabled by default in the universal conenctor and must be enabled manually. Persistent queue can only be enabled for Filebeat and it can cause the universal connector to work more slowly.To enable it, go to **Settings** > **Global settings** > **Connection settings**. Click **Universal connector: enable persistent queue**.
+7. Persistent queue is disabled by default in the universal connector and must be enabled manually. Persistent queue can only be enabled for Filebeat and it can cause the universal connector to work more slowly.To enable it, go to **Settings** > **Global settings** > **Connection settings**. Click **Universal connector: enable persistent queue**.
 
-# TCP Input Plug-in Configuration (for Connection with Syslog)
+## TCP Input Plug-in Configuration (for Connection with Syslog)
 
-## Prerequisites:
+### Prerequisites:
 
 To enable a secure connection with Syslog on the data source server, you need to create a **certificate authority** and **certificate**. Follow the steps below:
 
@@ -133,7 +133,7 @@ To enable a secure connection with Syslog on the data source server, you need to
 
 4. **Copy `ucCA.crt` to your local system.**
 
-## Configuring a Syslog Connection:
+### Configuring a Syslog Connection:
 
 1. **Initiate Configuration:**
     - For this input type, simply click on configure without entering additional details.
@@ -155,6 +155,7 @@ To enable a secure connection with Syslog on the data source server, you need to
 5. **Configure Datasource Source for Guardium Insights:**
     - Follow the instructions in the readme file of the filter plug-in to configure the datasource source for effective communication with Guardium Insights. Pay attention to the configuration steps on the rsyslog side. Refer to the Syslog configuration section for specific details.
     - Copy the hostname in the Configuration Notes to configure the host in the rsyslog.conf file on your datasource.
+    - The configured port should be 443. Guardium Insights will map this to an internal port.
 
 6. **Configure mTLS:**
     - **Universal Connector to the Data Source Server:**
