@@ -4,11 +4,6 @@
   "input_name": "syslog_input",
   "input_parameters": [
     {
-      "port": {
-        "type": "number",
-        "default": 5044,
-        "hidden": true
-      },
       "type": {
       "type": "text",
       "default": "syslog-PostgresEDB",
