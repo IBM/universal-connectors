@@ -5,7 +5,7 @@ data contains details about the query "construct". The construct details the mai
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for the Guardium universal connector.
 
 ## 1. IRIS Environment Setup and Installation
-
+This plug-in was developed and tested against an Ubuntu instance on AWS EC2, but any instance should work.
 ### Create ubuntu Instance using AWS EC2 instance
 
 #### Procedure:

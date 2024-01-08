@@ -61,9 +61,9 @@ public class IrisParser {
 		List<Map<String, Object>> verbObjectMapList = new ArrayList<>();
 		Stack<Integer> verbLevelStack = new Stack<>();
 		Stack<Map<String, Object>> verbObjectMapStack = new Stack<>();
-
+	//FIXME: extract function, for easier tests of the core DB command parser. 
 		ParseUtils.visitTree(result.parseTreeRoot, (node, level) -> {
-
+	
 			String label = node.getLabel();
 			 String verb = VERB_LABEL_MAPPING.get(label);
 
