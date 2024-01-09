@@ -243,7 +243,7 @@ input {
 	start_position => "end"
 	#Insert the role_arn of the role that is associated with the Guardium EC2 instance.
 	role_arn => "<ROLE_ARN_ON_GUARDIUM_EC2_INSTANCE>"   #e.g., "arn:aws:iam::111111:role/role_on_111111" 
-	region => "<REGION>" #Region that has the DB, Default value: us-east-1
+	region => "<REGION>" #Region that has the DB, Default value : us-east-1
 	interval => 2
 	event_filter => ""
 	type => "<TYPE>"  #e.g., Postgres
