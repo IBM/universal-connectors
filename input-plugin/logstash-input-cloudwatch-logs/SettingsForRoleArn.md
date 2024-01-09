@@ -66,8 +66,8 @@ These settings can be used only when Guardium Data Protection is hosted on AWS.
             "AWS": "arn:aws:sts::<AWS Account>:role/<Role Name>/"
         },
         "Action": "sts:AssumeRole"
-    }
-    ```
+}
+```
 
 19. Set the role to the EC2 machine hosting Guardium.
 20. Go to the EC2 machine hosting Guardium.
