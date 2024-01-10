@@ -287,7 +287,7 @@ limitations under the License.
 [^5.3]: See SQS input plug-in [load-balancing configuration](https://github.com/IBM/universal-connectors/blob/main/docs/general%20topics/aws.md#configuring-amazon-s3-auditing-via-sqs) as an example of a push method plug-in.
 [^5.4]: See Filebeat input plug-in [load-balancing configuration](https://www.elastic.co/guide/en/beats/filebeat/7.17/load-balancing.html) as an example of a push method plug-in.
 [^6]: Check [Available Plug-ins](https://github.com/IBM/universal-connectors/blob/main/docs/available_plugins.md) for the list of plug-ins that are pre-installed and do not require any manual uploads.
-[^7]: For some data sources, you can configure either real-time or historic audit logging  via the input plug-in's configuration file in its input scope (e.g., [JDBC Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter#3-configure-the-input-and-filter-plugins)).
+[^7]: For some data sources, you can configure either real-time or historic audit logging  via the input plug-in's configuration file in its input scope (e.g., [JDBC Snowflake](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-snowflake-guardium#snowflake-guardium-logstash-filter-plug-in)).
 [^8]: GIM is currently supported only for [Filebeat and Syslog on MongoDB](https://github.com/IBM/universal-connectors/blob/main/docs/general%20topics/GIM.md#configuring-gim-to-handle-filebeat-and-syslog-on-mongodb).
 [^9]: See [MySQL filter plug-in page](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mysql-guardium/README.md#mysql-guardium-logstash-filter-plug-in)
 
