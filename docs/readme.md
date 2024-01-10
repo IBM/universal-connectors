@@ -88,7 +88,7 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
 
 ## Enabling load balancing and fail-over
-To prevent this default behavior and ensure efficient operation, it is recommended to configure these mechanisms as part of the input scope in the configuration file of the installed connector. You can achieve this configuration through both pull(Pub/Sub[^5.1], JDBC[^5.2], SQS[^5.3]) and push(Filebeat[^5.4]) methods.
+To prevent this default behavior and ensure efficient operation, it is recommended to configure these mechanisms as part of the input scope in the configuration file of the installed connector. You can achieve this configuration through both pull (Pub/Sub[^5.1], JDBC[^5.2], SQS[^5.3]) and push (Filebeat[^5.4]) methods.
 It's important to note that when using the push method in Guardium Data Protection, configuring the entire set of collectors as part of the input scope is necessary.
 For more detailed information about each plug-in, please refer to the [Available Plug-ins](/docs/available_plugins.md) page.
 
@@ -283,8 +283,8 @@ limitations under the License.
 [^3]: except GI SaaS 1.0.0, where no manual uploads by the customer are allowed.
 [^4]: See GCP MySQL [Create the SQL Instance and Configure Logging](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/README.md#create-the-sql-instance-and-configure-logging) section as an example of configuring audit log types via the cloud SQL Instance.
 [^5.1]: See GCP Pub/Sub input plug-in [load-balancing configuration](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub#note-2) as an example of a pull method plug-in.
-[^5.2]: See JDBC input plug-in [load-balancing configuration](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-jdbc/README.md#jdbc-load-balancing-and-failover-configuration) as an example of a push method plug-in.
-[^5.3]: See SQS input plug-in [load-balancing configuration](https://github.com/IBM/universal-connectors/blob/main/docs/general%20topics/aws.md#configuring-amazon-s3-auditing-via-sqs) as an example of a push method plug-in.
+[^5.2]: See JDBC input plug-in [load-balancing configuration](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-jdbc/README.md#jdbc-load-balancing-and-failover-configuration) as an example of a pull method plug-in.
+[^5.3]: See SQS input plug-in [load-balancing configuration](https://github.com/IBM/universal-connectors/blob/main/docs/general%20topics/aws.md#configuring-amazon-s3-auditing-via-sqs) as an example of a pull method plug-in.
 [^5.4]: See Filebeat input plug-in [load-balancing configuration](https://www.elastic.co/guide/en/beats/filebeat/7.17/load-balancing.html) as an example of a push method plug-in.
 [^6]: Check [Available Plug-ins](https://github.com/IBM/universal-connectors/blob/main/docs/available_plugins.md) for the list of plug-ins that are pre-installed and do not require any manual uploads.
 [^7]: For some data sources, you can configure either real-time or historic audit logging  via the input plug-in's configuration file in its input scope (e.g., [JDBC Snowflake](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-snowflake-guardium#snowflake-guardium-logstash-filter-plug-in)).
