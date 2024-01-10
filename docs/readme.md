@@ -88,7 +88,9 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
 
 ## Enabling load balancing and fail-over
-Using the given out-of-the-box mechanisms in both Guardium Data Protection and Guardium Insights might implicate distribution of the whole set of ingested events to each of the Guardium instances (i.e., Guardium collectors and universal connector pods respectively) in the set. This could cause duplications and redundant event processing. To properly avoid this fallback default behavior, configure these mechanisms as part of the input scope of the installed connector's configuration file. This is configurable via both pull[^5.1] and push[^5.2] methods. Note that the push method on Guardium Data Protection requires configuring the full set of collectors as part of the said input scope. For detailed information regarding each plug-in, check the [Available Plug-ins](/docs/available_plugins.md) page.
+To prevent this default behavior and ensure efficient operation, it is recommended to configure these mechanisms as part of the input scope in the configuration file of the installed connector. You can achieve this configuration through both pull[^5.1] and push[^5.2] methods.
+It's important to note that when using the push method in Guardium Data Protection, configuring the entire set of collectors as part of the input scope is necessary.
+For more detailed information about each plug-in, please refer to the [Available Plug-ins](/docs/available_plugins.md) page.
 
 </details>
 
@@ -277,17 +279,17 @@ limitations under the License.
   # References
   
 [^1]: See [IBM Guardium System Requirements and Supported Platforms](https://www.ibm.com/support/pages/ibm-guardium-system-requirements-and-supported-platforms)
-[^2]: In GI 3.3.0, SaaS, and GDP 12.0.0 all the plug-ins listed in [Available Plug-ins](/docs/available_plugins.md) are pre-installed upon startup.
+[^2]: In GI 3.3.0, SaaS, and GDP 12.0.0 all the plug-ins listed in [Available Plug-ins](https://github.com/IBM/universal-connectors/blob/main/docs/available_plugins.md) are pre-installed upon startup.
 [^3]: except GI SaaS 1.0.0, where no manual uploads by the customer are allowed.
-[^4]: See GCP MySQL [Create the SQL Instance and Configure Logging](filter-plugin/logstash-filter-pubsub-mysql-guardium#create-the-sql-instance-and-configure-logging) section as an example of configuring audit log types via the cloud SQL Instance.
-[^5.1]: See GCP Pub/Sub input plug-in [load-balancing configuration](input-plugin/logstash-input-google-pubsub#note-2) as an example of a pull method plug-in.
-[^5.2]: See Filebeat input plug-in [load-balancing configuration](https://www.elastic.co/guide/en/beats/filebeat/master/load-balancing.html) as an example of a push method plug-in.
-[^6]: Check [Available Plug-ins](/docs/available_plugins.md) for the list of plug-ins that are pre-installed and do not require any manual uploads.
+[^4]: See GCP MySQL [Create the SQL Instance and Configure Logging](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/README.md#create-the-sql-instance-and-configure-logging) section as an example of configuring audit log types via the cloud SQL Instance.
+[^5.1]: See GCP Pub/Sub input plug-in [load-balancing configuration](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub#note-2) as an example of a pull method plug-in.
+[^5.2]: See Filebeat input plug-in [load-balancing configuration](https://www.elastic.co/guide/en/beats/filebeat/7.17/load-balancing.html) as an example of a push method plug-in.
+[^6]: Check [Available Plug-ins](https://github.com/IBM/universal-connectors/blob/main/docs/available_plugins.md) for the list of plug-ins that are pre-installed and do not require any manual uploads.
 [^7]: For some data sources, you can configure either real-time or historic audit logging  via the input plug-in's configuration file in its input scope (e.g., [JDBC Snowflake](https://github.com/infoinsights/guardium-snowflake-uc-filter#3-configure-the-input-and-filter-plugins)).
-[^8]: GIM is currently supported only for [Filebeat and Syslog on MongoDB](docs/GIM.md#configuring-gim-to-handle-filebeat-and-syslog-on-mongodb).
-[^9]: See [MySQL filter plug-in page](filter-plugin/logstash-filter-mysql-guardium/README.md#mysql-guardium-logstash-filter-plug-in)
+[^8]: GIM is currently supported only for [Filebeat and Syslog on MongoDB](https://github.com/IBM/universal-connectors/blob/main/docs/general%20topics/GIM.md#configuring-gim-to-handle-filebeat-and-syslog-on-mongodb).
+[^9]: See [MySQL filter plug-in page](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mysql-guardium/README.md#mysql-guardium-logstash-filter-plug-in)
 
-  </details>
+</details>
 
 
 
