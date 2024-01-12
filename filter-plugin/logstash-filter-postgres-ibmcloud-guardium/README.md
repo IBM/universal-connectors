@@ -117,6 +117,7 @@ Note - For Load balancing number of partitions should be at least two or more wh
       - Source program
       - Client Hostname
 3. Success Audit log for SELECT, INSERT, UPDATE, DELETE, DECLARE, TRUNCATE queries are not generated, but if those Queries fail for some reason, then the appropriate Failure Log is captured in audit logs and so in the Error Report of Guardium.
+4. To get unique S-TAP for multiple Databases, user needs to create database instanes in different regions. This is an IBM platform limitation where we can't create 2 Kafka streams from a single IBM Log Analysis. 
 
 ## 6. Configuring the IBM Cloud PostgresSQL filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the PostgreSQL template.
