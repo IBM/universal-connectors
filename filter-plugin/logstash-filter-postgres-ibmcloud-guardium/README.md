@@ -84,9 +84,11 @@ Session logging is configured per event type. The supported event types across a
 #### Creating Topic
 1. Navigate to the Resource List, click on Integration option.
 2. Select the Event Stream instance created in above step.
-2. Select Topics Tab and click on Create Topic.
-2. Enter Topic Name.
-3. Keep the defaults set in the rest of the topic creation, click Next, and then Create topic.
+3. Select Topics Tab and click on Create Topic.
+4. Enter Topic Name.
+5. Keep the defaults set in the rest of the topic creation, click Next, and then Create topic.
+
+Note - For Load balancing number of partitions should be at least two or more while creating the topic. Same count should be updated in "consumer_threads" property of input configuration.
 
 #### Creating Service Credentials
 1. Navigate to the created event stream and go to Service credentials in the navigation panel.
@@ -122,12 +124,12 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ### Before you begin
 * Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugin-postgresql.zip plug-in](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-postgres-ibmcloud-guardium/IcdPostgresOverKafkaEvent/guardium_logstash-offline-plugin-icd-postgresql.zip).
+* Download the [guardium_logstash-offline-plugin-icd-postgresql.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-postgres-ibmcloud-guardium/IcdPostgresOverKafkaEvent/guardium_logstash-offline-plugin-icd-postgresql.zip) plug-in.
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Before you upload the universal connector, enable the connector if it is disabled.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugin-postgresql.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-postgres-ibmcloud-guardium/IcdPostgresOverKafkaEvent/guardium_logstash-offline-plugin-icd-postgresql.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugin-icd-postgresql.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-postgres-ibmcloud-guardium/IcdPostgresOverKafkaEvent/guardium_logstash-offline-plugin-icd-postgresql.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [Postgres.conf](Postgres.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
