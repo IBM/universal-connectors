@@ -88,6 +88,7 @@ There are a couple of flavors aimed at enabling audit log forwarding into Guardi
 
 
 ## Enabling load balancing and fail-over
+When utilizing the built-in features of both Guardium Data Protection and Guardium Insights, there's a possibility of inadvertently distributing the entire set of received events to each Guardium instance. This may result in duplicated and redundant event processing.
 To prevent this default behavior and ensure efficient operation, it is recommended to configure these mechanisms as part of the input scope in the configuration file of the installed connector. You can achieve this configuration through both pull (Pub/Sub[^5.1], JDBC[^5.2], SQS[^5.3]) and push (Filebeat[^5.4]) methods.
 It's important to note that when using the push method in Guardium Data Protection, configuring the entire set of collectors as part of the input scope is necessary.
 For more detailed information about each plug-in, please refer to the [Available Plug-ins](/docs/available_plugins.md) page.
