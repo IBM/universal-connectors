@@ -3,7 +3,7 @@
 
 ## Before you begin
 
-Each data source type has a specific plug-in that filters and parses the events from the data source, and converts them to a standard Guardium format. The first time that you add a connector of a specific data source type, you need to upload its plug-in. On the [available\_plugins.md](https://github.com/IBM/universal-connectors/blob/main/docs/available_plugins.md) page, refer to the "Downloads" column for the list of plug-ins available for Guardium Insights. Click the "GI" hyperlink for the plug-in you wish to download.
+Each data source type has a specific plug-in that filters and parses the events from the data source, and converts them to a standard Guardium format. The first time that you add a connector of a specific data source type, you need to upload its plug-in. On the [Plugins_management.md](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/3.2.x/Plugins_management.md) page, refer to the "Downloads" column for the list of plug-ins available for Guardium Insights. Click the "GI" hyperlink for the plug-in you wish to download.
 
 ## About this task
 

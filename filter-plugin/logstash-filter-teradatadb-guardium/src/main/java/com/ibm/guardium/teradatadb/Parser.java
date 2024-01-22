@@ -86,7 +86,7 @@ public class Parser {
 			accessor.setServiceName(Constants.UNKNOWN_STRING);
 			accessor.setServerOs(Constants.UNKNOWN_STRING);
 			accessor.setServerHostName(e.getField(Constants.SERVER_HOSTNAME).toString());
-			accessor.setOsUser(Constants.UNKNOWN_STRING);			
+			accessor.setOsUser(e.getField(Constants.OS_USER).toString());
 		return accessor;
 	}
 	
