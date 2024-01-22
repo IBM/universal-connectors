@@ -111,13 +111,27 @@ Note - For Load balancing number of partitions should be at least two or more wh
       - Enter the `topic` name which you have created above and click on Save button
       - Verify all the information which you have given and click on yes and after that click on Start stream.
 
+###  Exclusion Rule
+If User create more than one instance in same location and want to stream only the audit logs for the desired instance, then in that case we need to add `Exclusion Rules` in Log-Analysis. Below are the steps:
+ 
+- Go to `Log-Analysis` dashboard.
+- Click on `Usage` option present in left side bar of the dashboard.
+- After that when Usage dashboard will open, go to `Exclusion Rules`. 
+- Click on `Add Rule`.
+- Provide the Rule name.
+- Select the Host(For ex:- ibm-cloud-databases-prod).
+- Select Apps, here you can include all those instances from which you don't want audit logs to be streamed.
+- Keep Query section blank.
+- Keep the check box as it is to see the traces of unstreamed logs in `Log-Analysis` dashboard.
+- Click on `Save` (New rules may take a few minutes to take effect).
+
 ## 5. Limitations
 1. The Audit log doesn't contain a server IP. The default value is set to `0.0.0.0` for the `server IP`.
 2. The following important fields cannot be mapped with PostgreSql logs:
       - Source program
       - Client Hostname
 3. Success Audit log for SELECT, INSERT, UPDATE, DELETE, DECLARE, TRUNCATE queries are not generated, but if those Queries fail for some reason, then the appropriate Failure Log is captured in audit logs and so in the Error Report of Guardium.
-4. To get unique S-TAP for multiple Databases, user needs to create database instanes in different regions. This is an IBM platform limitation where we can't create 2 Kafka streams from a single IBM Log Analysis. 
+4. User needs to create database instanes in different regions. This is an IBM platform limitation where we can't create 2 Kafka streams from a single IBM Log Analysis. 
 
 ## 6. Configuring the IBM Cloud PostgresSQL filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the PostgreSQL template.
