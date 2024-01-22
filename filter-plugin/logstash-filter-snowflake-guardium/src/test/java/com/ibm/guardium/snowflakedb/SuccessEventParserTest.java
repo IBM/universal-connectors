@@ -37,7 +37,7 @@ public class SuccessEventParserTest {
             Assert.assertEquals(record.getTime().getMinOffsetFromGMT(), 0);
 
             String qts = event.get(Constants.QUERY_TIMESTAMP).toString();
-            LocalDateTime date = LocalDateTime.parse(qts,Parser.DATE_TIME_FORMATTER);
+            LocalDateTime date = Parser.parseTime(qts);
             long ts = date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
             Assert.assertEquals(record.getTime().getTimstamp(), ts);
@@ -86,6 +86,23 @@ public class SuccessEventParserTest {
     @Test
     public void testGetTime(){
         Event e = FakeEventFactory.getSuccessEvent();
+        SuccessEventParser parser = new SuccessEventParser();
+        Map<String,Object> event = e.toMap();
+
+        try{
+            Record record = parser.parseRecord(event);
+            System.out.println(record.getTime().getTimstamp());
+        }catch (ParseException ex){
+            Assert.fail(ex.getMessage());
+            ex.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void testGetTimeWithZone(){
+        Event e = FakeEventFactory.getSuccessEvent();
+        e.setField(Constants.QUERY_TIMESTAMP, "2023-08-03T13:33:06+0000");
         SuccessEventParser parser = new SuccessEventParser();
         Map<String,Object> event = e.toMap();
 

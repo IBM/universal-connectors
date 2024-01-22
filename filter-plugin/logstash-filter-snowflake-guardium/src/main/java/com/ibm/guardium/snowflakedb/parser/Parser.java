@@ -10,17 +10,15 @@ import com.ibm.guardium.snowflakedb.exceptions.ParseException;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.util.Map;
 import java.util.Optional;
 
 public interface Parser {
 
-    DateTimeFormatterBuilder dateTimeFormatterBuilder = new DateTimeFormatterBuilder()
-            .append(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS[[XXX][X]]"));
-
-    DateTimeFormatter DATE_TIME_FORMATTER = dateTimeFormatterBuilder.toFormatter();
     Record parseRecord(Map<String, Object> event) throws ParseException;
 
     default String getClientOS(Map<String, String> clientEnvironment) {
@@ -48,5 +46,22 @@ public interface Parser {
             return clientOs;
         }
         return Constants.UNKNOWN_STRING;
+    }
+
+    static LocalDateTime parseTime(String ts){
+        DateTimeFormatterBuilder dateTimeFormatterBuilder = new DateTimeFormatterBuilder()
+                .append(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS[[XXX][X]]"));
+
+        DateTimeFormatter formatter = dateTimeFormatterBuilder.toFormatter();
+
+        try {
+            return LocalDateTime.parse(ts,formatter);
+        } catch (DateTimeParseException e) {
+            DateTimeFormatterBuilder dateTimeFormatterBuilderUTC = new DateTimeFormatterBuilder()
+                    .append(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ"));
+            formatter = dateTimeFormatterBuilderUTC.toFormatter();
+
+            return LocalDateTime.parse(ts, formatter);
+        }
     }
 }
