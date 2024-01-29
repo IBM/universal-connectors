@@ -32,6 +32,7 @@ Optionally, you may set the log_group_prefix parameter to true which will scan f
 | session_token | string | No | |
 | region | string | No | `us-east-1` |
 | codec | string | No | `plain` |
+| role_arn | string | No |  |
 
 
 #### `log_group`
@@ -68,6 +69,9 @@ The `region` setting allows specify the region in which the Cloudwatch log group
 
 #### `codec`
 The `codec` setting allows specify, the codec used for input data. Input codecs are a convenient method for decoding the data before it enters the input, without needing a separate filter in the Logstash pipeline.
+
+#### `role_arn`
+The role_arn setting allows you to specify which AWS IAM Role to assume, if any. This is used to generate temporary credentials, typically for cross-account access. To understand more about the settings to be followed while using this parameter, click [here]( ./SettingsForRoleArn.md )
 
 
 #### Logstash Default config params
