@@ -41,6 +41,7 @@ filter-plugin/logstash-filter-pubsub-postgresql-guardium/PubSubPostgreSQLPackage
 filter-plugin/logstash-filter-mongodb-guardium/MongoDBOverSyslogPackage;logstash-filter-mongodb_guardium_filter.zip
 filter-plugin/logstash-filter-mysql-guardium/MySQLOverSyslogPackage;logstash-filter-mysql_filter_guardium.zip
 filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresOverSyslogPackage;
+filter-plugin/logstash-filter-yugabyte-guardium/YugabyteOverSyslogPackage;
 #Other
 filter-plugin/logstash-filter-mongodb-guardium/MongodbOverMongoAtlasPackage;logstash-filter-mongodb_guardium_filter.zip
 filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub;logstash-filter-azure_postgresql_guardium_plugin_filter.zip
