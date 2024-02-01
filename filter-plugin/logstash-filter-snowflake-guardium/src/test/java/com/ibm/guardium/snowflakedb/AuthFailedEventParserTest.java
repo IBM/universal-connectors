@@ -38,7 +38,7 @@ public class AuthFailedEventParserTest {
             Assert.assertEquals(record.getTime().getMinOffsetFromGMT(), 0);
 
             String qts = event.get(Constants.LOGIN_TIMESTAMP).toString();
-            LocalDateTime date = LocalDateTime.parse(qts,Parser.DATE_TIME_FORMATTER);
+            LocalDateTime date = Parser.parseTime(qts);
             long ts = date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
             Assert.assertEquals(record.getTime().getTimstamp(), ts);
