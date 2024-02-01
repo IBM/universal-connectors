@@ -38,6 +38,7 @@ public class TeradatadbGuardiumPluginFilterTest {
 		e.setField(Constants.ERROR_TEXT, null);
 		e.setField(Constants.LOGON_SOURCE, "(TCP/IP) c089 194.2.127.16 DBS-TERADATA1620.COM;DB-TERA CID=2D39989 "
 				+ "AVT666744 JDBC17.10.00.14;1.8.0_202 01 LSS");
+		e.setField(Constants.OS_USER, "TESTUSER");
 		return e;
    }
 	
