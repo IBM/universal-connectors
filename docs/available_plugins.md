@@ -13,6 +13,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [Amazon S3](../filter-plugin/logstash-filter-s3-guardium/README.md)
 * [Apache Cassandra](../filter-plugin/logstash-filter-cassandra-guardium/README.md)
 * [Azure Apache Solr](../filter-plugin/logstash-filter-azure-apachesolr-guardium/README.md)
+* [Azure Cosmos](../filter-plugin/logstash-filter-cosmos-azure-guardium/README.md)
 * [Azure Database for PostgreSQL](../filter-plugin/logstash-filter-azure-postgresql-guardium/README.md)
 * [Azure MYSQL](../filter-plugin/logstash-filter-mysql-azure-guardium/README.md)
 * [Azure SQL](../filter-plugin/logstash-filter-azure-sql-guardium/README.md)
