@@ -7,72 +7,127 @@
     * Guardium Data Protection: 11.4 and above
     * Guardium Insights: coming soon
 
-This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the universal connector that is featured in IBM Security Guardium. It reads events and messages from the Mongo Atlas audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
+This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the 
+universal connector that is featured in IBM Security Guardium. It reads events 
+and messages from the Mongo Atlas audit log 
+into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance 
+(which is a standard structure made out of several parts). The information is then 
+sent over to Guardium. Guardium records include the accessor (the person who tried 
+to access the data), the session, data, and exceptions. If there are no errors, the 
+data contains details about the query "construct". The construct details the main 
+action (verb) and collections (objects) involved.
 
 In order to support a few features one zip has to be added with the name "guardium_logstash-offline-plugins-mongo-atlas.zip".
 
 ##  Steps for cluster creation in Mongo Atlas.
-  1. Login to Atlas using https://cloud.mongodb.com/.
-  2. Click 'Build a cluster'.
-  3. If 'Build a cluster' option is unavailable, Select the 'create' option in the top right corner.
-  4. Select Dedicated Cluster.
-  5. Select your preferred Cloud Provider & Region
-  6. Select your preferred Cluster Tier.
-  7. Enter a name for your cluster in the Cluster Name field.
-  8. Click Create Cluster to deploy the cluster.
-  Now that your cluster is provisioned.
-  For more information https://www.mongodb.com/docs/atlas/tutorial/create-new-cluster/.
+1. Login to Atlas using https://cloud.mongodb.com/.
+2. Click 'Build a cluster'.
+3. If 'Build a cluster' option is unavailable,
+   Select **Database** from the menu at left and
+   Select the **Create** option in the top right corner.
+4. Select Dedicated Cluster.
+5. Select your preferred Cloud Provider & Region
+6. Select your preferred Cluster Tier.
+7. Enter a name for your cluster in the Cluster Name field.
+8. Click Create Cluster to deploy the cluster.
+   Now that your cluster is provisioned.
+   For more information https://www.mongodb.com/docs/atlas/tutorial/create-new-cluster/.
 
 
 ##  Steps to create API user.
-  1. Click on 'Database Access' option from 'SECURITY' menu.
-  2. Click on 'ADD NEW DATABASE USER' option in the top right corner.
-  3. Create username/password for Authentication And provide built-in role for user from drop-down list.
-  4. Click on Add user. 
-  Your API user is created successfully. 
+1. Click on **Database Access** option from **Security** menu.
+2. Click on **Add New Database User** option in the top right corner.
+3. Create username/password for Authentication And provide built-in role for user from drop-down list.
+4. Click on Add user.
+   Your API user is created successfully.
 
 
 ##  Create an API Key And Provide Network access.
-  1. Navigate to the Access Manager page for your organization.
-  2. Click Create API Key.
-  3. Enter the API Key Information.
-    a.Enter a Description.
-    b.In the Organization Permissions menu, select the new role or roles for the API key.
-  4. Click Next.
-  5. Copy and save the Public Key.
-  6. Copy and save the Private Key.
-  7. Add an API Access List Entry.
-    a.Click Add Access list Entry.
-    b.Enter an IP address from which you want Atlas to accept API requests for this API Key.
-    c.Click Save.
-  8. Click Done.
-  9. In the Security section of the left navigation, click on Network Access.
-  10. Click on 'ADD IP ADDRESS' button.
-  11. Add IP address and and click on 'Confirm'.
-  For more information, https://www.mongodb.com/docs/atlas/configure-api-access/#add-an-api-access-list-entry.
+1. Navigate to the Access Manager page for your organization.
+2. Select **Projects** from the menu at left.
+3. Select a Project from the list.
+4. Click on three dots adjacent to the Project selection menu
+   at top left corner just below to the Organization menu.
+5. Select the **Project Settings**.
+6. Select **Access Manager** from the menu at left side.
+7. Click **Create API Key**.
+8. Enter the API Key Information.
+    1. Enter a Description.
+    2. In the Project Permissions menu, select the role for the API key.
+9. Click **Next**.
+10. Copy and save the **Public Key**.
+11. Copy and save the **Private Key**.
+12. Click **Add Access list Entry**.
+    1. Enter an IP address from which you want Atlas to
+       accept API requests for this API Key. You can add the current IP address
+       just by clicking **Use Current IP address**.
+    2. Click **Save**.
+13. Click **Done**.
+14. Select the project from the top left corner
+    list below to the Organizations list.
+15. In the Security section of the left navigation, click on **Network Access**.
+16. Click on **Add IP Address** button.
+17. Add IP address and click on **Confirm**.
 
-**Note**:
-If no traffic is observed and the API key configured properly, revalidate the IP in the allowed access list by removing and adding it again, and recreate the UC connection. 
+For more information, https://www.mongodb.com/docs/atlas/configure-api-access/#add-an-api-access-list-entry. 
 
 
 ##  Setup Database Auditing.
-  1. In the Security section of the left navigation, click Advanced.
-  2. Toggle the button next to Database Auditing to On.
-  3. Click Save.
-  For more information, https://www.mongodb.com/docs/atlas/database-auditing/.
+1. In the **Security** section of the left navigation, click **Advanced**.
+2. Toggle the button next to **Database Auditing** to On.
+3. Click **Save**.
+   For more information, https://www.mongodb.com/docs/atlas/database-auditing/.
 
 ##  Audit filter criteria on MongoDB
-  1. In the Security section of the left navigation, click Advanced.
-  2. Click  Audit Filter Settings next to Database Auditing.
-  3. Paste this text and click Save
-  {
-     "atype": {
-      "$in": [
-       "authCheck",
-       "authenticate"
-      ]
+1. In the **Security** section of the left navigation, click **Advanced**.
+2. Click **Edit** just below to **Database Auditing** button.
+3. Paste below text and click **Save**.
+```json
+ {
+  "$and": [
+    {
+      "atype": {
+        "$nin": [
+          "clientMetadata"
+        ]
+      }
+    },
+    {
+      "users.user": {
+        "$nin": [
+          "mms-automation",
+          "mms-monitoring-agent",
+          "__system"
+        ]
+      }
+    },
+    {
+      "param.initialUsers.user": {
+        "$nin": [
+          "mms-automation",
+          "mms-monitoring-agent",
+          "__system"
+        ]
+      }
+    },
+    {
+      "param.ns": {
+        "$not": {
+          "$regex": "^admin"
+        }
+      }
+    },
+    {
+      "param.ns": {
+        "$not": {
+          "$regex": "^local"
+        }
+      }
     }
-  }
+  ]
+}
+```
+
 ##  Configuring the Input Mongo Atlas plugin in Guardium
 ### Before you begin
   • You must have permissions for the S-TAP Management role. The admin user includes this role by default.
@@ -95,19 +150,130 @@ If no traffic is observed and the API key configured properly, revalidate the IP
 
 
 ### Parameters
-| Parameter | Input Type | Required | Default |
-|-----------|------------|----------|---------|
-| interval | number | Yes | | 300
-| public-key | string | No | |
-| private-key | string | No | |
-| group-id | string | No | |
-| hostname | string | No | |
-| filename | string | No | `mongodb-audit-log.gz` |
+| Parameter   | Input Type | Required | Default                |
+|-------------|------------|----------|------------------------|
+| interval    | number     | Yes      | 300                    | 
+| public-key  | string     | Yes      |                        |
+| private-key | string     | Yes      |                        |
+| group-id    | string     | Yes      |                        |
+| hostname    | string     | Yes      |                        |
+| filename    | string     | No       | `mongodb-audit-log.gz` |
+
+* **group-id**: GroupId is equivalent to the project ID. To find it,
+    1. Go to your Organization.
+    2. Select **Projects** from the left menu.
+    3. Select the required project.
+    4. Click on the three dots right by the name of the selected project in the
+       top left corner.
+    5. Select **Project Settings**.
+    6. Copy the **Project ID** displayed on the page.
+
+* **hostname**: Hostname is equivalent to the cluster hostname. To find it,
+    1. Click **All Clusters** in the top right corner.
+    2. Select the cluster from the list.
+    3. There will be a panel named **Region**.
+    4. Select any shard among the listed inside the region panel.
+    5. You will land to the **Status** page.
+    6. The label of the title of the page will be in the format of <hostname>:<port>.
+    7. Take the host name. It will be in the format of,
+       `<cluster-name>-<shard-seq-seq>.<identifier>.mongodb.net`. For example,
+       `cluster2-shard-00-01.i2jq9.mongodb.net`
 
 ### Example
-### mongo  event
-  { "atype" : "authCheck", "ts" : { "$date" : "2022-07-03T10:05:49.906+00:00" }, "uuid" : { "$binary" : "Y2etnPUqSgayglUyJEIhAg==", "$type" : "04" }, "local" : { "ip" : "192.168.240.160", "port" : 27017 }, "remote" : { "ip" : "192.168.240.160", "port" : 35154 }, "users" : [ { "user" : "mms-automation", "db" : "admin" } ], "roles" : [ { "role" : "restore", "db" : "admin" }, { "role" : "userAdminAnyDatabase", "db" : "admin" }, { "role" : "dbAdminAnyDatabase", "db" : "admin" }, { "role" : "backup", "db" : "admin" }, { "role" : "readWriteAnyDatabase", "db" : "admin" }, { "role" : "clusterAdmin", "db" : "admin" } ], "param" : { "command" : "find", "ns" : "local.clustermanager", "args" : { "find" : "clustermanager", "filter" : {}, "limit" : { "$numberLong" : "1" }, "singleBatch" : true, "sort" : {}, "lsid" : { "id" : { "$binary" : "ij8ekCWaRSmm4kJmrXMVrA==", "$type" : "04" } }, "$clusterTime" : { "clusterTime" : { "$timestamp" : { "t" : 1656842749, "i" : 1 } }, "signature" : { "hash" : { "$binary" : "DO6s7IXc/4pDtTLFqcVl58O/uaI=", "$type" : "00" }, "keyId" : { "$numberLong" : "7109460176817618948" } } }, "$db" : "local", "$readPreference" : { "mode" : "primaryPreferred" } } }, "result" : 0 }
-
+#### Mongo  event
+```json
+  {
+  "atype": "authCheck",
+  "ts": {
+    "$date": "2022-07-03T10:05:49.906+00:00"
+  },
+  "uuid": {
+    "$binary": "Y2etnPUqSgayglUyJEIhAg==",
+    "$type": "04"
+  },
+  "local": {
+    "ip": "192.168.240.160",
+    "port": 27017
+  },
+  "remote": {
+    "ip": "192.168.240.160",
+    "port": 35154
+  },
+  "users": [
+    {
+      "user": "mms-automation",
+      "db": "admin"
+    }
+  ],
+  "roles": [
+    {
+      "role": "restore",
+      "db": "admin"
+    },
+    {
+      "role": "userAdminAnyDatabase",
+      "db": "admin"
+    },
+    {
+      "role": "dbAdminAnyDatabase",
+      "db": "admin"
+    },
+    {
+      "role": "backup",
+      "db": "admin"
+    },
+    {
+      "role": "readWriteAnyDatabase",
+      "db": "admin"
+    },
+    {
+      "role": "clusterAdmin",
+      "db": "admin"
+    }
+  ],
+  "param": {
+    "command": "find",
+    "ns": "local.clustermanager",
+    "args": {
+      "find": "clustermanager",
+      "filter": {},
+      "limit": {
+        "$numberLong": "1"
+      },
+      "singleBatch": true,
+      "sort": {},
+      "lsid": {
+        "id": {
+          "$binary": "ij8ekCWaRSmm4kJmrXMVrA==",
+          "$type": "04"
+        }
+      },
+      "$clusterTime": {
+        "clusterTime": {
+          "$timestamp": {
+            "t": 1656842749,
+            "i": 1
+          }
+        },
+        "signature": {
+          "hash": {
+            "$binary": "DO6s7IXc/4pDtTLFqcVl58O/uaI=",
+            "$type": "00"
+          },
+          "keyId": {
+            "$numberLong": "7109460176817618948"
+          }
+        }
+      },
+      "$db": "local",
+      "$readPreference": {
+        "mode": "primaryPreferred"
+      }
+    }
+  },
+  "result": 0
+}
+```
 
 ## Supported audit messages & commands
 * authCheck: 
