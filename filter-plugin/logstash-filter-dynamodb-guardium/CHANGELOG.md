@@ -9,8 +9,7 @@ Notable changes will be documented in this file.
 
 ## [1.0.1] - 2024-02-01
 ### Added
-- Support of SQS input. The plugin will be able to read and process the Dynamo DB 
-logs that are posted to the AWS SQS.
+- Support of Simple Queue Service (SQS) input. This plugin can read and process the DynamoDB.
 
 
 
