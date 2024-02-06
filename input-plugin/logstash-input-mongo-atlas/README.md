@@ -4,7 +4,7 @@
 * Developed by IBM
 * Configuration instructions can be found on [Guardium Mongo Atlas documentation](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-mongo-atlas/README.md)
 * Supported Guardium versions:
-    * Guardium Data Protection: 11.4 and above
+    * Guardium Data Protection: 11.4 and later
     * Guardium Insights: coming soon
 
 This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the 
@@ -17,27 +17,28 @@ to access the data), the session, data, and exceptions. If there are no errors, 
 data contains details about the query "construct". The construct details the main 
 action (verb) and collections (objects) involved.
 
-In order to support a few features one zip has to be added with the name "guardium_logstash-offline-plugins-mongo-atlas.zip".
+To support Universal Connector features for MongoDB Atlas, add the ZIP 
+file guardium_logstash-offline-plugins-mongo-atlas.zip.
 
 ##  Steps for cluster creation in Mongo Atlas.
 1. Login to Atlas using https://cloud.mongodb.com/.
 2. Click 'Build a cluster'.
-3. If 'Build a cluster' option is unavailable,
-   Select **Database** from the menu at left and
-   Select the **Create** option in the top right corner.
+3. If 'Build a cluster' is not available, you need to create and provision a new cluster, as follows:
+   * Select **Database** from the menu at left and,
+   * Select the **Create** option in the top right corner.
 4. Select Dedicated Cluster.
 5. Select your preferred Cloud Provider & Region
 6. Select your preferred Cluster Tier.
 7. Enter a name for your cluster in the Cluster Name field.
 8. Click Create Cluster to deploy the cluster.
-   Now that your cluster is provisioned.
+   Your cluster is now provisioned.
    For more information https://www.mongodb.com/docs/atlas/tutorial/create-new-cluster/.
 
 
-##  Steps to create API user.
+##  Create an API user.
 1. Click on **Database Access** option from **Security** menu.
 2. Click on **Add New Database User** option in the top right corner.
-3. Create username/password for Authentication And provide built-in role for user from drop-down list.
+3. Create a username and password for authentication. Select a built-in role for the user from the drop-down list.
 4. Click on Add user.
    Your API user is created successfully.
 
@@ -46,8 +47,7 @@ In order to support a few features one zip has to be added with the name "guardi
 1. Navigate to the Access Manager page for your organization.
 2. Select **Projects** from the menu at left.
 3. Select a Project from the list.
-4. Click on three dots adjacent to the Project selection menu
-   at top left corner just below to the Organization menu.
+4. Click the ellipses (**&#8942;**) next to the Project menu (in the top left corner below the Organization menu).
 5. Select the **Project Settings**.
 6. Select **Access Manager** from the menu at left side.
 7. Click **Create API Key**.
@@ -63,9 +63,8 @@ In order to support a few features one zip has to be added with the name "guardi
        just by clicking **Use Current IP address**.
     2. Click **Save**.
 13. Click **Done**.
-14. Select the project from the top left corner
-    list below to the Organizations list.
-15. In the Security section of the left navigation, click on **Network Access**.
+14. Select the Project from the list below Organizations.
+15. In the Security section, click **Network Access**.
 16. Click on **Add IP Address** button.
 17. Add IP address and click on **Confirm**.
 
@@ -81,7 +80,7 @@ For more information, https://www.mongodb.com/docs/atlas/configure-api-access/#a
 ##  Audit filter criteria on MongoDB
 1. In the **Security** section of the left navigation, click **Advanced**.
 2. Click **Edit** just below to **Database Auditing** button.
-3. Paste below text and click **Save**.
+3. Paste the following code and then click **Save**.
 ```json
  {
   "$and": [
@@ -163,24 +162,26 @@ For more information, https://www.mongodb.com/docs/atlas/configure-api-access/#a
     1. Go to your Organization.
     2. Select **Projects** from the left menu.
     3. Select the required project.
-    4. Click on the three dots right by the name of the selected project in the
-       top left corner.
+    4. Click the ellipses (**&#8942;**) next to the name of the selected project
     5. Select **Project Settings**.
     6. Copy the **Project ID** displayed on the page.
 
 * **hostname**: Hostname is equivalent to the cluster hostname. To find it,
     1. Click **All Clusters** in the top right corner.
     2. Select the cluster from the list.
-    3. There will be a panel named **Region**.
-    4. Select any shard among the listed inside the region panel.
-    5. You will land to the **Status** page.
-    6. The label of the title of the page will be in the format of <hostname>:<port>.
-    7. Take the host name. It will be in the format of,
-       `<cluster-name>-<shard-seq-seq>.<identifier>.mongodb.net`. For example,
-       `cluster2-shard-00-01.i2jq9.mongodb.net`
+    3. From the **Region** panel, select any shard. After you select the shard, the **Status** page displays.
+    4. The label of the title of the page will be in the format of <hostname>:<port>.
+    5. On the **Status** page, the page title includes the hostname. The host name format is:
+        ```
+       <cluster-name>-<shard-seq-seq>.<identifier>.mongodb.net
+       ``` 
+       For example,
+        ```
+       cluster2-shard-00-01.i2jq9.mongodb.net
+       ```
 
 ### Example
-#### Mongo  event
+#### Mongo event
 ```json
   {
   "atype": "authCheck",
