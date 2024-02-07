@@ -1,24 +1,22 @@
 package com.ibm.guardium.mongodb;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
-import java.net.ProxySelector;
+import java.net.InetAddress;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.zip.GZIPInputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Random;
+import java.util.zip.GZIPInputStream;
 
-import org.apache.http.*;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpStatus;
 import org.apache.http.auth.AUTH;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
@@ -27,11 +25,9 @@ import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.util.FileUtils;
+import org.apache.logging.log4j.Logger;
 
 /**
  * handle calling mongo atlas api
@@ -95,6 +91,7 @@ public class MongoApi {
         if (log.isDebugEnabled()) {
             log.debug(url);
         }
+
         try {
             URL object = new URL(url);
             //get the file unzipped from url
@@ -146,6 +143,11 @@ public class MongoApi {
 
         HttpHost targetHost = new HttpHost(url.getHost(), url.getPort(), url.getProtocol());
         DigestScheme digestScheme = new DigestScheme();
+        
+        String requester = InetAddress.getLocalHost().toString();
+        digestScheme.overrideParamter("realm", requester);
+        digestScheme.overrideParamter("nonce", Long.toString(new Random().nextLong(), 36));
+
         AuthCache authCache = new BasicAuthCache();
         authCache.put(targetHost, digestScheme);
 
@@ -166,7 +168,9 @@ public class MongoApi {
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
             Header authHeader = response.getFirstHeader(AUTH.WWW_AUTH);
             digestScheme = new DigestScheme();
-            digestScheme.overrideParamter("realm", "User Login Required !!");
+            digestScheme.overrideParamter("realm", requester);
+            digestScheme.overrideParamter("nonce", Long.toString(new Random().nextLong(), 36));
+            
             digestScheme.processChallenge(authHeader);
 
             UsernamePasswordCredentials creds = new UsernamePasswordCredentials(publicKey, privateKey);
@@ -181,7 +185,7 @@ public class MongoApi {
 
         if (response.getStatusLine().getStatusCode() < HttpStatus.SC_BAD_REQUEST) {
             final HttpEntity entity = response.getEntity();
-            if (entity != null && response.getEntity().getContentLength()>0) {
+            if (entity != null && ( entity.getContentLength() > 0 || entity.isChunked())) {
                 try (InputStream inputStream = entity.getContent()) {
                     return unzip(inputStream);
                 }
