@@ -1,5 +1,5 @@
 /*
-Copyright IBM Corp. 2023 All rights reserved.
+Copyright IBM Corp. 2024 All rights reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 package com.ibm.guardium.icd.postgresql;
