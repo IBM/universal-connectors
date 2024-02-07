@@ -65,7 +65,29 @@ To set permissions for the log sink to route to its destination, do the followin
 * If you have owner access to the destination:
    1. add the sink's writer identity to topic and give it the Pub/Sub Publisher role and subscriber role.
    2. add the sink's writer identity to subscription and give it the Pub/Sub subscriber role.
-   3. 
+
+### Create service account credentials
+* Go to the Service accounts section of the IAM & Admin console.
+* Select ```project``` and click ```Create Service Account```.
+* Enter a Service account name, such as Bigquery-pubsub.
+* Click ```Create```.
+* The owner role is required for the service account. Select the owner role from the drop-down menu
+* Click ```Continue```. You do not need to grant users access to this service account.
+* Click ```Create Key```. The key is used by the Logstash input plug-in configuration file.
+* Select JSON and click ```Create```.
+
+### Inclusion Filter
+Edit the Sink via *Logs Router > Sink Inclusion Filter*:
+#### Description
+The purpose of this inclusion filter is to exclude unnecessary logs and include required logs with resource types and metadata reason as DELETE,TABLE_INSERT_REQUEST,TABLE_DELETE_REQUEST or CREATE and metadtata jobStatus.
+```    
+(resource.type=("bigquery_project") AND protoPayload.authenticationInfo.principalEmail:* AND
+(protoPayload.metadata.jobChange.job.jobStatus.jobState = DONE AND -protoPayload.metadata.jobChange.job.jobConfig.queryConfig.statementType = "SCRIPT"))
+OR
+(protoPayload.metadata.datasetDeletion.reason = "DELETE") OR (protoPayload.metadata.tableCreation.reason = "TABLE_INSERT_REQUEST") OR (protoPayload.metadata.tableDeletion.reason = "TABLE_DELETE_REQUEST") OR (protoPayload.metadata.datasetCreation.reason = "CREATE")
+
+```
+
 ## Viewing the Audit logs
 
 The inclusion filter mentioned above will be used to view the Audit logs in the GCP Logs Explorer.
