@@ -99,7 +99,7 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 ### Before you begin
 * You must have permission for the S-Tap Management role. The admin user includes this role, by default.
-* Download the [logstash-filter-mysql_filter_guardium.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-mysql_filter_guardium.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+* Download the [logstash-filter-mysql_filter_guardium.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-mysql_filter_guardium.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 
 ### Procedure
 
