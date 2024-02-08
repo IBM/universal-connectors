@@ -152,7 +152,7 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
 * Download the relevant plugin based on the version of the Guardium.
 1. For the Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-apachesolr-guardium/PubSubApacheSolrPackage/guardium_logstash-offline-plugin-pubsub-apache-solr-gcp.zip)
-2. For the Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-apache_solr_gcp_connector.zip)
+2. For the Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-apache_solr_gcp_connector.zip)
 
  
 ## Procedure
