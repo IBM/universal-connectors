@@ -18,14 +18,14 @@ This version is compliant with Guardium Data Protection v11.4 and above. Please 
 1. [Prerequisites](https://cloud.google.com/bigquery/docs/quickstarts/quickstart-cloud-console)
 2. BigQuery is automatically enabled in new projects. To activate BigQuery in an existing project, enable the BigQuery API.  Please refer to [Enable the BigQuery API](https://cloud.google.com/bigquery-transfer/docs/enable-transfer-service#creating_a_project_and_enabling_the_api) for more information.
 3. Create a BigQuery dataset that stores the data.
-   Please refer to [Create a Dataset](https://cloud.google.com/bigquery/docs/datasets) for more information
+   For more information, see [Create a Dataset](https://cloud.google.com/bigquery/docs/datasets) for more information
 4. Create a table
-    - Expand the: View actions option and click ```Open```.
+    - Expand the: View actions option and click `Open`.
     - In the details panel, click on (+) Create table.
     - On the Create table page, do the following:
       Enter Table Name. e.g., “user”.
-      You can add more fields to the table by clicking  ```+Add Field```.
-    - Click ```Create Table```.
+      You can add more fields to the table by clicking  `+Add Field`.
+    - Click `Create Table`.
       Please refer to [Create Table](https://cloud.google.com/bigquery/docs/tables) for more information
 5. Query table data. Please refer to [Query Table Data](https://cloud.google.com/bigquery/docs/quickstarts/quickstart-cloud-console#query_table_data) for more information
 
@@ -45,19 +45,19 @@ The following Identity and Access Management roles are required to view and down
 
 ### Create a topic in Pub/Sub
 * Go to the Pub/Sub topics page in the Cloud Console. 
-* Click ```Create a topic```
+* Click `Create a topic`
 * In the Topic ID field, provide a unique topic name, for example, MyTopic.
-* Click ```Create Topic```.
+* Click `Create Topic`.
 
 ### Create a subscription in Pub/Sub
 * Display the menu for the topic created in the previous step and click ```New subscription```.
 * Type a name for the subscription, such as MySub.
 * Leave the delivery type as Pull.
-* Click ```Create```
+* Click `Create`
 
 ### Create a log sink in Pub/Sub
 * In the Cloud Console, go to the Logging > Log Router page.
-* Click ```Create sink```.
+* Click `Create sink`.
 * In the Sink details panel, enter the following details:
 * Sink name: Provide an identifier for the sink. Note that after you create the sink you cannot rename it. However, you can delete a sink and create a new one.
 * Sink description (optional): Describe the purpose or use case for the sink.
@@ -72,7 +72,7 @@ The following Identity and Access Management roles are required to view and down
 
 To set permissions for the log sink to route to its destination, do the following:
 * Obtain the sink's writer identity—an email address—from the new sink.
-    1. Go to the Log Router page, and select ```menu```  > ```View sink details```.
+    1. Go to the Log Router page, and select `menu`  > `View sink details`.
     2. The writer identity appears in the Sink details panel.
 * If you have owner access to the destination:
     1. Add the sink's writer identity to topic >>>>
@@ -91,13 +91,13 @@ To set permissions for the log sink to route to its destination, do the followin
 
 ### Create service account credentials
 * Go to the Service accounts section of the IAM & Admin console.
-* Select ```project``` and click ```Create Service Account```.
+* Select `project` and click `Create Service Account`.
 * Enter a Service account name, such as Bigquery-pubsub.
-* Click ```Create```.
+* Click `Create`.
 * The owner role is required for the service account. Select the owner role from the drop-down menu
-* Click ```Continue```. You do not need to grant users access to this service account.
-* Click ```Create Key```. The key is used by the Logstash input plug-in configuration file.
-* Select JSON and click ```Create```.
+* Click `Continue`. You do not need to grant users access to this service account.
+* Click `Create Key`. The key is used by the Logstash input plug-in configuration file.
+* Select JSON and click `Create`.
 
 ### Inclusion Filter
 Edit the Sink via *Logs Router > Sink Inclusion Filter*:
@@ -153,15 +153,15 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the universal connector if it is disabled.
-3. Click Upload File and select the relevant plugin based on the version of the Guardium. After it is uploaded, click ```OK```.
+3. Click Upload File and select the relevant plugin based on the version of the Guardium. After it is uploaded, click `OK`.
     * For the Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip)
     * For the Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-big_query_guardium_filter.zip)
-4. Click ```Upload File``` and select the key.json file. After it is uploaded, click ```OK```.
+4. Click `Upload File` and select the key.json file. After it is uploaded, click `OK`.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
 7. Update the input section to add the details from the [pubsub_big_query.conf](pubsub_big_query.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 8. Update the filter section to add the details from the [pubsub_big_query.conf](pubsub_big_query.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 9. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
-10. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+10. Click `Save`. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 11. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.
 
