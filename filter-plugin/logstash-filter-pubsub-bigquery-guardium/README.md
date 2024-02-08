@@ -18,15 +18,15 @@ This version is compliant with Guardium Data Protection v11.4 and above. Please 
 1. [Prerequisites](https://cloud.google.com/bigquery/docs/quickstarts/quickstart-cloud-console)
 2. BigQuery is automatically enabled in new projects. To activate BigQuery in an existing project, enable the BigQuery API.  Please refer to [Enable the BigQuery API](https://cloud.google.com/bigquery-transfer/docs/enable-transfer-service#creating_a_project_and_enabling_the_api) for more information.
 3. Create a BigQuery dataset that stores the data.
-  Please refer to [Create a Dataset](https://cloud.google.com/bigquery/docs/datasets) for more information
+   Please refer to [Create a Dataset](https://cloud.google.com/bigquery/docs/datasets) for more information
 4. Create a table
     - Expand the: View actions option and click ```Open```.
     - In the details panel, click on (+) Create table.
     - On the Create table page, do the following:
-Enter Table Name. e.g., “user”.
-You can add more fields to the table by clicking  ```+Add Field```.
+      Enter Table Name. e.g., “user”.
+      You can add more fields to the table by clicking  ```+Add Field```.
     - Click ```Create Table```.
-Please refer to [Create Table](https://cloud.google.com/bigquery/docs/tables) for more information
+      Please refer to [Create Table](https://cloud.google.com/bigquery/docs/tables) for more information
 5. Query table data. Please refer to [Query Table Data](https://cloud.google.com/bigquery/docs/quickstarts/quickstart-cloud-console#query_table_data) for more information
 
 ### Permissions and Roles Details
@@ -37,11 +37,23 @@ User can view and download the generated logs.
 The following Identity and Access Management roles are required to view and download logs:
 
 * To view logs:
-roles/logging.viewer (Logs Viewer)
-roles/logging.privateLogViewer (Private Logs Viewer)
+  roles/logging.viewer (Logs Viewer)
+  roles/logging.privateLogViewer (Private Logs Viewer)
 * To download logs:
-roles/logging.admin (Logging Admin)
-roles/logging.viewAccessor (Logs View Accessor)
+  roles/logging.admin (Logging Admin)
+  roles/logging.viewAccessor (Logs View Accessor)
+
+### Create a topic in Pub/Sub
+* Go to the Pub/Sub topics page in the Cloud Console. 
+* Click ```Create a topic```
+* In the Topic ID field, provide a unique topic name, for example, MyTopic.
+* Click ```Create Topic```.
+
+### Create a subscription in Pub/Sub
+* Display the menu for the topic created in the previous step and click ```New subscription```.
+* Type a name for the subscription, such as MySub.
+* Leave the delivery type as Pull.
+* Click ```Create```
 
 ### Create a log sink in Pub/Sub
 * In the Cloud Console, go to the Logging > Log Router page.
@@ -49,27 +61,38 @@ roles/logging.viewAccessor (Logs View Accessor)
 * In the Sink details panel, enter the following details:
 * Sink name: Provide an identifier for the sink. Note that after you create the sink you cannot rename it. However, you can delete a sink and create a new one.
 * Sink description (optional): Describe the purpose or use case for the sink.
-* In the Sink destination panel, select the Pub/Sub topic as sink service and destination.
+* In the Sink destination panel, select the Cloud Pub/Sub topic as sink service and select the topic created in previous steps.
 * Choose logs to include in the sink in the Build inclusion filter panel.
 * You can filter the logs by log name, resource, and  severity.
-Multi-region
+  Multi-region
 * In cases of multiple regions, you need to do the same set of configurations per each region.
-Based on the region, different configuration files will be used for the input plug-in
+  Based on the region, different configuration files will be used for the input plug-in
 
 #### Set destination (TOPIC & SUBSCRIPTION) permissions
 
 To set permissions for the log sink to route to its destination, do the following:
 * Obtain the sink's writer identity—an email address—from the new sink.
-   1. Go to the Log Router page, and select ```menu```  > ```View sink details```.
-   2. The writer identity appears in the Sink details panel.
+    1. Go to the Log Router page, and select ```menu```  > ```View sink details```.
+    2. The writer identity appears in the Sink details panel.
 * If you have owner access to the destination:
-   1. add the sink's writer identity to topic and give it the Pub/Sub Publisher role and subscriber role.
-   2. add the sink's writer identity to subscription and give it the Pub/Sub subscriber role.
+    1. Add the sink's writer identity to topic >>>>
+        - Navigate to the Topic created in the earlier steps
+        - Click on SHOW INFO panel
+        - Click on ADD PRINCIPAL
+        - Paste writer identity in the New Principals
+        - Give it the Pub/Sub Publisher role and subscriber role
+
+    2. Add the sink's writer identity to subscription >>>>
+        - Navigate to the Subscription
+        - Click on SHOW INFO panel
+        - Click on ADD PRINCIPAL
+        - Paste writer identity in the New Principals
+        - Give it the subscriber role
 
 ### Create service account credentials
 * Go to the Service accounts section of the IAM & Admin console.
 * Select ```project``` and click ```Create Service Account```.
-* Enter a Service account name, such as Bigquery-pubsub.
+* Enter a Service account name, such as Bigquery-pubsub.
 * Click ```Create```.
 * The owner role is required for the service account. Select the owner role from the drop-down menu
 * Click ```Continue```. You do not need to grant users access to this service account.
@@ -85,7 +108,6 @@ The purpose of this inclusion filter is to exclude unnecessary logs and include 
 (protoPayload.metadata.jobChange.job.jobStatus.jobState = DONE AND -protoPayload.metadata.jobChange.job.jobConfig.queryConfig.statementType = "SCRIPT"))
 OR
 (protoPayload.metadata.datasetDeletion.reason = "DELETE") OR (protoPayload.metadata.tableCreation.reason = "TABLE_INSERT_REQUEST") OR (protoPayload.metadata.tableDeletion.reason = "TABLE_DELETE_REQUEST") OR (protoPayload.metadata.datasetCreation.reason = "CREATE")
-
 ```
 
 ## Viewing the Audit logs
@@ -93,11 +115,11 @@ OR
 The inclusion filter mentioned above will be used to view the Audit logs in the GCP Logs Explorer.
 
 ### Supported audit logs
-  1. BigQueryAudit - `ACTIVITY`, `DATA_ACCESS` logs
-  2. BigQuery Log - `EMERGENCY`, `ALERT`, `CRITICAL`, `ERROR`, `WARNING`, `NOTICE`, `DEBUG`, `DEFAULT`
+1. BigQueryAudit - `ACTIVITY`, `DATA_ACCESS` logs
+2. BigQuery Log - `EMERGENCY`, `ALERT`, `CRITICAL`, `ERROR`, `WARNING`, `NOTICE`, `DEBUG`, `DEFAULT`
 
 ## 4. Limitations
-1. If no information regarding certain fields is available in the logs, those fields will not be mapped. 
+1. If no information regarding certain fields is available in the logs, those fields will not be mapped.
 2. Exception object will be prepared based on severity of the logs.
 3. The data model size is limited to 10 GB per table. If you have a 100 GB reservation per project per location, BigQuery BI Engine limits the reservation per table to 10 GB. The rest of the available reservation is used for other tables in the project.
 4. BigQuery cannot read the data in parallel if you use gzip compression. Loading compressed JSON data into BigQuery is slower than loading uncompressed data.
@@ -107,14 +129,14 @@ The inclusion filter mentioned above will be used to view the Audit logs in the 
 8. Log messages have a size limit of 100K bytes
 9. The Audit/Data access log doesn't contain a server IP. The default value is set 0.0.0.0 for the server IP.
 10. The following important fields cannot be mapped, as there is no information regarding these fields in the logs:
-    - Source program 
+    - Source program
     - OS User
-    - Client HostName 
+    - Client HostName
 11.  `serverHostName` pattern for BigQuery GCP :
-project-id_bigquery.googleapis.com.
+     project-id_bigquery.googleapis.com.
 12. When you try to create or delete a data set or table using BigQuery UI options, fields like the FULL SQL & Objects and Verbs column appear blank, because these actions don't receive any query from GCP logs. You can ignore these actions, by updating the inculsion filter:
-"(resource.type=("bigquery_project") AND protoPayload.authenticationInfo.principalEmail:* AND
-(protoPayload.metadata.jobChange.job.jobStatus.jobState = DONE AND -protoPayload.metadata.jobChange.job.jobConfig.queryConfig.statementType = "SCRIPT"))"
+    "(resource.type=("bigquery_project") AND protoPayload.authenticationInfo.principalEmail:* AND
+    (protoPayload.metadata.jobChange.job.jobStatus.jobState = DONE AND -protoPayload.metadata.jobChange.job.jobConfig.queryConfig.statementType = "SCRIPT"))"
 13. The parser does not support queries in which a keyword is used as a table name or column name, or in scenarios of nested parameters inside functions.
 14. The BigQuery audit log doesn’t include login failed logs, so these will not appear in the guardium LOGIN_FAILED report.
 
@@ -131,7 +153,9 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the universal connector if it is disabled.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugins-ps-bigQuery.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip) plug-in. After it is uploaded, click ```OK```. This step is not necessary for Guardium Data Protection v12.0 and later.
+3. Click Upload File and select the relevant plugin based on the version of the Guardium. After it is uploaded, click ```OK```.
+    * For the Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip)
+    * For the Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-big_query_guardium_filter.zip)
 4. Click ```Upload File``` and select the key.json file. After it is uploaded, click ```OK```.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
