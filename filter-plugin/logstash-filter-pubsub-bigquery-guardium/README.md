@@ -11,14 +11,14 @@ This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the
 ### Note
 This plug-in contains a runtime dependency of Logstash Google PubSub input plug-in (version ~> 1.2.1, i.e. at least 1.2.1).
 
-This version is compliant with Guardium Data Protection v11.4 and above. Please refer to the [input plug-in repository](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub) for more information.
+This version is compliant with Guardium Data Protection v11.4 and above. For more information, see [input plug-in repository](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub).
 
 ## Configuring BigQuery on GCP
 ### BigQuery Setup
 1. [Prerequisites](https://cloud.google.com/bigquery/docs/quickstarts/quickstart-cloud-console)
-2. BigQuery is automatically enabled in new projects. To activate BigQuery in an existing project, enable the BigQuery API.  Please refer to [Enable the BigQuery API](https://cloud.google.com/bigquery-transfer/docs/enable-transfer-service#creating_a_project_and_enabling_the_api) for more information.
+2. BigQuery is automatically enabled in new projects. To activate BigQuery in an existing project, enable the BigQuery API.  For more information, see [Enable the BigQuery API](https://cloud.google.com/bigquery-transfer/docs/enable-transfer-service#creating_a_project_and_enabling_the_api) .
 3. Create a BigQuery dataset that stores the data.
-   For more information, see [Create a Dataset](https://cloud.google.com/bigquery/docs/datasets) for more information
+   For more information, see [Create a Dataset](https://cloud.google.com/bigquery/docs/datasets).
 4. Create a table
     - Expand the: View actions option and click `Open`.
     - In the details panel, click on (+) Create table.
@@ -27,7 +27,7 @@ This version is compliant with Guardium Data Protection v11.4 and above. Please 
       You can add more fields to the table by clicking  `+Add Field`.
     - Click `Create Table`.
       Please refer to [Create Table](https://cloud.google.com/bigquery/docs/tables) for more information
-5. Query table data. Please refer to [Query Table Data](https://cloud.google.com/bigquery/docs/quickstarts/quickstart-cloud-console#query_table_data) for more information
+5. Query table data. For more information, see [Query Table Data](https://cloud.google.com/bigquery/docs/quickstarts/quickstart-cloud-console#query_table_data).
 
 ### Permissions and Roles Details
 
@@ -147,21 +147,21 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 * Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default
 * Download the relevant plugin based on the version of the Guardium.
-1. For the Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip)
-2. For the Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-big_query_guardium_filter.zip)
+1. For Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip)
+2. For Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-big_query_guardium_filter.zip)
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the universal connector if it is disabled.
-3. Click Upload File and select the relevant plugin based on the version of the Guardium. After it is uploaded, click `OK`.
-    * For the Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip)
-    * For the Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-big_query_guardium_filter.zip)
+3. Click `Upload File` and select the relevant plugin based on the version of the Guardium. After it is uploaded, click `OK`.
+    * For Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip)
+    * For Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-big_query_guardium_filter.zip)
 4. Click `Upload File` and select the key.json file. After it is uploaded, click `OK`.
-5. Click the Plus sign to open the Connector Configuration dialog box.
+5. Click the plus sign (+) to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
 7. Update the input section to add the details from the [pubsub_big_query.conf](pubsub_big_query.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 8. Update the filter section to add the details from the [pubsub_big_query.conf](pubsub_big_query.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-9. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
+9. Make sure that the `type` fields match in the input and filter configuration. The field must be unique for every individual connected that you add.
 10. Click `Save`. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 11. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.
 
