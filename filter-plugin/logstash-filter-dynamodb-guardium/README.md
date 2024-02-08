@@ -194,7 +194,7 @@ The Lambda will be called by a scheduler configured inside event rules in CloudW
 12. Click **Create Rule**.
 
 #### Note
-* Before making any changes to the Lambda function code, first disable the above rule.
+* Before you make changes to the Lambda function code, disable the rule that you just created.
   Deploy the change and then re-enable the rule.
 * If the **Management events** are enabled while configuring the **CloudTrail**, it is possible
   that a large amount of data will be read by the Lambda function. In this case 
@@ -211,8 +211,7 @@ The Lambda will be called by a scheduler configured inside event rules in CloudW
 1. The DynamoDB plug-in does not support IPV6.
 2. You may need to disable management events in order to avoid heavy traffic and data loss in Guardium. Disabling management events disables logging of the following events:
    CreateTable, DeleteTable, ListTable, UpdateTable, DescribeTable events.
-3. The following fields couldn't be mapped with the Dynamo audit logs,
-    1. Client HostName : Not available with audit logs so set as NA.
+3. The `Client HostName` field cannot be mapped with the DynamoDB audit logs, Set this field to _NA_.
 
 
 ## 4. Configuring the Dynamodb filters in Guardium
