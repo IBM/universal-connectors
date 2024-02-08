@@ -22,4 +22,5 @@ filter-plugin/logstash-filter-neo4j-guardium
 filter-plugin/logstash-filter-snowflake-guardium
 filter-plugin/logstash-filter-yugabyte-guardium
 filter-plugin/logstash-filter-teradatadb-guardium
+filter-plugin/logstash-filter-intersystems-iris-guardium
 input-plugin/logstash-input-mongo-atlas
