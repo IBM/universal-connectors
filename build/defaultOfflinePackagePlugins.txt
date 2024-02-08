@@ -31,4 +31,5 @@ filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/logstash-filter-
 filter-plugin/logstash-filter-pubsub-firestore-guardium/logstash-filter-fire_store_guardium_filter
 filter-plugin/logstash-filter-pubsub-spanner-guardium/logstash-filter-spanner_db_guardium_filter
 filter-plugin/logstash-filter-cosmos-azure-guardium/logstash-filter-azure_cosmos_guardium_filter
+filter-plugin/logstash-filter-intersystems-iris-guardium/logstash-filter-intersystems-iris-guardium
 input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input
