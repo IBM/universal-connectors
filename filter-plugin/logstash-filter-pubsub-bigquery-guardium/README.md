@@ -148,14 +148,14 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 * You must have permission for the S-Tap Management role. The admin user includes this role by default
 * Download the relevant plugin based on the version of the Guardium.
 1. For Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip)
-2. For Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-big_query_guardium_filter.zip)
+2. For Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.2/logstash-filter-big_query_guardium_filter.zip)
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the universal connector if it is disabled.
 3. Click `Upload File` and select the relevant plugin based on the version of the Guardium. After it is uploaded, click `OK`.
     * For Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage/guardium_logstash-offline-plugins-ps-bigQuery.zip)
-    * For Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-big_query_guardium_filter.zip)
+    * For Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.2/logstash-filter-big_query_guardium_filter.zip)
 4. Click `Upload File` and select the key.json file. After it is uploaded, click `OK`.
 5. Click the plus sign (+) to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
