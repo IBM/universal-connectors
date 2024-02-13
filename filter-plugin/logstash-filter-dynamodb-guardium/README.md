@@ -59,22 +59,22 @@ example since it supports all required parameters.
 6. For **Storage location**, verify that **Create new S3 bucket** is selected.
    The logs can be read directly from this bucket using the S3 input of the logstash.
 7. In **Log file SSE-KMS encryption**, uncheck **Enabled**.
-8. If the logs are to be monitored through CloudWatch, then forward them to CloudWatch using steps 9 to 13. (If not, skip those steps).
-9. In **CloudWatch Logs**, check **Enabled**.
-10. Verify **New** is selected for **Log group**.
-11. Under **Log group name**, provide a new log group name.
-12. Verify **New** is selected for **IAM Role**.
-13. For **Role name**, provide a new role name.
-14. Click **Next**.
-15. For **Event type**, select **Management events** and **Data events**.
-16. Verify that **Read** and **Write** are selected for **API Activity**.
-17. In the **Data Events** section, click **Switch to basic event selectors**.
-18. Click **Continue** to confirm.
-19. Click **Add data event type**.
-20. Click **Data event source** and select **DynamoDB**.
-21. Click **NEXT**.
-22. Verify that all parameters shown are correct.
-23. Click **Create trail**.
+8. To monitor the logs through CloudWatch, take the following steps to forward them to Cloudwatch:
+   1. Under **CloudWatch Logs**, check **Enabled**.
+   2. Verify that **New** is selected for **Log group**.
+   3. Under **Log group name**, provide a new log group name.
+   4. Verify that **New** is selected for **IAM Role**.
+   5. For **Role name**, provide a new role name.
+9. Click **Next**.
+10. For **Event type**, select **Management events** and **Data events**.
+11. Verify that **Read** and **Write** are selected for **API Activity**.
+12. In the **Data Events** section, click **Switch to basic event selectors**.
+13. Click **Continue** to confirm.
+14. Click **Add data event type**.
+15. Click **Data event source** and select **DynamoDB**.
+16. Click **NEXT**.
+17. Verify that all parameters shown are correct.
+18. Click **Create trail**.
 
 
 ## 3. Viewing the logs on CloudWatch
@@ -97,11 +97,11 @@ function (see [Creating the Lambda function](#creating-the-lambda-function)) by 
 CloudWatch logs.
 #### Procedure
 1. From https://console.aws.amazon.com/, click **Services**.
-2. Search for SQS and click on **Simple Queue Services**
+2. Search for SQS and click on **Simple Queue Services**.
 3. Click **Create Queue**.
 4. Select the type as **Standard**.
-5. Enter the name for the queue
-6. Keep the rest of the default settings
+5. Enter the name for the queue.
+6. Keep the rest of the default settings.
 
 ### Creating a policy for the relevant IAM User
 Perform the following steps for the IAM user who is accessing the SQS logs in
@@ -142,14 +142,13 @@ events and write to the SQS queue. Create the IAM Role **Export-Dynamo-CloudWatc
 "AmazonSQSFullAccess", "CloudWatchLogsFullAccess", and "CloudWatchEventsFullAccess" policies.
 
 __*Procedure*__
-1. Go to https://console.aws.amazon.com/
-2. Go to **IAM** -> **Roles**
-3. Click **Create Role**
-4. Under use case select **Lambda** and click **Next**
-5. Search for **AmazonSQSFullAccess** and select it
-6. Search for **CloudWatchLogsFullAccess** and select it
-7. Search for **CloudWatchEventsFullAccess** and select it
-8. Set the Role Name: e.g., "Export-Dynamo-CloudWatch-to-SQS-Lambda" and click **Create role**.
+1. From https://console.aws.amazon.com/, browse to **IAM** -> **Roles**.
+2. Click **Create Role**
+3. Under use case select **Lambda** and click **Next**
+4. Search for **AmazonSQSFullAccess** and select it
+5. Search for **CloudWatchLogsFullAccess** and select it
+6. Search for **CloudWatchEventsFullAccess** and select it
+7. Set the Role Name: e.g., "Export-Dynamo-CloudWatch-to-SQS-Lambda" and click **Create role**.
 
 
 #### Create the Lambda function
