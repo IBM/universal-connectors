@@ -87,6 +87,9 @@ public class BigQueryGuardiumFilter implements Filter {
 	public Collection<Event> filter(Collection<Event> events, FilterMatchListener filterMatchListener) {
 		ArrayList<Event> skippedEvents = new ArrayList<>();
 		for (Event e : events) {
+			if(logger.isDebugEnabled()){
+				logger.debug("Event Now: ",e);
+			}
 			if (e.getField(ApplicationConstants.MESSAGE) instanceof String
 					&& String.valueOf(e.getField(ApplicationConstants.MESSAGE))
 							.contains(ApplicationConstants.MESSAGE_CONTAINS)) {
@@ -104,6 +107,7 @@ public class BigQueryGuardiumFilter implements Filter {
 					filterMatchListener.filterMatched(e);
 				} catch (Exception ex) {
 					logger.error("found exception in parsing json", ex);
+					logger.error("Event that caused exception",e);
 					e.tag(ApplicationConstants.LOGSTASH_TAG_JSON_PARSE_ERROR);
 				}
 			} else {
