@@ -179,6 +179,7 @@ For more general information about policies, refer to our  [Guardium Data Protec
   - When connected with this plug-in, queries for non-existent tables are not logged to GDM_CONSTRUCT.
 
 * MongoDB plug-ins do not send the client source program to Guardium.
+* It is recommended not to configure more than 10 universal connectors on a single Guardium collector. 
 
 </details>
 
