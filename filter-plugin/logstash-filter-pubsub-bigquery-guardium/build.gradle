@@ -108,9 +108,9 @@ clean {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
-
-
-
+test {
+    useJUnitPlatform()
+}
 tasks.register("generateRubySupportFiles") {
     doLast {
         generateRubySupportFilesForPlugin(project.description, project.group, version)
