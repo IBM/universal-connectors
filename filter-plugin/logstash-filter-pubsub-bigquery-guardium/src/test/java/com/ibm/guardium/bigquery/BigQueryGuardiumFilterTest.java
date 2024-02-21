@@ -728,7 +728,7 @@ public class BigQueryGuardiumFilterTest {
 		Record sqlquery = Parser.parseRecord(BigqueryJson);
 		assertEquals("user@test.com", sqlquery.getAccessor().getDbUser());
 		assertEquals("my-gcp-project_bigquery.googleapis.com", sqlquery.getAccessor().getServerHostName());
-		assertEquals("BigQuery", sqlquery.getAccessor().getDbProtocol());
+		assertEquals("BigQuery(GCP)", sqlquery.getAccessor().getDbProtocol());
 		assertEquals("BigQuery", sqlquery.getAccessor().getServerType());
 		assertEquals("my-gcp-project:mydataset", sqlquery.getAccessor().getServiceName());
 		assertEquals("CONSTRUCT", sqlquery.getAccessor().getDataType());
