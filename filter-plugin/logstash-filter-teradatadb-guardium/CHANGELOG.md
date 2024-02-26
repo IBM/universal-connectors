@@ -1,7 +1,10 @@
 # Changelog
 Notable changes will be documented in this file.
 
-## [Unreleased]
+## [1.0.1]
+- Updated the query to correctly fetch the Source Program
+- Added fix to add os user in the reports
+
 
 ## [1.0.0] - 2021-05-17
 

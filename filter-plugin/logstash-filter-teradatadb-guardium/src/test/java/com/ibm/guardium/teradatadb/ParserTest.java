@@ -25,13 +25,14 @@ public class ParserTest {
     	
 	    e.setField(Constants.SESSION_ID, "6968");
 		e.setField(Constants.TIME_FIELD, "2021-11-16T07:49:41.220Z");
-		e.setField(Constants.CLIENT_IP, "194.2.127.16");
+		e.setField(Constants.CLIENT_IP, "9.211.127.160");
 		e.setField(Constants.USER_NAME, "SYSDBA");
 		e.setField(Constants.SERVER_HOSTNAME, "1.1.1.1");
 		e.setField(Constants.SQL_TEXT_INFO, "select * from employee;");
 		e.setField(Constants.ERROR_TEXT, null);
 		e.setField(Constants.LOGON_SOURCE, "(TCP/IP) c089 194.2.127.16 DBS-TERADATA1620.COM;DB-TERA CID=2D39989 "
 				+ "AVT666744 JDBC17.10.00.14;1.8.0_202 01 LSS");
+        e.setField(Constants.OS_USER, "TESTUSER");
 		return e;
    } 
    
@@ -67,6 +68,7 @@ public class ParserTest {
     	
         final Record record = Parser.parseRecord(e);
         Assert.assertEquals(record.getData().getConstruct(), null);
+        Assert.assertEquals(record.getDbName(), record.getAccessor().getServiceName());
     }
    
     
@@ -96,7 +98,7 @@ public class ParserTest {
     	Event e=intitalizeEventObject();
     	SessionLocator sessionLocator = Parser.parseSessionLocator(e);
     	
-        Assert.assertEquals("194.2.127.16", sessionLocator.getClientIp());
+        Assert.assertEquals("9.211.127.160", sessionLocator.getClientIp());
         Assert.assertEquals(-1, sessionLocator.getClientPort());
         Assert.assertEquals(false, sessionLocator.isIpv6());
     } 
@@ -109,6 +111,7 @@ public class ParserTest {
         Assert.assertEquals(Constants.DATA_PROTOCOL_STRING, accessor.getDbProtocol());
         Assert.assertEquals(Constants.SERVER_TYPE_STRING, accessor.getServerType());
         Assert.assertEquals(Constants.TERADATA_LANGUAGE, accessor.getLanguage());
+        Assert.assertEquals("TESTUSER", accessor.getOsUser());
     }
     
     @Test
