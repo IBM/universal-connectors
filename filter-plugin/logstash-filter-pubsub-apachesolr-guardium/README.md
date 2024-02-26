@@ -110,7 +110,7 @@ You can learn more about [Ops Agent installation](https://cloud.google.com/monit
 * Sink name: Provide an identifier for the sink; note that after the user creates the sink, the user can't rename the sink, but can delete it and create a new sink.
 * Sink description (optional): Describe the purpose or use case for the sink.
 * In the Sink destination panel, select the Pub/Sub topic as sink service and destination.
-* Choose logs to include in the sink in the Build inclusion filter panel. 
+* Choose logs to include in the sink in the Build [inclusion filter](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-apachesolr-guardium/README.md#inclusion-filter) panel. 
 * The user can filter the logs using log name, resource, and severity.
 * In cases of multiple regions, use the same set of configurations for all regions.
 Use different configuration files for the input plug-in based on the region.
@@ -162,8 +162,8 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 4. Click Upload File and select the key.json file(which was generated above for the service account). After it is uploaded, click OK.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
-7. Update the input section to add the details from the [solrgcp.conf](PubSubApacheSolrPackage/solrgcp.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-8. Update the filter section to add the details from the [solrgcp.conf](PubSubApacheSolrPackage/solrgcp.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+7. Update the input section to add the details from the [solrgcp.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-apachesolr-guardium/solrgcp.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+8. Update the filter section to add the details from the [solrgcp.conf](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-apachesolr-guardium/solrgcp.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 9. The 'type' fields should match in input and filter configuration sections.This field should be unique for every individual connector added.
 10. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 11. After the offline plug-in is installed and configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.
