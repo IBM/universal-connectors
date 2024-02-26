@@ -20,5 +20,6 @@ public interface Constants {
 	public static final String LOGON_SOURCE = "Logon_Source";
 	public static final String QUERY_ID = "Query_ID";
 	public static final String SERVER_HOSTNAME = "Server_Hostname";
+	public static final String OS_USER = "Os_User";
 	
 }
