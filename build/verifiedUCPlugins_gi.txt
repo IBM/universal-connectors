@@ -32,6 +32,8 @@ filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage
 #Syslog
 filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresOverSyslogPackage
 filter-plugin/logstash-filter-yugabyte-guardium/YugabyteOverSyslogPackage
+filter-plugin/logstash-filter-mysql-guardium/MySQLOverSyslogPackage
+filter-plugin/logstash-filter-mongodb-guardium/MongoDBOverSyslogPackage
 #Other
 filter-plugin/logstash-filter-mongodb-guardium/MongodbOverMongoAtlasPackage
 filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub
