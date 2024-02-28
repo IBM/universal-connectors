@@ -291,11 +291,41 @@ In SAP HANA JDBC input plug-ins , we distribute load between two machines based 
 ### Procedure
 1. On the first G Machine, in the input section for JDBC Plug-in, update the "statement" field as follows:
     ```
-    select audit_log.event_status,audit_log.client_ip,audit_log.connection_id,audit_log.client_port,audit_log.timestamp,audit_log.event_action,audit_log.user_name,audit_log.port,audit_log.client_host,audit_log.service_name,audit_log.statement_string,audit_log.application_name,audit_log.host,audit_log.application_user_name,M_DATABASE.database_name from M_DATABASE,audit_log where M_DATABASE.HOST = audit_log.HOST and audit_policy_name not in ('MandatoryAuditPolicy') and mod(connection_id,2) = 0 and timestamp > :sql_last_value;
+    select 
+      audit_log.event_status,audit_log.client_ip,
+      audit_log.connection_id,audit_log.client_port,
+      SECONDS_BETWEEN('1970-01-01 00:00:00.00000',localtoutc(audit_log.timestamp)) as new_timestamp,
+      audit_log.event_action,audit_log.user_name,
+      audit_log.port,audit_log.client_host,
+      audit_log.service_name,audit_log.statement_string,
+      audit_log.application_name,audit_log.host,
+      audit_log.application_user_name,
+      M_DATABASE.database_name,M_DATABASE.system_id
+   from
+      M_DATABASE, audit_log
+   where
+      M_DATABASE.HOST = audit_log.HOST and audit_policy_name not in ('MandatoryAuditPolicy')
+      and SECONDS_BETWEEN ('1970-01-01 00:00:00.00000', localtoutc(audit_log.timestamp)) > : sql_last_value
+      and mod(connection_id, 2) = 0;
     ```
 2. On the second G machine, in the input section for the JDBC Plug-in, update the  "statement" field as follows:
     ```
-    select audit_log.event_status,audit_log.client_ip,audit_log.connection_id,audit_log.client_port,audit_log.timestamp,audit_log.event_action,audit_log.user_name,audit_log.port,audit_log.client_host,audit_log.service_name,audit_log.statement_string,audit_log.application_name,audit_log.host,audit_log.application_user_name,M_DATABASE.database_name from M_DATABASE,audit_log where M_DATABASE.HOST = audit_log.HOST and audit_policy_name not in ('MandatoryAuditPolicy') and mod(connection_id,2) = 1 and timestamp > :sql_last_value;
+    select 
+      audit_log.event_status,audit_log.client_ip,
+      audit_log.connection_id,audit_log.client_port,
+      SECONDS_BETWEEN('1970-01-01 00:00:00.00000',localtoutc(audit_log.timestamp)) as new_timestamp,
+      audit_log.event_action,audit_log.user_name,
+      audit_log.port,audit_log.client_host,
+      audit_log.service_name,audit_log.statement_string,
+      audit_log.application_name,audit_log.host,
+      audit_log.application_user_name,
+      M_DATABASE.database_name,M_DATABASE.system_id
+   from
+      M_DATABASE, audit_log
+   where
+      M_DATABASE.HOST = audit_log.HOST and audit_policy_name not in ('MandatoryAuditPolicy')
+      and SECONDS_BETWEEN ('1970-01-01 00:00:00.00000', localtoutc(audit_log.timestamp)) > : sql_last_value
+      and mod(connection_id, 2) = 1;
     ```
 
 ## 5. Configuring the SAP HANA filters in Guardium Insights
