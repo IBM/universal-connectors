@@ -4,7 +4,7 @@ This is a Logstash filter plug-in for the universal connector that is featured i
 Generated with Logstash v7.15.0.
 
 ### Note
-This plug-in contains a runtime dependency of Logstash Google PubSub input plug-in (version ~> 1.2.1, i.e. at least 1.2.1). To install, refer to the [Prerequisites](#Prerequisites) section of the Documentation below.
+This plug-in contains a runtime dependency of Logstash Google PubSub input plug-in (version ~> 1.2.1, i.e. at least 1.2.1). To install, refer to the [Prerequisites](https://cloud.google.com/sql/docs/mysql/create-instance#before_you_begin).
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
@@ -72,6 +72,62 @@ In case you wish to use **Cloud SQL proxy**, use the following steps:
     3. Then you can click the Test Connection button, and you should see a success pop-up message
     4. Click OK twice, and you are up and running
 
+#### Create a topic in Pub/Sub
+
+1. Go to the Pub/Sub topics page in the Cloud Console and click Create a topic.
+2. In the Topic ID field, provide a unique topic name. For example, MyTopic.
+3.  Click Create Topic.
+
+#### Create a subscription in Pub/Sub
+1. Display the menu for the topic created in the previous step and click New subscription.
+2. Enter the subscription name. For example, MySub.
+3. Leave the delivery type as Pull and click Create.
+
+#### Create a log sink in Pub/Sub
+1. In the Cloud Console, go to the Logging > Log Router page.
+2. Click Create sink.
+3. In the Sink details panel, enter the following details:
+   * Sink name: Provide an identifier for the sink. 
+     Note that once you create the sink you cannot rename it. However, you can delete a sink and create a new one.
+4. Sink description (optional): Describe the purpose or use case for the sink.
+5. In the Sink destination panel, select the Cloud Pub/Sub topic as sink service and select the topic created in previous steps.
+6. Choose logs to include in the sink in the Build inclusion filter panel.
+* **NOTES** 
+     * You can filter the logs by log name, resource, and severit multi-region.
+     * In cases of multiple regions, you need to do the same set of configurations per each region. Based on the region, 
+       different configuration files will be used for the input plug-in
+
+#### Set destination (TOPIC & SUBSCRIPTION) permissions
+
+To set permissions for the log sink to route to its destination, do the following:
+
+1. Obtain the sink's writer identity—an email address—from the new sink.
+    * Go to the Log Router page, and select menu  > View sink details.
+    * The writer identity appears in the Sink details panel.
+2. If you have owner access to the destination:
+    * Add the sink's writer identity to topic >>>>
+        * Navigate to the Topic created in the earlier steps
+        * Click on SHOW INFO panel
+        * Click on ADD PRINCIPAL
+        * Paste writer identity in the New Principals
+        * Give it the Pub/Sub Publisher role and subscriber role
+    * Add the sink's writer identity to subscription >>>>
+        * Navigate to the Subscription
+        * Click on SHOW INFO panel
+        * Click on ADD PRINCIPAL
+        * Paste writer identity in the New Principals
+        * Give it the subscriber role
+     
+#### Create service account credentials
+1. Go to the Service accounts section of the IAM & Admin console.
+2. Select project and click Create Service Account.
+3. Enter a Service account name, such as MySQL-pubsub.
+4. Click Create.
+5. The owner role is required for the service account. Select the owner role from the drop-down menu
+6. Click Continue. You do not need to grant users access to this service account.
+7. Click Create Key. The key is used by the Logstash input plug-in configuration file.
+8. Select JSON and click Create.
+
 #### Configure Logging
 ##### Inclusion Filter
 Edit the Sink via *Logs Router > Sink Inclusion Filter*:
@@ -129,6 +185,22 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 To install this plug-in, you need to download the relevant plugin based on the version of the Guardium.
 1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip)
 2. For the Guardium 12.x, download [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
+
+### Procedure
+1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
+2. Ensure that the universal connector is enabled. 
+3. Click Upload File and select the relevant plugin based on the version of the Guardium and after it is uploads, click OK.
+    * For Guardium 11.x, download the [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip)
+    * For Guardium 12.x, download the [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
+4. Click Upload File and select the key.json file and click OK.
+5. Click the plus sign to open the Connector Configuration dialog box.
+6. In the Connector name field, enter a name. 
+7. Update the input section to add the details from the `googlepubsub.conf` [file](PubSubMySQLPackage/googlepubsub.conf) input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+8. Update the filter section to add the details from the `googlepubsub.conf` [file](PubSubMySQLPackage/googlepubsub.conf) filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+9. Ensure that the type fields match in the input and filter configuration. The field must be unique for every individual connector. 
+10. Click Save.
+    Guardium validates the new connector and displays it in the Configure Universal Connector page.
+12. Once the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.
 
 ### Note
 To install on your local machine that is running Logstash, execute:
