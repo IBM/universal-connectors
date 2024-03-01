@@ -1,17 +1,17 @@
 # Logstash Filter PubSub MySQL Plugin
 
+### Meet PubSub MySQL
+
 This is a Logstash filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses a GCP (Google Cloud Platform) audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
 Generated with Logstash v7.15.0.
 
-### Note
-This plug-in contains a runtime dependency of Logstash Google PubSub input plug-in (version ~> 1.2.1, i.e. at least 1.2.1). To install, refer to the [Prerequisites](https://cloud.google.com/sql/docs/mysql/create-instance#before_you_begin).
+### Notes:
+* This plug-in contains a runtime dependency of Logstash Google PubSub input plug-in (version ~> 1.2.1, i.e. at least 1.2.1). To install, refer to the [Prerequisites](https://cloud.google.com/sql/docs/mysql/create-instance#before_you_begin).
 
-The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
+* The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
 
-## Documentation
-
-### Supported Client Applications:
+## Supported Client Applications:
 * DBeaver
 * DataGrip
 * Google Cloud Shell (`gcloud`)
@@ -19,16 +19,15 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 * MySQL Shell
 * [Cloud Run](https://cloud.google.com/sql/docs/mysql/connect-run) for `JDBC` and `.NET`
 
-###### Note: all of the above comply with Cloud SQL Proxy authentication, except for `gcloud`
-###### Note: `.NET` wasn't tested, but is assumed to have the same event structure as `JDBC`
-
-#### Note
-This version is compliant with GDP v11.4 and above. Please refer to the
+### Notes: 
+* All of the above comply with Cloud SQL Proxy authentication, except for `gcloud`.
+* `.NET` wasn't tested, but is assumed to have the same event structure as `JDBC`.
+* This version is compliant with GDP v11.4 and above. Please refer to the
 [input plugin's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
 
-### Create the SQL instance and Configure Logging
+## Create the SQL instance and Configure Logging
 
-#### Create the SQL Instance
+### Create the SQL Instance
 
 1. [Prerequisites](https://cloud.google.com/sql/docs/mysql/create-instance#before_you_begin)
 2. [Creating a MySQL instance](https://cloud.google.com/sql/docs/mysql/create-instance#create-2nd-gen)
@@ -62,7 +61,7 @@ In case you wish to use **Cloud SQL proxy**, use the following steps:
    ./cloud_sql_proxy -instances=INSTANCE_CONNECTION_NAM=tcp:3306 \
                   -credential_file=PATH_TO_KEY_FILE &
    ```
-   ###### Note: running this will automatically bind your computer's IP to the MySQL port. In case the bind failed due to addressalready in use - use `tcp:0.0.0.0:3306` instead.
+   ###### Note: Running this will automatically bind your computer's IP to the MySQL port. In case the bind failed due to addressalready in use - use `tcp:0.0.0.0:3306` instead.
 
 
 6. Setup your SQL client application with **DBeaver** as an example:
@@ -72,18 +71,18 @@ In case you wish to use **Cloud SQL proxy**, use the following steps:
     3. Then you can click the Test Connection button, and you should see a success pop-up message
     4. Click OK twice, and you are up and running
 
-#### Create a topic in Pub/Sub
+### Create a topic in Pub/Sub
 
 1. Go to the Pub/Sub topics page in the Cloud Console and click Create a topic.
 2. In the Topic ID field, provide a unique topic name. For example, MyTopic.
 3.  Click Create Topic.
 
-#### Create a subscription in Pub/Sub
+### Create a subscription in Pub/Sub
 1. Display the menu for the topic created in the previous step and click New subscription.
 2. Enter the subscription name. For example, MySub.
 3. Leave the delivery type as Pull and click Create.
 
-#### Create a log sink in Pub/Sub
+### Create a log sink in Pub/Sub
 1. In the Cloud Console, go to the Logging > Log Router page.
 2. Click Create sink.
 3. In the Sink details panel, enter the following details:
@@ -92,12 +91,12 @@ In case you wish to use **Cloud SQL proxy**, use the following steps:
 4. Sink description (optional): Describe the purpose or use case for the sink.
 5. In the Sink destination panel, select the Cloud Pub/Sub topic as sink service and select the topic created in previous steps.
 6. Choose logs to include in the sink in the Build inclusion filter panel.
-* **NOTES** 
+#### NOTES:
      * You can filter the logs by log name, resource, and severit multi-region.
      * In cases of multiple regions, you need to do the same set of configurations per each region. Based on the region, 
        different configuration files will be used for the input plug-in
 
-#### Set destination (TOPIC & SUBSCRIPTION) permissions
+### Set destination (TOPIC & SUBSCRIPTION) permissions
 
 To set permissions for the log sink to route to its destination, do the following:
 
@@ -118,7 +117,7 @@ To set permissions for the log sink to route to its destination, do the followin
         * Paste writer identity in the New Principals
         * Give it the subscriber role
      
-#### Create service account credentials
+### Create service account credentials
 1. Go to the Service accounts section of the IAM & Admin console.
 2. Select project and click Create Service Account.
 3. Enter a Service account name, such as MySQL-pubsub.
@@ -128,8 +127,8 @@ To set permissions for the log sink to route to its destination, do the followin
 7. Click Create Key. The key is used by the Logstash input plug-in configuration file.
 8. Select JSON and click Create.
 
-#### Configure Logging
-##### Inclusion Filter
+### Configure Logging
+#### Inclusion Filter
 Edit the Sink via *Logs Router > Sink Inclusion Filter*:
 
 For **Cloud SQL proxy**:
@@ -158,7 +157,7 @@ OR
 logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 ```
 
-##### Exclusion Filter
+#### Exclusion Filter
    - Edit the Sink via *Logs Router > Build an exclusion filter*
      - Set the exclusion filter name to `internal_logs`
      - Set the filter
@@ -174,17 +173,34 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 * data_access - `INFO`, `DEFAULT`
 * mysql.err
 
-### Notes
-- `serverHostName` field is populated with the name of the MySQL instance connection
-- `serviceName` field is populated with Cloud SQL Service. See [docs](https://cloud.google.com/sql/docs/mysql)
-- `dbUser` and `exception.sqlString` fields are populated with "Undisclosed" for `mysql.err` events, as this information is not embedded in the messages pulled from Google Cloud.
-- `appUserName` is populated with your IAM Cloud SQL service account ID
+### Notes:
+* `serverHostName` field is populated with the name of the MySQL instance connection
+* `serviceName` field is populated with Cloud SQL Service. See [docs](https://cloud.google.com/sql/docs/mysql)
+* `dbUser` and `exception.sqlString` fields are populated with "Undisclosed" for `mysql.err` events, as this information is not embedded in the messages pulled from Google Cloud.
+* `appUserName` is populated with your IAM Cloud SQL service account ID
 
 
+## Limitations
+1. Some internal system queries for client apps other than DBeaver might be ingested by the plug-in. You could easily filter them out by using the 
+   GCP logs routing sink's exclusion filter, as seen in the Exclusion filter section above (simply append to it an `OR` followed by your expression). For more information, check 
+   [Exclusion filters](https://cloud.google.com/logging/docs/routing/overview#exclusions) and 
+   [Logging query language](https://cloud.google.com/logging/docs/view/logging-query-language).
+2. mysql-slow.log logs aren't supported in this version
+3. `SQLEditor` is the event type identifying user queries on DBeaver. For DataGrip, there's no type embedded in the event's comment, meaning some internal system queries will be ingested by this plug-in.
+4. `DESCRIBE table_name` and `SHOW TABLES` queries result in an internal `SELECT DATABASE()` query for some of the client applications
+5. For some of the client applications (detected for DBeaver and MySQL Client) the events are expected to be suffixed by a `LIMIT`
+   1. Example: `SELECT * FROM my_table WHERE name = 'Smith AND age < 30' LIMIT 0, 200`
+6. `dbName` will be populated with `Undisclosed` for some of the queries as their respective GCP events do not embed this information
+7. Due to a known issue, the objects and verbs column for `SHOW TRIGGERS` query is blank
+8. For applications other than DataGrip, DBeaver and Google Cloud Shell (`gcloud`), `Source Program` column in the reports will be populated with `MySQL Client Application` as this information isn't embedded in the applications' GCP events
+   1. **Note:** For security reasons, it is highly recommended that you configure `cloudsqlproxy_enabled` to true for all client applications other than Google Cloud Shell (`gcloud`). Otherwise, `Source Program` is populated with _Google Cloud Shell (gcloud)_.
+   2. 
 ## Installation
+### Before you begin 
 To install this plug-in, you need to download the relevant plugin based on the version of the Guardium.
 1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip)
 2. For the Guardium 12.x, download [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
+
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
@@ -202,10 +218,8 @@ To install this plug-in, you need to download the relevant plugin based on the v
     Guardium validates the new connector and displays it in the Configure Universal Connector page.
 12. Once the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.
 
-### Note
-To install on your local machine that is running Logstash, execute:
-`bin/logstash-plugin install file:///path/to/logstash-offline-plugin-input-google_pubsub.zip
-`
+#### Note
+To install on your local machine that is running Logstash, execute: `bin/logstash-plugin install file:///path/to/logstash-offline-plugin-input-google_pubsub.zip`
 
 ### Sample Configuration
 
@@ -219,22 +233,8 @@ For enabling Cloud SQL Proxy, use:
 ```
 pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 ```
-**Note:** `cloudsqlproxy_enabled` will default to `false` if not explicitly used in filter scope.
-
-## Limitations
-1. Some internal system queries for client apps other than DBeaver might be ingested by the plug-in. You could easily filter them out by using the 
-   GCP logs routing sink's exclusion filter, as seen in the Exclusion filter section above (simply append to it an `OR` followed by your expression). For more information, check 
-   [Exclusion filters](https://cloud.google.com/logging/docs/routing/overview#exclusions) and 
-   [Logging query language](https://cloud.google.com/logging/docs/view/logging-query-language).
-2. mysql-slow.log logs aren't supported in this version
-3. `SQLEditor` is the event type identifying user queries on DBeaver. For DataGrip, there's no type embedded in the event's comment, meaning some internal system queries will be ingested by this plug-in.
-4. `DESCRIBE table_name` and `SHOW TABLES` queries result in an internal `SELECT DATABASE()` query for some of the client applications
-5. For some of the client applications (detected for DBeaver and MySQL Client) the events are expected to be suffixed by a `LIMIT`
-   1. Example: `SELECT * FROM my_table WHERE name = 'Smith AND age < 30' LIMIT 0, 200`
-6. `dbName` will be populated with `Undisclosed` for some of the queries as their respective GCP events do not embed this information
-7. Due to a known issue, the objects and verbs column for `SHOW TRIGGERS` query is blank
-8. For applications other than DataGrip, DBeaver and Google Cloud Shell (`gcloud`), `Source Program` column in the reports will be populated with `MySQL Client Application` as this information isn't embedded in the applications' GCP events
-   1. **Note:** For security reasons, it is highly recommended that you configure `cloudsqlproxy_enabled` to true for all client applications other than Google Cloud Shell (`gcloud`). Otherwise, `Source Program` is populated with _Google Cloud Shell (gcloud)_.
+##### Note:
+`cloudsqlproxy_enabled` will default to `false` if not explicitly used in filter scope.
 
 ## Troubleshooting
 Refer to the input plugin's [Troubleshooting](../../input-plugin/logstash-input-google-pubsub#troubleshooting) section.
