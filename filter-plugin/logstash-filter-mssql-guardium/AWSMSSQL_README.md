@@ -34,7 +34,7 @@
 
 	3. Assign parameter group to database instance.
 	
-		a. We can assign default parameter group to our database. Parameter group family should be ‘sqlserver-ee-14.0’ and parameter ‘rds.sqlserver_audit’ parameter should be set to true.
+		a. We can assign default parameter group to our database. Parameter group family should be ‘sqlserver-ee-14.0’ and parameter ‘rds.sqlserver_audit’ parameter should be kept as default.
 		b. In Navigation panel choose Databases.
 		c. Select mssql database that we created. Click on Modify button.
 		d. Go to Advance configurations.
