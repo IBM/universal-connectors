@@ -5,7 +5,7 @@
 This is a Logstash filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses a GCP (Google Cloud Platform) audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
 Generated with Logstash v7.15.0.
 
-### Notes:
+**Notes**:
 * This plug-in contains a runtime dependency of Logstash Google PubSub input plug-in (version ~> 1.2.1, i.e. at least 1.2.1). To install, refer to the [Prerequisites](https://cloud.google.com/sql/docs/mysql/create-instance#before_you_begin).
 
 * The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
@@ -19,15 +19,15 @@ Generated with Logstash v7.15.0.
 * MySQL Shell
 * [Cloud Run](https://cloud.google.com/sql/docs/mysql/connect-run) for `JDBC` and `.NET`
 
-### Notes: 
+**Notes**: 
 * All of the above comply with Cloud SQL Proxy authentication, except for `gcloud`.
 * `.NET` wasn't tested, but is assumed to have the same event structure as `JDBC`.
 * This version is compliant with GDP v11.4 and above. Please refer to the
 [input plugin's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
 
-## Create the SQL instance and Configure Logging
+## Creating SQL instance and Configure Logging
 
-### Create the SQL Instance
+### Creating SQL Instance
 
 1. [Prerequisites](https://cloud.google.com/sql/docs/mysql/create-instance#before_you_begin)
 2. [Creating a MySQL instance](https://cloud.google.com/sql/docs/mysql/create-instance#create-2nd-gen)
@@ -61,7 +61,7 @@ In case you wish to use **Cloud SQL proxy**, use the following steps:
    ./cloud_sql_proxy -instances=INSTANCE_CONNECTION_NAM=tcp:3306 \
                   -credential_file=PATH_TO_KEY_FILE &
    ```
-   ###### Note: Running this will automatically bind your computer's IP to the MySQL port. In case the bind failed due to addressalready in use - use `tcp:0.0.0.0:3306` instead.
+**Note**: Running this will automatically bind your computer's IP to the MySQL port. In case the bind failed due to addressalready in use - use `tcp:0.0.0.0:3306` instead.
 
 
 6. Setup your SQL client application with **DBeaver** as an example:
@@ -71,18 +71,18 @@ In case you wish to use **Cloud SQL proxy**, use the following steps:
     3. Then you can click the Test Connection button, and you should see a success pop-up message
     4. Click OK twice, and you are up and running
 
-### Create a topic in Pub/Sub
+### Creating a topic in Pub/Sub
 
 1. Go to the Pub/Sub topics page in the Cloud Console and click Create a topic.
 2. In the Topic ID field, provide a unique topic name. For example, MyTopic.
 3.  Click Create Topic.
 
-### Create a subscription in Pub/Sub
+### Creating subscription in Pub/Sub
 1. Display the menu for the topic created in the previous step and click New subscription.
 2. Enter the subscription name. For example, MySub.
 3. Leave the delivery type as Pull and click Create.
 
-### Create a log sink in Pub/Sub
+### Creating log sink in Pub/Sub
 1. In the Cloud Console, go to the Logging > Log Router page.
 2. Click Create sink.
 3. In the Sink details panel, enter the following details:
@@ -91,12 +91,12 @@ In case you wish to use **Cloud SQL proxy**, use the following steps:
 4. Sink description (optional): Describe the purpose or use case for the sink.
 5. In the Sink destination panel, select the Cloud Pub/Sub topic as sink service and select the topic created in previous steps.
 6. Choose logs to include in the sink in the Build inclusion filter panel.
-#### NOTES:
-     * You can filter the logs by log name, resource, and severit multi-region.
-     * In cases of multiple regions, you need to do the same set of configurations per each region. Based on the region, 
-       different configuration files will be used for the input plug-in
+   
+**Notes**:
+* You can filter the logs by log name, resource, and severit multi-region.
+* In cases of multiple regions, you need to do the same set of configurations per each region. Based on the region, different configuration files will be used for the input plug-in.
 
-### Set destination (TOPIC & SUBSCRIPTION) permissions
+### Seting destination (TOPIC & SUBSCRIPTION) permissions
 
 To set permissions for the log sink to route to its destination, do the following:
 
@@ -173,7 +173,7 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 * data_access - `INFO`, `DEFAULT`
 * mysql.err
 
-### Notes:
+**Notes**:
 * `serverHostName` field is populated with the name of the MySQL instance connection
 * `serviceName` field is populated with Cloud SQL Service. See [docs](https://cloud.google.com/sql/docs/mysql)
 * `dbUser` and `exception.sqlString` fields are populated with "Undisclosed" for `mysql.err` events, as this information is not embedded in the messages pulled from Google Cloud.
@@ -218,7 +218,7 @@ To install this plug-in, you need to download the relevant plugin based on the v
     Guardium validates the new connector and displays it in the Configure Universal Connector page.
 12. Once the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.
 
-#### Note
+**Note**:
 To install on your local machine that is running Logstash, execute: `bin/logstash-plugin install file:///path/to/logstash-offline-plugin-input-google_pubsub.zip`
 
 ### Sample Configuration
