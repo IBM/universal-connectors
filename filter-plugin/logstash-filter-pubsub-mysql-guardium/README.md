@@ -168,7 +168,7 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
        ```
        OR protoPayload.request.query:"DataGrip" OR protoPayload.request.query:"DBeaver"     
        ```
-###### Note: the purpose of this exclusion filter is to filter out system and admin logs that are the result of internal packets in Google Cloud.
+**Note**: the purpose of this exclusion filter is to filter out system and admin logs that are the result of internal packets in Google Cloud.
 ### Supported audit messages types
 * data_access - `INFO`, `DEFAULT`
 * mysql.err
@@ -193,8 +193,8 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 6. `dbName` will be populated with `Undisclosed` for some of the queries as their respective GCP events do not embed this information
 7. Due to a known issue, the objects and verbs column for `SHOW TRIGGERS` query is blank
 8. For applications other than DataGrip, DBeaver and Google Cloud Shell (`gcloud`), `Source Program` column in the reports will be populated with `MySQL Client Application` as this information isn't embedded in the applications' GCP events
-   1. **Note:** For security reasons, it is highly recommended that you configure `cloudsqlproxy_enabled` to true for all client applications other than Google Cloud Shell (`gcloud`). Otherwise, `Source Program` is populated with _Google Cloud Shell (gcloud)_.
-   2. 
+**Note:** For security reasons, it is highly recommended that you configure `cloudsqlproxy_enabled` to true for all client applications other than Google Cloud Shell (`gcloud`). Otherwise, `Source Program` is populated with _Google Cloud Shell (gcloud)_.
+
 ## Installation
 ### Before you begin 
 To install this plug-in, you need to download the relevant plugin based on the version of the Guardium.
@@ -233,7 +233,7 @@ For enabling Cloud SQL Proxy, use:
 ```
 pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 ```
-##### Note:
+**Note**:
 `cloudsqlproxy_enabled` will default to `false` if not explicitly used in filter scope.
 
 ## Troubleshooting
