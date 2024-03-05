@@ -1,6 +1,6 @@
 # Logstash Filter PubSub MySQL Plugin
 
-### Meet PubSub MySQL
+## Meet PubSub MySQL
 
 This is a Logstash filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses a GCP (Google Cloud Platform) audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
 Generated with Logstash v7.15.0.
@@ -96,7 +96,7 @@ In case you wish to use **Cloud SQL proxy**, use the following steps:
 * You can filter the logs by log name, resource, and severit multi-region.
 * In cases of multiple regions, you need to do the same set of configurations per each region. Based on the region, different configuration files will be used for the input plug-in.
 
-### Seting destination (TOPIC & SUBSCRIPTION) permissions
+### Setting destination (TOPIC & SUBSCRIPTION) permissions
 
 To set permissions for the log sink to route to its destination, do the following:
 
@@ -117,7 +117,7 @@ To set permissions for the log sink to route to its destination, do the followin
         * Paste writer identity in the New Principals
         * Give it the subscriber role
      
-### Create service account credentials
+### Creating service account credentials
 1. Go to the Service accounts section of the IAM & Admin console.
 2. Select project and click Create Service Account.
 3. Enter a Service account name, such as MySQL-pubsub.
@@ -168,7 +168,7 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
        ```
        OR protoPayload.request.query:"DataGrip" OR protoPayload.request.query:"DBeaver"     
        ```
-**Note**: the purpose of this exclusion filter is to filter out system and admin logs that are the result of internal packets in Google Cloud.
+**Note**: The purpose of this exclusion filter is to filter out system and admin logs that are the result of internal packets in Google Cloud.
 ### Supported audit messages types
 * data_access - `INFO`, `DEFAULT`
 * mysql.err
@@ -225,7 +225,7 @@ To install on your local machine that is running Logstash, execute: `bin/logstas
 
 Below is a copy of the filter scope included `googlepubsub.conf` [file](PubSubMySQLPackage/googlepubsub.conf) that shows a basic
 configuration for this plugin.
-#### Filter part:
+**Filter part**
 ```
 pubsub-mysql-guardium{}
 ```
