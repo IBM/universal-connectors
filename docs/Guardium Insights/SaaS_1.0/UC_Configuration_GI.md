@@ -106,23 +106,23 @@ These certificates will be used later to establish secured connections between t
 6. To configure the data source to communicate with Guardium Insights, follow the instructions in the last section on this page: [Configuring Filebeat to forward audit logs to Guardium.](../SaaS_1.0/UC_Configuration_GI.md#configuring-filebeat-to-forward-audit-logs-to-guardium)  Copy the hostname in the Configuration Notes to configure the host in the filebeat.yml file on your datasource.
 7. Persistent queue is disabled by default in the universal connector and must be enabled manually. Persistent queue can only be enabled for Filebeat and it can cause the universal connector to work more slowly.To enable it, go to **Settings** > **Global settings** > **Connection settings**. Click **Universal connector: enable persistent queue**.
 
-## TCP Input Plug-in Configuration (for Connection with Syslog)
+## TCP input plug-in configuration (for connection with Syslog)
 
 ### Prerequisites:
 
 To enable a secure connection with Syslog on the data source server, you need to create a **certificate authority** and **certificate**. Follow the steps below:
 
-1. **Download the Script:**
+1. **Downloading script:**
     - Download the [create_certificates.sh](create_certificates.sh) script to the data source server.
 
-2. **Set Script Permissions:**
-    - Change the file permissions to make the script executable:
+2. **Setting script permissions:**
+    - Change the file permissions to run the script:
       ```bash
       chmod +x create_certificates.sh
       ```
 
-3. **Run the Script:**
-    - Execute the script with the following 2 arguments:
+3. **Runing script:**
+    - Run the script with the following 2 arguments:
         - The first argument specifies the path where the certificates will be stored.
         - The second argument is the hostname of the data source server.
 
@@ -133,32 +133,32 @@ To enable a secure connection with Syslog on the data source server, you need to
 
 4. **Copy `ucCA.crt` to your local system.**
 
-### Configuring a Syslog Connection:
+### Configuring a Syslog connection:
 
-1. **Initiate Configuration:**
-    - For this input type, simply click on configure without entering additional details.
+1. **Initiate configuration:**
+    - For this input type, click configure without entering additional details.
 
 2. **Retrieve Universal Connector Certificate Authority:**
     - Access the Configuration notes page.
-    - Download the certificate authority for the universal connector by clicking **Download certificate**. Save it to your local system.
+    - Click **Download certificate** to download the certificate authority for the universal connector and save it on your local system.
     - Copy this certificate to the respective data source directory (it will be incorporated into the Syslog configuration later).
     - Note: All data sources of a specific type share the same certificate.
 
-3. **Complete Configuration:**
-    - Click on **Done**.
+3. **Complete configuration:**
+    - Click **Done**.
     - Note: Allow up to 15 minutes for the connection setup.
 
-4. **Finalize Configuration:**
-    - Click on **Done** again.
+4. **Finalize configuration:**
+    - Click **Done**.
     - Note: Allow up to 15 minutes for the connection setup.
 
-5. **Configure Datasource Source for Guardium Insights:**
+5. **Configure datasource source for Guardium Insights:**
     - Follow the instructions in the readme file of the filter plug-in to configure the datasource source for effective communication with Guardium Insights. Pay attention to the configuration steps on the rsyslog side. Refer to the Syslog configuration section for specific details.
     - Copy the hostname in the Configuration Notes to configure the host in the rsyslog.conf file on your datasource.
     - The configured port should be 443. Guardium Insights will map this to an internal port.
 
 6. **Configure mTLS:**
-    - **Universal Connector to the Data Source Server:**
+    - **Universal Connector to data source server:**
         1. Download the SSL certificate (`UC certificate authority`) from Guardium Insights and upload it to the machine where Syslog is installed.
         2. Copy the location of the downloaded certificate and use it as the certificate authority in the `rsyslog.conf` file:
         ```conf
@@ -166,7 +166,7 @@ To enable a secure connection with Syslog on the data source server, you need to
         $DefaultNetstreamDriverCAFile <PATH TO>/GuardiumInsightsCA.pem
         ```
 
-    - **Data Source Server to the Universal Connector:**
+    - **Data source server to Universal Connector:**
         - Add entries for the SSL certificate in the `rsyslog.conf` file:
         ```conf
         $DefaultNetstreamDriverCertFile <PATH TO>/ucCA.crt
@@ -195,7 +195,7 @@ To enable a secure connection with Syslog on the data source server, you need to
         target="<hostname>"
         port="443")
         ```
-7. **Restart rsyslog to Apply Changes:**
+7. **Restart rsyslog to apply changes:**
     - **Linux:**
       Run the command:
       ```bash
@@ -226,7 +226,7 @@ To enable a secure connection with Syslog on the data source server, you need to
 
     ***NOTE: Due to the possibility of CloudWatch reporting events multiple times for plug-ins configured for Guardium Insights, it is recommended to use SQS instead***
 
-## Azure Event Hubs input plug-in configuration
+## Azure event hubs input plug-in configuration
 
 In the **Additional info** page, specify the details of the connection you want to create:
 
