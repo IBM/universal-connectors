@@ -1,6 +1,8 @@
 package com.ibm.guardium.saphana;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import com.google.gson.JsonObject;
@@ -14,6 +16,7 @@ public class Parser {
 	private static Logger log = LogManager.getLogger(Parser.class);
 
 	public static Record parseRecord(final JsonObject data) throws ParseException {
+
 		Record record = new Record();
 
 		if (data != null) {
@@ -27,15 +30,10 @@ public class Parser {
 			else
 				record.setDbName(Constants.UNKNOWN_STRING);
 
-			String dateString = Parser.parseTimestamp(data);
-			Time time = Parser.getTime(dateString);
-			if (time != null)
-				if(data.has(Constants.OFFSET))
-				{
-					long t=(time.getTimstamp()) - (data.get(Constants.OFFSET).getAsInt()*60000);
-					time.setTimstamp(t);
-				}
-				record.setTime(time);
+			Time objTime = parseTimestamp(data);
+			if(objTime!=null) {
+				record.setTime(objTime);
+			}
 
 			record.setSessionLocator(Parser.parseSessionLocator(data));
 			record.setAccessor(Parser.parseAccessor(data));
@@ -56,26 +54,49 @@ public class Parser {
 
 	// ----------- TIME
 
-	public static String parseTimestamp(final JsonObject data) {
-		String dateString = null;
-		dateString = data.get(Constants.TIMESTAMP).getAsString();
-		return dateString;
+	public static Time parseTimestamp(final JsonObject data) {
+		if(data.has(Constants.TIMESTAMP)) {
+			String dateString = data.get(Constants.TIMESTAMP).getAsString();
+
+			if(dateString.matches("\\d+")){
+				return getTime(dateString);
+			}
+
+			String timeZone = null;
+			long offset = 0L;
+
+			if (data.has(Constants.MIN_OFF)) {
+				timeZone = data.get(Constants.MIN_OFF).getAsString();
+			}
+
+			if(data.has(Constants.OFFSET)) {
+				offset = Long.parseLong(data.get(Constants.OFFSET).getAsString());
+				offset= offset * 60000;
+			}
+			return Parser.getTime(dateString, timeZone, offset);
+		}
+		return null;
 	}
 
-	public static Time getTime(String dateString) {
-			if(dateString.matches("\\d+"))
-			{
-				long millis = Long.parseLong(dateString);
-				return new Time(millis,0, 0);
-			}
-			else
-			{
-			ZonedDateTime date = ZonedDateTime.parse(dateString.replaceAll(" ", "T").concat("Z"),
-				DateTimeFormatter.ISO_DATE_TIME);
-			long millis = date.toInstant().toEpochMilli();
-			int minOffset = date.getOffset().getTotalSeconds() / 60;
-			return new Time(millis, minOffset, 0);
-			}
+	public static Time getTime(String timeStamp) {
+		long millis = Long.parseLong(timeStamp);
+		return new Time(millis,0, 0);
+	}
+
+	public static Time getTime(String dateString, String timeZone, Long tzOffset) {
+		LocalDateTime dt = LocalDateTime.parse(dateString.replaceAll(" ", "T").concat("Z"), DateTimeFormatter.ISO_DATE_TIME);
+		ZoneOffset offset = ZoneOffset.of(ZoneOffset.UTC.getId());
+		if (timeZone != null) {
+			offset = ZoneOffset.of(timeZone);
+		}
+		ZonedDateTime zdt = dt.atOffset(offset).toZonedDateTime();
+		long millis = zdt.toInstant().toEpochMilli();
+		int minOffset = zdt.getOffset().getTotalSeconds() / 60;
+
+		if(tzOffset!= null){
+			millis = millis - tzOffset;
+		}
+		return new Time(millis, minOffset, 0);
 	}
 
 	// ----------- Session Locator
@@ -143,10 +164,10 @@ public class Parser {
 		else
 			accessor.setServerHostName(Constants.NOT_AVAILABLE);
 
-		if (data.has(Constants.SERVICE_NAME) && !data.get(Constants.SERVICE_NAME).isJsonNull())
-			accessor.setServiceName(data.get(Constants.SERVICE_NAME).getAsString());
+		if (data.has(Constants.SCHEMA_NAME) && !data.get(Constants.SCHEMA_NAME).isJsonNull())
+			accessor.setServiceName(data.get(Constants.SCHEMA_NAME).getAsString());
 		else
-			accessor.setServiceName(Constants.NOT_AVAILABLE);
+			accessor.setServiceName(Constants.UNKNOWN_STRING);
 
 		accessor.setLanguage(Constants.Language);
 		accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
