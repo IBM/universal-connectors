@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_Yugabyte_Syslog_filter",
+	"alias": "Yugabyte Syslog",
+	"type": "filter",
+	"pipeline_type":"push",
+	"plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"Yugabyte","supportedVersions": ["1.x"]}],
+	"supported_input_plugins": ["syslog_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses Yugabyte database events into Guardium via Syslog connection.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.ibm.com/Activity-Insights/universal-connectors/tree/master/filter-plugin/logstash-filter-yugabyte-guardium/README.md"
+}
