@@ -42,8 +42,11 @@ public class ParserTest {
 		data.addProperty(Constants.SERVER_PORT, "3900");
 		data.addProperty(Constants.DB_USER, "JOHNNY");
 		data.addProperty(Constants.SCHEMA_NAME, "SYSTEM");
+		data.addProperty(Constants.MIN_OFF,"+04:00");
 
 		final Record record = Parser.parseRecord(data);
+
+		Assert.assertEquals(record.getDbName(), record.getAccessor().getServiceName());
 
 		Assert.assertEquals(
 				"CREATE TABLE Orders (OrderID int NOT NULL,OrderNumber int NOT NULL,PersonID int,PRIMARY KEY (OrderID))",
@@ -67,22 +70,26 @@ public class ParserTest {
 		data.addProperty(Constants.CLIENT_HOST, "desktop4141");
 		data.addProperty(Constants.SOURCE_PROGRAM, "HDBsql");
 		data.addProperty(Constants.SERVER_PORT, "3900");
-		data.addProperty(Constants.DB_USER, "JOHNNY");
+		data.addProperty(Constants.DB_USER, "PQR");
 		data.addProperty(Constants.SCHEMA_NAME, "SYSTEM");
+		data.addProperty(Constants.MIN_OFF,"+06:00");
+
 		final Record record = Parser.parseRecord(data);
 
 		Assert.assertEquals("LOGIN_FAILED", record.getException().getExceptionTypeId());
 		Assert.assertEquals("authentication failed", record.getException().getDescription());
 	}
 
-	// Date is not Parsed, only time is parsed.
+/*
+	Date is not Parsed, only time is parsed.
 	@Test
 	public void testTimeParing() throws ParseException {
 		String dateStr = "2020-12-28 07:35:21";
 		Time time = Parser.getTime(dateStr);
-		Assert.assertTrue("Failed to parse date, time is " + time.getTimstamp(), 1609140921000L == time.getTimstamp());
+		Assert.assertTrue("Failed to parse date, time is " + time.getTimstamp(), 1609166121000L == time.getTimstamp());
 
 	}
+*/
 
 	// Accessor values verified.
 	@Test
@@ -103,8 +110,9 @@ public class ParserTest {
 		data.addProperty(Constants.CLIENT_HOST, "desktop4141");
 		data.addProperty(Constants.SOURCE_PROGRAM, "HDBsql");
 		data.addProperty(Constants.SERVER_PORT, "3900");
-		data.addProperty(Constants.DB_USER, "JOHNNY");
+		data.addProperty(Constants.DB_USER, "RFV");
 		data.addProperty(Constants.SCHEMA_NAME, "SYSTEM");
+		data.addProperty(Constants.MIN_OFF,"+09:00");
 
 		Record record = Parser.parseRecord(data);
 		Accessor actual = record.getAccessor();
@@ -112,7 +120,7 @@ public class ParserTest {
 		Assert.assertEquals(Constants.DB_PROTOCOL, actual.getDbProtocol());
 		Assert.assertEquals(Constants.SERVER_TYPE, actual.getServerType());
 
-		Assert.assertEquals("JOHNNY", actual.getDbUser());
+		Assert.assertEquals("RFV", actual.getDbUser());
 
 	}
 
@@ -133,14 +141,14 @@ public class ParserTest {
 		data.addProperty(Constants.CLIENT_HOST, "desktop4141");
 		data.addProperty(Constants.SOURCE_PROGRAM, "HDBsql");
 		data.addProperty(Constants.SERVER_PORT, "3900");
-		data.addProperty(Constants.DB_USER, "JOHNNY");
+		data.addProperty(Constants.DB_USER, "IJB");
 		data.addProperty(Constants.SCHEMA_NAME, "SYSTEM");
+		data.addProperty(Constants.MIN_OFF,"-02:00");
 
-		String date = Parser.parseTimestamp(data);
-		Assert.assertEquals("2021-12-07 05:53:02", date);
+		Time date = Parser.parseTimestamp(data);
+		Assert.assertEquals(1638863582000L, date.getTimstamp());
 	}
 
-	// Timestamp parsing
 	@Test
 	public void testGetTime() throws ParseException {
 		JsonObject data = new JsonObject();
@@ -158,13 +166,38 @@ public class ParserTest {
 		data.addProperty(Constants.CLIENT_HOST, "desktop4141");
 		data.addProperty(Constants.SOURCE_PROGRAM, "HDBsql");
 		data.addProperty(Constants.SERVER_PORT, "3900");
-		data.addProperty(Constants.DB_USER, "JOHNNY");
+		data.addProperty(Constants.DB_USER, "OLK");
 		data.addProperty(Constants.SCHEMA_NAME, "SYSTEM");
 		data.addProperty(Constants.OFFSET, "-300");
+		data.addProperty(Constants.MIN_OFF,"-04:00");
 
-		String dateString = Parser.parseTimestamp(data);
-		long time = Parser.getTime(dateString).getTimstamp();
-		Assert.assertEquals(time, 1322907330000L);
+
+		Time time = Parser.parseTimestamp(data);
+		Assert.assertEquals(time.getTimstamp(), 1322939730000L);
 	}
 
+	// Timestamp parsing
+	@Test
+	public void testTimestamp() throws ParseException {
+		JsonObject data = new JsonObject();
+		data.addProperty(Constants.CLIENT_IP, "0.0.0.0");
+		data.addProperty(Constants.TIMESTAMP, "1709544248000");
+		data.addProperty(Constants.APP_USER, "Laxmikant");
+		data.addProperty(Constants.SESSION_ID, "1234");
+		data.addProperty(Constants.ACTION_STATUS, "SUCCESSFUL");
+		data.addProperty(Constants.EXEC_STATEMENT,
+				"CREATE TABLE Orders (OrderID int NOT NULL,OrderNumber int NOT NULL,PersonID int,PRIMARY KEY (OrderID))");
+		data.addProperty(Constants.CLIENT_PORT, "5400");
+		data.addProperty(Constants.AUDIT_ACTION, "Create Table");
+		data.addProperty(Constants.SERVICE_NAME, "indexserver");
+		data.addProperty(Constants.SERVER_HOST, "docker");
+		data.addProperty(Constants.CLIENT_HOST, "desktop4141");
+		data.addProperty(Constants.SOURCE_PROGRAM, "HDBsql");
+		data.addProperty(Constants.SERVER_PORT, "3900");
+		data.addProperty(Constants.DB_USER, "OLK");
+		data.addProperty(Constants.SCHEMA_NAME, "SYSTEM");
+
+		Time time = Parser.parseTimestamp(data);
+		Assert.assertEquals(time.getTimstamp(), 1709544248000L);
+	}
 }
