@@ -88,6 +88,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • Download the [mssql-jdbc-7.4.1.jre8](https://jar-download.com/artifacts/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8) jar.
 
+**Note**: To change running frequency of the Universal connector, refer https://www.ibm.com/support/pages/node/7013523.
+
 #### Procedure:
 
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
