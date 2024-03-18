@@ -15,6 +15,8 @@ This plugin is written in Ruby and so is a script that can be directly copied in
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
+**Note**: To change running frequency of the Universal connector, refer https://www.ibm.com/support/pages/node/7013523.
+
 ## Follow this link to set up and use AWS MSSQL
 
 [AWS MSSQL README](./AWSMSSQL_README.md)
