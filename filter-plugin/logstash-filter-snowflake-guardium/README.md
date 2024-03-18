@@ -22,6 +22,9 @@ filter plug-ins for Guardium universal connector.
 
 The connector helps to monitor SQL occurring in your Snowflake environments by providing a feed of events to
 the Guardium using the Universal Connector functionality.
+
+**Note:** To change running frequency of the Universal Connector, refer [How to change running frequency of the Universal connector for Snowflake](https://www.ibm.com/support/pages/node/7013523) topic.
+
 ### Credits
 Converge Technology Solutions (formerly Information Insights) provided the original version of this plug-in.
 Maintenance of the plug-in has been taken over by IBM to provide improvements, such as integration with Guardium
