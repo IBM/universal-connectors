@@ -10,5 +10,5 @@
 	"license": "Apache2.0",
 	"description": "Parses Yugabyte database events into Guardium via Syslog connection.",
 	"configuration_notes": "",
-	"documentation_path": "https://github.ibm.com/Activity-Insights/universal-connectors/tree/master/filter-plugin/logstash-filter-yugabyte-guardium/README.md"
+	"documentation_path": "https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-yugabyte-guardium/README.md"
 }
