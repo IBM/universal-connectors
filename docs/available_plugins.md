@@ -19,6 +19,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [Azure SQL](../filter-plugin/logstash-filter-azure-sql-guardium/README.md)
 * [Couchbase](../filter-plugin/logstash-filter-couchbasedb-guardium/README.md)
 * [CouchDB](../filter-plugin/logstash-filter-couchdb-guardium/README.md)
+* [Elasticsearch](../filter-plugin/logstash-filter-elasticsearch-guardium/README.md)
 * [DocumentDB](../filter-plugin/logstash-filter-documentdb-aws-guardium/README.md)
 * [Google Cloud Apache Solr](../filter-plugin/logstash-filter-pubsub-apachesolr-guardium/README.md) (Future GI releases)
 * [Google Cloud BigQuery](../filter-plugin/logstash-filter-pubsub-bigquery-guardium/README.md) (Future GI releases)
