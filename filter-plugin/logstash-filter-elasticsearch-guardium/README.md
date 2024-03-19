@@ -1,7 +1,7 @@
 # logstash-filter-elasticsearch-guardium
 
 ### Meet Elasticsearch
-* Tested versions: v9
+* Tested versions: v8.9
 * Environment: On-premise
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
@@ -264,7 +264,7 @@ The hosts option specifies the Logstash server and the port (8684) where Logstas
 - Accessor >clientHostName : Not available in audit logs
 - SQL Syntax Error logs are not available in audit logs.
 
-2.	SQL queries supports only below commands 
+2.	User can only execute following SQL commands
 
      DESCRIBE TABLE
 
