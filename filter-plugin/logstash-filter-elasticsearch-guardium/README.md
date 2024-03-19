@@ -285,13 +285,13 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ### Before you begin
 * Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugin-elasticsearch.zip](ElasticsearchOverFilebeatPackage/guardium_logstash-offline-plugins-elasticsearch.zip) plug-in.
+* Download the [guardium_logstash-offline-plugins-elasticsearch.zip](ElasticsearchOverFilebeatPackage/guardium_logstash-offline-plugins-elasticsearch.zip) plug-in.
 * Download the plugin filter configuration file [elasticsearch.conf](elasticsearch.conf).
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is already disabled, before proceeding uploading of the UC.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugin-elasticsearch.zip](ElasticsearchOverFilebeatPackage/guardium_logstash-offline-plugins-elasticsearch.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugins-elasticsearch.zip](ElasticsearchOverFilebeatPackage/guardium_logstash-offline-plugins-elasticsearch.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [elasticsearch.conf](elasticsearch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
