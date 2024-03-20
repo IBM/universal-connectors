@@ -120,7 +120,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 ### Limitations
 * When the universal collector starts to collect data, it may show two S-TAP statuses in the pattern "postgres_<server-host-name>" and "cassandra_<server-host-name>" based on what type of logs it is collecting.
-* The ClientHostName is not available in the YugabyteDB logs.
+* The ClientHostName is not available in the YugabyteDB audit logs.
 
 ### Before you begin
 
