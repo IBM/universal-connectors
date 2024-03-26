@@ -239,7 +239,10 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 
 • Download the [cloudtrail_codec_plugin.zip](DynamodbOverCloudtrailPackage/DynamoDB/cloudtrail_codec_plugin.zip) plug-in, if the logs are to be pulled directly from CloudTrail. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 
-• Download the [logstash-filter-dynamodb_guardium_plugin_filter.zip plug-in.](./logstash-filter-dynamodb_guardium_plugin_filter.zip)
+• Dynamodb-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [logstash-filter-dynamodb_guardium_plugin_filter.zip](./logstash-filter-dynamodb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
+
 
 ### Procedure
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.

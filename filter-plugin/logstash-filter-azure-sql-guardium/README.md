@@ -104,7 +104,9 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-azuresql_guardium_plugin_filter.zip) plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
+• AzureSQL-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-azuresql_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 • Download the mssql-jdbc-7.4.1.jre8 from [here](https://jar-download.com/artifacts/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8)
 
