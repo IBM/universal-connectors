@@ -19,6 +19,8 @@ This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
+**Note**: To change running frequency of the Universal Connector, refer https://www.ibm.com/support/pages/node/7013523.
+
 
 ## 1. Installing Progress and configuring auditing
 
