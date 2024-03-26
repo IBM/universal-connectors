@@ -128,8 +128,9 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
 
-• Download the [logstash-filter-teradatadb_guardium_plugin_filter.zip](./TeradataOverJdbcPackage/logstash-filter-teradatadb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+• Teradata-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
+Note: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [logstash-filter-teradatadb_guardium_plugin_filter.zip](./TeradataOverJdbcPackage/logstash-filter-teradatadb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
 
 • Download driver jar - Go to the URL https://downloads.teradata.com/download/connectivity/jdbc-driver and download the zip/tar for required version. After extracting the downloaded zip/tar, there will be a jar file.
 
