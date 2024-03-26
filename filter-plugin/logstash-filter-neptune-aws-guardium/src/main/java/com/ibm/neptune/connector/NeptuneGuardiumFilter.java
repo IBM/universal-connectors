@@ -58,6 +58,9 @@ public class NeptuneGuardiumFilter implements Filter {
 		}
 		Record record = null;
 		for (Event event : events) {
+			if(log.isDebugEnabled()){
+				log.debug("Event Now: {}", event.getField(ApplicationConstants.MESSAGE));
+			}
 //			log.error("Message received => " + event.getField(ApplicationConstants.MESSAGE));
 			if (event.getField(ApplicationConstants.MESSAGE).toString()
 					.contains(ApplicationConstants.QUERY_TYPE_GREMLIN)
