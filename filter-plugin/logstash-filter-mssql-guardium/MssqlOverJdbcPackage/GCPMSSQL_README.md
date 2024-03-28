@@ -82,32 +82,25 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [mssql-offline-plugins-7.5.2.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
+• Download the [mssql-offline-plugins-7.5.2.zip](./mssql-offline-plugins-7.5.2.zip) plug-in. This is not necessary for Guardium Data Protection v12.0 and later.
 
-• Download the relevant plugin based on the version of the Guardium.[This zip is not required for GCP MSSQL]<br>
-I. For the Guardium 11.x, download [logstash-filter-xml-4.1.3.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml-4.1.3.zip).<br>
-II.For the Guardium 12.x, download [logstash-filter-xml-4.2.0.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml-4.2.0.zip).
-
-• Download the [mssql-jdbc-7.4.1.jre8](https://github.ibm.com/prasona/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-jdbc-7.4.1.jre8.jar) jar.
+• Download the [mssql-jdbc-7.4.1.jre8](./mssql-jdbc-7.4.1.jre8.jar) jar.
 
 #### Procedure:
 
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. Enable the universal connector if it is currently disabled.
-3. Click **Upload File** and select the offline [mssql-offline-plugins-7.5.2.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in. After it uploads, click **OK**.This is not necessary for Guardium Data Protection v12.0 and later.
-4. Download the relevant plugin based on the version of the Guardium.[This zip is not required for GCP MSSQL]<br>
-   I. For the Guardium 11.x, download [logstash-filter-xml-4.1.3.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml-4.1.3.zip).<br>
-   II.For the Guardium 12.x, download [logstash-filter-xml-4.2.0.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml-4.2.0.zip).
-5. Click **Upload File** and select the [mssql-jdbc-7.4.1.jre8](https://github.ibm.com/prasona/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-jdbc-7.4.1.jre8.jar) jar. After it uploads, click **OK**.
+3. Click **Upload File** and select the offline [mssql-offline-plugins-7.5.2.zip](./mssql-offline-plugins-7.5.2.zip) plug-in. After it uploads, click **OK**.This is not necessary for Guardium Data Protection v12.0 and later.
+4. Click **Upload File** and select the [mssql-jdbc-7.4.1.jre8](https://github.ibm.com/prasona/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-jdbc-7.4.1.jre8.jar) jar. After it uploads, click **OK**.
 
-6. Click the Plus sign to open the Connector Configuration dialog box.
-7. Type a name in the **Connector name** field.
-8. Update the input section to add the details from [gcpMSSQL.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/gcpMSSQL.conf) for GCP MSSQL.
+5. Click the Plus sign to open the Connector Configuration dialog box.
+6. Type a name in the **Connector name** field.
+7. Update the input section to add the details from [gcpMSSQL.conf](./gcpMSSQL.conf) for GCP MSSQL.
    ***Note :***
    • For Guardium Data Protection version 11.3, add the following line to the input section:
     'jdbc_driver_library => "${THIRD_PARTY_PATH}/mssql-jdbc-7.4.1.jre8.jar"'
    • Even if auditing was configured long before the universal connector, the universal connector  will still process all the older records, since they were already audited by the database. 
-9. Update the filter section to add the details from [gcpMSSQL.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/gcpMSSQL.conf) for GCP MSSQL. 
+9. Update the filter section to add the details from [gcpMSSQL.conf](./gcpMSSQL.conf) for GCP MSSQL. 
 10. The**type** fields should match in the input and filter configuration sections. This field should be unique for  every individual connector added.
 11. If you are using two JDBC plug-ins on the same machine, the `last_run_metadata_path` file name should be different.
 12. Click **Save**. Guardium validates the new connector and enables the universal connector if it was
