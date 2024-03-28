@@ -111,45 +111,45 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [mssql-offline-plugins-7.5.2.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in.This is not necessary for Guardium Data Protection v12.0 and later.
+• Download the [mssql-offline-plugins-7.5.2.zip](./mssql-offline-plugins-7.5.2.zip) plug-in.This is not necessary for Guardium Data Protection v12.0 and later.
 
 •  Choose the appropriate plugin download based on your Guardium version. <br>
 	I. If you are using Guardium 11.4 with patch p485 or earlier,
-		Download [logstash-filter-xml-4.1.3-1.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml-4.1.3-1.zip).<br>
+		Download [logstash-filter-xml-4.1.3-1.zip](./logstash-filter-xml-4.1.3-1.zip).<br>
 	II. If you are using Guardium 11.5 with patch p535 or earlier,
-		Download [logstash-filter-xml-4.1.3-1.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml-4.1.3-1.zip).<br>
+		Download [logstash-filter-xml-4.1.3-1.zip](./logstash-filter-xml-4.1.3-1.zip).<br>
 	III. If you are using Guardium 12.0 with patch p5 or earlier,
-		Download [logstash-filter-xml-4.2.0-1.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml-4.2.0-1.zip).<br>
+		Download [logstash-filter-xml-4.2.0-1.zip](./logstash-filter-xml-4.2.0-1.zip).<br>
 	IV. For the Guardium 11.4(p490 or later),11.5(p540 or later) and 12.0(p10 or later),
-		Download [logstash-filter-xml-4.2.0-2.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml-4.2.0-2.zip).<br>
+		Download [logstash-filter-xml-4.2.0-2.zip](./logstash-filter-xml-4.2.0-2.zip).<br>
 	V. For the Guardium 12.0(p15 or later), logstash-filter-xml.zip upload is not required.
 
-• Download the [mssql-jdbc-7.4.1.jre8](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-jdbc-7.4.1.jre8.jar) jar.
+• Download the [mssql-jdbc-7.4.1.jre8](./mssql-jdbc-7.4.1.jre8.jar) jar.
 
 #### Procedure: 
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First Enable the Universal Guardium connector, if it is Disabled already.
-3. Click Upload File and select the offline [mssql-offline-plugins-7.5.2.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK.This is not necessary for Guardium Data Protection v12.0 and later.
+3. Click Upload File and select the offline [mssql-offline-plugins-7.5.2.zip](./mssql-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK.This is not necessary for Guardium Data Protection v12.0 and later.
    4. Upload the relevant plugin based on the version of the Guardium.<br>
       I. If you are using Guardium 11.4 with patch p485 or earlier,
-      Upload [logstash-filter-xml-4.1.3-1.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml-4.1.3-1.zip).<br>
+      Upload [logstash-filter-xml-4.1.3-1.zip](./logstash-filter-xml-4.1.3-1.zip).<br>
       II. If you are using Guardium 11.5 with patch p535 or earlier,
-      Upload [logstash-filter-xml-4.1.3-1.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml-4.1.3-1.zip).<br>
+      Upload [logstash-filter-xml-4.1.3-1.zip](./logstash-filter-xml-4.1.3-1.zip).<br>
       III. If you are using Guardium 12.0 with patch p5 or earlier,
-      Upload [logstash-filter-xml-4.2.0-1.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml-4.2.0-1.zip).<br>
+      Upload [logstash-filter-xml-4.2.0-1.zip](./logstash-filter-xml-4.2.0-1.zip).<br>
       IV. For the Guardium 11.4(p490 or later),11.5(p540 or later) and 12.0(p10 or later),
-      Upload [logstash-filter-xml-4.2.0-2.zip](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/logstash-filter-xml-4.2.0-2.zip).<br>
+      Upload [logstash-filter-xml-4.2.0-2.zip](./logstash-filter-xml-4.2.0-2.zip).<br>
    	  V. For the Guardium 12.0(p15 or later), logstash-filter-xml.zip upload is not required.
-5. Click Upload File and select the [mssql-jdbc-7.4.1.jre8](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-jdbc-7.4.1.jre8.jar) jar. After it is uploaded, click OK.
+5. Click Upload File and select the [mssql-jdbc-7.4.1.jre8](./mssql-jdbc-7.4.1.jre8.jar) jar. After it is uploaded, click OK.
 6. Click the Plus sign to open the Connector Configuration dialog box.
 7. Type a name in the Connector name field.
-8. Update the input section to add the details from [onPremMSSQL.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/onpremMSSQLPlugin.conf) for on prem MSSQL setup file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+8. Update the input section to add the details from [onPremMSSQL.conf](./onpremMSSQLPlugin.conf) for on prem MSSQL setup file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 	Note : 
 		• For Guardium Data Protection version 11.3, add the following line to the input section:
 			'jdbc_driver_library => "${THIRD_PARTY_PATH}/mssql-jdbc-7.4.1.jre8.jar"'
 		• If auditing is configured way long back and UC is configured at later point of time, still UC will process all the previous older records as well till date, since it is already audited by the DB.
-9.  Update the filter section to add the details from [onPremMSSQL.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/onpremMSSQLPlugin.conf) for on prem MSSQL setup file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+9.  Update the filter section to add the details from [onPremMSSQL.conf](./onpremMSSQLPlugin.conf) for on prem MSSQL setup file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 10. "type" field should match in input and filter configuration section. This field should be unique for  every individual connector added.
 11. If using two jdbc plug-ins on the same machine, the last_run_metadata_path file name should be different.
 12. Click Save. Guardium validates the new connector, and enables the universal connector if it was
