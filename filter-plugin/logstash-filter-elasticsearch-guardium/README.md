@@ -257,27 +257,14 @@ The hosts option specifies the Logstash server and the port (8684) where Logstas
 
 
 ## 7. Limitations
-1.	The following important fields couldn't be mapped with Elasticsearch audit logs:
+1. The following important fields couldn't be mapped with Elasticsearch audit logs:
 
 - Accessor>sourceProgram : Not available with logs.
 - dbName : Not available in audit logs.
 - Accessor >clientHostName : Not available in audit logs
 - SQL Syntax Error logs are not available in audit logs.
 
-2.	User can only execute following SQL commands
-
-     DESCRIBE TABLE
-
-     SELECT
-
-     SHOW CATALOGS
-
-     SHOW COLUMNS
-
-     SHOW FUNCTIONS
-
-     SHOW TABLES
-
+2. User can perform crud operation only through rest api,It can not be able to perform with sql cli. 
 
 ## 8. Configuring the Elasticsearch filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Elasticsearch template.

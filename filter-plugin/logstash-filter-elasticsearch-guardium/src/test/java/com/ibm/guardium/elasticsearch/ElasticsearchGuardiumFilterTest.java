@@ -31,7 +31,7 @@ public class ElasticsearchGuardiumFilterTest {
 		Event e = new org.logstash.Event();
 		TestMatchListener matchListener = new TestMatchListener();
 		e.setField("message", elasticString);
-		e.setField("totalOffset", "+330");
+		e.setField("totalOffset", null);
 		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 		assertEquals(1, results.size());
 		assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
@@ -55,7 +55,7 @@ public class ElasticsearchGuardiumFilterTest {
 		Event e = new org.logstash.Event();
 		TestMatchListener matchListener = new TestMatchListener();
 		e.setField("message", elasticString);
-		e.setField("totalOffset", "+330");
+		e.setField("totalOffset", "");
 		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 		assertEquals(1, results.size());
 		assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
