@@ -51,23 +51,24 @@ public class ElasticsearchGuardiumFilter implements Filter {
 	@Override
 	public Collection<Event> filter(Collection<Event> events, FilterMatchListener matchListener) {
 		for (Event event : events) {
+			if(log.isDebugEnabled()){
+				log.debug("Event Now: {}", event.getData());
+			}
 			if (event.getField("message") instanceof String && event.getField("message") != null) {
 				String messageValue = event.getField("message").toString();
 				try {
 					JsonObject inputJSON = new Gson().fromJson(messageValue, JsonObject.class);
-					Record record = Parser.parseRecord(inputJSON);
-					Time time=record.getTime();
-					long t = (time.getTimstamp()) - (Long.parseLong(event.getField("totalOffset").toString()) * 60000);
-					time.setTimstamp(t);
-					record.setTime(time);
+					Record record = Parser.parseRecord(inputJSON,(event.getField("totalOffset")!=null && !event.getField("totalOffset").toString().isEmpty())?event.getField("totalOffset"):0);
 					final Gson gson = new GsonBuilder().disableHtmlEscaping().serializeNulls().create();
 					event.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
 					matchListener.filterMatched(event);
 				} catch (Exception exception) {
 					log.error("Elasticsearch filter: Error parsing event ", exception);
+					log.error("Event that caused exception: {}",event.getData());
 					event.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
 				}
 			} else {
+				log.error(event.getField("message"));
 				event.tag(LOGSTASH_TAG_JSON_PARSE_SKIP);
 			}
 
