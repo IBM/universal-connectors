@@ -19,7 +19,7 @@ public class ParserTest {
 	public void parseRecordTest() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\", \"host.name\":\"127.0.0.1\", \"host.ip\":\"127.0.0.1\", \"event.type\":\"rest\", \"event.action\":\"authentication_success\", \"authentication.type\":\"REALM\", \"user.name\":\"elastic\", \"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"origin.address\":\"117.98.4.93:1811\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,"+330");
 		assertNotNull(record);
 		assertEquals("-1109026561", record.getSessionId());
 		assertEquals("", record.getAppUserName());
@@ -34,7 +34,7 @@ public class ParserTest {
 	public void parseRecordTestException() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\", \"host.name\":\"127.0.0.1\", \"host.ip\":\"127.0.0.1\", \"event.type\":\"rest\", \"event.action\":\"authentication_failed\", \"authentication.type\":\"REALM\", \"user.name\":\"elastic\", \"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"origin.address\":\"117.98.4.93:1811\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,"+330");
 		assertNotNull(record);
 		assertEquals("-1109026561", record.getSessionId());
 		assertEquals("", record.getAppUserName());
@@ -50,10 +50,10 @@ public class ParserTest {
 	public void parseTimeTest() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-12-22T15:54:24,534+0530\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\", \"host.name\":\"127.0.0.1\", \"host.ip\":\"127.0.0.1\", \"event.type\":\"rest\", \"event.action\":\"authentication_success\", \"authentication.type\":\"REALM\", \"user.name\":\"elastic\", \"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"origin.address\":\"117.98.4.93:1811\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,"+330");
 		assertNotNull(record);
 		assertNotNull(record.getTime());
-		assertEquals(Long.parseLong("1703260464534"), record.getTime().getTimstamp());
+		assertEquals(Long.parseLong("1703240664534"), record.getTime().getTimstamp());
 		assertEquals(0, record.getTime().getMinDst());
 		assertEquals(0, record.getTime().getMinOffsetFromGMT());
 
@@ -63,7 +63,7 @@ public class ParserTest {
 	public void parseSessionLocatorTest() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\", \"host.name\":\"127.0.0.1\", \"host.ip\":\"127.0.0.1\", \"event.type\":\"rest\", \"event.action\":\"authentication_success\", \"authentication.type\":\"REALM\", \"user.name\":\"elastic\", \"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"origin.address\":\"117.98.4.93:1811\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,0);
 		assertNotNull(record);
 		assertNotNull(record.getSessionLocator());
 		assertEquals("117.98.4.93", record.getSessionLocator().getClientIp());
@@ -79,7 +79,7 @@ public class ParserTest {
 	public void parseAccessorTest() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\", \"host.name\":\"127.0.0.1\", \"host.ip\":\"127.0.0.1\", \"event.type\":\"rest\", \"event.action\":\"authentication_success\", \"authentication.type\":\"REALM\", \"user.name\":\"elastic\", \"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"origin.address\":\"117.98.4.93:1811\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,0);
 		assertNotNull(record);
 		assertNotNull(record.getAccessor());
 		assertEquals("elastic", record.getAccessor().getDbUser());
@@ -105,7 +105,7 @@ public class ParserTest {
 	public void parseDataTest() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\", \"host.name\":\"127.0.0.1\", \"host.ip\":\"127.0.0.1\", \"event.type\":\"rest\", \"event.action\":\"authentication_success\", \"authentication.type\":\"REALM\", \"user.name\":\"elastic\", \"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"origin.address\":\"117.98.4.93:1811\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,"+330");
 		assertNotNull(record);
 		assertNotNull(record.getData());
 		assertNull(record.getData().getConstruct());
@@ -117,7 +117,7 @@ public class ParserTest {
 	public void parseExceptionTest() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\", \"host.name\":\"127.0.0.1\", \"host.ip\":\"127.0.0.1\", \"event.type\":\"rest\", \"event.action\":\"authentication_failed\", \"user.name\":\"elastic\",\"origin.type\":\"rest\", \"origin.address\":\"117.98.4.93:1811\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,"+330");
 		assertNotNull(record);
 		assertNotNull(record.getException());
 		assertEquals("LOGIN_FAILED", record.getException().getExceptionTypeId());
@@ -129,7 +129,7 @@ public class ParserTest {
 	public void testParseSessionId() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\", \"host.name\":\"127.0.0.1\", \"host.ip\":\"127.0.0.1\", \"event.type\":\"rest\", \"event.action\":\"authentication_success\", \"authentication.type\":\"REALM\", \"user.name\":\"elastic\", \"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"origin.address\":\"117.98.4.93:1811\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,"+330");
 		assertNotNull(record);
 		assertEquals("-1109026561", record.getSessionId());
 
@@ -139,7 +139,7 @@ public class ParserTest {
 	public void testParseNoIp() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\",\"event.type\":\"rest\", \"event.action\":\"authentication_success\", \"authentication.type\":\"REALM\", \"user.name\":\"elastic\", \"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"origin.address\":\"[::1]:1811\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,"+330");
 		assertNotNull(record);
 		assertNotNull(record.getSessionLocator());
 		assertEquals("0.0.0.0", record.getSessionLocator().getClientIp());
@@ -150,7 +150,7 @@ public class ParserTest {
 	public void testParseNoPort() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\",\"event.type\":\"rest\", \"event.action\":\"authentication_success\", \"authentication.type\":\"REALM\", \"user.name\":\"elastic\", \"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,"+330");
 		assertNotNull(record);
 		assertNotNull(record.getSessionLocator());
 		assertEquals(-1, record.getSessionLocator().getClientPort());
@@ -161,7 +161,7 @@ public class ParserTest {
 	public void testParseNoUser() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\",\"event.type\":\"rest\", \"event.action\":\"authentication_success\", \"authentication.type\":\"REALM\",\"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,"+330");
 		assertNotNull(record);
 		assertNotNull(record.getAccessor());
 		assertEquals("NA", record.getAccessor().getDbUser());
@@ -171,7 +171,7 @@ public class ParserTest {
 	public void testParseNoServerHostName() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\",\"event.type\":\"rest\", \"event.action\":\"authentication_success\", \"authentication.type\":\"REALM\",\"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,"+330");
 		assertNotNull(record);
 		assertNotNull(record.getAccessor());
 		assertEquals("", record.getAccessor().getServerHostName());
@@ -207,7 +207,7 @@ public class ParserTest {
 	public void testParseClientIpPort() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\", \"host.name\":\"127.0.0.1\", \"host.ip\":\"127.0.0.1\", \"event.type\":\"rest\", \"event.action\":\"authentication_success\", \"authentication.type\":\"REALM\", \"user.name\":\"elastic\", \"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"origin.address\":\"[::1]:1811\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,"+330");
 		assertNotNull(record);
 		assertNotNull(record.getSessionLocator());
 		assertEquals("0.0.0.0", record.getSessionLocator().getClientIp());
@@ -218,7 +218,7 @@ public class ParserTest {
 	public void testParseServerIpPort() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\", \"host.name\":\"127.0.0.1\", \"host.ip\":\"127.0.0.1\", \"event.type\":\"rest\", \"event.action\":\"authentication_success\", \"authentication.type\":\"REALM\", \"user.name\":\"elastic\", \"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"origin.address\":\"117.98.4.93:1811\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,"+330");
 		assertNotNull(record);
 		assertNotNull(record.getSessionLocator());
 		assertEquals("127.0.0.1", record.getSessionLocator().getServerIp());
@@ -228,7 +228,7 @@ public class ParserTest {
 	public void testParseServerClientIpv6() throws Exception {
 		final String message = "{\"type\":\"audit\", \"timestamp\":\"2023-09-26T11:01:19,220+0000\", \"cluster.uuid\":\"mEtWYmxQSdGY27FoeGubIQ\", \"node.name\":\"node-1\", \"node.id\":\"RkqF7ZGKRuSlu_1EFdGXqQ\", \"host.name\":\"127.0.0.1\", \"host.ip\":\"1233:0dc8:33a3:0000:0000:9a2e:0440:8834\", \"event.type\":\"rest\", \"event.action\":\"authentication_success\", \"authentication.type\":\"REALM\", \"user.name\":\"elastic\", \"user.realm\":\"reserved\", \"origin.type\":\"rest\", \"origin.address\":\"[2001:0db8:85a3:0000:0000:8a2e:0370:7334]:8080\", \"realm\":\"reserved\", \"url.path\":\"/_sql\", \"url.query\":\"format=txt&pretty\", \"request.method\":\"POST\", \"request.body\":\"\\n{\\n  \\\"query\\\": \\\"SELECT * FROM hcltesting1\\\"\\n}\\n\", \"request.id\":\"Ol0gXgOtTO6cyIjF1Vx3aA\"}";
 		final JsonObject object = JsonParser.parseString(message).getAsJsonObject();
-		Record record = Parser.parseRecord(object);
+		Record record = Parser.parseRecord(object,"+330");
 		assertNotNull(record);
 		assertNotNull(record.getSessionLocator());
 		assertEquals("1233:0dc8:33a3:0000:0000:9a2e:0440:8834", record.getSessionLocator().getServerIpv6());

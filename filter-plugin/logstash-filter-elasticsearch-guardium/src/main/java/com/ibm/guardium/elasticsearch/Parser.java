@@ -32,14 +32,14 @@ public class Parser {
 	/**
 	 * Method to parse data from JsonObject and set to record object
 	 * 
-	 * @param data
+	 * @param data,totalOffset
 	 * @return
 	 * @throws Exception
 	 */
-	public static Record parseRecord(final JsonObject data) throws Exception {
+	public static Record parseRecord(final JsonObject data,final Object totalOffset) throws Exception {
 		Record record = new Record();
 		try {
-			record.setTime(parseTime(data));
+			record.setTime(parseTime(data,totalOffset));
 			record.setAppUserName(ApplicationConstant.UNKNOWN_STRING);
 			record.setDbName(ApplicationConstant.UNKNOWN_STRING);
 			record.setSessionLocator(parseSessionLocator(data));
@@ -67,12 +67,12 @@ public class Parser {
 	 * Method to get Time from the JsonObject, set the expected value into
 	 * respective Time Object and then return the value as response
 	 * 
-	 * @param data
+	 * @param data,totalOffSet
 	 * @return
 	 * @throws ParseException 
 	 */
 
-	private static Time parseTime(JsonObject data) throws ParseException {
+	private static Time parseTime(JsonObject data,Object totalOffSet) throws ParseException {
 
 		String dateString = data.get(ApplicationConstant.TIMESTAMP_KEY).getAsString();
 		LocalDateTime localDateTime = LocalDateTime.parse(dateString, DATE_TIME_FORMATTER);
@@ -81,7 +81,9 @@ public class Parser {
 		long millis = date.toInstant().toEpochMilli();
 		int minOffset = date.getOffset().getTotalSeconds() / 60;
 		Time time = new Time(millis, minOffset, 0);
-		return time;
+		long t = (time.getTimstamp()) - (Long.parseLong(totalOffSet.toString()) * 60000);
+		time.setTimstamp(t);
+	    return time;
 	}
 
 	/**
