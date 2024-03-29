@@ -32,7 +32,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [IBM Cloud PostgreSQL](../filter-plugin/logstash-filter-postgres-ibmcloud-guardium/README.md)
 * [Intersystems IRIS](../filter-plugin/logstash-filter-intersystems-iris-guardium/README.md)
 * [MariaDB](../filter-plugin/logstash-filter-mariadb-guardium/README.md)
-* [Microsoft SQL Server](../filter-plugin/logstash-filter-mssql-guardium/README.md)
+* [Microsoft SQL Server](../filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/README.md)
 * [MongoDB](../filter-plugin/logstash-filter-mongodb-guardium/README.md)
 * [MySQL](../filter-plugin/logstash-filter-mysql-guardium/README.md)
 * [MySQL Percona](../filter-plugin/logstash-filter-mysql-percona-guardium/README.md)
