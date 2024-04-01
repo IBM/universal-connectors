@@ -25,8 +25,8 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONObject;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 public class Parser {
@@ -40,21 +40,27 @@ public class Parser {
 	 * @throws Exception
 	 */
 	public static Record parseRecord(final JsonObject records) throws Exception {
-
+		
+		if(log.isDebugEnabled()){
+		    log.debug("Event Now: ",records);
+		}
+		
 		Record record = new Record();
 		try {
 			
-			JsonObject properties=records.get(ApplicationConstants.PROPERTIES).getAsJsonObject();
-	
+			if(records.has(ApplicationConstants.PROPERTIES) && records.get(ApplicationConstants.PROPERTIES).getAsJsonObject()!=null){
+			JsonObject	properties = records.get(ApplicationConstants.PROPERTIES).getAsJsonObject();
 			record.setTime(parseTime(records));
 			String subId = getSubscriptionId(records);
 			String databaseName = getDatabaseName(records, properties);
 			String accountId = getAccountId(records);
-			Integer hashcode=properties.get(ApplicationConstants.ACTIVITY_ID).getAsString().hashCode();
+			Integer hashcode=properties.has(ApplicationConstants.ACTIVITY_ID)?properties.get(ApplicationConstants.ACTIVITY_ID).getAsString().hashCode():ApplicationConstants.UNKNOWN_STRING.hashCode();
 			record.setSessionId(hashcode.toString());
-			record.setDbName(
-					!databaseName.isEmpty() ? subId.concat(":").concat(accountId).concat(":").concat(databaseName)
-							: subId.concat(":").concat(accountId));
+			String dbName = subId.concat(":").concat(accountId);
+			if(!databaseName.isEmpty()) {
+				dbName = dbName.concat(":").concat(databaseName);
+			}
+			record.setDbName(dbName);
 			record.setAppUserName(ApplicationConstants.UNKNOWN_STRING);
 			record.setAccessor(parseAccessor(subId, accountId, properties ));
 			record.getAccessor().setServiceName(record.getDbName());
@@ -65,7 +71,7 @@ public class Parser {
 			} else {
 				record.setException(parseException(records, properties));
 			}
-
+		}
 		} catch (Exception e) {
 			log.error("Exception occurred while parsing event in parseRecord method:  ", e);
 			throw e;
@@ -368,9 +374,23 @@ public class Parser {
 	 * @return
 	 */
 	private static String getFullsqlForDataPlane(JsonObject records,JsonObject properties) {
-		String fullsql=ApplicationConstants.UNKNOWN_STRING;
-		fullsql = "{ \"time\": ".concat(records.get(ApplicationConstants.TIMESTAMP).toString())+","+"\"resourceId\": "+records.get("resourceId")+","+"\"category\": "+records.get(ApplicationConstants.CATEGORY)+","+"\"operationName\": "+records.get(ApplicationConstants.OPERATION)+","+"\"properties\": { "+"\"activityId\": "+properties.get(ApplicationConstants.ACTIVITY_ID)+","+"\"requestResourceType\": "+properties.get(ApplicationConstants.REQUEST_RESOURCE_TYPE)+","+"\"requestResourceId\": "+decodeContent(properties.get(ApplicationConstants.REQUEST_RESOURCE).getAsString())+","+"\"statusCode\": "+properties.get(ApplicationConstants.STATUS_CODE)+"\"clientIpAddress\": "+properties.get(ApplicationConstants.CLIENT_IP)+","+"\"aadPrincipalId\": "+properties.get(ApplicationConstants.AAD_PRINCIPAL_ID)+","+"\"subscriptionId\": "+properties.get(ApplicationConstants.SUBSCRIPTIONID)+","+"\"databaseName\": "+properties.get(ApplicationConstants.DATABASE_NAME)+","+"\"collectionName\": "+properties.get(ApplicationConstants.COllECTION_NAME)+"} }";
-		return fullsql;
+		StringBuilder sb=new StringBuilder();
+		sb.append("{ \"time\": ").append(records.get(ApplicationConstants.TIMESTAMP).toString()).append(",")
+				.append("\"resourceId\": ").append(records.get("resourceId")).append(",").append("\"category\": ")
+				.append(records.get(ApplicationConstants.CATEGORY)).append(",").append("\"operationName\": ")
+				.append(records.get(ApplicationConstants.OPERATION)).append(",").append("\"properties\": { ")
+				.append("\"activityId\": ").append(properties.get(ApplicationConstants.ACTIVITY_ID)).append(",")
+				.append("\"requestResourceType\": ").append(properties.get(ApplicationConstants.REQUEST_RESOURCE_TYPE))
+				.append(",").append("\"requestResourceId\": ")
+				.append(decodeContent(properties.get(ApplicationConstants.REQUEST_RESOURCE).getAsString())).append(",")
+				.append("\"statusCode\": ").append(properties.get(ApplicationConstants.STATUS_CODE)).append(",")
+				.append("\"clientIpAddress\": ").append(properties.get(ApplicationConstants.CLIENT_IP)).append(",")
+				.append("\"aadPrincipalId\": ").append(properties.get(ApplicationConstants.AAD_PRINCIPAL_ID))
+				.append(",").append("\"subscriptionId\": ").append(properties.get(ApplicationConstants.SUBSCRIPTIONID))
+				.append(",").append("\"databaseName\": ").append(properties.get(ApplicationConstants.DATABASE_NAME))
+				.append(",").append("\"collectionName\": ").append(properties.get(ApplicationConstants.COllECTION_NAME))
+				.append("} }");
+		return sb.toString();
 	}
 
 	/**
@@ -386,8 +406,8 @@ public class Parser {
 			return queryStatement;
 		}
 		String jsonStr = properties.get(ApplicationConstants.QUERYTEXT).getAsString();
-		JSONObject jsonObj = new JSONObject(jsonStr);
-		String Statement = jsonObj.getString(ApplicationConstants.QUERY);
+		JsonObject jsonObj=new Gson().fromJson(jsonStr,JsonObject.class);
+		String Statement = jsonObj.get(ApplicationConstants.QUERY).getAsString();
 		Statement = Statement.replaceAll("(\\\\t)|(\\\\r)|(\\\\n)|(\\\\)", " ");
 		if (!StringUtils.isEmpty(Statement)) {
 			queryStatement = Statement;
@@ -443,7 +463,10 @@ public class Parser {
 	private static Accessor parseAccessor(String subId, String accountId, JsonObject properties) {
 		Accessor accessor = new Accessor();
 		accessor.setClientHostName(ApplicationConstants.UNKNOWN_STRING);
-		accessor.setDbUser(properties.has(ApplicationConstants.AAD_PRINCIPAL_ID) && !properties.get(ApplicationConstants.AAD_PRINCIPAL_ID).getAsString().isEmpty()?properties.get(ApplicationConstants.AAD_PRINCIPAL_ID).getAsString(): ApplicationConstants.NOT_AVAILABLE);
+		accessor.setDbUser(properties.has(ApplicationConstants.AAD_PRINCIPAL_ID)
+				&& !properties.get(ApplicationConstants.AAD_PRINCIPAL_ID).getAsString().isEmpty()
+						? properties.get(ApplicationConstants.AAD_PRINCIPAL_ID).getAsString()
+						: ApplicationConstants.NOT_AVAILABLE);
 		accessor.setServerType(ApplicationConstants.SERVER_TYPE);
 		accessor.setDbProtocol(ApplicationConstants.DATA_PROTOCOL);
 		accessor.setDbProtocolVersion(ApplicationConstants.UNKNOWN_STRING);
