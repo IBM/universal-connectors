@@ -1,7 +1,7 @@
 # AWS MySQL Guardium Logstash filter configuration
 
 ### Meet AWS MySQL 
-* Tested versions: 5.7, 8.0.36
+* Tested versions: 5.7
 * Environment: AWS
 * Supported inputs: CloudWatch (pull)
 * Supported Guardium versions:
