@@ -22,6 +22,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 There are multiple ways to install a MySQL on-premise server. For this example, we will assume that we already have a working MySQL setup.
 
 ## 2. Installing and enabling auditing
+### linux database-server
 [Install the audit log plug-in](https://dev.mysql.com/doc/mysql-secure-deployment-guide/5.7/en/secure-deployment-audit.html), and verify the following two lines in the my.cnf file:
 ####
       plugin-load = audit_log.so
@@ -37,6 +38,15 @@ Run the following two SQLs to install the default filter to get every log:
 ####
       SELECT audit_log_filter_set_filter('log_all', '{ "filter": { "log": true }}');
       SELECT audit_log_filter_set_user('%', 'log_all');
+
+###  Windows database-server
+1. Append below code to my.ini file, located in MySQL directory (for example: "C:\ProgramData\MySQL\MySQL Server 8.0"):
+####
+      plugin-load = audit_log.dll
+      audit_log_format=JSON
+####
+2. Restart the MySQL service
+
 ####
 
 ## 3. Configuring Filebeat to push logs to Guardium
