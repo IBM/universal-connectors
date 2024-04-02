@@ -1,6 +1,6 @@
 # Mysql-Guardium Logstash filter plug-in
 ### Meet Mysql
-* Tested versions: 5.x
+* Tested versions: 5.x, 8.0.36
 * Environment: On-premise, Iaas
 * Supported Guardium versions:
    * Guardium Data Protection: 11.3 and above
