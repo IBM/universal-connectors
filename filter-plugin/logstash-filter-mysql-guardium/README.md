@@ -45,7 +45,7 @@ Run the following two SQLs to install the default filter to get every log:
       plugin-load = audit_log.dll
       audit_log_format=JSON
 ####
-2. Restart the MySQL service
+2. Restart the MySQL service.
 
 ####
 
@@ -133,7 +133,7 @@ In the ```Input configuration``` section, refer to the Filebeat section.
 * Field _server_ip_ - States the IP address of the MySQL server, if it is available to the filter plug-in. The filter will use this IP address instead of localhost IP addresses that are reported by MySQL, if actions were performed directly on the database server.
 * The client "Source program" is not available in messages sent by MySQL. This is because this data is sent only in the first audit log message upon database connection - and the filter plug-in doesn't aggregate data from different messages.
 * When traffic is executed remotely, client_hostname field is not available.
-* In 'Failed Login' report, DB user is not available and therefore will be displayed as NA.
+* In the Failed Login report, database user is not available and therefore will be displayed as NA.
 * If events with "(NONE)" local/remote IP addresses are not filtered, the filter plug-in will convert the IP to "0.0.0.0", as a valid format for IP is needed. However, this is atypical, since messages without users are filtered out.
 * Events in the filter are not removed, but tagged if not parsed (see [Filter result](#filter-result), below).
 *  If the dbname is not coming from the command line, it will not get populated. If you want to see the dbname, either  send a use statement or send it on command line.
