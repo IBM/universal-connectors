@@ -108,7 +108,8 @@ To use Logstash to perform additional processing on the data collected by Filebe
 	• Neo4j does not support Failed Login. 			   
 
 
-#### For details on configuring Filebeat connection over SSL, please refer to the instructions provided [here](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium)
+#### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
+
 
 ## 5. Configuring the Neo4j filters in Guardium
 
