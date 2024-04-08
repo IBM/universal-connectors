@@ -24,7 +24,7 @@ public class ParserTest {
 
 		JsonObject data = new JsonObject();
 		
-		data.addProperty(Constants.CLIENT_IP, "0.0.0.0");
+		data.addProperty(Constants.CLIENT_IP, "2600:1f16:6a0:1801:f292:6f15:a643:6128");
 		data.addProperty(Constants.TIMESTAMP, "1638806583399975");
 		data.addProperty(Constants.APP_USER, "Laxmikant");
 		data.addProperty(Constants.SESSION_ID, "1234");
@@ -67,7 +67,7 @@ public class ParserTest {
 	public void testParseAccessor() throws ParseException {
 
 		JsonObject data = new JsonObject();
-		data.addProperty(Constants.CLIENT_IP, "0.0.0.0");
+		data.addProperty(Constants.CLIENT_IP, "localhost");
 		data.addProperty(Constants.TIMESTAMP, "1638806583399975");
 		data.addProperty(Constants.APP_USER, "Laxmikant");
 		data.addProperty(Constants.SESSION_ID, "1234");
