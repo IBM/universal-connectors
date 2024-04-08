@@ -8,7 +8,7 @@
   * Guardium Data Protection: 11.3 and above
   * Guardium Insights: 3.2 and above
 
-This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the universal connector that is featured in IBM Security Guardium. It  enables Logstash to receive connections from TCP. The events are then sent over to a corresponding filter plug-in, which transforms these audit logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java)  instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
+This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the universal connector that is featured in IBM Security Guardium. It enables Logstash to receive connections from TCP. The events are then sent to a corresponding filter plug-in, which transforms these audit logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java)  instance, which is a standard structure made out of several parts. The information is then sent over to Guardium. Guardium records include an accessor (a person who tried to access the data), session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
 To learn more about logstash input plugin, see logstash documentation
 
@@ -68,7 +68,7 @@ input {
 ```
 
 ### Configure TCP connection with SSL on GDP
-1. **Generate Certificate Authority (CA)**
+1. Generate Certificate Authority (CA)
    1. On the Collector, run the following API to get the Certificate Authority content:
 
        ```bash
@@ -100,7 +100,7 @@ To learn more about rsyslog, see
 
 ### rsyslog configuration for sending over TCP
 
-Replace the host token with your host and copy the snippet to the end of `/etc/rsyslog.conf`.
+Replace the host token with your host and copy the snippet at the end of `/etc/rsyslog.conf`.
 
 ```txt
 # Enable sending of logs over TCP to <HOST> and the port that defined on the Guarium collector

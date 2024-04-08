@@ -44,7 +44,7 @@ Other standard logstash parameters are available such as:
 	}
 
 ### Configure Filebeat connection with SSL on GDP
-1. **Generate Certificate Authority (CA)**
+1. Generate Certificate Authority (CA)
 	1. On the Collector, run the following API to get the Certificate Authority content:
 
 	    ```bash
