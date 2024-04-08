@@ -110,7 +110,7 @@ You can learn more about [Ops Agent installation](https://cloud.google.com/monit
 * Sink name: Provide an identifier for the sink; note that after the user creates the sink, the user can't rename the sink, but can delete it and create a new sink.
 * Sink description (optional): Describe the purpose or use case for the sink.
 * In the Sink destination panel, select the Pub/Sub topic as sink service and destination.
-* Choose logs to include in the sink in the Build inclusion filter panel. 
+* Choose logs to include in the sink in the Build [inclusion filter](./README.md#inclusion-filter) panel. 
 * The user can filter the logs using log name, resource, and severity.
 * In cases of multiple regions, use the same set of configurations for all regions.
 Use different configuration files for the input plug-in based on the region.
