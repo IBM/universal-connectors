@@ -1,10 +1,11 @@
 package com.ibm.guardium.auroramysql;
 
-import java.text.ParseException;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.universalconnector.commons.structures.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.text.ParseException;
 
 public class Parser {
 
@@ -37,7 +38,7 @@ public class Parser {
 			record.setAccessor(Parser.parseAccessor(data));
 			record.setAppUserName(Constants.APP_USER);
 
-			if (data.get(Constants.ACTION_STATUS).getAsInt() != 0) {
+			if (data.has(Constants.ACTION_STATUS) && data.get(Constants.ACTION_STATUS).getAsInt() != 0) {
 				record.setException(Parser.parseException(data));
 			} else {
 				record.setData(Parser.parseData(data));
@@ -66,6 +67,11 @@ public class Parser {
 	private static SessionLocator parseSessionLocator(JsonObject data) {
 		SessionLocator sessionLocator = new SessionLocator();
 		sessionLocator.setIpv6(false);
+		sessionLocator.setServerPort(Constants.PORT);
+		sessionLocator.setClientPort(Constants.PORT);
+		sessionLocator.setServerIp(Constants.IP);
+		sessionLocator.setClientIpv6(Constants.UNKNOWN_STRING);
+		sessionLocator.setServerIpv6(Constants.UNKNOWN_STRING);
 
 		if (data.has(Constants.CLIENT_IP) && !data.get(Constants.CLIENT_IP).isJsonNull())
 
@@ -74,20 +80,31 @@ public class Parser {
 			if (clientAdd.equalsIgnoreCase("localhost") || clientAdd.equals("%")) {
 				sessionLocator.setClientIp(Constants.IP); // Set the appropriate IP for localhost
 			} else {
-				sessionLocator.setClientIp(clientAdd);
+				try {
+					// Check if the CLIENT_IP is an IPv6 address
+					boolean isIPv6 = isIPv6Address(clientAdd);
+					sessionLocator.setIpv6(isIPv6);
+					if (isIPv6) {
+						sessionLocator.setClientIpv6(clientAdd);
+						sessionLocator.setClientIp(Constants.IP);
+					} else {
+						sessionLocator.setClientIp(clientAdd);
+					}
+				} catch (Exception e) {
+					// Set a default IP or handle the error in a way that makes sense for your application
+					sessionLocator.setClientIp(Constants.IP);
+				}
 			}
 		}
 		else {
 			sessionLocator.setClientIp(Constants.IP);
 		}
-
-		sessionLocator.setServerPort(Constants.PORT);
-		sessionLocator.setClientPort(Constants.PORT);
-		sessionLocator.setServerIp(Constants.IP);
-		sessionLocator.setClientIpv6(Constants.UNKNOWN_STRING);
-		sessionLocator.setServerIpv6(Constants.UNKNOWN_STRING);
-
 		return sessionLocator;
+	}
+
+	// Function to check if the given IP address is IPv6
+	private static boolean isIPv6Address(String ipAddress) {
+		return ipAddress.contains(":");
 	}
 
 	// ---------- Accessor
@@ -138,7 +155,7 @@ public class Parser {
 				sql = inputJSON.get(Constants.EXEC_STATEMENT).getAsString();
 				data.setOriginalSqlCommand(sql.substring(1, sql.length() - 1));
 			} else {
-				data.setOriginalSqlCommand(inputJSON.get(Constants.AUDIT_ACTION).getAsString());
+                        data.setOriginalSqlCommand(inputJSON.get(Constants.AUDIT_ACTION).getAsString());
 			}
 
 		} catch (Exception e) {
@@ -153,7 +170,7 @@ public class Parser {
 	private static ExceptionRecord parseException(JsonObject data) {
 
 		ExceptionRecord exceptionRecord = new ExceptionRecord();
-		if (data.has(Constants.EXEC_STATEMENT)) {
+		if (data.has(Constants.EXEC_STATEMENT)  && !data.get(Constants.EXEC_STATEMENT).isJsonNull()) {
 			exceptionRecord.setSqlString(data.get(Constants.EXEC_STATEMENT).getAsString());
 			exceptionRecord.setDescription("ERROR Code=" + data.get(Constants.ACTION_STATUS).getAsString());
 			exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);

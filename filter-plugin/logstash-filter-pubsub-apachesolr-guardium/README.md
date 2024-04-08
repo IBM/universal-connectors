@@ -162,8 +162,8 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 4. Click Upload File and select the key.json file(which was generated above for the service account). After it is uploaded, click OK.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
-7. Update the input section to add the details from the [solrgcp.conf](./solrgcp.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-8. Update the filter section to add the details from the [solrgcp.conf](./solrgcp.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+7. Update the input section to add the details from the [solrgcp.conf](solrgcp.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+8. Update the filter section to add the details from the [solrgcp.conf](solrgcp.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 9. The 'type' fields should match in input and filter configuration sections.This field should be unique for every individual connector added.
 10. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 11. After the offline plug-in is installed and configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.

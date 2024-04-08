@@ -17,6 +17,7 @@ import javax.script.ScriptEngine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tinkerpop.gremlin.jsr223.GremlinLangScriptEngine;
+import org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.Step;
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal.Admin;
@@ -39,6 +40,7 @@ import org.apache.tinkerpop.gremlin.tinkergraph.process.traversal.step.sideEffec
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory;
 
 import com.ibm.neptune.connector.constant.ApplicationConstants;
+import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 
 /**
  * 
@@ -52,10 +54,12 @@ public class GremlinParser {
 
 	static {
 
+    TinkerGraph graph = TinkerGraph.open();
+		GraphTraversalSource g = AnonymousTraversalSource.traversal().withEmbedded(graph);
 		ENGINE = new GremlinLangScriptEngine();
-		ENGINE.put("g", new GraphTraversalSource(TinkerFactory.createGratefulDead()));
-
-	}
+		ENGINE.put("g", g);
+	
+  }
 
 	public static Map<String, List<Object>> parseGremlin(String script) throws Exception {
 
