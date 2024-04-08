@@ -56,8 +56,8 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
     #Change to true to enable this input configuration.
     enabled: true 
     paths:
-    - c:\programdata\elasticsearch\logs*
-    - C:\downloads\docker_volumes*
+    - /var/lib/mysql/audit.log
+    tags: ["mysqlpercona"]
   
     ```
 
@@ -75,10 +75,6 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
     output.logstash:
     #The Logstash hosts
     hosts: ["<Guardium IP>:5045"] #just to ip/host name of the gmachine
-    # Paths that should be crawled and fetched. Glob based paths.
-    paths: 
-    - /var/lib/mysql/audit.log
-    tags: ["mysqlpercona"] 
 
     ```
    In addition, events are configured with the add_locale, add_host_metadata, and add_tags processors (to add an "hdfs" tag).
