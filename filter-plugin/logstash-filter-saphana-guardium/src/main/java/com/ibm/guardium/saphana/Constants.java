@@ -40,6 +40,8 @@ public interface Constants {
 
 	public static final String TIMESTAMP = "ts";
 
+	public static final String MIN_OFF = "minOff";
+
 	public static final String CLIENT_PORT = "Client_Port_Number";
 
 	public static final String DB_PROTOCOL = "SAP HANA";
