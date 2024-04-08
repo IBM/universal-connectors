@@ -44,6 +44,9 @@ public class IntersystemsIRISGuardiumFilter implements Filter {
 	@Override
 	public Collection<Event> filter(Collection<Event> events, FilterMatchListener matchListener) {
 		for (Event event : events) {
+			if (log.isDebugEnabled()) {
+				log.debug("Event Now: {}", event.getData());
+			}
 			if (event.getField("message") instanceof String && event.getField("message") != null) {
 				String messageString = event.getField("message").toString();
 				try {
@@ -54,6 +57,7 @@ public class IntersystemsIRISGuardiumFilter implements Filter {
 					matchListener.filterMatched(event);
 				} catch (Exception exception) {
 					log.error("Iris filter: Error parsing event ", exception);
+					log.error("Event that caused exception: {}",event.getData());
 					event.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
 				}
 			}
