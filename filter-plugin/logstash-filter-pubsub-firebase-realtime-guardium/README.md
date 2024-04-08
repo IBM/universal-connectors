@@ -148,8 +148,8 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 4. Click Upload File and select the key.json file(which was generated above for Service Account). After it is uploaded, click OK.
 5. Click the plus icon to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
-7. Update the input section to add the details from the [firebase_with_pubsub.conf](PubSubFirebasePackage/firebase_with_pubsub.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-8. Update the filter section to add the details from the [firebase_with_pubsub.conf](PubSubFirebasePackage/firebase_with_pubsub.conf) file's filter part, omitting the keyword "filter {" at the beginning and its corresponding "}" at the end.
+7. Update the input section to add the details from the [firebase_with_pubsub.conf](./firebase_with_pubsub.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+8. Update the filter section to add the details from the [firebase_with_pubsub.conf](./firebase_with_pubsub.conf) file's filter part, omitting the keyword "filter {" at the beginning and its corresponding "}" at the end.
 9. The 'type' fields should match in the input and filter configuration sections.This field should be unique for every individual connector added.
 10. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 11. After offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.

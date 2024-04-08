@@ -60,8 +60,12 @@ public class SapHanaGuardiumPluginFilterTest {
 		e.setField(Constants.SOURCE_PROGRAM, "HDBSQL");
 		e.setField(Constants.SERVER_PORT, "3901");
 		e.setField(Constants.SCHEMA_NAME, "SYSTEM");
-		e.setField(Constants.DB_USER, "JOHNNY");
+		e.setField(Constants.DB_USER, "ABC");
 		e.setField(Constants.OFFSET, "-330");
+		e.setField(Constants.MIN_OFF,"+05:10");
+
+
+
 		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 
 		Assert.assertEquals(1, results.size());
