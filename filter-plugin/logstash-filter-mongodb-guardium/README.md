@@ -331,7 +331,8 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
 
 - Windows: Restart in the Services window
 
-#### For details on configuring Filebeat connection over SSL, please refer to the instructions provided [here](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium)
+#### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
+
 
 ### What to do next
 
