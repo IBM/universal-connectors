@@ -49,7 +49,6 @@ public class SapHanaGuardiumPluginFilter implements Filter {
 		Set<String> setOfFingerprintID = new HashSet<>();
 
 		for (Event e : events) {
-
 			if (e.getField(Constants.EXEC_STATEMENT) instanceof String || e.getField(Constants.ACTION_STATUS) instanceof String) {
 
 				if (setOfFingerprintID.contains(e.getField(Constants.FINGERPRINT))) {
@@ -64,9 +63,15 @@ public class SapHanaGuardiumPluginFilter implements Filter {
 						builder.serializeNulls();
 						final Gson gson = builder.create();
 						e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
+
 						matchListener.filterMatched(e);
 					} catch (Exception exception) {
 						log.error("SAPHANA filter: Error parsing saphana event " + exception);
+
+						if(log.isDebugEnabled()){
+							log.debug("Event Now: ",data);
+							exception.printStackTrace();
+						}
 						e.tag(Constants.LOGSTASH_TAG_JSON_PARSE_ERROR);
 					}
 				}

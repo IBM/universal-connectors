@@ -37,7 +37,7 @@ public class AuroraMysqlGuardiumPluginFilter implements Filter {
 
 	private String id;
 	public static final PluginConfigSpec<String> SOURCE_CONFIG = PluginConfigSpec.stringSetting("source", "message");
-	private static Logger log = LogManager.getLogger(AuroraMysqlGuardiumPluginFilter.class);
+	private static Logger logger = LogManager.getLogger(AuroraMysqlGuardiumPluginFilter.class);
 
 	public AuroraMysqlGuardiumPluginFilter(String id, Configuration config, Context context) {
 		// constructors should validate configuration options
@@ -49,7 +49,10 @@ public class AuroraMysqlGuardiumPluginFilter implements Filter {
 
 		for (Event e : events) {
 
-			if (e.getField("message") instanceof String) {
+			if(logger.isDebugEnabled()){
+				logger.debug("Event now {}:",e.getData());
+			}
+			if (e.getField("message") instanceof String && e.getField("message") != null) {
 				JsonObject data = new JsonObject();
 				data = inputData(e);
 				try {
@@ -60,12 +63,13 @@ public class AuroraMysqlGuardiumPluginFilter implements Filter {
 					e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
 					matchListener.filterMatched(e);
 				} catch (Exception exception) {
-					log.error("AWS_AURORA_MYSQL filter: Error parsing MYSQL event " + exception);
+					logger.error("AWS_AURORA_MYSQL filter: Error parsing MYSQL event " + exception);
+					logger.error("Event that caused exception: {}",e.getData());
 					e.tag(Constants.LOGSTASH_TAG_JSON_PARSE_ERROR);
 				}
 
 			} else {
-				log.error("AWS_AURORA_MYSQL filter: Event has been skipped: " + e.getField("message"));
+				logger.error("AWS_AURORA_MYSQL filter: Event has been skipped: " + e.getField("message"));
 				e.tag("_guardium_skip_not_AWS_AURORA_MYSQ");
 			}
 		}
