@@ -104,6 +104,9 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 3. To learn how to start FileBeat, see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
 
+#### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
+
+
 ### Limitations
 
 • Java filter code is used to handle “Query and Index Service” events logs only. The code can be enhanced further, depending on the purpose, if you are using Couchbase for your individual projects. All other types of Audit Events (except “Query and Index Service”) are not in scope for now.			   
