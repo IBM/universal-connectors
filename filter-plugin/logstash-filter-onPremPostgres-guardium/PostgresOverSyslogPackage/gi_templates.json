@@ -1,0 +1,27 @@
+{
+  "plugin_name": "PostgreSQL over tcp input with syslog",
+  "help_link": "https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-onPremPostgres-guardium/EDBPostgres_README.md",
+  "input_name": "syslog_input",
+  "input_parameters": [
+    {
+      "type": {
+      "type": "text",
+      "default": "syslog-PostgresEDB",
+      "hidden": true
+     }
+    }
+  ],
+  "filter_name": "Guardium_PostgresL_Syslog_filter",
+  "filter_parameters": [],
+  "auth_parameters": [
+    {
+      "guc_filter_param_datasource_tag": {
+        "param_type": "filter",
+        "type": "text",
+        "label": "Datasource Tag",
+        "description": "Tag that uses for syslog events"
+      }
+    }
+  ],
+  "supported_platforms": ["on-premise"]
+}
