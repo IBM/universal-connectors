@@ -107,6 +107,10 @@ To use Logstash to perform additional processing on the data collected by Filebe
 	• Multiple system related queries are logged, which cannot be skipped, so will be seen in the Reports
 	• Neo4j does not support Failed Login. 			   
 
+
+#### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
+
+
 ## 5. Configuring the Neo4j filters in Guardium
 
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector identifies and parses received events, and then converts them to a standard Guardium format. The output of the universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Neo4j template.
