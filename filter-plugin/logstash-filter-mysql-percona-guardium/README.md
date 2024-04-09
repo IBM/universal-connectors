@@ -56,8 +56,8 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
     #Change to true to enable this input configuration.
     enabled: true 
     paths:
-    - c:\programdata\elasticsearch\logs*
-    - C:\downloads\docker_volumes*
+    - /var/lib/mysql/audit.log
+    tags: ["mysqlpercona"]
   
     ```
 
@@ -75,16 +75,14 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
     output.logstash:
     #The Logstash hosts
     hosts: ["<Guardium IP>:5045"] #just to ip/host name of the gmachine
-    # Paths that should be crawled and fetched. Glob based paths.
-    paths: 
-    - /var/lib/mysql/audit.log
-    tags: ["mysqlpercona"] 
 
     ```
    In addition, events are configured with the add_locale, add_host_metadata, and add_tags processors (to add an "hdfs" tag).
 
 
 3. To learn more about Filebeat processors, click [here](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html#using-processors).
+
+#### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
 
 
 ## Configuring the MySQL filters in Guardium Data Protection (GDP)
