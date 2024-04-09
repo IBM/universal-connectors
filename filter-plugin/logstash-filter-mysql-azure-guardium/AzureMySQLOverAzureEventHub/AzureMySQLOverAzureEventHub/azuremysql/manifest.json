@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_Azure_Mysql_filter",
+	"alias": "AzureMysql",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "0.0.4",
+	"datasourceTypes": [{"type":"AzureMysql","supportedVersions": ["8.0"]}],
+	"supported_input_plugins": ["Azure_event_hub_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses events and messages from the Azure MySQL audit log into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mysql-azure-guardium/README.md"
+}
