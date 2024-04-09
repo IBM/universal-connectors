@@ -171,22 +171,10 @@ public class Parser {
 	 */
 	public static String getDbUser(JsonObject data, JsonObject Property) {
 		// StringBuffer user = new StringBuffer();
-		if (Property.has(Constants.DB_USER) && Property.has(Constants.EVENT_CATEGORY)
-				&& Property.get(Constants.EVENT_CATEGORY).getAsString().equals("connection_log")) {
+		if (Property.has(Constants.DB_USER) && !Property.get(Constants.DB_USER).getAsString().isEmpty()) {
 			return Property.get(Constants.DB_USER).getAsString();
-		} else if (!Property.has(Constants.DB_USER)) {
-			return Constants.UNKNOWN_STRING;
 		} else {
-			String userName = Property.get(Constants.DB_USER).getAsString();
-			String pattern = "(\\w+)\\[\\w+\\]";
-			Pattern ipPattern = Pattern.compile(pattern);
-			Matcher matcher = ipPattern.matcher(userName);
-			if (matcher.find()) {
-				String ipAddress = matcher.group(1);
-				return ipAddress;
-			} else {
-				return Constants.UNKNOWN_STRING;
-			}
+			return Constants.NOT_AVAILABLE;
 		}
 
 	}
@@ -306,8 +294,11 @@ public class Parser {
 	public static ExceptionRecord parseExceptionRecord(JsonObject data) throws Exception {
 		ExceptionRecord exception = new ExceptionRecord();
 		exception.setExceptionTypeId(Constants.EXCEPTION_TYPE_AUTHORIZATION_STRING);
-		exception.setDescription(data.has(Constants.ERROR_CODE)?"Error Occured (" + data.get(Constants.ERROR_CODE).getAsString() + ")":"Error Occured (" + Constants.UNKNOWN_STRING + ")");
-		exception.setSqlString(data.has(Constants.SQL_TEXT)?data.get(Constants.SQL_TEXT).getAsString():Constants.UNKNOWN_STRING);
+		exception.setDescription(
+				data.has(Constants.ERROR_CODE) ? "Error Occured (" + data.get(Constants.ERROR_CODE).getAsString() + ")"
+						: "Error Occured (" + Constants.UNKNOWN_STRING + ")");
+		exception.setSqlString(
+				data.has(Constants.SQL_TEXT) ? data.get(Constants.SQL_TEXT).getAsString() : Constants.UNKNOWN_STRING);
 		return exception;
 	}
 
