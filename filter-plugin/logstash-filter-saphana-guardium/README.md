@@ -243,10 +243,12 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * You must have permissions for the S-Tap Management role. The admin user includes this role, by default.
 
-* Download the required (ngdbc)jars as per your database version from URL https://tools.hana.ondemand.com/#hanatools .
+* Download the required (ngdbc)jars as per your database version from URL https://tools.hana.ondemand.com/#hanatools.
 
+* This plug-in is automatically available with Guardium Data Protection. versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+
+**Note:** For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the following plug-in. (Do not unzip the offline-package file throughout the procedure).
 * For CSVTEXTFILE-based auditing, refer to this [package](SaphanaOverFilebeatPackage) and download the [logstash-filter-saphana_guardium_plugin_filter.zip](SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).This step is not necessary for Guardium Data Protection v12.0 and later.
-
 * For CSTABLE based auditing, refer to this [package](SaphanaOverJdbcPackage) and download the [logstash-filter-saphana_guardium_plugin_filter.zip](SaphanaOverJdbcPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).This step is not necessary for Guardium Data Protection v12.0 and later.
 
 
