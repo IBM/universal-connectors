@@ -40,8 +40,10 @@ To add the MariaDB plug-in to a MySQL instance, follow the instructions describe
 ## Configuring the AWS MySQL filters in Guardium
 
 #### Before you begin
-• You must have permissions for the S-TAP Management role. The admin user includes this role by default.
-• Download the json-encode-offline-plugin.zip plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+* You must have permissions for the S-TAP Management role. The admin user includes this role by default.
+* This filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [offline json-encode-offline-plugin.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-aws-guardium/json-encode-offline-plugin.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 #### Authorizing outgoing traffic from AWS to Guardium
 
