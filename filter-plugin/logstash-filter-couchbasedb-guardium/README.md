@@ -104,6 +104,9 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 3. To learn how to start FileBeat, see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
 
+#### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
+
+
 ### Limitations
 
 • Java filter code is used to handle “Query and Index Service” events logs only. The code can be enhanced further, depending on the purpose, if you are using Couchbase for your individual projects. All other types of Audit Events (except “Query and Index Service”) are not in scope for now.			   
@@ -117,7 +120,10 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • You must have permission for the S-Tap Management role. The admin user includes this role, by default.
 
-• Download the [couchbase-offline-pack.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-couchbasedb_guardium_plugin_filter.zip). (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+• Couchbase-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [couchbase-offline-pack.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-couchbasedb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+
 
 #### Procedure
 

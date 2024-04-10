@@ -29,7 +29,7 @@ public class AzureMysqlGuardiumFilterTest {
 
 	@Test
 	public void testMysql_CreateTable() {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"create table subratotable55(ID int, phone int)\",\"event_time\":\"2023-04-17T09:59:26Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"create table subratotable55(ID int, phone int)\",\"event_time\":\"2023-04-17T09:59:26Z\"}}";
 		Event e = new org.logstash.Event();
 		TestMatchListener matchListener = new TestMatchListener();
 		e.setField("message", mysqlString);
@@ -137,7 +137,7 @@ public class AzureMysqlGuardiumFilterTest {
 
 	@Test
 	public void testMysql_Error() {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		Event e = new org.logstash.Event();
 		TestMatchListener matchListener = new TestMatchListener();
 		e.setField("message", mysqlString);

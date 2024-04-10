@@ -114,18 +114,24 @@ tags : ["Yugabyte"]
    5. The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections. 
    6. You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
 
+#### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
+
+
 ## Configuring the Yugabyte filters in Guardium
 
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector identifies and parses received events, and then converts them to a standard Guardium format. The output of the universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Yugabyte template.
 
 ### Limitations
-When the universal collector starts to collect data, it may show two S-TAP statuses in the pattern "postgres_<server-host-name>" and "cassandra_<server-host-name>" based on what type of logs it is collecting.
+* When the universal collector starts to collect data, it may show two S-TAP statuses in the pattern "postgres_<server-host-name>" and "cassandra_<server-host-name>" based on the types of logs it collects..
+* The ClientHostName is not available in the YugabyteDB audit logs.
 
 ### Before you begin
 
 • Configure the policies you require. See [policies](/docs/#policies) for more information.
 -  You must have permission for the S-Tap Management role. The admin user includes this role by default.
- - Download the [logstash-filter-yugabytedb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-yugabytedb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+- Yugabyte-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [logstash-filter-yugabytedb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-yugabytedb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 # Procedure
 
