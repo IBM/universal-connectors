@@ -368,5 +368,7 @@ Cluster creation may take few minutes.
 
 ## 3. Limitations
 
-1. For some db client tools client hostname is not captured by EDB PostgresSQL native audit, therefore can not be reported in Guardium.
+
+1. Client hostname is not captured by EDB PostgresSQL native audit on traffic of some db client tools, therefore can not be reported in Guardium.
 2. Source program is not captured by EDB PostgresSQL native audit on failed login attempt, therefore can not be reported in Guardium.
+3. Operating system user is not captured by EDB PostgresSQL native audit, therefore can not be reported in Guardium.
