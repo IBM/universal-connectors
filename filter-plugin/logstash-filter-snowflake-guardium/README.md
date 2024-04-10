@@ -95,10 +95,9 @@ you can turn it off. To do this, set the value to `false` for the following two 
 ### Before you begin
 1. Configure the policies that you require. See [policies](/../../#policies) for more information.
 2. You must have permission for the S-Tap Management role. The admin user includes this role by default.
-3. Download the relevant plugin based on the version of the Guardium.
-    1. For the Guardium 11.x, download [logstash-offline-plugins-7.12.1.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-7.12.1.zip).
-    2. For the Guardium 12.x, download [logstash-offline-plugins-8.3.3.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-8.3.3.zip)
-4. The plugin is tested with Snowflake JDBC driver v3.13.30.
+3. Snowflake-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection. versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+**Note:** For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [logstash-offline-plugins-7.12.1.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-7.12.1.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+5. The plugin is tested with Snowflake JDBC driver v3.13.30.
    Download the jdbc driver `jar` file from the maven repository [here](https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/).
 
 ### Procedure

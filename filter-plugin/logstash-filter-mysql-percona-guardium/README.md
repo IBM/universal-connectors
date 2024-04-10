@@ -56,8 +56,8 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
     #Change to true to enable this input configuration.
     enabled: true 
     paths:
-    - c:\programdata\elasticsearch\logs*
-    - C:\downloads\docker_volumes*
+    - /var/lib/mysql/audit.log
+    tags: ["mysqlpercona"]
   
     ```
 
@@ -75,16 +75,14 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
     output.logstash:
     #The Logstash hosts
     hosts: ["<Guardium IP>:5045"] #just to ip/host name of the gmachine
-    # Paths that should be crawled and fetched. Glob based paths.
-    paths: 
-    - /var/lib/mysql/audit.log
-    tags: ["mysqlpercona"] 
 
     ```
    In addition, events are configured with the add_locale, add_host_metadata, and add_tags processors (to add an "hdfs" tag).
 
 
 3. To learn more about Filebeat processors, click [here](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html#using-processors).
+
+#### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
 
 
 ## Configuring the MySQL filters in Guardium Data Protection (GDP)
@@ -99,7 +97,9 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [mysql-percona-offline-plugin.zip](./MysqlPerconaOverFilebeatPackage/mysql-percona-offline-plugin.zip)(Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+• MySql-Percona-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [mysql-percona-offline-plugin.zip](./MysqlPerconaOverFilebeatPackage/mysql-percona-offline-plugin.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
 
 ### Procedure
 

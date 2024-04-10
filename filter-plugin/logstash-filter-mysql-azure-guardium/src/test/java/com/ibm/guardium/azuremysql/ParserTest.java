@@ -13,7 +13,7 @@ import org.junit.Test;
 public class ParserTest {
 	@Test
 	public void testparseCreatetable() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"create table subratotable55(ID int, phone int)\",\"event_time\":\"2023-04-17T09:59:26Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"create table subratotable55(ID int, phone int)\",\"event_time\":\"2023-04-17T09:59:26Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("create table subratotable55(ID int, phone int)", record.getData().getOriginalSqlCommand());
@@ -58,16 +58,16 @@ public class ParserTest {
 	
 	@Test
 	public void testparseincorrectusername() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test@  [20.204.110.141]\",\"sql_text\":\"select * from resourcetable\",\"event_time\":\"2023-04-17T08:13:46Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from resourcetable\",\"event_time\":\"2023-04-17T08:13:46Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
-		assertEquals("", record.getAccessor().getDbUser());
+		assertEquals("test", record.getAccessor().getDbUser());
 		assertNotNull(record);
 	}
 
 	@Test
 	public void testparseAltertable() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.204.110.141]\",\"sql_text\":\"Alter table subratotable1 add (Name varchar(20))\",\"event_time\":\"2023-04-17T08:13:46Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"Alter table subratotable1 add (Name varchar(20))\",\"event_time\":\"2023-04-17T08:13:46Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("Alter table subratotable1 add (Name varchar(20))", record.getData().getOriginalSqlCommand());
@@ -77,7 +77,7 @@ public class ParserTest {
 
 	@Test
 	public void testparseSelect() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.204.110.141]\",\"sql_text\":\"select * from subratotable\",\"event_time\":\"2023-04-17T07:37:47Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subratotable\",\"event_time\":\"2023-04-17T07:37:47Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("select * from subratotable", record.getData().getOriginalSqlCommand());
@@ -87,7 +87,7 @@ public class ParserTest {
 
 	@Test
 	public void testparseDroptable() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.204.110.141]\",\"sql_text\":\"drop table subratotable\",\"event_time\":\"2023-04-17T08:13:46Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"drop table subratotable\",\"event_time\":\"2023-04-17T08:13:46Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("drop table subratotable", record.getData().getOriginalSqlCommand());
@@ -97,7 +97,7 @@ public class ParserTest {
 
 	@Test
 	public void testparseComment() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.204.110.141]\",\"sql_text\":\"select @@version_comment limit 1\",\"event_time\":\"2023-04-17T08:13:46Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select @@version_comment limit 1\",\"event_time\":\"2023-04-17T08:13:46Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("select @@version_comment limit 1", record.getData().getOriginalSqlCommand());
@@ -106,7 +106,7 @@ public class ParserTest {
 
 	@Test
 	public void testparseDatabase() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.204.110.141]\",\"sql_text\":\"SELECT DATABASE()\",\"event_time\":\"2023-04-17T08:13:46Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"SELECT DATABASE()\",\"event_time\":\"2023-04-17T08:13:46Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("SELECT DATABASE()", record.getData().getOriginalSqlCommand());
@@ -115,7 +115,7 @@ public class ParserTest {
 
 	@Test
 	public void testparseError() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
@@ -125,7 +125,7 @@ public class ParserTest {
 	
 	@Test
 	public void testparseErrorWithoutErrorcode() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
@@ -135,7 +135,7 @@ public class ParserTest {
 	
 	@Test
 	public void testparseErrorWithoutSqltext() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
@@ -146,7 +146,7 @@ public class ParserTest {
 
 	@Test
 	public void testparseDBname() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from sub\",\"event_time\":\"2023-04-17T09:25:28Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from sub\",\"event_time\":\"2023-04-17T09:25:28Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8:MYSQL-TEST-GUARDIUM", record.getDbName());
@@ -155,7 +155,7 @@ public class ParserTest {
 
 	@Test
 	public void testparseServiceName() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8:MYSQL-TEST-GUARDIUM", record.getAccessor().getServiceName());
@@ -164,7 +164,7 @@ public class ParserTest {
 
 	@Test
 	public void testparseDbuser() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("test", record.getAccessor().getDbUser());
@@ -173,7 +173,7 @@ public class ParserTest {
 
 	@Test
 	public void testparseServerHostName() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8-MYSQL-TEST-GUARDIUM.azure.com",
@@ -183,17 +183,17 @@ public class ParserTest {
 
 	@Test
 	public void testparseDbprotocol() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("MYSQL", record.getAccessor().getDbProtocol());
-		assertEquals("MYSQL", record.getAccessor().getServerType());
+		assertEquals("MySql", record.getAccessor().getServerType());
 		assertNotNull(record);
 	}
 
 	@Test
 	public void testparseDatatype() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("TEXT", record.getAccessor().getDataType());
@@ -203,7 +203,7 @@ public class ParserTest {
 
 	@Test
 	public void testparseSessionid() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("1359540437", record.getSessionId());
@@ -212,7 +212,7 @@ public class ParserTest {
 
 	@Test
 	public void testparsegetIP() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("20.219.48.223", record.getSessionLocator().getClientIp());
@@ -222,7 +222,7 @@ public class ParserTest {
 
 	@Test
 	public void testparsegetIPV6() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("2001:0db8:85a3:0000:0000:8a2e:0370:7334", record.getSessionLocator().getClientIpv6());
@@ -232,7 +232,7 @@ public class ParserTest {
 	
 	@Test
 	public void testparsegetNoIP() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals("0.0.0.0", record.getSessionLocator().getClientIp());
@@ -242,7 +242,7 @@ public class ParserTest {
 	
 	@Test
 	public void testparsegetPort() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"ERROR\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":1146,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"select * from subrato\",\"event_time\":\"2023-04-17T09:27:22Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals(-1, record.getSessionLocator().getClientPort());
@@ -252,7 +252,7 @@ public class ParserTest {
 
 	@Test
 	public void testparseTimestamp() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.204.110.141]\",\"sql_text\":\"show databases\",\"event_time\":\"2023-04-17T07:37:31Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":21,\"ip\":\"20.204.110.141\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"show databases\",\"event_time\":\"2023-04-17T07:37:31Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals(Long.parseLong("1681717051000"), record.getTime().getTimstamp());
@@ -293,7 +293,7 @@ public class ParserTest {
 
 	@Test
 	public void testparseSessionLocatorIpv6() throws Exception {
-		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test[test] @  [20.219.48.223]\",\"sql_text\":\"SELECT DATABASE()\",\"event_time\":\"2023-04-17T09:25:41Z\"}}";
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"event_subclass\":\"LOG\",\"replication_set_role\":\"single\",\"thread_id\":27,\"ip\":\"20.219.48.223\",\"host\":\"\",\"event_class\":\"general_log\",\"error_code\":0,\"category\":\"MySqlAuditLogs\",\"user\":\"test\",\"sql_text\":\"SELECT DATABASE()\",\"event_time\":\"2023-04-17T09:25:41Z\"}}";
 		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
 		Record record = Parser.parseRecord(mysqlJson);
 		assertEquals(false, record.getSessionLocator().isIpv6());

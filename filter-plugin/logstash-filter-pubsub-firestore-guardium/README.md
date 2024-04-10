@@ -118,9 +118,10 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 ### Before you begin
    * Configure the policies you require. See [policies](/docs/#policies) for more information.
    * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-   * Download the relevant plugin based on the version of the Guardium.
-1. For the Guardium 11.x, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-firestore-guardium/PubSubFireStorePackage/guardium_logstash-offline-plugins-ps-firestore.zip)
-2. For the Guardium 12.x, download the [Logstash_Offline_package_8.x](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-fire_base_guardium_filter.zip)
+   * FireStore-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-firestore-guardium/PubSubFireStorePackage/guardium_logstash-offline-plugins-ps-firestore.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
@@ -128,8 +129,8 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 3. Click Upload File and select the offline [guardium_logstash-offline-plugins-ps-firestore.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-firestore-guardium/PubSubFireStorePackage/guardium_logstash-offline-plugins-ps-firestore.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the plus icon to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
-6. Update the input section to add the details from the [firestore_pubsub_run.conf](PubSubFireStorePackage/firestore_pubsub_run.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7. Update the filter section to add the details from the [firestore_pubsub_run.conf](PubSubFireStorePackage/firestore_pubsub_run.conf) file's filter part, omitting the keyword "filter {" at the beginning and its corresponding "}" at the end.
+6. Update the input section to add the details from the [firestore_pubsub_run.conf](./firestore_pubsub_run.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from the [firestore_pubsub_run.conf](./firestore_pubsub_run.conf) file's filter part, omitting the keyword "filter {" at the beginning and its corresponding "}" at the end.
 8. The "type" fields should match in the input and filter configuration sections. This field should be unique for  every individual connector added.
 9. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 10. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the Disable/Enable button.
