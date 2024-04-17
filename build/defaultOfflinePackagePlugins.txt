@@ -1,0 +1,2 @@
+filter-plugin/logstash-filter-mysql-guardium/logstash-filter-mysql_filter_guardium
+filter-plugin/logstash-filter-oua-guardium/logstash-filter-oua_filter
