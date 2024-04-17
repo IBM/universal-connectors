@@ -5,7 +5,9 @@
 * Environment: On-premise
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
-  * Guardium Data Protection: 12.1 and later
+  * Guardium 11.4 with patch p490 and above having sniffer patch p4076
+  * Guardium 11.5 with patch p540 and above having sniffer patch p4076
+  * Guardium 12.0 with patch p10 and above having sniffer patch p4001
   
 This is a [Logstash](https://github.com/elastic/logstash)  filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Elasticsearch audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query and Guardium sniffer parse the Elasticsearch queries.
 
