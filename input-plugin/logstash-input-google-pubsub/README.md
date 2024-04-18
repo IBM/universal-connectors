@@ -1,170 +1,203 @@
-## google_pubsub input plug-in
-### Meet Google Pubsub
-* Tested versions: 1.2.1
-* Developed by Elastic
-* Configuration instructions can be found in [Guardium Google Pub/Sub documentation](#installation).
-* Supported Guardium versions:
-    * Guardium Data Protection: 11.4 and above
+# Logstash Plugin
+
+[![Travis Build Status](https://travis-ci.com/logstash-plugins/logstash-input-google_pubsub.svg)](https://travis-ci.com/logstash-plugins/logstash-input-google_pubsub)
 
 This is a [Logstash](https://github.com/elastic/logstash) input plugin for
 [Google Pub/Sub](https://cloud.google.com/pubsub/). The plugin can subscribe
-to a topic and ingest messages. The events are then sent over to corresponding filter plugin which transforms these audit logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java)  instance (which is a standard structure made out of several parts).
+to a topic and ingest messages.
 
-
-## Purpose:
-
-The plugin ingests [Stackdriver Logging](https://cloud.google.com/logging/) messages via the
+The main motivation behind the development of this plugin was to ingest
+[Stackdriver Logging](https://cloud.google.com/logging/) messages via the
 [Exported Logs](https://cloud.google.com/logging/docs/export/using_exported_logs)
 feature of Stackdriver Logging.
 
 It is fully free and fully open source. The license is Apache 2.0, meaning you
 are pretty much free to use it however you want in whatever way.
 
-## Usage:
+## Documentation
 
-### Prerequisites:
+### Prerequisites
 
-#### Procedure:
+You must first create a Google Cloud Platform project and enable the the
+Google Pub/Sub API. If you intend to use the plugin ingest Stackdriver Logging
+messages, you must also enable the Stackdriver Logging API and configure log
+exporting to Pub/Sub. There is plentiful information on
+https://cloud.google.com/ to get started,
 
-1. Access to Google Cloud Platform project
+- Google Cloud Platform Projects and [Overview](https://cloud.google.com/docs/overview/)
+- Goolge Cloud Pub/Sub [documentation](https://cloud.google.com/pubsub/)
+- Stackdriver Logging [documentation](https://cloud.google.com/logging/)
 
-2. Enable the Google Pub/Sub API.
+### Cloud Pub/Sub
 
-3. If the plugin is to be used to ingest Stackdriver Logging messages, then the Stackdriver Logging API should be enabled and configure log exporting to Pub/Sub.
+Currently, this module requires you to create a `topic` manually and specify
+it in the logstash config file. You must also specify a `subscription`, but
+the plugin will attempt to create the pull-based `subscription` on its own.
 
-4. Below links can be used to gather more information on the same
-	
-	* Google Cloud Platform Projects and [Overview](https://cloud.google.com/docs/overview/)
-	* Google Cloud Pub/Sub [documentation](https://cloud.google.com/pubsub/)
-	* Stackdriver Logging [documentation](https://cloud.google.com/logging/)
+All messages received from Pub/Sub will be converted to a logstash `event`
+and added to the processing pipeline queue. All Pub/Sub messages will be
+`acknowledged` and removed from the Pub/Sub `topic` (please see more about
+[Pub/Sub concepts](https://cloud.google.com/pubsub/overview#concepts)).
 
+It is generally assumed that incoming messages will be in JSON and added to
+the logstash `event` as-is. However, if a plain text message is received, the
+plugin will return the raw text in as `raw_message` in the logstash `event`.
 
-### Audit Logs Streaming
+#### Authentication
 
-#### Procedure:
+You have two options for authentication depending on where you run Logstash.
 
-1. Create a project attached to billing info 
-2. Set up your Google Cloud project and Pub/Sub topic and subscriptions:
-   - Grant Pub/Sub Editor, Pub/Sub Publisher, Pub/Sub Subscriber roles to your account in IAM to enable editing Pub/Sub and viewing all audited logs. See [Pub/Sub Roles](https://cloud.google.com/pubsub/docs/access-control#roles) for the full list.
-   - Create the topic and subscription as instructed [here](https://cloud.google.com/pubsub/docs/building-pubsub-messaging-system#set_up_your_project_and_topic_and_subscriptions)
-3. Create service account and credentials and add IAM roles
-   - Go to *Service accounts > IAM service accounts*, select your project and click Create Service Account
-   - Grant Pub/Sub Admin and Cloud Pub/Sub Service Agent roles to the service account in *Service account permissions or IAM & Admin > IAM*
-   - *Service accounts > Keys > Create Key > JSON > Create*. The key is sent to your downloads folder
-   - Use Upload file in the Guardium machine to upload the generated json key file
-4. Turn on audit logging for all services, as instructed [here](https://cloud.google.com/architecture/exporting-stackdriver-logging-for-security-and-access-analytics#turn_on_audit_logging_for_all_services)
-6. Configure a Sink:
-   - [Prerequisites](https://cloud.google.com/logging/docs/export/configure_export_v2#before-you-begin)
-   - in Logs Router in Logging side panel create a Sink associated with the Pub/Sub topic 
-   - Create a Sink [how-to guide](https://cloud.google.com/logging/docs/export/configure_export_v2#creating_sink)
-   - Go to *View Sink details > copy the Writer identity*
-   - Go to your topic's *page > Permissions > grant Pub/Sub Publisher role* to the Writer identity
-7. Create the SQL instance and Configure Logging
-   - MySQL [how-to guide](../../filter-plugin/logstash-filter-pubsub-mysql-guardium/README.md#prerequisites)
-   - PostgreSQL [how-to guide](../../filter-plugin/logstash-filter-pubsub-postgresql-guardium/README.md#prerequisites)
-8. After installing the plug-in's offline package and once the configuration is uploaded and saved to your Guardium machine, restart Universal Connector using the Disable/Enable button
-9. Connect to the SQL instance and run queries
-   - Add your IP to the Authorized networks section in *SQL > Connections > Add Network*
-   - Create SQL instance users in *SQL > Instances > `instance_name` > Users*
-   - Run queries from Cloud Shell:  *SQL > Instances > `instance_name` > Overview page > Connect using `gcloud`*
+1. If you are running Logstash outside of Google Cloud Platform, then you will
+need to create a Google Cloud Platform Service Account and specify the full
+path to the JSON private key file in your config. You must assign sufficient
+roles to the Service Account to create a subscription and to pull messages
+from the subscription. Learn more about GCP Service Accounts and IAM roles
+here:
 
-### Installation 
+  - Google Cloud Platform IAM [overview](https://cloud.google.com/iam/)
+  - Creating Service Accounts [overview](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
+  - Granting Roles [overview](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts)
 
-To install this plug-in, you need to download the [offline pack](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/input-plugin/logstash-input-google-pubsub/GooglePubSubPackage/logstash-offline-plugin-input-google_pubsub.zip), and use Upload file in the Guardium machine.
+1. If you are running Logstash on a Google Compute Engine instance, you may opt
+to use Application Default Credentials. In this case, you will not need to
+specify a JSON private key file in your config.
 
-#### Note
-To install on your local machine that is running Logstash, execute:
-`bin/logstash-plugin install file:///path/to/logstash-offline-plugin-input-google_pubsub.zip`
+### Stackdriver Logging (optional)
 
-### Parameters:
-	
-| Parameter | Input Type | Required | Default |
-|-----------|------------|----------|---------|
-| project_id | String  | Yes |  |
-| topic | String | Yes |  |
-| subscription | String | No |  |
-| json_key_file | a valid filesystem path | No |  |
-| include_metadata | Boolean | No | false|
-| create_subscription | Boolean | No | false|
-| max_messages | Number | Yes | 5|
+If you intend to use the logstash plugin for Stackdriver Logging message
+ingestion, you must first manually set up the Export option to Coud Pub/Sub and
+the manually create the `topic`. Please see the more detailed instructions at,
+[Exported Logs](https://cloud.google.com/logging/docs/export/using_exported_logs)
+and ensure that the [necessary permissions](https://cloud.google.com/logging/docs/export/configure_export#manual-access-pubsub)
+have also been manually configured.
 
-
-
-
-
-#### `project_id`
-The `project_id` setting allows to set the Google Cloud Project ID (name, not number).
-
-#### `topic`
-The `topic` setting allows specifying the Google Cloud Pub/Sub Topic and Subscription. Note that the topic must be created manually with Cloud Logging pre-configured export to PubSub configured to use the defined topic. The subscription will be created automatically by the plugin.
-
-#### `subscription`
-The `subscription` setting allows to specify teh subscription
-
-#### `json_key_file`
-The `json_key_file` allows setting authentication details, if logstash is running within Google Compute Engine, the plugin will use GCE’s Application Default Credentials. Outside of GCE, you will need to specify a Service Account JSON key file.
-
-#### `include_metadata`
-The `include_metadata` setting, if set true, will include the full message data in the [@metadata][pubsub_message] field
-
-#### `create_subscription`
-The `create_subscription` setting, if set true, will have the input plugin create a new subscription on startup instead of manually creating it on GCP
-##### Note
-    - This requires additional permissions to be granted to the client (i.e. the Service Account) and is not recommended for most use-cases. If you still need to use it, grant the Service Account the "Cloud Pub/Sub Service Agent" Role in *IAM & Admin > Service Accounts > Grant Access*
-
-#### `max_messages`
-The `max_messages` setting, helps to mitigate the issues caused due to subscriber client processing and acknowledging the messages more slowly than Pub/Sub sending them to the client. This option helps to control the rate at which the subscriber receives messages.
-
-
-#### Logstash Default config params
-Other standard logstash parameters are available such as:
-* `add_field`
-* `type`
-* `tags`
+Logging messages from Stackdriver Logging exported to Pub/Sub are received as
+JSON and converted to a logstash `event` as-is in
+[this format](https://cloud.google.com/logging/docs/export/using_exported_logs#log_entries_in_google_pubsub_topics).
 
 ### Sample Configuration
 
-Below is a copy of the included `googlepubsub.conf` [file](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/input-plugin/logstash-input-google-pubsub/GooglePubSubPackage/googlepubsub.conf) that shows a basic
+Below is a copy of the included `example.conf-tmpl` file that shows a basic
 configuration for this plugin.
 
-
-#### Input part:
 ```
 input {
-   google_pubsub {
+    google_pubsub {
         # Your GCP project id (name)
-       project_id => "<PROJECT_ID>"
+        project_id => "my-project-1234"
 
         # The topic name below is currently hard-coded in the plugin. You
         # must first create this topic by hand and ensure you are exporting
         # logging to this pubsub topic.
-       topic => "<TOPIC_NAME>"
+        topic => "logstash-input-dev"
 
         # The subscription name is customizeable. The plugin will attempt to
         # create the subscription (but use the hard-coded topic name above).
-       subscription => "<SUB_NAME>"
+        subscription => "logstash-sub"
 
         # If you are running logstash within GCE, it will use
         # Application Default Credentials and use GCE's metadata
         # service to fetch tokens.  However, if you are running logstash
         # outside of GCE, you will need to specify the service account's
         # JSON key file below.
-       json_key_file => "${THIRD_PARTY_PATH}/<KEY_FILE_NAME>.json"
+        #json_key_file => "/home/erjohnso/pkey.json"
+    }
+}
 
-        include_metadata => true
-       codec => "json"
-}
-}
+output { stdout { codec => rubydebug } }
 ```
-##### Note
-Setting a different `subscription` for each Logstash pipeline running on a server, enables receiving the full set of messages published to the `topic`.
-Setting the same `subscription` for multiple Logstash pipelines running on different servers, can be used for **Load Balancing** the processing of the messages over those servers.
 
+## (stock) Documentation
 
-## Troubleshooting
+Logstash provides infrastructure to automatically generate documentation for this plugin. We use the asciidoc format to write documentation so any comments in the source code will be first converted into asciidoc and then into html. All plugin documentation are placed under one [central location](http://www.elastic.co/guide/en/logstash/current/).
 
-* Logs aren't showing:
-   * Check that messages are being sent to your gmachine by going to your *Pub/Sub topic > Publish Messages*, publish a message and see if it's logged in `logstash_stdout_err.log`
-   * Make sure you can see messages when going to *Pub/Sub topic > Select Subscription > Pull messages*
-   * Check the inclusion/exclusion filters are valid and legal by going to *Edit Sink > Preview Logs* button next to the filters edit window.
-   * If you're still not seeing logs, double check that you don't have another configuration running using the same subscription name.
+- For formatting code or config example, you can use the asciidoc `[source,ruby]` directive
+- For more asciidoc formatting tips, see the excellent reference here https://github.com/elastic/docs#asciidoc-guide
+
+## Need Help?
+
+Need help? Try #logstash on freenode IRC or the https://discuss.elastic.co/c/logstash discussion forum.
+
+## Developing
+
+### 1. Plugin Development and Testing
+
+#### Code
+
+- To get started, you'll need JRuby with the Bundler gem installed.
+- You'll also need a Logstash installation to build the plugin against.
+
+- Create a new plugin or clone and existing from the GitHub [logstash-plugins](https://github.com/logstash-plugins) organization. We also provide [example plugins](https://github.com/logstash-plugins?query=example).
+
+- `export LOGSTASH_SOURCE=1` and point `LOGSTASH_PATH` to a local Logstash
+  e.g. `export LOGSTASH_PATH=/opt/local/logstash-8.7.0`
+
+- Install Ruby dependencies
+```sh
+bundle install
+```
+
+- Install Java dependencies - regenerates the *lib/logstash-input-google_pubsub_jars.rb*
+  script used to load the .jar dependencies when the plugin starts.
+```sh
+./gradlew vendor
+```
+  NOTE: This step is necessary whenever **build.gradle** is updated.
+
+#### Test
+
+- Update your dependencies
+
+```sh
+bundle install
+```
+
+- Run Ruby tests
+
+```sh
+bundle exec rspec
+```
+
+### 2. Running your unpublished Plugin in Logstash
+
+#### 2.1 Run in a local Logstash clone
+
+- Edit Logstash `Gemfile` and add the local plugin path, for example:
+```ruby
+gem "logstash-filter-awesome", :path => "/your/local/logstash-filter-awesome"
+```
+- Install plugin
+```sh
+bin/logstash-plugin install --no-verify
+```
+- Run Logstash with your plugin
+```sh
+bin/logstash -e 'filter {awesome {}}'
+```
+At this point any modifications to the plugin code will be applied to this local Logstash setup. After modifying the plugin, simply rerun Logstash.
+
+#### 2.2 Run in an installed Logstash
+
+You can use the same **2.1** method to run your plugin in an installed Logstash by editing its `Gemfile` and pointing the `:path` to your local plugin development directory or you can build the gem and install it using:
+
+- Build your plugin gem
+```sh
+gem build logstash-filter-awesome.gemspec
+```
+- Install the plugin from the Logstash home
+```sh
+bin/logstash-plugin install --no-verify
+```
+- Start Logstash and proceed to test the plugin
+
+## Contributing
+
+All contributions are welcome: ideas, patches, documentation, bug reports, complaints, and even something you drew up on a napkin.
+
+Programming is not a required skill. Whatever you've seen about open source and maintainers or community members  saying "send patches or die" - you will not see that here.
+
+It is more important to the community that you are able to contribute.
+
+For more information about contributing, see the [CONTRIBUTING](https://github.com/elastic/logstash/blob/master/CONTRIBUTING.md) file
+
+-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDsZGt5qGFWcy2z I5r3zHRWEbMn9y87DAfsDgdZ6lRpv0uYkoR97SdAyoWC7IXHoo9MdHAw0WRRZHcW +JgUI/7CUtD7/P5r7MHw6KK8/6mr3ItYTjhxgmthfeQ1HIxpAPmrQLiYnZeqYZ95 wG795vAG/y4Xobndhyji169emHUK7RHIoReT7DwEFNhwyIeTqLAIzqQAyMV+ymAN 6pCmIA3bovnoy2alRA//0zkaFsEFyD/8lsRURxrib7xCyiM1X5uozRo/YkTYyOuf VonK++YmsQ/4vMIRYZhJDSydDeF732RGGJNwjs2RTQy265XVQAqZpt0+ifE/i9gE 4MkNrjMxAgMBAAECggEAQ98HLpxmKhySu/LWnRwSMN4PGsPxRxpKsf9LJAlQKDZ4 3Xr/2Gn9UbB0CeWf+XQWgaSSy6lrDKV0Pd+tRmcZT7DYeOkoIVOOUX1xsCMVk5cU WQvIT+raqtiq64bhV4qkpINGHOducshpsdrK41JpixC8KqPQCicy2YKEwvux6ysd nr2jHeTvO6tZOTiLYQZalyfmi+VfnAHda6a/YsOEedqJm4YzvWJLkM9ncaVs4dDy oUhQagipAf4KDbeRvdkrXCYEE462s47VM91Kn1ESg6J6rbHMeK1ZlJY577588H5d lGuLwpXApF881FXuzLLJg+MlgRMnIi9cGOcMSLuluwKBgQD5/yfXlSbruQcRx4C8 gLEag9A/t70EwhEr25d+mONZ7bXeU58C7bxaO3A0Hv5q46ErVnj9ee2RA/YWjf/h wmq89DxfBhuoXGcCw5LDJiA7TjHMCuTvXH8q3k4padA62PSIqpo0kLMN5WjNB/vr hbSMKz1QA94k/4gWQAbm7xUzAwKBgQDyEaGotM5YfuGaDllUL2YJDAK6oD3xI47M PypX2/X5PEVYEe9AYiMpkLqNFB3YnBHyJmt3RabquLaxUkteUfVnjfSxDY1MvGoP 8zFZ+M/4I+BMoI2LO4zM4nrz6JBFpx/A3plXGOy7SDjwCcfSKj7RzQUUYsbXh+dt YvzffWtQuwKBgQC3iP3FJflHAbYQ9Xir64caQj93J/ubLKbSngqgpLn04bGtoZKR 4dtwG0cK3N5Htwox+PAml4cz+caHVITRR5x5UI2p7aAMgJoXy2FJ6AmtwICKnkzo 9e1emYqkmMyJB5KvayB/CuSJhSzlqcDnbmfYqD4BKnXCj99nBmaK0Get5QKBgAxq /yIKdHNxvt0KU2bQL6nTJeixA7x1GIQ90UxEim/Iub303ZMt9aPSOt+14noUN492 jRjHR/LOmwCpuhgSmEZBsAXNLix7le1Pin6VFwYhwQXtTpWP7n8sNyaADbalBin8 wV0IeEx7PgCCX+/WHvbgT5xmHNE9tY+U/mfwpSq1AoGBANwjWQxpe1h/tGqMPYOF ycYYgszXU4d2/+Q9Xzd/rxHpRCPVkvuJ52oHUfAlZbNtO/IkgmpjTNfyM83tvCga sUNu+2N6tVva7TaXRgDYpMvnKAt5UZ9vu8aqZH2HuHfYnLwpuZWBuLuuCi/mkYzc E4zB8adqUTqkxZ+a14p+HbPh\n-----END PRIVATE KEY-----\n

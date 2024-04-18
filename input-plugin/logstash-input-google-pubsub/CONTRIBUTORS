@@ -1,0 +1,23 @@
+The following is a list of people who have contributed ideas, code, bug
+reports, or in general have helped Logstash along its way.
+
+Contributors:
+
+* DeDe Morton (dedemorton)
+* Eric Johnson (erjohnso)
+* Google LLC
+* Jake Landis (jakelandis)
+* Jakub Sacha (jakubsacha)
+* James Bloomer (jamesbloomer)
+* João Duarte (jsvd)
+* Jordan Sissel (jordansissel)
+* Joseph Lewis III (josephlewis42)
+* Pier-Hugues Pellerin (ph)
+* Scott Brenner (ScottBrenner)
+* Suyog Rao (suyograo)
+* Sven Widén (SvenW)
+
+Note: If you've sent us patches, bug reports, or otherwise contributed to
+Logstash, and you aren't on the list above and want to be, please let us know
+and we'll make sure you're here. Contributions from folks like you are what make
+open source awesome.
