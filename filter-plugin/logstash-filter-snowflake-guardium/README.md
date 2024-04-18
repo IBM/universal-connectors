@@ -1,8 +1,8 @@
 # Snowflake-Guardium Logstash filter plug-in
 
 ## Meet Snowflake
-- Tested version: 7.x
-- Environment: On-premises, IaaS
+- Tested version: 7.x, 8.x
+- Environment: IaaS
 - Supported Guardium versions:
     - Guardium Data Protection: 11.4 and later
     - Guardium Insights SaaS: 1.0
