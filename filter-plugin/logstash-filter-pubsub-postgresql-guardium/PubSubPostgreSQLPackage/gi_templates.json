@@ -1,6 +1,6 @@
 {
-  "plugin_name": "PostgreSQL Over Pub Sub",
-  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-postgresql-guardium/README.md",
+  "plugin_name": "Postgres over PubSub",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mariadb-guardium/README.md",
   "input_name": "Google_PubSub_input",
   "input_parameters": [
     {
@@ -16,14 +16,26 @@
         "type": "text",
         "label": "Subscription"
       },
-      "include_metadata": {
-        "type": "boolean",
-        "default": false,
-        "hidden": true
-      },
-      "json_key_file_name": {
+      "client_id": {
         "type": "text",
-        "label": "Json key file name (For example: file_name.json)"
+        "label": "Client ID"
+      },
+      "type": {
+        "type": "text",
+        "default": "pubsub",
+        "hidden": true
+      }
+    }
+  ],
+  "credentials": [
+    {
+      "private_key_id": {
+        "type": "password",
+        "label": "Private key id"
+      },
+      "private_key": {
+        "type": "password",
+        "label": "Private key"
       }
     }
   ],
@@ -31,13 +43,11 @@
   "filter_parameters": [],
   "auth_parameters": [
     {
-      "guc_filter_param_type": {
-        "param_type": "filter",
+      "guc_input_param_username": {
         "type": "text",
-        "label": "Type",
-        "description": "Type field categorizes and filters incoming data."
+        "label": "Username"
       }
     }
   ],
-  "supported_platforms": ["Google Cloud"]
+  "supported_platforms": ["google-cloud"]
 }
