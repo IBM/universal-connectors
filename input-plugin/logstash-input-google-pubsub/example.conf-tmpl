@@ -1,0 +1,38 @@
+# Copyright 2016 Google Inc.                                                    
+#                                                                               
+# Licensed under the Apache License, Version 2.0 (the "License");               
+# you may not use this file except in compliance with the License.              
+# You may obtain a copy of the License at                                       
+#                                                                               
+#      http://www.apache.org/licenses/LICENSE-2.0                               
+#                                                                               
+# Unless required by applicable law or agreed to in writing, software           
+# distributed under the License is distributed on an "AS IS" BASIS,             
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.      
+# See the License for the specific language governing permissions and           
+# limitations under the License.                                                
+
+input {
+    google_pubsub {
+        # Your GCP project id (name)
+        project_id => "graphite-demos"
+
+        # The topic name below is currently hard-coded in the plugin. You
+        # must first create this topic by hand and ensure you are exporting
+        # logging to this pubsub topic.
+        topic => "logstash-input-dev"
+
+        # The subscription name is customizeable. The plugin will attempt to
+        # create the subscription (but use the hard-coded topic name above).
+        subscription => "logstash-sub"
+
+        # If you are running logstash within GCE, it will use
+        # Application Default Credentials and use GCE's metadata
+        # service to fetch tokens.  However, if you are running logstash
+        # outside of GCE, you will need to specify the service account's
+        # JSON key file below.
+        #json_key_file => "/home/erjohnso/pkey.json"
+    }
+}
+
+output { stdout { codec => rubydebug } }
