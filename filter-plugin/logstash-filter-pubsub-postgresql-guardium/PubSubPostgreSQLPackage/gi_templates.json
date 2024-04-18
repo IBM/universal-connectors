@@ -30,7 +30,7 @@
   "credentials": [
     {
       "private_key_id": {
-        "type": "password",
+        "type": "text",
         "label": "Private key id"
       },
       "private_key": {
@@ -49,5 +49,5 @@
       }
     }
   ],
-  "supported_platforms": ["google-cloud"]
+  "supported_platforms": ["google cloud"]
 }
