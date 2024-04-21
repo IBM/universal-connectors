@@ -1,0 +1,53 @@
+{
+  "plugin_name": "Postgres over PubSub",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mariadb-guardium/README.md",
+  "input_name": "Google_PubSub_input",
+  "input_parameters": [
+    {
+      "project_id": {
+        "type": "text",
+        "label": "Project ID"
+      },
+      "topic": {
+        "type": "text",
+        "label": "Topic"
+      },
+      "subscription": {
+        "type": "text",
+        "label": "Subscription"
+      },
+      "client_id": {
+        "type": "text",
+        "label": "Client ID"
+      },
+      "type": {
+        "type": "text",
+        "default": "PostgreSQL_GCP",
+        "hidden": true
+      }
+    }
+  ],
+  "credentials": [
+    {
+      "private_key_id": {
+        "type": "text",
+        "label": "Private key id"
+      },
+      "private_key": {
+        "type": "password",
+        "label": "Private key"
+      }
+    }
+  ],
+  "filter_name": "Guardium_GCP_PostgreSQL_filter",
+  "filter_parameters": [],
+  "auth_parameters": [
+    {
+      "guc_input_param_username": {
+        "type": "text",
+        "label": "Username"
+      }
+    }
+  ],
+  "supported_platforms": ["google cloud"]
+}
