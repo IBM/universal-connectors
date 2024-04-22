@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name = 'logstash-input-google_pubsub'
+  s.name = 'logstash-input-google-pubsub'
   s.version         = '2.0.0'
   s.licenses = ['Apache-2.0']
   s.summary = "Consume events from a Google Cloud PubSub service"
