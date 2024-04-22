@@ -1,0 +1,22 @@
+{
+  "name": "S3_input",
+  "alias": "S3",
+  "type": "input",
+  "pipeline_type": null,
+  "plugin_version": "3.8.3",
+  "supportedDataSources": null,
+  "supportedInputPlugins": null,
+  "developer": "Elastic",
+  "license": "Apache2.0",
+  "supported_input_plugins": [],
+  "description": "Pull events from the Amazon S# and passes them to the filter stage",
+  "configuration_notes": "This plugin is based on logstash-input-s3-logs",
+  "documentation_path": "",
+  "pluginSHA256Checksum": -1,
+  "pluginOfflinePackagePath": null,
+  "pluginConfigTemplateParams": null,
+  "pluginConfigTemplateStrings": null,
+  "uploadDate": null,
+  "uploadUser": null,
+  "auto_scaling": false
+}

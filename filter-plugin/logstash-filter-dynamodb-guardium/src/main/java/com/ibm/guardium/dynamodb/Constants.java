@@ -1,5 +1,5 @@
 //
-// Copyright 2021-2023 IBM Inc. All rights reserved
+// Copyright 2021-2024 IBM Inc. All rights reserved
 // SPDX-License-Identifier: Apache2.0
 //
 package com.ibm.guardium.dynamodb;
