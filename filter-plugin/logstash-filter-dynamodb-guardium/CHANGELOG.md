@@ -11,6 +11,9 @@ Notable changes will be documented in this file.
 ### Added
 - Support of Simple Queue Service (SQS) input. This plugin can read and process the DynamoDB.
 
+## [1.1.1] - 2024-04-22
+### Added
+- Support of Simple Queue Service (SQS) input. This plugin can read and process the DynamoDB events when events are sent to SQS using EventBridge Rule.
 
 
 
