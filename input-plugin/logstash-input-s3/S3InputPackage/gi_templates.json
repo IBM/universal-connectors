@@ -1,0 +1,11 @@
+{
+  "plugin_name": "S3_input",
+  "help_link": "",
+  "input_name": "S3_input",
+  "input_parameters": [
+  ],
+  "filter_name": "",
+  "filter_parameters": [],
+  "auth_parameters": [
+  ]
+}
