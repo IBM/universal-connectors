@@ -1,6 +1,6 @@
 #
-# Copyright 2022-2023 IBM Inc. All rights reserved
-# SPDX-License-Identifier: Apache2.0
+# Copyright 2023-2024 IBM Inc. All rights reserved
+# SPDX-License-Identifier: Apache 2.0
 #
 
 import boto3
