@@ -33,5 +33,4 @@ filter-plugin/logstash-filter-pubsub-spanner-guardium/logstash-filter-spanner_db
 filter-plugin/logstash-filter-cosmos-azure-guardium/logstash-filter-azure_cosmos_guardium_filter
 filter-plugin/logstash-filter-intersystems-iris-guardium/logstash-filter-intersystems_iris_guardium_filter
 filter-plugin/logstash-filter-postgres-ibmcloud-guardium/logstash-filter-icd_postgresql_guardium_filter
-input-plugin/logstash-input-google-pubsub/logstash-input-google_pubsub
 input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input
