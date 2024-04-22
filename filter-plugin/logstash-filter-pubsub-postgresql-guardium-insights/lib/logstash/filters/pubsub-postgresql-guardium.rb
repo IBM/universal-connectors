@@ -26,7 +26,6 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
   def parsePostgresLog(event)
     begin
       message = event.get('textPayload').match(/(?<ts>(\d*-){2}(\d*)\s(\d*:){2}(\d*.\d*))(\s)UTC(\s)\[(?<session_id>\d*)\].*db=(?<db_name>\S*),user=(?<uname>\S*)\s(?<severity>[A-Z]*):(?<msg>.*)/)
-
       msg = message['msg']
       severity = message['severity']
       db_name = message['db_name']
@@ -42,7 +41,7 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
       aborted_connection = 'Aborted connection'
       wait_timeout_exceeded = 'The wait_timeout'
 
-      if %w[EMERGENCY ALERT CRITICAL ERROR].include?(severity)
+      if %w[EMERGENCY ALERT CRITICAL ERROR FATAL].include?(severity)
         exception_type = case msg
                          when /#{login_failed_substr}.*/
                            'LOGIN_FAILED'
@@ -56,7 +55,9 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
         event.set('[GuardRecord][exception][exceptionTypeId]', exception_type)
         event.set('[GuardRecord][exception][description]', msg)
         event.set('[GuardRecord][exception][sqlString]', '')
-        event.set('[GuardRecord][data][originalSqlCommand]', nil)
+        # GRD-68551: when "data":{"construct":null,"originalSqlCommand":null} the output plug-in must receive empty string
+        event.set('[GuardRecord][data][originalSqlCommand]', '')
+
       else
         event.set('[GuardRecord][exception]', nil)
         event.set('[GuardRecord][data][originalSqlCommand]', msg)
