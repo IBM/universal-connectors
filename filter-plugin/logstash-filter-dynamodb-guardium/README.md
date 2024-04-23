@@ -241,7 +241,7 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 
 • Dynamodb-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [logstash-filter-dynamodb_guardium_plugin_filter.zip](./logstash-filter-dynamodb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-dynamodb_guardium_plugin_filter.zip](./logstash-filter-dynamodb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
 
 
 ### Procedure
@@ -253,7 +253,7 @@ Universal Connector, make sure that it is enabled.
       select the [logstash-filter-dynamodb_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-dynamodb_guardium_plugin_filter.zip) plug-in. After it is uploaded, click **OK**.
     * If the audit logs are to be fetched from CloudTrail, select the
       1. [cloudtrail_codec_plugin.zip](./DynamodbOverCloudtrailPackage/DynamoDB/cloudtrail_codec_plugin.zip) plug-in. After it is uploaded, click **OK**. 
-       **Note:** This step is not necessary for Guardium Data Protection 12.0 and later. 
+       **Note:** This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later. 
       2. Select [logstash-filter-dynamodb_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-dynamodb_guardium_plugin_filter.zip) plug-in. After it is uploaded, click **OK**.
     * If the audit logs are to be fetched from SQS, select the [logstash-filter-dynamodb_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-dynamodb_guardium_plugin_filter.zip) plug-in. After it is uploaded, click **OK**.
 4. Click the Plus sign to open the Connector Configuration dialog box.
