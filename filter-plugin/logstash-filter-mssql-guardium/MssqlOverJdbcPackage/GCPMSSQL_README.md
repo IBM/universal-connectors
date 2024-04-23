@@ -84,7 +84,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • GCP MSSQL Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [mssql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [mssql-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-offline-plugins-7.5.2.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 • Download the [mssql-jdbc-7.4.1.jre8](./mssql-jdbc-7.4.1.jre8.jar) jar.
 
@@ -92,7 +92,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. Enable the universal connector if it is currently disabled.
-3. Click **Upload File** and select the offline [mssql-offline-plugins-7.5.2.zip](./mssql-offline-plugins-7.5.2.zip) plug-in. After it uploads, click **OK**.This is not necessary for Guardium Data Protection v12.0 and later.
+3. Click **Upload File** and select the offline [mssql-offline-plugins-7.5.2.zip](./mssql-offline-plugins-7.5.2.zip) plug-in. After it uploads, click **OK**.This is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 4. Click **Upload File** and select the [mssql-jdbc-7.4.1.jre8](https://github.ibm.com/prasona/universal-connectors/blob/master/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/mssql-jdbc-7.4.1.jre8.jar) jar. After it uploads, click **OK**.
 
 5. Click the Plus sign to open the Connector Configuration dialog box.
