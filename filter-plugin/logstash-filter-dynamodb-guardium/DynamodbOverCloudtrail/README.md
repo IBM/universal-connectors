@@ -127,14 +127,16 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 
 • Download the [cloudtrail_codec_plugin.zip](DynamodbOverCloudtrailPackage/DynamoDB/cloudtrail_codec_plugin.zip) plug-in, if the logs are to be pulled directly from CloudTrail.
 
-• Download the [logstash-filter-dynamodb_guardium_plugin_filter.zip plug-in.](../logstash-filter-dynamodb_guardium_plugin_filter.zip)
+• DynamodbOverCloudtrail-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-dynamodb_guardium_plugin_filter.zip plug-in.](../logstash-filter-dynamodb_guardium_plugin_filter.zip).
 
 ### Procedure
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. Enable the connector if it is already disabled, before proceeding to upload the UC.
 3. Click **Upload File**, 
 	* If the audit logs are to be fetched from CloudTrail, select the
-      1. [cloudtrail_codec_plugin.zip](./DynamodbOverCloudtrailPackage/DynamoDB/cloudtrail_codec_plugin.zip) plug-in. After it is uploaded, click **OK**. This is specifically for CloudTrail only.
+      1. [cloudtrail_codec_plugin.zip](./DynamodbOverCloudtrailPackage/DynamoDB/cloudtrail_codec_plugin.zip) plug-in. After it is uploaded, click **OK**. This is specifically for CloudTrail only. This is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 	* Select [logstash-filter-dynamodb_guardium_plugin_filter.zip](../logstash-filter-dynamodb_guardium_plugin_filter.zip) plug-in. After it is uploaded, click **OK**.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the **Connector name** field.
