@@ -99,7 +99,7 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 • MySql-Percona-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [mysql-percona-offline-plugin.zip](./MysqlPerconaOverFilebeatPackage/mysql-percona-offline-plugin.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [mysql-percona-offline-plugin.zip](./MysqlPerconaOverFilebeatPackage/mysql-percona-offline-plugin.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
 
 ### Procedure
 
