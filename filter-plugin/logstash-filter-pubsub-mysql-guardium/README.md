@@ -224,7 +224,7 @@ pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 
 ### Notes
 * For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
-* While upgrading from p535 or SP6505 to p540, upload [MySQL Pubsub upgraded plugin](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/logstash-filter-pubsub-mysql-guardium-7.16.3.zip), then upload [pubsub-1.2.2 offline package](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/logstash-input-google_pubsub-1.2.2.zip)
+* While upgrading from v11.5 p535 or SP6505 to p540, upload [MySQL Pubsub upgraded plugin](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/logstash-filter-pubsub-mysql-guardium-7.16.3.zip), then upload [pubsub-1.2.2 offline package](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/logstash-input-google_pubsub-1.2.2.zip)
 
 
 ### Procedure
