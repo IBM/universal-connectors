@@ -221,18 +221,16 @@ pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 **Note:** For security reasons, it is highly recommended that you configure `cloudsqlproxy_enabled` to true for all client applications other than Google Cloud Shell (`gcloud`). Otherwise, `Source Program` is populated with _Google Cloud Shell (gcloud)_.
 
 ## Installation
-### Before you begin 
-To install this plug-in, you need to download the relevant plugin based on the version of the Guardium.
-1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip)
-2. For the Guardium 12.x, download [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
+
+### Notes
+* For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+* While upgrading from p535 or SP6505 to p540, upload [MySQL Pubsub upgraded plugin](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/logstash-filter-pubsub-mysql-guardium-7.16.3.zip), then upload [pubsub-1.2.2 offline package](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/logstash-input-google_pubsub-1.2.2.zip)
 
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Ensure that the universal connector is enabled. 
-3. Click Upload File and select the relevant plugin based on the version of the Guardium and after it is uploads, click OK.
-    * For Guardium 11.x, download the [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip)
-    * For Guardium 12.x, download the [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
+3. Click Upload File and select the offline [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 4. Click Upload File and select the key.json file and click OK.
 5. Click the plus sign to open the Connector Configuration dialog box.
 6. In the Connector name field, enter a name. 
