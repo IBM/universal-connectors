@@ -148,14 +148,16 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 * You must have permission for the S-Tap Management role. The admin user includes this role by default
 * BigQuery-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note:** For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [Logstash_Offline_package_7.x](./guardium_logstash-offline-plugins-ps-bigQuery.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+**Notes:** 
+* For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [Logstash_Offline_package_7.x](./guardium_logstash-offline-plugins-ps-bigQuery.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+* While upgrading from p535 or SP6505 to p540, upload [bigQuery upgraded plugin](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/guardium_logstash-offline-plugins-ps-bigQuery.zip), then upload [pubsub-1.2.2 offline package](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/logstash-input-google_pubsub-1.2.2.zip)
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the universal connector if it is disabled.
 3. Click Upload File and select the relevant plugin based on the version of the Guardium. After it is uploaded, click ```OK```. 
-   * For the Guardium 11.x, download the [Logstash_Offline_package_7.x](./guardium_logstash-offline-plugins-ps-bigQuery.zip)
-   * For the Guardium 12.x, download the [Logstash_Offline_package_8.x](./logstash-filter-big_query_guardium_filter.zip)
+   * For the Guardium 11.x, prior to 11.0p490 and 11.0p540, download the [Logstash_Offline_package_7.x](./guardium_logstash-offline-plugins-ps-bigQuery.zip)
+   * For higher versions, this step is not needed
 4. Click ```Upload File``` and select the key.json file. After it is uploaded, click ```OK```.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
