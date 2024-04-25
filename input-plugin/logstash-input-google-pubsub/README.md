@@ -1,6 +1,6 @@
 ## google_pubsub input plug-in
 ### Meet Google Pubsub
-* Tested versions: 1.2.1
+* Tested versions: 1.2.1, 1.2.2
 * Developed by Elastic
 * Configuration instructions can be found in [Guardium Google Pub/Sub documentation](#installation).
 * Supported Guardium versions:
