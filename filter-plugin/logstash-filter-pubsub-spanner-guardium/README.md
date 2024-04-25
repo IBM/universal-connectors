@@ -122,14 +122,15 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
 * Spanner-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
+### Notes 
 * For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-spanner-guardium/SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
-While upgrading from p535 or SP6505 to p540, upload [bigQuery upgraded plugin](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip), then upload [pubsub-1.2.2 offline package](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/logstash-input-google_pubsub-1.2.2.zip)
+* While upgrading from p535 or SP6505 to p540, upload [bigQuery upgraded plugin](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip), then upload [pubsub-1.2.2 offline package](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/logstash-input-google_pubsub-1.2.2.zip)
 
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is already disabled, before uploading the universal connector.
-3. Click upload File and select the [guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-spanner-guardium/SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in. After it is uploaded, click OK.This is not necessary for Guardium Data Protection v12.0 and later. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+3. Click upload File and select the [guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-spanner-guardium/SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection 11.0p490, 11.0p540, v12.0 and later versions.
 4. Click Upload File and select the key.json file. After it is uploaded, click OK.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
