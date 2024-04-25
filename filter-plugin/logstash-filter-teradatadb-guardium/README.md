@@ -130,7 +130,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • Teradata-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-Note: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [logstash-filter-teradatadb_guardium_plugin_filter.zip](./TeradataOverJdbcPackage/logstash-filter-teradatadb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
+Note: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-teradatadb_guardium_plugin_filter.zip](./TeradataOverJdbcPackage/logstash-filter-teradatadb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
 
 • Download driver jar - Go to the URL https://downloads.teradata.com/download/connectivity/jdbc-driver and download the zip/tar for required version. After extracting the downloaded zip/tar, there will be a jar file.
 
@@ -140,7 +140,7 @@ Note: For Guardium Data Protection version 11.4 without appliance bundle 11.0p49
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First enable the Universal Guardium connector, if it is disabled already.
 3. Click ```Upload File``` and upload the jar/jars which you downloaded from the teradata website.
-4. Click ```Upload File``` and select the offline [logstash-filter-teradatadb_guardium_plugin_filter.zip](./TeradataOverJdbcPackage/logstash-filter-teradatadb_guardium_plugin_filter.zip) plug-in. After it is uploaded, click ```OK```. This step is not necessary for Guardium Data Protection v12.0 and later.
+4. Click ```Upload File``` and select the offline [logstash-filter-teradatadb_guardium_plugin_filter.zip](./TeradataOverJdbcPackage/logstash-filter-teradatadb_guardium_plugin_filter.zip) plug-in. After it is uploaded, click ```OK```. This is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 5. Click the Plus sign to open the ```Connector Configuration``` dialog box. 
 6. Type a name in the Connector name field.
 7. Update the input section to add the details from the [teradataJDBC.conf](./TeradataOverJdbcPackage/teradataJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide the details for database server name, username, and password that are required for connecting with JDBC.
