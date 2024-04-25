@@ -1,0 +1,50 @@
+#
+# Copyright 2023-2024 IBM Inc. All rights reserved
+# SPDX-License-Identifier: Apache 2.0
+#
+
+input{
+    sqs {
+       #Mandatory arguments:
+       #Insert the access key and secret
+	    access_key_id => "<Enter the access key id>"
+		secret_access_key => "<Enter the secret access key id>"
+        region => "<Enter aws region>" #Region that has the Queue, Default value: us-east-1
+        queue => "<Enter the sqs queue name>" #This parameter simply holds the Queue name and not the URL
+        codec => plain
+        type => "dynamodb"
+        #Insert the account id of the AWS account
+        add_field => {"account_id" => "<Enter aws account id>"}
+    }
+}
+
+filter {
+	if [type] == "dynamodb" {
+	    mutate { gsub => [ "message", "'", '"' ] }
+        mutate { gsub => [ "message", '\"', '"' ] }
+        mutate { gsub => [ "message", '"{', '{' ] }
+        mutate { gsub => [ "message", '}"', '}' ] }
+		json {
+			source => "message"
+			target => "parsed_json"
+		}
+		mutate {
+			add_field => {
+				"new_event_source" => "%{[parsed_json][message][eventSource]}"
+			}
+			replace => {
+			    "message" => "%{[parsed_json][message]}"
+			}
+		}
+		if [new_event_source] {
+			if[new_event_source] =~ "dynamodb.amazonaws.com" {
+				dynamodb_guardium_plugin_filter {}
+			}
+			else {
+				drop {}
+			}
+		}
+
+		mutate { remove_field => [ "parsed_json", "new_event_source", "message", "cloudwatch_logs", "@timestamp", "@version", "type", "host", "sequence" ] }
+	}
+}

@@ -11,7 +11,7 @@ This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the 
 
 ## Purpose:
 
-This plugin pulls events from an Amazon Web Services Simple Queue Service (SQS) queue.
+This plug-in pulls events from an Amazon Web Services Simple Queue Service (SQS) queue.
 
 SQS is a simple, scalable queue system that is part of the Amazon Web Services suite of tools.
 
@@ -22,63 +22,66 @@ SQS is a simple, scalable queue system that is part of the Amazon Web Services s
 3. Search for SQS and click on **Simple Queue Services**
 4. Click **Create Queue**.
 5. Select the type as **Standard**.
-6. Enter the name for the queue
-7. Keep the rest of the default settings
+6. Enter the name for the queue.
+7. Keep the rest of the default settings.
 
 
 ## Usage:
 
 ### a. Prerequisites:
 
-1. Have an AWS account
+1. Have an AWS account.
 
-2. Setup an SQS queue as mentioned above.
+2. Set up an SQS queue as mentioned previously.
 
 3. Create an identity that has access to consume messages from the queue.
 
 4. The "consumer" identity must have the following permissions on the queue:
 
-   sqs:ChangeMessageVisibility
+	sqs:ChangeMessageVisibility
+	
+	sqs:ChangeMessageVisibilityBatch
+	
+	sqs:DeleteMessage
+	
+	sqs:DeleteMessageBatch
+	
+	sqs:GetQueueAttributes
+	
+	sqs:GetQueueUrl
+	
+	sqs:ListQueues
+	
+	sqs:ReceiveMessage
 
-   sqs:ChangeMessageVisibilityBatch
+5. Create a user and apply the below IAM Policy  to the user.
 
-   sqs:DeleteMessage
+```
+	{
+      "Statement": [
+        {
+          "Action": [
+            "sqs:ChangeMessageVisibility",
+            "sqs:ChangeMessageVisibilityBatch",
+            "sqs:DeleteMessage",
+            "sqs:DeleteMessageBatch",
+            "sqs:GetQueueAttributes",
+            "sqs:GetQueueUrl",
+            "sqs:ListQueues",
+            "sqs:ReceiveMessage"
+          ],
+          "Effect": "Allow",
+          "Resource": [
+            "arn:aws:sqs:us-east-1:123456789012:Logstash"
+          ]
+        }
+      ]
+    }
+```
 
-   sqs:DeleteMessageBatch
-
-   sqs:GetQueueAttributes
-
-   sqs:GetQueueUrl
-
-   sqs:ListQueues
-
-   sqs:ReceiveMessage
-
-5. Create a user and apply the below IAM Policy  to the user
-
-   {
-   "Statement": [
-   {
-   "Action": [
-   "sqs:ChangeMessageVisibility",
-   "sqs:ChangeMessageVisibilityBatch",
-   "sqs:DeleteMessage",
-   "sqs:DeleteMessageBatch",
-   "sqs:GetQueueAttributes",
-   "sqs:GetQueueUrl",
-   "sqs:ListQueues",
-   "sqs:ReceiveMessage"
-   ],
-   "Effect": "Allow",
-   "Resource": [
-   "arn:aws:sqs:us-east-1:123456789012:Logstash"
-   ]
-   }
-   ]
-   }
 
 ### b. Parameters:
-
+	
 | Parameter | Input Type | Required | Default |
 |-----------|------------|----------|---------|
 | access_key_id | String  | No |  |
@@ -86,37 +89,42 @@ SQS is a simple, scalable queue system that is part of the Amazon Web Services s
 | polling_frequency | Number | No | 20 |
 | queue | String | Yes |  |
 | region | String | No |  |
+| role_arn | string | No |  |
+
 
 
 
 #### `access_key_id`
-The `access_key_id` setting allows to set the access key id for the user having access to the SQS. This plugin uses the AWS SDK and supports several ways to get credentials, which will be tried in this order:
+The `access_key_id` setting allows to set the access key ID for the user that has access to SQS. This plugin uses the AWS SDK and supports several ways to get credentials, which will be tried in this order:
 
-	1. Static configuration, using access_key_id and secret_access_key params in logstash plugin config
+	1. Static configuration, using access_key_id and secret_access_key params in logstash plugin config.
 	
-	2. External credentials file specified by aws_credentials_file
+	2. External credentials file specified by an aws_credentials_file.
 
-	3. Environment variables AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
+	3. Environment variables AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
 	
-	4. Environment variables AMAZON_ACCESS_KEY_ID and AMAZON_SECRET_ACCESS_KEY
+	4. Environment variables AMAZON_ACCESS_KEY_ID and AMAZON_SECRET_ACCESS_KEY.
 
-	5. IAM Instance Profile (available when running inside EC2)
+	5. IAM Instance Profile (available when running inside EC2).
 
 #### `secret_access_key`
-The `secret_access_key` setting allows to set The AWS Secret Access Key.
+The `secret_access_key` setting defines the AWS Secret Access Key.
 
 #### `polling_frequency`
-The `polling_frequency` setting allows specify the frequency after which the Queue is to be polled
+The `polling_frequency` setting defines the frequency for the queue to be polled.
 
 #### `queue`
-The `queue` setting allows to specify the Name of the SQS Queue name to pull messages from. Note that this is just the name of the queue, not the URL or ARN.
+The `queue` setting specifies the name of the SQS queue to pull messages from. Note that this is just the name of the queue, not the URL or ARN.
 
 #### `region`
-The `region` allows setting the region where the SQS is present.
+The `region` setting defines the region where the SQS is present.
+
+#### `role_arn`
+The role_arn setting allows you to specify which AWS IAM Role to assume, if any. This is used to generate temporary credentials, typically for cross-account access. To understand more about the settings to be followed while using this parameter, click [here]( ./SettingsForRoleArn.md )
 
 
-#### Logstash Default config params
-Other standard logstash parameters are available such as:
+#### Logstash Default configuration parameters
+Other standard logstash parameters are available, such as:
 * `add_field`
 * `type`
 * `tags`
@@ -135,7 +143,7 @@ Other standard logstash parameters are available such as:
 ### Authorizing outgoing traffic from AWS to Guardium
 
 #### Procedure
-1. Log in to the Guardium Collector's API.
+1. Log in to the Guardium collector's API.
 2. Issue these commands:
-   • grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
-   • grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
+		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
+		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com

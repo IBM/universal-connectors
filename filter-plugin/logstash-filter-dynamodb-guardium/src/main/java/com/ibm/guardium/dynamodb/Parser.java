@@ -1,5 +1,5 @@
 //
-// Copyright 2021-2023 IBM Inc. All rights reserved
+// Copyright 2021-2024 IBM Inc. All rights reserved
 // SPDX-License-Identifier: Apache2.0
 //
 package com.ibm.guardium.dynamodb;
@@ -168,7 +168,6 @@ public class Parser {
 		accessor.setServerType(Constants.SERVER_TYPE_STRING);
 
 		String dbUsers = Constants.NOT_AVAILABLE;
-		String clientHostName = Constants.UNKNOWN_STRING;
 
 		if(data.has(Constants.USER_IDENTITY) && data.get(Constants.USER_IDENTITY) != null && !(data.get(Constants.USER_IDENTITY).isJsonNull())) {
 			
@@ -196,12 +195,10 @@ public class Parser {
 				dbUsers = arnNumbers[1];
 			}
 
-			if(userIdentity.has(Constants.ACCOUNT_ID) && userIdentity.get(Constants.ACCOUNT_ID).getAsString() != null) 
-				clientHostName = userIdentity.get(Constants.ACCOUNT_ID).getAsString();
 		}
 		
 		accessor.setDbUser(dbUsers);
-		accessor.setClientHostName(clientHostName);
+		accessor.setClientHostName(Constants.NOT_AVAILABLE);
 
 		String eventSource = Constants.UNKNOWN_STRING;
 		

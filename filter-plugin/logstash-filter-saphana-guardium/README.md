@@ -247,7 +247,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * This plug-in is automatically available with Guardium Data Protection. versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note:** For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the following plug-in. (Do not unzip the offline-package file throughout the procedure).
+**Note:** For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the following plug-in. (Do not unzip the offline-package file throughout the procedure).
 * For CSVTEXTFILE-based auditing, refer to this [package](SaphanaOverFilebeatPackage) and download the [logstash-filter-saphana_guardium_plugin_filter.zip](SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).This step is not necessary for Guardium Data Protection v12.0 and later.
 * For CSTABLE based auditing, refer to this [package](SaphanaOverJdbcPackage) and download the [logstash-filter-saphana_guardium_plugin_filter.zip](SaphanaOverJdbcPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).This step is not necessary for Guardium Data Protection v12.0 and later.
 
@@ -256,7 +256,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First enable the Universal Guardium connector, if it is disabled already.
 3. For CSVTEXTFILE-based auditing, follow these steps:-
-    1. Click "Upload File" and select the [logstash-filter-saphana_guardium_plugin_filter.zip](SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK". This step is not necessary for Guardium Data Protection v12.0 and later.
+    1. Click "Upload File" and select the [logstash-filter-saphana_guardium_plugin_filter.zip](SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK". This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
     2. Click the Plus sign to open the Connector Configuration dialog box.
     3. Type a name in the Connector name field.
     4. Update the input section. Use the [saphanaFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/saphanaFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
