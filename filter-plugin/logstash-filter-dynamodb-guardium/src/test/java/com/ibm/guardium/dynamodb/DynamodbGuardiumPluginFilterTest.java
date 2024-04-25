@@ -1,5 +1,5 @@
 //
-// Copyright 2021-2023 IBM Inc. All rights reserved
+// Copyright 2021-2024 IBM Inc. All rights reserved
 // SPDX-License-Identifier: Apache2.0
 //
 package com.ibm.guardium.dynamodb;
@@ -45,6 +45,25 @@ public class DynamodbGuardiumPluginFilterTest {
 
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+        Assert.assertEquals(1, matchListener.getMatchCount());
+    }
+
+    @Test
+    public void testFieldGuardRecord_dynamodb1() {
+        final String mongodString2 = "[{\"awsRegion\":\"us-east-1\",\"requestParameters\":{\"select\":\"ALL_ATTRIBUTES\",\"consistentRead\":false,\"tableName\":\"Pratiksha\",\"limit\":50,\"returnConsumedCapacity\":\"TOTAL\"},\"eventID\":\"02763b6b-71c0-4a12-a525-2ec46a944eb1\",\"readOnly\":true,\"recipientAccountId\":\"123456789012\",\"eventCategory\":\"Data\",\"eventName\":\"Scan\",\"responseElements\":null,\"eventVersion\":\"1.08\",\"sourceIPAddress\":\"192.0.2.2\",\"resources\":[{\"type\":\"AWS::DynamoDB::Table\",\"accountId\":\"123456789012\",\"ARN\":\"arn:aws:dynamodb:us-east-1:123456789012:table/Pratiksha\"}],\"apiVersion\":\"2012-08-10\",\"tlsDetails\":{\"clientProvidedHostHeader\":\"dynamodb.us-east-1.amazonaws.com\",\"tlsVersion\":\"TLSv1.3\",\"cipherSuite\":\"TLS_AES_128_GCM_SHA256\"},\"eventSource\":\"dynamodb.amazonaws.com\",\"requestID\":\"1HGD3CI5SO9JPGFIOHPHO16167VV4KQNSO5AEMVJF66Q9ASUAAJG\",\"userAgent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36\",\"managementEvent\":false,\"eventTime\":\"2024-03-12T06:22:01Z\",\"eventType\":\"AwsApiCall\",\"userIdentity\":{\"type\":\"AssumedRole\",\"arn\":\"arn:aws:sts::123456789012:assumed-role/example-iam-role/user@example.com\",\"accessKeyId\":\"ASIAIOSFODNN7EXAMPLE\",\"sessionContext\":{\"attributes\":{\"mfaAuthenticated\":\"false\",\"creationDate\":\"2024-03-12T06:21:33Z\"},\"sessionIssuer\":{\"userName\":\"example-iam-role\",\"type\":\"Role\",\"arn\":\"arn:aws:iam::123456789012:role/example-iam-role\",\"accountId\":\"123456789012\",\"principalId\":\"AROAIOSFODNN7EXAMPLE\"}},\"accountId\":\"123456789012\",\"principalId\":\"AROAIOSFODNN7EXAMPLE:user@example.com\"},\"sessionCredentialFromConsole\":\"true\"},{\"awsRegion\":\"us-east-1\",\"requestParameters\":{\"key\":{\"name\":\"Dehradun\",\"id\":\"7\"},\"tableName\":\"Pratiksha\"},\"eventID\":\"61253d6e-76fd-4bf1-8d77-878e601480d8\",\"readOnly\":false,\"recipientAccountId\":\"123456789012\",\"eventCategory\":\"Data\",\"eventName\":\"DeleteItem\",\"responseElements\":null,\"eventVersion\":\"1.08\",\"sourceIPAddress\":\"192.0.2.2\",\"resources\":[{\"type\":\"AWS::DynamoDB::Table\",\"accountId\":\"123456789012\",\"ARN\":\"arn:aws:dynamodb:us-east-1:123456789012:table/Pratiksha\"}],\"apiVersion\":\"2012-08-10\",\"tlsDetails\":{\"clientProvidedHostHeader\":\"dynamodb.us-east-1.amazonaws.com\",\"tlsVersion\":\"TLSv1.3\",\"cipherSuite\":\"TLS_AES_128_GCM_SHA256\"},\"eventSource\":\"dynamodb.amazonaws.com\",\"requestID\":\"8Q6U0HL3AKG0GVL39I7JRHFBBVVV4KQNSO5AEMVJF66Q9ASUAAJG\",\"userAgent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36\",\"managementEvent\":false,\"eventTime\":\"2024-03-12T06:22:12Z\",\"eventType\":\"AwsApiCall\",\"userIdentity\":{\"type\":\"AssumedRole\",\"arn\":\"arn:aws:sts::123456789012:assumed-role/example-iam-role/user@example.com\",\"accessKeyId\":\"ASIAIOSFODNN7EXAMPLE\",\"sessionContext\":{\"attributes\":{\"mfaAuthenticated\":\"false\",\"creationDate\":\"2024-03-12T06:21:33Z\"},\"sessionIssuer\":{\"userName\":\"example-iam-role\",\"type\":\"Role\",\"arn\":\"arn:aws:iam::123456789012:role/example-iam-role\",\"accountId\":\"123456789012\",\"principalId\":\"AROAIOSFODNN7EXAMPLE\"}},\"accountId\":\"123456789012\",\"principalId\":\"AROAIOSFODNN7EXAMPLE:user@example.com\"},\"sessionCredentialFromConsole\":\"true\"}]";
+
+        // Configuration config = new ConfigurationImpl(Collections.singletonMap("source", sourceField));
+        Context context = new ContextImpl(null, null);
+        DynamodbGuardiumPluginFilter filter = new DynamodbGuardiumPluginFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        TestMatchListener matchListener = new TestMatchListener();
+
+        e.setField("message", mongodString2);
+        e.setField("account_id", "ABCD");
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(2, results.size());
         Assert.assertEquals(1, matchListener.getMatchCount());
     }
 }
