@@ -124,7 +124,7 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 
 ### Notes 
 * For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or later, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-spanner-guardium/SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
-* While upgrading from v11.5 p535 or SP6505 to p540, upload [bigQuery upgraded plugin](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip), then upload [pubsub-1.2.2 offline package](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/logstash-input-google_pubsub-1.2.2.zip)
+* While upgrading from v11.5 p535 or SP6505 to p540, upload [Spanner upgraded plugin](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip), then upload [pubsub-1.2.2 offline package](../../input-plugin/logstash-input-google-pubsub/pubsub-filter-packages-p540/logstash-input-google_pubsub-1.2.2.zip)
 
 
 ### Procedure
