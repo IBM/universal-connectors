@@ -111,7 +111,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 
 * Download the [logstash-filter-neptune_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-neptune_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
-* While upgrading from v11.5 p535 or SP6505 to p540, upload [Neptune update plugin](https://github.com/IBM/universal-connectors/releases/download/v1.5.4/logstash-filter-neptune_guardium_filter.zip)
+* While upgrading from v11.5 p535 or SP6505 to p540, upload [Neptune update plugin](https://github.com/IBM/universal-connectors/releases/download/v1.5.4/logstash-filter-neptune_guardium_filter.zip).
 
 
 
