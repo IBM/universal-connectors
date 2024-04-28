@@ -194,6 +194,9 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 * Download the [guardium_logstash-offline-plugin-azure-cosmos.zip](AzureCosmosOverAzureEventHub/guardium_logstash-offline-plugin-azure-cosmos.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 * Download the plug-in filter configuration file [azure_cosmos.conf](azure_cosmos.conf).
 
+### Note
+* While upgrading from v11.5 p535 or SP6505 to p540, upload [Azure Cosmos updated plugin](https://github.com/IBM/universal-connectors/releases/download/v1.5.4/logstash-filter-azure_cosmos_guardium_filter.zip).
+
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is disabled.
