@@ -216,9 +216,8 @@ sudo systemctl restart scylla-server
 1. The following important fields couldn't be mapped with Scylladb audit logs:
     * Source Program
     * Client Hostname
-2. Scylladb will not capture CQL error and syntax error audit logs.
-3. Authorization and Authentication failure error logs will be captured.
-4. Identical duplicate logs are coming on `Successful Login` and while executing `USE <keyspacename>`, `CREATE`, `ALTER`, `DROP` commands.
+2. Authorization and Authentication failure error logs will be captured but CQL error and syntax error audit logs will not be captured.
+3. Identical duplicate logs are coming on `Successful Login` and while executing `USE <keyspacename>`, `CREATE`, `ALTER`, `DROP` commands.
 
 ## 6. Configuring the scylladb filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the scylladb template.
