@@ -27,5 +27,5 @@ public interface Constants {
 	public static final String DEFAULT_IP = "0.0.0.0";
 	public static final String DEFAULT_IPV6 = "0000:0000:0000:0000:0000:FFFF:0000:0000";
 	public static final String EXCEPTION_TYPE_AUTHORIZATION_STRING = "SQL_ERROR";
-
+	public static final String NOT_AVAILABLE = "N.A.";
 }
