@@ -60,7 +60,7 @@ These settings can be used only when the Guardium Data Protection is hosted on A
 {
         "Effect": "Allow",
         "Principal": {
-            "AWS": "arn:aws:iam::<AWS Account>:role/<Role Name>/"
+            "AWS": "arn:aws:iam::<AWS Account>:role/<Role Name>"
         },
         "Action": "sts:AssumeRole"
 }
@@ -233,7 +233,7 @@ input{
 		queue              => "guc_input_param_queue"
 		region             => "guc_input_param_region"
 		#Insert the role_arn of the role that is associated with the Guardium EC2 instance.
-		role_arn           => "<ROLE_ARN_ON_GUARDIUM_EC2_INSTANCE>"   #e.g., "arn:aws:iam::111111:role/role_on_111111" 
+		role_arn           => "<ROLE_ARN_ON_RDS_EC2_INSTANCE>"   #e.g., "arn:aws:iam::222222:role/role_on_222222"
 		add_field          => { "account_id" => "guc_input_param_account_id" }
 		type               => "guc_input_param_type"
 		#Add the below parameter with default value logstash
