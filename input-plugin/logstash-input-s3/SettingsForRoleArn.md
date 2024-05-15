@@ -54,7 +54,7 @@ These settings can be used only when the Guardium Data Protection is hosted on A
 {
         "Effect": "Allow",
         "Principal": {
-            "AWS": "arn:aws:iam::<AWS Account>:role/<Role Name>/"
+            "AWS": "arn:aws:iam::<AWS Account>:role/<Role Name>"
         },
         "Action": "sts:AssumeRole"
 }
@@ -218,7 +218,7 @@ e.g.,
 input {
   s3 {
 	  #Insert the role_arn of the role that is associated with the Guardium EC2 instance.
-	  role_arn             => "<ROLE_ARN_ON_GUARDIUM_EC2_INSTANCE>"   #e.g., "arn:aws:iam::111111:role/role_on_111111" 
+	  role_arn             => "<ROLE_ARN_ON_RDS_EC2_INSTANCE>"   #e.g., "arn:aws:iam::222222:role/role_on_222222"
 	  region => "<Enter AWS region value>" #Region that has the DB, Default value: us-east-1
       bucket => "<Enter the S3 bucket name>" #This is Bucket cnfigured while creating CloudTrail
       interval => 5
