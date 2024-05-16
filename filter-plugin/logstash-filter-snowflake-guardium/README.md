@@ -98,7 +98,7 @@ you can turn it off. To do this, set the value to `false` for the following two 
 3. Snowflake-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection. versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 **Note:** For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-offline-plugins-7.12.1.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-7.12.1.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 5. The plugin is tested with Snowflake JDBC driver v3.13.30.
-   Download the jdbc driver `jar` file from the maven repository [here](https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.13.0/snowflake-jdbc-3.13.0.jar).
+   Download the jdbc driver `jar` file from the maven repository [here.](https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.13.30/snowflake-jdbc-3.13.30.jar)
 
 ### Procedure
 
