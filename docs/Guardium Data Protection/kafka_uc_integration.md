@@ -1,5 +1,3 @@
-
----
 # Universal Connector and Kafka Integration on Guardium - Configuration Guide
 
 Welcome to the configuration guide for integrating a Universal Connector (UC) with Kafka on Guardium. This guide provides step-by-step instructions to set up the necessary configurations and installations for seamless communication between Guardium and Kafka.
@@ -23,19 +21,28 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 ## 1. Set up UC Configurations on Guardium
 ### 1.1 Create a Kafka Cluster on Guardium (once per deployment)
 
-a. Connect to Guardium central manager machine via SSH.
+1. Log in to Guardium central manager by using your login credentials.
+2. Go to **Manage** > **Central Management** > **Kafka cluster management**.
+   Use the following information to complete various procsses
 
-b. Kafka cluster requires 3 managed units; run the following command to create a Kafka cluster:
+#### 1.1.1 Add new Kafka cluster 
 
-  ```bash
-    grdapi universal_connector_create_kafka_cluster hosts="<Managed_Unit_1_Host>,<Managed_Unit_2_Host>,<Managed_Unit_3_Host>"
-  ```
+1. Click **Add** icon to create a new Kafka cluster.
+2. In the **Name** field, enter unique cluster name.
+3. In the **Cluster member** grid, click add icon to create a member cluster.
+4. From the **Select units to add** list, select at least one or maximum three Kakfa nodes and click **OK**.
+5. Optionally, if you want to authenticate clients before connecting to the Kafka cluster, select enable **Client Authentication**.
+6. Select one or more Kafka nodes from the **Cluster member** grid to create a Kafka cluster.
+7. Use the Add icon before the cluster name to expand the cluster and view the individual node **Status** and **Details** in the grid.
+8. Use the Start, Stop and Restart options to start, stop and restart the individual clusters, respectively. 
 
-c. Verify the Kafka cluster creation by running:
+**Result**: Kafka cluster is created successfully. 
 
-  ```bash
-    grdapi universal_connector_get_kafka_cluster_status
-  ```
+#### 1.1.2 Downloading server CA 
+You need to download thje server (Kafka cluster) CA certificate to enure that syslog accepts the communication with kafka cluster. 
+1. In the **Kafka cluster management** page, select a cluster from the grid and click **Download server CA**.
+2. Copy the certificate to th database server machine and note the location.
+For more information, [Installing an appliance certificate to avoid a browser SSL certificate challenge](https://www.ibm.com/docs/en/guardium/12.x?topic=certificates-installing-appliance-certificate-avoid-browser-ssl-certificate-challenge)
 
 ### 1.2 Configure Universal Connector (UC) on Guardium
 
@@ -45,9 +52,7 @@ b. Click on the plus icon to add a new configuration.
 
 c. Select the connector template "EDB PostgreSQL using kafka (high volume)". 
 
-d. In the input section, substitute the designated placeholders with the appropriate values:
-
-- **topics:** Replace the `TOPIC_NAME_#` with your database server name (without domain).
+d. Set unique connector name ( without spaces and special characters )
 
 e. Click **Save**. Your UC is now configured and ready to receive new events from datasource.
 
@@ -202,8 +207,8 @@ module(load="omkafka")
 ruleset(name="kafkaRuleset") {
        action(type="omkafka"
            template="UcMessageFormat"
-           broker=["<MANAGED_UNIT_1>:9093", "<MANAGED_UNIT_2>:9093", "<MANAGED_UNIT_3>:9093"]
-           topic="<TOPIC_NAME>"
+           broker=["<KAFKA_NODE_1>:9093", "<KAFKA_NODE_2>:9093", "<KAFKA_NODE_3>:9093"]
+           topic="<ENTER_CONNECTOR_NAME_FROM_Setup > Tools and Views > Configure Universal Connector>"
            dynakey = "on"
            key = "UcSessionID"
            queue.filename="omkafkaq"
@@ -221,7 +226,8 @@ ruleset(name="kafkaRuleset") {
            errorFile="/var/log/rsyslog.err"
            confParam=[ "compression.codec=snappy",
                "socket.timeout.ms=1000",
-               "socket.keepalive.enable=true"]
+               "socket.keepalive.enable=true",
+               "ssl.ca.location=<Enter_CERTIFICATE_PATH_FROM_DOWLOADING_SERVER_CA_STEP_2>"] -update path as variable
            )
 }
 ```
@@ -347,27 +353,9 @@ Look for any error messages related to omkafka. If everything is set up correctl
 Please note that the exact steps might be different depending on your operating system and your version of rsyslog. For more accurate information, see the rsyslog documentation and the documentation specific to your distribution.
 
 ## Troubleshooting 
-- Verifying Kafka messages get to UC Kafka topic: run on Kafka managed unit:
-```bash
-/opt/kafka/bin/kafka-console-consumer.sh -topic <TOPIC_NAME> --property print.key=true -from-beginning --bootstrap-server <KAFKA_MANAGED_UNIT>:9093
-```
-- Traffic unseen because of timezone: 
-Run FULL SQL report on different time period, the traffic may appear with wrong timestamp. 
-
-```
-- Check Kafka cluster status on Guardium:
-run cli grdapi on managed unit:
-```bash
-grdapi universal_connector_get_kafka_cluster_status
-```
-run cli grdapi on central manager:
-```bash
-grdapi universal_connector_get_kafka_cluster_status debug=3 api_target_host="group:UC_KAFKA_CLUSTER"
-```
-Cluster creation may take few minutes.
+<TDB>
 
 ## 3. Limitations
-
 
 1. Client hostname is not captured by EDB PostgresSQL native audit on traffic of some db client tools, therefore can not be reported in Guardium.
 2. Source program is not captured by EDB PostgresSQL native audit on failed login attempt, therefore can not be reported in Guardium.
