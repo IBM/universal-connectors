@@ -5,64 +5,79 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 
 ## Table of Contents
 
-1. [Set up UC Configurations on Guardium](#1-Set-up-UC-Configurations-on-Guardium)
-    - 1.1 [Create a Kafka Cluster on Guardium (once per deployment)](#11-Create-a-Kafka-Cluster-on-Guardium-once-per-deployment)
-    - 1.2 [Configure Universal Connector (UC) on Guardium](#12-Configure-Universal-Connector-UC-on-Guardium)
+1. [Set up UC Configurations on Guardium](#Configuring-UC-on-Guardium-Data-Protection )
+    - 1.1 [Creating Kafka Cluster on Guardium (once per deployment)](#11-Creating-Kafka-Cluster-on-Guardium-once-per-deployment)
+   	- 1.1.1 [Creating new Kafka clusters ](#Creating-new-Kafka-clusters )
+   	- 1.1.2 [Downloading server (Kafka cluster) CA certificate](#Downloading-server-(Kafka-cluster)-CA-certificate)
+    - 1.2 [Configuring Universal Connector (UC) on Guardium](#12-Configuring-Universal-Connector-UC-on-Guardium)
 
-2. [Configure native audit and rsyslog on Datasource Server](#2-Configure-native-audit-and-rsyslog-on-Datasource-Server)
+2. [Configuring native audit and rsyslog on Datasource Server](#2-Configuring-native-audit-and-rsyslog-on-Datasource-Server)
     - 2.1 [Prerequisites: Install Rsyslog on the Database Server](#21-Prerequisites-install-rsyslog-on-the-database-server)
     - 2.2 [Prerequisites: Install Kafka Module for rsyslog on Database Server](#22-Prerequisites-Install-Kafka-Module-for-rsyslog-on-Database-Server)
-    - 2.3 [Enable logging functionality on the database](#23-Enable-logging-functionality-on-the-database)
-    - 2.4 [Configure rsyslog to send native audit data to Guardium via kafka](#24-Configure-rsyslog-to-send-native-audit-data-to-Guardium-via-kafka)
+    - 2.3 [Enabling logging on the database](#23-Enabling-logging-on-the-database)
+    - 2.4 [Configuring rsyslog to send native audit data to Guardium via kafka](#24-Configuring-rsyslog-to-send-native-audit-data-to-Guardium-via-kafka)
 
-3. [Known limitations](#3-Limitations)  
+3. [Troubleshooting](#3-Troubleshooting)
+4. [Known limitations](#4-Limitations)  
    
 ---
-## 1. Set up UC Configurations on Guardium
-### 1.1 Create a Kafka Cluster on Guardium (once per deployment)
+#Configuring UC on Guardium Data Protection 
+### 1.1 Creating a Kafka Cluster (once per deployment)
 
-1. Log in to Guardium central manager by using your login credentials.
-2. Go to **Manage** > **Central Management** > **Kafka cluster management**.
+1. Log in to **Guardium central manager** by using your login credentials.
+
+2. Go to **Manage** > **Central Management** > **Kafka cluster management** page.
    Use the following information to complete various procsses
 
-#### 1.1.1 Add new Kafka cluster 
+#### 1.1.1 Creating new Kafka clusters 
 
 1. Click **Add** icon to create a new Kafka cluster.
+
 2. In the **Name** field, enter unique cluster name.
+
 3. In the **Cluster member** grid, click add icon to create a member cluster.
+
 4. From the **Select units to add** list, select at least one or maximum three Kakfa nodes and click **OK**.
+
 5. Optionally, if you want to authenticate clients before connecting to the Kafka cluster, select enable **Client Authentication**.
+
 6. Select one or more Kafka nodes from the **Cluster member** grid to create a Kafka cluster.
-7. Use the Add icon before the cluster name to expand the cluster and view the individual node **Status** and **Details** in the grid.
-8. Use the Start, Stop and Restart options to start, stop and restart the individual clusters, respectively. 
+
+7. Use the **Add** icon before the Kafka cluster name to expand the cluster and view the individual node **Status** and **Details** in the grid.
+
+8. Use the **Start**, **Stop** and **Restart** options to start, stop and restart the individual clusters, respectively. 
 
 **Result**: Kafka cluster is created successfully. 
 
-#### 1.1.2 Downloading server CA 
-You need to download thje server (Kafka cluster) CA certificate to enure that syslog accepts the communication with kafka cluster. 
+#### 1.1.2 Downloading server (Kafka cluster) CA certificate
+You need to download the server (Kafka cluster) CA certificate to enure that syslog accepts the communication with Kafka cluster. 
+
 1. In the **Kafka cluster management** page, select a cluster from the grid and click **Download server CA**.
+
 2. Copy the certificate to th database server machine and note the location.
-For more information, [Installing an appliance certificate to avoid a browser SSL certificate challenge](https://www.ibm.com/docs/en/guardium/12.x?topic=certificates-installing-appliance-certificate-avoid-browser-ssl-certificate-challenge)
+For more information, see [Installing an appliance certificate to avoid a browser SSL certificate challenge](https://www.ibm.com/docs/en/guardium/12.x?topic=certificates-installing-appliance-certificate-avoid-browser-ssl-certificate-challenge)
 
-### 1.2 Configure Universal Connector (UC) on Guardium
+### 1.2 Configuring Universal Connector (UC) on Guardium
 
-a. Browse to the universal connector configuration page (Setup > Tools and Views > Configure Universal Connector).
+1. One the Guadium machine, go to **Setup** > **Tools and Views** > **Configure Universal Connector** page.
 
-b. Click on the plus icon to add a new configuration.
+2. Click **Add** icon to add a new configuration.
 
-c. Select the connector template "EDB PostgreSQL using kafka (high volume)". 
+3. Select the "EDB PostgreSQL using kafka (high volume)" connector template. 
 
-d. Set unique connector name ( without spaces and special characters )
+4. In the **Connector Name** field, enter a unique connector name. 
+   Ensure the name does not contain spaces and special characters.
 
-e. Click **Save**. Your UC is now configured and ready to receive new events from datasource.
+5. Click **Save**. 
+   Your UC is now configured and ready to receive new events from datasource.
 
 ```bash
-To ensure data failover and loadbalancing - define same configuration on another Managed Unit.
+To ensure data failover and loadbalancing, define same configuration on another Managed Unit.
 ```
 
-## 2. Configure native audit and rsyslog on Datasource Server
+## 2. Configuring native audit and rsyslog on Datasource Server
 ### 2.1 Prerequisites: Install rsyslog on the database server
-Check if rsyslog is installed:
+Verify if rsyslog is installed:
 
 ```bash
 service rsyslog status
@@ -129,8 +144,8 @@ or
 sudo apt-get install rsyslog-kafka
 ```
 
-### 2.3 Enable logging functionality on the database
-### 2.3.1 Enable native audit on Postgres
+### 2.3 Enabling logging on the database
+### 2.3.1 Enabling native audit on Postgres
 
 PostgreSQL can be configured to send logs to rsyslog. Open the PostgreSQL configuration file and make the following changes: 
 
@@ -158,9 +173,9 @@ log_statement = 'all'			         # none, ddl, mod, all
 log_timezone = 'America/New_York'                # this timezone should be the same timezone as dbserver machine timezone   
 ```
 (usually located at `/etc/postgresql/{version}/main/postgresql.conf` on Linux systems, but can be different)
-* Make sure that timezone specified in this file is the actual timezone of db server machine
+* Ensure that timezone specified in this file is the actual timezone of db server machine
 Restart PostgreSQL to apply the configuration modifications.
-For example the enterprise db postgres service: 
+For example, the enterprise db postgres service: 
 
 ```bash
 sudo service edb-as-15 restart
@@ -169,10 +184,10 @@ sudo service edb-as-15 status
 
 - The exact file paths and configurations may vary depending on your operating system and PostgreSQL version.
 
-### 2.3.2 Enable audit on Yugabyte
+### 2.3.2 Enabling audit on Yugabyte
 To configure auditing in Yugabyte DB, follow the instructions in [here](../filter-plugin/logstash-filter-yugabyte-guardium/README.md#2-enabling-the-audit-logs)
 
-### 2.4 Configure rsyslog to send native audit data to Guardium via kafka 
+### 2.4 Configuring rsyslog to send native audit data to Guardium via kafka 
 
 a. Edit your rsyslog configuration file (typically located at `/etc/rsyslog.conf` or `/etc/rsyslog.d/50-default.conf`).
 Add the following section:
@@ -187,7 +202,7 @@ Ensure that you substitute the designated placeholders with the appropriate valu
 
 - **Action:** Replace the brokers (`<MANAGED_UNIT_#>`) with the hosts of the managed units in the Kafka cluster established earlier. Note that the port remains constant at `9093`, as the Kafka cluster is configured to listen on this port.
 
-Syslog configuration for PostgreSQL:
+**Syslog configuration for PostgreSQL**:
 ```conf
 module(load="imfile")
 # Select input configuration by datasource: 
@@ -208,7 +223,7 @@ ruleset(name="kafkaRuleset") {
        action(type="omkafka"
            template="UcMessageFormat"
            broker=["<KAFKA_NODE_1>:9093", "<KAFKA_NODE_2>:9093", "<KAFKA_NODE_3>:9093"]
-           topic="<ENTER_CONNECTOR_NAME_FROM_Setup > Tools and Views > Configure Universal Connector>"
+           topic="<_ENTER_CONNECTOR_NAME_FROM_TOPIC_1.2_STEP_4_>"
            dynakey = "on"
            key = "UcSessionID"
            queue.filename="omkafkaq"
@@ -227,13 +242,13 @@ ruleset(name="kafkaRuleset") {
            confParam=[ "compression.codec=snappy",
                "socket.timeout.ms=1000",
                "socket.keepalive.enable=true",
-               "ssl.ca.location=<Enter_CERTIFICATE_PATH_FROM_DOWLOADING_SERVER_CA_STEP_2>"] -update path as variable
+               "ssl.ca.location=<_ENTER_CERTIFICATE_PATH_FROM_TOPIC_1.1.2_STEP_2_>"]
            )
 }
 ```
 
 
-Syslog configuration for YugabyteDB:
+**Syslog configuration for YugabyteDB**:
 ```conf
 module(load="imfile")
 
@@ -270,8 +285,8 @@ module(load="omkafka")
 ruleset(name="kafkaRuleset_postgresql") {
     action(type="omkafka"
         template="UcMessageFormat"
-        broker=["<MANAGED_UNIT_1>:9093", "<MANAGED_UNIT_2>:9093", "<MANAGED_UNIT_3>:9093"]
-        topic="<TOPIC_NAME>"
+        broker=["<KAFKA_NODE_1>:9093", "<KAFKA_NODE_2>:9093", "<KAFKA_NODE_3>:9093"]
+        topic="<ENTER_CONNECTOR_NAME_FROM_TOPIC_1.2>"
         dynakey="on"
         key="UcSessionID_PostgreSQL"
         queue.filename="omkafkaq_postgres"
@@ -291,6 +306,7 @@ ruleset(name="kafkaRuleset_postgresql") {
             "compression.codec=snappy",
             "socket.timeout.ms=1000",
             "socket.keepalive.enable=true"
+            "ssl.ca.location=<Enter_CERTIFICATE_PATH_FROM_DOWLOADING_SERVER_CA_STEP_2>"]
         ]
     )
 }
@@ -348,15 +364,17 @@ Verify by running:
 sudo tail -f /var/log/syslog
 ```
 
-Look for any error messages related to omkafka. If everything is set up correctly, rsyslog should be sending log messages to your Kafka broker.
+Search for any error messages related to omkafka. If everything is set up correctly, rsyslog should send the log messages to your Kafka broker.
 
-Please note that the exact steps might be different depending on your operating system and your version of rsyslog. For more accurate information, see the rsyslog documentation and the documentation specific to your distribution.
+**Important Note** The steps may vary depending on your operating system and rsyslog version. For more accurate information, see the rsyslog documentation and the documentation specific to your distribution.
 
-## Troubleshooting 
-<TDB>
+## 3. Troubleshooting 
+<TBD>
 
-## 3. Limitations
+## 4. Limitations
 
 1. Client hostname is not captured by EDB PostgresSQL native audit on traffic of some db client tools, therefore can not be reported in Guardium.
+
 2. Source program is not captured by EDB PostgresSQL native audit on failed login attempt, therefore can not be reported in Guardium.
+
 3. Operating system user is not captured by EDB PostgresSQL native audit, therefore can not be reported in Guardium.
