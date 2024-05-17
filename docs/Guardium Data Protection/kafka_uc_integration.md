@@ -27,7 +27,8 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 1. Log in to **Guardium central manager** by using your login credentials.
 
 2. Go to **Manage** > **Central Management** > **Kafka cluster management** page.
-   Use the following information to complete various procsses
+
+   Use the following information to complete various tasks. 
 
 #### 1.1.1 Creating new Kafka clusters 
 
@@ -39,13 +40,15 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 
 4. From the **Select units to add** list, select at least one or maximum three Kakfa nodes and click **OK**.
 
-5. Optionally, if you want to authenticate clients before connecting to the Kafka cluster, select enable **Client Authentication**.
+5. Optionally, if you want to authenticate usres before connecting to the Kafka cluster, select enable **Client Authentication**.
 
-6. Select one or more Kafka nodes from the **Cluster member** grid to create a Kafka cluster.
+   Users need to upload valid client certificates to authenticate themselves to the Kafka cluster. 
 
-7. Use the **Add** icon before the Kafka cluster name to expand the cluster and view the individual node **Status** and **Details** in the grid.
+7. Select one or more Kafka nodes from the **Cluster member** grid to create a Kafka cluster.
 
-8. Use the **Start**, **Stop** and **Restart** options to start, stop and restart the individual clusters, respectively. 
+8. Use the **Add** icon before the Kafka cluster name to expand the cluster and view the individual node **Status** and **Details** in the grid.
+
+9. Use the **Start**, **Stop** and **Restart** options to start, stop and restart the individual clusters, respectively. 
 
 **Result**: Kafka cluster is created successfully. 
 
