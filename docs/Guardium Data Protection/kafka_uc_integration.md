@@ -74,9 +74,8 @@ For more information, see [Installing an appliance certificate to avoid a browse
 5. Click **Save**. 
    Your UC is now configured and ready to receive new events from datasource.
 
-```bash
-To ensure data failover and loadbalancing, define same configuration on another Managed Unit.
-```
+**Note**: To ensure data failover and loadbalancing, define same configuration on another Kafka node .
+
 
 ## 2. Configuring native audit and rsyslog on Datasource Server
 ### 2.1 Prerequisites: Install rsyslog on the database server
