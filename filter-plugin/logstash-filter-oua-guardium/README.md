@@ -13,8 +13,11 @@
 1. Unified auditing must be enabled in an Oracle database that will be monitored by this method
 2. Download the Basic Instant client package from Oracle.
    **Note:** : In this release,only specific instance clients will be supported from starting v21.1.0.0.0 Download [here](https://download.oracle.com/otn_software/linux/instantclient/211000/oracle-instantclient-basic-21.1.0.0.0-1.x86_64.rpm)
-3. Download the OUA universal connector plug-in  `guardium-oua-uc.zip` from [here](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-oua-guardium/OracleUnifiedAuditPackage/OracleUnifiedAudit/guardium-oua-uc.zip). (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+3. Oracle Unified Audit Universal Connector is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [OUA](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-oua-guardium/OracleUnifiedAuditPackage/OracleUnifiedAudit/guardium-oua-uc.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+
 4. A designated user for OUA UC should be created for Oracle database access. An existing user with sysdba privileges can also be used
+
 5. You must create a secret containing your OUA universal connector password.
    - Example: `grdapi universal_connector_keystore_add key=OUA_USER_PASS password=<PASSWORD>` where `<PASSWORD>` is the OUA universal connector user’s password for the database. `OUA_USER_PASS` will be used in the plug-in configuration as a variable for the password secret.
 

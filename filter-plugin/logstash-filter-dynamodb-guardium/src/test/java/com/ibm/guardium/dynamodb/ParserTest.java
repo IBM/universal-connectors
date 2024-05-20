@@ -1,12 +1,11 @@
 //
-// Copyright 2021-2023 IBM Inc. All rights reserved
+// Copyright 2021-2024 IBM Inc. All rights reserved
 // SPDX-License-Identifier: Apache2.0
 //
 package com.ibm.guardium.dynamodb;
 
 import java.text.ParseException;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ibm.guardium.universalconnector.commons.structures.*;

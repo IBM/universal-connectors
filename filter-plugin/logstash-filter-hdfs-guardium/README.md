@@ -78,6 +78,9 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 3. To learn more about Filebeat processors, click [here](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html#using-processors).
 
+#### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
+
+
 ## 4. Configuring the HDFS filters in Guardium Data Protection (GDP)
 
 The Guardium universal connector is the Guardium entry point for native audit logs.
@@ -93,7 +96,9 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
-• Download the [guardium-hdfs-uc.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-hdfs_guardium_filter.zip)(Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+• HDFS Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [guardium-hdfs-uc.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-hdfs_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
 
 ### Procedure
 
@@ -116,7 +121,7 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 ## Configuring the HDFS filters in Guardium Insights
 
-To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/universal-connectors/blob/main/docs/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Insights, follow [this guide.](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 In the input configuration section, refer to the Filebeat section.
 
