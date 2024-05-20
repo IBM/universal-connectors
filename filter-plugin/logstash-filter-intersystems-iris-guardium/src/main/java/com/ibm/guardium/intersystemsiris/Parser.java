@@ -51,9 +51,10 @@ public class Parser {
 			if (match.find()) {
 				record.setDbName(useDatabase(data));
 			} else {
-				record.setDbName(data.has(Constants.DB_NAME) && !data.get(Constants.DB_NAME).getAsString().isEmpty()
-						? data.get(Constants.DB_NAME).getAsString()
-						: Constants.UNKNOWN_STRING);
+				record.setDbName(data.has(Constants.DB_NAME) && !data.get(Constants.DB_NAME).isJsonNull()
+						&& !data.get(Constants.DB_NAME).getAsString().isEmpty()
+								? data.get(Constants.DB_NAME).getAsString()
+								: Constants.UNKNOWN_STRING);
 			}
 			record.setSessionLocator(parseSessionLocator(data));
 			record.setAccessor(parseAccessor(data));

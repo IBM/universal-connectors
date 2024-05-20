@@ -43,6 +43,32 @@ Other standard logstash parameters are available such as:
 		}
 	}
 
+### Configure Filebeat connection with SSL on GDP
+1. Generate Certificate Authority (CA)
+	1. On the Collector, run the following API to get the Certificate Authority content:
+
+	    ```bash
+        grdapi generate_ssl_key_universal_connector
+        ```
+
+	2. This API will print the content of the public Certificate Authority. Copy this certificate authority to your database source and save it as a `ca.pem` file.
+
+2. Configure the Filebeat logstash input with the following:
+```txt
+input {
+  beats { 
+	port => 5045 
+	# For SSL over Filebeat, uncomment the following lines after generating an SSL key and a certificate authority (CA) using GuardAPI (see documentation), copy the public certificate authority (CA) to your data source and adjust Filebeat configuration:
+	ssl => true
+	ssl_certificate => "${SSL_DIR}/cert.pem"
+	ssl_key => "${SSL_DIR}/key.pem"
+	type => "<datasource-type>" 
+	}
+}
+```
+Set the *datasource-type* value according to the specific filter plug-in configuration.
+
+For detailed instructions on how to configure Filebeat connection on GI, follow the instructions [here](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/SaaS_1.0/UC_Configuration_GI.md#filebeat-input-plug-in-configuration).
 
 ## Configuring Filebeat to push logs to Guardium
 
@@ -102,4 +128,20 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 		• You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
 
-3. To learn how to start FileBeat, see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
+3. Filebeat configuration for sending data with SSL
+
+
+   Copy the location of the downloaded certificate authority and enter it as a pem file:
+```txt
+  # List of root certificates for HTTPS server verifications
+  ssl.certificate_authorities: ["<PATH TO>/ca.pem.pem"]
+ ```
+
+After making changes to the filebeat configuration, restart the filebeat daemon to apply the changes:
+Run:
+
+```bash
+sudo service filebeat restart
+```
+
+4. To learn how to start FileBeat, see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
