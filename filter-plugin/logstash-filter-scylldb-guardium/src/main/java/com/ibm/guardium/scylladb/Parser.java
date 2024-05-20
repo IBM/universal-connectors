@@ -197,9 +197,8 @@ public class Parser {
 				.replaceAll("  ", "").equals("AUTH")) {
 			data.setOriginalSqlCommand("LOGIN");
 		} else if (event.getField(Constants.SQL_QUERY) != null) {
-			data.setOriginalSqlCommand(event.getField(Constants.SQL_QUERY).toString()
-					.replaceAll("(\\\\t)|(\\\\r)|(\\\\n)|(\\\\)|(\\\")", "").replaceAll("(\\s)?#012", " ")
-					.replaceAll("\\s+", " "));
+			data.setOriginalSqlCommand(event.getField(Constants.SQL_QUERY).toString().replaceAll("(\\\")", "")
+					.replaceAll("((\\s)?#012)|((\\s)?#015#012)", "\\\n").replaceAll("(\\\\t)|(\\\\r)|(\\\\)|(\\\")", ""));
 		} else {
 			data.setOriginalSqlCommand(Constants.NOT_AVAILABLE);
 		}
@@ -256,7 +255,7 @@ public class Parser {
 				&& event.getField(Constants.CATEGORY).toString().replaceAll("(\\\\t)|(\\\\r)|(\\\\n)|(\\\\)|(\\\")", "")
 						.replaceAll("(\\s)?#012", " ").replaceAll("\\s+", " ").equals("AUTH")) {
 			exception.setExceptionTypeId(Constants.LOGIN_FAILED);
-			exception.setDescription("Error Occurred");
+			exception.setDescription("Authentication failure for user " + getDbUser(event));
 			exception.setSqlString(Constants.UNKNOWN_STRING);
 		} else {
 			exception.setExceptionTypeId(Constants.EXCEPTION_TYPE_SQL_ERROR_STRING);
@@ -269,3 +268,4 @@ public class Parser {
 	}
 
 }
+

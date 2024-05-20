@@ -5,80 +5,56 @@
 * Environment: On-premise
 * Supported inputs: Syslog (push)
 * Supported Guardium versions:
-  * Guardium Data Protection: 12.1 and later
+  * Guardium 11.4 with patch p490 and above having sniffer patch p4076
+  * Guardium 11.5 with patch p540 and above having sniffer patch p4076 
+  * Guardium 12.0 with patch p10 and above having sniffer patch p4001
 
 This [Logstash](https://github.com/elastic/logstash) filter plug-in for IBM Security Guardium the universal connector parses events and messages from the IBM Cloud PostgresSQL audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains SQL commands are not parsed by this plug-in but rather forwarded to Guardium to do the SQL parsing.
 
 The plug-in is free and open-source (Apache 2.0). You can use it as a starting point to develop additional filter plug-ins for the Guardium universal connector.
 
-## 1. ScyllaDB Enterprise Environment Setup and Installation
+## 1. ScyllaDB Enterprise Installation
 ScyllaDb Enterprise Support multiple Linux Distributed system i.e. Ubuntu, Debian, CentOS, RHEL.
 
-`Note`:
-* The recommended OS for ScyllaDB Enterprise is Ubuntu 22.04.
-* The recommended instance types are i3, i3en, and i4i.
-
 ### Procedure:
-#### Creating a Ubuntu 22.04 platform for ScyllaDB Enterprise:
-1. Log in to AWS account, search for EC2 and then go to instances(running).
-2. Click Launch Instances button at top right corner.
-3. Give the name for the instance.
-4. Choose Ubuntu 22.04.
-5. Choose instance type. (`Example- i4i.large`).
-6. Click on `Create new key pair` -- choose .pem radio button.
-7. Provide keypair name and click on `Create key pair` (.pem).
-8. Leave rest of the setting as it is.
-9. Click on Launch instance.
-
-#### Adding Port in Inbound Rule of EC2 Instance :
-1. Once your instance is ready(`2/2 checks passed`), then open your created Instance
-2. Scroll down and go to Security section and there in inbound rule section click on any one of security groups option.
-3. It will go to the Security groups section of the selected group then click on `Security group ID`.
-4. Security group id will open, then click on `Edit inbound rule`.
-5. Click on `Add rule` button and then add`9042` port and select `0.0.0.0/0` in source column.
-6. Click on `Save rules`.
-
-### Downloading the ScyllaDB Enterprise Edition:
-1. First connect to your EC2 instance by using `Connect` option mention inside your instance. 
-2. Install a repo file and add the ScyllaDB APT repository to your system by using below commands.
+#### Downloading the ScyllaDB Enterprise Edition for RHEL:
+1. Install a repo file and add the ScyllaDB RPM repo to your system.
 ```
-sudo gpg --homedir /tmp --no-default-keyring --keyring /etc/apt/keyrings/scylladb.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys d0a112e067426ab2
+sudo yum install wget
 ```
+```
+subscription-manager repos --enable codeready-builder-for-rhel-8-$(arch)-rpms
+```
+```
+dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+```
+```
+sudo yum install epel-release
+```
+2. Install stable release 2023.1
+repository.
 ``` 
-sudo curl -L --output /etc/apt/sources.list.d/scylla.list http://downloads.scylladb.com/deb/ubuntu/scylla-2023.1.list
+sudo curl -L --output /etc/yum.repos.d/scylla.repo http://downloads.scylladb.com/rpm/centos/scylla-2023.1.repo
 ```
 
-### Environment Setup:
+#### Environment Setup:
 1. Install packages.
 ```
-sudo apt-get update
+sudo yum install scylla-enterprise
 ```
+2. Install ScyllaDB Enterprise official image.  
 ```
-sudo apt-get install -y scylla-enterprise
+sudo yum install scylla-enterprise-machine-image
 ```
-2. Run below commands to set Java to 1.8 release.
- ```
-sudo apt-get update
-```
-```
-sudo apt-get install -y openjdk-8-jre-headless
-```
-```
-sudo update-java-alternatives --jre-headless -s java-1.8.0-openjdk-amd64
-```
-3. Install ScyllaDB Enterprise official image.  
-```
-sudo apt-get install -y scylla-enterprise-machine-image
-```
-4. Set ScyllaDb to Developer mode.
+3. Set ScyllaDb to Developer mode.
 ```
 sudo scylla_dev_mode_setup --developer-mode 1
 ```
-5. Run the scylla_setup script to tune the system settings.
+4. Run the scylla_setup script to tune the system settings.
 ```
 sudo scylla_setup
 ```
-6. `scylla_setup` command invokes a set of scripts to configure several operating system settings, answer `No` for below mentioned options. For remaining options select `Yes`.
+5. `scylla_setup` command invokes a set of scripts to configure several operating system settings, answer `No` for below mentioned options. For remaining options select `Yes`.
    * Enable XFS online discard?
    The default (Yes) asks the disk to recycle SSD cells as soon as files are deleted. 4.18+ kernel recommended for this option.
       * [YES/no]`no`
@@ -95,15 +71,15 @@ sudo scylla_setup
    Answer yes to setup rsyslog to a remote server, Answer no to do nothing.
       * [Yes/No]`no`
       
-7. Run ScyllaDB as a service.
+6. Run ScyllaDB as a service.
 ```
 sudo systemctl start scylla-server
 ```
-8. Check Status of Scylla server and make sure it is active.
+7. Check Status of Scylla server and make sure it is active.
 ```
 systemctl status scylla-server.service
 ```
-9. Run nodetool to check status of node.
+8. Run nodetool to check status of node.
 ```
 nodetool status
 ```
@@ -218,6 +194,7 @@ sudo systemctl restart scylla-server
     * Client Hostname
 2. Authorization and Authentication failure error logs will be captured but CQL error and syntax error audit logs will not be captured.
 3. Identical duplicate logs are coming on `Successful Login` and while executing `USE <keyspacename>`, `CREATE`, `ALTER`, `DROP` commands.
+4. ScyllaDB does not support Load balancing.
 
 ## 6. Configuring the scylladb filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the scylladb template.
