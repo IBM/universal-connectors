@@ -1,8 +1,8 @@
 # Snowflake-Guardium Logstash filter plug-in
 
 ## Meet Snowflake
-- Tested version: 7.x
-- Environment: On-premises, IaaS
+- Tested version: 7.x, 8.x
+- Environment: IaaS
 - Supported Guardium versions:
     - Guardium Data Protection: 11.4 and later
     - Guardium Insights SaaS: 1.0
@@ -95,11 +95,10 @@ you can turn it off. To do this, set the value to `false` for the following two 
 ### Before you begin
 1. Configure the policies that you require. See [policies](/../../#policies) for more information.
 2. You must have permission for the S-Tap Management role. The admin user includes this role by default.
-3. Download the relevant plugin based on the version of the Guardium.
-    1. For the Guardium 11.x, download [logstash-offline-plugins-7.12.1.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-7.12.1.zip).
-    2. For the Guardium 12.x, download [logstash-offline-plugins-8.3.3.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-8.3.3.zip)
-4. The plugin is tested with Snowflake JDBC driver v3.13.30.
-   Download the jdbc driver `jar` file from the maven repository [here](https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/).
+3. Snowflake-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection. versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+**Note:** For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-offline-plugins-7.12.1.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-7.12.1.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+5. The plugin is tested with Snowflake JDBC driver v3.13.30.
+   Download the jdbc driver `jar` file from the maven repository [here.](https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.13.30/snowflake-jdbc-3.13.30.jar)
 
 ### Procedure
 
@@ -107,7 +106,7 @@ you can turn it off. To do this, set the value to `false` for the following two 
 2. Enable the universal connector if it is disabled.
 3. Click **Upload File** and select the downloaded .jar jdbc driver file. After it is uploaded, click **OK**.
 4. Click **Upload File** and select the offline [logstash-offline-plugins-7.12.1.zip](SnowflakeOverJbdcPackage/Snowflake/logstash-offline-plugins-7.12.1.zip)
-   plug-in. After it is uploaded, click **OK**.
+   plug-in. After it is uploaded, click **OK**. This is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the **Connector name** field.
 7. Update the input section to add the details from the [snowflakeJDBC.conf](snowflakeJDBC.conf) file input section,

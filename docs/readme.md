@@ -180,6 +180,8 @@ For more general information about policies, refer to our  [Guardium Data Protec
 
 * MongoDB plug-ins do not send the client source program to Guardium.
 
+* Guardium recommends that you do not configure more than 10 universal connectors on a single Guardium collector. 
+
 </details>
 
 <details open="open">

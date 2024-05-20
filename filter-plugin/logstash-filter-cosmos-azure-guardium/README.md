@@ -1,4 +1,12 @@
 # Azure-Cosmos-Guardium Logstash filter plug-in
+### Meet Azure Cosmos
+* Tested versions: 4.48.0
+* Environment: Azure
+* Supported inputs: Azure Event Hub (pull)
+* Supported Guardium versions:
+  * Guardium Data Protection: 11.4 and above
+  * Guardium Insights: 3.3.1
+  
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Azure-Cosmos audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the 
 data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
@@ -185,6 +193,9 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
 * Download the [guardium_logstash-offline-plugin-azure-cosmos.zip](AzureCosmosOverAzureEventHub/guardium_logstash-offline-plugin-azure-cosmos.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 * Download the plug-in filter configuration file [azure_cosmos.conf](azure_cosmos.conf).
+
+### Note
+* While upgrading from v11.5 p535 or SP6505 to p540, upload [Azure Cosmos updated plugin](https://github.com/IBM/universal-connectors/releases/download/v1.5.4/logstash-filter-azure_cosmos_guardium_filter.zip).
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
