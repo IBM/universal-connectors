@@ -1,4 +1,12 @@
 # Azure MySQL-Guardium Logstash filter plug-in
+### Meet AzureMySQL
+* Tested versions: 8.0
+* Environment: Azure
+* Supported inputs: Azure Event Hub (pull)
+* Supported Guardium versions:
+  * Guardium Data Protection: 11.4 and above
+  * Guardium Insights: 3.3.1
+  
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Azure MySQL audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the 
 data that contains SQL commands are not parsed by this plug-in but rather forwarded as it is to Guardium to do the SQL parsing.
 
@@ -165,7 +173,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ### Before you begin
 * Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugins-azure-mysql.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-azure-guardium/AzureMySQLOverAzureEventHub/guardium_logstash-offline-plugins-azure-mysql.zip) plug-in.
+* Download the [guardium_logstash-offline-plugins-azure-mysql.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-azure-guardium/AzureMySQLOverAzureEventHub/guardium_logstash-offline-plugins-azure-mysql.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.

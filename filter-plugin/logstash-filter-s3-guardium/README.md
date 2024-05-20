@@ -146,20 +146,28 @@ grdapi add_domain_to_universal_connector_allowed_domain
 
 ## 3. Configuring the universal connector in Guardium
 
+### Before you begin
+
+* For Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12p15 download the [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip)
+
 1. Log in to Guardium
 
 2. Go to `Configure Universal Connector`
 
-3. If the audit logs are to be fetched from s3 directly,
-    1. Select Connector template as Amazon S3 using CloudWatch
+3. If the audit logs are to be fetched from Cloudwatch directly,
+
+    1. Click **Upload File**, If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12p15, select the offline [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click OK.
+
+    2. Select Connector template as Amazon S3 using CloudWatch
 
        ![Connector configuration 1](/docs/images/cloudwatch/connector_configuration_1.png)
 
-    2. Fill in the log group and the role_arn that were assigned to the ec2
+    3. Fill in the log group and the role_arn that were assigned to the ec2
 
        ![Connector configuration 2](/docs/images/cloudwatch/connector_configuration_2.png)
 
 4.  Note :To configure SQS on AWS, follow the steps mentioned in the [SQS input plug-in](/input-plugin/logstash-input-sqs/README.md) readme file.</br>
+
     If the audit logs are to be fetched from S3 directly,
     1. Select **Amazon S3 using SQS** in **Connector template**.
 

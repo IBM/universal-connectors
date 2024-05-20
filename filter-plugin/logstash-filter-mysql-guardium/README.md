@@ -1,6 +1,6 @@
 # Mysql-Guardium Logstash filter plug-in
 ### Meet Mysql
-* Tested versions: 5.x
+* Tested versions: 5.x, 8.0.36
 * Environment: On-premise, Iaas
 * Supported Guardium versions:
    * Guardium Data Protection: 11.3 and above
@@ -22,6 +22,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 There are multiple ways to install a MySQL on-premise server. For this example, we will assume that we already have a working MySQL setup.
 
 ## 2. Installing and enabling auditing
+### linux database-server
 [Install the audit log plug-in](https://dev.mysql.com/doc/mysql-secure-deployment-guide/5.7/en/secure-deployment-audit.html), and verify the following two lines in the my.cnf file:
 ####
       plugin-load = audit_log.so
@@ -37,6 +38,15 @@ Run the following two SQLs to install the default filter to get every log:
 ####
       SELECT audit_log_filter_set_filter('log_all', '{ "filter": { "log": true }}');
       SELECT audit_log_filter_set_user('%', 'log_all');
+
+###  Windows database-server
+1. Append below code to my.ini file, located in MySQL directory (for example: "C:\ProgramData\MySQL\MySQL Server 8.0"):
+####
+      plugin-load = audit_log.dll
+      audit_log_format=JSON
+####
+2. Restart the MySQL service.
+
 ####
 
 ## 3. Configuring Filebeat to push logs to Guardium
@@ -90,6 +100,8 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 3. To learn how to start FileBeat, see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
 
+#### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
+
 
 ## 4. Configuring the MySQL filters in Guardium Data Protection (GDP)
 
@@ -99,7 +111,10 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 ### Before you begin
 * You must have permission for the S-Tap Management role. The admin user includes this role, by default.
-* Download the [logstash-filter-mysql_filter_guardium.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-mysql_filter_guardium.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+* Mysql-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-mysql_filter_guardium.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-mysql_filter_guardium.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+
 
 ### Procedure
 
@@ -122,6 +137,8 @@ In the ```Input configuration``` section, refer to the Filebeat section.
 * Field _server_hostname_ (required) - Server hostname is expected (extracted from the second field of the syslog message).
 * Field _server_ip_ - States the IP address of the MySQL server, if it is available to the filter plug-in. The filter will use this IP address instead of localhost IP addresses that are reported by MySQL, if actions were performed directly on the database server.
 * The client "Source program" is not available in messages sent by MySQL. This is because this data is sent only in the first audit log message upon database connection - and the filter plug-in doesn't aggregate data from different messages.
+* When traffic is executed remotely, client_hostname field is not available.
+* In the Failed Login report, database user is not available and therefore will be displayed as NA.
 * If events with "(NONE)" local/remote IP addresses are not filtered, the filter plug-in will convert the IP to "0.0.0.0", as a valid format for IP is needed. However, this is atypical, since messages without users are filtered out.
 * Events in the filter are not removed, but tagged if not parsed (see [Filter result](#filter-result), below).
 *  If the dbname is not coming from the command line, it will not get populated. If you want to see the dbname, either  send a use statement or send it on command line.

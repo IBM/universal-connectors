@@ -1,0 +1,59 @@
+{
+  "plugin_name": "Azure Cosmos over azure_event_hubs",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-cosmos-azure-guardium/README.md",
+  "input_name": "Azure_event_hubs_input",
+  "input_parameters": [
+    {
+      "config_mode": {
+        "type": "text",
+        "default": "basic",
+        "hidden": true
+      },
+      "event_hub_connections": {
+        "type": "text",
+        "label": "event_hub_connections"
+      },
+      "initial_position": {
+        "type": "text",
+        "default": "end",
+        "hidden": true
+      },
+      "threads": {
+        "type": "number",
+        "default": 8,
+        "hidden": true
+      },
+      "decorate_events": {
+        "type": "boolean",
+        "default": true ,
+        "hidden": true
+      },
+      "consumer_group": {
+        "type": "text",
+        "default": "$Default",
+        "hidden": true
+      },
+      "type": {
+        "type": "text",
+        "default": "azure_cosmos",
+        "hidden": true
+      },
+	  "enrollmentId": {
+        "type": "text",
+        "default": "NA",
+        "hidden": true
+      }
+    }
+  ],
+  "filter_name": "Guardium_Azure_Cosmos_filter",
+  "filter_parameters": [],
+  "auth_parameters": [
+  {
+	"guc_input_param_storage_connection": {
+        "type": "text",
+        "label": "storage_connections"
+      }
+  }
+],
+  "supported_platforms": ["Microsoft Azure"]
+}
