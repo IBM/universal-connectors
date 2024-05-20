@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
 import co.elastic.logstash.api.Event;
 
-
 public class ParserTest {
 
 	@Test
@@ -25,17 +24,17 @@ public class ParserTest {
 		e.setField("error", "\"false\"");
 		e.setField("timestamp", "2024-01-10T02:35:58.000Z");
 		e.setField("logsource", "DWP-5CD212FV5L");
-		
+
 		final Record record = Parser.parseRecord(e);
 		assertNotNull(record);
-		assertEquals("mykeyspace",record.getDbName());
-		assertEquals("172.31.57.239",record.getSessionLocator().getServerIp());
-		assertEquals("9.43.118.110",record.getSessionLocator().getClientIp());
-		assertEquals(Long.parseLong("1704854158000"),record.getTime().getTimstamp());
-		assertEquals("DWP-5CD212FV5L",record.getAccessor().getServerHostName());
+		assertEquals("mykeyspace", record.getDbName());
+		assertEquals("172.31.57.239", record.getSessionLocator().getServerIp());
+		assertEquals("9.43.118.110", record.getSessionLocator().getClientIp());
+		assertEquals(Long.parseLong("1704854158000"), record.getTime().getTimstamp());
+		assertEquals("DWP-5CD212FV5L", record.getAccessor().getServerHostName());
 		assertEquals("CREATE TABLE SUBRATO(ID INT PRIMARY KEY);", record.getData().getOriginalSqlCommand());
 	}
-	
+
 	@Test
 	public void testParsesql() throws Exception {
 		Event e = new org.logstash.Event();
@@ -51,7 +50,7 @@ public class ParserTest {
 		assertNotNull(record);
 		assertEquals("USE mykeyspace;", record.getData().getOriginalSqlCommand());
 	}
-	
+
 	@Test
 	public void testParseuser() throws Exception {
 		Event e = new org.logstash.Event();
@@ -67,7 +66,7 @@ public class ParserTest {
 		assertNotNull(record);
 		assertEquals("alice1", record.getAccessor().getDbUser());
 	}
-	
+
 	@Test
 	public void testParseLogin_success() throws Exception {
 		Event e = new org.logstash.Event();
@@ -83,7 +82,7 @@ public class ParserTest {
 		assertNotNull(record);
 		assertEquals("LOGIN", record.getData().getOriginalSqlCommand());
 	}
-	
+
 	@Test
 	public void testParseLogin_fail() throws Exception {
 		Event e = new org.logstash.Event();
@@ -99,7 +98,7 @@ public class ParserTest {
 		assertNotNull(record);
 		assertEquals("", record.getException().getSqlString());
 	}
-	
+
 	@Test
 	public void testParseErrorsql() throws Exception {
 		Event e = new org.logstash.Event();
@@ -113,26 +112,49 @@ public class ParserTest {
 		e.setField("logsource", "DWP-5CD212FV5L");
 		final Record record = Parser.parseRecord(e);
 		assertNotNull(record);
-		assertEquals("DWP-5CD212FV5L",record.getAccessor().getServerHostName());
+		assertEquals("DWP-5CD212FV5L", record.getAccessor().getServerHostName());
 		assertEquals("Error Occurred", record.getException().getDescription());
-		assertEquals("ALTER ROLE alice1 WITH PASSWORD = '***' AND SUPERUSER = false;", record.getException().getSqlString());
+		assertEquals("ALTER ROLE alice1 WITH PASSWORD = '***' AND SUPERUSER = false;",
+				record.getException().getSqlString());
 	}
-	
+
 	@Test
-	public void testParseMultilineSql() throws Exception {
+	public void testParseMultilineSqltype1() throws Exception {
 		Event e = new org.logstash.Event();
 		e.setField("message", "");
 		e.setField("username", "\"cassandra\"");
 		e.setField("keyspace_name", "\"mykeyspace\"");
 		e.setField("server_ip", "\"172.31.57.239\"");
 		e.setField("category", "\"DDL\"");
-		e.setField("operation", "\"CREATE TABLE DEVTESTING1 (#012    a int,#012    b int,#012    c int,#012    PRIMARY KEY (a, b, c)#012);\"");
+		e.setField("operation", "\"CREATE MATERIALIZED VIEW IF NOT EXISTS user_emails_by_id AS#012SELECT user_id, email FROM users  --this is singleline#012WHERE user_id IS NOT NULL AND email IS NOT NULL#012PRIMARY KEY (user_id, email);\"");
 		e.setField("error", "\"false\"");
 		e.setField("timestamp", "2024-01-10T02:35:58.000Z");
 		e.setField("logsource", "DWP-5CD212FV5L");
 		final Record record = Parser.parseRecord(e);
 		assertNotNull(record);
-		assertEquals("CREATE TABLE DEVTESTING1 ( a int, b int, c int, PRIMARY KEY (a, b, c) );", record.getData().getOriginalSqlCommand());
+		assertEquals("CREATE MATERIALIZED VIEW IF NOT EXISTS user_emails_by_id AS\n"
+				+ "SELECT user_id, email FROM users  --this is singleline\n"
+				+ "WHERE user_id IS NOT NULL AND email IS NOT NULL\n"
+				+ "PRIMARY KEY (user_id, email);", record.getData().getOriginalSqlCommand());
 	}
+	
+	@Test
+	public void testParseMultilineSqltype2() throws Exception {
+		Event e = new org.logstash.Event();
+		e.setField("message", "");
+		e.setField("username", "\"cassandra\"");
+		e.setField("keyspace_name", "\"mykeyspace\"");
+		e.setField("server_ip", "\"172.31.57.239\"");
+		e.setField("category", "\"DDL\"");
+		e.setField("operation", "\"drop#015#012type#015#012address14;\"\"");
+		e.setField("error", "\"false\"");
+		e.setField("timestamp", "2024-01-10T02:35:58.000Z");
+		e.setField("logsource", "DWP-5CD212FV5L");
+		final Record record = Parser.parseRecord(e);
+		assertNotNull(record);
+		assertEquals("drop\n"
+				+ "type\n"
+				+ "address14;", record.getData().getOriginalSqlCommand());
+	}
+}
 
-} 
