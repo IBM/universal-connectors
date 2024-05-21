@@ -247,8 +247,9 @@ ruleset(name="kafkaRuleset") {
                	"socket.keepalive.enable=true",
 		"security.protocol=ssl",
 		"debug=all",
-                "ssl.ca.location=<_ENTER_CERTIFICATE_PATH_FROM_TOPIC_1.1.2_STEP_2_>"]
-           )
+                "ssl.ca.location=<_ENTER_CERTIFICATE_PATH_FROM_TOPIC_1.1.2_STEP_2_>"
+           ]
+	)
 }
 ```
 
@@ -313,7 +314,7 @@ ruleset(name="kafkaRuleset_postgresql") {
             "socket.keepalive.enable=true",
             "security.protocol=ssl",
             "debug=all",
-            "ssl.ca.location=<Enter_CERTIFICATE_PATH_FROM_DOWLOADING_SERVER_CA_STEP_2>"]
+            "ssl.ca.location=<Enter_CERTIFICATE_PATH_FROM_DOWLOADING_SERVER_CA_STEP_2>"
         ]
     )
 }
