@@ -1,4 +1,4 @@
-# Universal Connector and Kafka Integration on Guardium - Configuration Guide
+:# Universal Connector and Kafka Integration on Guardium - Configuration Guide
 
 Welcome to the configuration guide for integrating a Universal Connector (UC) with Kafka on Guardium. This guide provides step-by-step instructions to set up the necessary configurations and installations for seamless communication between Guardium and Kafka.
 
@@ -243,9 +243,11 @@ ruleset(name="kafkaRuleset") {
            partitions.auto="on"
            errorFile="/var/log/rsyslog.err"
            confParam=[ "compression.codec=snappy",
-               "socket.timeout.ms=1000",
-               "socket.keepalive.enable=true",
-               "ssl.ca.location=<_ENTER_CERTIFICATE_PATH_FROM_TOPIC_1.1.2_STEP_2_>"]
+               	"socket.timeout.ms=1000",
+               	"socket.keepalive.enable=true",
+		"security.protocol=ssl",
+		"debug=all",
+                "ssl.ca.location=<_ENTER_CERTIFICATE_PATH_FROM_TOPIC_1.1.2_STEP_2_>"]
            )
 }
 ```
@@ -309,6 +311,8 @@ ruleset(name="kafkaRuleset_postgresql") {
             "compression.codec=snappy",
             "socket.timeout.ms=1000",
             "socket.keepalive.enable=true",
+            "security.protocol=ssl",
+            "debug=all",
             "ssl.ca.location=<Enter_CERTIFICATE_PATH_FROM_DOWLOADING_SERVER_CA_STEP_2>"]
         ]
     )
@@ -340,7 +344,9 @@ ruleset(name="kafkaRuleset_yugabyte") {
                 "compression.codec=snappy",
                 "socket.timeout.ms=1000",
                 "socket.keepalive.enable=true",
-                "ssl.ca.location=<Enter_CERTIFICATE_PATH_FROM_DOWLOADING_SERVER_CA_STEP_2>"
+            	"security.protocol=ssl",
+		"debug=all",
+		"ssl.ca.location=<Enter_CERTIFICATE_PATH_FROM_DOWLOADING_SERVER_CA_STEP_2>"
             ]
         )
     }
