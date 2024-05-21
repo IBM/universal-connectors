@@ -308,7 +308,7 @@ ruleset(name="kafkaRuleset_postgresql") {
         confParam=[
             "compression.codec=snappy",
             "socket.timeout.ms=1000",
-            "socket.keepalive.enable=true"
+            "socket.keepalive.enable=true",
             "ssl.ca.location=<Enter_CERTIFICATE_PATH_FROM_DOWLOADING_SERVER_CA_STEP_2>"]
         ]
     )
@@ -320,7 +320,7 @@ ruleset(name="kafkaRuleset_yugabyte") {
         action(type="omkafka"
             template="UcMessageFormat"
             broker=["<MANAGED_UNIT_1>:9093", "<MANAGED_UNIT_2>:9093", "<MANAGED_UNIT_3>:9093"]
-            topic="<TOPIC_NAME>"
+            topic="<ENTER_CONNECTOR_NAME_FROM_TOPIC_1.2>"
             dynakey="on"
             key="UcSessionID_Yugabyte"
             queue.filename="omkafkaq_yugabyte"
@@ -339,7 +339,8 @@ ruleset(name="kafkaRuleset_yugabyte") {
             confParam=[
                 "compression.codec=snappy",
                 "socket.timeout.ms=1000",
-                "socket.keepalive.enable=true"
+                "socket.keepalive.enable=true",
+                "ssl.ca.location=<Enter_CERTIFICATE_PATH_FROM_DOWLOADING_SERVER_CA_STEP_2>"
             ]
         )
     }
