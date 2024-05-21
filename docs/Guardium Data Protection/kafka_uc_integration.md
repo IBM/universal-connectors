@@ -21,7 +21,8 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 4. [Known limitations](#4-Limitations)  
    
 ---
-#Configuring UC on Guardium Data Protection 
+
+##  Configuring UC on Guardium Data Protection 
 ### 1.1 Creating a Kafka Cluster (once per deployment)
 
 1. Log in to **Guardium central manager** by using your login credentials.
@@ -40,7 +41,7 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 
 4. From the **Select units to add** list, select at least one or maximum three Kakfa nodes and click **OK**.
 
-5. Optionally, if you want to authenticate usres before connecting to the Kafka cluster, select enable **Client Authentication**.
+5. Optionally, if you want to authenticate users before connecting to the Kafka cluster, select enable **Client Authentication**.
 
    Users need to upload valid client certificates to authenticate themselves to the Kafka cluster. 
 
@@ -58,15 +59,15 @@ You need to download the server (Kafka cluster) CA certificate to enure that sys
 1. In the **Kafka cluster management** page, select a cluster from the grid and click **Download server CA**.
 
 2. Copy the certificate to th database server machine and note the location.
-For more information, see [Installing an appliance certificate to avoid a browser SSL certificate challenge](https://www.ibm.com/docs/en/guardium/12.x?topic=certificates-installing-appliance-certificate-avoid-browser-ssl-certificate-challenge)
+For more information, see [Installing an appliance certificate to avoid a browser SSL certificate challenge](https://www.ibm.com/docs/en/guardium/12.x?topic=certificates-installing-appliance-certificate-avoid-browser-ssl-certificate-challenge).
 
 ### 1.2 Configuring Universal Connector (UC) on Guardium
 
-1. One the Guadium machine, go to **Setup** > **Tools and Views** > **Configure Universal Connector** page.
+1. On the **Guadium Managed Unit** machine, go to **Setup** > **Tools and Views** > **Configure Universal Connector** page.
 
 2. Click **Add** icon to add a new configuration.
 
-3. Select the "EDB PostgreSQL using kafka (high volume)" connector template. 
+3. Select the **EDB PostgreSQL using kafka (high volume)** connector template. 
 
 4. In the **Connector Name** field, enter a unique connector name. 
    Ensure the name does not contain spaces and special characters.
@@ -74,7 +75,7 @@ For more information, see [Installing an appliance certificate to avoid a browse
 5. Click **Save**. 
    Your UC is now configured and ready to receive new events from datasource.
 
-**Note**: To ensure data failover and loadbalancing, define same configuration on another Kafka node .
+**Note**: To ensure data failover and loadbalancing, define same configuration on another Kafka node.
 
 
 ## 2. Configuring native audit and rsyslog on Datasource Server
