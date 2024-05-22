@@ -1,4 +1,4 @@
-:# Universal Connector and Kafka Integration on Guardium - Configuration Guide
+# Universal Connector and Kafka Integration on Guardium - Configuration Guide
 
 Welcome to the configuration guide for integrating a Universal Connector (UC) with Kafka on Guardium. This guide provides step-by-step instructions to set up the necessary configurations and installations for seamless communication between Guardium and Kafka.
 
