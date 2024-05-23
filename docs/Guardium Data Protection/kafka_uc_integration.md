@@ -23,7 +23,7 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
    
 ---
 
-##  Configuring UC on Guardium Data Protection 
+## 1 Configuring UC on Guardium Data Protection 
 ### 1.1 Creating a Kafka Cluster (once per deployment)
 
 1. Log in to **Guardium Central Manager** by using your login credentials.
