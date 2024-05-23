@@ -15,10 +15,11 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
     - 2.1 [Prerequisite ](#21-prerequisite)
     - 2.2 [Installing Rsyslog on the Database Server](#22-installing-rsyslog-on-the-database-server)
     - 2.3 [Installing Kafka Module for rsyslog on Database Server](#23-Installing-Kafka-Module-for-rsyslog-on-Database-Server)
-    - 2.4 [Enabling logging on the database](#24-Enabling-logging-on-the-database)
-    - 2.5 [Configuring rsyslog to send native audit data to Guardium via kafka](#25-Configuring-rsyslog-to-send-native-audit-data-to-Guardium-via-kafka)
-    - 
-3. [Known limitations](#4-Limitations)  
+3. [Enabling logging on the database](#3-Enabling-logging-on-the-database)
+    - 3.1 [Enabling native audit on Postgres](#31-enabling-native-audit-on-postgres)
+    - 3.2 [Enabling audit on Yugabyte](#32-enabling-audit-on-yugabyte)
+4. [Configuring rsyslog to send native audit data to Guardium via kafka](#4-Configuring-rsyslog-to-send-native-audit-data-to-Guardium-via-kafka)
+5. [Known limitations](#5-Limitations)  
    
 ---
 
@@ -153,8 +154,8 @@ For more information on rsyslog, see [Rsyslog Documentation](https://www.rsyslog
 	sudo apt-get install rsyslog-kafka
 	```
 
-## 2.4 Enabling logging on the database
-### 2.4.1 Enabling native audit on Postgres
+## 3 Enabling logging on the database
+### 3.1 Enabling native audit on Postgres
 
 1. You can configure PostgreSQL so that it can send logs to rsyslog. Open the PostgreSQL configuration file and make the following changes.
 
@@ -195,10 +196,10 @@ For more information on rsyslog, see [Rsyslog Documentation](https://www.rsyslog
 
 The exact file paths and configurations may vary depending on your operating system and PostgreSQL version.
 
-### 2.4.2 Enabling audit on Yugabyte
+### 3.2 Enabling audit on Yugabyte
 To configure audit logs for Yugabyte DB, see [Enabling the audit logs](../filter-plugin/logstash-filter-yugabyte-guardium/README.md#2-enabling-the-audit-logs)
 
-### 2.5 Configuring rsyslog to send native audit data to Guardium via kafka 
+## 4 Configuring rsyslog to send native audit data to Guardium via kafka 
 
 1. Edit your rsyslog configuration file (typically located at `/etc/rsyslog.conf` or `/etc/rsyslog.d/50-default.conf`) and add the following section. Ensure that you substitute the designated placeholders with the appropriate values:
 
@@ -359,7 +360,7 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](../filter
 	}
 	```
 
-2. Verify the configuration:
+2. Run the following command to verify the configuration.
 
 	```bash
 	rsyslogd -N1
@@ -367,25 +368,25 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](../filter
 
 	Verify successful response: `rsyslogd: End of config validation run. Bye.`
 
-3. After making changes to the syslog configuration, restart the syslog daemon to apply the changes:
+3. After making changes to the syslog configuration, run the following command to restart the syslog daemon to apply the changes.
 	Run:
 
 	```bash
 	sudo service rsyslog restart
 	```
 
-4. Verify by running:
+4. Verify by running the following command. 
 
 	```bash
 	sudo tail -f /var/log/syslog
 	```
 
-Search for error messages related to omkafka. If everything is set up correctly, rsyslog should send the log messages to your Kafka broker.
+**Important Notes** 
+- Search for error messages related to omkafka. If everything is set up correctly, rsyslog should send the log messages to your Kafka broker
+- The steps may vary depending on your operating system and rsyslog version. For more accurate information, see the rsyslog documentation and the documentation specific to your distribution.
 
-**Important Note** The steps may vary depending on your operating system and rsyslog version. For more accurate information, see the rsyslog documentation and the documentation specific to your distribution.
 
-
-## 3. Limitations
+## 5. Limitations
 
 1. Client hostname is not captured by EDB PostgresSQL native audit on traffic of some db client tools, therefore can not be reported in Guardium.
 
