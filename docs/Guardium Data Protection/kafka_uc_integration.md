@@ -44,7 +44,7 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 
    **Note**: Guardium recommends to add at least three Kafka nodes in one cluster. 
 
-6. Optionally, if you want to authenticate database severs (for example, syslog) before connecting to the Kafka cluster, select **Enable client authentication**. You must upload valid client certificates to authenticate database servers.
+6. Optionally, if authentication of database severs to the Kafka cluster is required, select Enable client authentication and upload a valid client certificate for each database server or a set of signing certificates to be used for validation of incoming connections.
 
 7. Select one or more Kafka nodes from the **Cluster member** grid to create a Kafka cluster.
 
