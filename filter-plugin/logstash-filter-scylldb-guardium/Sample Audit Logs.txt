@@ -1,0 +1,18 @@
+Audit logs:
+                                                                      
+
+"2024-01-31T04:50:42.453756+00:00 ip-172-31-63-35.ec2.internal scylla-audit: \"172.31.63.35:0\", \"DML\", \"ONE\", \"\", \"mykeyspace\", \"USE \"mykeyspace\"\", \"127.0.0.1:0\", \"cassandra\", \"false\""
+
+"2024-01-31T04:51:46.791619+00:00 ip-172-31-63-35.ec2.internal scylla-audit: \"172.31.63.35:0\", \"DDL\", \"ONE\", \"users\", \"mykeyspace\", \"CREATE TABLE users(ID int PRIMARY KEY);\", \"127.0.0.1:0\", \"cassandra\", \"false\""
+
+"2024-01-31T04:51:46.864256+00:00 ip-172-31-63-35.ec2.internal scylla-audit: \"172.31.63.35:0\", \"QUERY\", \"ONE\", \"users\", \"mykeyspace\", \"SELECT * FROM users;\", \"127.0.0.1:0\", \"cassandra\", \"false\""
+
+"2024-01-31T04:51:46.816142+00:00 ip-172-31-63-35.ec2.internal scylla-audit: \"172.31.63.35:0\", \"DML\", \"ONE\", \"users\", \"mykeyspace\", \"TRUNCATE TABLE users USING TIMEOUT 5m;\", \"127.0.0.1:0\", \"cassandra\", \"false\""
+
+"2024-01-31T04:51:46.866639+00:00 ip-172-31-63-35.ec2.internal scylla-audit: \"172.31.63.35:0\", \"DDL\", \"ONE\", \"users\", \"mykeyspace\", \"DROP TABLE users;\", \"127.0.0.1:0\", \"cassandra\", \"false\""
+
+"2024-01-31T04:51:46.994369+00:00 ip-172-31-63-35.ec2.internal scylla-audit: \"172.31.63.35:0\", \"DCL\", \"ONE\", \"\", \"\", \"CREATE ROLE tmx WITH LOGIN = false;\", \"127.0.0.1:0\", \"cassandra\", \"false\""
+
+"2024-01-31T04:51:46.996727+00:00 ip-172-31-63-35.ec2.internal scylla-audit: \"172.31.63.35:0\", \"DCL\", \"ONE\", \"\", \"\", \"DROP ROLE jmx;\", \"127.0.0.1:0\", \"cassandra\", \"false\""
+
+"2024-01-31T04:51:46.995442+00:00 ip-172-31-63-35.ec2.internal scylla-audit: \"172.31.63.35:0\", \"DCL\", \"ONE\", \"\", \"\", \"GRANT tmx TO jmx;\", \"127.0.0.1:0\", \"cassandra\", \"false\""
