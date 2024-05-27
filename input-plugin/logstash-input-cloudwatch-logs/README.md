@@ -96,6 +96,7 @@ Other standard logstash parameters are available such as:
           what => "previous"
         }
 		type => "test"
+		add_field => {"account_id" => "<Enter the account id>"}
 		add_field => {"abc" => "value"}
 	}
 
