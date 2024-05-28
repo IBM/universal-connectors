@@ -12,7 +12,7 @@ public class Constants {
 	public static final String DB_NAME = "keyspace_name";
 	public static final String SERVER_IP = "server_ip";
 	public static final String CLIENT_IP = "client_ip";
-	public static final String NOT_AVAILABLE = "NA";
+	public static final String NOT_AVAILABLE = "N.A.";
 	public static final String CATEGORY = "category";
 	public static final String SQL_QUERY = "operation";
 	public static final String SERVERHOSTNAME = "logsource";
