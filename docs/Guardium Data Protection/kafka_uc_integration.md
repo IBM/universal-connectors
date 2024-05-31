@@ -5,11 +5,11 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 
 ## Table of Contents
 
-1. [Set up UC Configurations on Guardium](#Configuring-UC-on-Guardium-Data-Protection )
-    - 1.1 [Creating Kafka Cluster on Guardium (once per deployment)](#11-Creating-Kafka-Cluster-on-Guardium-once-per-deployment)
-   		- 1.1.1 [Creating new Kafka clusters ](#Creating-new-Kafka-clusters )
-   	 	- 1.1.2 [Downloading server (Kafka cluster) CA certificate](#Downloading-server-(Kafka-cluster)-CA-certificate)
-    - 1.2 [Configuring Universal Connector (UC) on Guardium](#12-Configuring-Universal-Connector-UC-on-Guardium)
+1. [Set up UC Configurations on Guardium](#1-Configuring-UC-on-Guardium-Data-Protection)
+    - 1.1 [Creating Kafka Cluster on Guardiumn once per deployment](#11-Creating-Kafka-Cluster-on-Guardium-once-per-deployment)
+   		- 1.1.1 [Creating new Kafka clusters](#111-Creating-new-Kafka-clusters)
+   	 	- 1.1.2 [Downloading server Kafka cluster CA certificate](#112-Downloading-server-(Kafka-cluster)-CA-certificate)
+    - 1.2 [Configuring Universal Connector on Guardium](#12-Configuring-Universal-Connector-on-Guardium)
 
 2. [Configuring native audit and rsyslog on Datasource Server](#2-Configuring-native-audit-and-rsyslog-on-Datasource-Server)
     - 2.1 [Prerequisite ](#21-prerequisite)
@@ -24,7 +24,7 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 ---
 
 ## 1 Configuring UC on Guardium Data Protection 
-### 1.1 Creating a Kafka Cluster (once per deployment)
+### 1.1 Creating a Kafka Cluster once per deployment
 
 1. Log in to **Guardium Central Manager** by using your login credentials.
 
@@ -64,7 +64,7 @@ You need to download the server (Kafka cluster) CA certificate to enure that sys
 2. Copy the certificate to th database server machine and note the location.
 For more information, see [Installing an appliance certificate to avoid a browser SSL certificate challenge](https://www.ibm.com/docs/en/guardium/12.x?topic=certificates-installing-appliance-certificate-avoid-browser-ssl-certificate-challenge).
 
-### 1.2 Configuring Universal Connector (UC) on Guardium
+### 1.2 Configuring Universal Connector on Guardium
 
 1. On the **Guadium Managed Unit** machine, go to **Setup** > **Tools and Views** > **Configure Universal Connector** page.
 
@@ -197,7 +197,7 @@ For more information on rsyslog, see [Rsyslog Documentation](https://www.rsyslog
 The exact file paths and configurations may vary depending on your operating system and PostgreSQL version.
 
 ### 3.2 Enabling audit on Yugabyte
-To configure audit logs for Yugabyte DB, see [Enabling the audit logs](../filter-plugin/logstash-filter-yugabyte-guardium/README.md#2-enabling-the-audit-logs)
+To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-yugabyte-guardium/README.md#enabling-the-audit-logs)
 
 ## 4 Configuring rsyslog to send native audit data to Guardium via kafka 
 
