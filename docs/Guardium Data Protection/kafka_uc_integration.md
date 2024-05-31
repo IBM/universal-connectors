@@ -6,9 +6,9 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 ## Table of Contents
 
 1. [Set up UC Configurations on Guardium](#1-Configuring-UC-on-Guardium-Data-Protection)
-    - 1.1 [Creating Kafka Cluster on Guardiumn once per deployment](#11-Creating-Kafka-Cluster-on-Guardium-once-per-deployment)
+    - 1.1 [Creating a Kafka Cluster on Guardiumn](#11-Creating-a-Kafka-Cluster-on-Guardium)
    		- 1.1.1 [Creating new Kafka clusters](#111-Creating-new-Kafka-clusters)
-   	 	- 1.1.2 [Downloading server Kafka cluster CA certificate](#112-Downloading-server-(Kafka-cluster)-CA-certificate)
+   	 	- 1.1.2 [Downloading server CA certificate](#112-Downloading-server-CA-certificate)
     - 1.2 [Configuring Universal Connector on Guardium](#12-Configuring-Universal-Connector-on-Guardium)
 
 2. [Configuring native audit and rsyslog on Datasource Server](#2-Configuring-native-audit-and-rsyslog-on-Datasource-Server)
@@ -24,8 +24,7 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 ---
 
 ## 1 Configuring UC on Guardium Data Protection 
-### 1.1 Creating a Kafka Cluster once per deployment
-
+### 1.1 Creating a Kafka Cluster on Guardiumn
 1. Log in to **Guardium Central Manager** by using your login credentials.
 
 2. Go to **Manage** > **Central Management** > **Kafka cluster management** page.
@@ -56,7 +55,7 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 
 **Result**: Kafka cluster is created successfully. 
 
-#### 1.1.2 Downloading server (Kafka cluster) CA certificate
+#### 1.1.2 Downloading server CA certificate
 You need to download the server (Kafka cluster) CA certificate to enure that syslog accepts the communication with Kafka cluster. 
 
 1. In the **Kafka cluster management** page, select a cluster from the grid and click **Download server CA**.
