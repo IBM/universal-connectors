@@ -6,7 +6,7 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 ## Table of Contents
 
 1. [Set up UC Configurations on Guardium](#1-Configuring-UC-on-Guardium-Data-Protection)
-    - 1.1 [Creating a Kafka Cluster on Guardiumn](#11-Creating-a-Kafka-Cluster-on-Guardium)
+    - 1.1 [Creating a Kafka Cluster on Guardium](#11-Creating-a-Kafka-Cluster-on-Guardium)
    		- 1.1.1 [Creating new Kafka clusters](#111-Creating-new-Kafka-clusters)
    	 	- 1.1.2 [Downloading server CA certificate](#112-Downloading-server-CA-certificate)
     - 1.2 [Configuring Universal Connector on Guardium](#12-Configuring-Universal-Connector-on-Guardium)
@@ -24,7 +24,7 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 ---
 
 ## 1 Configuring UC on Guardium Data Protection 
-### 1.1 Creating a Kafka Cluster on Guardiumn
+### 1.1 Creating a Kafka Cluster on Guardium
 1. Log in to **Guardium Central Manager** by using your login credentials.
 
 2. Go to **Manage** > **Central Management** > **Kafka cluster management** page.
