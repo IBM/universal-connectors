@@ -37,8 +37,11 @@ buildscript {
         classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
        	//classpath 'org.owasp:dependency-check-gradle:8.3.1'
        //classpath "com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.8"
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
 }
+def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 
 repositories {
     mavenCentral()
@@ -49,25 +52,23 @@ apply plugin: "com.github.johnrengelman.shadow"
 
 shadowJar {
     classifier = null
-    transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer)  
+    transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer)
 }
 
 dependencies {
 
-    compile group: 'commons-validator', name: 'commons-validator', version: '1.7'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
-    compile 'org.apache.commons:commons-lang3:3.7'
-    compile 'com.google.code.gson:gson:2.8.9'
-    testImplementation group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1';
-    compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-7.14.0.jar")
-    compile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-master-1.0.0.jar")
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.jruby:jruby-complete:9.2.7.0'
-    testCompile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-master-1.0.0.jar")
-    //spotbugs 'com.github.spotbugs:spotbugs:4.4.0'
-  	//spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.12.0'
-  	
+    implementation group: 'commons-validator', name: 'commons-validator', version: versions.dependencies.commonsValidator
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
+    implementation 'org.apache.commons:commons-lang3:' + versions.dependencies.commonsLang
+    implementation 'com.google.code.gson:gson:' + versions.dependencies.gson
+    testImplementation group: 'org.mockito', name: 'mockito-all', version: versions.dependencies.mockitoAll
+    testImplementation 'org.junit.jupiter:junit-jupiter:' + versions.dependencies.junitJupiter
+    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
+    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
+    testImplementation 'junit:junit:' + versions.dependencies.junit
+    testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
+
 }
 
 test {
