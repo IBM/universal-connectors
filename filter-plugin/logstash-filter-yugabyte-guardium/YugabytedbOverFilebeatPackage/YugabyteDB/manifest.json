@@ -10,5 +10,5 @@
 	"license": "Apache 2.0",
 	"description": "This package provides the data needed in order to support Yugabyte DB in Guardium Universal Connector.",
 	"configuration_notes": "",
-	"documentation_path": "https://github.ibm.com/Activity-Insights/universal-connectors/tree/master/filter-plugin/logstash-filter-yugabyte-guardium/README.md"
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-yugabyte-guardium/README.md"
 }
