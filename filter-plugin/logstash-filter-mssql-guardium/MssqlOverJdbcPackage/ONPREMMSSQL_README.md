@@ -1,4 +1,16 @@
-## 1. Configuring ONPREM MSSQL
+# On-Prem-MSSQL-Guardium Logstash filter plug-in
+
+## Meet On-Prem MSSQL 
+
+* Tested versions: 14.00.3281.6 Enterprise Version & above
+* Environment: Azure
+* Supported inputs: JDBC (pull)
+* Supported Guardium versions:
+  	* Guardium Data Protection: 11.4 and above
+  	* Guardium Insights SaaS: 1.0
+
+
+## 1. Configuring On-Prem MSSQL
 
 ### Procedure
 
