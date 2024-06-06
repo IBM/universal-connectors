@@ -39,9 +39,9 @@ CREATE USER guardium IDENTIFIED BY password;
 GRANT CONNECT to guardium;
 GRANT SELECT ANY DICTIONARY to guardium;
 GRANT AUDIT_VIEWER to guardium;
-GRANT SELECT ON v$INSTANCE TO guardium;
-GRANT SELECT ON v$DATABASE TO guardium;
-GRANT SELECT ON v$MYSTAT TO guardium;
+GRANT SELECT ON v$INSTANCE to guardium;
+GRANT SELECT ON v$DATABASE to guardium;
+GRANT SELECT ON v$MYSTAT to guardium;
 ```
 
 ### Procedure
