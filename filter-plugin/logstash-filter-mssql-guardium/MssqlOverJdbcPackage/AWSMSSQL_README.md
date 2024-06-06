@@ -2,7 +2,7 @@
 
 ## Meet AWS MSSQL
 * Tested versions: 14.00.3281.6 Enterprise Version and above
-* Environment: Azure
+* Environment: AWS
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
 	* Guardium Data Protection: 11.4 and above
