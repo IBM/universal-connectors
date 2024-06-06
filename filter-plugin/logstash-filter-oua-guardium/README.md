@@ -31,33 +31,29 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 
 ## Setup
 
-### Prerequisite
-In an autonomous database environment, the designated database user privileges are different. The commands listed below can be used to assign those privileges:
-
-```
-CREATE USER guardium IDENTIFIED BY password;
-GRANT CONNECT to guardium;
-GRANT SELECT ANY DICTIONARY to guardium;
-GRANT AUDIT_VIEWER to guardium;
-GRANT SELECT ON v$INSTANCE to guardium;
-GRANT SELECT ON v$DATABASE to guardium;
-GRANT SELECT ON v$MYSTAT to guardium;
-```
-
-### Procedure
-
 1. Create a designated Database User for OUA UC to retrieve audit data with minimal privileges (using DBA help) as follows:
    - Assuming the name for the designated Oracle Unified Audit user with minimal permissions will be "guardium" with password "password"
    - Connect to Oracle using sysdba account and execute the following commands:
-
-       ```
-       CREATE USER guardium IDENTIFIED BY password;
-       GRANT CONNECT, RESOURCE to guardium;
-       GRANT SELECT ANY DICTIONARY TO guardium;
-       exec DBMS_NETWORK_ACL_ADMIN.APPEND_HOST_ACE(host => 'localhost',
-       ace => xs$ace_type(privilege_list => xs$name_list('connect',
-       'resolve'), principal_name => 'guardium', principal_type => xs_acl.ptype_db));
-       ```
+       - For Oracle Autonomous Database in OCI run the following commands to create a user with the required grants:
+         ```
+         CREATE USER guardium IDENTIFIED BY password;
+         GRANT CONNECT to guardium;
+         GRANT SELECT ANY DICTIONARY to guardium;
+         GRANT AUDIT_VIEWER to guardium;
+         GRANT SELECT ON v$INSTANCE to guardium;
+         GRANT SELECT ON v$DATABASE to guardium;
+         GRANT SELECT ON v$MYSTAT to guardium;
+         ```
+  
+       - For other environments including RDS in AWS and Oracle Databases On-Premises run the following commands:
+         ```
+         CREATE USER guardium IDENTIFIED BY password;
+         GRANT CONNECT, RESOURCE to guardium;
+         GRANT SELECT ANY DICTIONARY TO guardium;
+         exec DBMS_NETWORK_ACL_ADMIN.APPEND_HOST_ACE(host => 'localhost',
+         ace => xs$ace_type(privilege_list => xs$name_list('connect',
+         'resolve'), principal_name => 'guardium', principal_type => xs_acl.ptype_db));
+         ```
 
    - To verify your new user's privileges, connect to the Oracle instance that you planning to monitor using the name and credentials for your designated user and run the following statements:
 
