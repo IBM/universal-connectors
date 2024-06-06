@@ -1,12 +1,14 @@
 # Oracle Unified Audit Universal Connector
 
-## Meet Oracle Unified Audit
+## Oracle Universal Connector plugin supports
 
-* Tested versions: 18,19
-* Environment: On-prem, RDS
-* Supported inputs: Oracle Unified Audit (pull)
-* Supported Guardium versions: 
-  * Guardium Data Protection: 11.4 and above
+* Environments: On-prem, RDS in AWS, Oracle Autonomous Database in OCI
+
+   **Note**: Autonomous Database in OCI is supported only by Guardium Data Protection SqlGuard-12.0p7015_Bundle_May_20_2024.
+* Oracle versions: 18, 19 and 21
+* Guardium versions: Guardium Data Protection 11.4 and above
+
+
 
 ## Requirements
 
@@ -28,6 +30,21 @@ Currently, this plug-in will work only on IBM Security Guardium Data Protection,
 Update the variables in Makefile for your environment's Java home and Logstash location
 
 ## Setup
+
+### Prerequisite
+In an autonomous database environment, the designated database user privileges are different. The commands listed below can be used to assign those privileges:
+
+```
+CREATE USER guardium IDENTIFIED BY password;
+GRANT CONNECT to guardium;
+GRANT SELECT ANY DICTIONARY to guardium;
+GRANT AUDIT_VIEWER to guardium;
+GRANT SELECT ON v$INSTANCE TO guardium;
+GRANT SELECT ON v$DATABASE TO guardium;
+GRANT SELECT ON v$MYSTAT TO guardium;
+```
+
+### Procedure
 
 1. Create a designated Database User for OUA UC to retrieve audit data with minimal privileges (using DBA help) as follows:
    - Assuming the name for the designated Oracle Unified Audit user with minimal permissions will be "guardium" with password "password"
