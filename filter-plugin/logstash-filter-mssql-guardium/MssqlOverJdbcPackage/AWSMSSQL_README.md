@@ -1,3 +1,13 @@
+# AWS-MSSQL-Guardium Logstash filter plug-in
+
+## Meet AWS MSSQL
+* Tested versions: 14.00.3281.6 Enterprise Version and above
+* Environment: AWS
+* Supported inputs: JDBC (pull)
+* Supported Guardium versions:
+	* Guardium Data Protection: 11.4 and above
+	* Guardium Insights SaaS: 1.0
+
 ## 1. Configuring AWS MSSQL RDS
 
 ### Procedure
