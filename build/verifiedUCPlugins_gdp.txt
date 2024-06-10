@@ -1,7 +1,7 @@
 #Filter plugins read to zip:
 filter-plugin/logstash-filter-documentdb-aws-guardium/DocumentDBOverCloudwatchPackage
 filter-plugin/logstash-filter-aurora-mysql-guardium/AuroraMysqlOverCloudwatchPackage
-filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudwatchPackage
+filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudwatch/DynamodbOverCloudwatchPackage
 #filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBOverCloudWatchPackage
 filter-plugin/logstash-filter-mysql-aws-guardium/MysqlOverCloudwatchLogsPackage
 filter-plugin/logstash-filter-neptune-aws-guardium/NeptuneOverCloudWatchPackage
@@ -36,9 +36,6 @@ filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/PubSubFirebasePa
 filter-plugin/logstash-filter-pubsub-firestore-guardium/PubSubFireStorePackage
 filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage
 filter-plugin/logstash-filter-pubsub-postgresql-guardium/PubSubPostgreSQLPackage
-#Syslog plug-ins
-filter-plugin/logstash-filter-mongodb-guardium/MongoDBOverSyslogPackage
-filter-plugin/logstash-filter-mysql-guardium/MySQLOverSyslogPackage
 #Other
 filter-plugin/logstash-filter-mongodb-guardium/MongodbOverMongoAtlasPackage
 filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub
