@@ -156,6 +156,20 @@
 			VI. Click on Ok button.
 			VII. Right click on database audit specification that we have created and select enable to enable it.
 
+	5. Create non-admin user to access audit table.
+		If you want to access audit table without exposing admin credentials, create a non-admin user with specific permissions:
+
+			a. Log in into database by using the admin credentials and run the following queries.
+				CREATE LOGIN <login_name> WITH PASSWORD = '<password>';
+				USE msdb;
+				CREATE USER <user_name> FOR LOGIN <login_name>;
+				GRANT SELECT ON msdb.dbo.rds_fn_get_audit_file TO <user_name>;
+			b. In the input section, add the database name as 'msdb'
+      				jdbc_connection_string => "jdbc:sqlserver://<SERVER_NAME>:<PORT>;databaseName=<DB_NAME>;
+			c. Use the login credentials created in the previous step as the jdbc_username and password.
+					jdbc_user => "<login_name>"
+					jdbc_password => "<password>"
+
 
 ## 3. Configuring the MSSQL filters in Guardium
 
