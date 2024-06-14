@@ -2,6 +2,8 @@
 
 Welcome to the configuration guide for integrating a Universal Connector (UC) with Kafka on Guardium. This guide provides step-by-step instructions to set up the necessary configurations and installations for seamless communication between Guardium and Kafka.
 
+**Note**: Do not install Sniffer patched on Kafka nodes. 
+
 
 ## Table of Contents
 
@@ -387,8 +389,10 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 
 ## 5. Limitations
 
-1. Client hostname is not captured by EDB PostgresSQL native audit on traffic of some db client tools, therefore can not be reported in Guardium.
+* Client hostname is not captured by EDB PostgresSQL native audit on traffic of some db client tools, therefore can not be reported in Guardium.
 
-2. Source program is not captured by EDB PostgresSQL native audit on failed login attempt, therefore can not be reported in Guardium.
+* Source program is not captured by EDB PostgresSQL native audit on failed login attempt, therefore can not be reported in Guardium.
 
-3. Operating system user is not captured by EDB PostgresSQL native audit, therefore can not be reported in Guardium.
+* Operating system user is not captured by EDB PostgresSQL native audit, therefore can not be reported in Guardium.
+
+* In any Kafka cluster that is deployed with 3 or more Kafka nodes, if only 1 node is up and running, then there is loss of data.
