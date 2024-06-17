@@ -68,7 +68,17 @@ and `SNOWFLAKE.ACCOUNT_USAGE.LOGIN_HISTORY`.
 You can authenticate to the database by using a key pair instead of password authentication.
 For information about setting up key pair authentication, see [KeyPairAuth_README](KeyPairAuth_README.md).
 
-## 5. Configuring the Snowflake filter in Guardium
+## 5. Configuring the Proxy (Optional)
+
+If the database has to be connected through an intermediate proxy, the jdbc connection string has
+to be configured like below,
+
+```text
+jdbc_connection_string => "jdbc:snowflake://<id>.<region>.<provider>.snowflakecomputing.com/?warehouse=<warehouse>
+&db=<database>&useProxy=true&proxyHost=<proxy_hostname/proxy_ip_address>&proxyPort=<proxy_port>" 
+```
+
+## 6. Configuring the Snowflake filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector
 identifies and parses received events, and then converts them to a standard Guardium format. The output of the
 universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements.
@@ -127,7 +137,7 @@ you can turn it off. To do this, set the value to `false` for the following two 
     After it is validated, it appears in the Configure Universal Connector page.
 
 
-## 5. JDBC load-balancing configuration
+## 7. JDBC load-balancing configuration
 1. For Query auditing:
     * the load can be distributed between two machines based on the even and the odd values of `EXECUTION_TIME`.
     * **Procedure**,
