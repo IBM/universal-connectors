@@ -111,10 +111,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * Download the [logstash-filter-neptune_guardium_filter.zip](./logstash-filter-neptune_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
-* While upgrading from v11.5 p535 or SP6505 to p540, upload [Neptune updated plugin](./logstash-filter-neptune_guardium_filter.zip).
-
 * For Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12p15 download the [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip)
-
 
 
 #### Procedure
@@ -122,9 +119,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
  1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
  2. Enable the connector if it is already disabled, before uploading the UC.
  3. Click Upload File 
- 	*  Select the offline [logstash-filter-neptune_guardium_filter.zip](./logstash-filter-neptune_guardium_filter.zip) plug-in. After it is uploaded, click **OK**. 
- or Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.		
-	*  If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12p15, select the offline [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click **OK**.
+ 	*  Select the Neptune filter plug-in that you downloaded from the 'Before you begin section' and click OK. This step is not required for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.	
+	*  If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12p15, select the Cloudwatch logs plug-in that you downloaded from the 'Before you begin' section and click OK.
  4. Click the Plus icon to open the Connector Configuration dialog box.
  5. Type a name in the Connector name field.
  6. Update the input section to add the details from [Neptune.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-neptune-aws-guardium/neptune.conf) file's input  part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
