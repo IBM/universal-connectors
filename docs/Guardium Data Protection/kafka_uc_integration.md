@@ -69,11 +69,13 @@ For more information, see [Installing an appliance certificate to avoid a browse
 
 1. On the **Guadium Managed Unit** machine, go to **Setup** > **Tools and Views** > **Configure Universal Connector** page.
 
-2. Click **Add** icon to add a new configuration.
+    **Important Note**: Ensure that **Guardium Universal Connector** is enabled. If the connnect if disabled, you would be able to add new configuration but the configuration will fail. 
 
-3. Select the **EDB PostgreSQL using kafka (high volume)** connector template. 
+3. Click **Add** icon to add a new configuration.
 
-4. In the **Connector Name** field, enter a unique connector name. 
+4. Select the **EDB PostgreSQL using kafka (high volume)** connector template. 
+
+5. In the **Connector Name** field, enter a unique connector name. 
 
    Ensure the name does not contain spaces and special characters.
 
@@ -81,7 +83,7 @@ For more information, see [Installing an appliance certificate to avoid a browse
 
 Your UC is now configured and ready to receive new events from the datasource.
 
-**Note**: To ensure data failover and loadbalancing, define same configuration on another Kafka node.
+**Note**: To ensure data failover and loadbalancing, define same configuration name on the Managed Unit on all Universal Connector in same Kafka Cluster. 
 
 
 ## 2. Configuring native audit and rsyslog on Datasource Server
