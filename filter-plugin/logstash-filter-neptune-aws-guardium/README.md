@@ -109,9 +109,9 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * You must have permission for the S-Tap Management role. The admin user includes this role by  default.
 
-* Download the [logstash-filter-neptune_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-neptune_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+* Download the [logstash-filter-neptune_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-neptune_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
-* While upgrading from v11.5 p535 or SP6505 to p540, upload [Neptune updated plugin](https://github.com/IBM/universal-connectors/releases/download/v1.5.4/logstash-filter-neptune_guardium_filter.zip).
+* While upgrading from v11.5 p535 or SP6505 to p540, upload [Neptune updated plugin](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-neptune_guardium_filter.zip).
 
 * For Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12p15 download the [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip)
 
