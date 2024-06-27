@@ -149,7 +149,46 @@ statement = SELECT [...] AND session_id%2= 0 # on other collector: session_ID%2=
 These language codes should be used when Guardium is familiar with the data source (DB) and should parse the command, otherwise, specify "FREE_TEXT" and in type, specify "CONSTRUCT", and send a parsed command in construct.
 **DB protocol:** For Databases that have built-in error text available (usually has, when you specify Language code), set DB protocol in Exception to the value in the DB Protocol column below to take advantage of the error text.
 
-
+| Language code | DB Protocol (on error) | -                                  | -      |
+|---------------|----------------------|------------------------------------|--------|
+| MSSQL         | MS SQL SERVER        |                                    |        |
+| SYB           | SYBASE               | SYBASE ANYWHERE                    |        |
+| ORACLE        | ORACLE               |                                    |        |
+| DB2           | DB2                  | DB2 I?                             | DB2/Z? |
+| INFX          | INFORMIX             | IBM INFORMIX?                      |        |
+| MYSQL         | MYSQL                |                                    |        |
+| TRD           | TERADATA             |                                    |        |
+| HADOOP        | HADOOP               |                                    |        |
+| PGRS          | POSTGRESQL           |                                    |        |
+| MSSP          | SAP HANA             |                                    |        |
+| OPTIM_AUDIT   | N/A                  |                                    |        |
+| OPTIM_REDACT  | N/A                  |                                    |        |
+| BIG_INSIGHTS  | N/A                  |                                    |        |
+| MONGO         | MONGODB              |                                    |        |
+| CASS          | CASSANDRA            |                                    |        |
+| EL_SEARCH     | ELASTIC SEARCH       |                                    |        |
+| ASTER         | N/A                  |                                    |        |
+| GPLUM         | GREENPLUMDB          |                                    |        |
+| COUCH         | N/A                  |                                    |        |
+| MARIADB       | MARIADB              |                                    |        |
+| FSM           | N/A                  |                                    |        |
+| MAGEN         | N/A                  |                                    |        |
+| HIVE          | HIVE                 |                                    |        |
+| ACCUMULO      | N/A                  |                                    |        |
+| IMPALA        | N/A                  |                                    |        |
+| VRTC          | VERTICA              |                                    |        |
+| MEMSQL        | N/A                  |                                    |        |
+| MYSQL_X       | N/A                  |                                    |        |
+| COUCHB        | COUCHBASE            |                                    |        |
+| REDIS         | REDIS                | No support for built-in error text |        |
+| COCKROACH     | SNOWFLAKE            |                                    |        |
+| ?             | AMAZON DYNAMODB      |                                    |        |
+| ?             | NEO4J                |                                    |        |
+| ?             | WGPB                 |                                    |        |
+| ?             | IBM ISERIES          |                                    |        |
+| ?             | FTP                  |                                    |        |
+| ?             | GDM                  |                                    |        |
+| ?             | CIFS                |                                    |        |
 
 
 
