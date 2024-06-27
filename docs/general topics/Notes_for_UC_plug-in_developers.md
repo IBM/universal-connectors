@@ -128,7 +128,7 @@ statement = SELECT [...] AND session_id%2= 0 # on other collector: session_ID%2=
 ## Performance testing
 
 * Try to use the tools and methods that Ora and Gene referred you to, if possible and helping. If not, develop a script that will replicate the process (insert events to data source then send to Guardium, or only send events to Guardium from static log file – skipping the datasource – if you feel there's a performance bottleneck when inserting data into the datasource).  
-* Use the Logstash metrics plugin to sample performance; aim for 5K events/sec on normal Guardium machine (Atlanta). This threshold may change in the future as a result of changes in UC infrastructure. If you do not reach this level, advise with Gene (gmaystro@us.ibm.com; CC Tal) regarding performance tuning suggestions. 
+* Use the Logstash metrics plugin to sample performance; aim for 5K events/sec on normal Guardium machine (Atlanta). This threshold may change in the future as a result of changes in UC infrastructure. If you do not reach this level, advise with Gene regarding performance tuning suggestions. 
 * Send report with performance test details that include the experiment(s) steps, repetitions, settings, and results. 
 * See also Filebeat and database settings that were used by Guardium testing department, in https://ibm.ent.box.com/folder/154711504977 (access to box folder required).  
 
