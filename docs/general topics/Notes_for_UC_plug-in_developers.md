@@ -140,7 +140,7 @@ statement = SELECT [...] AND session_id%2= 0 # on other collector: session_ID%2=
 * Remove hardcoding of values, cerificates, passwords use in the repository.
 * Add dependencies into gradle.build, not JARS in libs 
 * Change UI part, mostly. traffic utils (sql folder) should be used for unique datasources that do not have SQL syntax. 
-* Connection to cloud - certificate ….   
+* Create Connection to cloud and add necessary certificates if needed.
 * Create Jenkins job to test the automation 
 * Initiate demo when the automation test is ready. Add README.
 
