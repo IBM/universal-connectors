@@ -133,7 +133,7 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 4. Click Upload File and select the key.json file. After it is uploaded, click OK.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
-7. Update the input section to add the details from [spanner_with_pubsub.conf](spanner_with_pubsub.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the input section to add the details from [spanner_with_pubsub.conf](spanner_with_pubsub.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. For more information, refer [input plugin's repository](../../input-plugin/logstash-input-google-pubsub).
 8. Update the filter section to add the details from [spanner_with_pubsub.conf](spanner_with_pubsub.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 9.  The 'type' fields should match in input and filter configuration sections. This field should be unique for every individual connector added.
 10. Click Save.Guardium validates the new connector and displays it in the Configure Universal Connector page.
