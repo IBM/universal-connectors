@@ -97,7 +97,7 @@ public class Record {
 
     /**
      * Sets the {@link Time} the command was executed.
-     * 
+     *
      * @param time
      */
     public void setTime(Time time) {
@@ -111,7 +111,7 @@ public class Record {
     /**
      * Sets a [mandatory] session ID, which should uniquely identify a specific connection to
      * the data source by a specific user.
-     * 
+     *
      * @param sessionId
      */
     public void setSessionId(String sessionId) {
@@ -125,7 +125,7 @@ public class Record {
     /**
      * Sets {@link SessionLocator}, which describes location details about the data source
      * connection
-     * 
+     *
      * @param sessionLocator
      */
     public void setSessionLocator(SessionLocator sessionLocator) {
@@ -139,7 +139,7 @@ public class Record {
     /**
      * Sets an {@link Accessor} that describes the user who tried to access the data and
      * sets up the grammar parsing responsibility and language.
-     * 
+     *
      * @param accessor
      */
     public void setAccessor(Accessor accessor) {
@@ -153,7 +153,7 @@ public class Record {
     /**
      * Sets the name of the database, schema, or the container within the data
      * source that that relates to the command.
-     * 
+     *
      * @param dbName
      * @see Accessor#setServiceName(String)
      */
@@ -167,7 +167,7 @@ public class Record {
 
     /**
      * Sets the name of the application user. (Optional)
-     * 
+     *
      * @param appUserName
      */
     public void setAppUserName(String appUserName) {
@@ -180,7 +180,7 @@ public class Record {
 
     /**
      * Sets {@link Data}, if the data source command succeeded. 
-     * 
+     *
      * @param data
      */
     public void setData(Data data) {
@@ -193,7 +193,7 @@ public class Record {
 
     /**
      * Sets {@link ExceptionRecord}, if data source commands failed, with details about the error. 
-     * 
+     *
      * @param exception
      */
     public void setException(ExceptionRecord exception) {
@@ -216,6 +216,21 @@ public class Record {
         this.connectorId = connectorId;
     }
 
+    /**
+     * Originally added this param for GRD-80022 Teradata
+     *
+     */
+    private Integer recordsAffected;
+
+    public Integer getRecordsAffected() {
+        return recordsAffected;
+    }
+
+    public void setRecordsAffected(Integer recordsAffected) {
+        this.recordsAffected = recordsAffected;
+    }
+
+
     @Override
     public String toString() {
         return "Record{" +
@@ -229,6 +244,7 @@ public class Record {
                 ", accessor=" + accessor +
                 ", data=" + data +
                 ", exception=" + exception +
+                ", recordsAffected=" + recordsAffected +
                 '}';
     }
 }
