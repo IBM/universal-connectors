@@ -135,7 +135,9 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	*  If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12p15, select the offline [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click **OK**.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the **Connector name** field.
-6. To fetch the audit logs from s3 directly, use the details from the [redshift-over-s3.conf](redshift-over-s3.conf) file. To fetch the audit logs from Cloudwatch, use the details from the [redshift-over-cloudwatch.conf](redshift-over-cloudwatch.conf) file. Update the input section to add the details
+6. To fetch the audit logs from s3 directly, use the details from the [redshift-over-s3.conf](redshift-over-s3.conf) file. To fetch the audit logs from Cloudwatch, use the details from the [redshift-over-cloudwatch.conf](redshift-over-cloudwatch.conf) file. Update the input section to add the details.
+
+ **Note**: If you want to configure Cloudwatch with role_arn instead of access_key and secret_key then refer to the [Configuration for role_arn parameter in the cloudwatch_logs input plug-in](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-cloudwatch-logs/SettingsForRoleArn.md#configuration-for-role_arn-parameter-in-the-cloudwatch_logs-input-plug-in) topic.
     from the corresponding file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 7. To fetch the audit logs from s3 directly, use the details from the [redshift-over-s3.conf](redshift-over-s3.conf) file. To fetch the audit logs from Cloudwatch, use the details from the [redshift-over-cloudwatch.conf](redshift-over-cloudwatch.conf) file. Update the filter section to add the details
     from the corresponding file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
