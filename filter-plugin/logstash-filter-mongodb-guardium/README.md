@@ -156,7 +156,7 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
 -   Filebeat must be installed on your database server. For more information on installation, see [https://www.elastic.co/guide/en/beats/filebeat/current/setup-repositories.html\#\_yum](https://www.elastic.co/guide/en/beats/filebeat/current/setup-repositories.html#_yum). The recommended Filebeat version is 7.5.0 and higher.
 -   Native audit configuration is performed by the database admin.
 -   Filebeat cannot handle messages over approximately 1 GB. Make sure the MongoDB does not save files larger than this limit \(by using `logRotate`\). File messages that exceed the limit are dropped.
--   You can configure multiple collectors simultaneously by using GIM \([Configuring the GIM client to handle Filebeat and Syslog on MongoDB](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-configuring-gim-handle-filebeat-syslog-mongodb)\). If you configure collectors manually, you need to configure them individually.
+-   You can configure multiple collectors simultaneously by using GIM \([Configuring the GIM client to handle Filebeat and Syslog on MongoDB](https://github.com/IBM/universal-connectors/blob/main/docs/general%20topics/GIM.md). If you configure collectors manually, you need to configure them individually.
 -   For more information about MongoDB native audit, see [https://docs.mongodb.com/manual/core/auditing/](https://docs.mongodb.com/manual/core/auditing/).
 
 ### Procedure

@@ -17,8 +17,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## Documentation
 
 #### Note
-This version is compliant with GDP v11.4 and above.
-Please refer to the [input plugin's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
+This version is compliant with GDP v11.4 and above. Update the input section to add the details from the corresponding file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Please refer to the [input plugin's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
 
 ### Configuring Logging
 
