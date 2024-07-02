@@ -1,0 +1,122 @@
+{
+  "plugin_name": "intersystems iris over JDBC",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-intersystems-iris-guardium/README.md",
+  "input_name": "JDBC_input",
+  "input_parameters": [
+    {
+      "jdbc_connection_string": {
+        "type": "text",
+        "label": "Connection string"
+      },
+      "jdbc_driver_class": {
+        "type": "text",
+        "default": "com.intersystems.jdbc.IRISDriver",
+        "hidden": true
+      },
+      "schedule": {
+        "type": "text",
+        "default": "*/1 * * * *",
+        "hidden": true
+      },
+      "use_column_value": {
+        "type": "boolean",
+        "default": true,
+        "hidden": true
+      },
+      "tracking_column": {
+        "type": "text",
+        "default": "mytimestamp",
+        "hidden": true
+      },
+      "tracking_column_type": {
+        "type": "text",
+        "default": "timestamp",
+        "hidden": true
+      },
+      "statement_select": {
+        "type": "text",
+        "default": "UTCTimestamp as mytimestamp,Event,Username,ClientIPAddress,StartupClientIPAddress,SystemID,CSPSessionID,AuditIndex,Namespace,Description,OSUsername,EventData",
+        "label": "SELECT"
+      },
+      "statement_from": {
+        "type": "text",
+        "default": "%SYS.Audit",
+        "label": "FROM"
+      },
+      "statement_where": {
+        "type": "text",
+        "default": "UTCTimestamp > :sql_last_value order by UTCTimestamp asc",
+        "label": "WHERE"
+      },
+      "plugin_timezone": {
+        "type": "text",
+        "default": "utc",
+        "hidden": true
+      },
+      "jdbc_driver_library": {
+        "type": "text",
+        "default": "${LOGSTASH_DIR}/logstash-core/lib/jars/intersystems-jdbc-3.7.1.jar",
+        "hidden": true
+      },
+      "server_name": {
+        "type": "text",
+        "default": "NA",
+        "hidden": true
+      },
+      "account_id": {
+        "type": "text",
+        "default": "NA",
+        "hidden": true
+      },
+      "jdbc_validate_connection": {
+        "type": "boolean",
+        "default": false,
+        "hidden": true
+      },
+      "type": {
+        "type": "text",
+        "default": "test",
+        "hidden": true
+      },
+	  "Server_ip": {
+		  "type": "text",
+		  "label" : "Server Ip"
+	  },
+	  "enrollmentId": {
+        "type": "text",
+        "default": "NA",
+        "hidden": true
+      },
+	  "server_host_name": {
+        "type": "text",
+        "default": "NA",
+        "hidden": true
+      },
+	  "event_type": {
+        "type": "text",
+        "default": "NA",
+        "hidden": true
+      }
+	}
+  ],
+  "credentials": [
+    {
+      "jdbc_password": {
+        "type": "password",
+        "label": "password"
+
+      }
+    }
+  ],
+  "filter_name": "Guardium_Intersystems_Iris_filter",
+  "filter_parameters": [],
+  "auth_parameters": [
+    {
+      "guc_input_param_jdbc_user": {
+        "type": "text",
+        "label": "jdbc_user"
+      }
+    }
+  ],
+  "supported_platforms": ["on-premise"]
+}
