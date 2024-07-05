@@ -167,10 +167,10 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
    * If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12p15,  select the offline [cloudwatch_logs plug-in](../../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click **OK**.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the **Connector name** field.
-6. If the audit logs are to be fetched from CloudWatch, use the details from the [dynamodbCloudwatch.conf](DynamodbOverCloudwatchPackage/DynamoDB/dynamodbCloudwatch.conf)
+6. If the audit logs are to be fetched from CloudWatch, use the details from the [dynamodbCloudwatch.conf](../dynamodbCloudwatch.conf)
    file. If the audit logs are to be fetched from SQS, use the details
    from the [dynamodb_over_sqs.conf](DynamodbCloudwatchOverSQSPackage/DynamoDB/dynamodbOverSqs.conf) file. Update the input section to add the details from the corresponding file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. More details on how to configure the relevant input plug-in can be found [cloudwatch_logs](../../../input-plugin/logstash-input-cloudwatch-logs/README.md) and [sqs](../../../input-plugin/logstash-input-sqs/README.md)
-7. If the audit logs are to be fetched from CloudWatch, use the details from the [dynamodbCloudwatch.conf](DynamodbOverCloudwatchPackage/DynamoDB/dynamodbCloudwatch.conf)
+7. If the audit logs are to be fetched from CloudWatch, use the details from the [dynamodbCloudwatch.conf](../dynamodbCloudwatch.conf)
    file. But if the audit logs are to be fetched from SQS, use the details
    from the [dynamodbOverSqs.conf](DynamodbCloudwatchOverSQSPackage/DynamoDB/dynamodbOverSqs.conf) file. Update the filter section to add the details
    from the corresponding file's input part, omitting the keyword "filter{" at the beginning and its corresponding "}"
