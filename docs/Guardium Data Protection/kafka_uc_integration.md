@@ -387,6 +387,7 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 **Important Notes** 
 - Search for error messages related to omkafka. If everything is set up correctly, rsyslog should send the log messages to your Kafka broker
 - The steps may vary depending on your operating system and rsyslog version. For more accurate information, see the rsyslog documentation and the documentation specific to your distribution.
+- You can also use Command Line Interface (CLI) for various Kafka related functionality, such as create, edit, delete, get Kafka cluster, etc. For more information, see [GuardAPI and REST API commands](https://www.ibm.com/docs/en/guardium/12.x?topic=guardapi-rest-api-commands).
 
 
 ## 5. Limitations
