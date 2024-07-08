@@ -104,14 +104,14 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 * You must have permission for the S-Tap Management role.The admin user includes this role by default.
 * CouchDB-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection. versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-couchdb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-couchdb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-couchdb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.7/logstash-filter-couchdb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
   
 * Download the plugin filter configuration file [couchdb.conf](couchdb.conf).
 
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is disabled before uploading the UC plug-in.
-3. Click Upload File and select the offline [logstash-filter-couchdb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-couchdb_guardium_filter.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+3. Click Upload File and select the offline [logstash-filter-couchdb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.7/logstash-filter-couchdb_guardium_filter.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [couchdb.conf](couchdb.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
