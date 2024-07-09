@@ -23,6 +23,7 @@ public interface Constants {
 	public static final String USER_AGENT = "userAgent";
 	public static final String SOURCE_IP_ADDRESS = "sourceIPAddress";
 	public static final String TABLE_NAME = "tableName";
+	public static final String TABLE_ARN = "tableArn";
 	public static final String EVENT_NAME = "eventName";
 	public static final String EVENT_TIME = "eventTime";
 	public static final String REQUEST_PARAMETERS = "requestParameters";
