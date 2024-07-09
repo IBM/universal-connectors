@@ -27,6 +27,12 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 
 ## 1 Configuring UC on Guardium Data Protection 
 ### 1.1 Creating a Kafka Cluster on Guardium
+
+**Prerequisite**: Run the following command on the Command Line Interface to convert a Managed Unit into a Kafka node.
+```
+store unit type kafka-node
+```
+
 1. Log in to **Guardium Central Manager** by using your login credentials.
 
 2. Go to **Manage** > **Central Management** > **Kafka cluster management** page.
