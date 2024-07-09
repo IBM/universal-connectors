@@ -109,6 +109,11 @@ public class Parser {
 			if(requestParam.has(Constants.TABLE_NAME)){
 				tableName = requestParam.get(Constants.TABLE_NAME).getAsString();
 			}
+			else if(requestParam.has(Constants.TABLE_ARN)){
+				String tableArn = requestParam.get(Constants.TABLE_ARN).getAsString();
+				String arnTable[] = tableArn.split(":table/");
+				tableName = arnTable[1];
+			}
 	    }
 		return tableName;
 	}
