@@ -1,5 +1,5 @@
 ## SingleStore-Guardium Logstash filter plug-in
-### Meet SingleStore
+## Meet SingleStore
 * Tested versions: 8.7.1
 * Environment: On-premise, Iaas
 * Supported inputs: Filebeat (push)
@@ -45,8 +45,8 @@ Use the following command to retrieve the log files that are stored in the audit
 
 
 2. Configuring Filebeat  
-	To use Logstash to process additional data collected by Filebeat, configure Filebeat to use Logstash. To do so, modify the filebeat.yml file
-		**Note:** Search for the filebeat.yml file in the filebeat installation directory. You can also refer [Directory layout](https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html) to search the filebeat.yml file.  
+	To use Logstash to process additional data collected by Filebeat, configure Filebeat to use Logstash. To do so, modify the `filebeat.yml` file.  
+		**Note:** Search for the `filebeat.yml` file in the filebeat installation directory. You can also refer [Directory layout](https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html) to search the `filebeat.yml` file.  
 		
 	a. Update the filebeat.inputs section with the following parameters.
 	```text
@@ -65,9 +65,9 @@ Use the following command to retrieve the log files that are stored in the audit
 	**Note:** Add the tags to uniquely identify the SingleStore events from the rest.  
 
 	b. Configuring the output section.  
-		1. In the output section, disable the Elasticsearch output by commenting it out.  
-		2. Enable Logstash output by uncommenting the Logstash section.  For more information, see [Configure the Logstash output
-](https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output).  
+		&nbsp;&nbsp;1.In the output section, disable the Elasticsearch output by commenting it out.  
+		&nbsp;&nbsp;2. Enable Logstash output by uncommenting the Logstash section.  For more information, see [Configure the Logstash output
+](https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output).  <br><br>
 		**Note:** The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections. You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4).  
 		For example:  
 	```text
