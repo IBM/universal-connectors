@@ -1,4 +1,4 @@
-# SingleStore-Guardium Logstash filter plug-in
+## SingleStore-Guardium Logstash filter plug-in
 ### Meet SingleStore
 * Tested versions: 8.7.1
 * Environment: On-premise, Iaas
@@ -14,45 +14,40 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 
 
-## Enabling the audit logs:
+## 1. Enabling the audit logs
 
 ### Procedure
-	Start enabling audit logs in SingleStore
-		sdb-admin update-config --all --key "auditlog_level" --value "ALL-QUERIES-PLAINTEXT"
+1. Enable the audit logs.
+	```sdb-admin update-config --all --key "auditlog_level" --value "ALL-QUERIES-PLAINTEXT"```
 	
-	Restart the nodes
-		sdb-admin restart-node --all
+2. Restart the nodes.
+	```sdb-admin restart-node --all```
 
-	Check is configuration is saved and enabled
+3. Verify if the configuration is saved and enabled.
+	```SHOW GLOBAL VARIABLES LIKE 'audit%';```
+
+## 2. Viewing the audit logs configuration 
+
+	Use the following command to retrieve the log files that are stored in the auditlogsdir variable.
 		SHOW GLOBAL VARIABLES LIKE 'audit%';
 
-## 3. Viewing the audit logs configuration 
+**Note:** If you are using docker deployment, the logs directory(i.e. /var/lib/memsql) must be present outside the container.
 
-    logs file are stored in auditlogsdir variable that can be retrieved using the following command
-		SHOW GLOBAL VARIABLES LIKE 'audit%';
+## 3. Configuring Filebeat to push logs to Guardium
 
-	If using docker deployment, the logs directory need to be persisted outside the container
+	1.	Installing Filebeat
 
-## 4. Configuring Filebeat to push logs to Guardium
+		To install Filebeat on your system, refer to the [Filebeat quick start: installation and configuration](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#installation) topic.
 
-## a. Filebeat installation
+	2. Configuring Filebeat:
 
-### Procedure:
+		To use Logstash to process additional data collected by Filebeat, configure Filebeat to use Logstash. To do so, modify the filebeat.yml file
+		**Note:** Search for the filebeat.yml file in the filebeat installation directory. You can also refer [Directory layout](https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html) to search the filebeat.yml file.
 
-To install Filebeat on your system, follow the steps in this topic:
-    https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#installation
 
-## b. Filebeat configuration:
+1. Update the filebeat.inputs section with the following parameters.
 
-To use Logstash to perform additional processing on the data collected by Filebeat, we need to configure Filebeat to use Logstash. To do this, modify the filebeat.yml file which you can find inside the folder where filebeat is installed. Follow these instructions for finding the installation directory: https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
-
-### Procedure:
-
-1. Configuring the input section :-
-
-	• Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
-
-		filebeat.inputs:
+	filebeat.inputs:
 		- type: log
           enabled: true
 		  paths :  - /path/to/query.log
@@ -62,43 +57,42 @@ To use Logstash to perform additional processing on the data collected by Filebe
               pattern: '^\d+,'
               negate: true
               match: after
+		 tags : ["SingleStore"] 
+**Note:** Add the tags to uniquely identify the SingleStore events from the rest.
 
-	• Add the tags to uniquely identify the SingleStore events from the rest.
+		
 
-		tags : ["SingleStore"]
+2. Configuring the output section.
 
-2. Configuring the output section:
+	1.In the output section add the following parameters.
 
-		• Locate "output" in the filebeat.yml file, then add the following parameters.
+	2.Disable Elasticsearch output by commenting it out.
 
-		• Disable Elasticsearch output by commenting it out.
-
-		• Enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
-
+	3.Enable Logstash output by uncommenting the Logstash section. For more information, [see](https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output)
 		• For example:
-
-				output.logstash:
-					hosts: ["<host>:<port>"]
+			output.logstash:
+				hosts: ["<host>:<port>"]
+		
 		• The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections.
 
-		•You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
+		•You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4).
 ### Limitations
 
-	• Source Program is not part of the SingleStore logs
-	• Client IP can only be retrieved in login / logout actions 
-	• SQL Errors are not logged by SingleStore		   
+	• Source Program is not part of the SingleStore logs.
+	• Client IP can only be retrieved in login / logout actions.
+	• SQL Errors are not logged by SingleStore.
 
 
-#### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
+**Note:** For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
 
 
-## 5. Configuring the SingleStore filters in Guardium
+## 4. Configuring the SingleStore filters in Guardium
 
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector identifies and parses received events, and then converts them to a standard Guardium format. The output of the universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the SingleStore template.
 
 ### Before you begin
 
-• Configure the policies you require. See [policies](/docs/#policies) for more information.
+• Configure the [policies](/docs/#policies).
 
 • You must have permission for the S-Tap Management role. The admin user includes this role, by default.
 
