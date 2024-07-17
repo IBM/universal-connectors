@@ -17,71 +17,70 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## 1. Enabling the audit logs
 
 ### Procedure
-1. Enable the audit logs.
-	```sdb-admin update-config --all --key "auditlog_level" --value "ALL-QUERIES-PLAINTEXT"```
+1. Enable the audit logs.  
+	```text
+	sdb-admin update-config --all --key "auditlog_level" --value "ALL-QUERIES-PLAINTEXT"
+	```
 	
-2. Restart the nodes.
-	```sdb-admin restart-node --all```
+2. Restart the nodes.  
+	```text
+	sdb-admin restart-node --all
+	```
 
-3. Verify if the configuration is saved and enabled.
-	```SHOW GLOBAL VARIABLES LIKE 'audit%';```
+3. Verify if the configuration is saved and enabled.  
+	```text
+	SHOW GLOBAL VARIABLES LIKE 'audit%';
+	```
 
 ## 2. Viewing the audit logs configuration 
-
-	Use the following command to retrieve the log files that are stored in the auditlogsdir variable.
-		SHOW GLOBAL VARIABLES LIKE 'audit%';
+Use the following command to retrieve the log files that are stored in the auditlogsdir variable.  
+   ```text
+   SHOW GLOBAL VARIABLES LIKE 'audit%';
+   ```
 
 **Note:** If you are using docker deployment, the logs directory(i.e. /var/lib/memsql) must be present outside the container.
 
-## 3. Configuring Filebeat to push logs to Guardium
-
-	1.	Installing Filebeat
-
-		To install Filebeat on your system, refer to the [Filebeat quick start: installation and configuration](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#installation) topic.
-
-	2. Configuring Filebeat:
-
-		To use Logstash to process additional data collected by Filebeat, configure Filebeat to use Logstash. To do so, modify the filebeat.yml file
-		**Note:** Search for the filebeat.yml file in the filebeat installation directory. You can also refer [Directory layout](https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html) to search the filebeat.yml file.
+## 3. Configuring Filebeat to push logs to Guardium  
+1.	Installing Filebeat
+	To install Filebeat on your system, refer to the [Filebeat quick start: installation and configuration](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#installation) topic.
 
 
-1. Update the filebeat.inputs section with the following parameters.
-
+2. Configuring Filebeat:
+	To use Logstash to process additional data collected by Filebeat, configure Filebeat to use Logstash. To do so, modify the filebeat.yml file
+		**Note:** Search for the filebeat.yml file in the filebeat installation directory. You can also refer [Directory layout](https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html) to search the filebeat.yml file.  
+		
+	a. Update the filebeat.inputs section with the following parameters.
+	```text
 	filebeat.inputs:
 		- type: log
-          enabled: true
-		  paths :  - /path/to/query.log
-		  parsers:
-  		  - multiline:
-              type: pattern
-              pattern: '^\d+,'
-              negate: true
-              match: after
-		 tags : ["SingleStore"] 
-**Note:** Add the tags to uniquely identify the SingleStore events from the rest.
+		enabled: true
+		paths :  - /path/to/query.log
+		parsers:
+		- multiline:
+			type: pattern
+			pattern: '^\d+,'
+			negate: true
+			match: after
+		tags : ["SingleStore"] 
+	```
+	**Note:** Add the tags to uniquely identify the SingleStore events from the rest.
 
+	b. Configuring the output section.  
+		1.In the output section add the following parameters.  
+		2.Disable Elasticsearch output by commenting it out.  
+		3.Enable Logstash output by uncommenting the Logstash section.  For more information, [see](https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output)  
+		• The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections.  
+		• You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4).  
+		For example:  
+	```text
+	output.logstash:  
+		hosts: ["<host>:<port>"]  
+	```
 		
-
-2. Configuring the output section.
-
-	1.In the output section add the following parameters.
-
-	2.Disable Elasticsearch output by commenting it out.
-
-	3.Enable Logstash output by uncommenting the Logstash section. For more information, [see](https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output)
-		• For example:
-			output.logstash:
-				hosts: ["<host>:<port>"]
-		
-		• The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections.
-
-		•You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4).
-### Limitations
-
-	• Source Program is not part of the SingleStore logs.
-	• Client IP can only be retrieved in login / logout actions.
-	• SQL Errors are not logged by SingleStore.
-
+### Limitations  
+• Source Program is not part of the SingleStore logs.  
+• Client IP can only be retrieved in login / logout actions.  
+• SQL Errors are not logged by SingleStore.
 
 **Note:** For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
 
