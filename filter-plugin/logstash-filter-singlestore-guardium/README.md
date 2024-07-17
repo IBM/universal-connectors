@@ -63,7 +63,7 @@ Use the following command to retrieve the log files that are stored in the audit
 			match: after
 		tags : ["SingleStore"] 
 	```
-	**Note:** Add the tags to uniquely identify the SingleStore events from the rest.
+	**Note:** Add the tags to uniquely identify the SingleStore events from the rest.  
 
 	b. Configuring the output section.  
 		1.In the output section add the following parameters.  
@@ -102,7 +102,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 3. Click Upload File and select the offline [logstash-filter-singlestore_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.1/logstash-filter-neodb_guardium_filter.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
-6. Update the input section to add the details from the [singlestoreFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-SingleStore-guardium/SingleStoreFilebeat.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7. Update the filter section to add the details from the [singlestoreFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-SingleStore-guardium/SingleStoreFilebeat.conf)  file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+6. Update the input section to add the details from the [singlestoreFilebeat.conf](./singleStoreFilebeat.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from the [singlestoreFilebeat.conf](./singleStoreFilebeat.conf)  file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The "type" fields should match in the input and the filter configuration section. This field should be unique for  every individual connector added
 9. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
