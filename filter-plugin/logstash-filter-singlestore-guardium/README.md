@@ -66,9 +66,9 @@ Use the following command to retrieve the log files that are stored in the audit
 	**Note:** Add the tags to uniquely identify the SingleStore events from the rest.  
 
 	b. Configuring the output section.  
-		1.In the output section add the following parameters.  
-		2.Disable Elasticsearch output by commenting it out.  
-		3.Enable Logstash output by uncommenting the Logstash section.  For more information, [see](https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output)  
+		1. In the output section add the following parameters.  
+		2. Disable Elasticsearch output by commenting it out.  
+		3. Enable Logstash output by uncommenting the Logstash section.  For more information, [see](https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output)  
 		• The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections.  
 		• You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4).  
 		For example:  
