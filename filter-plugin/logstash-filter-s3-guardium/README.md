@@ -140,7 +140,7 @@ https://docs.aws.amazon.com/awscloudtrail/latest/userguide/send-cloudtrail-event
 To authorize outgoing traffic from Amazon Web Services (AWS) to Guardium, run these APIs:
 ```
 grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
-grdapi add_domain_to_universal_connector_allowed_domain
+grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 ```
 
 
