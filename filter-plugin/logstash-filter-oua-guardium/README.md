@@ -1,6 +1,6 @@
 # Oracle Unified Audit Universal Connector
  
-## Oracle Universal Connector plugin supports
+## Meet Oracle Unified Audit
 
 * Environments: On-prem, RDS in AWS, Oracle Autonomous Database in OCI
 
