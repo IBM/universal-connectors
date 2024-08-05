@@ -2,11 +2,15 @@
  
 ## Meet Oracle Unified Audit
 
+* Tested versions: 18,19
 * Environments: On-prem, RDS in AWS, Oracle Autonomous Database in OCI
 
    **Note**: Autonomous Database in OCI is supported only by Guardium Data Protection SqlGuard-12.0p7015_Bundle_May_20_2024.
-* Oracle versions: 18, 19 and 21
-* Guardium versions: Guardium Data Protection 11.4 and above
+* Supported inputs: Oracle Unified Audit (pull)
+* Supported Oracle versions: 18, 19, and 21
+* Supported Guardium versions:
+    * Guardium Data Protection: 11.4 and above 
+  
 
 ## Requirements
 
