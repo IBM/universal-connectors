@@ -4,7 +4,7 @@
 
 * Environments: On-prem, RDS in AWS, Oracle Autonomous Database in OCI
 
-   **Note**: Autonomous Database in OCI is supported only by Guardium Data Protection SqlGuard-12.0p7015_Bundle_May_20_2024.
+   **Note**: Autonomous Database in OCI is supported only by Guardium Data Protection SqlGuard-12.0p7015_Bundle_May_20_2024 and SqlGuard-11.0p545_Bundle_Jul_09_2024.
 * Oracle versions: 18, 19 and 21
 * Guardium versions: Guardium Data Protection 11.4 and above
 
@@ -50,9 +50,6 @@ Update the variables in Makefile for your environment's Java home and Logstash l
          CREATE USER guardium IDENTIFIED BY password;
          GRANT CONNECT, RESOURCE to guardium;
          GRANT SELECT ANY DICTIONARY TO guardium;
-         exec DBMS_NETWORK_ACL_ADMIN.APPEND_HOST_ACE(host => 'localhost',
-         ace => xs$ace_type(privilege_list => xs$name_list('connect',
-         'resolve'), principal_name => 'guardium', principal_type => xs_acl.ptype_db));
          ```
 
    - To verify your new user's privileges, connect to the Oracle instance that you planning to monitor using the name and credentials for your designated user and run the following statements:
