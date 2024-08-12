@@ -131,7 +131,9 @@ To build and create an updated GEM of this filter plug-in which can be installed
     
     ```LOGSTASH_CORE_PATH=/Users/taldan/logstash76/logstash-core```
 
-3. Run ```$ ./gradlew.unix gem --info``` to create the GEM (ensure you have JRuby installed beforehand, as described [here](https://www.ibm.com/docs/en/guardium/11.3?topic=connector-developing-plug-ins)).
+3. Run ```$ ./gradlew.unix gem --info``` to create the GEM.
+
+   **Note**: Ensure that JRuby is already installed. 
 
 ## Install
 To install this plug-in on your local developer machine with Logstash installed, issue this command:
@@ -200,7 +202,7 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
             delete"] } }'
             
 
-  - Auditing all commands can lead to excessive records. To prevent performance issues, make sure you have `authCheck` and `authenticate` log types, and any other commands you want to see. The filter parameters are an allowed list. They define what you see in the logs, not what is filtered from the logs. For more information about the MongoDB filter, see [https://docs.mongodb.com/manual/tutorial/configure-audit-filters/](https://docs.mongodb.com/manual/tutorial/configure-audit-filters/) and [Configuring Filebeat](https://www.ibm.com/docs/en/guardium/11.4?topic=source-send-get-data-from-data).
+  - Auditing all commands can lead to excessive records. To prevent performance issues, make sure you have `authCheck` and `authenticate` log types, and any other commands you want to see. The filter parameters are an allowed list. They define what you see in the logs, not what is filtered from the logs. For more information about the MongoDB filter, see [Configuring Audit Filters](https://docs.mongodb.com/manual/tutorial/configure-audit-filters/) and [Configuring Filebeat](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#installation).
 
       **Note:** The spaces in the configuration file are important, and must be located in the file as presented here.
 
@@ -240,7 +242,7 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
     c.  If you send multiple, different data sources from the same server on the same port:
 
 - Attach a different tag to each input log. Then, use the tags when you configure the connector
-- Use the tags when you configure the connector \([MongoDB auditing by using Filebeat connector template](https://www.ibm.com/docs/en/guardium/11.4?topic=guardium-mongodb-auditing-by-using-filebeat-connector-template)\)
+- Use the ```tags``` parameter from the following code while configuring the connector:
 
             
             # ============================== Filebeat inputs ===============================
