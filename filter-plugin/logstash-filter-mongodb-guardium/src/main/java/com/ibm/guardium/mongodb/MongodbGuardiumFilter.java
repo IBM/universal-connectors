@@ -103,6 +103,14 @@ public class MongodbGuardiumFilter implements Filter {
                             if (serverHost != null)
                                 record.getAccessor().setServerHostName(serverHost);
                         }
+
+                        //Setting source Program if available
+                        Optional<Object> optSourceProgram =
+                                Optional.ofNullable(e.getField("source_program"));
+
+                        if(optSourceProgram.isPresent()){
+                            record.getAccessor().setSourceProgram(optSourceProgram.get().toString());
+                        }
                         
                         // DbName
                         if (e.getField("dbname_prefix")!=null && !e.getField("dbname_prefix").toString().isEmpty()) {
