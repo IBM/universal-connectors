@@ -11,7 +11,8 @@ public enum AType {
     ROLE_CREATE("createRole"), ROLE_DROP("dropRole"), ROLE_UPDATE("updateRole"), ROLE_GRANT_PRIVILEGES("grantPrivilegesToRole"), ROLE_REVOKE_PRIVILEGES("revokePrivilegesFromRole"), ROLE_GRANT_ROLES("grantRolesToRole"), ROLE_REVOKE_ROLES("revokeRolesFromRole"),
     USER_CREATE("createUser"), USER_DROP("dropUser"), USER_UPDATE("updateUser"), USER_GRANT_ROLES("grantRolesToUser"), USER_REVOKE_ROLES("revokeRolesFromUser"),
     AUTHENTICATE("authenticate"),
-    AUTHCHECK("authCheck"),;
+    AUTHCHECK("authCheck"),
+    LOGOUT("logout");
 
 
     private static final HashMap<String, AType> allValuesByName = new HashMap<>();
