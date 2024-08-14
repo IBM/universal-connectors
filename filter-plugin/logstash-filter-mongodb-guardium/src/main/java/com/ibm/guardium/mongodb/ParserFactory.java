@@ -66,6 +66,9 @@ public class ParserFactory {
             case AUTHCHECK:
                 parser = new AuthCheckParser();
                 break;
+            case LOGOUT:
+                parser = new LoginParser();
+                break;
             default:
                 throw new Exception("Unsupported type "+aType);
         }
