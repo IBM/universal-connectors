@@ -1,0 +1,72 @@
+{
+  "plugin_name": "Azure Postgres over Event Hub",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-azure-postgresql-guardium/README.md",
+  "credentials": [""],
+  "input_name": "Azure EventHub input",
+  "input_parameters": [
+    {
+      "config_mode": {
+        "type": "text",
+        "label": "Config_mode",
+        "optional": false,
+        "hidden": false,
+        "sequence": 1
+      },
+      "event_hub_connections": {
+      	"type": "text",
+      	"label": "Event_hub_connections",
+        "optional": false,
+        "hidden": false,
+        "sequence": 2
+      },
+      "initial_position": {
+      	"type": "text",
+      	"label": "Initial position",
+        "optional": false,
+        "hidden": false,
+        "sequence": 3
+      },
+      "threads": {
+      	"type": "number",
+      	"label": "Threads",
+        "default": 16,
+        "optional": false,
+        "hidden": false,
+        "sequence": 4
+      },
+      "decorate_events": {
+      	"type": "boolean",
+      	"label": "Decorate events",
+        "optional": false,
+        "hidden": false,
+        "sequence": 5
+      },
+      "consumer_group": {
+      	"type": "text",
+      	"label": "Consumer group",
+        "optional": false,
+        "hidden": false,
+        "sequence": 6
+      },
+      "enrollment_id": {
+      	"type": "text",
+      	"label": "Enrollment id",
+        "optional": false,
+        "hidden": false,
+        "sequence": 7,
+        "exclusion_regex": "add_field => \\{ \"enrollment_id\" => \"param_enrollment_id\" \\}",
+        "exclusion_replacement": ""
+      },
+      "storage_connection": {
+      	"type": "text",
+      	"label": "Storage Connection",
+        "optional": false,
+        "hidden": false,
+        "sequence": 8
+      }
+    }
+  ],
+  "filter_name": "Guardium_AzurePostgreEventHub_filter",
+  "filter_parameters": [],
+  "supported_platforms": ["Azure"]
+}
