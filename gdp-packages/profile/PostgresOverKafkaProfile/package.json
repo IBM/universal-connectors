@@ -7,7 +7,7 @@
       "topic": {
         "type": "text",
         "default": "DEFAULT_TOPIC_NAME",
-        "label": "Kafka topic that will recieve data",
+        "label": "Kafka topic that will receive data",
         "optional": false,
         "hidden": true,
 	    "sequence": 1
