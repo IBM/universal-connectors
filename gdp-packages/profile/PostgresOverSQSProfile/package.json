@@ -1,0 +1,54 @@
+{
+  "plugin_name": "Postgres over SQS",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-postgres-guardium/AwsPostgres_README.md",
+  "credentials": ["AWS Credentials", "AWS Role ARN"],
+  "input_name": "SQS input",
+  "input_parameters": [
+    {
+      "region": {
+        "name":"region",
+        "type": "text",
+        "label": "AWS account region",
+        "optional": false,
+        "hidden": false,
+        "sequence": 1
+      },
+      "queue": {
+        "type": "text",
+        "label": "queue name",
+        "optional": false,
+        "hidden": false,
+        "sequence": 2
+      },
+      "account_id": {
+      	"type": "text",
+      	"label": "Account id",
+        "optional": false,
+        "hidden": false,
+        "sequence": 3,
+        "exclusion_regex": "add_field => \\{ \"account_id\" => \"param_account_id\" \\}",
+        "exclusion_replacement": ""
+      },
+      "instance_name": {
+      	"type": "text",
+      	"label": "Instance name",
+        "optional": false,
+        "hidden": false,
+        "sequence": 4,
+        "exclusion_regex": "add_field => \\{ \"instance\" => \"param_instance_name\" \\}",
+        "exclusion_replacement": ""
+      },
+      "codec": {
+      	"type": "text",
+      	"label": "Codec",
+        "default": "plain",
+        "optional": false,
+        "hidden": false,
+        "sequence": 5
+      }
+    }
+  ],
+  "filter_name": "Guardium PostgreSqs filter",
+  "filter_parameters": [],
+  "supported_platforms": ["AWS"]
+}

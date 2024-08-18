@@ -1,0 +1,12 @@
+{
+    "name": "Google Pub Sub",
+    "type": "input",
+    "pipeline_type": "pull",
+    "plugin_version": "6.0.11",
+    "developer": "Elastic",
+    "license": "Apache2.0",
+    "description": "Pulls event from Google Pub/Sub topic.",
+    "configuration_notes": "",
+    "documentation_path": "",
+    "action_on_change": "RESTART"
+  }

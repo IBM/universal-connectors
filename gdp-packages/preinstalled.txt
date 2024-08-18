@@ -1,0 +1,10 @@
+AuroraMysqlOverCloudwatchLogsProfile
+AwsMssqlOverJdbcProfile
+AzurePostgresOverEventHubProfile
+DynamoOverCloudwatchLogsProfile
+FirebaseOverGooglePubSubProfile
+MongoOverFilebeatProfile
+MysqlOverFilebeatProfile
+PostgresOverKafkaProfile
+PostgresOverSQSProfile
+S3OverCloudwatchLogsProfile
