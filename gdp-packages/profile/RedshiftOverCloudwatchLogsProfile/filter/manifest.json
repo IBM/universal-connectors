@@ -1,0 +1,15 @@
+{
+	"name": "Guardium_Redshift_filter",
+	"alias": "Redshift",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"distribute_to_many": "false", 
+	"plugin_version": "1.1.20",
+	"datasourceTypes": ["Redshift"],
+	"supported_input_plugins": ["Cloudwatch logs input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses Amazon Redshift database events into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-redshift-aws-guardium/README.md"
+}
