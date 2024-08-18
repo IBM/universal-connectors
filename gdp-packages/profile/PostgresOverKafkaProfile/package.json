@@ -1,0 +1,27 @@
+{
+  "plugin_name": "Postgres over Kafka",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-s3-guardium/README.md",
+  "input_name": "Kafka input",
+  "input_parameters": [
+    {
+      "topic": {
+        "type": "text",
+        "default": "DEFAULT_TOPIC_NAME",
+        "label": "Kafka topic that will recieve data",
+        "optional": false,
+        "hidden": true,
+	    "sequence": 1
+      },
+      "bootstrap_servers": {
+        "type": "text",
+        "default": "DEFAULT_BROKERS",
+        "label": "Brokers of kafka cluster",
+        "optional": false,
+        "hidden": true,
+        "sequence": 2
+      }
+    }
+  ],
+  "filter_name": "PostgreSQL Over Kafka",
+  "filter_parameters": []
+}
