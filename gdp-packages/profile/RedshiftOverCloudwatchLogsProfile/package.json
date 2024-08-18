@@ -1,7 +1,7 @@
 {
   "plugin_name": "Redshift over Cloudwatch Logs",
   "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-redshift-aws-guardium/README.md",
-  "credentials": ["AWS Credentials"],
+  "credentials": ["AWS Credentials", "AWS Role ARN"],
   "input_name": "Cloudwatch logs input",
   "input_parameters": [
     {
@@ -14,7 +14,7 @@
         "sequence": 1
       },
       "log_group": {
-        "type": "text",
+        "type": "string_list",
         "label": "log group",
         "optional": false,
         "hidden": false,
@@ -41,14 +41,25 @@
         "label": "Event filter (optional)",
         "optional": true,
         "hidden": false,
-        "sequence": 5
+        "sequence": 5,
+        "exclusion_regex": "param_event_filter",
+        "exclusion_replacement": ""
+      },
+      "cluster_name": {
+      	"type": "text",
+      	"label": "Cluster name",
+        "optional": false,
+        "hidden": false,
+        "sequence": 6,
+        "exclusion_regex": "add_field => \\{ \"cluster_name\" => \"param_cluster_name\" \\}",
+        "exclusion_replacement": ""
       },
       "account_id": {
       	"type": "text",
       	"label": "Account id",
         "optional": false,
         "hidden": false,
-        "sequence": 6,
+        "sequence": 7,
         "exclusion_regex": "add_field => \\{ \"account_id\" => \"param_account_id\" \\}",
         "exclusion_replacement": ""
       }
