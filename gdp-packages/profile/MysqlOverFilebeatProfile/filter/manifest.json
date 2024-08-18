@@ -1,0 +1,15 @@
+{
+	"name": "Guardium Mysql filter",
+	"alias": "Mysql",
+	"type": "filter",
+	"pipeline_type":"push",
+	"plugin_version": "1.0.0",
+	"distribute_to_many": "true", 
+	"datasourceTypes": "MySQL",
+	"supported_input_plugins": ["Filebeat input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses events and messages from the MySQL audit log into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mysql-guardium/README.md"
+}

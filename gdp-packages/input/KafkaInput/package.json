@@ -1,0 +1,12 @@
+{
+    "plugin_name": "Kafka input",
+    "help_link": "",
+    "input_name": "Kafka input",
+    "input_parameters": [
+    ],
+    "filter_name": "",
+    "filter_parameters": [],
+    "auth_parameters": [
+    ]
+}
+
