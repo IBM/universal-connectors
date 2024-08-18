@@ -50,3 +50,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+In order to generate gdp_plugins_templates.zip 
+run: 
+./gdp-packages/zipPackagesForGDP.sh
+the zip will be under gdp-packages
