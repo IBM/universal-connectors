@@ -20,8 +20,12 @@ public class Parser {
 			Record record = new Record();
 		
 			record.setSessionId(e.getField(Constants.Session_ID).toString());
-			
-			record.setDbName(e.getField(Constants.DATABASE_NAME).toString());
+
+			String databaseName = Constants.UNKNOWN_STRING;
+			if(e.getField(Constants.DATABASE_NAME) !=null){
+				databaseName=e.getField(Constants.DATABASE_NAME).toString();
+			}
+			record.setDbName(databaseName);
 			
 			record.setAppUserName(Constants.APP_USER_NAME);
 			
@@ -85,7 +89,13 @@ public class Parser {
 			accessor.setSourceProgram(e.getField(Constants.APPLICATION_NAME).toString());
 			accessor.setClient_mac(Constants.UNKNOWN_STRING);
 			accessor.setServerDescription(Constants.UNKNOWN_STRING);
-			accessor.setServiceName(Constants.UNKNOWN_STRING);
+
+			String databaseName = Constants.UNKNOWN_STRING;
+			if(e.getField(Constants.DATABASE_NAME) !=null){
+				databaseName=e.getField(Constants.DATABASE_NAME).toString();
+			}
+
+			accessor.setServiceName(databaseName);
 			accessor.setServerOs(Constants.UNKNOWN_STRING);
 			accessor.setServerHostName(e.getField(Constants.Server_Hostname).toString());
 			accessor.setOsUser(Constants.UNKNOWN_STRING);		
