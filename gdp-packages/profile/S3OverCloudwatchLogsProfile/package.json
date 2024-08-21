@@ -15,7 +15,7 @@
       },
       "log_group": {
         "type": "string_list",
-        "label": "log group",
+        "label": "Log group",
         "optional": false,
         "hidden": false,
         "sequence": 2
@@ -23,7 +23,7 @@
       "start_position": {
         "type": "text",
         "default": "end",
-        "label": "start position",
+        "label": "Start position",
         "optional": false,
         "hidden": false,
         "sequence": 3
@@ -39,10 +39,12 @@
       "event_filter": {
         "type": "text",
         "default": "{$.eventSource=\"s3.amazonaws.com\"}",
-        "label": "Event filter (optional)",
+        "label": "Event filter",
         "optional": true,
         "hidden": false,
-        "sequence": 5
+        "sequence": 5,
+        "exclusion_regex": "param_event_filter",
+        "exclusion_replacement": ""
       },
       "account_id": {
       	"type": "text",
