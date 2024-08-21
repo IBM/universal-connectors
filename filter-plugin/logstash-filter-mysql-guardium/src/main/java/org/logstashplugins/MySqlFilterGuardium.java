@@ -14,7 +14,6 @@ import co.elastic.logstash.api.FilterMatchListener;
 import co.elastic.logstash.api.LogstashPlugin;
 import co.elastic.logstash.api.PluginConfigSpec;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -36,16 +35,16 @@ import com.ibm.guardium.universalconnector.commons.GuardConstants;
 @LogstashPlugin(name = "mysql_filter_guardium")
 public class MySqlFilterGuardium implements Filter {
 
-    public static final String LOG42_CONF="log4j2uc.properties";
+    public static final String LOG42_CONF = "log4j2uc.properties";
     public static final String LOGSTASH_TAG_MYSQL_PARSE_ERROR = "_mysqlguardium_parse_error";
     public static final String LOGSTASH_TAG_MYSQL_IGNORE = "_mysqlguardium_ignore";
-    
+
     public static final String EXCEPTION_TYPE_SQL_ERROR_STRING = "SQL_ERROR";
     public static final String EXCEPTION_TYPE_LOGIN_FAILED_STRING = "LOGIN_FAILED";
-    
+
     private static final String QUERY_STRING = "Query";
     private static final String CONNECT_STRING = "Connect";
-    
+
     private static final String CLASS_TYPE_GENERAL = "general";
     private static final String CLASS_TYPE_CONNECTION = "connection";
     private static final String CLASS_TYPE_AUDIT = "audit";
@@ -53,8 +52,8 @@ public class MySqlFilterGuardium implements Filter {
     private static final String DATA_TYPE_TABLE_ACCESS = "table_access_data";
     private static final String DATA_TYPE_GENERAL = "general_data";
     private static final String DATA_TYPE_CONNECTION = "connection_data";
-    
-    private static final String MYSQL_AUDIT_START_SIGNAL = "mysql_audit_log: "; 
+
+    private static final String MYSQL_AUDIT_START_SIGNAL = "mysql_audit_log: ";
     public static final String DATA_PROTOCOL_STRING = "MySQL native audit";
     public static final String UNKNOWN_STRING = "";
     public static final String SERVER_TYPE_STRING = "MySql";
@@ -62,15 +61,15 @@ public class MySqlFilterGuardium implements Filter {
 
     private static final String DATE_FORMAT_ISO = "yyyy-MM-dd HH:mm:ss";
     private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat(DATE_FORMAT_ISO);
-    
+
     static {
         try {
             String uc_etc = System.getenv("UC_ETC");
             LoggerContext context = (LoggerContext) LogManager.getContext(false);
             File file = new File(uc_etc + File.separator + LOG42_CONF);
             context.setConfigLocation(file.toURI());
-        } catch (Exception e){
-            System.err.println("Failed to load log4j configuration "+e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Failed to load log4j configuration " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -83,7 +82,7 @@ public class MySqlFilterGuardium implements Filter {
     private String id;
     private String sourceField;
     private final static Set<String> LOCAL_IP_LIST = new HashSet<>(
-        Arrays.asList("127.0.0.1", "0:0:0:0:0:0:0:1", "::1"));
+            Arrays.asList("127.0.0.1", "0:0:0:0:0:0:0:1", "::1"));
 
     public MySqlFilterGuardium(String id, Configuration config, Context context) {
         // constructors should validate configuration options
@@ -96,7 +95,7 @@ public class MySqlFilterGuardium implements Filter {
         for (Event e : events) {
 
             if (log.isDebugEnabled()) {
-               log.debug("MySql filter: Got Event: " + logEvent(e));
+                log.debug("MySql filter: Got Event: " + logEvent(e));
             }
 
             String messageString = e.getField("message").toString();
@@ -107,109 +106,94 @@ public class MySqlFilterGuardium implements Filter {
             int mysqlIndex = messageString.indexOf(MYSQL_AUDIT_START_SIGNAL);
 
             if (mysqlIndex != -1) {
-                
+
                 String mysqlMsgString = messageString.substring(mysqlIndex + MYSQL_AUDIT_START_SIGNAL.length());
                 int msgStrLen = mysqlMsgString.length();
 
-                 // Remove last comma to get proper json string
-                if (mysqlMsgString.charAt(msgStrLen-1) == ',')
-                {
+                // Remove last comma to get proper json string
+                if (mysqlMsgString.charAt(msgStrLen - 1) == ',') {
                     // remove last character (,)
-                    mysqlMsgString = mysqlMsgString.substring(0, msgStrLen -1);
+                    mysqlMsgString = mysqlMsgString.substring(0, msgStrLen - 1);
                 }
 
                 try {
                     JsonObject inputJSON = (JsonObject) JsonParser.parseString(mysqlMsgString);
                     final String class_type = inputJSON.get("class").getAsString();
                     final String timestamp = inputJSON.get("timestamp").getAsString();
-                    final int connection_id = inputJSON.get("connection_id").getAsInt();
+                    final int connection_id;
 
-                    if ( class_type.equals(CLASS_TYPE_CONNECTION) 
-                        || class_type.equals(CLASS_TYPE_GENERAL)) {
-                            
+                    if (class_type.equals(CLASS_TYPE_CONNECTION)
+                            || class_type.equals(CLASS_TYPE_GENERAL)) {
+
                         Record record = new Record();
                         boolean validRecord = false;
 
                         record.setDbName(UNKNOWN_STRING);
-                        
-                        if (inputJSON.has(DATA_TYPE_CONNECTION)) {
-                            String eventField = inputJSON.get("event").getAsString();
-                            if (eventField.equals("connect")) {
-                                final JsonObject conn_data = inputJSON.get(DATA_TYPE_CONNECTION).getAsJsonObject();
-                                final int status = conn_data.get("status").getAsInt();
-                                final String dbName = conn_data.get("db").getAsString();
-                                
-                                record.setDbName(dbName);
-                                
-                                if (status != 0) {
-                                    // https://dev.mysql.com/doc/refman/8.0/en/error-message-components.html                                
-                                    ExceptionRecord exceptionRecord = new ExceptionRecord();
-                                    record.setException(exceptionRecord);
+                        String eventField = inputJSON.get("event").getAsString();
+                        if (inputJSON.has(DATA_TYPE_CONNECTION) && eventField.equals("connect")) {
 
-                                    exceptionRecord.setExceptionTypeId(EXCEPTION_TYPE_LOGIN_FAILED_STRING);
-                                    exceptionRecord.setDescription("Login Failed (" + status + ")"); 
-                                    exceptionRecord.setSqlString(UNKNOWN_STRING);
-                                    validRecord = true;
-                                }
+
+                            final JsonObject conn_data = inputJSON.get(DATA_TYPE_CONNECTION).getAsJsonObject();
+                            final int status = conn_data.get("status").getAsInt();
+                            final String dbName = conn_data.get("db").getAsString();
+
+                            record.setDbName(dbName);
+
+                            if (!dbName.isEmpty() && status == 0) {
+                                // setting serviceName in accessor when connect event occur
+                                record.setAccessor(parseAccessor(e, inputJSON));
+                                validRecord = true;
+                                updateRecord(e, inputJSON, record, timestamp);
+                            } else if (status != 0) {
+                                // https://dev.mysql.com/doc/refman/8.0/en/error-message-components.html
+                                ExceptionRecord exceptionRecord = new ExceptionRecord();
+                                record.setException(exceptionRecord);
+
+                                exceptionRecord.setExceptionTypeId(EXCEPTION_TYPE_LOGIN_FAILED_STRING);
+                                exceptionRecord.setDescription("Login Failed (" + status + ")");
+                                exceptionRecord.setSqlString(UNKNOWN_STRING);
+                                validRecord = true;
+                                updateRecord(e, inputJSON, record, timestamp);
                             }
-                        }                         
-                        else if (inputJSON.has(DATA_TYPE_GENERAL)) {
+                        } else if (inputJSON.has(DATA_TYPE_GENERAL)) {
                             final JsonObject gen_data = inputJSON.get(DATA_TYPE_GENERAL).getAsJsonObject();
-                            final String command = gen_data.get("command").getAsString(); 
+                            final String command = gen_data.get("command").getAsString();
                             final int status = gen_data.get("status").getAsInt();
-                        
+
                             if (command.equals(QUERY_STRING)) {
-                            
+
                                 final String query = gen_data.get("query").getAsString();
                                 if (status != 0) {
-                                    // https://dev.mysql.com/doc/refman/8.0/en/error-message-components.html                                
+                                    // https://dev.mysql.com/doc/refman/8.0/en/error-message-components.html
                                     ExceptionRecord exceptionRecord = new ExceptionRecord();
                                     record.setException(exceptionRecord);
 
                                     exceptionRecord.setExceptionTypeId(EXCEPTION_TYPE_SQL_ERROR_STRING);
-                                    exceptionRecord.setDescription("Error (" + status + ")"); 
+                                    exceptionRecord.setDescription("Error (" + status + ")");
                                     exceptionRecord.setSqlString(query);
                                     validRecord = true;
-                                }
-                                else {
-                                     Data data = new Data();
-                                     record.setData(data);
-                                     if (query != null)
-                                     {
-                                         data.setOriginalSqlCommand(query);
-                                         validRecord = true;
-                                     }
+                                    updateRecord(e, inputJSON, record, timestamp);
+                                } else {
+                                    Data data = new Data();
+                                    record.setData(data);
+                                    if (query != null) {
+                                        data.setOriginalSqlCommand(query);
+                                        validRecord = true;
+                                        updateRecord(e, inputJSON, record, timestamp);
+                                    }
                                 }
                             }
 
                         } // end general_data
-                        if (validRecord) {
-                            record.setSessionId(""+connection_id);
-                            record.setAppUserName(UNKNOWN_STRING);
-                                
-                            Time unixTime = getTimestamp(timestamp);
-                            record.setTime(unixTime);
-                                
-                            record.setSessionLocator(parseSessionLocator(e, inputJSON));
-                            record.setAccessor(parseAccessor(e, inputJSON));
-
-                            this.correctIPs(e, record);
-                                
-                            final GsonBuilder builder = new GsonBuilder();
-                            builder.serializeNulls();
-                            final Gson gson = builder.create();
-                            e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
-                        } // validRecord
-                        else {
+                        if (!validRecord) {
                             e.tag(LOGSTASH_TAG_MYSQL_IGNORE);
                         }
-                        
                     } // end general or connection data
                     else {
                         e.tag(LOGSTASH_TAG_MYSQL_IGNORE);
                     }
                 } catch (Exception exception) {
-                    // TODO log event removed? 
+                    // TODO log event removed?
                     //events.remove(e);
                     log.error("Error parsing mysql event " + logEvent(e), exception);
                     e.tag(LOGSTASH_TAG_MYSQL_PARSE_ERROR);
@@ -220,31 +204,56 @@ public class MySqlFilterGuardium implements Filter {
         return events;
     }
 
+    private void updateRecord(Event e, JsonObject inputJSON, Record record, String timestamp) throws ParseException {
+        final int connection_id;
+        if (inputJSON.has("connection_id") && !(inputJSON.get("connection_id").isJsonNull())) {
+            connection_id = inputJSON.get("connection_id").getAsInt();
+            record.setSessionId("" + connection_id);
+        } else {
+            record.setSessionId(UNKNOWN_STRING);
+        }
+
+        record.setAppUserName(UNKNOWN_STRING);
+
+        Time unixTime = getTimestamp(timestamp);
+        record.setTime(unixTime);
+
+        record.setSessionLocator(parseSessionLocator(e, inputJSON));
+        record.setAccessor(parseAccessor(e, inputJSON));
+
+        this.correctIPs(e, record);
+
+        final GsonBuilder builder = new GsonBuilder();
+        builder.serializeNulls();
+        final Gson gson = builder.create();
+        e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
+    }
+
     public static synchronized Time getTimestamp(String dateString) throws ParseException {
-        if (dateString == null){
+        if (dateString == null) {
             log.warn("DateString is null");
             return new Time(0, 0, 0);
         }
         Date date = DATE_FORMATTER.parse(dateString);
         ZonedDateTime zdt = ZonedDateTime.ofInstant(date.toInstant(), ZoneId.of("UTC"));
         long millis = zdt.toInstant().toEpochMilli();
-        int  minOffset = zdt.getOffset().getTotalSeconds()/60;
+        int minOffset = zdt.getOffset().getTotalSeconds() / 60;
         return new Time(millis, minOffset, 0);
     }
-        
+
     private static SessionLocator parseSessionLocator(Event e, JsonObject data) {
-        SessionLocator sessionLocator = new SessionLocator();       
+        SessionLocator sessionLocator = new SessionLocator();
         String serverIp = "0.0.0.0";
         int serverPort = SessionLocator.PORT_DEFAULT;
 
         if (e.getField("server_ip") instanceof String)
             serverIp = e.getField("server_ip").toString();
-                    
+
         sessionLocator.setClientIp(UNKNOWN_STRING);
         sessionLocator.setClientPort(SessionLocator.PORT_DEFAULT);
         sessionLocator.setClientIpv6(UNKNOWN_STRING);
 
-        if (Util.isIPv6(serverIp)){
+        if (Util.isIPv6(serverIp)) {
             sessionLocator.setServerIpv6(serverIp);
             sessionLocator.setIpv6(true);
             sessionLocator.setServerIp(UNKNOWN_STRING);
@@ -265,7 +274,7 @@ public class MySqlFilterGuardium implements Filter {
                 sessionLocator.setClientIpv6(address);
                 sessionLocator.setClientPort(port);
                 sessionLocator.setClientIp(UNKNOWN_STRING);
-            } else { // ipv4 
+            } else { // ipv4
                 sessionLocator.setIpv6(false);
                 sessionLocator.setClientIp(address);
                 sessionLocator.setClientPort(port);
@@ -281,7 +290,7 @@ public class MySqlFilterGuardium implements Filter {
         String sourceProgram = UNKNOWN_STRING;
         String osStr = UNKNOWN_STRING;
         String osUser = UNKNOWN_STRING;
-        
+
         if (e.getField("server_hostname") instanceof String)
             serverHostname = e.getField("server_hostname").toString();
 
@@ -291,18 +300,17 @@ public class MySqlFilterGuardium implements Filter {
         if (data.has("account")) {
             JsonObject login = data.getAsJsonObject("account");
             String user = login.get("user").getAsString();
-            if ("".equals(user) || user == null)
-            {
+            if ("".equals(user) || user == null) {
                 accessor.setDbUser("NA");
-            }
-            else
-            {
+            } else {
                 accessor.setDbUser(user);
             }
 
         }
-        
-       if (data.has(DATA_TYPE_CONNECTION)) {
+        // setting serviceName as empty if data is not connection object
+        accessor.setServiceName(UNKNOWN_STRING);
+
+        if (data.has(DATA_TYPE_CONNECTION)) {
             JsonObject connection_data = data.getAsJsonObject(DATA_TYPE_CONNECTION);
             if (connection_data.has("connection_attributes")) {
                 JsonObject connection_attribs = connection_data.getAsJsonObject("connection_attributes");
@@ -311,9 +319,15 @@ public class MySqlFilterGuardium implements Filter {
                 if (connection_attribs.has("os_user"))
                     osUser = connection_attribs.get("os_user").getAsString();
             }
+
+            final String event = data.get("event").getAsString();
+            if (event.equals("connect")) {
+                final String dbName = connection_data.get("db").getAsString();
+                accessor.setServiceName(dbName);
+            }
         }
- 
-        accessor.setServerHostName(serverHostname); 
+
+        accessor.setServerHostName(serverHostname);
         accessor.setSourceProgram(sourceProgram);
 
         accessor.setLanguage("MYSQL");
@@ -327,48 +341,44 @@ public class MySqlFilterGuardium implements Filter {
         accessor.setOsUser(osUser);
         accessor.setServerDescription(UNKNOWN_STRING);
         accessor.setServerOs(osStr);
-        accessor.setServiceName(UNKNOWN_STRING);
 
         return accessor;
     }
-    
-    private static String logEvent(Event event){
+
+    private static String logEvent(Event event) {
         try {
             StringBuffer sb = new StringBuffer();
             sb.append("{ ");
             boolean first = true;
             for (Map.Entry<String, Object> stringObjectEntry : event.getData().entrySet()) {
-                if (!first){
+                if (!first) {
                     sb.append(",");
                 }
-                sb.append("\""+stringObjectEntry.getKey()+"\" : \""+stringObjectEntry.getValue()+"\"");
+                sb.append("\"" + stringObjectEntry.getKey() + "\" : \"" + stringObjectEntry.getValue() + "\"");
                 first = false;
             }
             sb.append(" }");
             return sb.toString();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Failed to create event log string", e);
             return null;
         }
     }
-    
-   private void correctIPs(Event e, Record record) {
+
+    private void correctIPs(Event e, Record record) {
         // Note: IP needs to be in ipv4/ipv6 format
         SessionLocator sessionLocator = record.getSessionLocator();
-        
+
         if (sessionLocator == null)
-           log.error("SessionLocator is NULL");
-        
+            log.error("SessionLocator is NULL");
+
         String sessionServerIp;
         String sessionClientIp;
 
-        if (sessionLocator.isIpv6())
-        {
+        if (sessionLocator.isIpv6()) {
             sessionServerIp = sessionLocator.getServerIpv6();
             sessionClientIp = sessionLocator.getClientIpv6();
-        }
-        else
-        {
+        } else {
             sessionServerIp = sessionLocator.getServerIp();
             sessionClientIp = sessionLocator.getClientIp();
         }
@@ -379,7 +389,7 @@ public class MySqlFilterGuardium implements Filter {
             if (e.getField("server_ip") instanceof String) {
                 String ip = e.getField("server_ip").toString();
                 if (ip != null) {
-                    if (Util.isIPv6(ip)){
+                    if (Util.isIPv6(ip)) {
                         sessionLocator.setServerIpv6(ip);
                         sessionLocator.setIpv6(true);
                     } else {
@@ -393,21 +403,20 @@ public class MySqlFilterGuardium implements Filter {
         }
 
         if (LOCAL_IP_LIST.contains(sessionClientIp)
-            || sessionClientIp.equals("")
-            || sessionClientIp.equalsIgnoreCase("(NONE)")) {
+                || sessionClientIp.equals("")
+                || sessionClientIp.equalsIgnoreCase("(NONE)")) {
             // as clientIP & serverIP were equal
             if (sessionLocator.isIpv6()) {
                 sessionLocator.setClientIpv6(sessionLocator.getServerIpv6());
                 sessionLocator.setClientIp(UNKNOWN_STRING);
-            }
-            else {
+            } else {
                 sessionLocator.setClientIp(sessionLocator.getServerIp());
                 sessionLocator.setClientIpv6(UNKNOWN_STRING);
             }
         }
     }
-    
-    
+
+
     @Override
     public Collection<PluginConfigSpec<?>> configSchema() {
         // should return a list of all configuration options for this plugin
