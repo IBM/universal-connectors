@@ -15,7 +15,7 @@
       },
       "log_group": {
         "type": "string_list",
-        "label": "log group",
+        "label": "Log group",
         "optional": false,
         "hidden": false,
         "sequence": 2
@@ -23,7 +23,7 @@
       "start_position": {
         "type": "text",
         "default": "end",
-        "label": "start position",
+        "label": "Start position",
         "optional": false,
         "hidden": false,
         "sequence": 3
@@ -38,7 +38,7 @@
       },
       "event_filter": {
         "type": "text",
-        "label": "Event filter (optional)",
+        "label": "Event filter",
         "optional": true,
         "hidden": false,
         "sequence": 5,
