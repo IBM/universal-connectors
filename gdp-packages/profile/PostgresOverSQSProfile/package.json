@@ -15,7 +15,7 @@
       },
       "queue": {
         "type": "text",
-        "label": "queue name",
+        "label": "Queue name",
         "optional": false,
         "hidden": false,
         "sequence": 2

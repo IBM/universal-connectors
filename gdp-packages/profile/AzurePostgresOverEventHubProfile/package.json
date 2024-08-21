@@ -7,14 +7,14 @@
     {
       "config_mode": {
         "type": "text",
-        "label": "Config_mode",
+        "label": "Config mode",
         "optional": false,
         "hidden": false,
         "sequence": 1
       },
       "event_hub_connections": {
       	"type": "text",
-      	"label": "Event_hub_connections",
+      	"label": "Event hub connections",
         "optional": false,
         "hidden": false,
         "sequence": 2
