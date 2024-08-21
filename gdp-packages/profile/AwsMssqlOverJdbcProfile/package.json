@@ -25,14 +25,14 @@
       },
       "jdbc_connection_string": {
         "type": "text",
-        "label": "jdbc connection string",
+        "label": "JDBC connection string",
         "optional": false,
         "hidden": false,
         "sequence": 3
       },
       "jdbc_driver_class": {
         "type": "text",
-        "label": "jdbc driver class",
+        "label": "JDBC driver class",
         "optional": false,
         "hidden": true,
         "default":"com.microsoft.sqlserver.jdbc.SQLServerDriver",
@@ -40,7 +40,7 @@
       },
       "jdbc_driver_library": {
         "type": "BINARY",
-        "label": "jdbc driver library",
+        "label": "JDBC driver library",
         "optional": false,
         "hidden": false,
         "sequence": 5
@@ -71,7 +71,7 @@
       },
       "tracking_column_type": {
         "type": "text",
-        "label": "tracking column type",
+        "label": "Tracking column type",
         "default": "numeric",
         "optional": false,
         "hidden": false,
@@ -79,7 +79,7 @@
       },
       "tracking_column": {
         "type": "text",
-        "label": "tracking column",
+        "label": "Tracking column",
         "optional": false,
         "default": "updatedeventtime",
         "hidden": false,
@@ -97,21 +97,21 @@
         "type": "boolean",
         "default": false,
         "hidden": true,
-        "label": "validate connection",
+        "label": "Validate connection",
         "sequence": 12
       },
       "plugin_timezone": {
         "type": "text",
         "default": "utc",
         "hidden": true,
-        "label": "plugin timezone",
+        "label": "Plugin timezone",
         "sequence": 13
       },
       "use_column_value": {
         "type": "boolean",
         "default": true,
         "hidden": true,
-        "label": "use column value",
+        "label": "Use column value",
         "sequence": 14
       }
     }
