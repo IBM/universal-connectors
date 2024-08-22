@@ -1,11 +1,4 @@
 # Azure PostgreSQL-Guardium Logstash filter plug-in
-### Meet Azure PostgreSQL
-* Tested versions: 11
-* Environment: Azure
-* Supported inputs: Azure Event Hub (pull)
-* Supported Guardium versions:
-    * Guardium Data Protection: 11.4 and above
-    * Guardium Insights SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the azure postgreSQL audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
@@ -13,224 +6,164 @@ Currently, this plug-in will work only on IBM Security Guardium Data Protection,
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
-## Configuring the Azure PostgreSQL service
 
-There are following ways to get Azure PostgreSQL audit data:
+## 1.	Configuring the Azure PostgreSQL service
 
-	1. Azure Event Hub
-	2. Azure Storage
-	3. Log Analytics Workspace
-	4. Azure Partner Solution
+You can retrieve Azure PostgreSQL audit data in the following ways:
+1. Azure Event Hub
+2. Azure Storage
+3. Log Analytics Workspace
+4. Azure Partner Solution
 
-In this plugin we have used Azure Event Hub.
+For this plug-in, we used Azure Event Hub.
 
 
 ###	Procedure:
-
 1. Go to https://portal.azure.com/.
-   
-3. Click search bar.
-   
-5. Search for azure database for postgreSQL servers.
-   
-7. Click on 'Create' button.
-   
-9. Select server type.(here we use single server.)
-    
-11. Select Single server and click on create button and fill details in basic option.
-    
-13. In Basic option:
-			1. Select your subscription name.
-    
-			2. Select existing resource group or create new one.
-    
-			3. For new resource group click on create button  and enter name for resource group.
-    
-			4. Provide 'Server Name'. Keep 'Data source' as none ,select appropriate location and set 'Version=11'.
-    
-			5. Keep compute + storage as 'General Purpose, 4 vCore(s), 100 GB'.
-    
-			6. Provide server admin username and password.
-    
-8.	Click 'Review + Create' Button.
-   
-10.	Verify the configuration and then click on 'Create' Button.
-    
-12.	After successful creation of resource group, select resource button.
-    	
-13.	From settings,select connection security.
-
-14.	In firewall rules,select allow access to azure services to 'Yes'.
-
-15. Click on add current client IP address, and then click on Save.
-## Enabling Auditing
+2. Click the search bar.
+3. Search for azure database for postgreSQL servers.
+4. Click on **Create**.
+5. Select a resource type. (Here we selected single server.)
+6. Select a **server** > **create** and fill in the details for the **basic** option.
+7. In Basic option:
+   1. Select your subscription name.
+   2. Select an existing resource group or create a new one.
+   3. For a new resource group, click **create**  and enter a name for **resource group**.
+   4. Fille in the **Server Name** field. Keep **Data source** as **none** ,select the appropriate location, and set **Version=11**. 
+   5. Keep **compute + storage** as **General Purpose, 4 vCore(s), 100 GB**.
+   6. Provide a server admin username and password.
+8. Click 'Review + Create' Button.
+9. Verify the configuration and then click **Create**.
+10. After you successfully create a resource group, select **resource**.
+11. From **settings**, select **connection security**.
+12. In **firewall rules**, select **Yes** for **allow access to azure services**.
+13. Click **add current client IP address**, and then click **Save**.
+	
+	
+## 2. Enabling Auditing
 
 1.	From settings,select server parameter.
-
 2.	Search for shared_preload_libraries in server parameter.
-
 3.	Select shared_preload_libraries as PGAUDIT and save.
-
 4.	Go to overview and restart the server to apply the changes.
-
 5.	After installation of pgAudit, you can configure its parameters to start logging.
+      1. In **Settings**, select **server parameters** and set the server parameters as follows:
+         * log_checkpoints = off
+         * log_error_verbosity = VERBOSE 
+         * log_line_prefix = specify as per requirement but should include 
+         timestamp, client ip, client port, database username, database name, process id, application name,sql state. 
+         Refer from this link https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-LINE-PREFIX
+         (eg:- %t:%r:%u@%d:[%p]:%a:%e)
+         * pgaudit.log = DDL,FUNCTION,READ,WRITE,ROLE 
+         * pgaudit.log_catalog = off 
+         * pgaudit.log_client = off 
+         * pgaudit.log_parameter = off 
+6. Click **save**.
+			
 
-•	Under Settings, select server parameters and set server parameters as follows:
-
-       •	log_checkpoints = off
-			
-       •	log_connections = off
-       
-       •	log_disconnections = off
- 
-       •	log_duration = off
-  
-       •	log_error_verbosity = VERBOSE
-   
-       •	log_line_prefix = specify as per requirement but should include timestamp,client ip,client port,database 
-   username,database name,process id application name,sql state. Refer from this link https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-LINE-PREFIX 
-							(eg:- %t:%r:%u@%d:[%p]:%a:%e)
-       
-       •	pgaudit.log = DDL,FUNCTION,READ,WRITE,ROLE
-   
-       •	pgaudit.log_catalog = off
-			
-       •	pgaudit.log_client = off
-			
-       •	pgaudit.log_parameter = off
-       
-6.	Click save.
-	
-## Viewing the Audit logs
+## 3. Viewing the Audit logs
 		
 ### Azure Event Hub Connection:
 
-1.	Search event hub in search bar.
+1. Search for Storage Accounts in the search bar of the Azure portal.
+   (If you need your plug-in to read events from multiple Event Hubs, you need a storage account.)
+    1. Click **Create**.
+    2. Enter the required details in the presented form.
+    3. Once the details are reviewed, create a storage account.
+    4. Go into the created storage account.
+    5. In the menu, go to **Security + networking** > **Access keys**.
+    6. Choose any key (though key1 is preferable), and click **Show** in **Connection String**.
+    7. Copy the presented connection string and save it somewhere.
+2. Search "event hub" in search bar.
+3. Select **Create** to **create event hubs namespace**.
+4. To create a namespace:
+    1. Select the subscription in which you want to create the namespace.
+    2. Select the resource group you created in the previous step.
+    3. Enter a unique name for the namespace.
+    4. Select a location for the namespace.
+    5. Choose the appropriate pricing tier.(In this case, we selected basic.)
+    6. Leave the throughput units settings (or processing units settings for standard and premium tiers) as it is.
+    7. Select **Review + Create**.
+    8. Review the settings and select **create**.
+    9. After successful creation, the recently created namespace appears in the resource group.
 
-2.	Select create event hubs namespace button.
-		
-3.	To create namespace:
-   
-			1.Select the subscription in which you want to create the namespace.
-  	
-			2.Select the resource group you created in the previous step.
-  	
-			3.Enter a unique name for the namespace.
-  	
-			4.Select a location for the namespace.
-  	
-			5.Choose appropriate pricing tier.(here selected basic)
-  	
-			6.Leave the throughput units (or processing units for standard and premium tier) settings as it is.
-  	
-			7.Select Review + Create at the botton of the page.
-  	
-			8.Review the settings and select create.
-  	
-			9.After successful creation recently created namespace will appear in resource group.
-				
-5.	To create event hub :
-   
-   
-			1.Go to the Event Hubs Namespace page.
-  	
-			2.Click on '+ Event Hub' to add event hub.
-  	
-			3.Enter unique name for event hub, then select create.
-				
-7.	Connection string for a eventhub:
-   
-			1.	In the list of event hubs, select your event hub.
-  	
-			2.	On the Event Hubs instance page, from settings select Shared access policies on the left menu.
-  	
-			3.	In shared access policies click on add button from top.
-  	
-			4.	Give the name to policy and provide permission 'manage' and create the policy.
-  	
-			5.	Select primary key string from policy (it would be required in input plugin).
-				
-				
-9.	Stream logs to an event hub:
-    
-			1.	Go to server in your azure portal.
-  	
-			2.	From Monitoring, select Diagnostics settings option and do either of the following:
-  	
-						a.	To change existing settings, select Edit setting.
-  	
-						b.	To add new settings, select Add diagnostics setting.
-  	
-			3.	For adding new settings do following:
-  	
-						a.	Give name to setting.
-  	
-						b.	Select PostgreSQLLogs from categories.
-  	
-						c.	In Destination details choose stream to an event hub.
-  	
-						d.	In stream to event hub, select namespace name and event hub name as created above.Keep event hub policy name as it is.
-						e.	Select Save to save the setting.
+5. To create an event hub:
+    1. Go to the Event Hubs Namespace page.
+    2. Click **+ Event Hub** to add event hub.
+    3. Enter a unique name for the event hub, then select **create**.
 
-       
-11.	After about 15 minutes, verify that events are displayed in your event hub.
-		
-12.	Configurations needed to monitor traffic from single Event Hub, when UCs are configred on two 	separate Collectors
+6. Connection string for a eventhub:
+    1. In the list of event hubs, select your event hub.
+    2. On the Event Hubs instance page, go to **settings**  >  **shared access policies** > **Add**.
+    3. In shared access policies click **add**.
+    4. Provide the name to policy and choose **manage** from the permissions and create the policy.
+    5. Take the value of the primary key - connection string from the policy (this is required for an input plug-in).
+    6. The value of the primary key - connection string will be used in the parameter **event_hub_connections** in the input of the plug-in.
 
-  	Procedure :-
-			We need to do the following steps:
+7. Stream logs to an event hub:
+    1. Go to the server in your Azure portal.
+    2. From **Monitoring**, select **Diagnostics settings** and do either of the following:
+        1. Change existing settings by selecting **Edit setting**.
+        2. Add new settings by selecting **Add diagnostics setting**.
+        3. To add new settings, do the following:
+            1. Give the setting a name.
+            2. Select **PostgreSQL Server Logs** from **categories**.
+            3. In **Destination details**, choose **stream to an event hub**.
+            4. In **stream to event hub**, select the namespace name and event hub name that were above. Keep the event 
+               hub policy name as is.
+            5. Select **Save**.
+8. After about 15 minutes, verify that the events are displayed in your event hub.
 
-				1. We can create namespace in azure event hub as per given above but select standard pricing tier instead of basic in pricing tier configuration.
-				2. After creation of namespace we can create eventhub and connection string as per mention above.
-   	
-				3. After successful creation of eventhub we can add a consumer group to event hub as follows:
-   	
-					1. In the list of event hubs, select your event hub.
-   	
-					2. On the Event Hubs instance page, from entities select consumer group.
-   	
-					3. In consumer group click on add button from top.
-   	
-					4. Give the name to consumer group and create the consumer group.
-   	
-                                4. Stream logs to event hub as mentioned as above.
-   	
-				5. For gmachine , We have to use these consumer group name in input section of configuration file as follows:
-   	
-					1. On one machine in input section of configuration file in consumer group field give name as `$Default`.
-   	
-					2. On other machine in input section of configuration file in consumer group field give name of other consumer group.
-   	
-					3. Keep all other configurations as it is.
-		
+9. You also need the correct configurations to monitor traffic from a single event hub, when universal connectors are 
+configured on two separate collectors. <br />
+Procedure: 
+   1. Create a namespace in Azure event hub according to the procedure described previously, and then 
+select **standard**  instead of **basic** in the pricing tier configuration.
+   2. Then create an event hub and connection string according to the procedure described previously.
+   3. Add a consumer group to the event hub as follows:
+      1. In the list of event hubs, select your event hub.
+      2. On the Event Hubs instance page, go to **entities** >  **consumer group**.
+      3. In **consumer group**, click **Add**.
+      4. Assign the consumer group a name and create the consumer group.
+   4. Stream logs to the event hub according to the procedure described previously.
+   5. For the Guardium machine, use this consumer group name in the input section of the configuration file as follows:
+      1. For one machine, go to the consumer group field in the input section of the configuration 
+file and give the name `$Default`.
+      2. For the other machine, put the name of the other consumer group in the same location.
+      3. Keep all other configurations as is.
+
+#### Note
+There are some recommendations while configuring the plug-in to read from multiple event hubs. These recommendations 
+apply to both scenarios; when there is more than one connection string in `event_hub_connections` as well as when 
+there are multiple universal connector configurations in one Guardium machine.
+
+* When there is more than one connection string provided in the `event_hub_connections` parameter, 
+define both `storage_connection` and `consumer_group` parameters. They help to differentiate the files where timestamp 
+offsets are written. The `azure_event_hubs` input does not store the offset locally. 
+More details are here in the Logstash [documentation](https://www.elastic.co/guide/en/logstash/current/plugins-inputs-azure_event_hubs.html#plugins-inputs-azure_event_hubs-best-practices).
+
+Not following this recommendation may result into data loss.
 
 ## 4. Connecting to Azure postgreSQL Database:
 
 1. Start the psql and provide connection details.
-
-2. Enter the 'server name' (from overview window of server in azure portal)
-
-3. Enter 'database name' as 'postgres'.
-
+2. Enter the **server name** (from the overview window of the server in the Azure portal).
+3. Enter the database name as 'postgres'.
 4. Enter 'port' as 5432.
-
- 5. Provide the 'username' (you will get it from azure portal,click on overview and copy admin username) and ‘password’ that we had set while creating the database.
-
+5. Provide the 'username' (you can get it from the Azure portal. Click **overview** and copy the admin username and ‘password’ that you set when you created the database).
 6. Click enter.
-
 7. Enter command to give access to pgaudit.
-   
-        		GRANT pg_read_all_settings TO <admin-username>;(use admin-username which is given at the time of creation of database)
-				    eg:-GRANT pg_read_all_settings TO postgres; 
+    ```text
+    GRANT pg_read_all_settings TO <admin-username>;
+    (use admin-username which is given at the time of creation of database)
+    eg:-GRANT pg_read_all_settings TO postgres; 
+    ```
 
 #### Limitations
-• The azure postgreSQL plug-in does not support IPV6.
-
-• For sql errors and login failed,sql string is not available.
-
-• For primary or foreign key constraints violation, entry would be added to sql error report as well as full sql report.
-
-• Source program will be seen as blank in report for some clients(here for psql and pgadmin we get value but for visual studio it is blank).
+* The Azure PostgreSQL plug-in does not support IPV6.
+* For SQL errors and failed logins, SQL string is not available.
+* For primary or foreign key constraints violations, entry are added to both the SQL error report and the full SQL report.
+* The source program will be seen as blank in the report for some clients (in this case, values appear for psql and pgadmin but visual studio is blank).
 
 ## 5. Configuring the Azure PostgreSQL filters in Guardium
 
@@ -238,29 +171,18 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 
 #### Before you begin
-
-•  Configure the policies you require. See [policies](/docs/#policies) for more information.
-																	
-• You must have permission for the S-Tap Management role. The admin user includes this role by default.
-
-
-• Azure PostgreSQL-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
-
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-azure_postgresql_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-azure_postgresql_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
+* Configure the policies you require. See [policies](/docs/#policies) for more information.
+* You must have permission for the S-Tap Management role. The admin user includes this role by default.
+* Download the [logstash-filter-azure_postgresql_guardium_plugin_filter.zip](./logstash-filter-azure_postgresql_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 
 #### Procedure : 
 
-1.	On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-
-2.	Enable the universal connector if it is disabled.
-
-3.	Click Upload File and select the offline [logstash-filter-azure_postgresql_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-azure_postgresql_guardium_plugin_filter.zip) plugin. After it is uploaded,click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
-
-4.	Click the Plus sign to open the Connector Configuration dialog box.
-
-5.	Type a name in the Connector name field.
-
-6.	Update the input section to add the details from [azurepostgresql.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-postgresql-guardium/azurepostgresql.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7.	The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
-8.	Update the filter section to add the details from [azurepostgresql.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-postgresql-guardium/azurepostgresql.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-9.	Click **Save**.Guardium validates the new connector and displays it in the Configure Universal Connector page.
+1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
+2. First enable the universal connector if it is currently disabled.
+3. Click Upload File and select the offline [logstash-filter-azure_postgresql_guardium_plugin_filter.zip](./logstash-filter-azure_postgresql_guardium_plugin_filter.zip) plugin. After it is uploaded,click OK. This is not necessary for Guardium Data Protection v12.0 and later.
+4. Click the Plus sign to open the Connector Configuration dialog box.
+5. Type a name in the Connector name field.
+6. Update the input section to add the details from [azurepostgresql.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azurepostgresql.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added. This is no longer required starting v12p20 and v12.1.
+8. Update the filter section to add the details from [azurepostgresql.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azurepostgresql.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+9. Click **Save**. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.
