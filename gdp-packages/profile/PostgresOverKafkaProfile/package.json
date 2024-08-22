@@ -19,6 +19,22 @@
         "optional": false,
         "hidden": true,
         "sequence": 2
+      },
+      "max_poll_records": {
+        "type": "number",
+        "default": 1000,
+        "label": "Maximum poll records",
+        "optional": false,
+        "hidden": false,
+        "sequence": 3
+      },
+      "poll_timeout_ms": {
+        "type": "number",
+        "default": 500,
+        "label": "Poll timeout (milliseconds)",
+        "optional": false,
+        "hidden": false,
+        "sequence": 4
       }
     }
   ],
