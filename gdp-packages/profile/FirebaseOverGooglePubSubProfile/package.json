@@ -1,6 +1,6 @@
 {
   "plugin_name": "Firebase over Google Pubsub",
-  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-s3-guardium/README.md",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/README.md",
   "credentials": ["Google Cloud Credentials"],
   "input_name": "Google Pub Sub",
   "input_parameters": [
