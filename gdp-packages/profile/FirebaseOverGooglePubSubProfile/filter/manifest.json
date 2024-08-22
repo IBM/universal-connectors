@@ -9,6 +9,5 @@
 	"license": "Apache2.0",
 	"description": "Pulls Firebase audit data from Gooble Pub Sub.",
 	"configuration_notes": "",
-	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/README.md",
-	"action_on_change" : "RESTART"
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/README.md"
 }
