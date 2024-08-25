@@ -13,13 +13,11 @@ VERIFIED_FULL_PLUGINS_LIST="verified_UC_plugins_full_list.txt"
 
 PACKAGED_PLUGINS_DIR=dist/plugins
 GI_PLUGINS_DIR=dist/temp/GI
-GDP_PLUGINS_DIR=dist/temp/GDP
 
 PLUGINS_LISTS_DIR=build/
 
 
 GI_PLUGINS_TEMPLATES="gi_plugins_templates.zip"
-GDP_PLUGINS_TEMPLATES="gdp_plugins_templates.zip"
 originalPath=$(pwd)
 
 function zipPackage {
@@ -52,16 +50,11 @@ function zipPackage {
 
 mkdir -p ${PACKAGED_PLUGINS_DIR};
 mkdir -p ${GI_PLUGINS_DIR}
-mkdir -p ${GDP_PLUGINS_DIR}
 
 
 # go to the build direction and zip all the plug-ins packages includes the offline-package plugin (if exist)
 cd ${PLUGINS_LISTS_DIR}
 grep -v '^#' ${VERIFIED_FULL_PLUGINS_LIST} | while read -r line ; do zipPackage "$line" "${PACKAGED_PLUGINS_DIR}" ; done
-
-
-#zip the GDP plugins templates to a temp location
-grep -v '^#' ${VERIFIED_UC_GDP_PLUGINS_FILE} | while read -r line ; do zipPackage "$line" "${GDP_PLUGINS_DIR}" ; done
 
 #zip the GI plugins templates to a temp location
 grep -v '^#' ${VERIFIED_UC_GI_PLUGINS_FILE} | while read -r line ; do zipPackage "$line" "${GI_PLUGINS_DIR}" ; done
@@ -73,10 +66,8 @@ ls | grep -v '/$' | grep -v 'plugins_list.txt' > "plugins_list.txt"
 
 #zip all plugins zips (the templates only, not the offline plugin zip) and the names list into one zip
 cd ${originalPath}
-zip -j -r "${GDP_PLUGINS_TEMPLATES}" "${GDP_PLUGINS_DIR}"
 zip -j -r "${GI_PLUGINS_TEMPLATES}" "${GI_PLUGINS_DIR}"
 
 
 # remove the temporary directions
 rm -r ${originalPath}/${GI_PLUGINS_DIR}
-rm -r ${originalPath}/${GDP_PLUGINS_DIR}
