@@ -22,44 +22,27 @@ You can retrieve Azure PostgreSQL audit data in the following ways:
 3. Log Analytics Workspace
 4. Azure Partner Solution
 
-For this plug-in, we used Azure Event Hub.
+This plug-in uses Azure Event Hub as the data streaming service.
 
 
 ###	Procedure:
-1. Go to https://portal.azure.com/.
-2. Click the search bar.
-3. Search for azure database for postgreSQL servers.
-4. Click on **Create**.
-5. Select a resource type. (Here we selected single server.)
-6. Select a **server** > **create** and fill in the details for the **basic** option.
-7. In Basic option:
-   1. Select your subscription name.
-   2. Select an existing resource group or create a new one.
-   3. For a new resource group, click **create**  and enter a name for **resource group**.
-   4. Fille in the **Server Name** field. Keep **Data source** as **none** ,select the appropriate location, and set **Version=11**. 
-   5. Keep **compute + storage** as **General Purpose, 4 vCore(s), 100 GB**.
-   6. Provide a server admin username and password.
-8. Click 'Review + Create' Button.
-9. Verify the configuration and then click **Create**.
-10. After you successfully create a resource group, select **resource**.
-11. From **settings**, select **connection security**.
-12. In **firewall rules**, select **Yes** for **allow access to azure services**.
-13. Click **add current client IP address**, and then click **Save**.
-	
+There are multiple ways to install a Postgres server. For this example, we will assume that we already have a working Azure Postgres setup.
+For information regarding setup, please refer [quickstart-create-server-portal](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-create-server-portal) link. 
+
 	
 ## 2. Enabling Auditing
 
-1.	From settings,select server parameter.
+1.	On the database auditing page ,Go to **Settings**, select **server parameters**.
 2.	Search for shared_preload_libraries in server parameter.
 3.	Select shared_preload_libraries as PGAUDIT and save.
 4.	Go to overview and restart the server to apply the changes.
 5.	After installation of pgAudit, you can configure its parameters to start logging.
-      1. In **Settings**, select **server parameters** and set the server parameters as follows:
+      1. On the database auditing page, select **Settings**, select **server parameters** and set the server parameters as follows:
          * log_checkpoints = off
          * log_error_verbosity = VERBOSE 
          * log_line_prefix = specify as per requirement but should include 
-         timestamp, client ip, client port, database username, database name, process id, application name,sql state. 
-         Refer from this link https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-LINE-PREFIX
+         timestamp, client ip, client port, database username, database name, process id, application name,sql state.
+         For information regarding timestamp, client ip, client port, database username, database name, process id, application name,sql state parameters, see [Error Reporting and Logging](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-LINE-PREFIX).
          (eg:- %t:%r:%u@%d:[%p]:%a:%e)
          * pgaudit.log = DDL,FUNCTION,READ,WRITE,ROLE 
          * pgaudit.log_catalog = off 
