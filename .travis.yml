@@ -7,4 +7,9 @@ before_script:
   - echo "Running before script..."
 
 script:
-  - echo "Running tests..."
+  - if [ "$TRAVIS_BRANCH" == "build-gdp-zip-on-travis" ] && git diff --name-only $TRAVIS_COMMIT_RANGE | grep -q "gdp-packages"; then
+      echo "zipping GDP package templates"
+      ./gdp-packages/zipPackagesForGDP.sh;
+    else
+      echo "There was no change in gdp-packages on main branch."
+    fi
