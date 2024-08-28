@@ -35,10 +35,3 @@ cd "$TEMPLATES_DIR"
 zip -r "$TEMPLATES_DIR" . -x ".*"
 mv gdp_plugins_templates.zip ../.
 cd ..
-
-# publish zip into pre release
-if [ "$TRAVIS_BRANCH" == "build-gdp-zip-on-travis" ]; then
-  export TAG=$(cat version);
-  export UPLOAD_URL=$(curl -s "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases/tags/$TAG" | jq -r '.upload_url' | sed -e "s/{?name,label}//");
-  curl -X POST --data-binary "@gdp_plugins_templates.zip" -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/zip" "$UPLOAD_URL?name=gdp_plugins_templates.zip";
-fi
