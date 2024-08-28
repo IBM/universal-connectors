@@ -15,6 +15,7 @@ before_install:
 
   # Ensure directories are traversable
   - find . -type d -exec chmod 755 {} \;
+  - chmod -R 755 ./build
 
 script:
   - ./build/buildUCDefaultOfflinePackage.sh
