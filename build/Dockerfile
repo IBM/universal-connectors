@@ -143,6 +143,6 @@ RUN curl https://artifacts.elastic.co/downloads/logstash/${LOGSTASH_VERSION}.tar
     tar -xzf ${LOGSTASH_DIR}/${LOGSTASH_VERSION}.tar.gz  -C ${LOGSTASH_DIR} --strip-components=1 && \
 	rm ${LOGSTASH_DIR}/*.tar.gz
 
-ENV LS_JAVA_HOME=${JAVA_HOME}
+#ENV LS_JAVA_HOME=${JAVA_HOME}
 
 WORKDIR ${LOGSTASH_DIR}
