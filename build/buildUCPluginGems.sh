@@ -18,7 +18,6 @@ function buildUCPluginGem() {
   cd ${BASE_DIR}/$1
   adjustToLogstash8
   cp ${BASE_DIR}/build/gradle.properties .
-  chmod 755 gradlew
   ./gradlew --no-daemon test </dev/null
   if [ $? -eq 0 ]; then
     echo "Successfully test $1"
@@ -34,7 +33,6 @@ function buildUCPluginGem() {
 }
 
 function buildUCCommons() {
-  chmod -R 775 ${BASE_DIR}/common
   cd ${BASE_DIR}/common
   ./gradlew test
   if [ $? -eq 0 ]; then
