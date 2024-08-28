@@ -19,7 +19,7 @@ FROM ${DOCKER_REPO}/${IMAGE_TAG}
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
-RUN microdnf install -y tzdata openssl curl wget ca-certificates fontconfig glibc-langpack-en gzip tar git vim findutils \
+RUN microdnf install -y tzdata openssl curl wget ca-certificates fontconfig glibc-langpack-en zip gzip tar git vim findutils \
     && microdnf update -y; microdnf clean all
 
 LABEL name="Universal-Connector plugins" \

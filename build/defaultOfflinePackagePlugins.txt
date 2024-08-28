@@ -1,5 +1,2 @@
 filter-plugin/logstash-filter-mongodb-guardium/logstash-filter-mongodb_guardium_filter
-filter-plugin/logstash-filter-dynamodb-guardium/logstash-filter-dynamodb_guardium_plugin_filter
-filter-plugin/logstash-filter-pubsub-firestore-guardium/logstash-filter-fire_store_guardium_filter
-filter-plugin/logstash-filter-pubsub-mysql-guardium/logstash-filter-pubsub-mysql-guardium
 filter-plugin/logstash-filter-pubsub-postgresql-guardium/logstash-filter-pubsub-postgresql-guardium
