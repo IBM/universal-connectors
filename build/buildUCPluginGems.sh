@@ -34,6 +34,7 @@ function buildUCPluginGem() {
 }
 
 function buildUCCommons() {
+  chmod -R 775 ${BASE_DIR}/common
   cd ${BASE_DIR}/common
   ./gradlew test
   if [ $? -eq 0 ]; then
