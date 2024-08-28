@@ -3,7 +3,19 @@ language: java
 os:
   - linux
 
+before_install:
+  # Grant execute permissions to all gradlew files in the repository
+  - find . -type f -name "gradlew" -exec chmod 755 {} \;
+
+  # Make shell scripts executable
+  - find . -type f -name "*.sh" -exec chmod 755 {} \;
+
+  # Set other files to read/write for the owner and read-only for others
+  - find . -type f -exec chmod 644 {} \;
+
+  # Ensure directories are traversable
+  - find . -type d -exec chmod 755 {} \;
+
 script:
-  - chmod -R 755 ./build
   - ./build/buildUCDefaultOfflinePackage.sh
 #  - ./build/test.sh
