@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$TRAVIS_BRANCH" == "build-gdp-zip-on-travis" ] && $(git diff --name-only $TRAVIS_COMMIT_RANGE | grep -q "gdp-packages"); then
+if [ "$TRAVIS_BRANCH" == "main" ] && $(git diff --name-only $TRAVIS_COMMIT_RANGE | grep -q "gdp-packages"); then
   echo "zipping GDP package templates"
   ./gdp-packages/zipPackagesForGDP.sh
 
