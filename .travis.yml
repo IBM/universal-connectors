@@ -3,8 +3,7 @@ language: java
 os:
   - linux
 
-before_script:
-  - echo "Running before script..."
-
 script:
-  - echo "Running tests..."
+  - chmod -R 755 ./build
+  - ./build/buildUCDefaultOfflinePackage.sh
+#  - ./build/test.sh
