@@ -109,7 +109,7 @@ buildRubyPlugin() {
 
 # Main script execution
 echo "================ Starting Build Process ================="
-
+whoami
 ls -ld /usr/share/logstash
 ls -ld /usr/share/logstash/universal-connectors
 ls -ld /usr/share/logstash/universal-connectors/common
