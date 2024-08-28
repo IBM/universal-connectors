@@ -1,18 +1,3 @@
-# (C) Copyright IBM Corporation 2019, 2024
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
 # Arguments for the Docker repository and image tag
 ARG DOCKER_REPO
 ARG IMAGE_TAG
@@ -55,10 +40,7 @@ LABEL name="Universal-Connector plugins" \
 ENV LOGSTASH_VERSION=logstash-oss-8.3.3-linux-x86_64 \
     LOGSTASH_GIT_TAG=v8.3.3 \
     LOGSTASH_DIR=/usr/share/logstash \
-    LOGSTASH_SRC_DIR=/usr/share/logstashSRC \
-    JAVA_HOME=${LOGSTASH_DIR}/jdk \
-    PATH=${LOGSTASH_DIR}/jdk/bin:${LOGSTASH_DIR}/vendor/jruby/bin:$PATH \
-    LS_JAVA_HOME=${LOGSTASH_DIR}/jdk
+    LOGSTASH_SRC_DIR=/usr/share/logstashSRC
 
 # Create and set ownership for Logstash directories
 RUN groupadd -g 991 guardium \
@@ -79,6 +61,11 @@ USER root
 RUN curl -L https://artifacts.elastic.co/downloads/logstash/${LOGSTASH_VERSION}.tar.gz -o ${LOGSTASH_DIR}/${LOGSTASH_VERSION}.tar.gz \
     && tar -xzf ${LOGSTASH_DIR}/${LOGSTASH_VERSION}.tar.gz -C ${LOGSTASH_DIR} --strip-components=1 \
     && rm ${LOGSTASH_DIR}/${LOGSTASH_VERSION}.tar.gz
+
+# Set environment variables to use Java and JRuby bundled in Logstash
+ENV JAVA_HOME=${LOGSTASH_DIR}/jdk \
+    PATH=${LOGSTASH_DIR}/jdk/bin:${LOGSTASH_DIR}/vendor/jruby/bin:$PATH \
+    LS_JAVA_HOME=${LOGSTASH_DIR}/jdk
 
 # Set working directory
 WORKDIR ${LOGSTASH_DIR}
