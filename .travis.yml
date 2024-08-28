@@ -8,3 +8,4 @@ before_script:
 
 script:
   - ./gdp-packages/publishTemplatesGDP.sh
+  - echo "Test no need to publish templates"
