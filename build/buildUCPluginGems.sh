@@ -19,10 +19,10 @@ function buildUCPluginGem() {
   adjustToLogstash8
   cp ${BASE_DIR}/build/gradle.properties .
   chmod 755 gradlew
-  ./gradlew --no-daemon test </dev/null >/dev/null 2>&1
+  ./gradlew --no-daemon test </dev/null
   if [ $? -eq 0 ]; then
     echo "Successfully test $1"
-      ./gradlew --no-daemon gem </dev/null >/dev/null 2>&1
+      ./gradlew --no-daemon gem </dev/null
       if [ $? -eq 0 ]; then
         echo "Successfully build gem $1"
       else
@@ -35,7 +35,7 @@ function buildUCPluginGem() {
 
 function buildUCCommons() {
   cd ${BASE_DIR}/common
-  ./gradlew test >/dev/null 2>&1
+  ./gradlew test
   if [ $? -eq 0 ]; then
     echo "Successfully test uc-commons"
   else
@@ -43,7 +43,7 @@ function buildUCCommons() {
     exit 1
   fi
   #check if succeed
-  ./gradlew jar >/dev/null 2>&1
+  ./gradlew jar
   if [ $? -eq 0 ]; then
     echo "Successfully build jar uc-commons"
   else
