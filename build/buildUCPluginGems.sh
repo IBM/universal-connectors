@@ -33,9 +33,9 @@ buildUCPluginGem() {
 
   cp "${BASE_DIR}/build/gradle.properties" .
 
-  if ./gradlew --no-daemon test </dev/null; then
+  if ./gradlew --no-daemon test  </dev/null >/dev/null 2>&1; then
     echo "Successfully tested $plugin_dir"
-    if ./gradlew --no-daemon gem </dev/null; then
+    if ./gradlew --no-daemon gem  </dev/null >/dev/null 2>&1; then
       echo "Successfully built gem $plugin_dir"
     else
       echo "Failed to build gem $plugin_dir"
@@ -52,14 +52,14 @@ buildUCCommons() {
   echo "================ Building UC Commons ================="
   cd "${BASE_DIR}/common" || { echo "Failed to enter directory ${BASE_DIR}/common"; exit 1; }
 
-  if ./gradlew test; then
+  if ./gradlew test  </dev/null >/dev/null 2>&1; then
     echo "Successfully tested uc-commons"
   else
     echo "Failed to test uc-commons"
     exit 1
   fi
 
-  if ./gradlew jar; then
+  if ./gradlew jar  </dev/null >/dev/null 2>&1; then
     echo "Successfully built jar uc-commons"
   else
     echo "Failed to build jar uc-commons"
@@ -109,10 +109,6 @@ buildRubyPlugin() {
 
 # Main script execution
 echo "================ Starting Build Process ================="
-whoami
-ls -ld /usr/share/logstash
-ls -ld /usr/share/logstash/universal-connectors
-ls -ld /usr/share/logstash/universal-connectors/common
 
 buildUCCommons
 buildJavaPlugins
