@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOGSTASH_PLUGIN_CMD=/usr/share/logstash/bin/logstash-plugin
+LOGSTASH_PLUGIN_CMD=${LOGSTASH_DIR}/bin/logstash-plugin
 
 function addPluginToInstallationList() {
   line=$1
@@ -47,11 +47,12 @@ function prepareReleaseOfflinePackages() {
 while read line; do addPluginToInstallationList $line; done <build/defaultOfflinePackagePlugins.txt
 
 echo "Installing packages on Logstash..."
+cd ${LOGSTASH_DIR}
 ${LOGSTASH_PLUGIN_CMD} install *.gem
 
 removeUninstalledPluginFromPackagingList
 
 prepareReleaseOfflinePackages
 
-mkdir -p dist
-mv *.zip dist/
+mkdir -p universal-connectors/dist
+mv *.zip universal-connectors/dist/
