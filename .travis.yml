@@ -8,4 +8,4 @@ before_install:
 
 script:
   - ./build/buildUCDefaultOfflinePackage.sh
-#  - ./build/test.sh
+  - ./build/test.sh
