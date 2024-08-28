@@ -110,6 +110,10 @@ buildRubyPlugin() {
 # Main script execution
 echo "================ Starting Build Process ================="
 
+ls -ld /usr/share/logstash
+ls -ld /usr/share/logstash/universal-connectors
+ls -ld /usr/share/logstash/universal-connectors/common
+
 buildUCCommons
 buildJavaPlugins
 buildRubyPlugins
