@@ -3,9 +3,24 @@ language: java
 os:
   - linux
 
-before_install:
-  - chmod -R 777 .
+# Define stages to run jobs in parallel
+stages:
+  - build
+  - test
 
-script:
-  - ./build/buildUCDefaultOfflinePackage.sh
-  - ./build/test.sh
+jobs:
+  include:
+    - stage: build
+      name: "Build UC Default Offline Package"
+      script:
+        - ./build/buildUCDefaultOfflinePackage.sh
+
+    - stage: test
+      name: "Run Tests"
+      script:
+        - ./build/test.sh
+
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.gradle
