@@ -2,6 +2,7 @@
 
 BASE_DIR=$(pwd)
 IS_MAC_M1_BUILD=false  # Set to true for Mac M1 builds
+export GRADLE_OPTS="-Dorg.gradle.daemon=true"
 
 # Updates build.gradle to use logstash-core.jar instead of versioned logstash-core JARs.
 adjustToLogstash8() {
@@ -19,31 +20,6 @@ adjustToLogstash8() {
   # Uncomment and modify as needed- relevant for future Logstash versions:
   # sed '/ext { snakeYamlVersion.*/d' build.gradle > tmp && mv tmp build.gradle
   # sed "/^buildscript.*/a ext { snakeYamlVersion = \"$snakeYamlVersion\" }" build.gradle > tmp && mv tmp build.gradle
-}
-
-# Builds a gem from the specified plugin directory.
-buildUCPluginGem() {
-  local plugin_dir="$1"
-
-  echo "================ Building $plugin_dir gem file ================="
-  cd "${BASE_DIR}/${plugin_dir}" || { echo "Failed to enter directory ${BASE_DIR}/${plugin_dir}"; exit 1; }
-
-  adjustToLogstash8
-
-  cp "${BASE_DIR}/build/gradle.properties" .
-
-  if ./gradlew --no-daemon test </dev/null >/dev/null 2>&1; then
-    echo "Successfully tested $plugin_dir"
-    if ./gradlew --no-daemon gem </dev/null >/dev/null 2>&1; then
-      echo "Successfully built gem $plugin_dir"
-    else
-      echo "Failed to build gem $plugin_dir"
-      exit 1
-    fi
-  else
-    echo "Failed to test $plugin_dir"
-    exit 1
-  fi
 }
 
 # Builds the UC Commons project.
@@ -71,11 +47,17 @@ buildUCCommons() {
 
 # Builds Java plugins specified in the javaPluginsToBuild.txt file.
 buildJavaPlugins() {
-  echo "================ Building Java Plugins ================="
-  while IFS= read -r plugin; do
-    [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
-    buildUCPluginGem "$plugin"
-  done < "${BASE_DIR}/build/javaPluginsToBuild.txt"
+  echo "================ Building All Java Plugins Together ================="
+
+  cd "${BASE_DIR}" || exit 1
+
+  # Execute all builds in one Gradle invocation if possible
+  if ./gradlew --no-daemon clean test gem </dev/null >/dev/null 2>&1; then
+    echo "Successfully built all Java plugins"
+  else
+    echo "Failed to build Java plugins"
+    exit 1
+  fi
 }
 
 # Builds Ruby plugins specified in the rubyPluginsToBuild.txt file.
