@@ -24,7 +24,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 [FEP Postgres README](./FEPostgres_README.md) 
 
 ## Limitations
-	• Pgaudit logs Failed queries twice, one as success and one with actual Failure reason, so expect Failed queries to be seen in Full Sql Report
+	• Pgaudit logs Failed queries twice, one as success and one with actual Failure reason, so expect Failed queries to be seen twice in Full Sql Report
 	• The log entries which are generated even before the user is logged in or before the session starts, are currently not seen in SQL Error report
 	• When the database is created using UI option from pgadmin, currently sniffer fails to parse that audit log, so the entry cannot be seen in the Full Sql report
 

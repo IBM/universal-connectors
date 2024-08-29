@@ -49,7 +49,9 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
        - type: log   
        enabled: true
         paths:
-       - <directory specified in postgresql.conf under "edb_audit_directory" parameter/*.csv>
+       - <directory specified in postgresql.conf under "edb_audit_directory" parameter/audit*.csv>
+
+		Note : In the above path, ensure that the name of the .csv matches the filename specified for the "edb_audit_filename" parameter in the postgresql.conf file.
 	
 	• To process multi-line audit events, add the settings in the same inputs section.
 	
