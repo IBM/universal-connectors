@@ -79,7 +79,8 @@ list_dist_files() {
 # Main Script Execution
 echo "================ Starting Build Process ================="
 
-build_docker_image
+#build_docker_image
+cd build
 verify_plugins_version
 
 echo "Final list in $PLUGIN_FILE:"
