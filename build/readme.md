@@ -6,20 +6,6 @@ This repository contains a set of scripts for building and packaging plugins for
 
 The project uses Travis CI for continuous integration and deployment. The CI pipeline is divided into three distinct stages to ensure modular and efficient build processes.
 
-### CI Pipeline Stages
-
-1. **Docker Image Build (`dockerBuild` Stage)**
-  - The first stage in the CI pipeline builds a Docker image using the provided `Dockerfile` and arguments. This image serves as the base environment for subsequent stages.
-  - The Dockerfile used in this stage is located at `build/Dockerfile`.
-
-2. **Plugins Build (`pluginsBuild` Stage)**
-  - The second stage updates the plugins with the latest versions and prepares the UC default offline package. This ensures that all plugins are up-to-date and bundled correctly.
-  - The build script used in this stage is `build/buildUCDefaultOfflinePackage.sh`.
-
-3. **Test (`test` Stage)**
-  - The final stage runs the test suite to verify the integrity of the build and the functionality of the plugins. If the tests pass, the build is considered successful.
-  - The test script used in this stage is `build/test.sh`.
-
 ## Main Script
 
 ### `buildUCDefaultOfflinePackage.sh`
@@ -75,7 +61,4 @@ filter-plugin/logstash-filter-dynamodb-guardium
 filter-plugin/logstash-filter-pubsub-mysql-guardium
 filter-plugin/logstash-filter-pubsub-postgresql-guardium
 ```
-
-
-## Running the Build on Travis CI
-The .travis.yml file is configured to automatically run these three stages in sequence whenever changes are pushed to the repository.
+.yml file is configured to automatically run these three stages in sequence whenever changes are pushed to the repository.

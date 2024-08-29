@@ -31,8 +31,8 @@ filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/logstash-filter-
 filter-plugin/logstash-filter-pubsub-firestore-guardium/logstash-filter-fire_store_guardium_filter
 filter-plugin/logstash-filter-pubsub-spanner-guardium/logstash-filter-spanner_db_guardium_filter
 filter-plugin/logstash-filter-cosmos-azure-guardium/logstash-filter-azure_cosmos_guardium_filter
-filter-plugin/logstash-filter-intersystems-iris-guardium/logstash-filter-intersystems_iris_guardium_filter
-filter-plugin/logstash-filter-postgres-ibmcloud-guardium/logstash-filter-icd_postgresql_guardium_filter
-filter-plugin/logstash-filter-mysql-azure-guardium/logstash-filter-azure_mysql_guardium_filter
-filter-plugin/logstash-filter-scylldb-guardium/logstash-filter-scylladb_guardium_filter
-input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input
+#filter-plugin/logstash-filter-intersystems-iris-guardium/logstash-filter-intersystems_iris_guardium_filter
+#filter-plugin/logstash-filter-postgres-ibmcloud-guardium/logstash-filter-icd_postgresql_guardium_filter
+#filter-plugin/logstash-filter-mysql-azure-guardium/logstash-filter-azure_mysql_guardium_filter
+#filter-plugin/logstash-filter-scylldb-guardium/logstash-filter-scylladb_guardium_filter
+#input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input
