@@ -10,16 +10,15 @@ The project uses Travis CI for continuous integration and deployment. The CI pip
 
 1. **Docker Image Build (`dockerBuild` Stage)**
   - The first stage in the CI pipeline builds a Docker image using the provided `Dockerfile` and arguments. This image serves as the base environment for subsequent stages.
-  - The build script used in this stage is located at `build/Dockerfile`.
+  - The Dockerfile used in this stage is located at `build/Dockerfile`.
 
-2. **Main Script- Plugins Build (`pluginsBuild` Stage)**
+2. **Plugins Build (`pluginsBuild` Stage)**
   - The second stage updates the plugins with the latest versions and prepares the UC default offline package. This ensures that all plugins are up-to-date and bundled correctly.
   - The build script used in this stage is `build/buildUCDefaultOfflinePackage.sh`.
 
 3. **Test (`test` Stage)**
   - The final stage runs the test suite to verify the integrity of the build and the functionality of the plugins. If the tests pass, the build is considered successful.
   - The test script used in this stage is `build/test.sh`.
-
 
 ## Main Script
 
@@ -30,7 +29,7 @@ The project uses Travis CI for continuous integration and deployment. The CI pip
 **Functionality**:
 1. **Create Docker Image**: Builds a Docker image to act as the build platform.
 2. **Run Plugin Build**: Executes `buildUCPluginGems.sh` inside the Docker container to build UC plugins.
-3. **Prepare Offline Package**: Calls `prepareUCDefaultOfflinePackage.sh` inside the Docker container to prepare the default offline package which is installed on UC image.
+3. **Prepare Offline Package**: Calls `prepareUCDefaultOfflinePackage.sh` inside the Docker container to prepare the default offline package, which is installed on the UC image.
 
 **Usage**:
 - Execute `buildUCDefaultOfflinePackage.sh` to start the build and packaging process. This script handles creating the Docker image, running the plugin build, and preparing the offline package.
@@ -78,3 +77,5 @@ filter-plugin/logstash-filter-pubsub-postgresql-guardium
 ```
 
 
+## Running the Build on Travis CI
+The .travis.yml file is configured to automatically run these three stages in sequence whenever changes are pushed to the repository.
