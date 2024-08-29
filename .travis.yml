@@ -12,21 +12,12 @@ before_install:
   - chmod -R 777 .
 
 stages:
-  - name: Docker Image Build
-  - name: Plugins Build
+  - name: Build
   - name: Test
 
 jobs:
   include:
-    - stage: Docker Image Build
-      name: "Build Docker Image"
-      script:
-        - echo "Building Docker image..."
-        - cd build
-        - docker build --build-arg DOCKER_REPO="${DOCKER_REPO}" --build-arg IMAGE_TAG="${IMAGE_TAG}" -qt "guc_dit:latest" .
-        - cd ..
-
-    - stage: Plugins Build
+    - stage: Build
       name: "Update plugins and prepare UC default offline package"
       script:
         - ./build/buildUCDefaultOfflinePackage.sh
