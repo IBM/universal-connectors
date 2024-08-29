@@ -7,7 +7,7 @@ IS_MAC_M1_BUILD=true  # Set to true for Mac M1 builds
 adjustToLogstash8() {
   local sed_cmd
 
-  if [ "$IS_MAC_M1_BUILD" = true ]; then
+  if [ "$IS_MAC_M1_BUILD" = false ]; then
     sed_cmd='s/logstash-core-.*\.jar/logstash-core.jar/'
     sed "$sed_cmd" build.gradle > tmp && mv tmp build.gradle
     # Uncomment and modify as needed:
