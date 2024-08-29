@@ -1,25 +1,24 @@
 #!/bin/bash
 
 BASE_DIR=$(pwd)
-IS_MAC_M1_BUILD=true  # Set to true for Mac M1 builds
+IS_MAC_M1_BUILD=false  # Set to true for Mac M1 builds
 
 # Updates build.gradle to use logstash-core.jar instead of versioned logstash-core JARs.
 adjustToLogstash8() {
   local sed_cmd
 
+  # Determine the sed command based on the platform
   if [ "$IS_MAC_M1_BUILD" = false ]; then
     sed_cmd='s/logstash-core-.*\.jar/logstash-core.jar/'
     sed "$sed_cmd" build.gradle > tmp && mv tmp build.gradle
-    # Uncomment and modify as needed:
-    # sed '/ext { snakeYamlVersion.*/d' build.gradle > tmp && mv tmp build.gradle
-    # sed "/^buildscript.*/a ext { snakeYamlVersion = \"$snakeYamlVersion\" }" build.gradle > tmp && mv tmp build.gradle
   else
     sed_cmd='s/logstash-core-*.*.*.jar/logstash-core.jar/'
     sed -i "$sed_cmd" build.gradle
-    # Uncomment and modify as needed:
-    # sed -i '/ext { snakeYamlVersion.*/d' build.gradle
-    # sed -i '/^buildscript.*/a ext { snakeYamlVersion = '$snakeYamlVersion' }' build.gradle
   fi
+
+  # Uncomment and modify as needed- relevant for future Logstash versions:
+  # sed '/ext { snakeYamlVersion.*/d' build.gradle > tmp && mv tmp build.gradle
+  # sed "/^buildscript.*/a ext { snakeYamlVersion = \"$snakeYamlVersion\" }" build.gradle > tmp && mv tmp build.gradle
 }
 
 # Builds a gem from the specified plugin directory.
@@ -33,9 +32,9 @@ buildUCPluginGem() {
 
   cp "${BASE_DIR}/build/gradle.properties" .
 
-  if ./gradlew --no-daemon test  </dev/null >/dev/null 2>&1; then
+  if ./gradlew --no-daemon test </dev/null >/dev/null 2>&1; then
     echo "Successfully tested $plugin_dir"
-    if ./gradlew --no-daemon gem  </dev/null >/dev/null 2>&1; then
+    if ./gradlew --no-daemon gem </dev/null >/dev/null 2>&1; then
       echo "Successfully built gem $plugin_dir"
     else
       echo "Failed to build gem $plugin_dir"
@@ -52,14 +51,14 @@ buildUCCommons() {
   echo "================ Building UC Commons ================="
   cd "${BASE_DIR}/common" || { echo "Failed to enter directory ${BASE_DIR}/common"; exit 1; }
 
-  if ./gradlew test  </dev/null >/dev/null 2>&1; then
+  if ./gradlew test </dev/null >/dev/null 2>&1; then
     echo "Successfully tested uc-commons"
   else
     echo "Failed to test uc-commons"
     exit 1
   fi
 
-  if ./gradlew jar  </dev/null >/dev/null 2>&1; then
+  if ./gradlew jar </dev/null >/dev/null 2>&1; then
     echo "Successfully built jar uc-commons"
   else
     echo "Failed to build jar uc-commons"
@@ -74,8 +73,7 @@ buildUCCommons() {
 buildJavaPlugins() {
   echo "================ Building Java Plugins ================="
   while IFS= read -r plugin; do
-    # Skip lines that are comments or empty
-    [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue
+    [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
     buildUCPluginGem "$plugin"
   done < "${BASE_DIR}/build/javaPluginsToBuild.txt"
 }
@@ -84,8 +82,7 @@ buildJavaPlugins() {
 buildRubyPlugins() {
   echo "================ Building Ruby Plugins ================="
   while IFS= read -r plugin; do
-    # Skip lines that are comments or empty
-    [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue
+    [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
     buildRubyPlugin "$plugin" "${plugin##*/}.gemspec"
   done < "${BASE_DIR}/build/rubyPluginsToBuild.txt"
 }
