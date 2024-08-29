@@ -22,6 +22,32 @@ adjustToLogstash8() {
   # sed "/^buildscript.*/a ext { snakeYamlVersion = \"$snakeYamlVersion\" }" build.gradle > tmp && mv tmp build.gradle
 }
 
+# Builds a gem from the specified plugin directory.
+buildUCPluginGem() {
+  local plugin_dir="$1"
+
+  echo "================ Building $plugin_dir gem file ================="
+  cd "${BASE_DIR}/${plugin_dir}" || { echo "Failed to enter directory ${BASE_DIR}/${plugin_dir}"; exit 1; }
+
+  adjustToLogstash8
+
+  cp "${BASE_DIR}/build/gradle.properties" .
+
+  if ./gradlew --no-daemon test </dev/null >/dev/null 2>&1; then
+    echo "Successfully tested $plugin_dir"
+    if ./gradlew --no-daemon gem </dev/null >/dev/null 2>&1; then
+      echo "Successfully built gem $plugin_dir"
+    else
+      echo "Failed to build gem $plugin_dir"
+      exit 1
+    fi
+  else
+    echo "Failed to test $plugin_dir"
+    exit 1
+  fi
+}
+
+
 # Builds the UC Commons project.
 buildUCCommons() {
   echo "================ Building UC Commons ================="
@@ -47,17 +73,20 @@ buildUCCommons() {
 
 # Builds Java plugins specified in the javaPluginsToBuild.txt file.
 buildJavaPlugins() {
-  echo "================ Building All Java Plugins Together ================="
-
+  echo "================ Building Java Plugins ================="
   cd "${BASE_DIR}" || exit 1
 
-  # Execute all builds in one Gradle invocation if possible
-  if ./gradlew --no-daemon clean test gem </dev/null >/dev/null 2>&1; then
-    echo "Successfully built all Java plugins"
-  else
-    echo "Failed to build Java plugins"
-    exit 1
-  fi
+  while IFS= read -r plugin; do
+    [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
+
+    echo "Starting build for $plugin..."
+    (cd "${BASE_DIR}/${plugin}" && adjustToLogstash8 && cp "${BASE_DIR}/build/gradle.properties" . && ./gradlew --no-daemon clean test gem </dev/null >/dev/null 2>&1 && echo "Successfully built gem $plugin") &
+  done < "${BASE_DIR}/build/javaPluginsToBuild.txt"
+
+  # Wait for all background jobs to complete
+  wait
+
+  echo "All Java plugins built successfully"
 }
 
 # Builds Ruby plugins specified in the rubyPluginsToBuild.txt file.
