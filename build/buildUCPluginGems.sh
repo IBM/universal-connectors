@@ -33,16 +33,16 @@ buildUCPluginGem() {
 
   cp "${BASE_DIR}/build/gradle.properties" .
 
-  if ./gradlew --no-daemon test </dev/null >/dev/null 2>&1; then
-    echo "Successfully tested $plugin_dir"
-    if ./gradlew --no-daemon gem </dev/null >/dev/null 2>&1; then
-      echo "Successfully built gem $plugin_dir"
-    else
-      echo "Failed to build gem $plugin_dir"
-      exit 1
-    fi
+  ./gradlew --no-daemon test </dev/null >/dev/null 2>&1
+  TEST_STATUS=$?
+
+  ./gradlew --no-daemon gem </dev/null >/dev/null 2>&1
+  GEM_STATUS=$?
+
+  if [ $TEST_STATUS -eq 0 ] && [ $GEM_STATUS -eq 0 ]; then
+    echo "Successfully tested and built gem $plugin_dir"
   else
-    echo "Failed to test $plugin_dir"
+    echo "Failed to test or build gem $plugin_dir"
     exit 1
   fi
 }
@@ -73,20 +73,11 @@ buildUCCommons() {
 
 # Builds Java plugins specified in the javaPluginsToBuild.txt file.
 buildJavaPlugins() {
-  echo "================ Building Java Plugins ================="
-  cd "${BASE_DIR}" || exit 1
-
-  while IFS= read -r plugin; do
-    [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
-
-    echo "Starting build for $plugin..."
-    (cd "${BASE_DIR}/${plugin}" && adjustToLogstash8 && cp "${BASE_DIR}/build/gradle.properties" . && ./gradlew --no-daemon clean test gem </dev/null >/dev/null 2>&1 && echo "Successfully built gem $plugin") &
-  done < "${BASE_DIR}/build/javaPluginsToBuild.txt"
-
-  # Wait for all background jobs to complete
-  wait
-
-  echo "All Java plugins built successfully"
+    echo "================ Building Java Plugins ================="
+    while IFS= read -r plugin; do
+      [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
+      buildUCPluginGem "$plugin"
+    done < "${BASE_DIR}/build/javaPluginsToBuild.txt"
 }
 
 # Builds Ruby plugins specified in the rubyPluginsToBuild.txt file.
