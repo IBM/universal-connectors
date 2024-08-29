@@ -1,26 +1,36 @@
-language: java
+language: bash
 
 os:
   - linux
-
-# Define stages to run jobs in parallel
-stages:
-  - build
-  - test
-
-jobs:
-  include:
-    - stage: build
-      name: "Build UC Default Offline Package"
-      script:
-        - ./build/buildUCDefaultOfflinePackage.sh
-
-    - stage: test
-      name: "Run Tests"
-      script:
-        - ./build/test.sh
 
 cache:
   directories:
     - $HOME/.m2
     - $HOME/.gradle
+
+before_install:
+  - chmod -R 777 .
+
+stages:
+  - name: Build
+  - name: Test
+
+jobs:
+  include:
+    - stage: Docker Image Build
+      name: "Build Docker Image"
+      script:
+        - echo "Building Docker image..."
+        cd build
+        docker build --build-arg DOCKER_REPO="${DOCKER_REPO}" --build-arg IMAGE_TAG="${IMAGE_TAG}" -qt "guc_dit:latest" .
+        cd ..
+
+    - stage: Build
+      name: "Update plugins and prepare UC default offline package"
+      script:
+        - ./build/buildUCDefaultOfflinePackage.sh
+
+    - stage: Test
+      name: "Run tests"
+      script:
+        - ./build/test.sh
