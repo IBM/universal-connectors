@@ -3,26 +3,10 @@ language: shell
 os:
   - linux
 
-cache:
-  directories:
-    - $HOME/.m2
-    - $HOME/.gradle
-
-before_install:
+before_script:
   - chmod -R 777 .
 
-stages:
-  - name: Build
-  - name: Test
-
-jobs:
-  include:
-    - stage: Build
-      name: "Update plugins and prepare UC default offline package"
-      script:
-        - ./build/buildUCDefaultOfflinePackage.sh
-
-    - stage: Test
-      name: "Run tests"
-      script:
-        - ./build/test.sh
+script:
+  - chmod -R 755 ./build
+  - ./build/buildUCDefaultOfflinePackage.sh
+  - ./build/test.sh
