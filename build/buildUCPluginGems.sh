@@ -16,10 +16,6 @@ adjustToLogstash8() {
     sed_cmd='s/logstash-core-*.*.*.jar/logstash-core.jar/'
     sed -i "$sed_cmd" build.gradle
   fi
-
-  # Uncomment and modify as needed- relevant for future Logstash versions:
-  # sed '/ext { snakeYamlVersion.*/d' build.gradle > tmp && mv tmp build.gradle
-  # sed "/^buildscript.*/a ext { snakeYamlVersion = \"$snakeYamlVersion\" }" build.gradle > tmp && mv tmp build.gradle
 }
 
 # Builds a gem from the specified plugin directory.
@@ -47,7 +43,6 @@ buildUCPluginGem() {
   fi
 }
 
-
 # Builds the UC Commons project.
 buildUCCommons() {
   echo "================ Building UC Commons ================="
@@ -71,22 +66,36 @@ buildUCCommons() {
   cd "${BASE_DIR}" || exit
 }
 
-# Builds Java plugins specified in the javaPluginsToBuild.txt file.
+# Builds Java plugins specified in the javaPluginsToBuild.txt file in parallel.
 buildJavaPlugins() {
-    echo "================ Building Java Plugins ================="
-    while IFS= read -r plugin; do
-      [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
-      buildUCPluginGem "$plugin"
-    done < "${BASE_DIR}/build/javaPluginsToBuild.txt"
-}
-
-# Builds Ruby plugins specified in the rubyPluginsToBuild.txt file.
-buildRubyPlugins() {
-  echo "================ Building Ruby Plugins ================="
+  echo "================ Building Java Plugins in Parallel ================="
+  local pids=()
   while IFS= read -r plugin; do
     [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
-    buildRubyPlugin "$plugin" "${plugin##*/}.gemspec"
+    buildUCPluginGem "$plugin" &
+    pids+=($!)  # Capture the PID of the background process
+  done < "${BASE_DIR}/build/javaPluginsToBuild.txt"
+
+  # Wait for all background jobs to finish
+  for pid in "${pids[@]}"; do
+    wait "$pid" || { echo "Build failed for one or more Java plugins"; exit 1; }
+  done
+}
+
+# Builds Ruby plugins specified in the rubyPluginsToBuild.txt file in parallel.
+buildRubyPlugins() {
+  echo "================ Building Ruby Plugins in Parallel ================="
+  local pids=()
+  while IFS= read -r plugin; do
+    [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
+    buildRubyPlugin "$plugin" "${plugin##*/}.gemspec" &
+    pids+=($!)  # Capture the PID of the background process
   done < "${BASE_DIR}/build/rubyPluginsToBuild.txt"
+
+  # Wait for all background jobs to finish
+  for pid in "${pids[@]}"; do
+    wait "$pid" || { echo "Build failed for one or more Ruby plugins"; exit 1; }
+  done
 }
 
 # Builds a Ruby plugin from the specified directory and gemspec.
@@ -110,8 +119,11 @@ buildRubyPlugin() {
 echo "================ Starting Build Process ================="
 
 buildUCCommons
-buildJavaPlugins
-buildRubyPlugins
+
+# Run Java and Ruby plugin builds in parallel
+buildJavaPlugins &
+buildRubyPlugins &
+wait  # Wait for all parallel builds to complete
 
 echo "================ Build Process Complete ================="
 
