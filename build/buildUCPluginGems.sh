@@ -53,9 +53,9 @@ function buildRubyPlugin() {
 buildUCCommons
 
 # Build Java plugins in parallel
-grep -v '^#' "${BASE_DIR}/build/javaPluginsToBuild.txt" | xargs -P 2 -I {} bash -c 'buildUCPluginGem "{}"'
+grep -v '^#' "${BASE_DIR}/build/javaPluginsToBuild.txt" | xargs -P 4 -I {} bash -c 'bash -c "source ${BASE_DIR}/build/buildUCPluginGem.sh; buildUCPluginGem \"{}\""'
 
 # Build Ruby plugins in parallel
-grep -v '^#' "${BASE_DIR}/build/rubyPluginsToBuild.txt" | xargs -P 2 -I {} bash -c 'buildRubyPlugin "{}" "${}/*.gemspec"'
+grep -v '^#' "${BASE_DIR}/build/rubyPluginsToBuild.txt" | xargs -P 2 -I {} bash -c 'bash -c "source ${BASE_DIR}/build/buildRubyPlugin.sh; buildRubyPlugin \"{}\" \"${}/*.gemspec\""'
 
 exit 0
