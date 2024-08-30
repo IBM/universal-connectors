@@ -1,143 +1,60 @@
 #!/bin/bash
-
 BASE_DIR=$(pwd)
-export GRADLE_OPTS="-Dorg.gradle.daemon=true -Dorg.gradle.parallel=true -Dorg.gradle.configureondemand=true -Xmx512m -XX:MaxMetaspaceSize=256m"
 
-# Adjust to Logstash 8 JARs in build.gradle
-adjustToLogstash8() {
-  local sed_cmd='s/logstash-core-.*\.jar/logstash-core.jar/'
-  sed "$sed_cmd" build.gradle > build.gradle.tmp && mv build.gradle.tmp build.gradle
+function adjustToLogstash8() {
+  sed -i 's/logstash-core-*.*.*.jar/logstash-core.jar/' build.gradle
 }
-
-# Builds a gem from the specified plugin directory.
-buildUCPluginGem() {
-  local plugin_dir="$1"
-
-  echo "================ Building $plugin_dir gem file ================="
-  cd "${BASE_DIR}/${plugin_dir}" || { echo "Failed to enter directory ${BASE_DIR}/${plugin_dir}"; exit 1; }
-
+function buildUCPluginGem() {
+  echo "================ Building $1 gem file================"
+  cd ${BASE_DIR}/$1
   adjustToLogstash8
-
-  cp "${BASE_DIR}/build/gradle.properties" .
-
-  # Adjust Gradle options for low resource environments
+  cp ${BASE_DIR}/build/gradle.properties .
+  chmod 755 gradlew
   ./gradlew --no-daemon test </dev/null >/dev/null 2>&1
-  TEST_STATUS=$?
-
-  ./gradlew --no-daemon gem </dev/null >/dev/null 2>&1
-  GEM_STATUS=$?
-
-  if [ $TEST_STATUS -eq 0 ] && [ $GEM_STATUS -eq 0 ]; then
-    echo "Successfully tested and built gem $plugin_dir"
+  if [ $? -eq 0 ]; then
+    echo "Successfully test $1"
+      ./gradlew --no-daemon gem </dev/null >/dev/null 2>&1
+      if [ $? -eq 0 ]; then
+        echo "Successfully build gem $1"
+      else
+        echo "Failed build gem $1"
+      fi
   else
-    echo "Failed to test or build gem $plugin_dir"
-    exit 1
+    echo "Failed test $1"
   fi
 }
 
-# Runs limited parallel jobs to avoid resource exhaustion.
-run_limited_parallel_jobs() {
-  local max_jobs=$1
-  shift
-  local jobs=() # Array to hold job PIDs
-
-  for job in "$@"; do
-    # Run each job command and capture its PID
-    eval "$job" &
-    local pid=$!
-    if [[ $pid =~ ^[0-9]+$ ]]; then
-      jobs+=($pid)
-    fi
-
-    # If the number of jobs reaches the max limit, wait for one to finish
-    if [ "${#jobs[@]}" -ge "$max_jobs" ]; then
-      # Wait for any job to finish and remove its PID from the array
-      wait -n
-      jobs=("${jobs[@]/$!}") # Remove the finished job from the array
-    fi
-  done
-
-  # Wait for any remaining jobs
-  for pid in "${jobs[@]}"; do
-    if [[ $pid =~ ^[0-9]+$ ]]; then
-      wait "$pid"
-    fi
-  done
-}
-
-# Build the UC Commons project
-buildUCCommons() {
-  echo "================ Building UC Commons ================="
-  cd "${BASE_DIR}/common" || { echo "Failed to enter directory ${BASE_DIR}/common"; exit 1; }
-
-  if ./gradlew test </dev/null >/dev/null 2>&1; then
-    echo "Successfully tested uc-commons"
+function buildUCCommons() {
+  cd ${BASE_DIR}/common
+  ./gradlew test >/dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    echo "Successfully test uc-commons"
   else
-    echo "Failed to test uc-commons"
+    echo "Failed test uc-commons"
     exit 1
   fi
-
-  if ./gradlew jar </dev/null >/dev/null 2>&1; then
-    echo "Successfully built jar uc-commons"
+  #check if succeed
+  ./gradlew jar >/dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    echo "Successfully build jar uc-commons"
   else
-    echo "Failed to build jar uc-commons"
+    echo "Failed build jar uc-commons"
     exit 2
   fi
-
   cp ./build/libs/common-1.0.0.jar ./build/libs/guardium-universalconnector-commons-1.0.0.jar
-  cd "${BASE_DIR}" || exit
+  cd ../../
 }
 
-# Build Java plugins specified in the javaPluginsToBuild.txt file
-buildJavaPlugins() {
-  echo "================ Building Java Plugins ================="
-  local plugins=()
-  while IFS= read -r plugin; do
-    [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
-    plugins+=("buildUCPluginGem \"$plugin\"")
-  done < "${BASE_DIR}/build/javaPluginsToBuild.txt"
-
-  run_limited_parallel_jobs 4 "${plugins[@]}"  # Adjust the max_jobs value as needed
-}
-
-# Build Ruby plugins specified in the rubyPluginsToBuild.txt file
-buildRubyPlugins() {
-  echo "================ Building Ruby Plugins ================="
-  local plugins=()
-  while IFS= read -r plugin; do
-    [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
-    plugins+=("buildRubyPlugin \"$plugin\" \"${plugin##*/}.gemspec\"")
-  done < "${BASE_DIR}/build/rubyPluginsToBuild.txt"
-
-  run_limited_parallel_jobs 4 "${plugins[@]}"  # Adjust the max_jobs value as needed
-}
-
-# Build a Ruby plugin from the specified directory and gemspec
-buildRubyPlugin() {
-  local plugin_dir="$1"
-  local gemspec="$2"
-  echo "================ Building Ruby Plugin in $plugin_dir ================="
-  cd "${BASE_DIR}/${plugin_dir}" || { echo "Failed to enter directory ${BASE_DIR}/${plugin_dir}"; exit 1; }
-
+function buildRubyPlugin(){
+  cd ${BASE_DIR}/$1
   bundle install >/dev/null 2>&1
-  if gem build "$gemspec"; then
-    echo "Successfully built Ruby plugin with gemspec $gemspec"
-  else
-    echo "Failed to build Ruby plugin with gemspec $gemspec"
-    exit 1
-  fi
+  gem build $2
 }
-
-# Main script execution
-echo "================ Starting Build Process ================="
 
 buildUCCommons
 
-# Run Java and Ruby plugin builds in parallel with limited jobs
-buildJavaPlugins &
-buildRubyPlugins &
-wait  # Wait for all parallel builds to complete
-
-echo "================ Build Process Complete ================="
+# Build the rest of the plugins from javaPluginsToBuild.txt
+grep -v '^#' ${BASE_DIR}/build/javaPluginsToBuild.txt | while read -r line; do buildUCPluginGem "$line";done
+grep -v '^#' ${BASE_DIR}/build/rubyPluginsToBuild.txt | while read -r line; do buildRubyPlugin "${line}" "${line##*/}.gemspec"; done
 
 exit 0
