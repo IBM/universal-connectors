@@ -4,56 +4,58 @@ BASE_DIR=$(pwd)
 function adjustToLogstash8() {
   sed -i 's/logstash-core-*.*.*.jar/logstash-core.jar/' build.gradle
 }
+
 function buildUCPluginGem() {
-  echo "================ Building $1 gem file================"
-  cd ${BASE_DIR}/$1
+  echo "================ Building $1 gem file ================="
+  cd "${BASE_DIR}/$1" || exit
   adjustToLogstash8
-  cp ${BASE_DIR}/build/gradle.properties .
-  ./gradlew --no-daemon test </dev/null >/dev/null 2>&1
+  cp "${BASE_DIR}/build/gradle.properties" .
+  ./gradlew --no-daemon test >/dev/null 2>&1
   if [ $? -eq 0 ]; then
-    echo "Successfully test $1"
-      ./gradlew --no-daemon gem </dev/null >/dev/null 2>&1
-      if [ $? -eq 0 ]; then
-        echo "Successfully build gem $1"
-      else
-        echo "Failed build gem $1"
-      fi
+    echo "Successfully tested $1"
+    ./gradlew --no-daemon gem >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+      echo "Successfully built gem $1"
+    else
+      echo "Failed to build gem $1"
+    fi
   else
-    echo "Failed test $1"
+    echo "Failed to test $1"
   fi
 }
 
 function buildUCCommons() {
-  cd ${BASE_DIR}/common
+  cd "${BASE_DIR}/common" || exit
   ./gradlew test >/dev/null 2>&1
   if [ $? -eq 0 ]; then
-    echo "Successfully test uc-commons"
+    echo "Successfully tested uc-commons"
   else
-    echo "Failed test uc-commons"
+    echo "Failed to test uc-commons"
     exit 1
   fi
-  #check if succeed
   ./gradlew jar >/dev/null 2>&1
   if [ $? -eq 0 ]; then
-    echo "Successfully build jar uc-commons"
+    echo "Successfully built jar uc-commons"
   else
-    echo "Failed build jar uc-commons"
+    echo "Failed to build jar uc-commons"
     exit 2
   fi
   cp ./build/libs/common-1.0.0.jar ./build/libs/guardium-universalconnector-commons-1.0.0.jar
-  cd ../../
+  cd "${BASE_DIR}" || exit
 }
 
-function buildRubyPlugin(){
-  cd ${BASE_DIR}/$1
+function buildRubyPlugin() {
+  cd "${BASE_DIR}/$1" || exit
   bundle install >/dev/null 2>&1
-  gem build $2
+  gem build "$2"
 }
 
 buildUCCommons
 
-# Build the rest of the plugins from javaPluginsToBuild.txt
-grep -v '^#' ${BASE_DIR}/build/javaPluginsToBuild.txt | while read -r line; do buildUCPluginGem "$line";done
-grep -v '^#' ${BASE_DIR}/build/rubyPluginsToBuild.txt | while read -r line; do buildRubyPlugin "${line}" "${line##*/}.gemspec"; done
+# Build Java plugins in parallel
+grep -v '^#' "${BASE_DIR}/build/javaPluginsToBuild.txt" | xargs -P 2 -I {} bash -c 'buildUCPluginGem "{}"'
+
+# Build Ruby plugins in parallel
+grep -v '^#' "${BASE_DIR}/build/rubyPluginsToBuild.txt" | xargs -P 2 -I {} bash -c 'buildRubyPlugin "{}" "${}/*.gemspec"'
 
 exit 0
