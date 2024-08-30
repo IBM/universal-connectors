@@ -25,10 +25,10 @@ filter-plugin/logstash-filter-couchbasedb-guardium/logstash-filter-couchbasedb_g
 #filter-plugin/logstash-filter-snowflake-guardium/logstash-filter-guardium_snowflake_filter
 #filter-plugin/logstash-filter-yugabyte-guardium/logstash-filter-yugabytedb_guardium_filter
 #filter-plugin/logstash-filter-teradatadb-guardium/logstash-filter-teradatadb_guardium_plugin_filter
-#filter-plugin/logstash-filter-pubsub-apachesolr-guardium/logstash-filter-apache_solr_gcp_connector
-#filter-plugin/logstash-filter-pubsub-bigquery-guardium/logstash-filter-big_query_guardium_filter
-#filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/logstash-filter-fire_base_guardium_filter
-#filter-plugin/logstash-filter-pubsub-firestore-guardium/logstash-filter-fire_store_guardium_filter
+filter-plugin/logstash-filter-pubsub-apachesolr-guardium/logstash-filter-apache_solr_gcp_connector
+filter-plugin/logstash-filter-pubsub-bigquery-guardium/logstash-filter-big_query_guardium_filter
+filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/logstash-filter-fire_base_guardium_filter
+filter-plugin/logstash-filter-pubsub-firestore-guardium/logstash-filter-fire_store_guardium_filter
 filter-plugin/logstash-filter-pubsub-spanner-guardium/logstash-filter-spanner_db_guardium_filter
 #filter-plugin/logstash-filter-cosmos-azure-guardium/logstash-filter-azure_cosmos_guardium_filter
 #filter-plugin/logstash-filter-intersystems-iris-guardium/logstash-filter-intersystems_iris_guardium_filter
