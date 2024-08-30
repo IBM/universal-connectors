@@ -20,9 +20,6 @@ adjustToLogstash8() {
 buildUCPluginGem() {
   local plugin_dir="$1"
 
-  # Remove any quotes from plugin_dir to prevent path errors
-  plugin_dir="${plugin_dir//\"/}"
-
   echo "================ Building $plugin_dir gem file ================="
   cd "${BASE_DIR}/${plugin_dir}" || { echo "Failed to enter directory ${BASE_DIR}/${plugin_dir}"; exit 1; }
 
@@ -93,7 +90,7 @@ buildJavaPlugins() {
   local plugins=()
   while IFS= read -r plugin; do
     [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
-    plugins+=("buildUCPluginGem \"$plugin\"")
+    plugins+=("buildUCPluginGem $plugin")
   done < "${BASE_DIR}/build/javaPluginsToBuild.txt"
 
   run_limited_parallel_jobs 4 "${plugins[@]}"  # Adjust the max_jobs value as needed
