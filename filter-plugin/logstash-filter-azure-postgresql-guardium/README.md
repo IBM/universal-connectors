@@ -32,12 +32,12 @@ For information regarding setup, please refer [quickstart-create-server-portal](
 	
 ## 2. Enabling Auditing
 
-1.	On the database auditing page ,Go to **Settings**, select **server parameters**.
+1.	On the Database auditing page , go to **Settings** and select **server parameters**.
 2.	Search for shared_preload_libraries in server parameter.
 3.	Select shared_preload_libraries as PGAUDIT and save.
 4.	Go to overview and restart the server to apply the changes.
 5.	After installation of pgAudit, you can configure its parameters to start logging.
-      1. On the database auditing page, select **Settings**, select **server parameters** and set the server parameters as follows:
+      1. On the Database auditing page , go to **Settings** and select **server parameters** and set the server parameters as follows:
          * log_checkpoints = off
          * log_error_verbosity = VERBOSE 
          * log_line_prefix = specify as per requirement but should include 
