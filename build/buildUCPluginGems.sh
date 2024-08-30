@@ -108,7 +108,7 @@ buildRubyPlugins() {
 
 # Build a Ruby plugin from the specified directory and gemspec
 buildRubyPlugin() {
-  local plugin_dir="$1"
+  local plugin_dir=$1
   local gemspec="$2"
   echo "================ Building Ruby Plugin in $plugin_dir ================="
   cd "${BASE_DIR}/${plugin_dir}" || { echo "Failed to enter directory ${BASE_DIR}/${plugin_dir}"; exit 1; }
