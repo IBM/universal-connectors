@@ -42,23 +42,34 @@ buildUCPluginGem() {
   fi
 }
 
-
-# Control the number of parallel jobs to avoid resource exhaustion
+# Runs limited parallel jobs to avoid resource exhaustion.
 run_limited_parallel_jobs() {
   local max_jobs=$1
   shift
-  local jobs=()
+  local jobs=() # Array to hold job PIDs
 
   for job in "$@"; do
-    $job &
-    jobs+=($!)
+    # Run each job command and capture its PID
+    eval "$job" &
+    local pid=$!
+    if [[ $pid =~ ^[0-9]+$ ]]; then
+      jobs+=($pid)
+    fi
+
+    # If the number of jobs reaches the max limit, wait for one to finish
     if [ "${#jobs[@]}" -ge "$max_jobs" ]; then
+      # Wait for any job to finish and remove its PID from the array
       wait -n
-      jobs=("${jobs[@]/$!}")
+      jobs=("${jobs[@]/$!}") # Remove the finished job from the array
     fi
   done
 
-  wait "${jobs[@]}"
+  # Wait for any remaining jobs
+  for pid in "${jobs[@]}"; do
+    if [[ $pid =~ ^[0-9]+$ ]]; then
+      wait "$pid"
+    fi
+  done
 }
 
 # Build the UC Commons project
@@ -90,7 +101,7 @@ buildJavaPlugins() {
   local plugins=()
   while IFS= read -r plugin; do
     [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
-    plugins+=("buildUCPluginGem $plugin")
+    plugins+=("buildUCPluginGem \"$plugin\"")
   done < "${BASE_DIR}/build/javaPluginsToBuild.txt"
 
   run_limited_parallel_jobs 4 "${plugins[@]}"  # Adjust the max_jobs value as needed

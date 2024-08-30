@@ -1,5 +1,5 @@
 filter-plugin/logstash-filter-mongodb-guardium
-filter-plugin/logstash-filter-cosmos-azure-guardium
+#filter-plugin/logstash-filter-cosmos-azure-guardium
 filter-plugin/logstash-filter-oua-guardium
 filter-plugin/logstash-filter-mariadb-aws-guardium
 filter-plugin/logstash-filter-redshift-aws-guardium
@@ -30,7 +30,7 @@ filter-plugin/logstash-filter-neo4j-guardium
 #filter-plugin/logstash-filter-pubsub-bigquery-guardium
 #filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium
 #filter-plugin/logstash-filter-pubsub-firestore-guardium
-#filter-plugin/logstash-filter-pubsub-spanner-guardium
+filter-plugin/logstash-filter-pubsub-spanner-guardium
 #filter-plugin/logstash-filter-intersystems-iris-guardium
 #filter-plugin/logstash-filter-postgres-ibmcloud-guardium
 #filter-plugin/logstash-filter-mysql-azure-guardium
