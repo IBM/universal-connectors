@@ -75,6 +75,19 @@ public class ParserTest {
 	}
 
 	@Test
+	public void selectQueryNew() throws ParseException {
+
+		Event e = intitalizeEventObject();
+
+		e.setField(Constants.STATEMENT, "\"SELECT \n   first_name || ' ' || last_name \"\"Full Name\"\"\nFROM \n   AutomationEdge\"");
+		final Record record = Parser.parseRecord(e);
+		Assert.assertEquals(record.getData().getOriginalSqlCommand(),"SELECT \n" +
+				"   first_name || ' ' || last_name \"Full Name\"\n" +
+				"FROM \n" +
+				"   AutomationEdge" );
+	}
+
+	@Test
 	public void updateQuery() throws ParseException {
 
 		Event e = intitalizeEventObject();
@@ -98,7 +111,10 @@ public class ParserTest {
 	public void testParseTimestamp() throws ParseException {
 
 		Event e = intitalizeEventObject();
-		Parser.parseTimestamp(e);
+		
+		e.setField(Constants.TIMESTAMP, "2022-03-02 14:06:56");
+		Time time = Parser.parseTimestamp(e);
+		Assert.assertEquals(1646210216000L, time.getTimstamp());
 	}
 
 	@Test
@@ -138,6 +154,7 @@ public class ParserTest {
 		Event e = intitalizeEventObject();
 		
 		e.setField(Constants.SUCCEEDED, "FATAL" );
+		e.setField(Constants.SQL_STATE,"28P01");
 		e.setField(Constants.PREFIX,"28P01");
 		e.setField(Constants.MESSAGE, "password authentication failed for user \"postgres\"");
 		final Record record = Parser.parseRecord(e);
