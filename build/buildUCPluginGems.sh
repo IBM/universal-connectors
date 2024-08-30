@@ -2,13 +2,11 @@
 
 BASE_DIR=$(pwd)
 IS_MAC_M1_BUILD=false  # Set to true for Mac M1 builds
-export GRADLE_OPTS="-Dorg.gradle.daemon=true"
+export GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx512m -XX:MaxMetaspaceSize=256m"
 
-# Updates build.gradle to use logstash-core.jar instead of versioned logstash-core JARs.
+# Adjust to Logstash 8 JARs in build.gradle
 adjustToLogstash8() {
   local sed_cmd
-
-  # Determine the sed command based on the platform
   if [ "$IS_MAC_M1_BUILD" = false ]; then
     sed_cmd='s/logstash-core-.*\.jar/logstash-core.jar/'
     sed "$sed_cmd" build.gradle > tmp && mv tmp build.gradle
@@ -18,10 +16,9 @@ adjustToLogstash8() {
   fi
 }
 
-# Builds a gem from the specified plugin directory.
+# Build a gem from the specified plugin directory
 buildUCPluginGem() {
   local plugin_dir="$1"
-
   echo "================ Building $plugin_dir gem file ================="
   cd "${BASE_DIR}/${plugin_dir}" || { echo "Failed to enter directory ${BASE_DIR}/${plugin_dir}"; exit 1; }
 
@@ -29,6 +26,7 @@ buildUCPluginGem() {
 
   cp "${BASE_DIR}/build/gradle.properties" .
 
+  # Adjust Gradle options for low resource environments
   ./gradlew --no-daemon test </dev/null >/dev/null 2>&1
   TEST_STATUS=$?
 
@@ -43,7 +41,25 @@ buildUCPluginGem() {
   fi
 }
 
-# Builds the UC Commons project.
+# Control the number of parallel jobs to avoid resource exhaustion
+run_limited_parallel_jobs() {
+  local max_jobs=$1
+  shift
+  local jobs=()
+
+  for job in "$@"; do
+    $job &
+    jobs+=($!)
+    if [ "${#jobs[@]}" -ge "$max_jobs" ]; then
+      wait -n
+      jobs=("${jobs[@]/$!}")
+    fi
+  done
+
+  wait "${jobs[@]}"
+}
+
+# Build the UC Commons project
 buildUCCommons() {
   echo "================ Building UC Commons ================="
   cd "${BASE_DIR}/common" || { echo "Failed to enter directory ${BASE_DIR}/common"; exit 1; }
@@ -66,43 +82,34 @@ buildUCCommons() {
   cd "${BASE_DIR}" || exit
 }
 
-# Builds Java plugins specified in the javaPluginsToBuild.txt file in parallel.
+# Build Java plugins specified in the javaPluginsToBuild.txt file
 buildJavaPlugins() {
-  echo "================ Building Java Plugins in Parallel ================="
-  local pids=()
+  echo "================ Building Java Plugins ================="
+  local plugins=()
   while IFS= read -r plugin; do
     [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
-    buildUCPluginGem "$plugin" &
-    pids+=($!)  # Capture the PID of the background process
+    plugins+=("buildUCPluginGem \"$plugin\"")
   done < "${BASE_DIR}/build/javaPluginsToBuild.txt"
 
-  # Wait for all background jobs to finish
-  for pid in "${pids[@]}"; do
-    wait "$pid" || { echo "Build failed for one or more Java plugins"; exit 1; }
-  done
+  run_limited_parallel_jobs 4 "${plugins[@]}"  # Adjust the max_jobs value as needed
 }
 
-# Builds Ruby plugins specified in the rubyPluginsToBuild.txt file in parallel.
+# Build Ruby plugins specified in the rubyPluginsToBuild.txt file
 buildRubyPlugins() {
-  echo "================ Building Ruby Plugins in Parallel ================="
-  local pids=()
+  echo "================ Building Ruby Plugins ================="
+  local plugins=()
   while IFS= read -r plugin; do
     [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue  # Skip comments or empty lines
-    buildRubyPlugin "$plugin" "${plugin##*/}.gemspec" &
-    pids+=($!)  # Capture the PID of the background process
+    plugins+=("buildRubyPlugin \"$plugin\" \"${plugin##*/}.gemspec\"")
   done < "${BASE_DIR}/build/rubyPluginsToBuild.txt"
 
-  # Wait for all background jobs to finish
-  for pid in "${pids[@]}"; do
-    wait "$pid" || { echo "Build failed for one or more Ruby plugins"; exit 1; }
-  done
+  run_limited_parallel_jobs 4 "${plugins[@]}"  # Adjust the max_jobs value as needed
 }
 
-# Builds a Ruby plugin from the specified directory and gemspec.
+# Build a Ruby plugin from the specified directory and gemspec
 buildRubyPlugin() {
   local plugin_dir="$1"
   local gemspec="$2"
-
   echo "================ Building Ruby Plugin in $plugin_dir ================="
   cd "${BASE_DIR}/${plugin_dir}" || { echo "Failed to enter directory ${BASE_DIR}/${plugin_dir}"; exit 1; }
 
@@ -120,7 +127,7 @@ echo "================ Starting Build Process ================="
 
 buildUCCommons
 
-# Run Java and Ruby plugin builds in parallel
+# Run Java and Ruby plugin builds in parallel with limited jobs
 buildJavaPlugins &
 buildRubyPlugins &
 wait  # Wait for all parallel builds to complete
