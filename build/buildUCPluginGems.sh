@@ -1,19 +1,12 @@
 #!/bin/bash
 
 BASE_DIR=$(pwd)
-IS_MAC_M1_BUILD=false  # Set to true for Mac M1 builds
-export GRADLE_OPTS="-Dorg.gradle.daemon=true -Xmx512m -XX:MaxMetaspaceSize=256m"
+export GRADLE_OPTS="-Dorg.gradle.daemon=true -Dorg.gradle.parallel=true -Dorg.gradle.configureondemand=true -Xmx512m -XX:MaxMetaspaceSize=256m"
 
 # Adjust to Logstash 8 JARs in build.gradle
 adjustToLogstash8() {
-  local sed_cmd
-  if [ "$IS_MAC_M1_BUILD" = false ]; then
-    sed_cmd='s/logstash-core-.*\.jar/logstash-core.jar/'
-    sed "$sed_cmd" build.gradle > tmp && mv tmp build.gradle
-  else
-    sed_cmd='s/logstash-core-*.*.*.jar/logstash-core.jar/'
-    sed -i "$sed_cmd" build.gradle
-  fi
+  local sed_cmd='s/logstash-core-.*\.jar/logstash-core.jar/'
+  sed "$sed_cmd" build.gradle > build.gradle.tmp && mv build.gradle.tmp build.gradle
 }
 
 # Builds a gem from the specified plugin directory.
