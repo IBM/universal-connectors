@@ -43,7 +43,7 @@ printNumOfInstalledPlugins() {
   num_of_installed_plugins=$(docker exec -it "${UC_TEST_CONTAINER_NAME}" bash -c "unzip -l ${package_file} | grep -c gem")
   echo "Number of installed plugins in ${package_file}: ${num_of_installed_plugins}"
 
-  if [[ "$installedPluginsNum" -lt ${MINIMUM_AMOUNT_OF_PLUGINS} ]]; then
+  if [[ "$num_of_installed_plugins" -lt ${MINIMUM_AMOUNT_OF_PLUGINS} ]]; then
     echo "Missing Guardium plugins. Please check if UC plugins were installed."
     exit 1
   fi
