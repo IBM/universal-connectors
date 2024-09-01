@@ -24,7 +24,7 @@ function buildUCCommons() {
 buildUCCommons
 
 # Build Java plugins in parallel
-grep -v '^#' "${BASE_DIR}/build/javaPluginsToBuild.txt" | xargs -P 4 -I {} bash -c '
+grep -v '^#' "${BASE_DIR}/build/javaPluginsToBuild.txt" | xargs -P 2 -I {} bash -c '
 BASE_DIR="'${BASE_DIR}'"
 
 function adjustToLogstash8() {
