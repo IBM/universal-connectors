@@ -9,6 +9,9 @@ LOGSTASH_DIR="/usr/share/logstash"
 PACKAGED_PLUGINS_DIR="dist"
 LOGSTASH_PLUGIN_CMD="${LOGSTASH_DIR}/bin/logstash-plugin"
 
+MINIMUM_AMOUNT_OF_PLUGINS=20
+
+
 # Function to test if a plugin exists and has the expected version
 testPluginExistence() {
   local plugin_path="$1"
@@ -39,6 +42,11 @@ printNumOfInstalledPlugins() {
   local num_of_installed_plugins
   num_of_installed_plugins=$(docker exec -it "${UC_TEST_CONTAINER_NAME}" bash -c "unzip -l ${package_file} | grep -c gem")
   echo "Number of installed plugins in ${package_file}: ${num_of_installed_plugins}"
+
+  if [[ "$installedPluginsNum" -lt ${MINIMUM_AMOUNT_OF_PLUGINS} ]]; then
+    echo "Missing Guardium plugins. Please check if UC plugins were installed."
+    exit 1
+  fi
 
   local num_of_dependencies
   num_of_dependencies=$(docker exec -it "${UC_TEST_CONTAINER_NAME}" bash -c "unzip -l ${package_file} | grep dependencies | grep -c gem")
