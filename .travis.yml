@@ -9,5 +9,5 @@ before_script:
 
 script:
   - chmod -R 755 ./build
-  - ./build/buildUCDefaultOfflinePackage.sh
+  - travis_wait 80 ./build/buildUCDefaultOfflinePackage.sh  # Increase timeout to 80 minutes
   - ./build/test.sh

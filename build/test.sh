@@ -9,7 +9,7 @@ LOGSTASH_DIR="/usr/share/logstash"
 PACKAGED_PLUGINS_DIR="dist"
 LOGSTASH_PLUGIN_CMD="${LOGSTASH_DIR}/bin/logstash-plugin"
 
-MINIMUM_AMOUNT_OF_PLUGINS=20
+MINIMUM_AMOUNT_OF_PLUGINS=30
 
 
 # Function to test if a plugin exists and has the expected version
