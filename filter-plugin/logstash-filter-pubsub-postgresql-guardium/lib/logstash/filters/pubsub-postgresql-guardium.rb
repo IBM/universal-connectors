@@ -25,16 +25,18 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
   # auxilary functions for parsing
   def parsePostgresLog(event)
     begin
+      a = event.get('textPayload')
+      @logger.debug("Start parsing postgres log. payload: #{a}")
       message = event.get('textPayload').match(/(?<ts>(\d*-){2}(\d*)\s(\d*:){2}(\d*.\d*))(\s)UTC(\s)\[(?<session_id>\d*)\].*db=(?<db_name>\S*),user=(?<uname>\S*)\s(?<severity>[A-Z]*):(?<msg>.*)/)
-
       msg = message['msg']
       severity = message['severity']
-      db_name = message['db_name']
-      session_id = message['session_id']
-      uname = message['uname']
+      db_name = message['db_name'].to_s.empty? ? "NA" : message['db_name']
+      session_id = message['session_id'].to_s.empty? ? "" : message['session_id']
+      uname = message['uname'].to_s.empty? ? "NA" : message['uname']
       timestamp = message['ts']
 
       event.set('[GuardRecord][dbName]', db_name)
+      event.set('[GuardRecord][accessor][serviceName]', db_name)
       event.set('[GuardRecord][sessionId]', session_id)
       event.set('[GuardRecord][accessor][dbUser]', uname)
 
@@ -42,7 +44,7 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
       aborted_connection = 'Aborted connection'
       wait_timeout_exceeded = 'The wait_timeout'
 
-      if %w[EMERGENCY ALERT CRITICAL ERROR].include?(severity)
+      if %w[EMERGENCY ALERT CRITICAL ERROR FATAL].include?(severity)
         exception_type = case msg
                          when /#{login_failed_substr}.*/
                            'LOGIN_FAILED'
@@ -55,11 +57,14 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
                          end
         event.set('[GuardRecord][exception][exceptionTypeId]', exception_type)
         event.set('[GuardRecord][exception][description]', msg)
-        event.set('[GuardRecord][exception][sqlString]', '')
-        event.set('[GuardRecord][data][originalSqlCommand]', nil)
+        event.set('[GuardRecord][exception][sqlString]', 'N.A.')
+        # GRD-71899: data or exception must be null
+        event.set('[GuardRecord][data]', nil)
+
       else
         event.set('[GuardRecord][exception]', nil)
         event.set('[GuardRecord][data][originalSqlCommand]', msg)
+        event.set('[GuardRecord][data][construct]', nil)
       end
 
       ts_epoch = TimestampFormatter.parse(timestamp)
@@ -76,16 +81,20 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
 
   def parsePgAudit(event)
     begin
+      a = event.get('protoPayload')
+      @logger.debug("Start parsing pg audit log. payload: #{a}")
       protoPayload = event.get('protoPayload')
       request = protoPayload['request']
       original_sql = request['statement']
-      session_id = request['databaseSessionId']
-      db_name = request['database']
-      uname = request['user']
+      session_id = request['databaseSessionId'].to_s.empty? ? "" : request['databaseSessionId']
+      db_name = request['database'].to_s.empty? ? "NA" : request['database']
+      uname = request['user'].to_s.empty? ? "NA" : request['user']
       timestamp = event.get('timestamp')
 
       event.set('[GuardRecord][data][originalSqlCommand]', original_sql)
+      event.set('[GuardRecord][data][construct]', nil)
       event.set('[GuardRecord][dbName]', db_name)
+      event.set('[GuardRecord][accessor][serviceName]', db_name)
       event.set('[GuardRecord][sessionId]', session_id)
       event.set('[GuardRecord][accessor][dbUser]', uname)
       event.set('[GuardRecord][exception]', nil)
@@ -105,18 +114,19 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
     matched = false
 
     begin
-      @logger.debug('Fetching log name')
+      @logger.debug("Start processing new event: #{event}")
+      log_name_for_debug = event.get('logName')
+      @logger.debug("log name: #{log_name_for_debug}")
       log_name = event.get('logName').match(/.*%2F(?<log_type>.*)/)
       log_type = log_name['log_type']
+      @logger.debug("log type: #{log_type}")
 
-      @logger.debug('Fetching mutual fields')
       resource = event.get('resource')
       labels = resource['labels']
       database_id = labels['database_id']
       server_hostname = "#{labels["region"]}:#{database_id}"
       severity = event.get('severity')
       client_hostname = event.get('host')
-      service_name = 'cloudsql.googleapis.com'
 
       @logger.debug('Parsing by log type')
       case log_type
@@ -135,10 +145,8 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
       event.set('[GuardRecord][time][minOffsetFromGMT]', 0)
       event.set('[GuardRecord][time][minDst]', 0)
 
-      event.set('[GuardRecord][data][construct]', nil)
-
       event.set('[GuardRecord][sessionLocator][clientIp]', '0.0.0.0')
-      event.set('[GuardRecord][sessionLocator][clientPort]', 0)
+      event.set('[GuardRecord][sessionLocator][clientPort]', -1)
       event.set('[GuardRecord][sessionLocator][clientIpv6]', nil)
       event.set('[GuardRecord][sessionLocator][serverIpv6]', nil)
 
@@ -147,22 +155,21 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
 
 
       event.set('[GuardRecord][sessionLocator][serverIp]', '0.0.0.0')
-      event.set('[GuardRecord][sessionLocator][serverPort]', '0')
+      event.set('[GuardRecord][sessionLocator][serverPort]', -1)
       event.set('[GuardRecord][sessionLocator][isIpv6]', false)
 
-      event.set('[GuardRecord][accessor][serverType]', 'PostgreSQL')
+      event.set('[GuardRecord][accessor][serverType]', 'POSTGRESQL')
       event.set('[GuardRecord][accessor][serverOS]', '')
       event.set('[GuardRecord][accessor][clientOs]', '')
       event.set('[GuardRecord][accessor][clientHostName]', client_hostname)
       event.set('[GuardRecord][accessor][serverHostName]', server_hostname)
       event.set('[GuardRecord][accessor][commProtocol]', '')
-      event.set('[GuardRecord][accessor][dbProtocol]', 'Cloud SQL for PostgreSQL')
+      event.set('[GuardRecord][accessor][dbProtocol]', 'POSTGRESQL')
       event.set('[GuardRecord][accessor][dbProtocolVersion]', '')
       event.set('[GuardRecord][accessor][osUser]', '')
       event.set('[GuardRecord][accessor][sourceProgram]', '')
       event.set('[GuardRecord][accessor][clientMac]', '')
       event.set('[GuardRecord][accessor][serverDescription]', '')
-      event.set('[GuardRecord][accessor][serviceName]', service_name)
       event.set('[GuardRecord][accessor][language]', 'PGRS')
       event.set('[GuardRecord][accessor][dataType]', 'TEXT')
 
