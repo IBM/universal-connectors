@@ -9,8 +9,6 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 
 1. [Set up UC Configurations on Guardium](#1-Configuring-UC-on-Guardium-Data-Protection)
     - 1.1 [Creating a Kafka Cluster on Guardium](#11-Creating-a-Kafka-Cluster-on-Guardium)
-   		- 1.1.1 [Creating new Kafka clusters](#111-Creating-new-Kafka-clusters)
-   	 	- 1.1.2 [Downloading server CA certificate](#112-Downloading-server-CA-certificate)
     - 1.2 [Configuring Universal Connector on Guardium](#12-Configuring-Universal-Connector-on-Guardium)
 
 2. [Configuring native audit and rsyslog on Datasource Server](#2-Configuring-native-audit-and-rsyslog-on-Datasource-Server)
@@ -27,70 +25,10 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 
 ## 1 Configuring UC on Guardium Data Protection 
 ### 1.1 Creating a Kafka Cluster on Guardium
-
-**Prerequisite**: Run the following command on the Command Line Interface to convert a Managed Unit into a Kafka node.
-```
-store unit type kafka-node
-```
-
-1. Log in to **Guardium Central Manager** by using your login credentials.
-
-2. Go to **Manage** > **Central Management** > **Kafka cluster management** page.
-
-   Use the following information to complete various tasks. 
-
-#### 1.1.1 Creating new Kafka clusters 
-
-1. Click **Add** icon to create a new Kafka cluster.
-
-2. In the **Name** field, enter unique cluster name.
-
-3. In the **Cluster member** grid, click add icon to create a member cluster.
-
-4. From the **Select units to add** list, select Kakfa nodes and click **OK**.
-
-   **Note**: Guardium recommends to add at least three Kafka nodes in one cluster. 
-
-6. Optionally, if authentication of database severs to the Kafka cluster is required, select Enable client authentication and upload a valid client certificate for each database server or a set of signing certificates to be used for validation of incoming connections.
-
-7. Select one or more Kafka nodes from the **Cluster member** grid to create a Kafka cluster.
-
-8. Use the **Expand** icon before the Kafka cluster name to expand the cluster and view the individual node **Status** and **Details** in the grid.
-
-9. Use the **Start**, **Stop** and **Restart** options to start, stop and restart the individual clusters, respectively. 
-
-  	**Note**: You can restart one or more nodes in from a cluster. 
-
-**Result**: Kafka cluster is created successfully. 
-
-#### 1.1.2 Downloading server CA certificate
-You need to download the server (Kafka cluster) CA certificate to enure that syslog accepts the communication with Kafka cluster. 
-
-1. In the **Kafka cluster management** page, select a cluster from the grid and click **Download server CA**.
-
-2. Copy the certificate to th database server machine and note the location.
-For more information, see [Installing an appliance certificate to avoid a browser SSL certificate challenge](https://www.ibm.com/docs/en/guardium/12.x?topic=certificates-installing-appliance-certificate-avoid-browser-ssl-certificate-challenge).
+For information on creating Kafka Clusters, see the **Managing Kafka clusters** topic on the [Guardium universal connector](https://www.ibm.com/docs/en/guardium/12.x?topic=guardium-universal-connector) page.
 
 ### 1.2 Configuring Universal Connector on Guardium
-
-1. On the **Guadium Managed Unit** machine, go to **Setup** > **Tools and Views** > **Configure Universal Connector** page.
-
-    **Important Note**: Ensure that **Guardium Universal Connector** is enabled. If the connnect if disabled, you would be able to add new configuration but the configuration will fail. 
-
-3. Click **Add** icon to add a new configuration.
-
-4. Select the **EDB PostgreSQL using kafka (high volume)** connector template. 
-
-5. In the **Connector Name** field, enter a unique connector name. 
-
-   Ensure the name does not contain spaces and special characters.
-
-6. Click **Save**. 
-
-Your UC is now configured and ready to receive new events from the datasource.
-
-**Note**: To ensure data failover and loadbalancing, define same configuration name on the Managed Unit on all Universal Connector in same Kafka Cluster. 
-
+For information on configuring Universal Connectors, see the **Configuring universal connectors** topic on the [Guardium universal connector](https://www.ibm.com/docs/en/guardium/12.x?topic=guardium-universal-connector) page.
 
 ## 2. Configuring native audit and rsyslog on Datasource Server
 
