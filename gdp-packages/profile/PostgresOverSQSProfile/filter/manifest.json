@@ -3,7 +3,7 @@
 	"alias": "PostgreSqs",
 	"type": "filter",
 	"pipeline_type":"pull",
-	"distribute_to_many": "false", 
+	"distribute_to_many": "true", 
 	"plugin_version": "",
 	"datasourceTypes": ["Postgres"],
 	"supported_input_plugins": ["SQS input"],
