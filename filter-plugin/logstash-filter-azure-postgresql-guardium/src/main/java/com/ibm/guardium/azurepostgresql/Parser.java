@@ -58,7 +58,8 @@ public class Parser {
 			Data data = new Data();
 
 			if (e.getField(Constants.STATEMENT) != null) {
-				data.setOriginalSqlCommand(e.getField(Constants.STATEMENT).toString());
+				data.setOriginalSqlCommand(e.getField(Constants.STATEMENT).toString().replaceAll("^\\\"|\\\"$", "").replace("\"\"", "\""));
+
 			} else {
 				data.setOriginalSqlCommand(Constants.NA);
 			}
@@ -170,7 +171,12 @@ public class Parser {
 		accessor.setDbProtocolVersion(Constants.UNKNOWN_STRING);
 		accessor.setClient_mac(Constants.UNKNOWN_STRING);
 		accessor.setServerDescription(Constants.UNKNOWN_STRING);
-		accessor.setServiceName(Constants.UNKNOWN_STRING);
+
+		String serviceName = Constants.NA;
+		if (e.getField(Constants.DATABASE_NAME) != null) {
+			serviceName = e.getField(Constants.DATABASE_NAME).toString();
+		}
+		accessor.setServiceName(serviceName);
 		accessor.setServerOs(Constants.UNKNOWN_STRING);
 		String ServerHostName = Constants.UNKNOWN_STRING;
 		if (e.getField(Constants.SERVER_HOSTNAME) != null) {

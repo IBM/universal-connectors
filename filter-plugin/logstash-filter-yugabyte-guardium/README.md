@@ -47,7 +47,8 @@ Log configuration:
         --ysql_pg_conf_csv=pgaudit.log='ALL',pgaudit.log_level=INFO,pgaudit.log_parameter=true,pgaudit.log_relation=on,log_line_prefix='%n %r [%p] %a %u %d %c %x '
         --ycql_enable_audit_log=true
         --ycql_audit_included_categories=QUERY,DML,DDL,DCL,AUTH,PREPARE,ERROR,OTHER
-        --ycql_audit_log_level=INFO
+        --ycql_audit_log_level=INFO 
+        --use_cassandra_authentication=true 
    ```
     d. Create a configuration file with the content in the step 3(c) and start the Yugabyte server as follows:
    
