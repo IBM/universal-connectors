@@ -128,9 +128,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
 
-• Teradata-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
-
-Note: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-teradatadb_guardium_plugin_filter.zip](./TeradataOverJdbcPackage/logstash-filter-teradatadb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
+• Download the [logstash-filter-teradatadb_guardium_plugin_filter.zip](./TeradataOverJdbcPackage/logstash-filter-teradatadb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 • Download driver jar - Go to the URL https://downloads.teradata.com/download/connectivity/jdbc-driver and download the zip/tar for required version. After extracting the downloaded zip/tar, there will be a jar file.
 
@@ -148,3 +146,16 @@ Note: For Guardium Data Protection version 11.4 without appliance bundle 11.0p49
 9. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 10. If you are using two JDBC plug-ins on the same machine, the last_run_metadata_path file name should be different.
 11. Click ```Save```. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the ```Configure Universal Connector``` page.
+
+#### Note:
+
+•  ```Records Affected``` column has a valid value for the Select Queries only, for other type of queries it is set to -1.
+
+•  If there is a requirement of having the number of Records Affected from a Select Query in a FULL SQL report, follow the below steps :
+
+#### Procedure:
+1. On the collector, go to Activity Monitoring > Inspection Engines.
+2. Check Default capture value, Log Records Affected and Inspect Returned data checkboxes, if unchecked already.
+3. Click on Apply.
+4. Click on Restart Inspection Engines.
+5. To add the column in the Full SQL Report, select the Attribute ```Records Affected``` listed under the Entity  ```FULL SQL```.
