@@ -21,5 +21,7 @@ public interface Constants {
 	public static final String QUERY_ID = "Query_ID";
 	public static final String SERVER_HOSTNAME = "Server_Hostname";
 	public static final String OS_USER = "Os_User";
+
+	public static final String ROWS_RETURNED = "Rows_Returned";
 	
 }
