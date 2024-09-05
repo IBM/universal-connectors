@@ -31,18 +31,25 @@ public class Parser {
 			
 			record.setAccessor(Parser.parseAccessor(e));
 			
-				if(e.getField(Constants.ERROR_TEXT) == null){
-					Data data=new Data();
-					data.setOriginalSqlCommand(e.getField(Constants.SQL_TEXT_INFO).toString());
-					record.setData(data);
-				}else {
-					ExceptionRecord exceptionRecord = new ExceptionRecord();
-					exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
-					exceptionRecord.setDescription(e.getField(Constants.ERROR_TEXT).toString());
-					exceptionRecord.setSqlString(e.getField(Constants.SQL_TEXT_INFO).toString());
-					record.setException(exceptionRecord);
-				}
-		return record;
+			if(e.getField(Constants.ERROR_TEXT) == null){
+				Data data=new Data();
+				data.setOriginalSqlCommand(e.getField(Constants.SQL_TEXT_INFO).toString());
+				record.setData(data);
+			}else {
+				ExceptionRecord exceptionRecord = new ExceptionRecord();
+				exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
+				exceptionRecord.setDescription(e.getField(Constants.ERROR_TEXT).toString());
+				exceptionRecord.setSqlString(e.getField(Constants.SQL_TEXT_INFO).toString());
+				record.setException(exceptionRecord);
+			}
+			//Fix for GRD-80022 Adding rows returned to the GuardRecord
+			if (e.includes(Constants.ROWS_RETURNED)  && (null != e.getField(Constants.ROWS_RETURNED))) {
+				String recordsAffected = e.getField(Constants.ROWS_RETURNED).toString();
+				double doubleValueRecords = Double.parseDouble(recordsAffected);
+				int rowsReturned = (int) doubleValueRecords;
+				record.setRecordsAffected(rowsReturned);
+			}
+			return record;
 	}
 	
 	public static Time parseTimestamp(final Event e) {
