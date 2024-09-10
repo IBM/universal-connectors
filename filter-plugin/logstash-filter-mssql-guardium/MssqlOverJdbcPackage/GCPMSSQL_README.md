@@ -107,15 +107,16 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the **Connector name** field.
 7. Update the input section to add the details from [gcpMSSQL.conf](./gcpMSSQL.conf) for GCP MSSQL.
-   ***Note :***
-   • For Guardium Data Protection version 11.3, add the following line to the input section:
-    'jdbc_driver_library => "${THIRD_PARTY_PATH}/mssql-jdbc-7.4.1.jre8.jar"'
-   • Even if auditing was configured long before the universal connector, the universal connector  will still process all the older records, since they were already audited by the database. 
-9. Update the filter section to add the details from [gcpMSSQL.conf](./gcpMSSQL.conf) for GCP MSSQL. 
-10. The**type** fields should match in the input and filter configuration sections. This field should be unique for  every individual connector added.
-11. If you are using two JDBC plug-ins on the same machine, the `last_run_metadata_path` file name should be different.
-12. Click **Save**. Guardium validates the new connector and enables the universal connector if it was
-    disabled. After it is validated, it appears in the Configure Universal Connector page.
+
+Note :
+
+	• For Guardium Data Protection version 11.3, add the following line to the input section:
+       'jdbc_driver_library => "${THIRD_PARTY_PATH}/mssql-jdbc-7.4.1.jre8.jar"'
+	• If auditing was configured a while before the UC, the UC will still process all previous records, since they were already audited by the database.
+8. Update the filter section to add the details from [gcpMSSQL.conf](./gcpMSSQL.conf) for GCP MSSQL.
+9. The**type** fields should match in the input and filter configuration sections. This field should be unique for  every individual connector added. 
+10. If you are using two JDBC plug-ins on the same machine, the `last_run_metadata_path` file name should be different. 
+11. Click Save. Guardium validates the new connector and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 ## 4. JDBC load-balancing configuration
 
