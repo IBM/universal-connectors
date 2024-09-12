@@ -98,7 +98,7 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 • HDFS Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [guardium-hdfs-uc.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-hdfs_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [guardium-hdfs-uc.zip](https://github.com/IBM/universal-connectors/releases/download/v1.6.0/logstash-filter-hdfs_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
 
 ### Procedure
 
@@ -106,7 +106,7 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 2. First enable the Universal Guardium connector, if it is disabled already.
 
-4. Click **Upload File** and select the offline [guardium-hdfs-uc.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-hdfs_guardium_filter.zip) file. After it is uploaded, click OK.
+4. Click **Upload File** and select the offline [guardium-hdfs-uc.zip](https://github.com/IBM/universal-connectors/releases/download/v1.6.0/logstash-filter-hdfs_guardium_filter.zip) file. After it is uploaded, click OK.
 
 5. Click the Plus sign to open the Connector Configuration dialog box.
 

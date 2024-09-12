@@ -171,14 +171,14 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ### Before you begin
 1. Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
 2. You must have permission for the S-Tap Management role. The admin user includes this role by default.
-3. Download the [guardium_logstash-offline-plugin-intersystemsiris.zip](IntersystemsIrisoverJDBC/guardium_logstash-offline-plugin-intersystemsiris.zip) plug-in.
+3. Download the [guardium_logstash-offline-plugin-intersystemsiris.zip](https://github.com/IBM/universal-connectors/releases/download/v1.6.0/logstash-filter-intersystems_iris_guardium_filter.zip) plug-in.
 4. Download the plugin filter configuration file [intersystems_iris.conf](intersystems_iris.conf).
 5. Download the intersystems-jdbc-3.7.1.jar from [here](IntersystemsIrisoverJDBC/intersystems-jdbc-3.7.1.jar) ([External Link](https://github.com/intersystems-community/iris-driver-distribution/blob/main/JDBC/JDK18/intersystems-jdbc-3.7.1.jar)).
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is already disabled, before proceeding uploading of the UC.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugin-intersystemsiris.zip](IntersystemsIrisoverJDBC/guardium_logstash-offline-plugin-intersystemsiris.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugin-intersystemsiris.zip](https://github.com/IBM/universal-connectors/releases/download/v1.6.0/logstash-filter-intersystems_iris_guardium_filter.zip) plug-in. After it is uploaded, click OK.
 4. Again click Upload File and select the offline intersystems-jdbc-3.7.1.jar file. After it is uploaded, click OK.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.

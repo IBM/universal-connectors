@@ -201,11 +201,11 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ### Before you begin:
 1. Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
 2. You must have permission for the S-Tap Management role. The admin user includes this role by default.
-3. Download the [guardium_logstash-offline-plugin-scylladb.zip](ScyllaDBOverSyslogPackage/guardium_logstash-offline-plugin-scylladb.zip) plug-in.
+3. Download the [guardium_logstash-offline-plugin-scylladb.zip](https://github.com/IBM/universal-connectors/releases/download/v1.6.0/logstash-filter-scylladb_guardium_filter.zip) plug-in.
 ### Procedure:
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is already disabled, before proceeding uploading of the UC.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugin-scylladb.zip](ScyllaDBOverSyslogPackage/guardium_logstash-offline-plugin-scylladb.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugin-scylladb.zip](https://github.com/IBM/universal-connectors/releases/download/v1.6.0/logstash-filter-scylladb_guardium_filter.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [Scylladb.conf](Scylladb.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.

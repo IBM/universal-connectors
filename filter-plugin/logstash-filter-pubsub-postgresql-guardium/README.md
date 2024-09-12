@@ -54,7 +54,7 @@ This version is compliant with GDP v11.4 and above. Update the input section to 
 ## Installation
 Logstash Filter Pub/Sub PostgreSQL Plugin is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-postgresql-guardium/PubSubPostgreSQLPackage/logstash-offline-plugins-filter-pubsub-postgresql-guardium.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/releases/download/v1.6.0/logstash-filter-pubsub-postgresql-guardium.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 
 After you install the plug-in's offline package and upload and save the configuration to your Guardium machine, restart the Universal Connector using the Disable/Enable button or CLI.
