@@ -124,7 +124,7 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 
 **Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [Logstash_Offline_package_7.x](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-pubsub-spanner-guardium/SpannerOverPubSubPackage/guardium_logstash-offline-plugins-gcp-pubsub-spanner.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
-* Download the [logstash-filter-spanner_db_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-spanner_db_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+* Download the [logstash-filter-spanner_db_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.6.0/logstash-filter-spanner_db_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.

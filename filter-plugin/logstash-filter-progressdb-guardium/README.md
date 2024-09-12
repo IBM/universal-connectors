@@ -198,7 +198,7 @@ the native audit logs by customizing the Progress template.
 
 • This plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note:** For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
+**Note:** For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-progress_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.6.0/logstash-filter-progress_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
 
 
 ### Procedure
@@ -209,7 +209,7 @@ the native audit logs by customizing the Progress template.
 
 3. Click **Upload File** and upload the `openedge.jar` file that is included in the enterprise version. 
 
-4. Click **Upload File** and select the offline [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip) file. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+4. Click **Upload File** and select the offline [logstash-filter-progress_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.6.0/logstash-filter-progress_guardium_plugin_filter.zip) file. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 
 5. Click the Plus icon to open the Connector Configuration dialog box.
     

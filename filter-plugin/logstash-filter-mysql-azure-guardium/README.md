@@ -173,13 +173,13 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ### Before you begin
 * Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugins-azure-mysql.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-azure-guardium/AzureMySQLOverAzureEventHub/guardium_logstash-offline-plugins-azure-mysql.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+* Download the [guardium_logstash-offline-plugins-azure-mysql.zip](https://github.com/IBM/universal-connectors/releases/download/v1.6.0/logstash-filter-azure_mysql_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Before you upload the universal connector, enable the connector if it is disabled.
-3. Click Upload File and select the offline [guardium_logstash-offline-plugins-azure-mysql.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-azure-guardium/AzureMySQLOverAzureEventHub/guardium_logstash-offline-plugins-azure-mysql.zip) plug-in. After it is uploaded, click OK.
+3. Click Upload File and select the offline [guardium_logstash-offline-plugins-azure-mysql.zip](https://github.com/IBM/universal-connectors/releases/download/v1.6.0/logstash-filter-azure_mysql_guardium_filter.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [azure_mysql.conf](azure_mysql.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
