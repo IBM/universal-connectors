@@ -10,7 +10,7 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
     - 1.1 [Creating a Kafka Cluster on Guardium](#11-Creating-a-Kafka-Cluster-on-Guardium)
     - 1.2 [Configuring Universal Connector](#12-Configuring-Universal-Connector)
       	- 1.2.1 [Configuring UC on Guardium using the new flow](#121-Configuring-UC-on-Guardium-using-the-new-flow)
-      	- 1.2.2 [Configuring UC on Guardium using the legacy flow](#123-Configuring-UC-on-Guardium-using-the-legacy-flow)
+      	- 1.2.2 [Configuring UC on Guardium using the legacy flow](#122-Configuring-UC-on-Guardium-using-the-legacy-flow)
 
 2. [Configuring native audit and rsyslog on Datasource Server](#2-Configuring-native-audit-and-rsyslog-on-Datasource-Server)
     - 2.1 [Prerequisite ](#21-prerequisite)
