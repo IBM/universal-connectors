@@ -2,14 +2,16 @@
 
 Welcome to the configuration guide for integrating a Universal Connector (UC) with Kafka on Guardium. This guide provides step-by-step instructions to set up the necessary configurations and installations for seamless communication between Guardium and Kafka.
 
-**Note**: Do not install Sniffer patched on Kafka nodes. 
-
+**Note**: Do not install Sniffer patches on Kafka nodes. 
 
 ## Table of Contents
 
 1. [Set up UC Configurations on Guardium](#1-Configuring-UC-on-Guardium-Data-Protection)
     - 1.1 [Creating a Kafka Cluster on Guardium](#11-Creating-a-Kafka-Cluster-on-Guardium)
-    - 1.2 [Configuring Universal Connector on Guardium](#12-Configuring-Universal-Connector-on-Guardium)
+    - 1.2 [Configuring Universal Connector](#12-Configuring-Universal-Connector)
+      	- 1.2.1 [Configuring UC on Guardium using the new flow](#121-Configuring-UC-on-Guardium-using-the-new-flow)
+      	- 1.2.2 [Configuring UC on Guardium using the new flow](#122-Configuring-UC-on-Guardium-using-the-new-flow)
+      	- 1.2.3 [Configuring UC on Guardium using the legacy flow](#123-Configuring-UC-on-Guardium-using-the-legacy-flow)
 
 2. [Configuring native audit and rsyslog on Datasource Server](#2-Configuring-native-audit-and-rsyslog-on-Datasource-Server)
     - 2.1 [Prerequisite ](#21-prerequisite)
@@ -23,12 +25,35 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
    
 ---
 
-## 1 Configuring UC on Guardium Data Protection 
+## 1 Configuring Universal Connector on Guardium Data Protection 
 ### 1.1 Creating a Kafka Cluster on Guardium
 For information on creating Kafka Clusters, see the **Managing Kafka clusters** topic on the [Guardium universal connector](https://www.ibm.com/docs/en/guardium/12.x?topic=guardium-universal-connector) page.
 
-### 1.2 Configuring Universal Connector on Guardium
-For information on configuring Universal Connectors, see the **Configuring universal connectors** topic on the [Guardium universal connector](https://www.ibm.com/docs/en/guardium/12.x?topic=guardium-universal-connector) page.
+### 1.2 Configuring Universal Connector 
+
+#### 1.2.1 Configuring UC on Guardium using the new flow
+For information on configuring the Universal Connector on Guardium using the new flow, see **Managing universal connector configuration** topic on the [Guardium universal connector](https://www.ibm.com/docs/en/guardium/12.x?topic=guardium-universal-connector) page.
+
+#### 1.2.2 Configuring UC on Guardium using the legacy flow
+
+1. On the **Guadium Managed Unit** machine, go to **Setup** > **Tools and Views** > **Configure Universal Connector** page.
+
+    **Important Note**: Ensure that **Guardium Universal Connector** is enabled.
+
+3. Click the **Add** icon to add a new configuration.
+
+4. Select the **EDB PostgreSQL using kafka (high volume)** connector template. 
+
+5. In the **Connector Name** field, enter a unique connector name. 
+
+   Ensure the Connector name does not contain special characters other than underscore (_) and hyphen (-).
+
+6. Click **Save**. 
+
+Your UC is now configured and ready to receive new events from the data source.
+
+**Note**: To ensure data failover and load-balancing, define the same configuration name on the Managed Unit for all Universal Connectors in the same Kafka Cluster. 
+
 
 ## 2. Configuring native audit and rsyslog on Datasource Server
 
@@ -179,7 +204,7 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	       action(type="omkafka"
 	           template="UcMessageFormat"
 	           broker=["<KAFKA_NODE_1>:9093", "<KAFKA_NODE_2>:9093", "<KAFKA_NODE_3>:9093"]
-	           topic="<_ENTER_CONNECTOR_NAME_FROM_TOPIC_1.2_STEP_4_>"
+	           topic="<_ENTER_CONNECTOR_NAME>"
 	           dynakey = "on"
 	           key = "UcSessionID"
 	           queue.filename="omkafkaq"
@@ -200,7 +225,7 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	               	"socket.keepalive.enable=true",
 			"security.protocol=ssl",
 			"debug=all",
-	                "ssl.ca.location=<_ENTER_CERTIFICATE_PATH_FROM_TOPIC_1.1.2_STEP_2_>"
+	                "ssl.ca.location=<_ENTER_CERTIFICATE>"
 	           ]
 		)
 	}
@@ -245,7 +270,7 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	    action(type="omkafka"
 	        template="UcMessageFormat"
 	        broker=["<KAFKA_NODE_1>:9093", "<KAFKA_NODE_2>:9093", "<KAFKA_NODE_3>:9093"]
-	        topic="<ENTER_CONNECTOR_NAME_FROM_TOPIC_1.2>"
+	        topic="<ENTER_CONNECTOR_NAME>"
 	        dynakey="on"
 	        key="UcSessionID_PostgreSQL"
 	        queue.filename="omkafkaq_postgres"
@@ -267,7 +292,7 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	            "socket.keepalive.enable=true",
 	            "security.protocol=ssl",
 	            "debug=all",
-	            "ssl.ca.location=<Enter_CERTIFICATE_PATH_FROM_DOWLOADING_SERVER_CA_STEP_2>"
+	            "ssl.ca.location=<ENTER_CERTIFICATE_PATH>"
 	        ]
 	    )
 	}
@@ -278,7 +303,7 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	        action(type="omkafka"
 	            template="UcMessageFormat"
 	            broker=["<MANAGED_UNIT_1>:9093", "<MANAGED_UNIT_2>:9093", "<MANAGED_UNIT_3>:9093"]
-	            topic="<ENTER_CONNECTOR_NAME_FROM_TOPIC_1.2>"
+	            topic="<ENTER_CONNECTOR_NAME>"
 	            dynakey="on"
 	            key="UcSessionID_Yugabyte"
 	            queue.filename="omkafkaq_yugabyte"
@@ -300,7 +325,7 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	                "socket.keepalive.enable=true",
 	            	"security.protocol=ssl",
 			"debug=all",
-			"ssl.ca.location=<Enter_CERTIFICATE_PATH_FROM_DOWLOADING_SERVER_CA_STEP_2>"
+			"ssl.ca.location=<ENTER_CERTIFICATE_PATH>"
 	            ]
 	        )
 	    }
