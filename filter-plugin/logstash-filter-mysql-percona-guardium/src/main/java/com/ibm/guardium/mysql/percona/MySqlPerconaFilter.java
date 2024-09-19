@@ -31,6 +31,10 @@ public class MySqlPerconaFilter implements Filter {
     public static final PluginConfigSpec<String> LOG_LEVEL_CONFIG = PluginConfigSpec.stringSetting("log_level", null);
 
     public static final String LOG42_CONF="log4j2uc.properties";
+
+    public static final String LOGIN_FAILED = "LOGIN_FAILED";
+    public static final String SQL_ERROR = "SQL_ERROR";
+
     public static final String LOGSTASH_TAG_MYSQL_PARSE_ERROR = "_mysqlguardium_parse_error";
     public static final String LOGSTASH_TAG_MYSQL_IGNORE = "_mysqlguardium_ignore";
 
@@ -118,10 +122,18 @@ public class MySqlPerconaFilter implements Filter {
                             record.setData(data);
                             validRecord = true;
                         }
+                    } else if ("1045".equals(status)) {
+                        ExceptionRecord exceptionRecord = new ExceptionRecord();
+                        exceptionRecord.setExceptionTypeId(LOGIN_FAILED);
+                        exceptionRecord.setDescription("Query failed with SQL state as " + status);
+                        exceptionRecord.setSqlString(getFieldAsString(audit_record, "sqltext", UNKNOWN_STRING));
+
+                        record.setException(exceptionRecord);
+                        validRecord = true;
                     } else {
                         ExceptionRecord exceptionRecord = new ExceptionRecord();
-                        exceptionRecord.setExceptionTypeId(status);
-                        exceptionRecord.setDescription(status);
+                        exceptionRecord.setExceptionTypeId("Query failed with SQL state as " + status);
+                        exceptionRecord.setDescription(SQL_ERROR);
                         exceptionRecord.setSqlString(getFieldAsString(audit_record, "sqltext", UNKNOWN_STRING));
 
                         record.setException(exceptionRecord);
