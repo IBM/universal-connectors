@@ -159,10 +159,12 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 6. Click the Plus sign to open the Connector Configuration dialog box.
 7. Type a name in the Connector name field.
 8. Update the input section to add the details from [onPremMSSQL.conf](./onpremMSSQLPlugin.conf) for on prem MSSQL setup file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-	Note : 
-		• For Guardium Data Protection version 11.3, add the following line to the input section:
-			'jdbc_driver_library => "${THIRD_PARTY_PATH}/mssql-jdbc-7.4.1.jre8.jar"'
-		• If auditing is configured way long back and UC is configured at later point of time, still UC will process all the previous older records as well till date, since it is already audited by the DB.
+
+Note :
+
+	• For Guardium Data Protection version 11.3, add the following line to the input section:
+       'jdbc_driver_library => "${THIRD_PARTY_PATH}/mssql-jdbc-7.4.1.jre8.jar"'
+	• If auditing was configured a while before the UC, the UC will still process all previous records, since they were already audited by the database.
 9.  Update the filter section to add the details from [onPremMSSQL.conf](./onpremMSSQLPlugin.conf) for on prem MSSQL setup file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 10. "type" field should match in input and filter configuration section. This field should be unique for  every individual connector added.
 11. If using two jdbc plug-ins on the same machine, the last_run_metadata_path file name should be different.
