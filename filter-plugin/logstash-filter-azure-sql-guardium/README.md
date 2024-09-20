@@ -118,13 +118,16 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 4. Again click Upload File and select the offline mssql-jdbc-7.4.1.jre8 file. After it is uploaded, click OK. . 
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
-7. Update the input section to add the details from [azureSQLJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-sql-guardium/azureSQLJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-	Note : • For Guardium Data Protection version 11.3, add the following line to the input section:
-	'jdbc_driver_library => "${THIRD_PARTY_PATH}/mssql-jdbc-7.4.1.jre8.jar"'
-		• If auditing was configured a while before the UC, the UC will still process all previous records, since they were already audited by the database.
-		• For moderate to large amounts of data, include pagination to facilitate the audit and to avoid out-of-memory errors. Use the parameters in the input section below when using a JDBC connector
-			jdbc_paging_enabled => true
-			jdbc_page_size => <size> 
+7. Update the input section to add the details from [azureSQLJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-sql-guardium/azureSQLJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. 
+    
+Note : 
+		
+	• For Guardium Data Protection version 11.3, add the following line to the input section:
+       'jdbc_driver_library => "${THIRD_PARTY_PATH}/mssql-jdbc-7.4.1.jre8.jar"'
+	• If auditing was configured a while before the UC, the UC will still process all previous records, since they were already audited by the database.
+	• For moderate to large amounts of data, include pagination to facilitate the audit and to avoid out-of-memory errors. Use the parameters in the input section below when using a JDBC connector
+               jdbc_paging_enabled => true
+               jdbc_page_size => <size>
 8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 9. If using two jdbc plug-ins on the same machine, the last_run_metadata_path file name should be different.
 10. Update the filter section to add the details from [azureSQLJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-azure-sql-guardium/azureSQLJDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
