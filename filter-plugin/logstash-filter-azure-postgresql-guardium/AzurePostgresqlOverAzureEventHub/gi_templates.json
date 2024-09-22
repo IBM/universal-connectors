@@ -31,7 +31,7 @@
       "consumer_group": {
         "type": "text",
         "default": "$Default",
-        "hidden": true
+        "label": "consumer_group"
       },
       "type": {
         "type": "text",
