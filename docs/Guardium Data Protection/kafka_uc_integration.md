@@ -26,12 +26,12 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 
 ## 1 Configuring Universal Connector on Guardium Data Protection 
 ### 1.1 Creating a Kafka Cluster on Guardium
-For information on creating Kafka Clusters, see the **Managing Kafka clusters** topic on the [Guardium universal connector](https://www.ibm.com/docs/en/guardium/12.x?topic=guardium-universal-connector) page.
+For information on creating Kafka Clusters, see the [Managing Kafka clusters](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-managing-kafka-clusters) topic.
 
 ### 1.2 Configuring Universal Connector 
 
 #### 1.2.1 Configuring UC on Guardium using the new flow
-For information on configuring the Universal Connector on Guardium using the new flow, see **Managing universal connector configuration** topic on the [Guardium universal connector](https://www.ibm.com/docs/en/guardium/12.x?topic=guardium-universal-connector) page.
+For information on configuring the Universal Connector on Guardium using the new flow, see [Managing universal connector configuration](https://www.ibm.com/docs/en/gdp/12.x?topic=connector-managing-universal-configuration) topic.
 
 #### 1.2.2 Configuring UC on Guardium using the legacy flow
 
