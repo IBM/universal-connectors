@@ -315,12 +315,12 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
        ![Connector configuration 4](/docs/images/cloudwatch/connector_configuration_4.png)
 
 5. If the audit logs are to be fetched from SQS LAMBDA,
-    1. Use the details from the [s3-over-sqs.conf](S3OverSQSPackage/S3/s3OverSqs.conf) file.
+    1. Use the details from the [s3-over-sqs.conf](S3OverSQSPackage/S3/S3OverSQS.conf) file.
        Update the input section to add the details from the corresponding file's input part, omitting the
        keyword "input{" at the beginning and its corresponding "}" at the end. More details on how to configure the
        relevant input plugin can be found [here](../../input-plugin/logstash-input-cloudwatch-logs/README.md).
     2. Use the details
-       from the [s3-over-sqs.conf](S3OverSQSPackage/S3/s3OverSqs.conf) file. Update the filter section to add the details
+       from the [s3-over-sqs.conf](S3OverSQSPackage/S3/S3OverSQS.conf) file. Update the filter section to add the details
        from the corresponding file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}"
        at the end. More details on how to configure the relevant input plugin can be
        found [here](../../input-plugin/logstash-input-cloudwatch-logs/README.md).
