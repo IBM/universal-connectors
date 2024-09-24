@@ -148,7 +148,7 @@ In the ```Input configuration``` section, refer to the Filebeat section.
 
 ## Filter result
 
-The Guardium record, which is added to Logstash event after the filter, is examined and handled by Guardium universal connector (in an output stage) and inserted into Guardium.
-
-If the event message is not related to MySQL, the event is tagged with  "_mysqlguardium_ignore" (not removed from the pipeline). If it is an event from MySQL but JSON parsing fails, the event is tagged with "_mysqlguardium_parse_error" but not removed (this may happen if the syslog message is too long and was truncated). These tags can be useful for debugging purposes. 
+The Guardium record that is added to Logstash event after the filter is examined and handled by Guardium universal connector (in an output stage) and inserted into Guardium.
+If an event message is not related to MySQL, then such event is not removed from the pipleline and is tagged as ‘_mysqlguardium_ignore’. If an event message is from MySQL but the JSON parsing has fails, then such event is tagged as ‘_mysqlguardium_parse_error’ and not removed from the pipeline. This may occur if the syslog message gets truncated due to its length.
+The ‘_mysqlguardium_ignore’ and  ‘_mysqlguardium_parse_error’ tags are useful for debugging purposes.
 
