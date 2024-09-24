@@ -143,5 +143,12 @@ In the ```Input configuration``` section, refer to the Filebeat section.
 * Events in the filter are not removed, but tagged if not parsed (see [Filter result](#filter-result), below).
 *  If the dbname is not coming from the command line, it will not get populated. If you want to see the dbname, either  send a use statement or send it on command line.
 * *IPv6* addresses are typically supported by the MySQL and filter plug-ins, however this is not fully supported by the Guardium pipeline.
-* It is supported on Enterprise version only
+* It is supported on Enterprisex version only
 * Use JSON format for native logging (configurable in the database server). XML is not supported as of now.
+
+## Filter result
+
+The Guardium record, which is added to Logstash event after the filter, is examined and handled by Guardium universal connector (in an output stage) and inserted into Guardium.
+
+If the event message is not related to MySQL, the event is tagged with  "_mysqlguardium_ignore" (not removed from the pipeline). If it is an event from MySQL but JSON parsing fails, the event is tagged with "_mysqlguardium_parse_error" but not removed (this may happen if the syslog message is too long and was truncated). These tags can be useful for debugging purposes. 
+
