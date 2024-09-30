@@ -3,26 +3,38 @@
 if [ "$TRAVIS_BRANCH" == "main" ] && $(git diff --name-only $TRAVIS_COMMIT_RANGE | grep -q "gdp-packages"); then
   echo "zipping GDP package templates"
   ./gdp-packages/zipPackagesForGDP.sh
+  export COMMIT_SHA=${TRAVIS_COMMIT}
+  # Get current timestamp
+  TIMESTAMP=$(date +%Y-%m-%d-%H-%M)
+  # Create the tag name by combining timestamp and commit hash
+  export TAG="packages-v${TIMESTAMP}_${COMMIT_SHA:0:7}"
 
-  export TAG=$(cat "./gdp-packages/version")
+  # Create the tag using the GitHub API
+  curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+  -H "Accept: application/vnd.github.v3+json" \
+  https://api.github.com/repos/${TRAVIS_REPO_SLUG}/git/refs \
+  -d '{
+    "ref": "refs/tags/'"$TAG"'",
+    "sha": "'"$COMMIT_SHA"'"
+  }'
 
-  # Delete the previous version of the release
-  # Step 1: get the asset id for gdp_plugins_templates.zip
-  RELEASE_INFO=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-    "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases/tags/${TAG}")
-  RELEASE_ID=$(echo "$RELEASE_INFO" | jq -r '.id')
-  ASSET_LIST=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-      "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases/${RELEASE_ID}/assets")
-  ASSET_ID=$(echo "$ASSET_LIST" | jq -r '.[] | select(.name == "gdp_plugins_templates.zip") | .id')
+  echo "Tag $TAG created for commit $COMMIT_SHA"
 
-  # Step 2: Delete the existing asset gdp_plugins_templates.zip by asset id
-  if [ -n "$ASSET_ID" ]; then
-    curl -s -X DELETE -H "Authorization: token $GITHUB_TOKEN" \
-         "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases/assets/$ASSET_ID"
-  fi
+  # Create a release from the tag using the GitHub API
+  curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+  -H "Accept: application/vnd.github.v3+json" \
+  https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases \
+  -d '{
+    "tag_name": "'"$TAG"'",
+    "name": "'"$TAG"'",
+    "body": "gdp packages for CM management",
+    "draft": false,
+    "prerelease":true
+  }'
+  echo "Draft release $TAG created"
 
   # Publish the new gdp_plugins_templates.zip to release
-  export UPLOAD_URL=$(curl -s "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases/tags/$TAG" | jq -r '.upload_url' | sed -e "s/{?name,label}//")
+  export UPLOAD_URL=$(curl -H "Authorization: token $GITHUB_TOKEN" -s "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases/tags/$TAG" | jq -r '.upload_url' | sed -e "s/{?name,label}//")
   echo "Uploading gdp-packages/gdp_plugins_templates.zip into release: $TAG, url: $UPLOAD_URL"
   response=$(curl -s -o response.json -w "%{http_code}" -X POST --data-binary "@gdp-packages/gdp_plugins_templates.zip" -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/zip" "$UPLOAD_URL?name=gdp_plugins_templates.zip")
   # Parse the response JSON file to check for errors
