@@ -2117,6 +2117,34 @@ public class NeptuneGuardiumFilterTest {
 
 	}
 
+	@Test
+	public void filterTestForCustomQuery() {
+
+		final String auditString = "1716474836828, 10.231.3.133:36112, 10.231.2.175:8672, Websocket, arn:aws:sts::594452854709:assumed-role/BURoleForNeptuneNotebook/SageMaker, {authenticationSucceeded=true}, [unknown], \"RequestMessage{, requestId=313bd190-3b18-4ad3-8811-ae2cc0b2ab0b, op='eval', processor='', args={gremlin=g.V('test_id_mohan').drop() , aliases={g=g}}}\"";
+
+		Event event = new org.logstash.Event();
+		List<Event> events = new ArrayList<>();
+		events.add(event);
+		event.setField(ApplicationConstantTest.LOG_MESSAGE_KEY, auditString);
+		event.setField(ApplicationConstantTest.CLIENT_HOST_KEY, "10.231.3.133:36112");
+		event.setField(ApplicationConstantTest.SERVER_HOST_KEY, "10.231.2.175:8672");
+		event.setField(ApplicationConstantTest.TIME_STAMP_KEY, "1716474836828");
+		event.setField(ApplicationConstantTest.HTTP_HEADERS_KEY, "[unknown]");
+		event.setField(ApplicationConstantTest.PAYLOAD_KEY,
+				"RequestMessage{, requestId=313bd190-3b18-4ad3-8811-ae2cc0b2ab0b, op='eval', processor='', args={gremlin=g.V('test_id_abc').drop() , aliases={g=g}}}");
+		event.setField(ApplicationConstantTest.CALLERIAM_KEY, "arn:aws:sts::*********:assumed-role/BURoleForNeptuneNotebook/SageMaker");
+		event.setField(ApplicationConstantTest.SERVER_HOSTNAME_PREFIX_KEY,
+				ApplicationConstantTest.SERVER_HOSTNAME_PREFIX);
+		event.setField(ApplicationConstantTest.DBNAME_PREFIX_KEY, ApplicationConstantTest.DBNAME_PREFIX);
+
+		Collection<Event> response = FILTER.filter(events, matchListener);
+
+		assertNotNull(event.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+		assertEquals(1, response.size());
+		assertEquals(1, matchListener.getMatchCount());
+
+	}
+
 }
 
 class TestMatchListener implements FilterMatchListener {

@@ -118,7 +118,26 @@ public class MySqlPerconaFilterTest {
         System.out.println(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
     }
 
+    @Test
+    public void testParseMySqlPercona_AccessDenied(){
+        String access_denied = "percona-audit: {\"audit_record\": {\"name\": \"Connect\",\"record\": \"8420_2022-02-10T10:37:59\",\"timestamp\": \"2022-02-10T13:24:28 UTC\",\"connection_id\": \"10\",\"status\": 1045,\"user\": \"root\",\"priv_user\": \"root\",\"os_login\": \"\",\"proxy_user\": \"\",\"host\": \"localhost\",\"ip\": \"\",\"db\": \"\"}}";
+        String minOff = "+04:00";
 
+        Configuration config = new ConfigurationImpl(Collections.singletonMap("source", "message"));
+        Context context = new ContextImpl(null, null);
+        MySqlPerconaFilter filter = new MySqlPerconaFilter("test-id", config, context);
+
+        Event e = new org.logstash.Event();
+        TestMatchListener matchListener = new TestMatchListener();
+
+        e.setField("message", access_denied);
+        e.setField("minOff", minOff);
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+        Assert.assertEquals(1, results.size());
+        Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+        Assert.assertEquals(1, matchListener.getMatchCount());
+        System.out.println(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+    }
 }
 
 class TestMatchListener implements FilterMatchListener {
