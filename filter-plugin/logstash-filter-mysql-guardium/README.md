@@ -145,3 +145,10 @@ In the ```Input configuration``` section, refer to the Filebeat section.
 * *IPv6* addresses are typically supported by the MySQL and filter plug-ins, however this is not fully supported by the Guardium pipeline.
 * It is supported on Enterprise version only
 * Use JSON format for native logging (configurable in the database server). XML is not supported as of now.
+
+## Filter result
+
+The Guardium record that is added to Logstash event after examining the filter are handled by Guardium Universal Connector (in an output stage) and then loaded into Guardium.
+If an event message is not related to MySQL, then such event is not removed from the pipleline and is tagged as ‘_mysqlguardium_ignore’. If an event message is from MySQL but the JSON parsing has failed, then such event is tagged as ‘_mysqlguardium_parse_error’ and not removed from the pipeline. This may occur if the syslog message gets truncated due to its length.
+The ‘_mysqlguardium_ignore’ and  ‘_mysqlguardium_parse_error’ tags are useful for debugging purposes.
+
