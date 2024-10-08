@@ -7,6 +7,8 @@ import co.elastic.logstash.api.Filter;
 import co.elastic.logstash.api.FilterMatchListener;
 import co.elastic.logstash.api.LogstashPlugin;
 import co.elastic.logstash.api.PluginConfigSpec;
+import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -41,7 +43,7 @@ public class MySqlPerconaFilter implements Filter {
     private static final String MYSQL_AUDIT_START_SIGNAL = "percona-audit: ";
     public static final String DATA_PROTOCOL_STRING = "MySQL Percona audit";
     public static final String UNKNOWN_STRING = "";
-    public static final String SERVER_TYPE_STRING = "MySql";
+    public static final String SERVER_TYPE_STRING = "PERCONA_MYSQL";
 
     private static Logger log = LogManager.getLogger(MySqlPerconaFilter.class);
 
@@ -151,7 +153,13 @@ public class MySqlPerconaFilter implements Filter {
 
                         record.setAppUserName(UNKNOWN_STRING);
 
-                        Time time = getTime(getFieldAsString(audit_record, "timestamp", null));
+                        String minOff = "+00:00" ;
+                        if(e.getField("minOff") != null)
+                        {
+                            minOff = e.getField("minOff").toString();
+                        }
+                        Time time = getTime(getFieldAsString(audit_record, "timestamp", null),minOff);
+
                         record.setTime(time);
 
                         record.setSessionLocator(parseSessionLocator(e, audit_record));
@@ -192,9 +200,24 @@ public class MySqlPerconaFilter implements Filter {
             log.warn("DateString is null");
             return new Time(0, 0, 0);
         }
-        ZonedDateTime date = ZonedDateTime.parse(dateString, DATE_TIME_FORMATTER);
-        long millis = date.toInstant().toEpochMilli();
-        int  minOffset = date.getOffset().getTotalSeconds()/60;
+
+        ZoneOffset offset = ZoneOffset.of(ZoneOffset.UTC.getId());
+        if (timeZone != null) {
+            offset = ZoneOffset.of(timeZone);
+        }
+
+        ZonedDateTime date;
+        try {
+            date = ZonedDateTime.parse(dateString, DATE_TIME_FORMATTER);
+        }
+        catch(DateTimeParseException e){
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
+            date = ZonedDateTime.parse(dateString, formatter.withZone(offset));
+        }
+
+        ZonedDateTime zdt = date.withZoneSameInstant(offset);
+        long millis = zdt.toInstant().toEpochMilli();
+        int minOffset = zdt.getOffset().getTotalSeconds() / 60;
         //int  minDst = date.getOffset().getRules().isDaylightSavings(date.toInstant()) ? 60 : 0;
         return new Time(millis, minOffset, 0);
     }
