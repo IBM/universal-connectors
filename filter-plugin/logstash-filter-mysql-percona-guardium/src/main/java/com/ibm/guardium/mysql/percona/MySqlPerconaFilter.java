@@ -195,7 +195,7 @@ public class MySqlPerconaFilter implements Filter {
         return jsonObject.get(fieldName).getAsString();
     }
 
-    public static Time getTime(String dateString){
+    public static Time getTime(String dateString, String timeZone){
         if (dateString == null){
             log.warn("DateString is null");
             return new Time(0, 0, 0);
