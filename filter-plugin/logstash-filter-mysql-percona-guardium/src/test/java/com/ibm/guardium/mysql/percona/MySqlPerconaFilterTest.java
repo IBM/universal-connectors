@@ -4,7 +4,11 @@ import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
 import co.elastic.logstash.api.FilterMatchListener;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ConfigurationImpl;
@@ -82,6 +86,9 @@ public class MySqlPerconaFilterTest {
                 "\t\t\t\t\t\t\t\t\t\t\t\t\"ip\":\"\",\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t\t\"db\":\"gdb\"}\n" +
                 "\t\t\t\t\t\t\t\t\t}";
+        String minOff = "+07:00";
+
+
         Configuration config = new ConfigurationImpl(Collections.singletonMap("log_level", "debug"));
         Context context = new ContextImpl(null, null);
         MySqlPerconaFilter filter = new MySqlPerconaFilter("test-id", config, context);
@@ -89,6 +96,7 @@ public class MySqlPerconaFilterTest {
         Event e = new org.logstash.Event();
         TestMatchListener matchListener = new TestMatchListener();
 
+        e.setField("minOff", minOff);
         e.setField("message", mysql_message);
         Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 
@@ -96,12 +104,16 @@ public class MySqlPerconaFilterTest {
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         Assert.assertEquals(1, matchListener.getMatchCount());
         System.out.println(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+        Record record = new Gson().fromJson((String)e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME), Record.class);
+        Assert.assertEquals(record.getDbName(), record.getAccessor().getServiceName());
 
     }
 
     @Test
     public void testParseMySqlPercona_Error(){
         String error_message = "percona-audit: {\"audit_record\":{\"name\":\"Query\",\"record\":\"39_2021-02-03T18:54:45\",\"timestamp\":\"2021-02-03T18:55:57 UTC\",\"command_class\":\"select\",\"connection_id\":\"2\",\"status\":1146,\"sqltext\":\"select * from users\",\"user\":\"root[root] @ localhost []\",\"host\":\"localhost\",\"os_user\":\"\",\"ip\":\"\",\"db\":\"mysql\"}}";
+        String minOff = "+04:00";
+
         Configuration config = new ConfigurationImpl(Collections.singletonMap("source", "message"));
         Context context = new ContextImpl(null, null);
         MySqlPerconaFilter filter = new MySqlPerconaFilter("test-id", config, context);
@@ -110,6 +122,7 @@ public class MySqlPerconaFilterTest {
         TestMatchListener matchListener = new TestMatchListener();
 
         e.setField("message", error_message);
+        e.setField("minOff", minOff);
         Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 
         Assert.assertEquals(1, results.size());
@@ -138,6 +151,26 @@ public class MySqlPerconaFilterTest {
         Assert.assertEquals(1, matchListener.getMatchCount());
         System.out.println(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
     }
+
+    @Test
+    public void testParseMySqlPercona_Data2(){
+        String mysql_message = "<14>Feb 12 07:18:30 dbqa09 percona-audit: {\"audit_record\":{\"name\":\"Query\",\"record\":\"106_1970-01-01T00:00:00\",\"timestamp\":\"2021-02-12T12:18:30Z\",\"command_class\":\"select\",\"connection_id\":\"12\",\"status\":0,\"sqltext\":\"select * from Products limit 99999\",\"user\":\"root[root] @ localhost []\",\"host\":\"localhost\",\"os_user\":\"\",\"ip\":\"\",\"db\":\"\"}}";
+        Configuration config = new ConfigurationImpl(Collections.singletonMap("log_level", "debug"));
+        Context context = new ContextImpl(null, null);
+        MySqlPerconaFilter filter = new MySqlPerconaFilter("test-id", config, context);
+
+        Event e = new org.logstash.Event();
+        TestMatchListener matchListener = new TestMatchListener();
+
+        e.setField("message", mysql_message);
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+        Assert.assertEquals(1, matchListener.getMatchCount());
+        System.out.println(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+    }
+
 }
 
 class TestMatchListener implements FilterMatchListener {
