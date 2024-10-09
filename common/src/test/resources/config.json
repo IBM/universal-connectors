@@ -1,0 +1,9 @@
+{
+  "session_id": "75849321",
+  "client_port": "53422",
+  "server_port": "5432",
+  "db_user": "admin_user",
+  "server_type": "PostgreSQL",
+  "db_protocol": "TCP/IP",
+  "exception_type_id": "104"
+}
