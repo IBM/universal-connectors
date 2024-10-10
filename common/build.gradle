@@ -29,8 +29,8 @@ repositories {
 
 
 dependencies {
-    compile group: 'commons-validator', name: 'commons-validator', version: '1.7'
-    testCompile 'junit:junit:4.13.1'
+    implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
+    testImplementation 'junit:junit:4.13.1'
 }
 
 clean {
