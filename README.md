@@ -19,9 +19,11 @@ The process for working with the universal connector differs for Guardium Data P
 
 See documentation specific to [Guardium Data Protection](docs/Guardium%20Data%20Protection).
 
-See documentation specific to [Guardium Insights](docs/Guardium%20Insights/3.2.x/README.md).
+See documentation specific to [Guardium Insights 3.x](https://www.ibm.com/docs/en/guardium-insights/3.x?topic=connecting-data-sources).
 
-See documentation specific to [Guardium Insights SaaS](/docs/Guardium%20Insights/SaaS_1.0)
+See documentation specific to [Guardium Insights 3.2.x](https://github.com/IBM/universal-connectors/tree/main/docs/Guardium%20Insights/3.2.x).
+
+See documentation specific to [Guardium Insights SaaS](https://www.ibm.com/docs/en/guardium-insights/saas?topic=connecting-data-sources)
 
 See general documentation about the universal connector for all versions [here](/docs/readme.md)
 
