@@ -12,21 +12,14 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.ibm.guardium.universalconnector.commons.structures.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Construct;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
-import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 public class Parser {
 	private static Logger log = LogManager.getLogger(Parser.class);
@@ -51,8 +44,8 @@ public class Parser {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static Record parseAuditRecord(final JsonObject data) throws ParseException {
-		Record record = new Record();
+	public static UCRecord parseAuditRecord(final JsonObject data) throws ParseException {
+		UCRecord record = new UCRecord();
 		final JsonObject param = data.get("param").getAsJsonObject();
 		if (param.get("error") != null) {
 			param.get("error").getAsString();
@@ -101,8 +94,8 @@ public class Parser {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static Record parseProfilerRecord(final JsonObject data) throws ParseException {
-		Record record = new Record();
+	public static UCRecord parseProfilerRecord(final JsonObject data) throws ParseException {
+		UCRecord record = new UCRecord();
 		final JsonObject param = data.get("command").getAsJsonObject();
 
 		// Setting session ID

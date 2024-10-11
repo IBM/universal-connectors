@@ -10,7 +10,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 public class ParserTest {
 
@@ -36,7 +36,7 @@ public class ParserTest {
 	@Test
 	public void testParseRecord() throws ParseException {
 
-		final Record record = Parser.parseRecord(intializeMap());
+		final UCRecord record = Parser.parseRecord(intializeMap());
 
 		Assert.assertEquals(Constants.TEXT, record.getAccessor().getDataType());
 		Assert.assertEquals(null, record.getException());
@@ -54,7 +54,7 @@ public class ParserTest {
 				"Select * from employee;; No keyspace has been specified. USE a keyspace, or explicitly specify keyspace.tablename");
 		intrimData.put("category", "ERROR");
 
-		final Record record = Parser.parseRecord(intrimData);
+		final UCRecord record = Parser.parseRecord(intrimData);
 
 		Assert.assertEquals(Constants.TEXT, record.getAccessor().getDataType());
 		Assert.assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
@@ -73,7 +73,7 @@ public class ParserTest {
 		intrimData.put("operation", "LOGIN SUCCESSFUL");
 		intrimData.put("category", "AUTH");
 
-		final Record record = Parser.parseRecord(intrimData);
+		final UCRecord record = Parser.parseRecord(intrimData);
 
 		Assert.assertEquals(Constants.TEXT, record.getAccessor().getDataType());
 		Assert.assertNull(record.getException());
@@ -93,7 +93,7 @@ public class ParserTest {
 				"CREATE USER test WITH PASSWORD *******; User test does not have sufficient privileges to perform the requested operation");
 		intrimData.put("category", "AUTH");
 
-		final Record record = Parser.parseRecord(intrimData);
+		final UCRecord record = Parser.parseRecord(intrimData);
 
 		Assert.assertEquals(Constants.TEXT, record.getAccessor().getDataType());
 		Assert.assertNotNull(record.getException());

@@ -27,7 +27,7 @@ import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
@@ -54,8 +54,8 @@ public class Parser {
 	 * @return record
 	 * @throws Exception
 	 */
-	public static Record parseQtpRecord(final Event event) throws Exception {
-		Record record = new Record();
+	public static UCRecord parseQtpRecord(final Event event) throws Exception {
+		UCRecord record = new UCRecord();
 		try {
 			record.setSessionId(getSessionId(event));
 			record.setAppUserName(ApplicationConstant.NOT_AVAILABLE);
@@ -385,7 +385,7 @@ public class Parser {
 	/**
 	 * Using this to set redactedDataSql
 	 * 
-	 * @param eventF
+	 * @param event
 	 * @return redactedsql
 	 */
 	private static String getRedactedSql(final Event event) {
@@ -453,7 +453,7 @@ public class Parser {
 	 * Using this to perform operation on input, convert String core into
 	 * sentenceObject Object and then return the value as response
 	 *
-	 * @param String core
+	 * @param core
 	 * @return sentenceobject
 	 *
 	 */

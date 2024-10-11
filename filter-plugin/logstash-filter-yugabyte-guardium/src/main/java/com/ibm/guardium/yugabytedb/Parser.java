@@ -21,8 +21,8 @@ public class Parser {
 
 	private static Logger log = LogManager.getLogger(Parser.class);
 
-	public static Record parseRecord(final Map data) throws ParseException {
-		Record record = new Record();
+	public static UCRecord parseRecord(final Map data) throws ParseException {
+		UCRecord record = new UCRecord();
 
 		if (data != null) {
 			if(log.isDebugEnabled()){

@@ -6,15 +6,12 @@
 package com.ibm.guardium.azurepostgresql;
 
 import java.text.ParseException;
-import java.util.Map;
 
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.ibm.guardium.azurepostgresql.Constants;
-import com.ibm.guardium.azurepostgresql.Parser;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 import co.elastic.logstash.api.Event;
@@ -47,7 +44,7 @@ public class ParserTest {
 		Event e = intitalizeEventObject();
 
 		e.setField(Constants.STATEMENT, "create table emp1(id int);");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		Assert.assertEquals(record.getData().getOriginalSqlCommand(),"create table emp1(id int);");
 	}
 
@@ -59,7 +56,7 @@ public class ParserTest {
 		e.setField(Constants.STATEMENT,
 				"INSERT INTO Employee (EmployeeNo, FirstName, LastName, DOB, JoinedDate, DepartmentNo )"
 						+ "VALUES ( 101, 'sss', 'shinde','1980-01-05', '2005-03-27', 01);");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		Assert.assertEquals(record.getData().getOriginalSqlCommand(), "INSERT INTO Employee (EmployeeNo, FirstName, LastName, DOB, JoinedDate, DepartmentNo )"
 				+ "VALUES ( 101, 'sss', 'shinde','1980-01-05', '2005-03-27', 01);");
 	}
@@ -70,7 +67,7 @@ public class ParserTest {
 		Event e = intitalizeEventObject();
 		
 		e.setField(Constants.STATEMENT, "Select * from employee;");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		Assert.assertEquals(record.getData().getOriginalSqlCommand(),"Select * from employee;" );
 	}
 
@@ -80,7 +77,7 @@ public class ParserTest {
 		Event e = intitalizeEventObject();
 
 		e.setField(Constants.STATEMENT, "\"SELECT \n   first_name || ' ' || last_name \"\"Full Name\"\"\nFROM \n   AutomationEdge\"");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		Assert.assertEquals(record.getData().getOriginalSqlCommand(),"SELECT \n" +
 				"   first_name || ' ' || last_name \"Full Name\"\n" +
 				"FROM \n" +
@@ -93,7 +90,7 @@ public class ParserTest {
 		Event e = intitalizeEventObject();
 		
 		e.setField(Constants.STATEMENT, "UPDATE Employee SET DepartmentNo = 03 WHERE EmployeeNo = 101;");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		Assert.assertEquals(record.getData().getOriginalSqlCommand(),"UPDATE Employee SET DepartmentNo = 03 WHERE EmployeeNo = 101;");
 	}
 
@@ -103,7 +100,7 @@ public class ParserTest {
 		Event e = intitalizeEventObject();
 		
 		e.setField(Constants.STATEMENT, "DELETE FROM Employee WHERE EmployeeNo = 101;");
-		 Record record = Parser.parseRecord(e);
+		UCRecord record = Parser.parseRecord(e);
 		Assert.assertEquals(record.getData().getOriginalSqlCommand(),"DELETE FROM Employee WHERE EmployeeNo = 101;");
 	}
 
@@ -144,7 +141,7 @@ public class ParserTest {
 		
 		e.setField(Constants.SUCCEEDED, "ERROR");
 		e.setField(Constants.MESSAGE, "relation \"dept\" already exists");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		Assert.assertEquals(Constants.SQL_ERROR, record.getException().getExceptionTypeId());
 		Assert.assertEquals("relation \"dept\" already exists", record.getException().getDescription());
 	}
@@ -157,7 +154,7 @@ public class ParserTest {
 		e.setField(Constants.SQL_STATE,"28P01");
 		e.setField(Constants.PREFIX,"28P01");
 		e.setField(Constants.MESSAGE, "password authentication failed for user \"postgres\"");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		Assert.assertEquals(Constants.LOGIN_ERROR, record.getException().getExceptionTypeId());
 		Assert.assertEquals("password authentication failed for user \"postgres\"",
 				record.getException().getDescription());

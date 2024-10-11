@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.ibm.guardium.couchdb.Parser;
 import com.ibm.guardium.universalconnector.commons.structures.*;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 import co.elastic.logstash.api.Event;
 
@@ -30,13 +30,13 @@ public class Parser {
 	/***
 	 * Parses logs and returns a Guard Record object
 	 * 
-	 * @param data
+	 * @param event
 	 * @return
 	 * @throws Exception 
 	 * @throws ParseException
 	 */
-	public static Record parseRecord(Event event) throws Exception {
-		Record record = new Record();
+	public static UCRecord parseRecord(Event event) throws Exception {
+		UCRecord record = new UCRecord();
 		try {
 			record.setAppUserName(ApplicationConstant.UNKNOWN_STRING);
 			record.setAccessor(parseAccessor(event));

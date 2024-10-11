@@ -4,9 +4,6 @@ SPDX-License-Identifier: Apache-2.0
 */
 package com.ibm.guardium.documentdb;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,7 +23,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 
 import co.elastic.logstash.api.Configuration;
@@ -108,7 +105,7 @@ public class DocumentdbGuardiumFilter implements Filter {
 							skippedEvents.add(e);
                             continue;
                         }
-						Record record = Parser.parseAuditRecord(inputJSON);
+						UCRecord record = Parser.parseAuditRecord(inputJSON);
 						if(e.getField("serverHostnamePrefix") !=null && e.getField("serverHostnamePrefix") instanceof String) {
 							record.getAccessor().setServerHostName(e.getField("serverHostnamePrefix").toString()+".aws.com");
 							String dbName=record.getDbName();
@@ -140,7 +137,7 @@ public class DocumentdbGuardiumFilter implements Filter {
 								skippedEvents.add(e);
 	                            continue;
 	                        }
-							Record record = Parser.parseProfilerRecord(inputJSON);
+							UCRecord record = Parser.parseProfilerRecord(inputJSON);
 							if(e.getField("serverHostnamePrefix") !=null && e.getField("serverHostnamePrefix") instanceof String) {
 								record.getAccessor().setServerHostName(e.getField("serverHostnamePrefix").toString()+".aws.com");
 								String dbName=record.getDbName();
@@ -184,7 +181,7 @@ public class DocumentdbGuardiumFilter implements Filter {
 	 * @param e      - Logstash Event
 	 * @param record - Record after parsing.
 	 */
-	private void correctIPs(Event e, Record record) {
+	private void correctIPs(Event e, UCRecord record) {
 		// Override "(NONE)" IP, if not filterd, as it's internal command by DocumentDB.
 		// Note: IP needs to be in ipv4/ipv6 format
 		SessionLocator sessionLocator = record.getSessionLocator();

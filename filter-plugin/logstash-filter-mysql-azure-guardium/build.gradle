@@ -20,8 +20,8 @@ pluginInfo.pluginClass     = "AzureMysqlGuardiumFilter"
 pluginInfo.pluginName      = "azure_mysql_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 17
+targetCompatibility = 17
 
 buildscript {
     repositories {

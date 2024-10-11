@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
@@ -47,7 +47,7 @@ public class ApacheSolrAzureConnector implements Filter {
 		for (Event event : events) {
 			if (isQtpEvent(event)) {
 				try {
-					Record rec = Parser.parseQtpRecord(event);
+					UCRecord rec = Parser.parseQtpRecord(event);
 					final GsonBuilder builder = new GsonBuilder();
 					builder.serializeNulls();
 					final Gson gson = builder.disableHtmlEscaping().create();

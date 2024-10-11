@@ -4,27 +4,14 @@
 #*/
 package com.ibm.guardium.azurepostgresql;
 
-import java.text.SimpleDateFormat;
-
-import org.apache.logging.log4j.LogManager;
-
-import org.apache.logging.log4j.Logger;
-
 import java.util.Date;
-
+import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
+import com.ibm.guardium.universalconnector.commons.structures.*;
 
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-
-import com.ibm.guardium.universalconnector.commons.structures.Time;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import co.elastic.logstash.api.Event;
 
@@ -32,9 +19,9 @@ public class Parser {
 
 	private static Logger log = LogManager.getLogger(Parser.class);
 
-	public static Record parseRecord(final Event e) throws ParseException {
+	public static UCRecord parseRecord(final Event e) throws ParseException {
 
-		Record record = new Record();
+		UCRecord record = new UCRecord();
 
 		String dbname = Constants.NA;
 		if (e.getField(Constants.DATABASE_NAME) != null) {
@@ -102,7 +89,7 @@ public class Parser {
 		return new Time(millis, 0, 0);
 	}
 
-	public static void parseSessionId(final Event e, final Record record) {
+	public static void parseSessionId(final Event e, final UCRecord record) {
 
 		if (e.getField(Constants.SESSION_ID) != null) {
 			record.setSessionId(e.getField(Constants.SESSION_ID).toString());

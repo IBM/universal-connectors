@@ -5,7 +5,7 @@
 package com.ibm.guardium.universalconnector.commons;
 
 /**
- * A utility class for creating a Guardium {@link com.ibm.guardium.universalconnector.commons.structures.Record Record}.
+ * A utility class for creating a Guardium {@link com.ibm.guardium.universalconnector.commons.structures.UCRecord Record}.
  */
 public class Util {
     /**

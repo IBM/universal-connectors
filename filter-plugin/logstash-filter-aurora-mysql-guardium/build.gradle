@@ -11,7 +11,7 @@ group                      'com.ibm.guardium.auroramysql' // must match the pack
 version                    "${file("VERSION").text.trim()}" // read from required VERSION file
 description                = "Aurora Mysql Guardium filter plugin"
 pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
-pluginInfo.longDescription = "This gem is a Logstash saphana filter plugin required to be installed as part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program."
+pluginInfo.longDescription = "This gem is a Logstash Aurora MySQL filter plugin required to be installed as part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program."
 pluginInfo.authors         = ['IBM', 'Laxmikant Mahale']
 pluginInfo.email           = ['Laxmikant.Mahale@ibm.com']
 pluginInfo.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
@@ -20,8 +20,8 @@ pluginInfo.pluginClass     = "AuroraMysqlGuardiumPluginFilter"
 pluginInfo.pluginName      = "auroramysqlguardiumpluginfilter" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 17
+targetCompatibility = 17
 
 def jacocoVersion = '0.8.4'
 // minimumCoverage can be set by Travis ENV

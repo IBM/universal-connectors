@@ -22,8 +22,8 @@ pluginInfo.pluginName      = "awsmariadb_guardium_filter" // must match the @Log
 // ===========================================================================
 
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 17
+targetCompatibility = 17
 
 def jacocoVersion = '0.8.4'
 // minimumCoverage can be set by Travis ENV

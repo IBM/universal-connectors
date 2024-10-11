@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class RecordTest {
 
-    Record record = new Record();
+     UCRecord record = new UCRecord();
 
     @Test 
     public void testAccessorPostManipulation() {

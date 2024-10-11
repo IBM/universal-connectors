@@ -6,10 +6,7 @@ package com.ibm.guardium.auroramysql;
 
 import java.text.ParseException;
 import com.google.gson.JsonObject;
-import com.ibm.guardium.auroramysql.Constants;
-import com.ibm.guardium.auroramysql.Parser;
 import com.ibm.guardium.universalconnector.commons.structures.*;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,7 +32,7 @@ public class ParserTest {
 		data.addProperty(Constants.DB_USER, "admin");
 		data.addProperty(Constants.DB_NAME, "music");
 		data.addProperty(Constants.SERVERHOSTNAME, "serverHostName");
-		final Record record = Parser.parseRecord(data);
+		final UCRecord record = Parser.parseRecord(data);
 
 		Assert.assertEquals(
 				"CREATE TABLE Orders (OrderID int NOT NULL,OrderNumber int NOT NULL,PersonID int,PRIMARY KEY (OrderID))",
@@ -56,7 +53,7 @@ public class ParserTest {
 		data.addProperty(Constants.DB_USER, "JOHNNY");
 		data.addProperty(Constants.DB_NAME, "music");
 		data.addProperty(Constants.SERVERHOSTNAME, "serverHostName");
-		final Record record = Parser.parseRecord(data);
+		final UCRecord record = Parser.parseRecord(data);
 		Assert.assertEquals("LOGIN_FAILED", record.getException().getExceptionTypeId());
 		Assert.assertEquals("CONNECT", record.getException().getDescription());
 	}
@@ -78,7 +75,7 @@ public class ParserTest {
 		data.addProperty(Constants.DB_USER, "JOHNNY");
 		data.addProperty(Constants.DB_NAME, "MUSIC");
 		data.addProperty(Constants.SERVERHOSTNAME, "serverHostName");
-		Record record = Parser.parseRecord(data);
+		UCRecord record = Parser.parseRecord(data);
 		Accessor actual = record.getAccessor();
 
 		Assert.assertEquals(Constants.DB_PROTOCOL, actual.getDbProtocol());

@@ -4,20 +4,16 @@ import java.text.ParseException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
+import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 import co.elastic.logstash.api.Event;
 
 public class Parser {
 	
-	public static Record parseRecord(final Event e) throws ParseException {
+	public static UCRecord parseRecord(final Event e) throws ParseException {
 		
-			Record record = new Record();
+			UCRecord record = new UCRecord();
 		
 			record.setSessionId(e.getField(Constants.Session_ID).toString());
 

@@ -21,10 +21,10 @@ pluginInfo.pluginName      = "azure_postgresql_guardium_plugin_filter" // must m
 // ===========================================================================shPlugin annotation in the main plugin class
 // ===========================================================================
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 17
+targetCompatibility = 17
 
-def jacocoVersion = '0.8.4'
+def jacocoVersion = '0.8.8'
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
@@ -43,7 +43,7 @@ buildscript {
 
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
-        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0"
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
 }
@@ -137,7 +137,6 @@ tasks.register("copyDependencyLibs", Copy){
 }
 
 apply plugin: 'jacoco'
-//apply plugin: 'org.barfuin.gradle.jacocolog' version '2.0.0'
 apply plugin: "org.barfuin.gradle.jacocolog"
 // ------------------------------------
 // JaCoCo is a code coverage tool

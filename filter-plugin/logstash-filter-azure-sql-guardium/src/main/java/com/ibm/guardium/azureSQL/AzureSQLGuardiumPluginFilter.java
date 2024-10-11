@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -11,7 +12,6 @@ import org.apache.logging.log4j.core.LoggerContext;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
@@ -52,7 +52,7 @@ public class AzureSQLGuardiumPluginFilter implements Filter {
 		for (Event e : events) {
 	
 			try {
-					Record record = Parser.parseRecord(e);
+					UCRecord record = Parser.parseRecord(e);
 					final GsonBuilder builder = new GsonBuilder();
 					builder.serializeNulls();
 					final Gson gson = builder.create();

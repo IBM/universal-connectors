@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +18,6 @@ import org.apache.logging.log4j.core.LoggerContext;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
@@ -72,7 +72,7 @@ public class CassandraGuardiumPluginFilter implements Filter {
 						String[] keyValue = input_value.split(Constants.INPUT_SPLIT3,Constants.limit);
 						dataMap.put(keyValue[0], keyValue[1]);
 					}
-					Record record = Parser.parseRecord(dataMap);
+					UCRecord record = Parser.parseRecord(dataMap);
 					final GsonBuilder builder = new GsonBuilder();
 					builder.serializeNulls();
 					final Gson gson = builder.create();
