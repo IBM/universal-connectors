@@ -4,31 +4,15 @@
 //
 package com.ibm.guardium.dynamodb;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.ibm.guardium.universalconnector.commons.structures.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.text.ParseException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonParser;
-import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.*;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
-import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class Parser {
 
@@ -36,8 +20,8 @@ public class Parser {
 	
 	private static JsonParser jsonParser = new JsonParser();
 
-	public static Record parseRecord(final JsonObject data) throws ParseException {
-		Record record = new Record();
+	public static UCRecord parseRecord(final JsonObject data) throws ParseException {
+		UCRecord record = new UCRecord();
 
 		String query =  Constants.UNKNOWN_STRING;
 		String sessionID =  Constants.UNKNOWN_STRING;
