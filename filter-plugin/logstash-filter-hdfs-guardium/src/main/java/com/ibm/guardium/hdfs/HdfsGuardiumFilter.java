@@ -6,32 +6,24 @@
  */
 package com.ibm.guardium.hdfs;
 
-import co.elastic.logstash.api.Configuration;
-import co.elastic.logstash.api.Context;
-import co.elastic.logstash.api.Event;
-import co.elastic.logstash.api.Filter;
-import co.elastic.logstash.api.FilterMatchListener;
-import co.elastic.logstash.api.LogstashPlugin;
-import co.elastic.logstash.api.PluginConfigSpec;
-import com.google.gson.*;
+import co.elastic.logstash.api.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import com.ibm.guardium.universalconnector.commons.Util;
 import com.ibm.guardium.universalconnector.commons.structures.*;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
 
-import java.io.File;
-import java.util.*;
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
 import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-import java.security.MessageDigest;
-import java.nio.ByteBuffer;
+import java.util.*;
 
 // class name must match plugin name
 @LogstashPlugin(name = "hdfs_guardium_filter")
@@ -98,7 +90,7 @@ public class HdfsGuardiumFilter implements Filter {
 				// String msg_string = e.getField("message").toString();
 				if (e.getField("message").toString().contains(HdfsGuardiumFilter.HDFS_AUDIT_MARK_STRING)) {
 					try {
-            			Record record = HdfsGuardiumFilter.parseRecord(e);
+            			UCRecord record = HdfsGuardiumFilter.parseRecord(e);
 
             			final GsonBuilder builder = new GsonBuilder();
             			builder.serializeNulls();
@@ -153,8 +145,8 @@ public class HdfsGuardiumFilter implements Filter {
         return this.id;
     }
     
-	public static Record parseRecord(final Event event) throws ParseException {
-        Record record = new Record();
+	public static UCRecord parseRecord(final Event event) throws ParseException {
+        UCRecord record = new UCRecord();
 
         record.setSessionId(HdfsGuardiumFilter.UNKNOWN_STRING);
         record.setDbName(HdfsGuardiumFilter.UNKNOWN_STRING);
