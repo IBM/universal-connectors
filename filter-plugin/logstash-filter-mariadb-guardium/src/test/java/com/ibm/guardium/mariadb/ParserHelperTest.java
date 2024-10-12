@@ -15,7 +15,7 @@ import com.ibm.guardium.mariadb.constant.ApplicationConstant;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 
@@ -33,7 +33,7 @@ public class ParserHelperTest {
 		event.setField(ApplicationConstantTest.OPERATION_KEY, "QUERY");
 		event.setField("timestamp", "20220204 15:47:44");
 		event.setField("totalOffset", "-330");
-		Record actualResponse = ParserHelper.parseRecord(event);
+		UCRecord actualResponse = ParserHelper.parseRecord(event);
 		assertNotNull(actualResponse);
 		assertEquals("-105977793", actualResponse.getSessionId());
 		assertEquals("mariadb", actualResponse.getDbName());
@@ -58,7 +58,7 @@ public class ParserHelperTest {
 		event.setField(ApplicationConstantTest.OPERATION_KEY, "QUERY");
 		event.setField("timestamp", "20220204 15:47:44");
 		event.setField("totalOffset", "-330");
-		Record actualResponse = ParserHelper.parseRecord(event);
+		UCRecord actualResponse = ParserHelper.parseRecord(event);
 		assertNotNull(actualResponse);
 		assertEquals("-105977793", actualResponse.getSessionId());
 		assertEquals("mariadb", actualResponse.getDbName());
@@ -81,7 +81,7 @@ public class ParserHelperTest {
 		event.setField(ApplicationConstantTest.OPERATION_KEY, "QUERY");
 		event.setField("timestamp", "20220204 15:47:44");
 		event.setField("totalOffset", "-330");
-		Record actualResponse = ParserHelper.parseRecord(event);
+		UCRecord actualResponse = ParserHelper.parseRecord(event);
 		assertNotNull(actualResponse);
 
 	}
@@ -89,7 +89,7 @@ public class ParserHelperTest {
 	@Test
 	public void parseRecordExceptionTest() throws Exception {
 		try {
-			Record accessorexception = ParserHelper.parseRecord(null);
+			UCRecord accessorexception = ParserHelper.parseRecord(null);
 
 		} catch (Exception e) {
 		}

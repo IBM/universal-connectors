@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ibm.guardium.mariadb.constant.ApplicationConstant;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
@@ -58,7 +58,7 @@ public class MariadbGuardiumFilter implements Filter {
 	@Override
 	public Collection<Event> filter(Collection<Event> events, FilterMatchListener matchListener) {
 		ArrayList<Event> skippedEvents = new ArrayList<>();
-		Record rec = null;
+		UCRecord rec = null;
 		GsonBuilder builder = null;
 		Gson gson = null;
 		for (Event event : events) {
