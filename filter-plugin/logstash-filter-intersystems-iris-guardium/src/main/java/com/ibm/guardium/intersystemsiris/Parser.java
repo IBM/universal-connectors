@@ -15,20 +15,12 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.ibm.guardium.universalconnector.commons.structures.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonObject;
 import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Construct;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
-import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
 
 public class Parser {
 	private static Logger log = LogManager.getLogger(Parser.class);
@@ -37,13 +29,13 @@ public class Parser {
 	/**
 	 * Method to parse data from JsonObject and set to record object
 	 * 
-	 * @param records
+	 * @param data
 	 * @return
 	 * @throws Exception
 	 */
-	public static Record parseRecord(final JsonObject data) throws Exception {
+	public static UCRecord parseRecord(final JsonObject data) throws Exception {
 
-		Record record = new Record();
+		UCRecord record = new UCRecord();
 		try {
 			record.setTime(parseTime(data));
 			record.setAppUserName(Constants.UNKNOWN_STRING);

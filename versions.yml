@@ -10,7 +10,7 @@ dependencies:
   junitJupiter: 5.7.1
   mockitoAll: 2.0.2-beta
   json: 20231013
-  parboiledJava: 1.1.8
+  parboiledJava: 1.4.1
   javaxJson: 1.1.4
   guava: 32.1.3-jre
   commonsText: 1.10.0
