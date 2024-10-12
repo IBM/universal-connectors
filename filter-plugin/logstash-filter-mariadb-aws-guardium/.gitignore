@@ -12,3 +12,4 @@ build/
 Gemfile*
 gradle.properties
 .settings/
+.idea/
