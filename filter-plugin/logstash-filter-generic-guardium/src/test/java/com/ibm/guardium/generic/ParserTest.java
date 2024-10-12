@@ -4,17 +4,15 @@
 //
 package com.ibm.guardium.generic;
 
-import java.text.ParseException;
-
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.ibm.guardium.generic.Constants;
-import com.ibm.guardium.generic.Parser;
-import com.ibm.guardium.universalconnector.commons.structures.*;
-
+import com.ibm.guardium.universalconnector.commons.structures.Accessor;
+import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
+import com.ibm.guardium.universalconnector.commons.structures.Time;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.text.ParseException;
 
 public class ParserTest {
 
@@ -29,7 +27,7 @@ public class ParserTest {
 		data.addProperty(Constants.DBNAME, "testDB");
 		data.addProperty(Constants.SESSIONID, "17796");
 
-		Record record = Parser.parseRecord(data);
+		UCRecord record = Parser.parseRecord(data);
 
 		Assert.assertEquals("17796", record.getSessionId());
 		Assert.assertEquals("testDB", record.getDbName());
@@ -85,7 +83,7 @@ public class ParserTest {
 		data.addProperty(Constants.DBPROTOCOL, "Postgre AWS Native Audit");
 		data.addProperty(Constants.SERVERTYPE, "Postgre");
 
-		Record record = Parser.parseRecord(data);
+		UCRecord record = Parser.parseRecord(data);
 		Accessor actual = record.getAccessor();
 
 		Assert.assertEquals("Postgre AWS Native Audit", actual.getDbProtocol());

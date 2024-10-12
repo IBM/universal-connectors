@@ -5,25 +5,14 @@
 
 package com.ibm.guardium.generic;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
+import com.google.gson.JsonObject;
+import com.ibm.guardium.universalconnector.commons.structures.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.gson.JsonObject;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Construct;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
-import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Parser {
 
@@ -38,9 +27,9 @@ public class Parser {
 	 * dateTimeFormatterBuilder.toFormatter();
 	 */
 
-	public static Record parseRecord(final JsonObject data) throws ParseException {
+	public static UCRecord parseRecord(final JsonObject data) throws ParseException {
 		
-		Record record = new Record();
+		UCRecord record = new UCRecord();
 		if (data != null) {
 			
 			String sessionID=setSessionID(data);
@@ -310,7 +299,7 @@ public class Parser {
 	}
 	
 	
-	public static void setExceptionOrDataPart(final Record record,final JsonObject data){
+	public static void setExceptionOrDataPart(final UCRecord record,final JsonObject data){
 		
 		if(record.getAccessor().getDataType().equals(Constants.TEXT)) {
 			Data retData = new Data();

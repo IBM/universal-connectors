@@ -4,25 +4,20 @@
 //
 package com.ibm.guardium.generic;
 
-import co.elastic.logstash.api.Configuration;
-import co.elastic.logstash.api.Context;
-import co.elastic.logstash.api.Event;
-import co.elastic.logstash.api.Filter;
-import co.elastic.logstash.api.FilterMatchListener;
-import co.elastic.logstash.api.LogstashPlugin;
-import co.elastic.logstash.api.PluginConfigSpec;
-import com.google.gson.*;
+import co.elastic.logstash.api.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.*;
-
-import org.apache.commons.validator.routines.InetAddressValidator;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 // class name must match plugin name
 @LogstashPlugin(name = "generic_guardium_filter")
@@ -59,8 +54,8 @@ public class GenericGuardiumFilter implements Filter {
     			try {
     				JsonObject inputData = inputData(e);
     				//log.error("Actual message "+inputData.getAsString());
-    				
-    				Record record = Parser.parseRecord(inputData);
+
+					UCRecord record = Parser.parseRecord(inputData);
             		final GsonBuilder builder = new GsonBuilder();
 	            	builder.serializeNulls();
 	            	final Gson gson = builder.create();
