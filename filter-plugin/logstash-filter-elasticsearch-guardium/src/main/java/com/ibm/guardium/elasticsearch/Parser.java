@@ -10,17 +10,14 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+
+import com.ibm.guardium.universalconnector.commons.structures.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.elasticsearch.constant.ApplicationConstant;
 import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 public class Parser {
 
@@ -36,8 +33,8 @@ public class Parser {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Record parseRecord(final JsonObject data,final Object totalOffset) throws Exception {
-		Record record = new Record();
+	public static UCRecord parseRecord(final JsonObject data, final Object totalOffset) throws Exception {
+		UCRecord record = new UCRecord();
 		try {
 			record.setTime(parseTime(data,totalOffset));
 			record.setAppUserName(ApplicationConstant.UNKNOWN_STRING);
@@ -175,7 +172,7 @@ public class Parser {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Data parseData(final JsonObject jsonData, Record record) throws Exception {
+	public static Data parseData(final JsonObject jsonData, UCRecord record) throws Exception {
 
 		Data data = new Data();
 		StringBuilder sb= new StringBuilder();
