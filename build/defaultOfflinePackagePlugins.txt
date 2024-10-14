@@ -30,6 +30,7 @@ filter-plugin/logstash-filter-pubsub-bigquery-guardium/logstash-filter-big_query
 filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/logstash-filter-fire_base_guardium_filter
 filter-plugin/logstash-filter-pubsub-firestore-guardium/logstash-filter-fire_store_guardium_filter
 filter-plugin/logstash-filter-pubsub-spanner-guardium/logstash-filter-spanner_db_guardium_filter
+filter-plugin/logstash-filter-pubsub-bigtable-guardium/logstash-filter-bigtable_guardium_filter
 filter-plugin/logstash-filter-cosmos-azure-guardium/logstash-filter-azure_cosmos_guardium_filter
 filter-plugin/logstash-filter-intersystems-iris-guardium/logstash-filter-intersystems_iris_guardium_filter
 filter-plugin/logstash-filter-postgres-ibmcloud-guardium/logstash-filter-icd_postgresql_guardium_filter

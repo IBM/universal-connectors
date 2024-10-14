@@ -1,0 +1,64 @@
+{
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "authenticationInfo": {
+      "principalEmail": "test@abc.com"
+    },
+    "requestMetadata": {
+      "callerIp": "192.159.178.221",
+      "callerSuppliedUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36,gzip(gfe),gzip(gfe)",
+      "requestAttributes": {
+        "time": "2024-08-22T00:22:04.442196946Z",
+        "auth": {}
+      },
+      "destinationAttributes": {}
+    },
+    "serviceName": "bigtableadmin.googleapis.com",
+    "methodName": "google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies",
+    "authorizationInfo": [
+      {
+        "resource": "projects/charged-mind-281913/instances/nexusbigtabletest/tables/test",
+        "permission": "bigtable.tables.update",
+        "granted": true,
+        "resourceAttributes": {
+          "service": "bigtableadmin.googleapis.com",
+          "name": "projects/charged-mind-281913/instances/nexusbigtabletest/tables/test",
+          "type": "bigtableadmin.googleapis.com/Table"
+        },
+        "permissionType": "ADMIN_WRITE"
+      }
+    ],
+    "resourceName": "projects/charged-mind-281913/instances/nexusbigtabletest/tables/test",
+    "request": {
+      "name": "projects/charged-mind-281913/instances/nexusbigtabletest/tables/test",
+      "modifications": [
+        {
+          "create": {
+            "gcRule": {}
+          },
+          "id": "AddColumnTest"
+        }
+      ],
+      "@type": "type.googleapis.com/google.bigtable.admin.v2.ModifyColumnFamiliesRequest"
+    },
+    "response": {
+      "name": "projects/charged-mind-281913/instances/nexusbigtabletest/tables/test",
+      "@type": "type.googleapis.com/google.bigtable.admin.v2.Table",
+      "granularity": "MILLIS",
+      "dataModel": "BIGTABLE"
+    }
+  },
+  "insertId": "1e9xtnqd351f",
+  "resource": {
+    "type": "audited_resource",
+    "labels": {
+      "service": "bigtableadmin.googleapis.com",
+      "project_id": "charged-mind-281913",
+      "method": "google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies"
+    }
+  },
+  "timestamp": "2024-08-22T00:22:04.429078888Z",
+  "severity": "NOTICE",
+  "logName": "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Factivity",
+  "receiveTimestamp": "2024-08-22T00:22:10.568657501Z"
+}
