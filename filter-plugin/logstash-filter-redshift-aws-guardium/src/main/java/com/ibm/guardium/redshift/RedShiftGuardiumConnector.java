@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
@@ -61,7 +61,7 @@ public class RedShiftGuardiumConnector implements Filter {
 							&& !e.getField(RedShiftTags.USER_NAME).toString().equalsIgnoreCase("RDSDB")
 							&& e.getField(RedShiftTags.STATUS).toString().equalsIgnoreCase("authentication failure"))) {
 				try {
-					Record record = Parser.parseRecord(e);
+					UCRecord record = Parser.parseRecord(e);
 					final GsonBuilder builder = new GsonBuilder();
 					builder.serializeNulls();
 					final Gson gson = builder.create();

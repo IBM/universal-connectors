@@ -338,7 +338,7 @@ public class RedShiftGuardiumConnectorTest {
 		e.setField("dbprefix", "979326520502_guardiumredshift");
 		e.setField("serverHostnamePrefix", "979326520502_guardiumredshift");
 		e.setField("sql_query",
-				"LOG: CREATE TABLE T1 (   col1 Varchar(20) distkey sortkey );");
+				"LOG: CREATE TABLE T1 ( col1 Varchar(20) distkey sortkey );");
 		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 		Assert.assertEquals(1, results.size());
 		Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));

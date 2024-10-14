@@ -4,7 +4,7 @@ import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
@@ -46,8 +46,8 @@ public class Parser {
 	 * @param event
 	 * @return record
 	 */
-	public static Record parseRecord(final Event event) throws ParseException {
-		Record record = new Record();
+	public static UCRecord parseRecord(final Event event) throws ParseException {
+		UCRecord record = new UCRecord();
 		String sessionId = RedShiftTags.NA_STRING;
 		String dbName = RedShiftTags.UNKNOWN_STRING;
 		record.setSessionId(
@@ -128,7 +128,7 @@ public class Parser {
 	 * @param event
 	 * @return Accessor
 	 */
-	public static Accessor parseAccessor(final Event event, final Record record) {
+	public static Accessor parseAccessor(final Event event, final UCRecord record) {
 		Accessor accessor = new Accessor();
 		if (event.getField(RedShiftTags.U_IDENTIFIER) != null) {
 			accessor.setDbUser(event.getField(RedShiftTags.U_IDENTIFIER).toString());
