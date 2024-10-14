@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
@@ -79,7 +79,7 @@ public class GreenplumdbGuardiumFilter implements Filter {
 		if (LOGGER == null) {
 			LOGGER = LogManager.getLogger(GreenplumdbGuardiumFilter.class);
 		}
-		Record record = null;
+		UCRecord record = null;
 		for (Event event : events) {
 			if (event.getField(ApplicationConstant.MESSAGE) != null && (event.getField(ApplicationConstant.MESSAGE)
 					.toString().contains(ApplicationConstant.POSTGRES)

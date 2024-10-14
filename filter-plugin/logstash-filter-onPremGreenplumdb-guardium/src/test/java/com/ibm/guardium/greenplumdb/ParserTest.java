@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 
@@ -44,7 +44,7 @@ public class ParserTest {
 		event.setField(ApplicationConstantTest.QUERY, "DELETE FROM products5 where prod_id = 10;");
 		event.setField(ApplicationConstantTest.SERVER_HOSTNAME, "ip-172-31-7-158.ap-south-1.compute.internal");
 		event.setField(ApplicationConstant.EVENT_SEVERITY, "LOG");
-		Record actualResponse = Parser.parseRecord(event);
+		UCRecord actualResponse = Parser.parseRecord(event);
 		assertNotNull(actualResponse);
 		assertNotNull(actualResponse.getTime());
 		assertNotNull(actualResponse.getSessionLocator());
@@ -63,7 +63,7 @@ public class ParserTest {
 		event.setField(ApplicationConstantTest.QUERY, "DELETE FROM products5 where prod_id = 10;");
 		event.setField(ApplicationConstantTest.SERVER_HOSTNAME, "ip-172-31-7-158.ap-south-1.compute.internal");
 		event.setField(ApplicationConstant.EVENT_SEVERITY, "LOG");
-		Record record = Parser.parseRecord(event);
+		UCRecord record = Parser.parseRecord(event);
 		assertNotNull(record);
 		assertEquals(ApplicationConstant.EMPTY, record.getDbName());
 	}
@@ -84,7 +84,7 @@ public class ParserTest {
 	@Test
 	public void parseAccessorTest() throws Exception {
 		Event event = new org.logstash.Event();
-		Record record = new Record();
+		UCRecord record = new UCRecord();
 		record.setDbName("test1");
 		Accessor actual = Parser.parseAccessor(event, record);
 		assertNotNull(actual);
