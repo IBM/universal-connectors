@@ -188,8 +188,8 @@ public class Parser {
     }
 
 
-    public static Record parseRecord(final JsonObject data) throws ParseException {
-        Record record = new Record();
+    public static UCRecord parseRecord(final JsonObject data) throws ParseException {
+        UCRecord record = new UCRecord();
 
         final JsonObject param = data.get("param").getAsJsonObject();
         final JsonObject args = param.getAsJsonObject("args");

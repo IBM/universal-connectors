@@ -8,10 +8,9 @@ import com.ibm.guardium.mongodb.MongodbGuardiumFilter;
 import com.ibm.guardium.mongodb.TestMatchListener;
 import com.ibm.guardium.mongodb.parsersbytype.BaseParser;
 import com.ibm.guardium.mongodb.parsersbytype.IndexParser;
-import com.ibm.guardium.mongodb.parsersbytype.ParserUtils;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
@@ -43,7 +42,7 @@ public class GeneralParserTest {
     }
 
 
-    private void validateSessionDetails(JsonObject source, Record record) {
+    private void validateSessionDetails(JsonObject source, UCRecord record) {
         Assert.assertEquals("serverIp", source.get("local").getAsJsonObject().get("ip").getAsString(), record.getSessionLocator().getServerIp());
         Assert.assertEquals("serverPort", source.get("local").getAsJsonObject().get("port").getAsInt(), record.getSessionLocator().getServerPort());
 
@@ -54,7 +53,7 @@ public class GeneralParserTest {
     }
 
 
-    private void validateAccessor(JsonObject source, Record record) {
+    private void validateAccessor(JsonObject source, UCRecord record) {
         String user = source.get("users")!=null && source.get("users").getAsJsonArray().size()>0 ?
                 source.get("users").getAsJsonArray().get(0).getAsJsonObject().get("user").getAsString() :
                 IndexParser.USER_NOT_AVAILABLE;
@@ -81,7 +80,7 @@ public class GeneralParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);

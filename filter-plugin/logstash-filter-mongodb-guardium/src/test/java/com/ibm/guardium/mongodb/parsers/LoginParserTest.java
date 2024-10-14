@@ -1,12 +1,9 @@
 package com.ibm.guardium.mongodb.parsers;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.ibm.guardium.mongodb.parsersbytype.BaseParser;
 import com.ibm.guardium.mongodb.parsersbytype.LoginParser;
 import com.ibm.guardium.universalconnector.commons.structures.*;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,7 +30,7 @@ public class LoginParserTest {
         JsonObject event = JsonParser.parseString(eventString).getAsJsonObject();
         LoginParser parser = new LoginParser();
 
-        Record record = parser.parseRecord(event);
+        UCRecord record = parser.parseRecord(event);
         Time time = record.getTime();
         Accessor accessor = record.getAccessor();
         SessionLocator locator = record.getSessionLocator();

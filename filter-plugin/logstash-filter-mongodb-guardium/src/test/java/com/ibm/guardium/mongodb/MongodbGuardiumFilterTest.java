@@ -5,20 +5,17 @@
 package com.ibm.guardium.mongodb;
 
 //import co.elastic.logstash.api.Configuration;
+
 import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
-import co.elastic.logstash.api.FilterMatchListener;
+import com.google.gson.Gson;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.junit.Assert;
 import org.junit.Test;
-//import org.logstash.plugins.ConfigurationImpl;
 import org.logstash.plugins.ContextImpl;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import com.google.gson.Gson;
 
 import static com.ibm.guardium.mongodb.MongodbGuardiumFilter.LOGSTASH_TAG_SKIP_NOT_MONGODB;
 
@@ -78,7 +75,7 @@ public class MongodbGuardiumFilterTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         Assert.assertNotNull(record);
         Assert.assertEquals("testdatabase",record.getDbName());
     }
@@ -99,7 +96,7 @@ public class MongodbGuardiumFilterTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         Assert.assertNotNull(record);
         Assert.assertEquals("testid44505a917e8fcb952c4ce-test75b-776c-486e-8ee7-f6a0ddd5a1cb",record.getDbName() );
     }
@@ -120,7 +117,7 @@ public class MongodbGuardiumFilterTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         Assert.assertNotNull(record);
         Assert.assertEquals(Parser.EXCEPTION_TYPE_AUTHENTICATION_STRING, record.getException().getExceptionTypeId());
         Assert.assertEquals("admin IBMuser",record.getAccessor().getDbUser());
@@ -142,7 +139,7 @@ public class MongodbGuardiumFilterTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         Assert.assertNotNull(record);
         Assert.assertEquals(true,record.getSessionLocator().isIpv6());
     }
@@ -163,7 +160,7 @@ public class MongodbGuardiumFilterTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         Assert.assertNotNull(record);
         Assert.assertEquals(Parser.EXCEPTION_TYPE_AUTHORIZATION_STRING, record.getException().getExceptionTypeId());
     	Assert.assertEquals("Error (20)", record.getException().getDescription());
@@ -185,7 +182,7 @@ public class MongodbGuardiumFilterTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         Assert.assertNotNull(record);
         Assert.assertEquals("", record.getSessionLocator().getClientIp());
     	Assert.assertEquals(-1, record.getSessionLocator().getClientPort());  
@@ -389,7 +386,7 @@ public class MongodbGuardiumFilterTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         Assert.assertNotNull(record);
 
         Assert.assertEquals(
@@ -420,7 +417,7 @@ public class MongodbGuardiumFilterTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         Assert.assertNotNull(record);
 
         Assert.assertEquals(
@@ -447,7 +444,7 @@ public class MongodbGuardiumFilterTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         Assert.assertNotNull(record);
 
         Assert.assertEquals(
