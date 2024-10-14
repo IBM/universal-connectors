@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
@@ -72,7 +72,7 @@ public class NeodbGuardiumFilter implements Filter {
 
 				if (isNotSystemGeneratedEvent(inputData)) {
 
-					Record record = Parser.parseRecord(inputData);
+					UCRecord record = Parser.parseRecord(inputData);
 
 					final GsonBuilder builder = new GsonBuilder();
 					builder.serializeNulls();

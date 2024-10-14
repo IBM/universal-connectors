@@ -24,7 +24,7 @@ import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
@@ -43,8 +43,8 @@ public class Parser {
 	static LinkedHashMap<String, String> variables = null;
 	static Character randomValue = 65;
 
-	public static Record parseRecord(final JsonObject data) throws ParseException {
-		Record record = new Record();
+	public static UCRecord parseRecord(final JsonObject data) throws ParseException {
+		UCRecord record = new UCRecord();
 
 		if (data != null) {
 
@@ -86,7 +86,7 @@ public class Parser {
 
 // 	---------------------- Session Id -----------------------
 
-	public static void parseSessionId(Record record) {
+	public static void parseSessionId(UCRecord record) {
 
 		Integer hashCode = (record.getSessionLocator().getClientIp() + record.getSessionLocator().getClientPort()
 					+ record.getDbName()).hashCode();
