@@ -20,8 +20,8 @@ public class Parser {
 
     private static final Logger log = LogManager.getLogger(Parser.class);
 
-    public static Record parseRecord(final JsonObject data) throws ParseException {
-        Record record = new Record();
+    public static UCRecord parseRecord(final JsonObject data) throws ParseException {
+        UCRecord record = new UCRecord();
         if (data != null) {
 
             //database name

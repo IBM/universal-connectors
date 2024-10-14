@@ -36,7 +36,7 @@ public class ParserTest {
         data.addProperty(Constants.EVENT_CONTEXT, "PUB._fileSTUDENTPUB");
 
 
-        final Record record = Parser.parseRecord(data);
+        final UCRecord record = Parser.parseRecord(data);
         assertEquals("Demo", record.getDbName());
         assertEquals("t+3ZR8SvMLygFMida3OP4w", record.getSessionId());
 
@@ -61,7 +61,7 @@ public class ParserTest {
         data.addProperty(Constants.EVENT_CONTEXT, "PUB._Field4273_Db-guid");
 
 
-        Record record = Parser.parseRecord(data);
+        UCRecord record = Parser.parseRecord(data);
         Accessor actual = record.getAccessor();
 
         assertEquals(Constants.DB_PROTOCOL, actual.getDbProtocol());
@@ -90,7 +90,7 @@ public class ParserTest {
         data.addProperty(Constants.CLIENT_IP, "0.0.0.0");
         data.addProperty(Constants.SERVER_IP, "0.0.0.0");
 
-        Record record = Parser.parseRecord(data);
+        UCRecord record = Parser.parseRecord(data);
         SessionLocator session = record.getSessionLocator();
 
        assertEquals(-1, session.getClientPort());
