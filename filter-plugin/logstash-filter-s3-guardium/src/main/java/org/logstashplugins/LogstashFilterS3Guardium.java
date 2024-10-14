@@ -16,7 +16,7 @@ import co.elastic.logstash.api.PluginConfigSpec;
 import com.google.gson.*;
 import com.ibm.guardium.s3.Parser;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -89,7 +89,7 @@ public class LogstashFilterS3Guardium implements Filter {
                     throw new Exception("Invalid event, no relevant for s3 parser properties found");
                 }
 
-                Record record = Parser.buildRecord(inputJSON);
+                UCRecord record = Parser.buildRecord(inputJSON);
                 if (record==null){
                     log.warn("Failed to parse event "+logEvent(e));
                     continue;

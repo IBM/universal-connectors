@@ -9,7 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ibm.guardium.samples.EventSamples;
 import com.ibm.guardium.s3.Parser;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +42,7 @@ public class SampledEventsTest {
     public void testParseAsConstruct_dbname() throws Exception{
 
         JsonObject inputJSON = (JsonObject) JsonParser.parseString(event.getJsonStr());
-        Record result = Parser.buildRecord(inputJSON);
+        UCRecord result = Parser.buildRecord(inputJSON);
         Assert.assertTrue("db name is null, event "+event, result.getDbName() != null);
         // for PutAccessPolicy event we do not have dbname available
         if (!EventSamples.EventName.PutAccessPolicy.equals(event.getEventName()) &&
@@ -54,7 +54,7 @@ public class SampledEventsTest {
     @Test
     public void testParseAsConstruct_appUserName() throws Exception{
         JsonObject inputJSON = (JsonObject) JsonParser.parseString(event.getJsonStr());
-        Record result = Parser.buildRecord(inputJSON);
+        UCRecord result = Parser.buildRecord(inputJSON);
         Assert.assertTrue("app user name is null, event "+event, result.getAppUserName()!= null);
         Assert.assertTrue("app user name is empty, event "+event, result.getAppUserName().length() != 0);
     }
@@ -63,7 +63,7 @@ public class SampledEventsTest {
     public void testParseAsConstruct_SessionLocator_clientIp() throws Exception{
 
         JsonObject inputJSON = (JsonObject) JsonParser.parseString(event.getJsonStr());
-        Record result = Parser.buildRecord(inputJSON);
+        UCRecord result = Parser.buildRecord(inputJSON);
         String clientIp = result.getSessionLocator().getClientIp();
         System.out.println(clientIp);
         Assert.assertTrue("app user name is null, event "+event, clientIp!= null);
@@ -75,7 +75,7 @@ public class SampledEventsTest {
     public void testParseAsConstruct_SessionLocator_serverIp() throws Exception{
 
         JsonObject inputJSON = (JsonObject) JsonParser.parseString(event.getJsonStr());
-        Record result = Parser.buildRecord(inputJSON);
+        UCRecord result = Parser.buildRecord(inputJSON);
         String serverIp = result.getSessionLocator().getServerIp();
         System.out.println(serverIp);
         Assert.assertTrue("app user name is null, event "+event, serverIp!= null);
