@@ -2138,7 +2138,6 @@ public class NeptuneGuardiumFilterTest {
 		event.setField(ApplicationConstantTest.DBNAME_PREFIX_KEY, ApplicationConstantTest.DBNAME_PREFIX);
 
 		Collection<Event> response = FILTER.filter(events, matchListener);
-
 		assertNotNull(event.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
 		assertEquals(1, response.size());
 		assertEquals(1, matchListener.getMatchCount());

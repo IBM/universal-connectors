@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 import com.ibm.neptune.connector.constant.ApplicationConstantTest;
@@ -23,11 +23,11 @@ import co.elastic.logstash.api.Event;
 
 public class ParserHelperTest {
 
-	private Record record;
+	private UCRecord record;
 
 	@BeforeEach
 	public void beforeEachTest() {
-		record = new Record();
+		record = new UCRecord();
 		record.setDbName(ApplicationConstantTest.DBNAME_PREFIX.split(ApplicationConstantTest.DOT)[0]);
 	}
 
@@ -94,7 +94,7 @@ public class ParserHelperTest {
 				ApplicationConstantTest.SERVER_HOSTNAME_PREFIX);
 		event.setField(ApplicationConstantTest.DBNAME_PREFIX_KEY, ApplicationConstantTest.DBNAME_PREFIX);
 
-		Record actualResponse = ParserHelper.parseRecord(event, record);
+		UCRecord actualResponse = ParserHelper.parseRecord(event, record);
 
 		assertNotNull(actualResponse);
 		assertEquals(record.getDbName(), actualResponse.getAccessor().getServiceName());
@@ -127,7 +127,7 @@ public class ParserHelperTest {
 				ApplicationConstantTest.SERVER_HOSTNAME_PREFIX);
 		event.setField(ApplicationConstantTest.DBNAME_PREFIX_KEY, ApplicationConstantTest.DBNAME_PREFIX);
 
-		Record actualResponse = ParserHelper.parseRecord(event, record);
+		UCRecord actualResponse = ParserHelper.parseRecord(event, record);
 
 		assertNotNull(actualResponse);
 		assertEquals(record.getDbName(), actualResponse.getAccessor().getServiceName());
@@ -158,7 +158,7 @@ public class ParserHelperTest {
 	public void prepareGuardRecordDataTest() {
 
 		Event event = new org.logstash.Event();
-		Record actual = null;
+		UCRecord actual = null;
 		try {
 			actual = ParserHelper.parseRecord(event, record);
 		} catch (Exception e) {
