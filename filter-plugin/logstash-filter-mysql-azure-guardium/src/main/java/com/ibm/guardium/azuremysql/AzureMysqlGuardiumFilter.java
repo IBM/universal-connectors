@@ -4,25 +4,17 @@ SPDX-License-Identifier: Apache-2.0
 */
 package com.ibm.guardium.azuremysql;
 
-import co.elastic.logstash.api.Configuration;
-import co.elastic.logstash.api.Context;
-import co.elastic.logstash.api.Event;
-import co.elastic.logstash.api.Filter;
-import co.elastic.logstash.api.FilterMatchListener;
-import co.elastic.logstash.api.LogstashPlugin;
-import co.elastic.logstash.api.PluginConfigSpec;
-import com.google.gson.*;
-import com.ibm.guardium.azuremysql.Parser;
-import com.ibm.guardium.azuremysql.Constants;
+import co.elastic.logstash.api.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.*;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
-import java.io.File;
-import java.util.*;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * This class is used to convert log events into guardium object as per
@@ -54,7 +46,7 @@ public class AzureMysqlGuardiumFilter implements Filter {
 				String messagevalue = event.getField("message").toString();
 				try {
 					JsonObject inputJSON = new Gson().fromJson(messagevalue, JsonObject.class);
-					Record record = Parser.parseRecord(inputJSON);
+					UCRecord record = Parser.parseRecord(inputJSON);
 					final Gson gson = new GsonBuilder().disableHtmlEscaping().serializeNulls().create();
 					event.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
 					matchListener.filterMatched(event);

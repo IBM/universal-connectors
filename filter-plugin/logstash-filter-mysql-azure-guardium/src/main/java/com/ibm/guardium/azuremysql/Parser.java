@@ -4,28 +4,15 @@ SPDX-License-Identifier: Apache-2.0
 */
 package com.ibm.guardium.azuremysql;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import com.ibm.guardium.universalconnector.commons.Util;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.ibm.guardium.azuremysql.Constants;
+import com.ibm.guardium.universalconnector.commons.Util;
 import com.ibm.guardium.universalconnector.commons.structures.*;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import co.elastic.logstash.api.Event;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class Parser {
 
@@ -38,8 +25,8 @@ public class Parser {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Record parseRecord(final JsonObject data) throws Exception {
-		Record record = new Record();
+	public static UCRecord parseRecord(final JsonObject data) throws Exception {
+		UCRecord record = new UCRecord();
 		try {
 			JsonObject properties = data.get(Constants.PROPERTIES).getAsJsonObject();
 			record.setSessionId(getSessionId(data, properties));
@@ -113,7 +100,6 @@ public class Parser {
 	 * Method to get the server name from the JsonObject
 	 * 
 	 * @param data
-	 * @param Property
 	 * @return
 	 */
 	public static String getServerName(JsonObject data) {
@@ -207,7 +193,7 @@ public class Parser {
 	 * and then return the value as response
 	 * 
 	 * @param data
-	 * @param records
+	 * @param Property
 	 * @return
 	 */
 
