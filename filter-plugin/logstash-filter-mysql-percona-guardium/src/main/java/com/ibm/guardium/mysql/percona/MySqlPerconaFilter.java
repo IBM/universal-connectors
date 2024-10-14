@@ -109,7 +109,7 @@ public class MySqlPerconaFilter implements Filter {
                     JsonObject messageJson = (JsonObject) JsonParser.parseString(mysqlMsgString);
                     JsonObject audit_record = messageJson.get("audit_record").getAsJsonObject();
                     boolean validRecord = false;
-                    Record record = new Record();
+                    UCRecord record = new UCRecord();
 
                     String status = getFieldAsString(audit_record, "status", "-1");
                     if ("0".equals(status)) {
@@ -285,7 +285,7 @@ public class MySqlPerconaFilter implements Filter {
         }
     }
     
-   private void correctIPs(Event e, Record record) {
+   private void correctIPs(Event e, UCRecord record) {
         // Note: IP needs to be in ipv4/ipv6 format
         SessionLocator sessionLocator = record.getSessionLocator();
         
