@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
@@ -101,7 +101,7 @@ public class BigQueryGuardiumFilter implements Filter {
 				}
 				try {
 					JsonObject inputJSON = new Gson().fromJson(messageString, JsonObject.class);
-					Record record = Parser.parseRecord(inputJSON);
+					UCRecord record = Parser.parseRecord(inputJSON);
 					final Gson gson = new GsonBuilder().disableHtmlEscaping().serializeNulls().create();
 					e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
 					filterMatchListener.filterMatched(e);
