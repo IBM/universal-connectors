@@ -107,12 +107,7 @@ public class ParserTest {
 		Assert.assertEquals(record.getData().getOriginalSqlCommand(),"DELETE FROM Employee WHERE EmployeeNo = 101;");
 	}
 
-	@Test
-	public void testParseTimestamp() throws ParseException {
 
-		Event e = intitalizeEventObject();
-
-	}
 
 	@Test
 	public void testParseSessionLocator() throws ParseException {
