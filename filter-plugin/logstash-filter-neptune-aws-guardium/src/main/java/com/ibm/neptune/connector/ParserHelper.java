@@ -121,7 +121,10 @@ public class ParserHelper {
 			if (!callerIAM.isEmpty()) {
 
 				String[] temp = callerIAM.split(ApplicationConstants.DOUBLE_COLON)[1].split(":user/");
-				dbUser = temp[1];
+				if (temp.length == 1)
+					dbUser = temp[0];
+				else
+					dbUser = temp[1];
 
 			}
 
