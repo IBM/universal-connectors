@@ -8,8 +8,8 @@ package com.ibm.guardium.snowflakedb.utils;
 import com.ibm.guardium.universalconnector.commons.structures.*;
 
 public class DefaultGuardRecordBuilder {
-    public Record buildGuardRecordWithDefaultValues(){
-        Record record = new Record();
+    public UCRecord buildGuardRecordWithDefaultValues(){
+        UCRecord record = new UCRecord();
         record.setAppUserName(Constants.NOT_AVAILABLE);
         record.setDbName(Constants.UNKNOWN_STRING);
         record.setSessionId(Constants.UNKNOWN_STRING);

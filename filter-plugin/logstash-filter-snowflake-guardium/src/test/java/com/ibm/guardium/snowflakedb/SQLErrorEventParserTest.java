@@ -10,7 +10,7 @@ import com.ibm.guardium.snowflakedb.exceptions.ParseException;
 import com.ibm.guardium.snowflakedb.parser.Parser;
 import com.ibm.guardium.snowflakedb.parser.SQLErrorEventParser;
 import com.ibm.guardium.snowflakedb.utils.Constants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.Event;
@@ -27,7 +27,7 @@ public class SQLErrorEventParserTest {
         Map<String,Object> event = e.toMap();
 
         try{
-            Record record = parser.parseRecord(event);
+            UCRecord record = parser.parseRecord(event);
 
             Assert.assertEquals(record.getSessionId(), event.get(Constants.SESSION_ID).toString());
             Assert.assertEquals(record.getDbName(), event.get(Constants.DATABASE_NAME).toString());

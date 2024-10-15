@@ -9,7 +9,7 @@ import com.ibm.guardium.snowflakedb.exceptions.ParseException;
 import com.ibm.guardium.snowflakedb.parser.AuthFailedEventParser;
 import com.ibm.guardium.snowflakedb.parser.Parser;
 import com.ibm.guardium.snowflakedb.utils.Constants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class AuthFailedEventParserTest {
         Map<String,Object> event = e.toMap();
 
         try{
-            Record record = parser.parseRecord(event);
+            UCRecord record = parser.parseRecord(event);
 
             Integer hashCode = (e.getField(Constants.CLIENT_IP).toString() + SessionLocator.PORT_DEFAULT
                     + e.getField(Constants.SERVER_IP) + Constants.SERVER_PORT).hashCode();
