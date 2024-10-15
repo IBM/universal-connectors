@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ "$TRAVIS_PULL_REQUEST_SLUG" != "$TRAVIS_REPO_SLUG" ]; then
+  echo "This pull request is from a fork so shouldn't create a new tag in original repo."
+  exit 0
+fi
+
+
 if [ "$TRAVIS_BRANCH" == "main" ] && $(git diff --name-only $TRAVIS_COMMIT_RANGE | grep -q "gdp-packages"); then
   echo "zipping GDP package templates"
   ./gdp-packages/zipPackagesForGDP.sh
@@ -8,13 +14,6 @@ if [ "$TRAVIS_BRANCH" == "main" ] && $(git diff --name-only $TRAVIS_COMMIT_RANGE
   TIMESTAMP=$(date +%Y-%m-%d-%H-%M)
   # Create the tag name by combining timestamp and commit hash
   export TAG="packages-v${TIMESTAMP}_${COMMIT_SHA:0:7}"
-
-  if [ -z "$GITHUB_TOKEN" ]; then
-    echo "GITHUB_TOKEN is empty"
-    exit 1
-  else
-    echo "GITHUB_TOKEN is not empty"
-  fi
 
   # Create the tag using the GitHub API
   curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
