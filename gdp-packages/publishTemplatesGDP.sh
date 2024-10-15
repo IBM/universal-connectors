@@ -9,6 +9,13 @@ if [ "$TRAVIS_BRANCH" == "main" ] && $(git diff --name-only $TRAVIS_COMMIT_RANGE
   # Create the tag name by combining timestamp and commit hash
   export TAG="packages-v${TIMESTAMP}_${COMMIT_SHA:0:7}"
 
+  if [ -z "$GITHUB_TOKEN" ]; then
+    echo "GITHUB_TOKEN is empty"
+    exit 1
+  else
+    echo "GITHUB_TOKEN is not empty"
+  fi
+
   # Create the tag using the GitHub API
   curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
   -H "Accept: application/vnd.github.v3+json" \
