@@ -7,7 +7,7 @@ package com.ibm.guardium.scylladb;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import co.elastic.logstash.api.Event;
 
 public class ParserTest {
@@ -25,7 +25,7 @@ public class ParserTest {
 		e.setField("timestamp", "2024-01-10T02:35:58.000Z");
 		e.setField("logsource", "DWP-5CD212FV5L");
 
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("mykeyspace", record.getDbName());
 		assertEquals("172.31.57.239", record.getSessionLocator().getServerIp());
@@ -46,7 +46,7 @@ public class ParserTest {
 		e.setField("error", "\"false\"");
 		e.setField("timestamp", "2024-01-10T02:35:58.000Z");
 		e.setField("logsource", "DWP-5CD212FV5L");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("USE mykeyspace;", record.getData().getOriginalSqlCommand());
 	}
@@ -62,7 +62,7 @@ public class ParserTest {
 		e.setField("error", "\"false\"");
 		e.setField("timestamp", "2024-01-10T02:35:58.000Z");
 		e.setField("logsource", "DWP-5CD212FV5L");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("alice1", record.getAccessor().getDbUser());
 	}
@@ -78,7 +78,7 @@ public class ParserTest {
 		e.setField("error", "\"false\"");
 		e.setField("timestamp", "2024-01-10T02:35:58.000Z");
 		e.setField("logsource", "DWP-5CD212FV5L");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("LOGIN", record.getData().getOriginalSqlCommand());
 	}
@@ -94,7 +94,7 @@ public class ParserTest {
 		e.setField("error", "\"true\"");
 		e.setField("timestamp", "2024-01-10T02:35:58.000Z");
 		e.setField("logsource", "DWP-5CD212FV5L");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("", record.getException().getSqlString());
 	}
@@ -110,7 +110,7 @@ public class ParserTest {
 		e.setField("error", "\"true\"");
 		e.setField("timestamp", "2024-01-10T02:35:58.000Z");
 		e.setField("logsource", "DWP-5CD212FV5L");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("DWP-5CD212FV5L", record.getAccessor().getServerHostName());
 		assertEquals("Error Occurred", record.getException().getDescription());
@@ -130,7 +130,7 @@ public class ParserTest {
 		e.setField("error", "\"false\"");
 		e.setField("timestamp", "2024-01-10T02:35:58.000Z");
 		e.setField("logsource", "DWP-5CD212FV5L");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("CREATE MATERIALIZED VIEW IF NOT EXISTS user_emails_by_id AS\n"
 				+ "SELECT user_id, email FROM users  --this is singleline\n"
@@ -150,7 +150,7 @@ public class ParserTest {
 		e.setField("error", "\"false\"");
 		e.setField("timestamp", "2024-01-10T02:35:58.000Z");
 		e.setField("logsource", "DWP-5CD212FV5L");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("drop\n"
 				+ "type\n"
