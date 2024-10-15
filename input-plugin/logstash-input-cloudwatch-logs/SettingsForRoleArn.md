@@ -45,9 +45,28 @@ These settings can be used only when the Guardium Data Protection is hosted on A
 	
 14. Click **Review Policy**
 15. Enter the policy Name and click **Create Policy**
-16. Select the role created above
-17. Click the **Trust relationships** tab and click **Edit trust policy**
-18. Add the below statement in the trust policy and click **Update Policy**
+16. In order to restrict access to a particular log group only, perform below steps else move to Step 21
+17. In the Permissions tab, click the Add Permissions button and select Create Inline Policy
+18. On the Create Policy page, select JSON editor and add the below policy
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": {
+        "Effect": "Deny",
+        "NotAction": "logs:DescribeLogGroups",
+        "NotResource": [
+            "arn:aws:logs:<AWS log group Region>:<AWS Account>:log-group:<log_group name>:*"
+        ]
+    }
+}
+```
+
+19. Click Review Policy
+20. Enter the policy Name and click Create Policy
+21. Select the role created above
+22. Click the **Trust relationships** tab and click **Edit trust policy**
+23. Add the below statement in the trust policy and click **Update Policy**
 
 ```
 {
@@ -58,11 +77,11 @@ These settings can be used only when the Guardium Data Protection is hosted on A
         "Action": "sts:AssumeRole"
 }
 ```
-	
-19. Set the role to the EC2 machine hosting Guardium
-20. Go to the EC2 machine hosting Guardium
-21. Right click on the EC2 instance, select the Security Option, and modify the IAM role
-22. Set the role that was created above
+
+24. Set the role to the EC2 machine hosting Guardium
+25. Go to the EC2 machine hosting Guardium
+26. Right click on the EC2 instance, select the Security Option, and modify the IAM role
+27. Set the role that was created above
 
 ## Configuration for IAM Role when the Guardium Data Protection and the Database to be monitored are in different AWS accounts
 
@@ -142,7 +161,7 @@ Inline policy –
 	"Version": "2012-10-17",
 	"Statement": {
 		"Effect": "Deny",
-		"Action": "*",
+		"NotAction": "logs:DescribeLogGroups",
 		"NotResource": [
 				"arn:aws:logs:<Region_of_Database>:<Account_Id_Of_RDS>:log-group:<log_group_to_be_monitored>:*"]
 	}
@@ -157,7 +176,7 @@ Inline policy –
 	"Version": "2012-10-17",
 	"Statement": {
 		"Effect": "Deny",
-		"Action": "*",
+		"NotAction": "logs:DescribeLogGroups",
 		"NotResource": [
 			"arn:aws:logs:us-east-1:222222:log-group:test-log-group:*"
 		]
@@ -221,8 +240,8 @@ input {
 			#Example of log group for Aurora Postgres, /aws/rds/cluster/<instance_name>/postgresql i.e., ["/aws/rds/cluster/aurorapostgres/postgresql"]
 			log_group => ["<LOG_GROUP>"]  #e.g., ["/aws/rds/instance/database-1/postgresql"]
 			start_position => "end"
-			#Insert the role_arn of the role that is associated with the Guardium EC2 instance.
-			role_arn => "<ROLE_ARN_ON_RDS_EC2_INSTANCE>"   #e.g., "arn:aws:iam::222222:role/role_on_222222"
+			#Insert the role_arn of the role that is created in RDS account.
+			role_arn => "<ROLE_ARN_ON_RDS_ACCOUNT>"   #e.g., "arn:aws:iam::222222:role/role_on_222222"
 			region => "<REGION>" #Region that has the DB, Default value: us-east-1
 			interval => 2
 			event_filter => ""
