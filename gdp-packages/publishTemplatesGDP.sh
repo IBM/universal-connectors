@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ "$TRAVIS_PULL_REQUEST_SLUG" != "$TRAVIS_REPO_SLUG" ]; then
+  echo "This pull request is from a fork so shouldn't create a new tag in original repo."
+  exit 0
+fi
+
 if [ "$TRAVIS_BRANCH" == "main" ] && $(git diff --name-only $TRAVIS_COMMIT_RANGE | grep -q "gdp-packages"); then
   echo "zipping GDP package templates"
   ./gdp-packages/zipPackagesForGDP.sh
