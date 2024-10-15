@@ -12,7 +12,7 @@ import com.google.gson.JsonParser;
 import com.ibm.guardium.saphana.Constants;
 import com.ibm.guardium.saphana.Parser;
 import com.ibm.guardium.universalconnector.commons.structures.*;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class ParserTest {
 		data.addProperty(Constants.SCHEMA_NAME, "SYSTEM");
 		data.addProperty(Constants.MIN_OFF,"+04:00");
 
-		final Record record = Parser.parseRecord(data);
+		final UCRecord record = Parser.parseRecord(data);
 
 		Assert.assertEquals(record.getDbName(), record.getAccessor().getServiceName());
 
@@ -74,7 +74,7 @@ public class ParserTest {
 		data.addProperty(Constants.SCHEMA_NAME, "SYSTEM");
 		data.addProperty(Constants.MIN_OFF,"+06:00");
 
-		final Record record = Parser.parseRecord(data);
+		final UCRecord record = Parser.parseRecord(data);
 
 		Assert.assertEquals("LOGIN_FAILED", record.getException().getExceptionTypeId());
 		Assert.assertEquals("authentication failed", record.getException().getDescription());
@@ -114,7 +114,7 @@ public class ParserTest {
 		data.addProperty(Constants.SCHEMA_NAME, "SYSTEM");
 		data.addProperty(Constants.MIN_OFF,"+09:00");
 
-		Record record = Parser.parseRecord(data);
+		UCRecord record = Parser.parseRecord(data);
 		Accessor actual = record.getAccessor();
 
 		Assert.assertEquals(Constants.DB_PROTOCOL, actual.getDbProtocol());
