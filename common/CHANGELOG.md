@@ -25,6 +25,7 @@ Notable changes will be documented in this file.
 ### Fixed
 
 - Filter plugin now skips and removes messages/events that are not authCheck and authenticate from logstash pipeline, to prevent unnecessary JSON parse errors.
+-
 
 ## [0.3.0]
 
