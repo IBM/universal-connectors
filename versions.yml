@@ -15,4 +15,4 @@ dependencies:
   guava: 32.1.3-jre
   commonsText: 1.10.0
   tinkergraphGremlin: 3.6.4
-  rdf4jQueryparserSparql: 4.3.13
+  rdf4jQueryparserSparql:  5.0.2
