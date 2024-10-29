@@ -3,6 +3,11 @@
 Notable changes will be documented in this file.
 
 ## [Unreleased]
+
+## [0.3.6]
+### Added
+- Regex parser to enable parsing of custom Universal Connectors (UCs) in a regex-based audit log format.
+
 ## [0.3.2]
 ### Changed
 - Removed mongoDB messages with empty users[], as they are either internal or occur during authentication.
