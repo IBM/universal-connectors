@@ -30,16 +30,92 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 2. In the **Change Database Admin Password** section, provide the new password and  click **Change Password**.
 You will receive a prompt asking "Are you sure you want to continue?".  Select **Change**.
 
-### Connecting to the database through MongoDB Shell
-1. In this example, we created an AWS EC2 instance with Amazon Linux 2 AMI for database connectivity.
-2. After the EC2 instance is created, 
-      - Create the repository file for MongoDB by running the below command  
-         ```echo -e "[mongodb-org-4.4] \nname=MongoDB Repository\nbaseurl=https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/4.4/x86_64/\ngpgcheck=1 \nenabled=1 \ngpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc" | sudo tee /etc/yum.repos.d/mongodb-org-4.4.repo```
-      -  Install MongoDB Shell by running the below command    
-         ```sudo yum install -y mongodb-org-shell```
-3. On your deployment's Overview page, there is an Endpoints panel with all the relevant connection information.
-4. Copy the CLI endpoint URL.
-5. Connect to the AWS EC2 instance that you previously created and paste the URL by replacing username (default: admin) and password credentials. The database will be connected.
+# Connecting to the database through MongoDB Shell
+
+## Prerequisites
+
+- **MongoDB Shell**: Ensure you have the MongoDB Shell installed. You can download it from the [MongoDB Download Center](https://www.mongodb.com/try/download/community).
+- **MongoDB Server**: Make sure you have access to a MongoDB server (either local or cloud-based).
+
+## Connecting to MongoDB
+
+### 1. Open MongoDB Shell
+
+Launch the MongoDB Shell by entering the following command in your terminal or command prompt:
+
+```
+mongo
+```
+
+### 2. Connection String Format
+
+To connect to a MongoDB instance, use the following syntax:
+
+```
+mongo <connection_string>
+```
+
+### 3. Examples of Connection Strings
+
+#### Local MongoDB Instance
+
+For a local MongoDB instance running on the default port (27017):
+
+```
+mongo localhost:27017
+```
+
+#### MongoDB Atlas (Cloud)
+
+To connect to a MongoDB Atlas cluster, your connection string will look like this:
+
+```
+mongo "mongodb+srv://<username>:<password>@cluster0.mongodb.net/myDatabase"
+```
+
+Make sure to replace `<username>`, `<password>`, and `myDatabase` with your actual credentials and database name.
+
+On your deployment's Overview page, there is an Endpoints panel with all the relevant connection information.Copy the CLI endpoint URL.
+
+### 4. Switch to Desired Database
+
+After connecting, switch to your desired database using:
+
+```
+use myDatabase
+```
+
+### 5. Common Commands
+
+Once connected, you can execute various commands:
+
+- View all databases:
+  ```
+  show dbs
+  ```
+
+- View collections in the current database:
+  ```
+  show collections
+  ```
+
+### 6. Exiting the Shell
+
+To exit the MongoDB Shell, type:
+
+```
+exit
+```
+
+## Troubleshooting
+
+- **MongoDB Server Not Running**: Ensure that the MongoDB server is running on your machine.
+- **Firewall Issues**: Check that your firewall allows connections on the MongoDB port (default: 27017).
+- **Incorrect Credentials**: Verify that your username, password, and connection string are correct.
+
+## Note :
+
+If the Instance of IBM Log Analysis and Event Stream is already configured in the region of IBM Cloud Account, then skip Step - 2 and Step - 3.
 
 ## 2. Viewing the Audit logs
 ### Creating an instance of IBM log analysis on IBM Cloud.
@@ -147,17 +223,17 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ### Before you begin
 * Configure the policies you require. See [policies](/../../#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [logstash-filter-mongodb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-mongodb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
+* Download the [guardium_logstash-offline-plugins-mongo.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-mongodb-guardium/MongodbOverFilebeatPackage/MongoDB/guardium_logstash-offline-plugins-mongo.zip)) plug-in. (Do not unzip the offline-package file throughout the procedure). This step is not necessary for Guardium Data Protection v12.0 and later.
 * Download the plug-in filter configuration file [IBMCloudMongoDB.conf](IBMCloudMongoDB.conf).
 
 ### Procedure
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. Before you upload the universal connector, enable the connector if it is disabled.
-3. Click **Upload File** and select the offline [logstash-filter-mongodb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.0/logstash-filter-mongodb_guardium_filter.zip) plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v12.0 and later.
+3. Click **Upload File** and select the offline [guardium_logstash-offline-plugins-mongo.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-mongodb-guardium/MongodbOverFilebeatPackage/MongoDB/guardium_logstash-offline-plugins-mongo.zip)) plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the **Connector name** field.
 6. Update the input section to add the details from the [IBMCloudMongoDB.conf](IBMCloudMongoDB.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 7. Update the filter section to add the details from the [IBMCloudMongoDB.conf](IBMCloudMongoDB.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The **type** fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
 9. Click **Save**. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
- 
+
