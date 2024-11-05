@@ -75,6 +75,27 @@ public class CustomParserTest {
     }
 
     @Test
+    public void testGetStaticValue() {
+        Map<String, String> props = new HashMap<>();
+        props.put(PropertyConstant.DB_USER, "{TEST}");
+        CustomParser cp = new CustomParser(ParserFactory.ParserType.regex) {
+            @Override
+            public String getConfigFilePath() {
+                return "";
+            }
+            @Override
+            public Map<String, String> getProperties() {
+                return props;
+            }
+        };
+        cp.properties = props;
+        assertEquals("TEST", cp.getValue("whatever", PropertyConstant.DB_USER));
+
+        //Invalid regex wont cause exception
+        assertNull(cp.parse("whatever", "invalid Regex"));
+    }
+
+    @Test
     public void testGetProperties() {
         Map<String, String> properties = customParser.getProperties();
         assertNotNull(properties);
