@@ -65,7 +65,14 @@ public abstract class CustomParser {
     }
 
     protected String getValue(String payload, String fieldName) {
-        return parse(payload, properties.get(fieldName));
+        String value = properties.get(fieldName);
+        if(value == null) return null;
+
+        // If it is static literal we dont need custom parser
+        if(value.startsWith("{") && value.endsWith("}"))
+            return value.substring(1, value.indexOf("}"));
+
+        return parse(payload, value);
     }
 
     protected String parse(String payload, String key) {
