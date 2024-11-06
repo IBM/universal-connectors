@@ -191,14 +191,14 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • Download the [mssql-offline-plugins-7.5.2.zip](./mssql-offline-plugins-7.5.2.zip) plug-in.This is not necessary for Guardium Data Protection v12.0 and later.
 
-• Download the [mssql-jdbc-7.4.1.jre8](./mssql-jdbc-7.4.1.jre8.jar) jar.
+• Download the [mssql-jdbc-7.4.1.jre8](https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/7.4.1.jre8/mssql-jdbc-7.4.1.jre8.jar) jar.
 
 #### Procedure: 
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First Enable the Universal Guardium connector, if it is Disabled already.
 3. Click Upload File and select the offline [mssql-offline-plugins-7.5.2.zip](./mssql-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK.This is not necessary for Guardium Data Protection v12.0 and later.
-4. Click Upload File and select the [mssql-jdbc-7.4.1.jre8](./mssql-jdbc-7.4.1.jre8.jar) jar. After it is uploaded, click OK.
+4. Click Upload File and select the [mssql-jdbc-7.4.1.jre8](https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/7.4.1.jre8/mssql-jdbc-7.4.1.jre8.jar) jar. After it is uploaded, click OK.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
 7. Update the input section to add the details from [awsMSSQL.conf](./awsMSSQL.conf) for AWS MSSQL setup file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
