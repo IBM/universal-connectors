@@ -25,7 +25,7 @@ import com.ibm.guardium.snowflakedb.parser.SQLErrorEventParser;
 import com.ibm.guardium.snowflakedb.parser.SuccessEventParser;
 import com.ibm.guardium.snowflakedb.utils.Constants;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.google.gson.*;
@@ -79,7 +79,7 @@ public class GuardiumSnowflakeFilter implements Filter {
                     }
 
                     if(parser != null){
-                        Record rec = parser.parseRecord(event.toMap());
+                        UCRecord rec = parser.parseRecord(event.toMap());
                         if(rec.getAccessor().getDbUser() == null || rec.getAccessor().getDbUser().equals("")){
                             event.tag(Constants.LOGSTASH_TAG_SKIP_NOT_SNOWFLAKE);
                             skippedEvents.add(event);

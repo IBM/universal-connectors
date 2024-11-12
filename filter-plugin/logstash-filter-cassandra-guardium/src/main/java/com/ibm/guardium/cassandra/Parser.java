@@ -6,20 +6,16 @@ package com.ibm.guardium.cassandra;
 
 import java.text.ParseException;
 import java.util.Map;
+
+import com.ibm.guardium.universalconnector.commons.structures.*;
 import org.apache.commons.validator.routines.InetAddressValidator;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
 
 public class Parser {
 	static ExceptionRecord exceptionRecord;
 
-	public static Record parseRecord(final Map<String, String> data) throws ParseException {
+	public static UCRecord parseRecord(final Map<String, String> data) throws ParseException {
 
-		Record record = new Record();
+		UCRecord record = new UCRecord();
 
 		record.setSessionId(Constants.UNKNOWN_STRING);
 
@@ -40,7 +36,7 @@ public class Parser {
 
 	}
 
-	public static void setDbName(Record record, Map<String, String> data) {
+	public static void setDbName(UCRecord record, Map<String, String> data) {
 		if (data.containsKey(Constants.KEYSPACE)) {
 			record.setDbName(data.get(Constants.KEYSPACE));
 		} else {
@@ -118,7 +114,7 @@ public class Parser {
 		return accessor;
 	}
 
-	public static void setExceptionOrDataPart(final Record record, Map<String, String> data) {
+	public static void setExceptionOrDataPart(final UCRecord record, Map<String, String> data) {
 		String operation = data.get(Constants.OPERATION);
 		if (data.get(Constants.CATEGORY).equals(Constants.AUTH)) {
 			if (data.get(Constants.TYPE).equals(Constants.LOGIN_SUCCESS)) {
@@ -143,14 +139,14 @@ public class Parser {
 		}
 	}
 
-	static void setException(Map<String, String> data, Record record, String[] error) {
+	static void setException(Map<String, String> data, UCRecord record, String[] error) {
 
 		exceptionRecord.setDescription(error[1]);
 		exceptionRecord.setSqlString(error[0]);
 		record.setException(exceptionRecord);
 	}
 
-	static void setData(Map<String, String> data, Record record) {
+	static void setData(Map<String, String> data, UCRecord record) {
 		Data outputData = new Data();
 		outputData.setOriginalSqlCommand(data.get(Constants.OPERATION));
 		record.setData(outputData);

@@ -102,7 +102,7 @@ public class OuaFilter implements Filter {
 					}
 
 					if (return_code == 0 || !OuaFilter.isLoginFailedReturnCode(return_code)) {
-						Record record = OuaFilter.parseRecord(e);
+						UCRecord record = OuaFilter.parseRecord(e);
 
 						final GsonBuilder builder = new GsonBuilder();
 						builder.serializeNulls();
@@ -110,7 +110,7 @@ public class OuaFilter implements Filter {
 						e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
 
 						if (log.isDebugEnabled()) {
-						   log.debug("Record Event: "+logEvent(e));
+						   log.debug("UCRecord Event: "+logEvent(e));
 						}
 						matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
 						outputEvents.add(e);
@@ -118,7 +118,7 @@ public class OuaFilter implements Filter {
 
 					if (return_code != 0) {
 						Event exception_event = e.clone();
-						Record exception_record = OuaFilter.parseExceptionRecord(exception_event);
+						UCRecord exception_record = OuaFilter.parseExceptionRecord(exception_event);
 
 						final GsonBuilder exception_builder = new GsonBuilder();
 						exception_builder.serializeNulls();
@@ -126,7 +126,7 @@ public class OuaFilter implements Filter {
 						exception_event.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, exception_gson.toJson(exception_record));
 
 						if (log.isDebugEnabled()) {
-						   log.debug("Record Event: "+logEvent(exception_event));
+						   log.debug("UCRecord Event: "+logEvent(exception_event));
 						}
 						matchListener.filterMatched(exception_event); // Flag OK for filter input/parsing/out
 						outputEvents.add(exception_event);
@@ -143,8 +143,8 @@ public class OuaFilter implements Filter {
         return outputEvents;
     }
 
-    public static Record parseRecord(final Event event) throws ParseException {
-        Record record = new Record();
+    public static UCRecord parseRecord(final Event event) throws ParseException {
+        UCRecord record = new UCRecord();
 		
 		if (event.getField(OuaFilter.DB_NAME_TAG) instanceof String) {
 			record.setDbName(event.getField(OuaFilter.DB_NAME_TAG).toString());
@@ -168,8 +168,8 @@ public class OuaFilter implements Filter {
 		return record;
 	}
 
-	public static Record parseExceptionRecord(final Event event) throws ParseException {
-        Record record = new Record();
+	public static UCRecord parseExceptionRecord(final Event event) throws ParseException {
+        UCRecord record = new UCRecord();
 
 		if (event.getField(OuaFilter.DB_NAME_TAG) instanceof String) {
 			record.setDbName(event.getField(OuaFilter.DB_NAME_TAG).toString());

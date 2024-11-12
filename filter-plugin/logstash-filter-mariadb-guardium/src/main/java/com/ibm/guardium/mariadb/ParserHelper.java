@@ -21,7 +21,7 @@ import com.ibm.guardium.mariadb.constant.ApplicationConstant;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 import co.elastic.logstash.api.Event;
@@ -48,8 +48,8 @@ public class ParserHelper {
 	 * @param event
 	 * @return record
 	 */
-	public static Record parseRecord(final Event event) throws Exception {
-		Record record = new Record();
+	public static UCRecord parseRecord(final Event event) throws Exception {
+		UCRecord record = new UCRecord();
 		try {
 			record.setAccessor(parseAccessor(event));
 			record.setSessionLocator(parseSessionLocator(event));
@@ -68,7 +68,7 @@ public class ParserHelper {
 					&& Integer.parseInt(event.getField(ApplicationConstant.RETCODE_KEY).toString().trim()) != 0) {
 				record.setException(parseExceptionRecord(event));
 			} else {
-				throw new Exception("Invalid Record : ");
+				throw new Exception("Invalid UCRecord : ");
 			}
 
 		} catch (Exception e) {

@@ -56,7 +56,7 @@ public class AuroraMysqlGuardiumPluginFilter implements Filter {
 				JsonObject data = new JsonObject();
 				data = inputData(e);
 				try {
-					Record record = Parser.parseRecord(data);
+					UCRecord record = Parser.parseRecord(data);
 					final GsonBuilder builder = new GsonBuilder();
 					builder.serializeNulls();
 					final Gson gson = builder.create();

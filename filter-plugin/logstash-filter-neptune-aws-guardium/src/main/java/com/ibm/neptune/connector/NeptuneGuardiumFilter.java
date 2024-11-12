@@ -18,7 +18,7 @@ import org.eclipse.rdf4j.query.MalformedQueryException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.neptune.connector.constant.ApplicationConstants;
 
 import co.elastic.logstash.api.Configuration;
@@ -56,7 +56,7 @@ public class NeptuneGuardiumFilter implements Filter {
 		if (log == null) {
 			log = LogManager.getLogger(NeptuneGuardiumFilter.class);
 		}
-		Record record = null;
+		UCRecord record = null;
 		for (Event event : events) {
 			if(log.isDebugEnabled()){
 				log.debug("Event Now: {}", event.getField(ApplicationConstants.MESSAGE));
@@ -67,7 +67,7 @@ public class NeptuneGuardiumFilter implements Filter {
 					|| event.getField(ApplicationConstants.MESSAGE).toString()
 							.contains(ApplicationConstants.QUERY_TYPE_SPARQL)) {
 
-				record = new Record();
+				record = new UCRecord();
 				try {
 
 					if (event.getField(ApplicationConstants.MESSAGE) instanceof String) {

@@ -24,7 +24,7 @@ package com.ibm.guardium.universalconnector.commons.structures;
  * <li>App username specifies an application username
  * </ul>
  */
-public class Record {
+public class UCRecord {
 
     /**
      * Not to be filled by filter developer
@@ -233,7 +233,7 @@ public class Record {
 
     @Override
     public String toString() {
-        return "Record{" +
+        return "UCRecord{" +
                 "connectorName='" + connectorName + '\'' +
                 ", connectorId='" + connectorId + '\'' +
                 ", sessionId='" + sessionId + '\'' +

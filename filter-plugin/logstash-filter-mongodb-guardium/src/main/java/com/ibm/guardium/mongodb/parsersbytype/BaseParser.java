@@ -56,13 +56,13 @@ public abstract class BaseParser {
         return true;
     }
 
-    public Record parseRecord(final JsonObject data){
+    public UCRecord parseRecord(final JsonObject data){
 
         if (!validate(data)){
             return null;
         }
 
-        Record record = new Record();
+        UCRecord record = new UCRecord();
 
         final JsonObject param = data.get("param").getAsJsonObject();
         final JsonObject args = param==null ? null : param.getAsJsonObject("args");
@@ -99,7 +99,7 @@ public abstract class BaseParser {
         return record;
     }
 
-    private void fixSessionId(Record record) {
+    private void fixSessionId(UCRecord record) {
         String sessionId = record.getSessionId();
         if (sessionId==null || sessionId.trim().length()==0){
             // must generate unique value that could identify session and we are not provided with real session id value

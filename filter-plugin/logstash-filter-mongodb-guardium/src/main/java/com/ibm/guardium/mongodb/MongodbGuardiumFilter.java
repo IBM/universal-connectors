@@ -90,7 +90,7 @@ public class MongodbGuardiumFilter implements Filter {
                         // filter internal and not parsed events
                         BaseParser parser = ParserFactory.getParser(inputJSON);
 
-                        Record record = parser.parseRecord(inputJSON);
+                        UCRecord record = parser.parseRecord(inputJSON);
                         if (record==null){
                             e.tag(LOGSTASH_TAG_SKIP);
                             skippedEvents.add(e);
@@ -169,7 +169,7 @@ public class MongodbGuardiumFilter implements Filter {
      * @param e - Logstash Event
      * @param record - Record after parsing.
      */
-    private void correctIPs(Event e, Record record) {
+    private void correctIPs(Event e, UCRecord record) {
         // Override "(NONE)" IP, if not filterd, as it's internal command by MongoDB.
         // Note: IP needs to be in ipv4/ipv6 format
         SessionLocator sessionLocator = record.getSessionLocator();

@@ -12,7 +12,7 @@ import com.google.gson.*;
 
 import com.ibm.guardium.samples.EventSamples;
 import com.ibm.guardium.s3.Parser;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ public class ParserTest {
         // final String actualResult = Parser.Parse(mongoJson);
         JsonObject inputJSON = (JsonObject) JsonParser.parseString(EventSamples.getSamplesByEventName(EventSamples.EventName.GetObject).get(0).getJsonStr());
         try {
-            // Record result = Parser.buildRecord(inputJSON);
+            // UCRecord result = Parser.buildRecord(inputJSON);
             System.out.println("result");
         } catch (Exception e) {
             e.printStackTrace();

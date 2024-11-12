@@ -13,7 +13,7 @@ import co.elastic.logstash.api.LogstashPlugin;
 import co.elastic.logstash.api.PluginConfigSpec;
 import com.google.gson.*;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.*;
@@ -47,7 +47,7 @@ public class ScyllaDbGuardiumFilter implements Filter {
 				log.debug("Event now {}:",event.getData());		
 			}
 			try {
-				Record rec = Parser.parseRecord(event);
+				UCRecord rec = Parser.parseRecord(event);
 				final GsonBuilder builder = new GsonBuilder();
 				builder.serializeNulls();
 				final Gson gson = builder.disableHtmlEscaping().create();

@@ -10,12 +10,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Assert;
 import org.junit.Test;
-//import org.logstash.plugins.ConfigurationImpl;
 import org.logstash.plugins.ContextImpl;
 
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 
-//import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
 import co.elastic.logstash.api.FilterMatchListener;

@@ -22,7 +22,7 @@ import com.ibm.guardium.universalconnector.commons.structures.Data;
 
 import co.elastic.logstash.api.Event;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 
@@ -37,8 +37,8 @@ public class Parser {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Record parseRecord(Event event) throws Exception {
-		Record record = new Record();
+	public static UCRecord parseRecord(Event event) throws Exception {
+		UCRecord record = new UCRecord();
 		try {
 			Integer hashcode = null;
 			if (event.getField(Constants.DB_NAME) != null && event.getField(Constants.USER_NAME) != null

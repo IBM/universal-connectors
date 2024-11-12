@@ -4,27 +4,21 @@
 //
 package com.ibm.guardium.dynamodb;
 
-import co.elastic.logstash.api.Configuration;
-import co.elastic.logstash.api.Context;
-import co.elastic.logstash.api.Event;
-import co.elastic.logstash.api.Filter;
-import co.elastic.logstash.api.FilterMatchListener;
-import co.elastic.logstash.api.LogstashPlugin;
-import co.elastic.logstash.api.PluginConfigSpec;
+import co.elastic.logstash.api.*;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.*;
-
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
 import java.io.File;
-import java.text.ParseException;
-import java.util.*;
 import java.io.StringReader;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 //class name must match plugin name
 @LogstashPlugin(name = "dynamodb_guardium_plugin_filter")
@@ -127,7 +121,7 @@ public class DynamodbGuardiumPluginFilter implements Filter{
 	}
 
 	private String convertEventToRecord(JsonObject inputJSON) throws ParseException {
-		Record record = Parser.parseRecord(inputJSON);
+		UCRecord record = Parser.parseRecord(inputJSON);
 		final GsonBuilder builder = new GsonBuilder();
 		builder.serializeNulls();
 		final Gson gson = builder.create();

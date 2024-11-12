@@ -4,24 +4,19 @@ SPDX-License-Identifier: Apache-2.0
 */
 package com.ibm.guardium.azuremysql;
 
-import static org.junit.Assert.*;
+import co.elastic.logstash.api.Context;
+import co.elastic.logstash.api.Event;
+import co.elastic.logstash.api.FilterMatchListener;
+import com.ibm.guardium.universalconnector.commons.GuardConstants;
+import org.junit.Test;
+import org.logstash.plugins.ContextImpl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Test;
-import org.logstash.plugins.ContextImpl;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-
-import co.elastic.logstash.api.Context;
-import co.elastic.logstash.api.Event;
-import co.elastic.logstash.api.FilterMatchListener;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class AzureMysqlGuardiumFilterTest {
 	final static Context context = new ContextImpl(null, null);

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 
@@ -19,7 +19,7 @@ import co.elastic.logstash.api.Event;
 class ParserTest {
 	@Test
 	public void testparseAccessor() {
-		Record record = new Record();
+		UCRecord record = new UCRecord();
 		record.setDbName("979326520502_guardiumredshift:dev");
 		Event e = new org.logstash.Event();
 		e.setField("username", "awsuser");
@@ -107,7 +107,7 @@ class ParserTest {
 		e.setField("year", "2022");
 		e.setField("time", "04:58:51:641");
 		e.setField("action", "authentication failure");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("796", record.getSessionId());
 		assertEquals("979326520502_guardiumredshift:dev", record.getDbName());
@@ -127,7 +127,7 @@ class ParserTest {
 		e.setField("user", "awsuser");
 		e.setField("timestamp", "2022-03-17T07:34:29.118Z");
 		e.setField("sql_query", "SELECT d.datname as Name");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("1073979586", record.getSessionId());
 		assertEquals("979326520502_guardiumredshift:dev", record.getDbName());
@@ -142,7 +142,7 @@ class ParserTest {
 		e.setField("pid", "1073979586");
 		e.setField("timestamp", "2022-03-17T07:34:29.118Z");
 		e.setField("sql_query", "SELECT d.datname as Name");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("1073979586", record.getSessionId());
 		assertEquals(1647502469118L, record.getTime().getTimstamp());

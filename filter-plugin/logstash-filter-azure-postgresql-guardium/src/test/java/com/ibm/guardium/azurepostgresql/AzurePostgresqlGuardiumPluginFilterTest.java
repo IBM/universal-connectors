@@ -11,8 +11,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
 
-import com.ibm.guardium.azurepostgresql.Constants;
-import com.ibm.guardium.azurepostgresql.AzurePostgresqlGuardiumPluginFilter;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;

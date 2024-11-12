@@ -13,7 +13,7 @@ import co.elastic.logstash.api.LogstashPlugin;
 import co.elastic.logstash.api.PluginConfigSpec;
 import com.google.gson.*;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.*;
@@ -51,7 +51,7 @@ public class IntersystemsIRISGuardiumFilter implements Filter {
 				String messageString = event.getField("message").toString();
 				try {
 					JsonObject inputJSON = new Gson().fromJson(messageString, JsonObject.class);
-					Record record = Parser.parseRecord(inputJSON);
+					UCRecord record = Parser.parseRecord(inputJSON);
 					final Gson gson = new GsonBuilder().disableHtmlEscaping().serializeNulls().create();
 					event.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
 					matchListener.filterMatched(event);

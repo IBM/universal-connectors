@@ -8,7 +8,7 @@ import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
 import com.google.gson.Gson;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
@@ -87,7 +87,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = new Gson().fromJson(recordStr, Record.class);
+        UCRecord record = new Gson().fromJson(recordStr, UCRecord.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIpv6().equals(serverIpFromFilebeat));
         Assert.assertTrue(record.getSessionLocator().getServerIpv6().equals(serverIpFromFilebeat));
@@ -114,7 +114,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = new Gson().fromJson(recordStr, Record.class);
+        UCRecord record = new Gson().fromJson(recordStr, UCRecord.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals(serverIpFromFilebeat));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals(serverIpFromFilebeat));
@@ -141,7 +141,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = new Gson().fromJson(recordStr, Record.class);
+        UCRecord record = new Gson().fromJson(recordStr, UCRecord.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals(serverIpFromFilebeat));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals(serverIpFromFilebeat));
@@ -167,7 +167,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = new Gson().fromJson(recordStr, Record.class);
+        UCRecord record = new Gson().fromJson(recordStr, UCRecord.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals(serverIpFromFilebeat));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals(serverIpFromFilebeat));
@@ -195,7 +195,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = new Gson().fromJson(recordStr, Record.class);
+        UCRecord record = new Gson().fromJson(recordStr, UCRecord.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals("0.0.0.0"));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals("0.0.0.0"));
@@ -222,7 +222,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = new Gson().fromJson(recordStr, Record.class);
+        UCRecord record = new Gson().fromJson(recordStr, UCRecord.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals("127.0.0.1"));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals("127.0.0.1"));
@@ -252,7 +252,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = new Gson().fromJson(recordStr, Record.class);
+        UCRecord record = new Gson().fromJson(recordStr, UCRecord.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals("127.0.0.1"));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals("127.0.0.1"));
@@ -283,7 +283,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = new Gson().fromJson(recordStr, Record.class);
+        UCRecord record = new Gson().fromJson(recordStr, UCRecord.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals("0.0.0.0"));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals("0.0.0.0"));

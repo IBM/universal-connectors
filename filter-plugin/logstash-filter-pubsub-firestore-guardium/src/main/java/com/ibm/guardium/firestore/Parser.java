@@ -1,6 +1,6 @@
 /*
 
-© Copyright IBM Corp. 2021, 2022 All rights reserved.
+ï¿½ Copyright IBM Corp. 2021, 2022 All rights reserved.
 SPDX-License-Identifier: Apache-2.0
 
 */
@@ -24,7 +24,7 @@ import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
@@ -46,15 +46,15 @@ public class Parser {
 	/**
 	 *
 	 * parseRecord() method will perform operation on JsonObject input, convert
-	 * JsonObject into Record Object and then return the value as response
+	 * JsonObject into UCRecord Object and then return the value as response
 	 * 
 	 * @param JsonObject inputJson
 	 * @methodName @parseRecord
-	 * @return Record GUARDIUM Object
+	 * @return UCRecord GUARDIUM Object
 	 * 
 	 */
-	public static Record parseRecord(JsonObject inputJson) throws Exception {
-		Record record = new Record();
+	public static UCRecord parseRecord(JsonObject inputJson) throws Exception {
+		UCRecord record = new UCRecord();
 		String serverHostName = ApplicationConstants.SERVER_HOST_NAME_STRING;
 		String projectId = StringUtils.EMPTY;
 		JsonObject protoPayload = inputJson.get(ApplicationConstants.PROTO_PAYLOAD).getAsJsonObject();

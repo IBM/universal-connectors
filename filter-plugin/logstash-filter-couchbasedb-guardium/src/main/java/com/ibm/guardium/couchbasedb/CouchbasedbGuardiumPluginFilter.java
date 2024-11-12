@@ -14,7 +14,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
@@ -67,7 +67,7 @@ public class CouchbasedbGuardiumPluginFilter implements Filter {
 						if(e.getField(Constants.SERVER_HOSTNAME) instanceof String) {
 							inputJSON.addProperty(Constants.SERVER_HOSTNAME, e.getField(Constants.SERVER_HOSTNAME).toString());
 						}
-						Record record = Parser.parseRecord(inputJSON);
+						UCRecord record = Parser.parseRecord(inputJSON);
 						final GsonBuilder builder = new GsonBuilder();
 						builder.serializeNulls();
 						final Gson gson = builder.create();

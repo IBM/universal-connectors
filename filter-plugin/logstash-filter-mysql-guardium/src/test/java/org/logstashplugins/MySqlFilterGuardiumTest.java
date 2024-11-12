@@ -11,7 +11,7 @@ import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
 import co.elastic.logstash.api.FilterMatchListener;
 import com.google.gson.Gson;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ConfigurationImpl;
@@ -61,7 +61,7 @@ public class MySqlFilterGuardiumTest {
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         Assert.assertEquals(1, matchListener.getMatchCount());
 
-        Record record = new Gson().fromJson((String)e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME), Record.class);
+        UCRecord record = new Gson().fromJson((String)e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME), UCRecord.class);
         Assert.assertEquals("NA", record.getAccessor().getDbUser());
 
     }

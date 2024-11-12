@@ -13,8 +13,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.google.gson.JsonObject;
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
@@ -58,7 +57,7 @@ public class ElasticsearchGuardiumFilter implements Filter {
 				String messageValue = event.getField("message").toString();
 				try {
 					JsonObject inputJSON = new Gson().fromJson(messageValue, JsonObject.class);
-					Record record = Parser.parseRecord(inputJSON,(event.getField("totalOffset")!=null && !event.getField("totalOffset").toString().isEmpty())?event.getField("totalOffset"):0);
+					UCRecord record = Parser.parseRecord(inputJSON,(event.getField("totalOffset")!=null && !event.getField("totalOffset").toString().isEmpty())?event.getField("totalOffset"):0);
 					final Gson gson = new GsonBuilder().disableHtmlEscaping().serializeNulls().create();
 					event.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
 					matchListener.filterMatched(event);

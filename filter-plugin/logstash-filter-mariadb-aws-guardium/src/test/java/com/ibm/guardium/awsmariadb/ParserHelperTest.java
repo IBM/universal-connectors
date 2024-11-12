@@ -4,20 +4,13 @@ SPDX-License-Identifier: Apache-2.0
  */
 package com.ibm.guardium.awsmariadb;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import com.ibm.guardium.awsmariadb.constant.ApplicationConstant;
+import com.ibm.guardium.universalconnector.commons.structures.*;
 import org.junit.jupiter.api.Test;
 import org.logstash.Event;
 
-import com.ibm.guardium.awsmariadb.ParserHelper;
-import com.ibm.guardium.awsmariadb.constant.ApplicationConstant;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ParserHelperTest {
 	@Test
@@ -32,7 +25,7 @@ public class ParserHelperTest {
 		event.setField(ApplicationConstant.SERVERHOSTNAMEPREFIX_KEY, "979326520502-database-mariadbtest");
 		event.setField(ApplicationConstantTest.OPERATION_KEY, "QUERY");
 		event.setField("timestamp", "20220204 15:47:44");
-		Record actualResponse = ParserHelper.parseRecord(event);
+		UCRecord actualResponse = ParserHelper.parseRecord(event);
 		assertNotNull(actualResponse);
 //		assertEquals("231", actualResponse.getSessionId());
 		assertEquals("331346110", actualResponse.getSessionId());
@@ -57,7 +50,7 @@ public class ParserHelperTest {
 		event.setField(ApplicationConstantTest.OPERATION_KEY, "QUERY");
 		event.setField("timestamp", "20220524 03:22:54");
 		event.setField("totalOffset", "-330");
-		Record actualResponse = ParserHelper.parseRecord(event);
+		UCRecord actualResponse = ParserHelper.parseRecord(event);
 		assertNotNull(actualResponse);
 //		assertEquals("7", actualResponse.getSessionId());
 		assertEquals("-1157520155", actualResponse.getSessionId());
@@ -81,7 +74,7 @@ public class ParserHelperTest {
 		event.setField(ApplicationConstantTest.OPERATION_KEY, "QUERY");
 		event.setField("timestamp", "20220524 03:22:54");
 		event.setField("totalOffset", "-330");
-		Record actualResponse = ParserHelper.parseRecord(event);
+		UCRecord actualResponse = ParserHelper.parseRecord(event);
 		assertNotNull(actualResponse);
 
 	}
@@ -89,7 +82,7 @@ public class ParserHelperTest {
 	@Test
 	public void parseRecordExceptionTest() throws Exception {
 		try {
-			Record accessorexception = ParserHelper.parseRecord(null);
+			UCRecord accessorexception = ParserHelper.parseRecord(null);
 
 		} catch (Exception e) {
 		}
@@ -98,7 +91,7 @@ public class ParserHelperTest {
 	@Test
 	public void parseAccessorTest() {
 		Event event = new org.logstash.Event();
-		Record record = new Record();
+		UCRecord record = new UCRecord();
 		event.setField(ApplicationConstant.HOSTNAME_KEY, ApplicationConstantTest.HOSTNAME_VALUE);
 		event.setField(ApplicationConstant.SERVERHOSTNAMEPREFIX_KEY, "979326520502-database-mariadbtest");
 		event.setField(ApplicationConstant.USERNAME_KEY, ApplicationConstantTest.USERNAME_VALUE);
@@ -116,7 +109,7 @@ public class ParserHelperTest {
 	@Test
 	public void parseAccessor1Test() {
 		Event event = new org.logstash.Event();
-		Record record = new Record();
+		UCRecord record = new UCRecord();
 		event.setField(ApplicationConstant.HOSTNAME_KEY, null);
 		event.setField(ApplicationConstant.SERVERHOST_KEY, null);
 		event.setField(ApplicationConstant.USERNAME_KEY, null);
@@ -129,7 +122,7 @@ public class ParserHelperTest {
 
 	@Test
 	public void parseAccessorExceptionTest() throws Exception {
-		Record record = new Record();
+		UCRecord record = new UCRecord();
 		try {
 			Accessor accessorexception = ParserHelper.parseAccessor(null, record);
 

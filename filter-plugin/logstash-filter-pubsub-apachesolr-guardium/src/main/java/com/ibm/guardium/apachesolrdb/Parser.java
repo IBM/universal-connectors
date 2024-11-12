@@ -1,5 +1,5 @@
 /*
-© Copyright IBM Corp. 2021, 2022 All rights reserved.
+ï¿½ Copyright IBM Corp. 2021, 2022 All rights reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 package com.ibm.guardium.apachesolrdb;
@@ -26,7 +26,7 @@ import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
@@ -47,14 +47,14 @@ public class Parser {
 
 	/**
 	 * this method parse solr qtp logs ,converts into jsonObject data and extracts
-	 * required fields from it and sets into Record object.
+	 * required fields from it and sets into UCRecord object.
 	 * 
 	 * @param JsonObject data
 	 * @return record
 	 * @throws Exception
 	 */
-	public static Record parseQtpRecord(JsonObject data) throws Exception {
-		Record record = new Record();
+	public static UCRecord parseQtpRecord(JsonObject data) throws Exception {
+		UCRecord record = new UCRecord();
 		try {
 			Map<String, String> map = new HashMap<>();
 			getCommonDetails(data, map, ApplicationConstant.lOG_TYPE);

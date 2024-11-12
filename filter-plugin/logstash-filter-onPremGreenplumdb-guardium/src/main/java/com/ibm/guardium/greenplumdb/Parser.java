@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 
@@ -37,9 +37,9 @@ public class Parser {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Record parseRecord(final Event event) throws Exception {
+	public static UCRecord parseRecord(final Event event) throws Exception {
 
-		final Record record = new Record();
+		final UCRecord record = new UCRecord();
 
 		try {
 			String fullSQl = event.getField(ApplicationConstant.QUERY) != null
@@ -91,7 +91,7 @@ public class Parser {
 	 * @param event
 	 * @return
 	 */
-	private static String parseSessionID(final Record record, final Event event) {
+	private static String parseSessionID(final UCRecord record, final Event event) {
 
 		final String processID = event.getField(ApplicationConstant.PROCESS_ID) != null
 				? event.getField(ApplicationConstant.PROCESS_ID).toString()
@@ -174,7 +174,7 @@ public class Parser {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Accessor parseAccessor(final Event event, final Record record) throws Exception {
+	public static Accessor parseAccessor(final Event event, final UCRecord record) throws Exception {
 		Accessor accessor = new Accessor();
 		try {
 

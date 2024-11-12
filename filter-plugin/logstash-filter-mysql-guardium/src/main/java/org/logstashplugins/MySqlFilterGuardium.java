@@ -125,7 +125,7 @@ public class MySqlFilterGuardium implements Filter {
                     if (class_type.equals(CLASS_TYPE_CONNECTION)
                             || class_type.equals(CLASS_TYPE_GENERAL)) {
 
-                        Record record = new Record();
+                        UCRecord record = new UCRecord();
                         boolean validRecord = false;
 
                         record.setDbName(UNKNOWN_STRING);
@@ -204,7 +204,7 @@ public class MySqlFilterGuardium implements Filter {
         return events;
     }
 
-    private void updateRecord(Event e, JsonObject inputJSON, Record record, String timestamp) throws ParseException {
+    private void updateRecord(Event e, JsonObject inputJSON, UCRecord record, String timestamp) throws ParseException {
         final int connection_id;
         if (inputJSON.has("connection_id") && !(inputJSON.get("connection_id").isJsonNull())) {
             connection_id = inputJSON.get("connection_id").getAsInt();
@@ -365,7 +365,7 @@ public class MySqlFilterGuardium implements Filter {
         }
     }
 
-    private void correctIPs(Event e, Record record) {
+    private void correctIPs(Event e, UCRecord record) {
         // Note: IP needs to be in ipv4/ipv6 format
         SessionLocator sessionLocator = record.getSessionLocator();
 

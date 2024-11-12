@@ -6,16 +6,16 @@
  */
 package com.ibm.guardium.s3;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-
 import com.google.gson.*;
 import com.ibm.guardium.universalconnector.commons.structures.*;
-
+import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sun.net.util.IPAddressUtil;
+
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class Parser {
 
@@ -32,13 +32,13 @@ public class Parser {
     private static final Gson   gson = new Gson();
 
 
-    public static Record buildRecord(JsonElement auditEl) throws Exception {
+    public static UCRecord buildRecord(JsonElement auditEl) throws Exception {
 
         if (auditEl==null || !auditEl.isJsonObject()){
             throw new Exception("Invalid event data");
         }
 
-        Record record = new Record();
+        UCRecord record = new UCRecord();
 
         // ------------------ Build record upper layer
         // userIdentity is a mandatory property
@@ -279,7 +279,9 @@ public class Parser {
     }
 
     public static String validateIP(String sourceIPAddress){
-        if (IPAddressUtil.isIPv4LiteralAddress(sourceIPAddress) || IPAddressUtil.isIPv6LiteralAddress(sourceIPAddress)){
+        var inetValidator = InetAddressValidator.getInstance();
+        if (inetValidator.isValidInet4Address(sourceIPAddress) ||
+                inetValidator.isValidInet6Address(sourceIPAddress)){
             return sourceIPAddress;
         } else {
             return UNKNOWN_IP;
@@ -360,7 +362,7 @@ public class Parser {
             JsonObject inputJSON = (JsonObject) JsonParser.parseString(parseErrorEvent);
 
 //            JsonObject inputJSON = (JsonObject) JsonParser.parseString(EventSamples.getSamplesByEventName(EventSamples.EventName.DeleteBucket).get(0).getJsonStr());
-            Record record = Parser.buildRecord(inputJSON);
+            UCRecord record = Parser.buildRecord(inputJSON);
             System.out.println(record);
             String recordStr = gson.toJson(record);
             System.out.println(recordStr);

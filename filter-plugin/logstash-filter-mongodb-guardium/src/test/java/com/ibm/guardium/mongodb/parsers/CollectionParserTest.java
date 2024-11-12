@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.ibm.guardium.mongodb.MongodbGuardiumFilter;
 import com.ibm.guardium.mongodb.TestMatchListener;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
@@ -51,7 +51,7 @@ public class CollectionParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -84,7 +84,7 @@ public class CollectionParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -115,7 +115,7 @@ public class CollectionParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);

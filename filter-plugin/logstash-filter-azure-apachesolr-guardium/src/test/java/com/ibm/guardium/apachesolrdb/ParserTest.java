@@ -12,7 +12,7 @@ import org.logstash.Event;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 
@@ -111,7 +111,7 @@ public class ParserTest {
 		event.setField(ApplicationConstant.WEBAPP_FOR_FULLSQL, ApplicationConstantTest.WEBAPP_FOR_FULLSQL_VALUE);
 		event.setField(ApplicationConstant.PATH_FOR_FULLSQL, ApplicationConstantTest.PATH_FOR_FULLSQL_VALUE);
 		event.setField(ApplicationConstant.PARAMS, ApplicationConstantTest.PARAMS_VALUE);
-		Record record = Parser.parseQtpRecord(event);
+		UCRecord record = Parser.parseQtpRecord(event);
 		String redacted = record.getData().getConstruct().getRedactedSensitiveDataSql();
 		Assert.assertNotNull(redacted);
 		Assert.assertEquals(ApplicationConstantTest.REDACTED_VALUE, redacted);

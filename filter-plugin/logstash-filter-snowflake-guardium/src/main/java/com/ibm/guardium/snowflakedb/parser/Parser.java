@@ -7,7 +7,7 @@ package com.ibm.guardium.snowflakedb.parser;
 
 import com.ibm.guardium.snowflakedb.utils.Constants;
 import com.ibm.guardium.snowflakedb.exceptions.ParseException;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ import java.util.Optional;
 
 public interface Parser {
 
-    Record parseRecord(Map<String, Object> event) throws ParseException;
+    UCRecord parseRecord(Map<String, Object> event) throws ParseException;
 
     default String getClientOS(Map<String, String> clientEnvironment) {
         String osMake = Constants.UNKNOWN_STRING;

@@ -174,7 +174,7 @@ public class Accessor {
      * the OS level service that runs the DB instace.
      * 
      * @param serviceName Usually identical to DB name, or container identifier in data source.
-     * @see Record#setDbName(String)
+     * @see UCRecord#setDbName(String)
      */
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;

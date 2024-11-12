@@ -24,7 +24,7 @@ import com.google.gson.JsonObject;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
@@ -65,19 +65,19 @@ public class Parser {
 
 	/**
 	 * parseRecord() method will perform operation on JsonObject input, convert
-	 * JsonObject into Record Object and then return the value as response
+	 * JsonObject into UCRecord Object and then return the value as response
 	 *
 	 * @param JsonObject inputJson
 	 * @methodName @parseRecord
-	 * @return Record GUARDIUM Object
+	 * @return UCRecord GUARDIUM Object
 	 * @throws Exception
 	 *
 	 */
-	public static Record parseRecord(JsonObject inputJson) {
+	public static UCRecord parseRecord(JsonObject inputJson) {
 		JsonObject protoPayload = null;
 		JsonObject metaDataJson = null;
 
-		Record record = new Record();
+		UCRecord record = new UCRecord();
 
 		if(inputJson.has(ApplicationConstants.PROTO_PAYLOAD) && inputJson.get(ApplicationConstants.PROTO_PAYLOAD).getAsJsonObject() != null && !inputJson.get(ApplicationConstants.PROTO_PAYLOAD).getAsJsonObject().entrySet().isEmpty());
 		{

@@ -14,8 +14,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class ParserTest {
-
-    Parser parser = new Parser();
     final String dynamoString = "{\"eventVersion\": \"1.08\", \"userIdentity\": {\"type\": \"Root\", \"principalId\": \"<dummy_principal_id>\", \"arn\": \"arn:aws:iam::testAccountId:root\", \"accountId\": \"testAccountId\", \"accessKeyId\": \"<dummy_access_key_id>\", \"sessionContext\": { \"attributes\": {  \"creationDate\": \"2020-12-28T07:15:10Z\", \"mfaAuthenticated\": \"false\" } } },\"eventTime\": \"2020-12-28T07:35:21Z\",\"eventSource\": \"dynamodb.amazonaws.com\",   \"eventName\": \"CreateTable\",    \"awsRegion\": \"ap-south-1\", \"sourceIPAddress\": \"103.62.17.201\", \"userAgent\": \"console.mazonaws.com\", \"requestParameters\": {\"attributeDefinitions\": [{ \"attributeName\": \"Employee Number\", \"attributeType\": \"N\" }], \"tableName\": \"Employee\", \"keySchema\": [ {\"attributeName\": \"Employee Number\", \"keyType\": \"HASH\" } ],\"billingMode\": \"PROVISIONED\", \"provisionedThroughput\": { \"readCapacityUnits\": 5,  \"writeCapacityUnits\": 5 }, \"sSESpecification\": { \"enabled\": false } }, \"responseElements\": { \"tableDescription\": {  \"attributeDefinitions\": [ {  \"attributeName\": \"Employee Number\",\"attributeType\": \"N\"} ],   \"tableName\": \"Employee\",  \"keySchema\": [{ \"attributeName\": \"Employee Number\", \"keyType\": \"HASH\"  } ], \"tableStatus\": \"CREATING\", \"creationDateTime\": \"Dec 28, 2020, 7:35:21 AM\",  \"provisionedThroughput\": { \"numberOfDecreasesToday\": 0, \"readCapacityUnits\": 5, \"writeCapacityUnits\": 5},\"tableSizeBytes\": 0,\"itemCount\": 0,\"tableArn\": \"arn:aws:dynamodb:ap-south-1:testAccountId:table/Employee\",\"tableId\": \"0bbd1d31-624b-4a0a-b804-4a7bc7351e3e\"}},\"requestID\": \"4NR3PQIDKFSKJGELV8EBNN1BNJVV4KQNSO5AEMVJF66Q9ASUAAJG\",\"eventID\": \"79151c71-058e-4031-8f2d-adbac87198a2\",\"readOnly\": false,\"resources\": [{\"accountId\": \"083406524166\",\"type\": \"AWS::DynamoDB::Table\",\"ARN\": \"arn:aws:dynamodb:ap-south-1:testAccountId:table/Employee\"}],\"eventType\": \"AwsApiCall\",\"apiVersion\": \"2012-08-10\",\"managementEvent\": true,\"recipientAccountId\": \"testAccountId\",\"eventCategory\": \"Management\"}";
     final JsonObject dynamoJson = JsonParser.parseString(dynamoString).getAsJsonObject();
 
@@ -25,7 +23,7 @@ public class ParserTest {
         final String dynamoString = "{\"eventVersion\": \"1.08\", \"userIdentity\": {\"type\": \"Root\", \"principalId\": \"<dummy_principal_id>\", \"arn\": \"arn:aws:iam::testAccountId:root\", \"accountId\": \"testAccountId\", \"accessKeyId\": \"<dummy_access_key_id>\", \"sessionContext\": { \"attributes\": {  \"creationDate\": \"2020-12-28T07:15:10Z\", \"mfaAuthenticated\": \"false\" } } },\"eventTime\": \"2020-12-28T07:35:21Z\",\"eventSource\": \"dynamodb.amazonaws.com\",   \"eventName\": \"CreateTable\",    \"awsRegion\": \"ap-south-1\", \"sourceIPAddress\": \"103.62.17.201\", \"userAgent\": \"console.mazonaws.com\", \"requestParameters\": {\"attributeDefinitions\": [{ \"attributeName\": \"Employee Number\", \"attributeType\": \"N\" }], \"tableName\": \"Employee\", \"keySchema\": [ {\"attributeName\": \"Employee Number\", \"keyType\": \"HASH\" } ],\"billingMode\": \"PROVISIONED\", \"provisionedThroughput\": { \"readCapacityUnits\": 5,  \"writeCapacityUnits\": 5 }, \"sSESpecification\": { \"enabled\": false } }, \"responseElements\": { \"tableDescription\": {  \"attributeDefinitions\": [ {  \"attributeName\": \"Employee Number\",\"attributeType\": \"N\"} ],   \"tableName\": \"Employee\",  \"keySchema\": [{ \"attributeName\": \"Employee Number\", \"keyType\": \"HASH\"  } ], \"tableStatus\": \"CREATING\", \"creationDateTime\": \"Dec 28, 2020, 7:35:21 AM\",  \"provisionedThroughput\": { \"numberOfDecreasesToday\": 0, \"readCapacityUnits\": 5, \"writeCapacityUnits\": 5},\"tableSizeBytes\": 0,\"itemCount\": 0,\"tableArn\": \"arn:aws:dynamodb:ap-south-1:testAccountId:table/Employee\",\"tableId\": \"0bbd1d31-624b-4a0a-b804-4a7bc7351e3e\"}},\"requestID\": \"4NR3PQIDKFSKJGELV8EBNN1BNJVV4KQNSO5AEMVJF66Q9ASUAAJG\",\"eventID\": \"79151c71-058e-4031-8f2d-adbac87198a2\",\"readOnly\": false,\"resources\": [{\"accountId\": \"testAccountId\",\"type\": \"AWS::DynamoDB::Table\",\"ARN\": \"arn:aws:dynamodb:ap-south-1:testAccountId:table/Employee\"}],\"eventType\": \"AwsApiCall\",\"apiVersion\": \"2012-08-10\",\"managementEvent\": true,\"recipientAccountId\": \"testAccountId\",\"eventCategory\": \"Management\"}";
         final JsonObject dynamoJson = JsonParser.parseString(dynamoString).getAsJsonObject();
 
-        final Record record = Parser.parseRecord(dynamoJson);
+        final UCRecord record = Parser.parseRecord(dynamoJson);
 
         final Construct construct = record.getData().getConstruct();
         final Sentence sentence = construct.sentences.get(0);
@@ -42,7 +40,7 @@ public class ParserTest {
         final String dynamoString = "{ \"eventVersion\": \"1.08\", \"userIdentity\": { \"type\": \"IAMUser\", \"principalId\": \"<dummy_principal_id>\", \"arn\": \"arn:aws:iam::testAccountId:user/rasika.shete\", \"accountId\": \"testAccountId\", \"accessKeyId\": \"<dummy_access_key_id>\", \"userName\": \"rasika.shete\" }, \"eventTime\": \"2021-01-11T18:03:56Z\", \"eventSource\": \"dynamodb.amazonaws.com\", \"eventName\": \"UpdateTable\", \"awsRegion\": \"ap-south-1\", \"sourceIPAddress\": \"103.62.16.216\", \"userAgent\": \"aws-cli/2.1.15 Python/3.7.9 Windows/10 exe/AMD64 prompt/off command/dynamodb.update-table\", \"errorCode\": \"ResourceNotFoundException\", \"errorMessage\": \"Requested resource not found: Table: Music12 not found\", \"requestParameters\": { \"tableName\": \"Music12\", \"provisionedThroughput\": {  \"readCapacityUnits\": 20,  \"writeCapacityUnits\": 10 } }, \"responseElements\": null, \"requestID\": \"LBQJMQUKQNU73MVN8GHAGNBDDNVV4KQNSO5AEMVJF66Q9ASUAAJG\", \"eventID\": \"e1325551-1a43-453d-a188-5f91ba136c6a\", \"readOnly\": false, \"resources\": [ {  \"accountId\": \"testAccountId\",  \"type\": \"AWS::DynamoDB::Table\",  \"ARN\": \"arn:aws:dynamodb:ap-south-1:testAccountId:table/Music12\" } ], \"eventType\": \"AwsApiCall\", \"apiVersion\": \"2012-08-10\", \"managementEvent\": true, \"recipientAccountId\": \"testAccountId\", \"eventCategory\": \"Management\"}";
         final JsonObject dynamoJson = JsonParser.parseString(dynamoString).getAsJsonObject();
 
-        final Record record = Parser.parseRecord(dynamoJson);
+        final UCRecord record = Parser.parseRecord(dynamoJson);
 
         Assert.assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
         Assert.assertEquals("Requested resource not found: Table: Music12 not found", record.getException().getDescription());
@@ -53,8 +51,11 @@ public class ParserTest {
     public void testTimeParing() throws ParseException {
         String dateStr = "2020-12-28T07:35:21Z";
         Time time = Parser.getTime(dateStr);
-        Assert.assertTrue("Failed to parse date, time is "+time.getTimstamp(), 1609140921000L==time.getTimstamp());
-
+        Assert.assertEquals(
+                "Failed to parse date, time is "+time.getTimstamp(),
+                1609140921000L,
+                time.getTimstamp())
+        ;
     }
 
     @Test
@@ -113,7 +114,7 @@ public class ParserTest {
     //Accessor values verified.
     @Test
     public void testParseAccessor() throws ParseException {
-        Record record = Parser.parseRecord(dynamoJson);
+        UCRecord record = Parser.parseRecord(dynamoJson);
         Accessor actual = record.getAccessor();
 
         Assert.assertEquals(Constants.DATA_PROTOCOL_STRING, actual.getDbProtocol());
@@ -146,7 +147,7 @@ public class ParserTest {
         final JsonObject dynamoJson = JsonParser.parseString(dynamoString).getAsJsonObject();
 
         String errorMessage = dynamoJson.get(Constants.ERROR_MESSAGE).getAsString();
-        final Record record = Parser.parseRecord(dynamoJson);
+        final UCRecord record = Parser.parseRecord(dynamoJson);
 
         Assert.assertEquals(Constants.LOGIN_ERROR, record.getException().getExceptionTypeId());
         Assert.assertEquals(errorMessage, record.getException().getDescription());
@@ -191,7 +192,7 @@ public class ParserTest {
         final JsonObject dynamoJson = JsonParser.parseString(dynamoString).getAsJsonObject();
         dynamoJson.addProperty(Constants.ACCOUNT_ID, "testAccountId");
 
-        final Record record = Parser.parseRecord(dynamoJson);
+        final UCRecord record = Parser.parseRecord(dynamoJson);
 
         //final Sentence sentence = construct.sentences.get(0);
         Assert.assertEquals(record.getDbName(),"testAccountId:Table_2504_1010/test");

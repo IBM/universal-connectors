@@ -20,8 +20,8 @@ pluginInfo.pluginClass     = "GenericGuardiumFilter"
 pluginInfo.pluginName      = "generic_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 17
+targetCompatibility = 17
 
 buildscript {
     repositories {
@@ -33,7 +33,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.0'
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
 }

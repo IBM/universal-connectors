@@ -13,20 +13,12 @@ import org.junit.jupiter.api.Test;
 import org.logstash.plugins.ContextImpl;
 import com.google.gson.Gson;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
 import co.elastic.logstash.api.FilterMatchListener;
 import co.elastic.logstash.api.PluginConfigSpec;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-//import static org.junit.Assert.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-//import static org.junit.Assert.*;
 
 public class DocumentdbGuardiumFilterTest {
 
@@ -327,7 +319,7 @@ public class DocumentdbGuardiumFilterTest {
 		assertEquals(1, results.size());
 		assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
 		String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-		Record record = (new Gson()).fromJson(recordString, Record.class);
+		UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
 		assertNotNull(record);
 		assertEquals(1, matchListener.getMatchCount());
 	}
@@ -345,7 +337,7 @@ public class DocumentdbGuardiumFilterTest {
 		e.setField("event_id", "1234567");
 		filter.filter(Collections.singletonList(e), matchListener);
 		String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-		Record record = (new Gson()).fromJson(recordString, Record.class);
+		UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
 		assertNotNull(record.getAccessor().getServiceName());
 		assertEquals("LP-123455556:test", record.getAccessor().getServiceName());
 	}
@@ -360,7 +352,7 @@ public class DocumentdbGuardiumFilterTest {
 		e.setField("message", DbString);
 		filter.filter(Collections.singletonList(e), matchListener);
 		String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-		Record record = (new Gson()).fromJson(recordString, Record.class);
+		UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
 		assertNotNull(record.getAccessor().getDbProtocol());
 		assertEquals(Parser.DATA_PROTOCOL_STRING, record.getAccessor().getDbProtocol());
 	}
@@ -381,7 +373,7 @@ public class DocumentdbGuardiumFilterTest {
 			e.setField("message", DbString);
 			filter.filter(Collections.singletonList(e), matchListener);
 			String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-			Record record = (new Gson()).fromJson(recordString, Record.class);
+			UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
 			assertNotNull(record.getAccessor().getSourceProgram());
 		}
 

@@ -5,15 +5,7 @@ SPDX-License-Identifier: Apache-2.0
 package com.ibm.guardium.azure.cosmos;
 
 import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Construct;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
-import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
+import com.ibm.guardium.universalconnector.commons.structures.*;
 
 import java.net.URLDecoder;
 import java.time.ZonedDateTime;
@@ -39,13 +31,13 @@ public class Parser {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Record parseRecord(final JsonObject records) throws Exception {
+	public static UCRecord parseRecord(final JsonObject records) throws Exception {
 		
 		if(log.isDebugEnabled()){
 		    log.debug("Event Now: ",records);
 		}
-		
-		Record record = new Record();
+
+		UCRecord record = new UCRecord();
 		try {
 			
 			if(records.has(ApplicationConstants.PROPERTIES) && records.get(ApplicationConstants.PROPERTIES).getAsJsonObject()!=null){
@@ -457,7 +449,7 @@ public class Parser {
 	 * 
 	 * @param subId
 	 * @param accountId
-	 * @param records
+	 * @param properties
 	 * @return
 	 */
 	private static Accessor parseAccessor(String subId, String accountId, JsonObject properties) {

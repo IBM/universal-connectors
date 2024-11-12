@@ -7,12 +7,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.mongodb.MongodbGuardiumFilter;
 import com.ibm.guardium.mongodb.TestMatchListener;
-import com.ibm.guardium.mongodb.parsersbytype.CollectionParser;
 import com.ibm.guardium.mongodb.parsersbytype.RoleParser;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
@@ -20,7 +19,10 @@ import org.logstash.plugins.ContextImpl;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
 public class UserParserTest {
 
@@ -55,7 +57,7 @@ public class UserParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -85,7 +87,7 @@ public class UserParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -113,7 +115,7 @@ public class UserParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -148,7 +150,7 @@ public class UserParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -176,7 +178,7 @@ public class UserParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -206,7 +208,7 @@ public class UserParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -222,7 +224,7 @@ public class UserParserTest {
         validateRoles( source,  record, true);
     }
 
-    private void validateRoles(JsonObject source, Record record, boolean isRequired){
+    private void validateRoles(JsonObject source, UCRecord record, boolean isRequired){
         ArrayList<Sentence> allSentences = record.getData().getConstruct().getSentences().get(0).getDescendants();
         Sentence rolesSentence = null;
         for (Sentence sentence : allSentences) {

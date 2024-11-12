@@ -5,8 +5,13 @@ SPDX-License-Identifier: Apache-2.0
 
 package com.ibm.guardium.awsmariadb;
 
+import co.elastic.logstash.api.Event;
+import com.ibm.guardium.awsmariadb.constant.ApplicationConstant;
+import com.ibm.guardium.universalconnector.commons.structures.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,19 +19,6 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.StringJoiner;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.ibm.guardium.awsmariadb.constant.ApplicationConstant;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
-import co.elastic.logstash.api.Event;
 
 /**
  * Parser Class will perform operation on parsing events and messages from the
@@ -51,8 +43,8 @@ public class ParserHelper {
 	 * @param event
 	 * @return record
 	 */
-	public static Record parseRecord(final Event event) throws Exception {
-		Record record = new Record();
+	public static UCRecord parseRecord(final Event event) throws Exception {
+		UCRecord record = new UCRecord();
 		try {
 			record.setSessionLocator(parseSessionLocator(event));
 			record.setTime(parseTime(event));
@@ -121,7 +113,7 @@ public class ParserHelper {
 	 * @param event
 	 * @return accessor
 	 */
-	public static Accessor parseAccessor(final Event event, final Record record) {
+	public static Accessor parseAccessor(final Event event, final UCRecord record) {
 		Accessor accessor = new Accessor();
 		try {
 			accessor.setServerHostName(event.getField(ApplicationConstant.SERVERHOSTNAMEPREFIX_KEY) != null && !event.getField(ApplicationConstant.SERVERHOSTNAMEPREFIX_KEY).toString().trim().isEmpty() 
@@ -214,7 +206,6 @@ public class ParserHelper {
 	 * 
 	 * @param event
 	 * @return SessionLocator
-	 * @throws ParseException
 	 */
 	public static SessionLocator parseSessionLocator(final Event event) {
 		SessionLocator sessionLocator = new SessionLocator();

@@ -1,0 +1,6 @@
+build
+.idea
+.settings
+bin
+gradle.properties
+lib

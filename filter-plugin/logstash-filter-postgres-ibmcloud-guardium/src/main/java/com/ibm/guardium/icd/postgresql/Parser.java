@@ -23,7 +23,7 @@ import com.ibm.guardium.universalconnector.commons.Util;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 import co.elastic.logstash.api.Event;
@@ -33,15 +33,15 @@ public class Parser {
 	private static Logger log = LogManager.getLogger(Parser.class);
 
 	/***
-	 * Parses logs and returns a Guard Record object
+	 * Parses logs and returns a Guard UCRecord object
 	 * 
 	 * @param event
 	 * @return
 	 * @throws Exception
 	 * @throws ParseException
 	 */
-	public static Record parseRecord(Event event) throws Exception {
-		Record record = new Record();
+	public static UCRecord parseRecord(Event event) throws Exception {
+		UCRecord record = new UCRecord();
 		try {
 			record.setAppUserName(event.getField(ApplicationConstant.USER_NAME) != null
 					? event.getField(ApplicationConstant.USER_NAME).toString()

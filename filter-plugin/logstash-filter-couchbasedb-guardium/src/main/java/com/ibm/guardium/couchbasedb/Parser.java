@@ -4,20 +4,12 @@ import java.text.ParseException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.ibm.guardium.universalconnector.commons.structures.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.commons.validator.routines.InetAddressValidator;
 
 import com.google.gson.JsonObject;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Construct;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
-import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
 
 public class Parser {
 
@@ -32,9 +24,9 @@ public class Parser {
 		return isUIGeneratedQuery;
 	}
 
-	public static Record parseRecord(final JsonObject data) throws ParseException {
-		
-		Record record = new Record();
+	public static UCRecord parseRecord(final JsonObject data) throws ParseException {
+
+		UCRecord record = new UCRecord();
 		
 			record.setSessionId(parseSessionID(data));
 			
@@ -53,7 +45,7 @@ public class Parser {
 		return record;
 	}
 	
-	public static void setExceptionOrDataPart(final Record record,final JsonObject data){
+	public static void setExceptionOrDataPart(final UCRecord record,final JsonObject data){
 	
 		if(record.getAccessor().getDataType().equals(Constants.TEXT)) {
 			

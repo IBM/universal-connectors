@@ -9,9 +9,9 @@ import com.ibm.guardium.mongodb.MongodbGuardiumFilter;
 import com.ibm.guardium.mongodb.TestMatchListener;
 import com.ibm.guardium.mongodb.parsersbytype.RoleParser;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
@@ -54,7 +54,7 @@ public class RoleParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -87,7 +87,7 @@ public class RoleParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -120,7 +120,7 @@ public class RoleParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -148,7 +148,7 @@ public class RoleParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -178,7 +178,7 @@ public class RoleParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        UCRecord record = (new Gson()).fromJson(recordString, UCRecord.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -196,7 +196,7 @@ public class RoleParserTest {
 
     }
 
-    private void validateRoles(JsonObject source, Record record, boolean isRequired){
+    private void validateRoles(JsonObject source, UCRecord record, boolean isRequired){
         ArrayList<Sentence> allSentences = record.getData().getConstruct().getSentences().get(0).getDescendants();
         Sentence rolesSentence = null;
         for (Sentence sentence : allSentences) {
@@ -225,7 +225,7 @@ public class RoleParserTest {
         }
     }
 
-    private void validatePrivileges(Record record, String db, String collection, String type, Collection<String> actions, boolean isRequired){
+    private void validatePrivileges(UCRecord record, String db, String collection, String type, Collection<String> actions, boolean isRequired){
         ArrayList<Sentence> allSentences = record.getData().getConstruct().getSentences().get(0).getDescendants();
         Sentence privilegesSentence = null;
         for (Sentence sentence : allSentences) {

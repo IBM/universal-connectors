@@ -9,10 +9,8 @@ import java.text.ParseException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.ibm.guardium.azureSQL.Constants;
-import com.ibm.guardium.azureSQL.Parser;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 
@@ -44,7 +42,7 @@ public class ParserTest {
     	Event e=intitalizeEventObject();
 		e.setField(Constants.STATEMENT, "create table emp1(id int);");
 		
-        final Record record = Parser.parseRecord(e);
+        final UCRecord record = Parser.parseRecord(e);
         Assert.assertEquals(record.getData().getConstruct(), null);
     }
     
@@ -55,7 +53,7 @@ public class ParserTest {
     	e.setField(Constants.STATEMENT, "INSERT INTO Employee (EmployeeNo, FirstName, LastName, DOB, JoinedDate, DepartmentNo )"
 				+ "VALUES ( 101, 'Mike', 'James', '1980-01-05', '2005-03-27', 01);");
     	
-        final Record record = Parser.parseRecord(e);
+        final UCRecord record = Parser.parseRecord(e);
         Assert.assertEquals(record.getData().getConstruct(), null);
     }
     
@@ -66,7 +64,7 @@ public class ParserTest {
     	e.setField(Constants.STATEMENT, "SELECT A.EmployeeNo, A.DepartmentNo, B.NetPay FROM  Employee A "
     			+ "INNER JOIN Salary B ON (A.EmployeeNo = B. EmployeeNo);");
     	
-        final Record record = Parser.parseRecord(e);
+        final UCRecord record = Parser.parseRecord(e);
         Assert.assertEquals(record.getData().getConstruct(), null);
     }
    
@@ -77,7 +75,7 @@ public class ParserTest {
     	Event e=intitalizeEventObject();		
     	e.setField(Constants.STATEMENT, "UPDATE Employee SET DepartmentNo = 03 WHERE EmployeeNo = 101;");
     	
-        final Record record = Parser.parseRecord(e);
+        final UCRecord record = Parser.parseRecord(e);
         Assert.assertEquals(record.getData().getConstruct(), null);
     }
     
@@ -88,7 +86,7 @@ public class ParserTest {
     	Event e=intitalizeEventObject();		
     	e.setField(Constants.STATEMENT, "DELETE FROM Employee WHERE EmployeeNo = 101;");
     	
-        final Record record = Parser.parseRecord(e);
+        final UCRecord record = Parser.parseRecord(e);
         Assert.assertEquals(record.getData().getConstruct(), null);
     }
         
@@ -128,7 +126,7 @@ public class ParserTest {
     	e.setField(Constants.STATEMENT, "select * from emp;");
  		e.setField(Constants.ADDITIONAL_INFORMATION, "Invalid object name");
     	
-    	final Record record = Parser.parseRecord(e);
+    	final UCRecord record = Parser.parseRecord(e);
 
         Assert.assertEquals(Constants.SQL_ERROR,record.getException().getExceptionTypeId());
         Assert.assertEquals("Invalid object name"

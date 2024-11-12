@@ -10,7 +10,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 
@@ -44,7 +44,7 @@ public class ParserTest {
 				+ "LastName VARCHAR(30), DOB DATE FORMAT 'YYYY-MM-DD', JoinedDate DATE FORMAT 'YYYY-MM-DD', "
 				+ "DepartmentNo BYTEINT ) UNIQUE PRIMARY INDEX ( EmployeeNo );");
 		
-        final Record record = Parser.parseRecord(e);
+        final UCRecord record = Parser.parseRecord(e);
         Assert.assertEquals(record.getData().getConstruct(), null);
     }
     
@@ -55,7 +55,7 @@ public class ParserTest {
     	e.setField(Constants.SQL_TEXT_INFO, "INSERT INTO Employee (EmployeeNo, FirstName, LastName, DOB, JoinedDate, DepartmentNo )"
 				+ "VALUES ( 101, 'Mike', 'James', '1980-01-05', '2005-03-27', 01);");
     	
-        final Record record = Parser.parseRecord(e);
+        final UCRecord record = Parser.parseRecord(e);
         Assert.assertEquals(record.getData().getConstruct(), null);
     }
     
@@ -66,7 +66,7 @@ public class ParserTest {
     	e.setField(Constants.SQL_TEXT_INFO, "SELECT A.EmployeeNo, A.DepartmentNo, B.NetPay FROM  Employee A "
     			+ "INNER JOIN Salary B ON (A.EmployeeNo = B. EmployeeNo);");
     	
-        final Record record = Parser.parseRecord(e);
+        final UCRecord record = Parser.parseRecord(e);
         Assert.assertEquals(record.getData().getConstruct(), null);
         Assert.assertEquals(record.getDbName(), record.getAccessor().getServiceName());
     }
@@ -78,7 +78,7 @@ public class ParserTest {
     	Event e=intitalizeEventObject();		
     	e.setField(Constants.SQL_TEXT_INFO, "UPDATE Employee SET DepartmentNo = 03 WHERE EmployeeNo = 101;");
     	
-        final Record record = Parser.parseRecord(e);
+        final UCRecord record = Parser.parseRecord(e);
         Assert.assertEquals(record.getData().getConstruct(), null);
     }
     
@@ -89,7 +89,7 @@ public class ParserTest {
     	Event e=intitalizeEventObject();		
     	e.setField(Constants.SQL_TEXT_INFO, "DELETE FROM Employee WHERE EmployeeNo = 101;");
     	
-        final Record record = Parser.parseRecord(e);
+        final UCRecord record = Parser.parseRecord(e);
         Assert.assertEquals(record.getData().getConstruct(), null);
     }
         
@@ -129,7 +129,7 @@ public class ParserTest {
     	e.setField(Constants.SQL_TEXT_INFO, "select * from DBC.QryLog;");
  		e.setField(Constants.ERROR_TEXT, "The user does not have SELECT access to DBC.QryLog.");
     	
-    	final Record record = Parser.parseRecord(e);
+    	final UCRecord record = Parser.parseRecord(e);
 
         Assert.assertEquals(Constants.SQL_ERROR,record.getException().getExceptionTypeId());
         Assert.assertEquals("The user does not have SELECT access to DBC.QryLog."

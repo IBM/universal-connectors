@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
@@ -25,18 +25,18 @@ import co.elastic.logstash.api.Event;
 
 public class ParserHelper {
 
+	private static final Logger LOG = LogManager.getLogger(ParserHelper.class);
+
 	/**
 	 * This method get the event data as input, overrides the properties which are
 	 * not in standard format. Creates the Guardium Object and returns it.
 	 * 
 	 * @param event
 	 * @param record
-	 * @return Record
+	 * @return UCRecord
 	 * @throws Exception
 	 */
-	private static final Logger LOG = LogManager.getLogger(ParserHelper.class);
-
-	public static Record parseRecord(Event event, Record record) throws Exception {
+	public static UCRecord parseRecord(Event event, UCRecord record) throws Exception {
 		String fullSQL = null;
 
 		try {
@@ -74,8 +74,8 @@ public class ParserHelper {
 
 			record.getAccessor().setServiceName(record.getDbName());
 
-			Integer serverPort = new Integer(record.getSessionLocator().getServerPort());
-			Integer clientPort = new Integer(record.getSessionLocator().getClientPort());
+			Integer serverPort = record.getSessionLocator().getServerPort();
+			Integer clientPort = record.getSessionLocator().getClientPort();
 			Integer hashCode = (record.getSessionLocator().getServerIp() + record.getSessionLocator().getClientIp()
 					+ serverPort.toString() + clientPort.toString() + record.getDbName()).hashCode();
 			record.setSessionId(hashCode.toString());
@@ -92,11 +92,11 @@ public class ParserHelper {
 	 * It prepares the Accessor data and set it in the Guardium Object. It accepts
 	 * HttpHeaders as input and parses the information to get accessor data.
 	 * 
-	 * @param httpHeaders
+	 * @param event
 	 * @param record
 	 * @return record
 	 */
-	public static Accessor parseAccessor(Event event, Record record) throws Exception {
+	public static Accessor parseAccessor(Event event, UCRecord record) throws Exception {
 
 		Accessor accessor = new Accessor();
 
@@ -159,12 +159,11 @@ public class ParserHelper {
 
 	/**
 	 * This methods prepares the SessionLocator Data for Guardium Object, which
-	 * takes client and server infos and set it in the Record Object.
+	 * takes client and server infos and set it in the UCRecord Object.
 	 * 
 	 * @param client
 	 * @param server
-	 * @param record
-	 * @return Record
+	 * @return UCRecord
 	 */
 	public static SessionLocator parseSessionLocator(final String client, final String server) throws Exception {
 		SessionLocator sessionLocator = new SessionLocator();
@@ -238,14 +237,14 @@ public class ParserHelper {
 	}
 
 	/**
-	 * It Prepares the Data object and set it in the Data part of Guardium Record
+	 * It Prepares the Data object and set it in the Data part of Guardium UCRecord
 	 * Object.
 	 * 
-	 * @param payload
+	 * @param event
 	 * @param record
-	 * @return Record
+	 * @return UCRecord
 	 */
-	public static Data parseData(Event event, Record record) throws Exception {
+	public static Data parseData(Event event, UCRecord record) throws Exception {
 		Data data = new Data();
 		Construct construct;
 		try {
@@ -258,7 +257,7 @@ public class ParserHelper {
 		return data;
 	}
 
-	public static Construct parseConstruct(Event event, Record record) throws Exception {
+	public static Construct parseConstruct(Event event, UCRecord record) throws Exception {
 		Construct construct = new Construct();
 		try {
 
@@ -287,7 +286,7 @@ public class ParserHelper {
 
 	}
 
-	public static Sentence parseSentence(Event event, Record record) throws Exception {
+	public static Sentence parseSentence(Event event, UCRecord record) throws Exception {
 		Sentence sentence = new Sentence(ApplicationConstants.VERB);
 
 		Map<String, List<Object>> map = null;
@@ -370,11 +369,10 @@ public class ParserHelper {
 
 	/**
 	 * It prepares the Time object, which accepts input Timestamp , process it and
-	 * set it in the Time field of Guardium Record Object.
+	 * set it in the Time field of Guardium UCRecord Object.
 	 * 
 	 * @param timestamp
-	 * @param record
-	 * @return Record
+	 * @return UCRecord
 	 */
 	public static Time parseTime(String timestamp) throws Exception {
 
@@ -405,10 +403,10 @@ public class ParserHelper {
 	 * 
 	 * @param event
 	 * @param record
-	 * @return Record
+	 * @return UCRecord
 	 * @throws Exception
 	 */
-	public static Record prepareGuardRecordData(Event event, Record record) throws Exception {
+	public static UCRecord prepareGuardRecordData(Event event, UCRecord record) throws Exception {
 
 		String client = ApplicationConstants.UNKNOWN_STRING;
 		String server = ApplicationConstants.UNKNOWN_STRING;

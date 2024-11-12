@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import com.ibm.guardium.icd.postgresql.Parser;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 import co.elastic.logstash.api.Event;
 
@@ -27,7 +27,7 @@ class ParserTest {
 		e.setField("clientIP", "172.30.216.75");
 		e.setField("detail", ":f90dcc7d-68aa-4c85-8740-21929b237bfc");
 		e.setField("sqlquery", "\\\"create table sst20_report(Roll_No int,Name varchar(20),Marks int);\\\"");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("admin", record.getAppUserName());
 		assertEquals("2212c4a700f44505a917e8fcb952c4ce:f90dcc7d-68aa-4c85-8740-21929b237bfc:ibmclouddb",
@@ -46,7 +46,7 @@ class ParserTest {
 		e.setField("clientIP", "172.30.216.75");
 		e.setField("detail", ":f90dcc7d-68aa-4c85-8740-21929b237bfc");
 		e.setField("sqlquery", "\\\"create table sst20_report(Roll_No int,Name varchar(20),Marks int);\\\"");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("create table sst20_report(Roll_No int,Name varchar(20),Marks int);",
 				record.getData().getOriginalSqlCommand());
@@ -63,7 +63,7 @@ class ParserTest {
 		e.setField("clientIP", "172.30.216.75");
 		e.setField("detail", ":f90dcc7d-68aa-4c85-8740-21929b237bfc");
 		e.setField("sqlquery", "\\\"create table sst20_report(Roll_No int,Name varchar(20),Marks int);\\\"");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("", record.getAccessor().getDbUser());
 	}
@@ -81,7 +81,7 @@ class ParserTest {
 		e.setField("statement", "STATEMENT");
 		e.setField("detail", ":f90dcc7d-68aa-4c85-8740-21929b237bfc");
 		e.setField("ID1", "48p01");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("48p01", record.getException().getDescription());
 		assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
@@ -101,7 +101,7 @@ class ParserTest {
 		e.setField("statement", "STATEMENT");
 		e.setField("detail", ":f90dcc7d-68aa-4c85-8740-21929b237bfc");
 		e.setField("ID1", "48p01");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("48p01", record.getException().getDescription());
 		assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
@@ -119,7 +119,7 @@ class ParserTest {
 		e.setField("clientIP", null);
 		e.setField("sqlquery", "drop table sst_report;");
 		e.setField("detail", ":f90dcc7d-68aa-4c85-8740-21929b237bfc");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("NA", record.getAccessor().getDbUser());
 		assertEquals("", record.getAccessor().getServerHostName());
@@ -137,7 +137,7 @@ class ParserTest {
 		e.setField("clientIP", "172.30.216.75");
 		e.setField("detail", ":f90dcc7d-68aa-4c85-8740-21929b237bfc");
 		e.setField("sqlquery", "\\\"create table sst20_report(Roll_No int,Name varchar(20),Marks int);\\\"");
-		final Record record = Parser.parseRecord(e);
+		final UCRecord record = Parser.parseRecord(e);
 		assertNotNull(record);
 		assertEquals("create table sst20_report(Roll_No int,Name varchar(20),Marks int);",
 				record.getData().getOriginalSqlCommand());

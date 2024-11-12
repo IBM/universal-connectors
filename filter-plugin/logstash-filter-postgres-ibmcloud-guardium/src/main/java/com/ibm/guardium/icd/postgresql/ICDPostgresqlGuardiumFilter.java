@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
@@ -58,7 +58,7 @@ public class ICDPostgresqlGuardiumFilter implements Filter {
 				if (isMultilineEvent(event)) {
 					multilineEventParser.prepareEventForMultiLineLogs(event);
 				}
-				Record rec = Parser.parseRecord(event);
+				UCRecord rec = Parser.parseRecord(event);
 				final GsonBuilder builder = new GsonBuilder();
 				builder.serializeNulls();
 				final Gson gson = builder.disableHtmlEscaping().create();

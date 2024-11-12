@@ -9,7 +9,7 @@ import co.elastic.logstash.api.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -59,7 +59,7 @@ public class YugabytedbGuardiumFilter implements Filter {
 
         for (Event e : events) {
             try {
-                Record record = Parser.parseRecord(e.toMap());
+                UCRecord record = Parser.parseRecord(e.toMap());
                 final GsonBuilder builder = new GsonBuilder();
                 builder.serializeNulls();
                 final Gson gson = builder.create();

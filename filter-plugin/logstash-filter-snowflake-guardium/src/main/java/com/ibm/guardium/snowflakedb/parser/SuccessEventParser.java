@@ -23,7 +23,7 @@ public class SuccessEventParser implements Parser{
     private static Logger log = LogManager.getLogger(SuccessEventParser.class);
 
     private Map<String, Object> eventMap;
-    private Record guardRecord;
+    private UCRecord guardRecord;
 
     public SuccessEventParser() {
         DefaultGuardRecordBuilder builder = new DefaultGuardRecordBuilder();
@@ -39,7 +39,7 @@ public class SuccessEventParser implements Parser{
      * @return
      */
     @Override
-    public Record parseRecord(final Map<String, Object> event) throws ParseException {
+    public UCRecord parseRecord(final Map<String, Object> event) throws ParseException {
         if(event == null){
             ParseException e = new ParseException("Snowflake filter: Event object is null.");
             log.error(e);

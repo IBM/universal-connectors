@@ -1,6 +1,6 @@
 /*
 
-© Copyright IBM Corp. 2021, 2022 All rights reserved.
+ï¿½ Copyright IBM Corp. 2021, 2022 All rights reserved.
 SPDX-License-Identifier: Apache-2.0
 
 */
@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
@@ -86,7 +86,7 @@ public class FireBaseGuardiumFilter implements Filter {
 
 				try {
 					JsonObject inputJSON = new Gson().fromJson(messageString, JsonObject.class);
-					Record record = Parser.parseRecord(inputJSON);
+					UCRecord record = Parser.parseRecord(inputJSON);
 					final GsonBuilder builder = new GsonBuilder();
 					builder.serializeNulls();
 					final Gson gson = builder.disableHtmlEscaping().create();

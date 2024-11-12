@@ -8,16 +8,11 @@ package com.ibm.guardium.couchdb;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.text.ParseException;
-
 import org.junit.jupiter.api.Test;
 
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Construct;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
+import com.ibm.guardium.universalconnector.commons.structures.UCRecord;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 
@@ -37,7 +32,7 @@ class ParserTest {
 		event.setField(ApplicationConstant.STATUS, "200");
 		event.setField(ApplicationConstant.DESCRIPTION, "ok");
 		event.setField(ApplicationConstant.TIME_INTERVAL, "30");
-		final Record record = Parser.parseRecord(event);
+		final UCRecord record = Parser.parseRecord(event);
 		assertNotNull(record);
 		assertEquals("", record.getAppUserName());
 		assertEquals("fruits", record.getDbName());
@@ -52,7 +47,7 @@ class ParserTest {
 		event.setField(ApplicationConstant.DB_NAME, "fruits");
 		event.setField(ApplicationConstant.STATUS, "404");
 		event.setField(ApplicationConstant.TIMESTAMP, "2022-02-21T07:03:10.759000Z");
-		final Record record = Parser.parseRecord(event);
+		final UCRecord record = Parser.parseRecord(event);
 		assertNotNull(record);
 		assertEquals("fruits", record.getDbName());
 	}
