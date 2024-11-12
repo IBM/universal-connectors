@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_firebase_realtime_filter",
+	"alias": "Firebase",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"Firebase-Realtime","supportedVersions": [""]}],
+	"supported_input_plugins": ["Google_PubSub"],
+	"developer": "IBM",
+	"license": "Apache 2.0",
+	"description": "This package provides the data needed in order to support firebase-realtime in Guardium Universal Connector.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/README.md"
+}
