@@ -30,4 +30,5 @@ filter-plugin/logstash-filter-pubsub-spanner-guardium
 filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium
 filter-plugin/logstash-filter-pubsub-firestore-guardium
 filter-plugin/logstash-filter-pubsub-mysql-guardium
+filter-plugin/logstash-filter-pubsub-bigquery-guardium
 input-plugin/logstash-input-mongo-atlas
