@@ -92,7 +92,7 @@ dependencies {
     implementation group: 'org.json', name: 'json', version: versions.dependencies.json
     implementation group: 'org.parboiled', name: 'parboiled-java', version: versions.dependencies.parboiledJava
     implementation group: 'org.glassfish', name: 'javax.json', version: versions.dependencies.javaxJson
-    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 }
 
 clean {

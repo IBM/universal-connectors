@@ -67,7 +67,7 @@ dependencies {
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
     testImplementation 'junit:junit:' + versions.dependencies.junit
     testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
-    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 
 }
 
