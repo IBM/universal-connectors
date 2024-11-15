@@ -29,6 +29,12 @@ filter-plugin/logstash-filter-azure-sql-guardium/AzureSQLOverJdbcPackage
 filter-plugin/logstash-filter-mssql-guardium/MssqlAWSOverJdbcPackage
 filter-plugin/logstash-filter-mssql-guardium/MssqlOnPremOverJdbcPackage
 filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage
+#Pubsub plug-ins
+filter-plugin/logstash-filter-pubsub-spanner-guardium/gi-pubsub-spanner-package
+filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/gi-pubsub-firebase-package
+filter-plugin/logstash-filter-pubsub-firestore-guardium/gi-pubsub-firestore-package
+filter-plugin/logstash-filter-pubsub-mysql-guardium/gi-pubsub-mysql-package
+filter-plugin/logstash-filter-pubsub-bigquery-guardium/gi-pubsub-bigquery-package
 #Syslog
 filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresOverSyslogPackage
 filter-plugin/logstash-filter-yugabyte-guardium/YugabyteOverSyslogPackage
