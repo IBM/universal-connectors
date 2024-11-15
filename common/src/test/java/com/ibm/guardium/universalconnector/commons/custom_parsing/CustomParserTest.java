@@ -315,7 +315,7 @@ public class CustomParserTest {
         Map<String, String> properties = new HashMap<>();
         properties.put(SQL_PARSING_ACTIVE, "false");
         assertFalse(SqlParser.hasSqlParsing(properties));
-        assertEquals(SqlParser.ValidityCase.VALID, SqlParser.isValid(properties));
+        assertEquals(SqlParser.ValidityCase.VALID, SqlParser.isValid(properties, false, false, false));
 
         // Test hasSqlParsing when SQL parsing is active
         properties.put(SQL_PARSING_ACTIVE, "true");
@@ -323,30 +323,30 @@ public class CustomParserTest {
 
         // Test isValid with invalid parsing type
         properties.put(PARSING_TYPE, "INVALID_TYPE");
-        assertEquals(SqlParser.ValidityCase.INVALID_PARSING_TYPE, SqlParser.isValid(properties));
+        assertEquals(SqlParser.ValidityCase.INVALID_PARSING_TYPE, SqlParser.isValid(properties, true, false, false));
 
         // Test isValid with valid REGEX parsing type but null object
         properties.put(PARSING_TYPE, "REGEX");
         properties.put(VERB, "SELECT");
-        assertEquals(SqlParser.ValidityCase.NULL_OBJECT, SqlParser.isValid(properties));
+        assertEquals(SqlParser.ValidityCase.NULL_OBJECT, SqlParser.isValid(properties, true, false, true));
 
         // Test isValid with valid REGEX parsing type but null verb
         properties.put(OBJECT, "table");
         properties.remove(VERB);
-        assertEquals(SqlParser.ValidityCase.NULL_VERB, SqlParser.isValid(properties));
+        assertEquals(SqlParser.ValidityCase.NULL_VERB, SqlParser.isValid(properties, true, false, true));
 
         // Test isValid with valid REGEX parsing type and both object and verb present
         properties.put(VERB, "SELECT");
-        assertEquals(SqlParser.ValidityCase.VALID, SqlParser.isValid(properties));
+        assertEquals(SqlParser.ValidityCase.VALID, SqlParser.isValid(properties, true, false, true));
 
         // Test isValid with valid SNIFFER parsing type but null sniffer parser
         properties.put(PARSING_TYPE, "SNIFFER");
         properties.remove(SNIFFER_PARSER);
-        assertEquals(SqlParser.ValidityCase.INVALID_SNIFFER_PARSER, SqlParser.isValid(properties));
+        assertEquals(SqlParser.ValidityCase.INVALID_SNIFFER_PARSER, SqlParser.isValid(properties, true, true, false));
 
         // Test isValid with valid SNIFFER parsing type and valid sniffer parser
         properties.put(SNIFFER_PARSER, "MSSQL");
-        assertEquals(SqlParser.ValidityCase.VALID, SqlParser.isValid(properties));
+        assertEquals(SqlParser.ValidityCase.VALID, SqlParser.isValid(properties, true, true, false));
     }
 
     @Test
@@ -356,9 +356,19 @@ public class CustomParserTest {
         assertNull(SqlParser.getServerType("INVALID_LANGUAGE"));
 
         // Test isSnifferParsing with valid and invalid parsing types
-        assertTrue(SqlParser.isSnifferParsing("SNIFFER"));
-        assertFalse(SqlParser.isSnifferParsing("REGEX"));
-        assertFalse(SqlParser.isSnifferParsing("INVALID_TYPE"));
+        Map<String, String> map = new HashMap<>();
+        map.put("parsing_type", "SNIFFER");
+        assertTrue(SqlParser.isSnifferParsing(map));
+
+        map.put("parsing_type", "REGEX");
+        assertFalse(SqlParser.isSnifferParsing(map));
+
+        map.put("parsing_type", "JAVA");
+        assertFalse(SqlParser.isSnifferParsing(map));
+
+        map.put("parsing_type", "something else");
+        assertFalse(SqlParser.isSnifferParsing(map));
+
         // Test getDescription for each ValidityCase
         assertEquals("The SQL Parsing is valid", SqlParser.ValidityCase.VALID.getDescription());
         assertEquals("Parsing type can only be REGEX or SNIFFER",
