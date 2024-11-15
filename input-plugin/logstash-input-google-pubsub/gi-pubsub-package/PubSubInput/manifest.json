@@ -1,0 +1,22 @@
+{
+  "name": "Google_PubSub",
+  "alias": "Google PubSub",
+  "type": "input",
+  "pipeline_type": null,
+  "plugin_version": "3.0.8",
+  "supportedDataSources": null,
+  "supportedInputPlugins": null,
+  "developer": "IBM",
+  "license": "Apache2.0",
+  "supported_input_plugins": [],
+  "description": "Input plugin to pull data from GCP pubsub",
+  "configuration_notes": "This plugin is based on logstash-input-google_pubsub",
+  "documentation_path": "",
+  "pluginSHA256Checksum": -1,
+  "pluginOfflinePackagePath": null,
+  "pluginConfigTemplateParams": null,
+  "pluginConfigTemplateStrings": null,
+  "uploadDate": null,
+  "uploadUser": null,
+  "auto_scaling": false
+}
