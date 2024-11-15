@@ -1,10 +1,11 @@
 ## google_pubsub input plug-in
 ### Meet Google Pubsub
-* Tested versions: 1.2.1
+* Tested versions: 1.2.1 for GDP and 1.4.0 for GI
 * Developed by Elastic
 * Configuration instructions can be found in [Guardium Google Pub/Sub documentation](#installation).
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
+    * GI 3.6 and above
 
 This is a [Logstash](https://github.com/elastic/logstash) input plugin for
 [Google Pub/Sub](https://cloud.google.com/pubsub/). The plugin can subscribe
@@ -68,7 +69,7 @@ are pretty much free to use it however you want in whatever way.
    - Create SQL instance users in *SQL > Instances > `instance_name` > Users*
    - Run queries from Cloud Shell:  *SQL > Instances > `instance_name` > Overview page > Connect using `gcloud`*
 
-### Installation 
+### Installation for GDP
 
 To install this plug-in, you need to download the [offline pack](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/input-plugin/logstash-input-google-pubsub/GooglePubSubPackage/logstash-offline-plugin-input-google_pubsub.zip), and use Upload file in the Guardium machine.
 
@@ -76,7 +77,7 @@ To install this plug-in, you need to download the [offline pack](https://github.
 To install on your local machine that is running Logstash, execute:
 `bin/logstash-plugin install file:///path/to/logstash-offline-plugin-input-google_pubsub.zip`
 
-### Parameters:
+### Parameters for GDP:
 	
 | Parameter | Input Type | Required | Default |
 |-----------|------------|----------|---------|
@@ -121,6 +122,23 @@ Other standard logstash parameters are available such as:
 * `add_field`
 * `type`
 * `tags`
+
+### Parameters for GI:
+	
+| Parameter | Input Type | Required | Default |
+|-----------|------------|----------|---------|
+| project_id | String  | Yes |  |
+| topic | String | Yes |  |
+| subscription | String | No |  |
+| json_key_file_content | a valid JSON key file content | No |  |
+| include_metadata | Boolean | No | false|
+| create_subscription | Boolean | No | false|
+| max_messages | Number | Yes | 5|
+
+#### `json_key_file_content`
+The `json_key_file_content` allows setting authentication details, if logstash is running within Google Compute Engine, the plugin will use GCE’s Application Default Credentials. Outside of GCE, you will need to specify a Service Account JSON key file content.
+
+Note: `json_key_file_content` is replacement of `json_key_file` in GI, all other settings are same
 
 ### Sample Configuration
 

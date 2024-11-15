@@ -1,0 +1,11 @@
+{
+  "plugin_name": "Google_PubSub",
+  "help_link": "",
+  "input_name": "Google_PubSub",
+  "input_parameters": [
+  ],
+  "filter_name": "",
+  "filter_parameters": [],
+  "auth_parameters": [
+  ]
+}
