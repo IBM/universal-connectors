@@ -17,7 +17,6 @@ import static com.ibm.guardium.universalconnector.commons.structures.Accessor.DA
 import static org.junit.Assert.*;
 
 public class CustomParserTest {
-
     private static CustomParser customParser;
     private static Map<String, String> configValues;
 
