@@ -1,0 +1,60 @@
+{
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "status": {
+      "code": 9,
+      "message": "Unable to delete instance projects/test-project-1234/instances/test-bigtable because the change stream is enabled for the following table(s): employee. Update the table(s) to disable the change stream and try again."
+    },
+    "authenticationInfo": {
+      "principalEmail": "test@abc.com",
+      "principalSubject": "user:test@abc.com"
+    },
+    "requestMetadata": {
+      "callerIp": "2607:fea8:8522:9e00:650d:f803:7b75:d97b",
+      "callerSuppliedUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15,gzip(gfe)",
+      "requestAttributes": {
+        "time": "2024-07-25T20:13:18.394725337Z",
+        "auth": {}
+      },
+      "destinationAttributes": {}
+    },
+    "serviceName": "bigtableadmin.googleapis.com",
+    "methodName": "google.bigtable.admin.v2.BigtableInstanceAdmin.DeleteInstance",
+    "authorizationInfo": [
+      {
+        "resource": "projects/test-project-1234/instances/test-bigtable",
+        "permission": "bigtable.instances.delete",
+        "granted": true,
+        "resourceAttributes": {
+          "service": "bigtableadmin.googleapis.com",
+          "name": "projects/test-project-1234/instances/test-bigtable",
+          "type": "bigtableadmin.googleapis.com/Instance"
+        },
+        "permissionType": "ADMIN_WRITE"
+      }
+    ],
+    "resourceName": "projects/test-project-1234/instances/test-bigtable",
+    "request": {
+      "name": "projects/test-project-1234/instances/test-bigtable",
+      "@type": "type.googleapis.com/google.bigtable.admin.v2.DeleteInstanceRequest"
+    },
+    "resourceLocation": {
+      "originalLocations": [
+        "northamerica-northeast2-c"
+      ]
+    }
+  },
+  "insertId": "1fw47xzb49",
+  "resource": {
+    "type": "audited_resource",
+    "labels": {
+      "service": "bigtableadmin.googleapis.com",
+      "method": "google.bigtable.admin.v2.BigtableInstanceAdmin.DeleteInstance",
+      "project_id": "test-project-1234"
+    }
+  },
+  "timestamp": "2024-07-25T20:13:18.384568796Z",
+  "severity": "ERROR",
+  "logName": "projects/test-project-1234/logs/cloudaudit.googleapis.com%2Factivity",
+  "receiveTimestamp": "2024-07-25T20:13:18.859397916Z"
+}

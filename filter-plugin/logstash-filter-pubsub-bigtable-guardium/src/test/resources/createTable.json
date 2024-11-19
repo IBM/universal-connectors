@@ -1,0 +1,67 @@
+{
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "authenticationInfo": {
+      "principalEmail": "test@abc.com"
+    },
+    "requestMetadata": {
+      "callerIp": "99.239.136.114",
+      "callerSuppliedUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15,gzip(gfe),gzip(gfe)",
+      "requestAttributes": {
+        "time": "2024-07-26T19:09:42.821455558Z",
+        "auth": {}
+      },
+      "destinationAttributes": {}
+    },
+    "serviceName": "bigtableadmin.googleapis.com",
+    "methodName": "google.bigtable.admin.v2.BigtableTableAdmin.CreateTable",
+    "authorizationInfo": [
+      {
+        "resource": "projects/test-Project/instances/test-bigtable",
+        "permission": "bigtable.tables.create",
+        "granted": true,
+        "resourceAttributes": {
+          "service": "bigtableadmin.googleapis.com",
+          "name": "projects/test-Project/instances/test-bigtable/tables/employeeT",
+          "type": "bigtableadmin.googleapis.com/Table"
+        },
+        "permissionType": "ADMIN_WRITE"
+      }
+    ],
+    "resourceName":  "projects/test-Project/instances/test-bigtable/tables/employeeT",
+    "request": {
+      "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateTableRequest",
+      "table": {
+        "automatedBackupPolicy": {
+          "frequency": "86400s",
+          "retentionPeriod": "259200s"
+        }
+      },
+      "tableId": "employeeT",
+      "parent": "projects/test-Project/instances/test-bigtable"
+    },
+    "response": {
+      "name": "projects/test-Project/instances/test-bigtable/tables/employeeT",
+      "automatedBackupPolicy": {
+        "frequency": "86400s",
+        "retentionPeriod": "259200s"
+      },
+      "granularity": "MILLIS",
+      "dataModel": "BIGTABLE",
+      "@type": "type.googleapis.com/google.bigtable.admin.v2.Table"
+    }
+  },
+  "insertId": "oh22jcd12ds",
+  "resource": {
+    "type": "audited_resource",
+    "labels": {
+      "method": "google.bigtable.admin.v2.BigtableTableAdmin.CreateTable",
+      "project_id": "test-Project",
+      "service": "bigtableadmin.googleapis.com"
+    }
+  },
+  "timestamp": "2024-07-26T19:09:42.801148179Z",
+  "severity": "NOTICE",
+  "logName": "projects/test-Project/logs/cloudaudit.googleapis.com%2Factivity",
+  "receiveTimestamp": "2024-07-26T19:09:47.258896523Z"
+}

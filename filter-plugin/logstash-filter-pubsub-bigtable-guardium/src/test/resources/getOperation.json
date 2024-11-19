@@ -1,0 +1,45 @@
+// TODO: Should not have `request` field in protopayload
+
+{
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "authenticationInfo": {
+      "principalEmail": "test@abc.com",
+      "principalSubject": "user:test@abc.com"
+    },
+    "requestMetadata": {
+      "callerIp": "192.159.178.221",
+      "callerSuppliedUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36,gzip(gfe)",
+      "requestAttributes": {
+        "time": "2024-08-25T17:17:54.520749515Z",
+        "auth": {}
+      },
+      "destinationAttributes": {}
+    },
+    "serviceName": "bigtableadmin.googleapis.com",
+    "methodName": "google.longrunning.Operations.GetOperation",
+    "authorizationInfo": [
+      {
+        "resource": "operations/projects/charged-mind-281913/instances/createinstancetest/locations/northamerica-northeast2-a/operations/5003528313522199720",
+        "permission": "bigtable.instances.get",
+        "granted": true,
+        "resourceAttributes": {},
+        "permissionType": "ADMIN_READ"
+      }
+    ],
+    "resourceName": "operations/projects/charged-mind-281913/instances/createinstancetest/locations/northamerica-northeast2-a/operations/5003528313522199720"
+  },
+  "insertId": "1brwzdebgo",
+  "resource": {
+    "type": "audited_resource",
+    "labels": {
+      "service": "bigtableadmin.googleapis.com",
+      "project_id": "charged-mind-281913",
+      "method": "google.longrunning.Operations.GetOperation"
+    }
+  },
+  "timestamp": "2024-08-25T17:17:54.513614465Z",
+  "severity": "INFO",
+  "logName": "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Fdata_access",
+  "receiveTimestamp": "2024-08-25T17:17:55.056289303Z"
+}
