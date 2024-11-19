@@ -1,0 +1,58 @@
+{
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "status": {},
+    "authenticationInfo": {
+      "principalEmail": "test@abc.com"
+    },
+    "requestMetadata": {
+      "callerIp": "2607:fea8:8522:9e00:e105:8dbc:e73f:4e9",
+      "requestAttributes": {
+        "time": "2024-07-26T15:05:23.029191555Z",
+        "auth": {}
+      },
+      "destinationAttributes": {}
+    },
+    "serviceName": "bigtableadmin.googleapis.com",
+    "methodName": "google.bigtable.admin.v2.BigtableTableAdmin.UpdateTable",
+    "authorizationInfo": [
+      {
+        "resource": "projects/test-project-1234/instances/test-bigtable/tables/employee",
+        "permission": "bigtable.tables.update",
+        "granted": true,
+        "resourceAttributes": {
+          "service": "bigtableadmin.googleapis.com",
+          "name": "projects/test-project-1234/instances/test-bigtable/tables/employee",
+          "type": "bigtableadmin.googleapis.com/Table"
+        },
+        "permissionType": "ADMIN_WRITE"
+      }
+    ],
+    "resourceName": "projects/test-project-1234/instances/test-bigtable/tables/employee",
+    "request": {
+      "table": {
+        "name": "projects/test-project-1234/instances/test-bigtable/tables/employee"
+      },
+      "updateMask": "changeStreamConfig",
+      "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateTableRequest"
+    }
+  },
+  "insertId": "1c1i2embjx",
+  "resource": {
+    "type": "audited_resource",
+    "labels": {
+      "method": "google.bigtable.admin.v2.BigtableTableAdmin.UpdateTable",
+      "service": "bigtableadmin.googleapis.com",
+      "project_id": "test-project-1234"
+    }
+  },
+  "timestamp": "2024-07-26T15:05:23.013283666Z",
+  "severity": "NOTICE",
+  "logName": "projects/test-project-1234/logs/cloudaudit.googleapis.com%2Factivity",
+  "operation": {
+    "id": "operations/projects/test-project-1234/instances/test-bigtable/tables/employee/locations/northamerica-northeast2-c/operations/2054486713057428855",
+    "producer": "bigtableadmin.googleapis.com",
+    "first": true
+  },
+  "receiveTimestamp": "2024-07-26T15:05:23.356716280Z"
+}
