@@ -1,0 +1,65 @@
+{
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "status": {},
+    "authenticationInfo": {
+      "principalEmail": "test@abc.com"
+    },
+    "requestMetadata": {
+      "callerIp": "2607:fea8:8522:9e00:47f:1b28:723d:677b",
+      "callerSuppliedUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15,gzip(gfe),gzip(gfe)",
+      "requestAttributes": {
+        "time": "2024-08-27T17:12:32.492860112Z",
+        "auth": {}
+      },
+      "destinationAttributes": {}
+    },
+    "serviceName": "logging.googleapis.com",
+    "methodName": "google.logging.v2.LoggingServiceV2.ReadLogEntriesLegacy",
+    "authorizationInfo": [
+      {
+        "resource": "projects/test-project-1234",
+        "permission": "logging.privateLogEntries.list",
+        "granted": true,
+        "resourceAttributes": {
+          "service": "logging.googleapis.com",
+          "name": "projects/test-project-1234"
+        },
+        "permissionType": "DATA_READ"
+      },
+      {
+        "resource": "projects/test-project-1234",
+        "permission": "logging.logEntries.list",
+        "granted": true,
+        "resourceAttributes": {
+          "service": "logging.googleapis.com",
+          "name": "projects/test-project-1234"
+        },
+        "permissionType": "DATA_READ"
+      }
+    ],
+    "resourceName": "projects/test-project-1234",
+    "request": {
+      "orderBy": "timestamp desc",
+      "resourceNames": [
+        "projects/test-project-1234"
+      ],
+      "filter": "(protoPayload.authenticationInfo.principalEmail=\"test@abc.com\")\nprotoPayload.serviceName=\"bigtableadmin.googleapis.com\" OR protoPayload.serviceName=\"bigtable.googleapis.com\"\n\n\n(timestamp>=\"2024-08-27T16:12:22.475190Z\" timestamp<\"2024-08-27T17:12:22.475190Z\")",
+      "maxEntries": 500,
+      "maxResponseInterval": "10s",
+      "@type": "type.googleapis.com/google.logging.v2.ReadLogEntriesRequest"
+    }
+  },
+  "insertId": "1eu96ecbfd",
+  "resource": {
+    "type": "logging_log",
+    "labels": {
+      "project_id": "test-project-1234",
+      "name": ""
+    }
+  },
+  "timestamp": "2024-08-27T17:12:32.492688282Z",
+  "severity": "INFO",
+  "logName": "projects/test-project-1234/logs/cloudaudit.googleapis.com%2Fdata_access",
+  "receiveTimestamp": "2024-08-27T17:12:33.790205732Z"
+}

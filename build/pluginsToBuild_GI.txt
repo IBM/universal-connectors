@@ -32,4 +32,5 @@ filter-plugin/logstash-filter-pubsub-firestore-guardium
 filter-plugin/logstash-filter-pubsub-mysql-guardium
 filter-plugin/logstash-filter-pubsub-bigquery-guardium
 filter-plugin/logstash-filter-pubsub-apachesolr-guardium
+filter-plugin/logstash-filter-pubsub-bigtable-guardium
 input-plugin/logstash-input-mongo-atlas
