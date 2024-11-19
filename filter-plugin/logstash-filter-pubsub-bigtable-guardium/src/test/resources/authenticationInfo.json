@@ -1,0 +1,57 @@
+{
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "status": {},
+    "authenticationInfo": {
+      "principalEmail": "apachesolrgcp-pubsub@test-project-1234.iam.gserviceaccount.com",
+      "serviceAccountKeyName": "//iam.googleapis.com/projects/test-project-1234/serviceAccounts/apachesolrgcp-pubsub@test-project-1234.iam.gserviceaccount.com/keys/960653a95002d5b9c230ad1631ac38f3aee2123f",
+      "principalSubject": "serviceAccount:apachesolrgcp-pubsub@test-project-1234.iam.gserviceaccount.com"
+    },
+    "requestMetadata": {
+      "callerIp": "99.239.136.114",
+      "callerSuppliedUserAgent": "bigtable-java/2.28.0 grpc-java-netty/1.58.0,gzip(gfe)",
+      "requestAttributes": {
+        "time": "2024-08-22T13:31:50.566956768Z",
+        "auth": {}
+      },
+      "destinationAttributes": {}
+    },
+    "serviceName": "bigtable.googleapis.com",
+    "methodName": "google.bigtable.v2.Bigtable.ReadRows",
+    "authorizationInfo": [
+      {
+        "resource": "projects/test-project-1234/instances/testbigtable/tables/students",
+        "permission": "bigtable.tables.readRows",
+        "granted": true,
+        "resourceAttributes": {
+          "service": "bigtableadmin.googleapis.com",
+          "name": "projects/test-project-1234/instances/testbigtable/tables/students",
+          "type": "bigtableadmin.googleapis.com/Table"
+        },
+        "permissionType": "DATA_READ"
+      }
+    ],
+    "resourceName": "projects/test-project-1234/instances/testbigtable/tables/students",
+    "response": {
+      "response_stream_bytes": 104
+    }
+  },
+  "insertId": "e6cyf7a3",
+  "resource": {
+    "type": "audited_resource",
+    "labels": {
+      "project_id": "test-project-1234",
+      "service": "bigtable.googleapis.com",
+      "method": "google.bigtable.v2.Bigtable.ReadRows"
+    }
+  },
+  "timestamp": "2024-08-22T13:31:50.566824848Z",
+  "severity": "INFO",
+  "logName": "projects/test-project-1234/logs/cloudaudit.googleapis.com%2Fdata_access",
+  "operation": {
+    "id": "11067608152628764391",
+    "producer": "bigtable.googleapis.com",
+    "last": true
+  },
+  "receiveTimestamp": "2024-08-22T13:31:51.927141842Z"
+}

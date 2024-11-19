@@ -28,6 +28,7 @@ filter-plugin/logstash-filter-yugabyte-guardium
 filter-plugin/logstash-filter-teradatadb-guardium
 filter-plugin/logstash-filter-pubsub-apachesolr-guardium
 filter-plugin/logstash-filter-pubsub-bigquery-guardium
+filter-plugin/logstash-filter-pubsub-bigtable-guardium
 filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium
 filter-plugin/logstash-filter-pubsub-firestore-guardium
 filter-plugin/logstash-filter-pubsub-spanner-guardium

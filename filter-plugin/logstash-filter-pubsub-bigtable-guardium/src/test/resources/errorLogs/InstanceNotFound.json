@@ -1,0 +1,55 @@
+{
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "status": {
+      "code": 5,
+      "message": "Instance projects/test-project-1234/instances/test-bigtable not found."
+    },
+    "authenticationInfo": {
+      "principalEmail": "test@abc.com"
+    },
+    "requestMetadata": {
+      "callerIp": "2607:fea8:8522:9e00:a509:d0bc:b5d9:132d",
+      "callerSuppliedUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15,gzip(gfe),gzip(gfe)",
+      "requestAttributes": {
+        "time": "2024-07-29T14:20:15.618298866Z",
+        "auth": {}
+      },
+      "destinationAttributes": {}
+    },
+    "serviceName": "bigtableadmin.googleapis.com",
+    "methodName": "google.bigtable.admin.v2.BigtableTableAdmin.ListBackups",
+    "authorizationInfo": [
+      {
+        "resource": "projects/test-project-1234/instances/test-bigtable",
+        "permission": "bigtable.backups.list",
+        "granted": true,
+        "resourceAttributes": {
+          "service": "bigtableadmin.googleapis.com",
+          "name": "projects/test-project-1234/instances/test-bigtable",
+          "type": "bigtableadmin.googleapis.com/Instance"
+        },
+        "permissionType": "ADMIN_READ"
+      }
+    ],
+    "resourceName": "projects/test-project-1234/instances/test-bigtable",
+    "request": {
+      "parent": "projects/test-project-1234/instances/test-bigtable/clusters/-",
+      "pageSize": 50,
+      "@type": "type.googleapis.com/google.bigtable.admin.v2.ListBackupsRequest"
+    }
+  },
+  "insertId": "1g60teecetz",
+  "resource": {
+    "type": "audited_resource",
+    "labels": {
+      "project_id": "test-project-1234",
+      "service": "bigtableadmin.googleapis.com",
+      "method": "google.bigtable.admin.v2.BigtableTableAdmin.ListBackups"
+    }
+  },
+  "timestamp": "2024-07-29T14:20:15.603301405Z",
+  "severity": "ERROR",
+  "logName": "projects/test-project-1234/logs/cloudaudit.googleapis.com%2Fdata_access",
+  "receiveTimestamp": "2024-07-29T14:20:17.052719486Z"
+}
