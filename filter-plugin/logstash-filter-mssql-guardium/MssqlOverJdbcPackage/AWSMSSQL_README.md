@@ -156,20 +156,30 @@
 			VI. Click on Ok button.
 			VII. Right click on database audit specification that we have created and select enable to enable it.
 
-	5. Create non-admin user to access audit table.
-		If you want to access audit table without exposing admin credentials, create a non-admin user with specific permissions:
+### **Note: Create non-admin user to access audit table**
 
-			a. Log in into database by using the admin credentials and run the following queries.
-				CREATE LOGIN <login_name> WITH PASSWORD = '<password>';
-				USE msdb;
-				CREATE USER <user_name> FOR LOGIN <login_name>;
-				GRANT SELECT ON msdb.dbo.rds_fn_get_audit_file TO <user_name>;
-			b. In the input section, add the database name as 'msdb'
-      				jdbc_connection_string => "jdbc:sqlserver://<SERVER_NAME>:<PORT>;databaseName=<DB_NAME>;
-			c. Use the login credentials created in the previous step as the jdbc_username and password.
-					jdbc_user => "<login_name>"
-					jdbc_password => "<password>"
+To access the audit table without exposing admin credentials, create a non-admin user with specific permissions:
 
+- Log in to the database using admin credentials and run the following queries:
+  ```sql
+  CREATE LOGIN <login_name> WITH PASSWORD = '<password>';
+  USE msdb;
+  CREATE USER <user_name> FOR LOGIN <login_name>;
+  GRANT SELECT ON msdb.dbo.rds_fn_get_audit_file TO <user_name>;
+  ```
+
+- In the input section, set the database name as **msdb**.
+  ```properties
+  jdbc_connection_string => "jdbc:sqlserver://<SERVER_NAME>:<PORT>;databaseName=msdb;"
+  ```
+
+- Use the login credentials created in the previous step for the JDBC connection:
+  ```properties
+  jdbc_user => "<login_name>"
+  jdbc_password => "<password>"
+  ```
+
+- Update the input section by adding the details from the [awsNonAdminMSSQL.conf](./awsNonAdminMSSQL.conf) AWS MSSQL setup file, omitting the `input {` at the beginning and its corresponding `}` at the end.
 
 ## 3. Configuring the MSSQL filters in Guardium
 
