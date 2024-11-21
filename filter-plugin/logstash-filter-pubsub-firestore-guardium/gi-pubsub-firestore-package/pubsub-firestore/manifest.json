@@ -1,5 +1,5 @@
 {
-	"name": "GuardiumFirestoreFilterPlugin",
+	"name": "Guardium_Firestore_Filter_plugin",
 	"alias": "FireStore",
 	"type": "filter",
 	"pipeline_type":"pull",
