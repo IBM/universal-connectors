@@ -1,5 +1,5 @@
 {
-  "plugin_name": "Guardium_Big_Query_filter_Plugin",
+  "plugin_name": "BigQuery Over PubSub",
   "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-bigquery-guardium/README.md",
   "input_name": "Google_PubSub",
   "input_parameters": [

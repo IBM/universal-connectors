@@ -1,5 +1,5 @@
 {
-  "plugin_name": "Guardium_Apache_Solr_Filter_plugin",
+  "plugin_name": "Apache Solr Over PubSub",
   "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mariadb-guardium/README.md",
   "input_name": "Google_PubSub",
   "input_parameters": [
