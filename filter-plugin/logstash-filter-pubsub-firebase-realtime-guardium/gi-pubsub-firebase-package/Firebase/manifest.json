@@ -1,5 +1,5 @@
 {
-	"name": "Guardium_firebase_realtime_filter",
+	"name": "Guardium_Firebase_Realtime_Filter_plugin",
 	"alias": "Firebase",
 	"type": "filter",
 	"pipeline_type":"pull",

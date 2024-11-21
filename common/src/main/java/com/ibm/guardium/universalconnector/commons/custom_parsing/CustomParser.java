@@ -26,8 +26,9 @@ public abstract class CustomParser {
     protected Map<String, String> properties;
     private final ObjectMapper mapper;
     private final IParser parser;
-    boolean parseUsingSniffer = false;
-    boolean hasSqlParsing = false;
+    protected boolean parseUsingSniffer = false;
+    protected boolean hasSqlParsing = false;
+    protected boolean parseUsingRegex = false;
 
     public CustomParser(ParserFactory.ParserType parserType) {
         parser = new ParserFactory().getParser(parserType);
@@ -39,9 +40,6 @@ public abstract class CustomParser {
 
         if (!isValid(payload))
             return null;
-
-        hasSqlParsing = SqlParser.hasSqlParsing(properties);
-        parseUsingSniffer = hasSqlParsing && SqlParser.isSnifferParsing(payload);
 
         return extractRecord(payload);
     }
@@ -58,7 +56,7 @@ public abstract class CustomParser {
         record.setSessionLocator(getSessionLocator(payload, record.getSessionId()));
         record.setTime(getTimestamp(payload));
 
-        if (record.isException())
+        if (!record.isException())
             record.setData(getData(payload, sqlString));
 
         return record;
@@ -409,7 +407,11 @@ public abstract class CustomParser {
             return false;
         }
 
-        SqlParser.ValidityCase isValid = SqlParser.isValid(properties);
+        hasSqlParsing = SqlParser.hasSqlParsing(properties);
+        parseUsingSniffer = hasSqlParsing && SqlParser.isSnifferParsing(properties);
+        parseUsingRegex = hasSqlParsing && SqlParser.isRegexParsing(properties);
+
+        SqlParser.ValidityCase isValid = SqlParser.isValid(properties, hasSqlParsing, parseUsingSniffer, parseUsingRegex);
         if (!isValid.equals(SqlParser.ValidityCase.VALID)) {
             logger.error(isValid.getDescription());
             return false;
