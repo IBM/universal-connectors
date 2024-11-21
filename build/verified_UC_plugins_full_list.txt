@@ -38,12 +38,12 @@ filter-plugin/logstash-filter-pubsub-firestore-guardium/PubSubFireStorePackage;l
 filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage;logstash-filter-pubsub-mysql-guardium.zip
 filter-plugin/logstash-filter-pubsub-postgresql-guardium/PubSubPostgreSQLPackage;logstash-filter-pubsub-postgresql-guardium.zip
 #Pubsub plug-ins
-filter-plugin/logstash-filter-pubsub-spanner-guardium/SpannerOverPubSubPackage;logstash-filter-spanner_db_guardium_filter.zip
+filter-plugin/logstash-filter-pubsub-spanner-guardium/gi-pubsub-spanner-package;logstash-filter-spanner_db_guardium_filter.zip
 filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/gi-pubsub-firebase-package;logstash-filter-fire_base_guardium_filter.zip
 filter-plugin/logstash-filter-pubsub-firestore-guardium/gi-pubsub-firestore-package;logstash-filter-fire_store_guardium_filter.zip
 filter-plugin/logstash-filter-pubsub-mysql-guardium/gi-pubsub-mysql-package;logstash-filter-pubsub-mysql-guardium.zip
 filter-plugin/logstash-filter-pubsub-bigquery-guardium/gi-pubsub-bigquery-package;logstash-filter-big_query_guardium_filter.zip
-filter-plugin/logstash-filter-pubsub-apachesolr-guardium/PubSubApacheSolrPackage;logstash-filter-apache_solr_gcp_connector.zip
+filter-plugin/logstash-filter-pubsub-apachesolr-guardium/gi-pubsub-apachsolr-package;logstash-filter-apache_solr_gcp_connector.zip
 filter-plugin/logstash-filter-pubsub-bigtable-guardium/gi-pubsub-bigtable-package;logstash-filter-big_table_guardium_filter.zip
 #Syslog plug-ins
 filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresOverSyslogPackage;

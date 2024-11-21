@@ -1,5 +1,5 @@
 {
-  "plugin_name": "Guardium_Firestore_Filter_plugin",
+  "plugin_name": "FireStore Over PubSub",
   "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-firestore-guardium/README.md",
   "input_name": "Google_PubSub",
   "input_parameters": [

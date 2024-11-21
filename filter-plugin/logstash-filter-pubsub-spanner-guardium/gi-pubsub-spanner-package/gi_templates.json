@@ -1,5 +1,5 @@
 {
-  "plugin_name": "Guardium_SpannerDB_Filter_plugin",
+  "plugin_name": "SpannerDB Over PubSub",
   "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-spanner-guardium/README.md",
   "input_name": "Google_PubSub",
   "input_parameters": [
