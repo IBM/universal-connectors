@@ -1,5 +1,5 @@
 {
-  "plugin_name": "Guardium_firebase_realtime_filter",
+  "plugin_name": "FireBase Over PubSub",
   "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/README.md",
   "input_name": "Google_PubSub",
   "input_parameters": [
@@ -31,7 +31,7 @@
       }
     }
   ],
-  "filter_name": "Guardium_firebase_realtime_filter",
+  "filter_name": "Guardium_Firebase_Realtime_Filter_plugin",
   "filter_parameters": [],
   "credentials": [
     {
