@@ -1,5 +1,5 @@
 {
-	"name": "GuardiumGCPApacheSolrFilter",
+	"name": "Guardium_Apache_Solr_Filter_plugin",
 	"alias": "Pubsub_Apache_solr",
 	"type": "filter",
 	"pipeline_type":"pull",
