@@ -1,5 +1,5 @@
 {
-  "plugin_name": "MysqlGooglePubSubFilterPlugin",
+  "plugin_name": "Guardium_Mysql_Filter_plugin",
   "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mysql-percona-guardium/README.md",
   "input_name": "Google_PubSub",
   "input_parameters": [
@@ -31,7 +31,7 @@
       }
     }
   ],
-  "filter_name": "MysqlGooglePubSubFilterPlugin",
+  "filter_name": "Guardium_Mysql_Filter_plugin",
   "filter_parameters": [],
   "credentials": [
     {
