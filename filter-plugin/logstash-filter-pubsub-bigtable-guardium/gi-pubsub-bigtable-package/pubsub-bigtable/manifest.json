@@ -1,5 +1,5 @@
 {
-	"name": "BigTableFilterPlugin",
+	"name": "Guardium_Big_Table_Filter_plugin",
 	"alias": "BigTable Filter Plugin",
 	"type": "filter",
 	"pipeline_type":"pull",
