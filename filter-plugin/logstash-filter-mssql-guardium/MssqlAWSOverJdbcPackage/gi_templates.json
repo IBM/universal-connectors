@@ -1,6 +1,6 @@
 {
   "plugin_name": "mssql AWS over JDBC",
-  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/README.md",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/AWSMSSQL_README.md",
   "input_name": "JDBC_input",
   "input_parameters": [
     {
