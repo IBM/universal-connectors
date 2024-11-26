@@ -10,6 +10,6 @@
 	"license": "Apache2.0",
 	"description": "Parses AWS Mssql audit log events into Guardium.",
 	"configuration_notes": "",
-	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/README.md",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/AWSMSSQL_README.md",
 	"third_parties" : ["MSSQL-jdbc.jar"]
 }
