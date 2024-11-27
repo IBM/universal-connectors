@@ -52,9 +52,14 @@ public class AuroraMysqlGuardiumPluginFilter implements Filter {
 			if(logger.isDebugEnabled()){
 				logger.debug("Event now {}:",e.getData());
 			}
-			if (e.getField("message") instanceof String && e.getField("message") != null) {
-				JsonObject data = new JsonObject();
-				data = inputData(e);
+
+			if(isGrokParseFailure(e) || checkSQLErrorCode(e)) {
+				addFailureLogging(e);
+				continue;
+			}
+
+			if (e.getField(Constants.MESSAGE) != null && e.getField(Constants.MESSAGE) instanceof String) {
+				JsonObject data = inputData(e);
 				try {
 					Record record = Parser.parseRecord(data);
 					final GsonBuilder builder = new GsonBuilder();
@@ -69,12 +74,35 @@ public class AuroraMysqlGuardiumPluginFilter implements Filter {
 				}
 
 			} else {
-				logger.error("AWS_AURORA_MYSQL filter: Event has been skipped: " + e.getField("message"));
-				e.tag("_guardium_skip_not_AWS_AURORA_MYSQ");
+				addFailureLogging(e);
 			}
 		}
 
 		return events;
+	}
+
+	private static void addFailureLogging(Event e) {
+		logger.error("AWS_AURORA_MYSQL filter: Event has been skipped: " + e.getField("message"));
+		e.tag("_guardium_skip_not_AWS_AURORA_MYSQ");
+	}
+
+	private static boolean checkSQLErrorCode(Event e) {
+		if (null != e.getField(Constants.MESSAGE) && e.getField(Constants.MESSAGE) instanceof String
+				&&  !((String) e.getField(Constants.MESSAGE)).isEmpty()
+				&& ((String) e.getField(Constants.MESSAGE)).contains(Constants.SQL_ERROR_CODE_MY_010914)){
+			logger.debug("checkSQLErrorCode check for SQL error code[MY-010914] in message : {} ", e.getField(Constants.MESSAGE));
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean isGrokParseFailure(Event e) {
+		if(null != e && e.includes(Constants.TAGS)){
+			ArrayList<String> tags = (ArrayList<String>) e.getField(Constants.TAGS);
+			logger.debug("tags check for _grokparsefailure : {} ", tags);
+			return tags.contains(Constants.GROK_PARSE_FAILURE);
+		}
+		return false;
 	}
 
 	private JsonObject inputData(Event e) {
