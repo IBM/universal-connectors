@@ -120,8 +120,11 @@ public class SQLErrorEventParser implements Parser{
         SessionLocator sessionLocator = guardRecord.getSessionLocator();
         try {
 
-            sessionLocator.setClientIp(getStringValueOf(Constants.CLIENT_IP));
-            sessionLocator.setServerIp(getStringValueOf(Constants.SERVER_IP));
+            String clientIp = getStringValueOf(Constants.CLIENT_IP);
+            String serverIp = getStringValueOf(Constants.SERVER_IP);
+
+            sessionLocator.setClientIp((clientIp == null || clientIp.isEmpty()) ? Constants.DEFAULT_IP : clientIp);
+            sessionLocator.setServerIp((serverIp == null || serverIp.isEmpty()) ? Constants.DEFAULT_IP : serverIp);
             sessionLocator.setServerPort(Constants.SERVER_PORT);
 
         } catch (Exception e) {
