@@ -1,0 +1,9 @@
+{
+    "plugin_name": "Kafka connect JDBC",
+    "help_link": "",
+    "input_name": "Kafka connect JDBC",
+    "input_parameters": [],
+    "filter_name": "",
+    "filter_parameters": [],
+    "auth_parameters": []
+}
