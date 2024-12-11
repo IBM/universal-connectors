@@ -8,3 +8,5 @@ MysqlOverFilebeatProfile
 PostgresOverKafkaProfile
 PostgresOverSQSProfile
 S3OverCloudwatchLogsProfile
+OUAOverJdbcKafkaConnectProfile
+JDBCKafkaConnectProfile
