@@ -13,7 +13,7 @@
         "sequence": 1
       },
       "event_hub_connections": {
-      	"type": "text",
+        "type": "string_list",
       	"label": "Event hub connections",
         "optional": false,
         "hidden": false,
