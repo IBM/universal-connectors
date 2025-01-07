@@ -234,7 +234,6 @@ public class ParserHelper {
 		long millis = date.toInstant().toEpochMilli();
 		int minOffset = date.getOffset().getTotalSeconds() / 60;
 		Time time = new Time(millis, minOffset, 0);
-		log.error(event.getField("totalOffset").toString());
 		long t = (time.getTimstamp()) - (Integer.valueOf(event.getField("totalOffset").toString()) * 60000);
 		time.setTimstamp(t);
 
