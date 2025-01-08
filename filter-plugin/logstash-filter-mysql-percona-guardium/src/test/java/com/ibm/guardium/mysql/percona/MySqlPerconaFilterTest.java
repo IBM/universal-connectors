@@ -138,6 +138,25 @@ public class MySqlPerconaFilterTest {
         Assert.assertEquals(1, matchListener.getMatchCount());
         System.out.println(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
     }
+
+    @Test
+    public void testParseMySqlPercona_Data2(){
+        String mysql_message = "<14>Feb 12 07:18:30 dbqa09 percona-audit: {\"audit_record\":{\"name\":\"Query\",\"record\":\"106_1970-01-01T00:00:00\",\"timestamp\":\"2021-02-12T12:18:30Z\",\"command_class\":\"select\",\"connection_id\":\"12\",\"status\":0,\"sqltext\":\"select * from Products limit 99999\",\"user\":\"root[root] @ localhost []\",\"host\":\"localhost\",\"os_user\":\"\",\"ip\":\"\",\"db\":\"\"}}";
+        Configuration config = new ConfigurationImpl(Collections.singletonMap("log_level", "debug"));
+        Context context = new ContextImpl(null, null);
+        MySqlPerconaFilter filter = new MySqlPerconaFilter("test-id", config, context);
+
+        Event e = new org.logstash.Event();
+        TestMatchListener matchListener = new TestMatchListener();
+
+        e.setField("message", mysql_message);
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+        Assert.assertEquals(1, matchListener.getMatchCount());
+        System.out.println(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+    }
 }
 
 class TestMatchListener implements FilterMatchListener {
