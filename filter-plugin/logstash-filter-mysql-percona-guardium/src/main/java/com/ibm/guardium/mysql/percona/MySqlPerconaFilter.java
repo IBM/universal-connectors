@@ -14,8 +14,12 @@ import org.apache.logging.log4j.core.LoggerContext;
 
 import com.google.gson.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.io.File;
 import java.time.ZonedDateTime;
@@ -151,7 +155,12 @@ public class MySqlPerconaFilter implements Filter {
 
                         record.setAppUserName(UNKNOWN_STRING);
 
-                        Time time = getTime(getFieldAsString(audit_record, "timestamp", null));
+                        String minOff = "+00:00" ;
+                        if(e.getField("minOff") != null)
+                        {
+                            minOff = e.getField("minOff").toString();
+                        }
+                        Time time = getTime(getFieldAsString(audit_record, "timestamp", null),minOff);
                         record.setTime(time);
 
                         record.setSessionLocator(parseSessionLocator(e, audit_record));
@@ -187,17 +196,33 @@ public class MySqlPerconaFilter implements Filter {
         return jsonObject.get(fieldName).getAsString();
     }
 
-    public static Time getTime(String dateString){
+    public static Time getTime(String dateString, String timeZone){
         if (dateString == null){
             log.warn("DateString is null");
             return new Time(0, 0, 0);
         }
-        ZonedDateTime date = ZonedDateTime.parse(dateString, DATE_TIME_FORMATTER);
-        long millis = date.toInstant().toEpochMilli();
-        int  minOffset = date.getOffset().getTotalSeconds()/60;
+
+        ZoneOffset offset = ZoneOffset.of(ZoneOffset.UTC.getId());
+        if (timeZone != null) {
+            offset = ZoneOffset.of(timeZone);
+        }
+
+        ZonedDateTime date;
+        try {
+            date = ZonedDateTime.parse(dateString, DATE_TIME_FORMATTER);
+        }
+        catch(DateTimeParseException e){
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
+            date = ZonedDateTime.parse(dateString, formatter.withZone(offset));
+        }
+
+        ZonedDateTime zdt = date.withZoneSameInstant(offset);
+        long millis = zdt.toInstant().toEpochMilli();
+        int minOffset = zdt.getOffset().getTotalSeconds() / 60;
         //int  minDst = date.getOffset().getRules().isDaylightSavings(date.toInstant()) ? 60 : 0;
         return new Time(millis, minOffset, 0);
     }
+
 
     private static SessionLocator parseSessionLocator(Event e, JsonObject audit_record) {
         SessionLocator sessionLocator = new SessionLocator();
