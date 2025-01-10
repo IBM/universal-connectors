@@ -6,6 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 package com.ibm.guardium.mariadb;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -225,20 +226,23 @@ public class ParserHelper {
 	 * @return Time
 	 */
 	public static Time getTime(final Event event) {
-		String dateString = null;
-		dateString = event.getField(ApplicationConstant.TIMESTAMP_KEY).toString();
-		LocalDateTime localDateTime = LocalDateTime.parse(dateString, DATE_TIME_FORMATTER);
-		localDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
-
-		ZonedDateTime date = ZonedDateTime.parse(localDateTime.toString().concat("Z"), DateTimeFormatter.ISO_DATE_TIME);
-		long millis = date.toInstant().toEpochMilli();
-		int minOffset = date.getOffset().getTotalSeconds() / 60;
-		Time time = new Time(millis, minOffset, 0);
-		long t = (time.getTimstamp()) - (Integer.valueOf(event.getField("totalOffset").toString()) * 60000);
-		time.setTimstamp(t);
-
-		return time;
+		String dateString = event.getField(ApplicationConstant.TIMESTAMP_KEY).toString();
+		String timeZone = event.getField(ApplicationConstant.MIN_OFFSET).toString();
+		if(dateString!=null) {
+			LocalDateTime dt = LocalDateTime.parse(dateString, DATE_TIME_FORMATTER);
+			ZoneOffset offset = ZoneOffset.of(ZoneOffset.UTC.getId());
+			if(timeZone != null ){
+				offset = ZoneOffset.of(timeZone);
+			}
+			ZonedDateTime zdt = dt.atOffset(offset).toZonedDateTime();
+			long millis = zdt.toInstant().toEpochMilli();
+			int minOffset = zdt.getOffset().getTotalSeconds() / 60;
+			return new Time(millis, minOffset, 0);
+		}
+		return null;
 	}
+
+
 	/**
 	 * parseSQL() method will perform operation on String inputs, set the expected
 	 * value into respective dataset name and then return the value as response
