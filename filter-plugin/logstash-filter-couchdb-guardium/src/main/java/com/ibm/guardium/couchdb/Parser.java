@@ -8,8 +8,11 @@ package com.ibm.guardium.couchdb;
 
 import java.net.URLDecoder;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,8 +26,6 @@ public class Parser {
 
 	
 	private static Logger log = LogManager.getLogger(Parser.class);
-	private static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
-
 
 
 	/***
@@ -174,18 +175,39 @@ public class Parser {
 		return exception;
 	}
 
-	public static Time getTime(Event event) throws Exception {
-		try {
-			String dateString = event.getField(ApplicationConstant.TIMESTAMP).toString();
-			ZonedDateTime date = ZonedDateTime.parse(dateString,DATE_TIME_FORMATTER);
-			long millis = date.toInstant().toEpochMilli();
-			int minOffset = date.getOffset().getTotalSeconds() / 60;
-			return new Time(millis, minOffset, 0);
+	public static Time getTime(final Event event) throws Exception {
+		try{
+			Optional<Object> optTimestamp = Optional.ofNullable(event.getField(ApplicationConstant.TIMESTAMP));
+			Optional<Object> optTimeZone = Optional.ofNullable(event.getField(ApplicationConstant.MIN_OFFSET));
+			if(optTimestamp.isPresent()){
+				String dateString = optTimestamp.get().toString();
+
+				if(!dateString.isEmpty()){
+
+					LocalDateTime dt = LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME);
+					ZoneOffset offset = ZoneOffset.of(ZoneOffset.UTC.getId());
+
+					if(optTimeZone.isPresent()){
+
+						String timeZone = optTimeZone.get().toString();
+						if(!timeZone.isEmpty()){
+							offset = ZoneOffset.of(timeZone);
+						}
+					}
+
+					ZonedDateTime zdt = dt.atOffset(offset).toZonedDateTime();
+					long millis = zdt.toInstant().toEpochMilli();
+					int minOffset = zdt.getOffset().getTotalSeconds() / 60;
+					return new Time(millis, minOffset, 0);
+				}
+			}
 		}
+
 		catch (Exception e) {
 			log.error("Exception occurred while parsing event in parseTime method: ", e);
 			throw new Exception("Incorrect Time Format");
 		}
+		return null;
 	}
 
 	public static String decodeContent(String obj) {
