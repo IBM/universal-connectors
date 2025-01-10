@@ -12,6 +12,7 @@ public class ApplicationConstant {
 	public static final String USERNAME_KEY = "username";
 	public static final String HOSTNAME_KEY = "hostname";
 	public static final String CONNECTIONID_KEY = "connectionid";
+
 	public static final String QUERYID_KEY = "queryid";
 	public static final String OPERATION_KEY = "operation";
 	public static final String DATABASE_KEY = "database";
@@ -24,7 +25,8 @@ public class ApplicationConstant {
 	public static final String SOURCEPROGRAM_KEY = "source_program";
 	public static final String SOURCEPROGRAM_VALUE = "mariadb";
 	public static final String DBPROTOCAL_STRING = "MariaDB";
-	public static final String SERVICE_NAME_STRING = "mariadb";
+
+	public static final String MIN_OFFSET = "Offset";
 	public static final String SERVER_IP_STRING = "0.0.0.0";
 	public static final String CLIENT_IP_STRING = "0.0.0.0";
 	public static final String UNKNOWN_STRING = "";
