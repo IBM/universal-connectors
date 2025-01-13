@@ -10,8 +10,9 @@ public class ApplicationConstantTest {
 	public static final String ID = "test-id";
 	public static final String CONFIG_KEY = "source";
 	public static final String CONFIG_VALUE = "message";
-
 	public static final String TIMESTAMP = "event_time";
+
+	public static final String MIN_OFFSET = "min_off";
 	public static final String MESSAGE = "message";
 	public static final String PROCESS_ID = "process_id";
 	public static final String CONNECTION_ID = "gp_session_id";

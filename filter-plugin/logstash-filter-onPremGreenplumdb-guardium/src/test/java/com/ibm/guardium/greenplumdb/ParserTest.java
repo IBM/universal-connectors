@@ -35,6 +35,7 @@ public class ParserTest {
 
 		Event event = new org.logstash.Event();
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-05 06:32:41.527966 IST");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"+05:00");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "172.31.7.158");
 		event.setField(ApplicationConstantTest.REMOTE_PORT, "56116");
 		event.setField(ApplicationConstantTest.USER_NAME, "ec2-user");
@@ -57,6 +58,7 @@ public class ParserTest {
 	public void parseRecordTest2() throws Exception {
 		Event event = new org.logstash.Event();
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-05 06:32:41.527966 IST");
+		event.setField(ApplicationConstant.MIN_OFFSET,"-04:00");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "172.31.7.158");
 		event.setField(ApplicationConstantTest.REMOTE_PORT, "56116");
 		event.setField(ApplicationConstantTest.USER_NAME, "ec2-user");
