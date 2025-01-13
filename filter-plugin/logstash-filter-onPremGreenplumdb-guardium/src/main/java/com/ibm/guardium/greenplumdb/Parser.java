@@ -5,8 +5,12 @@ SPDX-License-Identifier: Apache-2.0
 
 package com.ibm.guardium.greenplumdb;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -268,20 +272,36 @@ public class Parser {
 	 * @throws Exception
 	 */
 	public static Time parseTime(final Event event) throws Exception {
+		try{
+			Optional<Object> optTimestamp = Optional.ofNullable(event.getField(ApplicationConstant.TIMESTAMP));
+			Optional<Object> optTimeZone = Optional.ofNullable(event.getField(ApplicationConstant.MIN_OFFSET));
+			if(optTimestamp.isPresent()){
+				String dateString = optTimestamp.get().toString();
+				if(!dateString.isEmpty()){
 
-		try {
+					if(dateString.contains("EDT"))
+						dateString = dateString.replaceAll("EDT", "").concat("Z");
+					LocalDateTime dt = LocalDateTime.parse(dateString, DATE_TIME_FORMATTER);
+					ZoneOffset offset = ZoneOffset.of(ZoneOffset.UTC.getId());
 
-			ZonedDateTime date = ZonedDateTime.parse(event.getField(ApplicationConstant.TIMESTAMP).toString(),
-					DATE_TIME_FORMATTER);
-			long millis = date.toInstant().toEpochMilli();
-			int minOffset = date.getOffset().getTotalSeconds() / 60;
-			return new Time(millis, minOffset, 0);
-
-		} catch (Exception e) {
-			LOGGER.error("Exception occurred while parsing event in parseTime method");
-			throw e;
+					if(optTimeZone.isPresent()){
+						String timeZone = optTimeZone.get().toString();
+						if(!timeZone.isEmpty()){
+							offset = ZoneOffset.of(timeZone);
+						}
+					}
+					ZonedDateTime zdt = dt.atOffset(offset).toZonedDateTime();
+					long millis = zdt.toInstant().toEpochMilli();
+					int minOffset = zdt.getOffset().getTotalSeconds() / 60;
+					return new Time(millis, minOffset, 0);
+				}
+			}
 		}
-
+		catch (Exception e) {
+			LOGGER.error("Exception occurred while parsing event in parseTime method: ", e);
+			throw new Exception("Incorrect Time Format");
+		}
+		return null;
 	}
 
 }
