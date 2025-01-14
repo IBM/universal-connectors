@@ -25,6 +25,7 @@ public class Constants {
 	public static final String SERVER_IP = "server_ip";
 	public static final String DB_PROTOCOL = "protocol";
 	public static final String TIMESTAMP = "ts";
+	public static final String MIN_OFF = "minOff";
 	public static final String LOG_LEVEL = "log_level";
 	public static final String DB_USER = "dbuser";
 	public static final String DB_NAME = "dbname";
