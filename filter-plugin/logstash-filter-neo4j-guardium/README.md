@@ -83,21 +83,26 @@ To use Logstash to perform additional processing on the data collected by Filebe
 
 		tags : ["Neo4j"]
 
-2. Configuring the output section:
+   2. Configuring the output section:
 
-		• Locate "output" in the filebeat.yml file, then add the following parameters.
+           • Locate "output" in the filebeat.yml file, then add the following parameters.
 
-		• Disable Elasticsearch output by commenting it out.
+           • Disable Elasticsearch output by commenting it out.
 
-		• Enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
+           • Enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
 
-		• For example:
+           • For example:
 
-				output.logstash:
-					hosts: ["<host>:<port>"]
-		• The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections.
+                   output.logstash:
+                       hosts: ["<host>:<port>"]
+           • The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections.
 
-		•You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
+           •You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
+
+   			• Locate "Processors" in the filebeat.yml file and then add below attribute to get timezone of Server:
+                          For example:-
+                          processors:
+                          add_locale: ~
 ### Limitations
 
 	• Queries containing a semi-colon in a batch query, causes skipping of the entire batch query

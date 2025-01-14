@@ -6,6 +6,8 @@
 package com.ibm.guardium.neodb;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -61,7 +63,12 @@ public class Parser {
 
 			// Time
 			String dateString = Parser.parseTimestamp(data);
-			Time time = Parser.getTime(dateString);
+			String timeZone = null;
+			if (data.has(Constants.MIN_OFF)) {
+				timeZone = data.get(Constants.MIN_OFF).getAsString();
+			}
+			Time time = Parser.getTime(dateString, timeZone);
+
 			if (time != null) {
 				record.setTime(time);
 			}
@@ -180,16 +187,21 @@ public class Parser {
 		return dateString;
 	}
 
-	public static Time getTime(String dateString) {
-		if (dateString != null) {
-			ZonedDateTime date = ZonedDateTime.parse(dateString, DATE_TIME_FORMATTER);
-			long millis = date.toInstant().toEpochMilli();
-			int minOffset = date.getOffset().getTotalSeconds() / 60;
-			return new Time(millis, minOffset, 0);
-		} else {
-			return null;
-		}
 
+	public static Time getTime(String dateString, String timeZone) {
+		if (dateString != null) {
+			JsonObject data = new JsonObject();
+			LocalDateTime dt = LocalDateTime.parse(dateString, DATE_TIME_FORMATTER);
+			ZoneOffset offset = ZoneOffset.of(ZoneOffset.UTC.getId());
+			if (timeZone != null) {
+				offset = ZoneOffset.of(timeZone);
+			}
+			ZonedDateTime zdt = dt.atOffset(offset).toZonedDateTime();
+			long millis = zdt.toInstant().toEpochMilli();
+			int minOffset = zdt.getOffset().getTotalSeconds() / 60;
+			return new Time(millis, minOffset, 0);
+		}
+		return null;
 	}
 
 //  -----------------------------------------------Exception-----------------

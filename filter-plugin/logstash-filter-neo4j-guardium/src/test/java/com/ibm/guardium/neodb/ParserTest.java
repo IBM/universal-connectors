@@ -91,8 +91,8 @@ public class ParserTest {
 					"    \"queryStatement\": \"MERGE (mark:Person {name: 'Mark'})   RETURN mark - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}\"\n" +
 					"  }";
 	    	Event e = getParsedEvent(neoString_grokOutput,neoString);
-	    	
-	    	JsonObject inputData = inputData(e);
+			e.setField("minoff", "+04:00");
+			JsonObject inputData = inputData(e);
 	        
 	        final Construct result = Parser.parseAsConstruct(inputData);
 	        
@@ -119,7 +119,8 @@ public class ParserTest {
 					"    \"queryStatement\": \"DETACH DELETE node - {} - runtime=null - {type: 'user-action', app: 'neo4j-browser_v4.2.1'} - Variable `node` not defined (line 1, column 23 (offset: 22))\\\";\"\n" +
 					"  }";
 			Event e = getParsedEvent(neoString_grokOutput, neoString);
-	    	JsonObject inputData = inputData(e);
+			e.setField("minoff", "+07:00");
+			JsonObject inputData = inputData(e);
 	        
 	        final ExceptionRecord exceptionRecord = Parser.parseException(inputData);
 
@@ -170,19 +171,19 @@ public class ParserTest {
 	        Assert.assertEquals("2021-01-25 11:17:09.099+0000", timestamp);
 
 	    }
-	    
-	    @Test
-	    public void testGetTime() {
 
-	    	String dateString = "2021-01-25 11:17:09.099+0000";
-	    	
-	        final Time time = Parser.getTime(dateString);
-	        
-	        Assert.assertEquals(0, time.getMinDst());
-	        Assert.assertEquals(0, time.getMinOffsetFromGMT());
-	        Assert.assertEquals(1611573429099L, time.getTimstamp());
+	@Test
+	public void testGetTime() {
 
-	    }
+		String dateString = "2021-01-25 11:17:09.099+0000";
+		String timeZone = "-04:00";
+		final Time time = Parser.getTime(dateString, timeZone);
+
+		Assert.assertEquals(0, time.getMinDst());
+		Assert.assertEquals(-240, time.getMinOffsetFromGMT());
+		Assert.assertEquals(1611587829099L, time.getTimstamp());
+
+	}
 	    
 	    @Test
 	    public void testParseSentence() {
