@@ -10,6 +10,6 @@
 	"license": "Apache2.0",
 	"description": "Parses on-prem Mssql audit log events into Guardium.",
 	"configuration_notes": "",
-	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/README.md",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/ONPREMMSSQL_README.md",
 	"third_parties" : ["MSSQL-jdbc.jar"]
 }
