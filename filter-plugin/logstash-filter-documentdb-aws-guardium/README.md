@@ -5,6 +5,7 @@
 * Supported inputs: CloudWatch (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
+    * Guardium Insights: 3.3
     * Guardium Insights SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the DocumentDB audit and profiler logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved. 
@@ -108,8 +109,8 @@ The Guardium universal connector is the Guardium entry point for native audit/pr
 - Server IPs are also not reported because they are not part of the audit stream. That said, the "add_field" clause in the configuration adds a user defined Server Host Name that can be used in reports and policies if desired.
 - Because Sniffer saves the DB name once when a new session is created, and not with every event, DB name will be updated and populated correctly in Guardium only when everytime a new database connection is established with database name. If Database connection is established without database name, then the database on which the first query for that session runs, will be retained in Guardium. Even if user switches between the databases for the same session.     
 
-## Configuring the DocumentDB Guardium Logstash filters in Guardium Insights
+## Configuring the DocumentDB Guardium Logstash filters in Guardium Data Security Center
 
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).

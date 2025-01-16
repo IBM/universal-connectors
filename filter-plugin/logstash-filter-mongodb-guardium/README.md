@@ -1,7 +1,7 @@
 # MongoDB-Guardium Logstash filter plug-in
 ### Meet MongoDB
 * Tested versions: 4.2, 4.4
-* Environment: On-premise, Iaas, IBM Cloud
+* Environment: On-premise(Only Enterprise version is suuported), Iaas, IBM Cloud
 * Supported Guardium versions:
     * Guardium Data Protection: 11.3 and above
       * Supported inputs:
