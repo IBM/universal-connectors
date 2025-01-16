@@ -5,6 +5,7 @@
 - Environment: IaaS
 - Supported Guardium versions:
     - Guardium Data Protection: 11.4 and later
+    - Guardium Insights: 3.3
     - Guardium Insights SaaS: 1.0
 - Supported inputs:
     - JDBC (pull)
@@ -246,3 +247,5 @@ Yes. The schema and connection behaviour for Snowflake are the same across all t
 providers. You may wish to deploy a Guardium collector in the same region as your Snowflake instance to
 reduce items such as egress costs.
 
+## 5. Configuring the SNOWFLAKE filters in Guardium Data Security Center
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
