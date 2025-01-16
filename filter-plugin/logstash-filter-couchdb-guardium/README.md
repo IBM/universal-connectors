@@ -5,7 +5,7 @@
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
-    * Guardium Insights: 3.2
+    * Guardium Insights: 3.3
     * Guardium Insights SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the CouchDB log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query and Guardium sniffer parse the CouchDB queries.This plug-in prepares the Guardium Record object and relies on Guardium internal CouchDB parser to parse the database command. The CouchDB plugin supports only Guardium Data Protection as of now.
@@ -130,6 +130,6 @@ disabled. After it is validated, it appears in the Configure Universal Connector
     - Client port : Not available with logs
     - Client HostName : Not available with logs  
 
-## 6. Configuring the Couchdb filters in Guardium Insights
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+## 6. Configuring the Couchdb filters in Guardium Data Security Center
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 For the input configuration step, refer to the [Filebeat section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#Filebeat-input-plug-in-configuration).
