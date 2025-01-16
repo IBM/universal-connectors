@@ -181,6 +181,6 @@ The Guardium universal connector is the Guardium entry point for native audit lo
     - ClientIP - Not avaiable in Audit Logs
     - Source Program - Not available in Audit Logs
 
-## 7. Configuring the Mariadb filters in Guardium Insights
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+## 7. Configuring the Mariadb filters in Guardium Data Security Center
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 For the input configuration step, refer to the [Filebeat section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#Filebeat-input-plug-in-configuration).
