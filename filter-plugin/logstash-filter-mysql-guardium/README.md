@@ -7,7 +7,7 @@
       * Supported inputs:
          * Syslog (push)
          * Filebeat (push)
-   * Guardium Insights: 3.2
+   * Guardium Insights: 3.3
      *  Supported inputs:
         * Filebeat (push)
    * Guardium Insights SaaS: 1.0

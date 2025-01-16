@@ -6,7 +6,7 @@
 * Supported inputs: CloudWatch (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
-    * Guardium Insights: 3.2
+    * Guardium Insights: 3.3
     * Guardium Insights SaaS: 1.0
 
 This is a Logstash filter configuration. This filter receives CloudWatch audit logs of AWS MySQL instances, filters those events, and parses them into a Guardium record instance. The information is then sent over to Guardium as a JSON GuardRecord.
@@ -72,9 +72,6 @@ To add the MariaDB plug-in to a MySQL instance, follow the instructions describe
 * Guardium Data Protection requires installation of the [json_encode](https://www.elastic.co/guide/en/logstash-versioned-plugins/current/v3.0.3-plugins-filters-json_encode.html) filter plug-in.
 * The `use` statement does not display the account ID in the 'Database Name' column on the reports page.
 * 
-## Configuring the AWS MySQL Guardium Logstash filters in Guardium Insights
-
-
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
-
+## Configuring the AWS MySQL Guardium Logstash filters in Guardium Data Security Center
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).
