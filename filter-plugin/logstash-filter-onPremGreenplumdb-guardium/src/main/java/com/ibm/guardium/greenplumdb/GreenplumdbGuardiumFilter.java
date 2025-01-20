@@ -93,6 +93,9 @@ public class GreenplumdbGuardiumFilter implements Filter {
 						builder.serializeNulls();
 						final Gson gson = builder.create();
 						event.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
+						if(LOGGER.isDebugEnabled()){
+							LOGGER.debug(gson.toJson(record));
+						}
 						matchListener.filterMatched(event);
 					} else {
 

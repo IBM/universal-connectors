@@ -45,6 +45,8 @@ public class CouchdbGuardiumFilterTest {
 		e.setField("timeinterval","30");
 		e.setField("logmessage","/_all_dbs?startkey=%22%22&endkey=%22%E9%A6%99%22&limit=30");
 		e.setField("db_name","_all_dbs");
+		e.setField("minOff", "-07:00");
+
 
 		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 		assertEquals(1, results.size());
@@ -69,6 +71,8 @@ public class CouchdbGuardiumFilterTest {
 		e.setField("timeinterval","30");
 		e.setField("logmessage","recepies");
 		e.setField("db_name","recepies");
+		e.setField("minOff", "-07:30");
+
 
 		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 		assertEquals(1, results.size());
@@ -93,6 +97,8 @@ public class CouchdbGuardiumFilterTest {
 		e.setField("status","401");
 		e.setField("timeinterval","30");
 		e.setField("db_name","_session");
+		e.setField("minOff", "-07:00");
+
 
 		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 		assertEquals(1, results.size());
@@ -115,7 +121,9 @@ public class CouchdbGuardiumFilterTest {
 		e.setField("status","401");
 		e.setField("timeinterval","30");
 		e.setField("db_name","_all_dbs");
-		
+		e.setField("minOff", "-07:00");
+
+
 		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 		assertEquals(1, results.size());
 		assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
@@ -136,7 +144,9 @@ public class CouchdbGuardiumFilterTest {
 		e.setField("status","401");
 		e.setField("timeinterval","30");
 		e.setField("db_name","_all_dbs");
-		
+		e.setField("minOff", "-08:00");
+
+
 		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 		assertEquals(1, results.size());
 		assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
@@ -158,7 +168,9 @@ public class CouchdbGuardiumFilterTest {
 		e.setField("status",null);
 		e.setField("timeinterval","30");
 		e.setField("db_name","_all_dbs");
-		
+		e.setField("minOff", "-07:00");
+
+
 		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 		assertEquals(1, results.size());
 
@@ -177,7 +189,9 @@ public class CouchdbGuardiumFilterTest {
 		e.setField("status","200");
 		e.setField("timeinterval","30");
 		e.setField("db_name","_all_dbs");
-		
+		e.setField("minOff", "-07:00");
+
+
 		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 		assertEquals(1, results.size());
 	}
@@ -195,7 +209,9 @@ public class CouchdbGuardiumFilterTest {
 		e.setField("status","200");
 		e.setField("timeinterval","30");
 		e.setField("db_name","_all_dbs");
-		
+		e.setField("minOff", "-07:00");
+
+
 		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 		assertEquals(1, results.size());
 	}
@@ -229,8 +245,10 @@ public class CouchdbGuardiumFilterTest {
 	e.setField("status","null");
 	e.setField("timeinterval","30");
 	e.setField("db_name","_all_dbs");
+	e.setField("minOff", "-07:00");
 
-	Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 	assertEquals(1, results.size());
 	}
 	
@@ -248,8 +266,10 @@ public class CouchdbGuardiumFilterTest {
 	e.setField("status","300");
 	e.setField("timeinterval","30");
 	e.setField("db_name","_all_dbs");
+	e.setField("minOff", "-07:00");
 
-	Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
 	assertEquals(1, results.size());
 	}	
 	
@@ -262,8 +282,10 @@ public class CouchdbGuardiumFilterTest {
 	        ArrayList<Event> events = new ArrayList<>();
 	        e.setField("application","couchdb");
 	        e.setField("dbName","_session");
-	        e.setField("status", "200");	        
-	        events.add(e);
+	        e.setField("status", "200");
+			e.setField("minOff", "-04:00");
+
+		 events.add(e);
 	        
 	        Collection<Event> results = filter.filter(events, matchListener);
 	        	        
@@ -290,7 +312,9 @@ public class CouchdbGuardiumFilterTest {
 	 e.setField("status","200");
 	 e.setField("timeinterval","30");
 	 e.setField("db_name","_utils");
-	 events.add(e);
+	 e.setField("minOff", "-03:00");
+
+		 events.add(e);
 	 Collection<Event> results = filter.filter(events, matchListener);
 	 assertEquals(0, results.size());
 
@@ -316,7 +340,9 @@ public class CouchdbGuardiumFilterTest {
 	 e.setField("status","200");
 	 e.setField("timeinterval","30");
 	 e.setField("db_name","verifytestdb");
-	 events.add(e);
+	 e.setField("minOff", "-07:00");
+
+		 events.add(e);
 	 Collection<Event> results = filter.filter(events, matchListener);
 	 assertEquals(0, results.size());
 
@@ -342,7 +368,9 @@ public class CouchdbGuardiumFilterTest {
 	 e.setField("status","200");
 	 e.setField("timeinterval","30");
 	 e.setField("db_name","_session");
-	 events.add(e);
+	 e.setField("minOff", "-07:00");
+
+		 events.add(e);
 	 Collection<Event> results = filter.filter(events, matchListener);
 	 assertEquals(0, results.size());
 
@@ -368,7 +396,9 @@ public class CouchdbGuardiumFilterTest {
 	 e.setField("status","200");
 	 e.setField("timeinterval","30");
 	 e.setField("db_name","verifytestdb_replicate");
-	 events.add(e);
+	 e.setField("minOff", "-08:00");
+
+		 events.add(e);
 	 Collection<Event> results = filter.filter(events, matchListener);
 	 assertEquals(0, results.size());
 
@@ -394,7 +424,9 @@ public class CouchdbGuardiumFilterTest {
 	 e.setField("status","200");
 	 e.setField("timeinterval","30");
 	 e.setField("db_name","favicon.ico");
-	 events.add(e);
+	 e.setField("minOff", "-09:00");
+
+		 events.add(e);
 	 Collection<Event> results = filter.filter(events, matchListener);
 	 assertEquals(0, results.size());
 
