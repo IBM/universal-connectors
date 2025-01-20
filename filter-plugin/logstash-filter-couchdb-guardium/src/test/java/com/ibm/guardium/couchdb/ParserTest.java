@@ -9,7 +9,7 @@ package com.ibm.guardium.couchdb;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.text.ParseException;
-
+import java.time.ZonedDateTime;
 import org.junit.jupiter.api.Test;
 
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
@@ -24,16 +24,18 @@ import com.ibm.guardium.universalconnector.commons.structures.Time;
 import co.elastic.logstash.api.Event;
 
 class ParserTest {
-	
+
+
 	@Test
 	public void testParseRecord() throws Exception {
+		String date = "2022-02-21T07:03:10.759000Z";
 		Event event = new org.logstash.Event();
 		event.setField(ApplicationConstant.USER_NAME, "sravanthi");
 		event.setField(ApplicationConstant.VERB, "GET");
 		event.setField(ApplicationConstant.ID,"36fa3c0487");
 		event.setField(ApplicationConstant.DB_NAME, "fruits");
 		event.setField(ApplicationConstant.LOGMESSAGE, "");
-		event.setField(ApplicationConstant.TIMESTAMP, "2022-02-21T07:03:10.759000Z");
+		event.setField(ApplicationConstant.TIMESTAMP, date);
 		event.setField(ApplicationConstant.STATUS, "200");
 		event.setField(ApplicationConstant.DESCRIPTION, "ok");
 		event.setField(ApplicationConstant.TIME_INTERVAL, "30");
@@ -42,7 +44,8 @@ class ParserTest {
 		assertEquals("", record.getAppUserName());
 		assertEquals("fruits", record.getDbName());
 		assertEquals("234282622",record.getSessionId());
-		assertEquals(1645426990759L,record.getTime().getTimstamp());
+		long milli = ZonedDateTime.parse(date).toInstant().toEpochMilli();
+		assertEquals(milli,record.getTime().getTimstamp());
 	}
 	
 	@Test
@@ -111,15 +114,18 @@ class ParserTest {
 	assertEquals("SQL_ERROR", exception.getExceptionTypeId());
 	assertEquals("Error (" + event.getField(ApplicationConstant.STATUS) + ")", exception.getDescription());
 	assertEquals("GET fruits", exception.getSqlString());
-	}		
-	
+	}
+
 	@Test
 	public void testGetTime() throws Exception {
+		String date = "2022-02-21T07:03:10.759000Z";
 		Event event = new org.logstash.Event();
-		event.setField(ApplicationConstant.TIMESTAMP, "2022-02-21T07:03:10.759000Z");
+		event.setField(ApplicationConstant.TIMESTAMP, date);
+
 		final Time time = Parser.getTime(event);
 		assertNotNull(time);
-		assertEquals(1645426990759L,time.getTimstamp());
+		long milli = ZonedDateTime.parse(date).toInstant().toEpochMilli();
+		assertEquals(milli,time.getTimstamp());
 	}
 	
 }

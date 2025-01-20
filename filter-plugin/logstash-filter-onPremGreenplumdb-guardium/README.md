@@ -102,6 +102,15 @@ For example:
 
 •You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
 ```
+```
+• Locate "Processors" in the filebeat.yml file and then add below attribute to get timezone of Server:
+	For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/add-locale.html
+	For example:-
+       processors:
+	 - add_locale: ~
+ ```
+
+  
 _For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output_
 
 
