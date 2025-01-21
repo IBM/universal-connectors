@@ -59,7 +59,7 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 		multiline.negate: true
 		multiline.match: after
 	
-	• Add the tags to uniquely identify the Neo4j events from the rest.
+	• Add the tags to uniquely identify the EDB Postgres events from the rest.
 	
 		tags: ["guc_postgres_param"]
 	
