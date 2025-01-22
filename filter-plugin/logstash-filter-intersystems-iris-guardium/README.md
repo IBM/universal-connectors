@@ -164,17 +164,21 @@ Note: If we are not able to access the portal, Edit the inbound rules in EC2 ins
  5. User is expected to give Server Ip address according to the format of Client Ip address in the input configuration.
  6. We have seen the error(Communication link failure: Connection refused) using AWS EC2 instance Ip inside UC input configuration, a restart may be required for UC to bypass a connection refused issue.
 
-## 7. Configuring the intersystems-iris filter in Guardium
+## 7. Configuring the InterSystems-IRIS filter in Guardium
+
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the intersystems-iris template.
 
 ### Before you begin
-1. Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
-2. You must have permission for the S-Tap Management role. The admin user includes this role by default.
-3. Download the [guardium_logstash-offline-plugin-intersystemsiris.zip](IntersystemsIrisoverJDBC/guardium_logstash-offline-plugin-intersystemsiris.zip) plug-in.
-4. Download the plugin filter configuration file [intersystems_iris.conf](intersystems_iris.conf).
-5. Download the intersystems-jdbc-3.7.1.jar from [here](IntersystemsIrisoverJDBC/intersystems-jdbc-3.7.1.jar) ([External Link](https://github.com/intersystems-community/iris-driver-distribution/blob/main/JDBC/JDK18/intersystems-jdbc-3.7.1.jar)).
+* Configure the policies you require. See [policies](/docs/#policies) for more information.
+* You must have permission for the S-Tap Management role. The admin user includes this role by default
+* Download the relevant plugin based on the version of the Guardium.
 
-### Procedure
+    1. For Guardium Data Protection, Download [guardium_logstash-offline-plugin-intersystemsiris.zip](IntersystemsIrisoverJDBC/guardium_logstash-offline-plugin-intersystemsiris.zip) plug-in.
+    2. For Guardium Data Protection, Download the plugin filter configuration file [intersystems_iris.conf](intersystems_iris.conf).
+    3. Download the intersystems-jdbc-3.7.1.jar from [here](IntersystemsIrisoverJDBC/intersystems-jdbc-3.7.1.jar) ([External Link](https://github.com/intersystems-community/iris-driver-distribution/blob/main/JDBC/JDK18/intersystems-jdbc-3.7.1.jar)).
+    4. For Guardium Data Security Center, Download [gi-filter-intersystems-iris-package-1.0.zip](gi-filter-intersystems-iris-package-1.0.zip).
+
+### Procedure in Guardium Data Protection
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the connector if it is already disabled, before proceeding uploading of the UC.
 3. Click Upload File and select the offline [guardium_logstash-offline-plugin-intersystemsiris.zip](IntersystemsIrisoverJDBC/guardium_logstash-offline-plugin-intersystemsiris.zip) plug-in. After it is uploaded, click OK.
@@ -185,6 +189,28 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 8. Update the filter section to add the details from [intersystems_iris.conf](intersystems_iris.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 9. The "type" field should match in the input and filter configuration section. This field should be unique for every individual connector added.
 10. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+
+### Procedure in Guardium Data Security Center
+1. In the main menu, click **Configurations** > **Connections** > **Monitored Data Source**.
+2. On the Connections page, click **Manage** > **Universal Connector Plugins**.
+3. Click **Add Plugin**, upload the pacakage: [gi-filter-intersystems-iris-package-1.0.zip](gi-filter-intersystems-iris-package-1.0.zip).
+4. Once the the package is uploaded succesfully. Navigate to **Connections** > **Add connection**.
+5. Search for **InterSystems IRIS** and click **Configure**
+6. Provide Name and Description, click **Next**.
+7. In the **Build pipeline**, **Choose input plugin** > **JDBC** > **Choose filter plugin** > **InterSystems IRIS** click **Next**.
+8. Enter the Additional information,
+
+   **Connection String:** Enter the JDBC connection string. For example: jdbc:IRIS://<InterSystems IRIS instance ip>:1972/%SYS
+   **JDBC User:** Enter the username that you want to connect to the database with access to the audit tables to be queried.
+   **Password:** Enter password for the JDBC user.
+
+   The statement setting determines which audit tables the SELECT query calls for the audit logs. In the Guardium UI, the Statement* is divided into three parts to enhance clarity and ease of use:
+
+   **SELECT:** For choosing columns
+   **FROM:** For specifying tables
+   **WHERE:** For adding filter conditions
+
+9. Click **Configure** and then click **Done**.
 
 ## 8. JDBC Load Balancing Configuration
 In Intersystems IRIS JDBC input plug-in, we distribute load between two machines based on Even and Odd "AuditIndex".
