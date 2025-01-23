@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class JsonParserTest {
-    private JsonUtil js = new JsonUtil();
+    private final JsonUtil js = new JsonUtil();
 
     private static final String JSON_SAMPLE_1 = "{\n"
             + "\t\"id\": \"0001\",\n"
