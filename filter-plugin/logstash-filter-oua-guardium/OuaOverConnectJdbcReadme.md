@@ -6,7 +6,7 @@
 * Supported inputs: Kafka Input (pull)
 * Supported Oracle versions: 19
 * Supported Guardium versions:
-    * Guardium Data Protection: 12.1 Q4 2024 bundle and above
+    * Guardium Data Protection: appliance bundle 12.1p105 or later.
 
 kafka-connect is framework for streaming data between Apache Kafka and other systems.
 Detailed breakdown:
