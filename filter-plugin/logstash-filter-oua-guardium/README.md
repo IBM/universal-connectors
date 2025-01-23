@@ -1,6 +1,6 @@
 # Oracle Unified Audit Universal Connector
 
-## Follow this link to set up and use Oracle Unified Audit Universal Connector
+## Follow this link to set up and use Oracle Unified Audit Universal Connector over Pipe
 
 [OuaOverPipeReadme](./OuaOverPipeReadme.md)
 
