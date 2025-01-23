@@ -80,7 +80,7 @@ Detailed breakdown:
         #  Add ALL_ACTIONS policy to all user except AUDITUSER
         AUDIT POLICY ALL_ACTIONS EXCEPT "AUDITUSER";
         ```
-      
+**For further details about configuring audit policies, see [official Oracle documentation](https://docs.oracle.com/en/database/oracle/oracle-database/19/dbseg/configuring-audit-policies.html).**
 ## Configuring Universal Connector on Guardium Data Protection
 ### Configuring Universal Connector Profile
 1. See [Creating data source profile topic](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-creating-data-source-profiles) to create a datasource profile.
