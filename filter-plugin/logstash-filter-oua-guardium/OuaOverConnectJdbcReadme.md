@@ -81,12 +81,26 @@ Detailed breakdown:
         AUDIT POLICY ALL_ACTIONS EXCEPT "AUDITUSER";
         ```
       
-### Configuring Universal Connector on Guardium Data Protection
-1. ### Creating a Kafka Cluster on Guardium
-   For information on creating Kafka Clusters, see the [Managing Kafka clusters](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-managing-kafka-clusters) topic.
-2. ### Configuring Universal Connector
-   For information on configuring the Universal Connector on Guardium using the new flow, see [Managing universal connector configuration](https://www.ibm.com/docs/en/gdp/12.x?topic=connector-managing-universal-configuration) topic.
+## Configuring Universal Connector on Guardium Data Protection
+### Configuring Universal Connector Profile
+1. See [Creating data source profile topic](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-creating-data-source-profiles) to create a datasource profile.
+2. Select '**OUA over JDBC connect**' in the plug-ins list
+3. Update the parameters as follows:
 
+| Field                      | Description                                                                                                                                                                                                                                                          |
+|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+                                                                                      |                                                                                                                                                                                                                                  |                                                                                                                                                                                                                              |
+| **Credential**             | Create JDBC credentials, for more information see [Creating Credentials](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-creating-credentials).                                                                                                       
+| **Kafka cluster**          | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-managing-kafka-clusters).                     |                                                                         |
+| **Maximum poll records**   | By default, the value is 1000. To get more efficient results, you can increase the Kafka cluster partition by setting this value to 2000. **Restriction**: Once partitions are increased, they cannot be decreased. After updating this value, reinstall the profile. |
+| **Poll timeout (ms)**      | By default, the value is 500.                                                                                                                                                                                                                                        |
+| **Initial Time (ms)**      | The timestamp from which the connector starts polling for changes in the database. Setting this to 0 means the connector starts from the earliest available data. For incremental data fetching, this ensures only new data (after the initial time) is retrieved.   |
+| **Hostname**               | Specifies the hostname or IP address of the Oracle database server. It is the address where the Oracle instance can be accessed for establishing a JDBC connection.                                                                                                  |
+| **JDBC driver library**    | The Oracle JDBC driver JAR file (e.g., `ojdbc8.jar`) is required for the connector to communicate with the Oracle database. Download the [Oracle JDBC driver JAR file](https://www.ibm.com/links?url=https%3A%2F%2Fdownload.oracle.com%2Fotn-pub%2Fotn_software%2Fjdbc%2F234%2Fojdbc8.jar) and upload it to the Kafka Connect environment.                                             |
+| **Port**                   | Specifies the port number used to connect to the Oracle database. The default port number is 1521, but it can vary depending on the Oracle configuration. Port 1521 must be open and accessible for the connection.                                                  |
+| **Service Name / SID**     | Specifies the Oracle service name (or SID if it's an older configuration) for the Kafka connector to connect. The service name uniquely identifies a database service within an Oracle environment and is provided by the database administrator.                    |
+ 
+4. Continue from step 3 of [Creating data source profile topic](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-creating-data-source-profiles) to complete creating a datasource profile. 
 ### Limitations 
 - Traffic is not getting captured on the Guardium report after the Oracle DB server reboot - as a temporary workaround, uninstalling and then installing the profile again will work in this case.
 - Currently, the following activities are not being captured in the Guardian reports:
@@ -94,5 +108,4 @@ Detailed breakdown:
   - Startup/Shutdown
   - backup/restore
   
-  We are aware of this limitation and are actively working on a resolution, which will be included in the upcoming UC version.
-
+  We are aware of this limitation and are actively working on a resolution, which will be included in the upcoming UC version
