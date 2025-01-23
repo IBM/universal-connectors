@@ -88,7 +88,7 @@ Detailed breakdown:
    For information on configuring the Universal Connector on Guardium using the new flow, see [Managing universal connector configuration](https://www.ibm.com/docs/en/gdp/12.x?topic=connector-managing-universal-configuration) topic.
 
 ### Limitations 
-- Traffic is not getting captured on the Guardium report after the Oracle DB server reboot - as a temporary workaround, uninstalling and then reinstalling the profile will work in this case.
+- Traffic is not getting captured on the Guardium report after the Oracle DB server reboot - as a temporary workaround, installing again the profile will work in this case.
 - Currently, the following activities are not being captured in the Guardian reports:
   - Logon/Logoff
   - Startup/Shutdown
