@@ -89,4 +89,9 @@ Detailed breakdown:
 
 ### Limitations 
 - Traffic is not getting captured on the Guardium report after the Oracle DB server reboot - as a temporary workaround, uninstalling and then reinstalling the profile will work in this case.
+- Currently, the following activities are not being captured in the Guardian reports:
+  - Logon/Logoff
+  - Startup/Shutdown
+  - backup/restore
+  We are aware of this limitation and are actively working on a resolution, which will be included in the upcoming UC version.
 
