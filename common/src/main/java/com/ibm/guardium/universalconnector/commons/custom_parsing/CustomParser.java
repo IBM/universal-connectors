@@ -336,7 +336,7 @@ public abstract class CustomParser {
     protected String getServerType(String payload) {
         // this has been validated before
         if (parseUsingSniffer)
-            return SqlParser.getServerType((String) properties.get(SNIFFER_PARSER));
+            return SqlParser.getServerType(properties.get(SNIFFER_PARSER));
 
         String value = getValue(payload, SERVER_TYPE);
         return value != null ? value : DEFAULT_STRING;
@@ -345,14 +345,14 @@ public abstract class CustomParser {
     protected String getLanguage(String payload) {
         // this has been validated before
         if (parseUsingSniffer)
-            return (String) properties.get(SNIFFER_PARSER);
+            return properties.get(SNIFFER_PARSER);
 
         return Accessor.LANGUAGE_FREE_TEXT_STRING;
     }
 
     protected String getDataType(String payload) {
         if (parseUsingSniffer)
-            return (String) properties.get(DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
+            return properties.get(DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
 
         return DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL;
     }

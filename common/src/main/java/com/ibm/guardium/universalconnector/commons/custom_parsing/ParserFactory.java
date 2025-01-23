@@ -5,8 +5,6 @@ import com.ibm.guardium.universalconnector.commons.custom_parsing.parsers.JsonPa
 import com.ibm.guardium.universalconnector.commons.custom_parsing.parsers.RegexParser;
 
 public class ParserFactory {
-    IParser parser;
-
     public ParserFactory() {
     }
 
@@ -20,6 +18,5 @@ public class ParserFactory {
     public enum ParserType {
         regex,
         json,
-        xml
     }
 }

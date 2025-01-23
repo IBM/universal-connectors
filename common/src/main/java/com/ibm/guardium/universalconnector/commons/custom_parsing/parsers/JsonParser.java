@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class JsonParser implements IParser {
 
-    private JsonUtil util = new JsonUtil();
+    private final JsonUtil util = new JsonUtil();
     Map<String, String> extractedProperties;
 
     @Override
