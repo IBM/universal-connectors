@@ -1,22 +1,28 @@
-# Oracle Unified Audit Universal Connector
-
-## Functional Overview
+# Oracle Unified Audit Universal Connector Over JDBC Connect
 
 kafka-connect is framework for streaming data between Apache Kafka and other systems.
 Detailed breakdown:
 1. Kafka-connect JDBC Connector: used to pull data from `UNIFIED_AUDIT_TRAIL`.
 2. Produce to Kafka: The queried data is then sent (produced) to a Kafka topic.
-3. Consume with UC: The data in the Kafka topic is consumed by kafka-input plugin and process by the 'guardium-oua-uc' filter plug-in, 
+3. Consume with UC: The data in the Kafka topic is consumed by kafka-input plugin and process by the 'guardium-oua-uc' filter plug-in,
    a specific Unified Connector designed for your use case.
 
-### NOTES
+## Meet Oracle Unified Audit Over JDBC Connect
 
+* Tested versions: 19
+* Environments: On-prem, RDS in AWS
+* Supported inputs: Kafka Input (pull)
+* Supported Oracle versions: 19 and 21
+* Supported Guardium versions:
+    * Guardium Data Protection: 12.1 and above
+
+
+### Requirements
 1. This feature currently only supported in environment with CM management 12.1 and kafka cluster
 2. Unified auditing must be enabled in an Oracle database that will be monitored by this method
 3. Download the Oracle JDBC driver. Download here:
    https://download.oracle.com/otn-pub/otn_software/jdbc/234/ojdbc8.jar
 4. Currently, this plug-in will work only on IBM Security Guardium Data Protection, not in Guardium Insights
-
 
 ## Setup
 
