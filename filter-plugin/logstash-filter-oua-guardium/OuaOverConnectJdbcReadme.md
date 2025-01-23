@@ -4,9 +4,9 @@
 * Tested versions: 19
 * Environments: On-prem, RDS in AWS
 * Supported inputs: Kafka Input (pull)
-* Supported Oracle versions: 18, 19, and 21
+* Supported Oracle versions: 19
 * Supported Guardium versions:
-    * Guardium Data Protection: 12.1 and above
+    * Guardium Data Protection: 12.1 Q4 2024 bundle and above
 
 kafka-connect is framework for streaming data between Apache Kafka and other systems.
 Detailed breakdown:
