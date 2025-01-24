@@ -115,7 +115,7 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 
 ### Limitations
-
+•DBName is set to 'NA' since it is not present in audit log.
 • Java filter code is used to handle “Query and Index Service” events logs only. The code can be enhanced further, depending on the purpose, if you are using Couchbase for your individual projects. All other types of Audit Events (except “Query and Index Service”) are not in scope for now.			   
 ## 4. Configuring the Couchbase filter in Guardium
 
