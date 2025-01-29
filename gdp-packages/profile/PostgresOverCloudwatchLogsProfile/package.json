@@ -56,21 +56,12 @@
         "hidden": false,
         "sequence": 6
       },
-      "cluster_name": {
-        "type": "text",
-        "label": "Cluster name",
-        "optional": true,
-        "hidden": true,
-        "sequence": 7,
-        "exclusion_regex": "add_field => \\{ \"cluster_name\" => \"param_cluster_name\" \\}",
-        "exclusion_replacement": ""
-      },
       "account_id": {
         "type": "text",
         "label": "Account id",
         "optional": false,
         "hidden": false,
-        "sequence": 8,
+        "sequence": 7,
         "exclusion_regex": "add_field => \\{ \"account_id\" => \"param_account_id\" \\}",
         "exclusion_replacement": ""
       }
