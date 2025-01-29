@@ -1,6 +1,6 @@
 ## Couchbase-Guardium Logstash filter plug-in
 ### Meet Couchbase
-* Tested versions: 6.6.2-9600
+* Tested versions: 6.6.2-9600, 7.2.5-7596, 7.6.1-3200, 7.6.3-4200, 7.6.4-5146
 * Environment: On-premise, Iaas
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
@@ -116,7 +116,9 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 ### Limitations
 
-• Java filter code is used to handle “Query and Index Service” events logs only. The code can be enhanced further, depending on the purpose, if you are using Couchbase for your individual projects. All other types of Audit Events (except “Query and Index Service”) are not in scope for now.			   
+	• DBName is set to 'NA' since it is not present in audit log.
+	• Java filter code is used to handle “Query and Index Service” events logs only. The code can be enhanced further, depending on the purpose, if you are using Couchbase for your individual projects. All other types of Audit Events (except “Query and Index Service”) are not in scope for now.
+
 ## 4. Configuring the Couchbase filter in Guardium
 
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector identifies and parses received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Couchbase template.
