@@ -1,8 +1,6 @@
 package com.ibm.guardium.couchbasedb;
 
 import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -103,19 +101,11 @@ public class Parser {
 		if(data.has(Constants.TIMESTAMP) && !data.get(Constants.TIMESTAMP).isJsonNull()) {
 			dateString=data.get(Constants.TIMESTAMP).getAsString();
 		}
-		String timeZone = null;
-		if(data.has(Constants.MIN_OFF) && !data.get(Constants.MIN_OFF).isJsonNull()) {
-			timeZone = data.get(Constants.MIN_OFF).getAsString();
-		}
+
 		if(dateString!=null) {
-			LocalDateTime dt = LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME);
-			ZoneOffset offset = ZoneOffset.of(ZoneOffset.UTC.getId());
-			if(timeZone != null ){
-				offset = ZoneOffset.of(timeZone);
-			}
-			ZonedDateTime zdt = dt.atOffset(offset).toZonedDateTime();
-			long millis = zdt.toInstant().toEpochMilli();
-			int minOffset = zdt.getOffset().getTotalSeconds() / 60;
+			ZonedDateTime date = ZonedDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME);
+			long millis = date.toInstant().toEpochMilli();
+			int minOffset = date.getOffset().getTotalSeconds() / 60;
 			return new Time(millis, minOffset, 0);
 		}
 		
