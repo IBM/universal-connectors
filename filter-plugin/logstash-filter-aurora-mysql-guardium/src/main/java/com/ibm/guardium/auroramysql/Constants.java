@@ -23,4 +23,8 @@ public interface Constants {
 	public static final String SERVERHOSTNAME = "Server_Hostname";
 	public static final String LOGIN_FAILED = "LOGIN_FAILED";
 	public static final String SQL_ERROR = "SQL_ERROR";
+	public static final String TAGS = "tags";
+	public static final String GROK_PARSE_FAILURE = "_grokparsefailure";
+	public static final String MESSAGE = "message";
+	public static final String SQL_ERROR_CODE_MY_010914 = "MY-010914";
 }
