@@ -125,23 +125,23 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 #### Before you begin
 
-•  Configure the policies you require. See [policies](/docs/#policies) for more information.
+• Configure the policies you require. See [policies](/docs/#policies) for more information.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role, by default.
 
 • Couchbase-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [couchbase-offline-pack.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-couchbasedb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [couchbase-offline-pack.zip](logstash-filter-couchbasedb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 
 #### Procedure
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First enable the Universal Guardium connector, if it is disabled already.
-3. Click Upload File and select the offline plug-in named [couchbase-offline-pack.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-couchbasedb_guardium_plugin_filter.zip). After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+3. Click Upload File and select the offline plug-in named [couchbase-offline-pack.zip](logstash-filter-couchbasedb_guardium_plugin_filter.zip). After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 4. Click the Plus sign icon. The Connector Configuration dialog box opens.
 5. Type a name in the Connector name field.
-6. Update the input section to add the details from the [couchbasedbFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-couchbasedb-guardium/couchbasedbFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. On the Logstash server, ensure that the port that you want to use is free. This port should should be same as the port number defined in the filebeat.yml file.
+6. Update the input section to add the details from the [couchbasedbFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-couchbasedb-guardium/couchbasedbFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. On the Logstash server, ensure that the port that you want to use is free. This port should be same as the port number defined in the filebeat.yml file.
 7. Update the filter section to add the details from the [couchbasedbFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-couchbasedb-guardium/couchbasedbFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 9. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.
