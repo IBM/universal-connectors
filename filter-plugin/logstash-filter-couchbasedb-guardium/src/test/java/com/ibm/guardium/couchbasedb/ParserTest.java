@@ -48,6 +48,7 @@ public class ParserTest {
         Assert.assertEquals(Constants.TEXT, record.getAccessor().getDataType());
         Assert.assertEquals(null, record.getException());
         Assert.assertNotNull(record.getData());
+        Assert.assertEquals(record.getDbName(),record.getAccessor().getServiceName());
     }
     
     //Exception handling - Syntactically wrong query
