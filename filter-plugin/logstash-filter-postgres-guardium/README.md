@@ -23,6 +23,8 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 [Aurora Postgres README](./AuroraPostgres_README.md) (Serverless support is also available)
 
 ## Limitations
-• The postgres plug-in does not support IPV6.
-
-• PGAudit logs the batch queries multiple times, so the report will show multiple entries for the same item.
+	• The postgres plug-in does not support IPV6
+	• When Postgres UC is configured to be used with SQS, the multiline characters in the query are not preserved in FullSql Reports
+	• When Postgres UC is configured to be used with SQS, the queries containing single line comments will not be supported
+	• PGAudit logs the batch queries multiple times, so the report will show multiple entries for the same item
+	• Client HostName and OS User fields couldn't be mapped with the logs, so set as empty.
