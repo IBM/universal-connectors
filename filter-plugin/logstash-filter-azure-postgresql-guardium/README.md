@@ -30,6 +30,7 @@ This plug-in uses Azure Event Hub as the data streaming service.
 There are multiple ways to install a Postgres server. For this example, we will assume that we already have a working Azure Postgres setup.
 For information regarding setup, please refer [quickstart-create-server-portal](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-create-server-portal) link. 
 
+**Note:**  Here, we can opt for either a single server or a PostgreSQL Flexible server. The Single Server option is on the retirement path. For more information on the retirement schedule, please refer to the [official Microsoft documentation](https://learn.microsoft.com/en-us/azure/postgresql/migrate/whats-happening-to-postgresql-single-server?wt.mc_id=searchAPI_azureportal_inproduct_rmskilling&sessionId=d1a1e6c6a39842e1bc0191329167d1c3).
 	
 ## 2. Enabling Auditing
 
