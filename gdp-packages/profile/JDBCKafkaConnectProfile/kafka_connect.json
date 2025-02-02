@@ -6,10 +6,15 @@
     "timestamp.column.name": "param_tracking_column",
     "timestamp.initial.ms":"param_timestamp_initial_ms",
     "topic.prefix": "profile_name",
-    "connection.password": "cred_password",
     "tasks.max": "1",
     "connection.user": "cred_username",
-    "query": "SELECT EVENT_TIMESTAMP_UTC, TO_CHAR(SESSIONID) AS SESSIONID, DBUSERNAME AS USERID, ( CASE WHEN EXECUTION_ID IS NOT NULL THEN NULL ELSE ( SELECT GLOBAL_NAME FROM CONTAINERS (GLOBAL_NAME) WHERE CON_ID IN ( SELECT CON_ID FROM V$MYSTAT ) ) END ) CON_NAME, OS_USERNAME AS OS_USER, SUBSTR( REGEXP_SUBSTR(AUTHENTICATION_TYPE, 'HOST=([^)]*)'), 6 ) AS CLIENT_HOST_IP, USERHOST AS CLIENT_HOST_NAME, ( SELECT SYS_CONTEXT('USERENV','SERVER_HOST_IP') FROM DUAL ) SERVER_HOST_IP, CLIENT_PROGRAM_NAME, TO_CHAR(DBID) AS DBID, ( SELECT NAME FROM V$DATABASE WHERE DBID = DBID) DBNAME, TO_CHAR(RETURN_CODE) AS RETURN_CODE, SQL_TEXT FROM Unified_AUDIT_TRAIL",
+    "connection.password": "cred_password",
+    "connection.oracle.krb.config": "cred_krb5_conf",
+    "connection.oracle.krb.user": "cred_username_krb",
+    "connection.oracle.krb.password": "cred_password_krb",
+    "connection.oracle.krb.keytab": "cred_keytab_krb",
+    "connection.oracle.krb.cc": "cred_cc_krb",
+    "query": "param_query",
     "connection.url": "jdbc:oracle:thin:@//param_host:param_port/param_service_name"
   }
 }
