@@ -1,0 +1,48 @@
+{
+  "plugin_name": "Postgres Over Filebeat",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-onPremPostgres-guardium/README.md",
+  "input_name": "Filebeat input",
+  "input_parameters": [
+    {
+      "port": {
+        "label": "Port",
+        "type": "number",
+        "optional": false,
+        "hidden": false,
+        "default": 5044,
+        "sequence": 2
+      },
+      "ssl_enabled": {
+        "label": "SSL authentication",
+        "type": "boolean",
+        "default": false,
+        "hidden": false,
+        "optional": true,
+        "sequence": 3
+      },
+      "include_codec_tag": {
+        "label": "Include codec tag",
+        "type": "boolean",
+        "default": false,
+        "hidden": false,
+        "optional": true,
+        "sequence": 4
+      }
+    }
+  ],
+  "filter_name": "Guardium_Postgres_on-prem_filter",
+  "filter_parameters": [
+    {
+      "datasource_tag": {
+        "type": "text",
+        "label": "Datasource Tag",
+        "optional": false,
+        "hidden": false,
+        "sequence": 1
+      }
+    }
+  ],
+  "supported_platforms": [
+    "on-premise"
+  ]
+}
