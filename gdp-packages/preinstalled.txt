@@ -19,3 +19,5 @@ PostgresOverFilebeatProfile
 PostgresOverKafkaProfile
 PostgresOverSQSProfile
 S3OverCloudwatchLogsProfile
+JDBCKafkaConnectProfile
+OUAOverJdbcKafkaConnectProfile

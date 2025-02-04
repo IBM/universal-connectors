@@ -134,9 +134,9 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 		Download [logstash-filter-xml-4.1.3-1.zip](./logstash-filter-xml-4.1.3-1.zip).<br>
 	III. If you are using Guardium 12.0 with patch p5 or earlier,
 		Download [logstash-filter-xml-4.2.0-1.zip](./logstash-filter-xml-4.2.0-1.zip).<br>
-	IV. For the Guardium 11.4(p490 or later),11.5(p540 or later) and 12.0(p10 or later),
+	IV. For the Guardium 11.4p490, 11.5p540 and 12.0p10,
 		Download [logstash-filter-xml-4.2.0-2.zip](./logstash-filter-xml-4.2.0-2.zip).<br>
-	V. For the Guardium 12.0(p15 or later), logstash-filter-xml.zip upload is not required.
+	V.  For the Guardium 11.4(p491 or later), 11.5(p545 or later) and 12.0(p15 or later), logstash-filter-xml.zip upload is not required.
 
 • Download the [mssql-jdbc-7.4.1.jre8](./mssql-jdbc-7.4.1.jre8.jar) jar.
 
@@ -154,7 +154,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
       Upload [logstash-filter-xml-4.2.0-1.zip](./logstash-filter-xml-4.2.0-1.zip).<br>
       IV. For the Guardium 11.4(p490 or later),11.5(p540 or later) and 12.0(p10 or later),
       Upload [logstash-filter-xml-4.2.0-2.zip](./logstash-filter-xml-4.2.0-2.zip).<br>
-   	  V. For the Guardium 12.0(p15 or later), logstash-filter-xml.zip upload is not required.
+   	  V. For the Guardium 11.4(p491 or later), 11.5(p545 or later) and 12.0(p15 or later), logstash-filter-xml.zip upload is not required.
 5. Click Upload File and select the [mssql-jdbc-7.4.1.jre8](./mssql-jdbc-7.4.1.jre8.jar) jar. After it is uploaded, click OK.
 6. Click the Plus sign to open the Connector Configuration dialog box.
 7. Type a name in the Connector name field.
