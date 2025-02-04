@@ -1,0 +1,15 @@
+{
+	"name": "Guardium_MariaDB_filter",
+	"alias": "MariaDB",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"distribute_to_many": "false", 
+	"plugin_version": "1.0.15",
+	"datasourceTypes": ["MariaDB"],
+	"supported_input_plugins": ["Cloudwatch logs input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses Amazon MariaDB database events into Guardium.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-mariadb-aws-guardium/README.md"
+}
