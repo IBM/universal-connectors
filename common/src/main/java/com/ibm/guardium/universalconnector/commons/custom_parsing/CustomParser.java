@@ -32,22 +32,29 @@ public abstract class CustomParser {
     protected boolean hasSqlParsing = false;
     protected boolean parseUsingCustomParser = false;
 
-    public CustomParser(ParserFactory.ParserType parserType) throws InvalidConfigurationException {
+    public CustomParser(ParserFactory.ParserType parserType) {
         parser = new ParserFactory().getParser(parserType);
         mapper = new ObjectMapper();
 
         // We only need to read the properties file once and then we validate it.
-        properties = getProperties();
+        try {
+            properties = getProperties();
+        } catch (InvalidConfigurationException e) {
+            logger.error("The config file is corrupted so the parser cannot parse the logs: ", e);
+        }
     }
 
     public Record parseRecord(String payload) {
-        if (!parser.isPayloadValid(payload))
-            return null;
+        if(!isValid(payload)) return null;
 
         return extractRecord(payload);
     }
 
-    private Record extractRecord(String payload) {
+    protected boolean isValid(String payload) {
+        return properties != null && parser.isPayloadValid(payload);
+    }
+
+    protected Record extractRecord(String payload) {
         Record record = new Record();
 
         record.setSessionId(getSessionId(payload));
@@ -207,10 +214,9 @@ public abstract class CustomParser {
         sessionLocator.setClientIp(DEFAULT_IP);
         sessionLocator.setServerIp(DEFAULT_IP);
 
-        boolean isIpV6 = isIpv6(payload);
         String clientIp = getClientIp(payload);
         String clientIpv6 = getClientIpv6(payload);
-        if (isIpV6 && inetAddressValidator.isValidInet6Address(clientIpv6)) {
+        if (inetAddressValidator.isValidInet6Address(clientIpv6)) {
             // If client IP is IPv6, set both client and server to IPv6
             sessionLocator.setIpv6(true);
             sessionLocator.setClientIpv6(clientIpv6);
