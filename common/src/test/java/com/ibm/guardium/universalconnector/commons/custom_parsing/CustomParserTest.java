@@ -44,28 +44,6 @@ public class CustomParserTest {
     }
 
     @Test
-    public void invalidConfigFileTest() {
-        try {
-            new CustomParser(ParserFactory.ParserType.regex) {
-
-                @Override
-                public String getConfigFilePath() {
-                    // Return the path to your configuration file
-                    return "src/test/resources/empty.json";
-                }
-
-                @Override
-                public Record parseRecord(String payload) {
-                    return super.parseRecord(payload);
-                }
-            };
-            fail("Expected InvalidConfigurationException to be thrown");
-        } catch (InvalidConfigurationException e) {
-            assertEquals("Error reading or parsing the configuration file.", e.getMessage());
-        }
-    }
-
-    @Test
     public void testParseRecordValidPayload() {
         String payload = String.format(
                 "[Session ID: %s] [Client Port: %s] [Server Port: %s] [DB User: %s] [Server Type: %s] [DB Protocol: %s] [Exception Type ID: %s]",
@@ -92,7 +70,7 @@ public class CustomParserTest {
     }
 
     @Test
-    public void testGetStaticValue() throws InvalidConfigurationException {
+    public void testGetStaticValue() {
         Map<String, String> props = new HashMap<>();
         props.put(PropertyConstant.DB_USER, "{TEST}");
         CustomParser cp = new CustomParser(ParserFactory.ParserType.regex) {
@@ -478,7 +456,7 @@ public class CustomParserTest {
     }
 
     @Test
-    public void testJson() throws InvalidConfigurationException {
+    public void testJson() {
         String payload = "{\"hostIdentifier\":\"7d058e67620c\",\"calendarTime\":\"Sun Apr 14 16:17:14 2019 UTC\","
                 + "\"unixTime\":\"1555258634\","
                 + "\"severity\":\"0\",\"filename\":\"aws_kinesis.cpp\",\"line\":\"142\",\"message\":\"Successfully sent 6 of 6 logs to Kinesis\","
