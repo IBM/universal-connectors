@@ -5,13 +5,9 @@ SPDX-License-Identifier: Apache-2.0
 
 package com.ibm.guardium.icd.postgresql;
 
-import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +30,7 @@ public class Parser {
 
 	/***
 	 * Parses logs and returns a Guard Record object
-	 * 
+	 *
 	 * @param event
 	 * @return
 	 * @throws Exception
@@ -52,8 +48,7 @@ public class Parser {
 			record.setSessionLocator(parseSessionLocator(event));
 			record.setTime(getTime(event));
 			if (event.getField(ApplicationConstant.STATEMENT) != null
-					&& (event.getField(ApplicationConstant.STATEMENT).toString().startsWith("S")
-							|| event.getField(ApplicationConstant.STATEMENT).toString().startsWith("F"))) {
+					&& event.getField(ApplicationConstant.STATEMENT).toString().startsWith("F")){
 				record.setException(parseExceptionRecord(event));
 			} else {
 				record.setData(parseData(event));
@@ -67,19 +62,22 @@ public class Parser {
 
 	/**
 	 * Method to get the Session Id from the event
-	 * 
+	 *
 	 * @param event
 	 * @return
 	 */
 	private static String getSessionId(Event event) {
-		Integer sessionId = (parseSessionLocator(event).getClientIp() + parseAccessor(event).getDbUser()
-				+ getDbName(event)).hashCode();
-		return sessionId.toString();
+		String sessionId = ApplicationConstant.NOT_AVAILABLE;
+		if (event.getField(ApplicationConstant.SESSION_ID) != null
+				&& !event.getField(ApplicationConstant.SESSION_ID).toString().isEmpty()) {
+			sessionId = event.getField(ApplicationConstant.SESSION_ID).toString();
+		}
+		return sessionId;
 	}
 
 	/**
 	 * Method to get the database name from the event
-	 * 
+	 *
 	 * @param event
 	 * @return
 	 */
@@ -102,14 +100,14 @@ public class Parser {
 	 * Using this method describes location details about the data source
 	 * connection/session: Who connected, from which client IP and port, to what
 	 * server IP and port
-	 * 
+	 *
 	 * @param event
 	 * @return SessionLocator
 	 * @throws ParseException
 	 */
 	public static SessionLocator parseSessionLocator(final Event event) {
 		SessionLocator sessionLocator = new SessionLocator();
-		String clientIp = event.getField(ApplicationConstant.CLIENT_IP) != null
+		String clientIp = (event.getField(ApplicationConstant.CLIENT_IP) != null && !event.getField(ApplicationConstant.CLIENT_IP).toString().isEmpty())
 				? event.getField(ApplicationConstant.CLIENT_IP).toString()
 				: ApplicationConstant.DEFAULT_IP;
 		if (Util.isIPv6(clientIp)) {
@@ -128,25 +126,31 @@ public class Parser {
 
 	/**
 	 * Using this method to set details about the user who accessed the Accessor
-	 * 
+	 *
 	 * @param event
 	 * @return Accessor
 	 */
 	public static Accessor parseAccessor(final Event event) {
 		Accessor accessor = new Accessor();
 		accessor.setClientHostName(ApplicationConstant.UNKNOWN_STRING);
-		accessor.setDbUser(event.getField(ApplicationConstant.USER_NAME) != null
+		accessor.setDbUser((event.getField(ApplicationConstant.USER_NAME) != null && !event.getField(ApplicationConstant.USER_NAME).toString().isEmpty())
 				? event.getField(ApplicationConstant.USER_NAME).toString()
 				: ApplicationConstant.NOT_AVAILABLE);
 		accessor.setServerType(ApplicationConstant.SERVER_TYPE_STRING);
 		accessor.setServiceName(getDbName(event));
 		accessor.setDbProtocol(ApplicationConstant.DB_PROTOCOL);
 		accessor.setDbProtocolVersion(ApplicationConstant.UNKNOWN_STRING);
-		accessor.setSourceProgram(ApplicationConstant.UNKNOWN_STRING);
-		accessor.setServerHostName(event.getField(ApplicationConstant.ACCOUNT_ID) != null
-				? event.getField(ApplicationConstant.ACCOUNT_ID).toString()
-						+ event.getField(ApplicationConstant.DETAILS).toString().concat(".ibm.com")
-				: ApplicationConstant.UNKNOWN_STRING);
+		accessor.setSourceProgram(event.getField(ApplicationConstant.SOURCE_PROGRAM) != null
+				? event.getField(ApplicationConstant.SOURCE_PROGRAM).toString()
+				: ApplicationConstant.NOT_AVAILABLE);
+		if (event.getField(ApplicationConstant.INCLUDE_ACCOUNTID_IN_HOST).toString().equalsIgnoreCase("true")) {
+			accessor.setServerHostName(event.getField(ApplicationConstant.ACCOUNT_ID) != null
+					? event.getField(ApplicationConstant.ACCOUNT_ID).toString().concat(".ibm.com")
+					: ApplicationConstant.UNKNOWN_STRING);
+		}
+		else {
+			accessor.setServerHostName("Postgres.ibm.com");
+		}
 		accessor.setServerDescription(ApplicationConstant.UNKNOWN_STRING);
 		accessor.setLanguage(ApplicationConstant.LANGUAGE);
 		accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
@@ -163,7 +167,7 @@ public class Parser {
 	 * parseData() method will perform operation on JsonObject data, set the
 	 * expected value into respective Data Object and then return the value as
 	 * response
-	 * 
+	 *
 	 * @param event
 	 * @return
 	 * @throws Exception
@@ -187,66 +191,49 @@ public class Parser {
 	/**
 	 * Using this method to set details about the user who accessed the Exception
 	 * source
-	 * 
+	 *
 	 * @param event
 	 * @return Exception
 	 */
 	public static ExceptionRecord parseExceptionRecord(final Event event) {
 		ExceptionRecord exception = new ExceptionRecord();
-		if (event.getField(ApplicationConstant.STATUS) != null
-				&& event.getField(ApplicationConstant.STATUS).toString().contains("INFO: archive-push")) {
-			String statusString = event.getField(ApplicationConstant.STATUS).toString();
-			String[] status = statusString.split(" INFO: archive-push");
-			exception.setSqlString(event.getField(ApplicationConstant.STATUS) != null
-					&& !event.getField(ApplicationConstant.STATEMENT).toString().equals("FATAL")
-							? status[0].replaceAll("\\\\\"", "\"")
-							: ApplicationConstant.UNKNOWN_STRING);
+
+		String errorCode = event.getField(ApplicationConstant.ERROR_CODE).toString();
+		if(errorCode.equals("28P01")) {
+			exception.setExceptionTypeId(ApplicationConstant.LOGIN_FAILED);
 		} else {
-			exception.setSqlString(event.getField(ApplicationConstant.STATUS) != null
-					&& !event.getField(ApplicationConstant.STATEMENT).toString().equals("FATAL")
-							? event.getField(ApplicationConstant.STATUS).toString().replaceAll("\\\\\"", "\"")
-							: ApplicationConstant.UNKNOWN_STRING);
+			exception.setExceptionTypeId(ApplicationConstant.EXCEPTION_TYPE_SQL_ERROR_STRING);
 		}
-		exception.setExceptionTypeId(event.getField(ApplicationConstant.STATEMENT) != null
-				&& event.getField(ApplicationConstant.STATEMENT).toString().equals("FATAL")
-						? ApplicationConstant.LOGIN_FAILED
-						: ApplicationConstant.EXCEPTION_TYPE_SQL_ERROR_STRING);
-		exception.setDescription(event.getField(ApplicationConstant.STATEMENT) != null && event.getField(ApplicationConstant.ERROR_CODE)!=null
-						?event.getField(ApplicationConstant.ERROR_CODE).toString():  ApplicationConstant.UNKNOWN_STRING);
-								
+		exception.setDescription(errorCode);
+		exception.setSqlString(event.getField(ApplicationConstant.SQL_QUERY).toString());
+
 		return exception;
 	}
 
 	/**
 	 * Method to get the time from JsonObject, set the expected value into
 	 * respective Time Object and then return the value as response
-	 * 
+	 *
 	 * @param event
 	 * @return
 	 */
 	public static Time getTime(Event event) throws Exception {
-		try {
-			String timeStamp = event.getField(ApplicationConstant.TIMESTAMP) != null
-					? event.getField(ApplicationConstant.TIMESTAMP).toString()
-					: ApplicationConstant.UNKNOWN_STRING;
-			ZonedDateTime date = ZonedDateTime.parse(timeStamp);
-			long millis = date.toInstant().toEpochMilli();
-			int minOffset = date.getOffset().getTotalSeconds() / 60;
-			return new Time(millis, minOffset, 0);
-		} catch (Exception e) {
-			String timeStamp = event.getField(ApplicationConstant.TIMESTAMP) != null
-					? event.getField(ApplicationConstant.TIMESTAMP).toString()
-					: ApplicationConstant.UNKNOWN_STRING;
-			String timeZone = event.getField(ApplicationConstant.TIMEZONE) != null
-					? event.getField(ApplicationConstant.TIMEZONE).toString()
-					: ApplicationConstant.UNKNOWN_STRING;
-			String dateString = timeStamp+ " " + timeZone;
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss zzz");
+		String timeStamp = event.getField(ApplicationConstant.TIMESTAMP) != null
+				? event.getField(ApplicationConstant.TIMESTAMP).toString()
+				: ApplicationConstant.UNKNOWN_STRING;
+		String timeZone = event.getField(ApplicationConstant.TIMEZONE) != null
+				? event.getField(ApplicationConstant.TIMEZONE).toString()
+				: ApplicationConstant.UNKNOWN_STRING;
+		String dateString = timeStamp+ " " + timeZone;
+		Long millis = 0L;
+		int minOffset = 0;
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss zzz");
+		if (!dateString.trim().isEmpty()) {
 			Date date = df.parse(dateString);
-			long millis = date.getTime();
-			int minOffset = 0;
-			return new Time(millis, minOffset, 0);
-		}
-	}
+			millis = date.getTime();
+			minOffset = 0;
 
+		}
+		return new Time(millis, minOffset, 0);
+	}
 }
