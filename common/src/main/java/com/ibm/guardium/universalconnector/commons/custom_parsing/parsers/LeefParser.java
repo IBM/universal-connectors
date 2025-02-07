@@ -116,7 +116,7 @@ public class LeefParser implements IParser {
      * @param payload The structured event payload
      * @return A Map containing String values of all 'properties' within the event
      */
-    public Map<String, String> parsePayload(String payload) {
+    Map<String, String> parsePayload(String payload) {
         Map<String, String> map = new HashMap<>();
         Index i = new Index();
         // Look for the LEEF header, if it isn't present, then the payload we were

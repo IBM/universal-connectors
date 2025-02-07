@@ -21,11 +21,7 @@ public class JsonParser implements IParser {
         if (payload == null)
             return false;
 
-        extractedProperties = parsePayload(payload);
+        extractedProperties = util.getMap(payload);
         return extractedProperties != null && !extractedProperties.isEmpty();
-    }
-
-    public Map<String, String> parsePayload(String payload) {
-        return util.getMap(payload);
     }
 }
