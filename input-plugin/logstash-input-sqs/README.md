@@ -15,6 +15,8 @@ This plug-in pulls events from an Amazon Web Services Simple Queue Service (SQS)
 
 SQS is a simple, scalable queue system that is part of the Amazon Web Services suite of tools.
 
+**Note:** If the machine on which Guardium Data Protection is installed has an incorrect time zone, update the time according to your location and restart the UC by disabling and then enabling it. 
+
 ### Creating the SQS queue
 **_Procedure_**
 1. Go to https://console.aws.amazon.com/
