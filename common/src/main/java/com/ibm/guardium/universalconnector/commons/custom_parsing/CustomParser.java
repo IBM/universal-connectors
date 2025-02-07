@@ -1,6 +1,8 @@
 package com.ibm.guardium.universalconnector.commons.custom_parsing;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ibm.guardium.universalconnector.commons.custom_parsing.excepton.InvalidConfigurationException;
 import com.ibm.guardium.universalconnector.commons.custom_parsing.parsers.IParser;
 import com.ibm.guardium.universalconnector.commons.structures.*;
 import org.apache.commons.validator.routines.InetAddressValidator;
@@ -25,26 +27,35 @@ public abstract class CustomParser {
     private static final InetAddressValidator inetAddressValidator = InetAddressValidator.getInstance();
     protected Map<String, String> properties;
     private final ObjectMapper mapper;
-    private final IParser parser;
+    IParser parser;
     protected boolean parseUsingSniffer = false;
     protected boolean hasSqlParsing = false;
-    protected boolean parseUsingRegex = false;
+    protected boolean parseUsingCustomParser = false;
 
     public CustomParser(ParserFactory.ParserType parserType) {
         parser = new ParserFactory().getParser(parserType);
         mapper = new ObjectMapper();
+
+        // We only need to read the properties file once and then we validate it.
+        try {
+            properties = getProperties();
+        } catch (InvalidConfigurationException e) {
+            logger.error("The config file is corrupted so the parser cannot parse the logs: ", e);
+        }
     }
 
     public Record parseRecord(String payload) {
-        properties = getProperties();
-
         if (!isValid(payload))
             return null;
 
         return extractRecord(payload);
     }
 
-    private Record extractRecord(String payload) {
+    protected boolean isValid(String payload) {
+        return properties != null && parser.isPayloadValid(payload);
+    }
+
+    protected Record extractRecord(String payload) {
         Record record = new Record();
 
         record.setSessionId(getSessionId(payload));
@@ -64,10 +75,11 @@ public abstract class CustomParser {
 
     protected String getValue(String payload, String fieldName) {
         String value = properties.get(fieldName);
-        if(value == null) return null;
+        if (value == null)
+            return null;
 
         // If it is static literal we dont need custom parser
-        if(value.startsWith("{") && value.endsWith("}"))
+        if (value.startsWith("{") && value.endsWith("}"))
             return value.substring(1, value.indexOf("}"));
 
         return parse(payload, value);
@@ -203,10 +215,9 @@ public abstract class CustomParser {
         sessionLocator.setClientIp(DEFAULT_IP);
         sessionLocator.setServerIp(DEFAULT_IP);
 
-        boolean isIpV6 = isIpv6(payload);
         String clientIp = getClientIp(payload);
         String clientIpv6 = getClientIpv6(payload);
-        if (isIpV6 && inetAddressValidator.isValidInet6Address(clientIpv6)) {
+        if (inetAddressValidator.isValidInet6Address(clientIpv6)) {
             // If client IP is IPv6, set both client and server to IPv6
             sessionLocator.setIpv6(true);
             sessionLocator.setClientIpv6(clientIpv6);
@@ -332,7 +343,7 @@ public abstract class CustomParser {
     protected String getServerType(String payload) {
         // this has been validated before
         if (parseUsingSniffer)
-            return SqlParser.getServerType((String) properties.get(SNIFFER_PARSER));
+            return SqlParser.getServerType(properties.get(SNIFFER_PARSER));
 
         String value = getValue(payload, SERVER_TYPE);
         return value != null ? value : DEFAULT_STRING;
@@ -341,14 +352,14 @@ public abstract class CustomParser {
     protected String getLanguage(String payload) {
         // this has been validated before
         if (parseUsingSniffer)
-            return (String) properties.get(SNIFFER_PARSER);
+            return properties.get(SNIFFER_PARSER);
 
         return Accessor.LANGUAGE_FREE_TEXT_STRING;
     }
 
     protected String getDataType(String payload) {
         if (parseUsingSniffer)
-            return (String) properties.get(DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
+            return properties.get(DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
 
         return DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL;
     }
@@ -376,14 +387,18 @@ public abstract class CustomParser {
 
     public abstract String getConfigFilePath();
 
-    public Map<String, String> getProperties() {
+    public Map<String, String> getProperties() throws InvalidConfigurationException {
+        Map<String, String> props;
         try {
             String content = new String(Files.readAllBytes(Paths.get(getConfigFilePath())));
-            return mapper.readValue(content, HashMap.class);
+            props = mapper.readValue(content, new TypeReference<HashMap<String, String>>() {
+            });
+            if (!arePropertiesValid(props))
+                throw new InvalidConfigurationException("The configuration file data is invalid.");
         } catch (IOException e) {
-            logger.error("Error reading properties from config file", e);
-            return null;
+            throw new InvalidConfigurationException("Error reading or parsing the configuration file.");
         }
+        return props;
     }
 
     protected Integer convertToInt(String fieldName, String value) {
@@ -396,22 +411,18 @@ public abstract class CustomParser {
         return null;
     }
 
-    protected boolean isValid(String payload) {
-        if (properties == null) {
+    protected boolean arePropertiesValid(Map<String, String> props) {
+        if (props == null) {
             logger.error("The provided config file is invalid.");
             return false;
         }
 
-        if (payload == null) {
-            logger.error("The provided payload is null.");
-            return false;
-        }
+        hasSqlParsing = SqlParser.hasSqlParsing(props);
+        parseUsingSniffer = hasSqlParsing && SqlParser.isSnifferParsing(props);
+        parseUsingCustomParser = hasSqlParsing && SqlParser.isCustomParsing(props);
 
-        hasSqlParsing = SqlParser.hasSqlParsing(properties);
-        parseUsingSniffer = hasSqlParsing && SqlParser.isSnifferParsing(properties);
-        parseUsingRegex = hasSqlParsing && SqlParser.isRegexParsing(properties);
-
-        SqlParser.ValidityCase isValid = SqlParser.isValid(properties, hasSqlParsing, parseUsingSniffer, parseUsingRegex);
+        SqlParser.ValidityCase isValid = SqlParser.isValid(props, hasSqlParsing, parseUsingSniffer,
+                parseUsingCustomParser);
         if (!isValid.equals(SqlParser.ValidityCase.VALID)) {
             logger.error(isValid.getDescription());
             return false;

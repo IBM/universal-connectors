@@ -27,7 +27,8 @@ public class RegexParser implements IParser {
                 return m.groupCount() > 0 ? m.group(1) : m.group();
             } else {
                 if (rr.timedOut() && logger.isDebugEnabled()) {
-                    logger.debug("Regex parse aborted due to taking too long to match -- regex: {}, event-payload: {}", pattern, payload);
+                    logger.debug("Regex parse aborted due to taking too long to match -- regex: {}, event-payload: {}",
+                            pattern, payload);
                 }
             }
         } catch (PatternSyntaxException e) {
@@ -36,4 +37,8 @@ public class RegexParser implements IParser {
         return null;
     }
 
+    @Override
+    public boolean isPayloadValid(String payload) {
+        return payload != null;
+    }
 }
