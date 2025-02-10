@@ -139,10 +139,8 @@ public abstract class CustomParser {
         }
 
         Data data = new Data();
-        // If it reaches out this point it is a regex parsing and object and verb are
-        // not null
-        String object = getValue(payload, OBJECT);
-        String verb = getValue(payload, VERB);
+        String object = getNotNullString(getValue(payload, OBJECT));
+        String verb = getNotNullString(getValue(payload, VERB));
         Construct construct = new Construct();
         Sentence sentence = new Sentence(verb);
         SentenceObject sentenceObject = new SentenceObject(object);
@@ -155,9 +153,8 @@ public abstract class CustomParser {
         return data;
     }
 
-    protected Boolean isIpv6(String payload) {
-        String value = getValue(payload, IS_IPV6);
-        return Boolean.parseBoolean(value);
+    protected String getNotNullString(String value) {
+        return value != null ? value : DEFAULT_STRING;
     }
 
     protected Integer getMinDst(String payload) {
@@ -196,13 +193,14 @@ public abstract class CustomParser {
     // the Record. If the timestamp is not available, it sets default values.
     protected Time getTimestamp(String payload) {
         String value = getValue(payload, TIMESTAMP);
-        Time time;
         if (value != null) {
-            time = parseTimestamp(value);
-        } else {
-            time = new Time(0L, 0, 0);
+            try {
+                return parseTimestamp(value);
+            } catch (Exception e) {
+                logger.error("Time {} is invalid.", value, e);
+            }
         }
-        return time;
+        return new Time(0L, 0, 0);
     }
 
     protected SessionLocator getSessionLocator(String payload, String sessionId) {
