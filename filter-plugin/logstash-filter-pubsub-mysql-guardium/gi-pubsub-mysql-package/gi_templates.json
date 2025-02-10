@@ -49,5 +49,5 @@
       }
     }
   ],
-  "supported_platforms": ["on-premise"]
+  "supported_platforms": ["Google Cloud"]
 }
