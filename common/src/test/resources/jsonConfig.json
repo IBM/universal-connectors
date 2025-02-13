@@ -1,0 +1,8 @@
+{
+  "session_id": "/\"hostIdentifier\"",
+  "client_port": "/\"severity\"",
+  "server_port": "/\"severity\"",
+  "db_user": "/\"host_uuid\"",
+  "server_type": "{PostgreSQL}",
+  "db_protocol": "{TCP/IP}"
+}
