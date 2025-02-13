@@ -10,6 +10,7 @@ This project contains helper classes & utilities for creating a Guardium Record 
     GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH=../guardium-universalconnector-commons/build/libs
     
 The GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH variable is used in _build.gradle_, when compiling and building the code in your plugin project.
+
 5. Link the javadoc and sources JAR files from within your preferred IDE, to assist in your development. 
 
 ## Contribute
