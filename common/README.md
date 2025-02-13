@@ -16,4 +16,4 @@ The GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH variable is used in _build.gradle_,
 We want your feedback: Let us know of any errors, or if you have an improvement suggestion, by creating a pull request, or sending us a message. 
 
 <!-- references -->
-[logstash-filter-mongodb-guardium]: https://github.com/IBM/logstash-filter-mongodb-guardium
+[logstash-filter-mongodb-guardium]: https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-mongodb-guardium
