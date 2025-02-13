@@ -1,11 +1,12 @@
 # logstash-filter-intersystems-iris-guardium
 
 ### Meet IntersystemsIRIS
-* Tested versions: 2023.1
+* Tested versions: IRIS for UNIX 2024.2 (Build 247U)
 * Environment: On-premise
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
   * Guardium Data Protection: 11.4 and above
+  * Guardium Data Security Center: 3.7 and above
   
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the intersystems-iris audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the 
 data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
@@ -207,14 +208,11 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 <<<<<<< HEAD
 =======
 ### Procedure in Guardium Data Security Center
-1. In the main menu, click **Configurations** > **Connections** > **Monitored Data Source**.
-2. On the Connections page, click **Manage** > **Universal Connector Plugins**.
-3. Click **Add Plugin**, upload the pacakage: [gi-filter-intersystems-iris-package-1.0.zip](gi-filter-intersystems-iris-package-1.0.zip).
-4. Once the the package is uploaded succesfully. Navigate to **Connections** > **Add connection**.
-5. Search for **InterSystems IRIS** and click **Configure**
-6. Provide Name and Description, click **Next**.
-7. In the **Build pipeline**, **Choose input plugin** > **JDBC** > **Choose filter plugin** > **InterSystems IRIS** click **Next**.
-8. Enter the Additional information,
+1. Navigate to **Connections** > **Add connection**.
+2. Search for **InterSystems IRIS** and click **Configure**
+3. Provide Name and Description, click **Next**.
+4. In the **Build pipeline**, **Choose input plugin** > **JDBC** > **Choose filter plugin** > **InterSystems IRIS** click **Next**.
+5. Enter the Additional information,
 
    **Connection String:** Enter the JDBC connection string. For example: jdbc:IRIS://<InterSystems IRIS instance ip>:1972/%SYS
    **JDBC User:** Enter the username that you want to connect to the database with access to the audit tables to be queried.
@@ -226,7 +224,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
    **FROM:** For specifying tables
    **WHERE:** For adding filter conditions
 
-9. Click **Configure** and then click **Done**.
+6. Click **Configure** and then click **Done**.
 
 >>>>>>> 0b7b84e3 (INS-49070 Add iris db support to GDSC (#732))
 ## 8. JDBC Load Balancing Configuration
