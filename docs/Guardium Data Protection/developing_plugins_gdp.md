@@ -126,11 +126,11 @@ To develop a plug-in for Guardium universal connector, Develop a Logstash Filter
 ```
 The Guardium record, which is added to Logstash Event after the filter, is examined and handled by Guardium Universal connector (in an output stage) and inserted into Guardium.
 
-Clone the [guardium-universalconnector-commons project](https://github.com/IBM/guardium-universalconnector-commons) from GitHub to get helper classes for creating a Guardium record.
+Clone the [Guardium Code](https://github.com/IBM/universal-connectors/tree/main) from GitHub and build the [Guardium Universal-Connector Commons](https://github.com/IBM/universal-connectors/tree/main/common) code to get helper classes for creating a Guardium record.
 
-For a production-ready example, see the [MongoDB-Guardium filter plug-in project on GitHub](https://github.com/IBM/logstash-filter-mongodb-guardium). It transforms MongoDB activity audit log messages into a record that contains details about who performed the action, from where, and information about the command that was run. You can use it to learn how events are parsed and tested, and more. The ```README.md``` contains a brief introduction as to how the filter works, what it sends to Guardium in the end (a Record POJO), how to build and install it as a Logstash filter plug-in.
+For a production-ready example, see the [MongoDB-Guardium filter plug-in project on GitHub](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-mongodb-guardium). It transforms MongoDB activity audit log messages into a record that contains details about who performed the action, from where, and information about the command that was run. You can use it to learn how events are parsed and tested, and more. The ```README.md``` contains a brief introduction as to how the filter works, what it sends to Guardium in the end (a Record POJO), how to build and install it as a Logstash filter plug-in.
 
-If you need to create and store files from your plug-in’s code, use the environment variable ```$THIRD_PART_PATH``` from within your plug-in, to create a persistent storage location for you to work with. For example, to manage a queue and track the latest fetched log entry. For other usages of this folder, see [Installing and testing the filter or input plug-in on a staging Guardium system].
+If you need to create and store files from your plug-in’s code, use the environment variable ```$THIRD_PARTY_PATH``` from within your plug-in, to create a persistent storage location for you to work with. For example, to manage a queue and track the latest fetched log entry. For other usages of this folder, see [Installing and testing the filter or input plug-in on a staging Guardium system].
 
 ***Tips:***
 
@@ -200,7 +200,7 @@ output {
         stdout { codec => rubydebug }
 }
 ```
-See the [MongoDB-Guardium filter plugin project](https://github.com/IBM/logstash-filter-mongodb-guardium) on GitHub for more examples and instructions.
+See the [MongoDB-Guardium filter plugin project](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-mongodb-guardium) on GitHub for more examples and instructions.
 
 Run your test configuration by entering:
 ```logstash -f ./test.conf```.
@@ -245,7 +245,7 @@ jdbc {
    ...
 }
 ```
-You can also create and store files in the folder ```$THIRD_PART_PATH```, if your plug-in’s code requires it. For example, to support persistency by keeping track of the last fetched log entry.
+You can also create and store files in the folder ```$THIRD_PARTY_PATH```, if your plug-in’s code requires it. For example, to support persistency by keeping track of the last fetched log entry.
 
   3. Configure the Guardium universal connector to be aware of your data source and use your plug-in, by adding a connection. In the Configure Universal Connector page create a Connector configuration. Paste the input and filter sections contents from your Logstash configuration file into the Input and Filter textboxes.
 

@@ -10,10 +10,11 @@ This project contains helper classes & utilities for creating a Guardium Record 
     GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH=../guardium-universalconnector-commons/build/libs
     
 The GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH variable is used in _build.gradle_, when compiling and building the code in your plugin project.
+
 5. Link the javadoc and sources JAR files from within your preferred IDE, to assist in your development. 
 
 ## Contribute
 We want your feedback: Let us know of any errors, or if you have an improvement suggestion, by creating a pull request, or sending us a message. 
 
 <!-- references -->
-[logstash-filter-mongodb-guardium]: https://github.com/IBM/logstash-filter-mongodb-guardium
+[logstash-filter-mongodb-guardium]: https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-mongodb-guardium
