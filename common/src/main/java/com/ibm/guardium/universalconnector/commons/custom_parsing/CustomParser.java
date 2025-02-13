@@ -429,5 +429,4 @@ public abstract class CustomParser {
 
         return true;
     }
-
 }
