@@ -4,8 +4,6 @@
 Procedure:
  For this example, we will assume that we already have a working Oracle database. 
 
-Note: Here, we can opt for either a single server or a PostgreSQL Flexible server. The Single Server option is on the retirement path. For more information on the retirement schedule, please refer to the official Microsoft documentation.
-
 ## 2. Enabling Auditing
 Unified auditing must be enabled in an Oracle database. Required policies needs to be applied.
 
