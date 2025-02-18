@@ -61,7 +61,7 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
     implementation 'org.apache.commons:commons-lang3:' + versions.dependencies.commonsLang
     implementation 'com.google.code.gson:gson:' + versions.dependencies.gson
-    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core.jar")
+    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
     implementation group: 'org.parboiled', name: 'parboiled-java', version: versions.dependencies.parboiledJava
     implementation group: 'org.json', name: 'json', version: versions.dependencies.json
