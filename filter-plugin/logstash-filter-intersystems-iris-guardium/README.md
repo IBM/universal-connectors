@@ -35,7 +35,7 @@ This plug-in was developed and tested against an Ubuntu instance on AWS EC2, but
 5. Select the below options in Download page
     - Choose a Product - InterSystems IRIS Community
     - Choose a Platform - Ubuntu
-    - Choose a Version - 2023.1 
+    - Choose a Version
 6. Select I agree to Accept the policy.
 7. Click on the Download InterSystems IRIS button to download.
 
