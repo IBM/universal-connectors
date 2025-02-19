@@ -36,6 +36,10 @@ buildscript {
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
+
+    ext {
+        snakeYamlVersion = '2.2'
+    }
 }
 
 def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
