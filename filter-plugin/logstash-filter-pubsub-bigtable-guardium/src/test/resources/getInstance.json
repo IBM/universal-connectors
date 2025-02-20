@@ -1,0 +1,51 @@
+{
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "authenticationInfo": {
+      "principalEmail": "test@abc.com",
+      "principalSubject": "user:test@abc.com"
+    },
+    "requestMetadata": {
+      "callerIp": "192.159.178.221",
+      "callerSuppliedUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36,gzip(gfe)",
+      "requestAttributes": {
+        "time": "2024-08-25T17:17:54.515522453Z",
+        "auth": {}
+      },
+      "destinationAttributes": {}
+    },
+    "serviceName": "bigtableadmin.googleapis.com",
+    "methodName": "google.bigtable.admin.v2.BigtableInstanceAdmin.GetInstance",
+    "authorizationInfo": [
+      {
+        "resource": "projects/charged-mind-281913/instances/createinstancetest",
+        "permission": "bigtable.instances.get",
+        "granted": true,
+        "resourceAttributes": {
+          "service": "bigtableadmin.googleapis.com",
+          "name": "projects/charged-mind-281913/instances/createinstancetest",
+          "type": "bigtableadmin.googleapis.com/Instance"
+        },
+        "permissionType": "ADMIN_READ"
+      }
+    ],
+    "resourceName": "projects/charged-mind-281913/instances/createinstancetest",
+    "request": {
+      "name": "projects/charged-mind-281913/instances/createinstancetest",
+      "@type": "type.googleapis.com/google.bigtable.admin.v2.GetInstanceRequest"
+    }
+  },
+  "insertId": "5l9fdubgm",
+  "resource": {
+    "type": "audited_resource",
+    "labels": {
+      "service": "bigtableadmin.googleapis.com",
+      "method": "google.bigtable.admin.v2.BigtableInstanceAdmin.GetInstance",
+      "project_id": "charged-mind-281913"
+    }
+  },
+  "timestamp": "2024-08-25T17:17:54.507096564Z",
+  "severity": "INFO",
+  "logName": "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Fdata_access",
+  "receiveTimestamp": "2024-08-25T17:17:56.493805799Z"
+}

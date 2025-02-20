@@ -6,6 +6,7 @@
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
 	* Guardium Data Protection: 11.4 and above
+    * Guardium Insights :3.3
 	* Guardium Insights SaaS: 1.0
 
 ## 1. Configuring AWS MSSQL RDS
@@ -156,20 +157,30 @@
 			VI. Click on Ok button.
 			VII. Right click on database audit specification that we have created and select enable to enable it.
 
-	5. Create non-admin user to access audit table.
-		If you want to access audit table without exposing admin credentials, create a non-admin user with specific permissions:
+### **Note: Create non-admin user to access audit table**
 
-			a. Log in into database by using the admin credentials and run the following queries.
-				CREATE LOGIN <login_name> WITH PASSWORD = '<password>';
-				USE msdb;
-				CREATE USER <user_name> FOR LOGIN <login_name>;
-				GRANT SELECT ON msdb.dbo.rds_fn_get_audit_file TO <user_name>;
-			b. In the input section, add the database name as 'msdb'
-      				jdbc_connection_string => "jdbc:sqlserver://<SERVER_NAME>:<PORT>;databaseName=<DB_NAME>;
-			c. Use the login credentials created in the previous step as the jdbc_username and password.
-					jdbc_user => "<login_name>"
-					jdbc_password => "<password>"
+To access the audit table without exposing admin credentials, create a non-admin user with specific permissions:
 
+- Log in to the database using admin credentials and run the following queries:
+  ```sql
+  CREATE LOGIN <login_name> WITH PASSWORD = '<password>';
+  USE msdb;
+  CREATE USER <user_name> FOR LOGIN <login_name>;
+  GRANT SELECT ON msdb.dbo.rds_fn_get_audit_file TO <user_name>;
+  ```
+
+- In the input section, set the database name as **msdb**.
+  ```properties
+  jdbc_connection_string => "jdbc:sqlserver://<SERVER_NAME>:<PORT>;databaseName=msdb;"
+  ```
+
+- Use the login credentials created in the previous step for the JDBC connection:
+  ```properties
+  jdbc_user => "<login_name>"
+  jdbc_password => "<password>"
+  ```
+
+- Update the input section by adding the details from the [awsNonAdminMSSQL.conf](./awsNonAdminMSSQL.conf) AWS MSSQL setup file, omitting the `input {` at the beginning and its corresponding `}` at the end.
 
 ## 3. Configuring the MSSQL filters in Guardium
 
@@ -191,14 +202,14 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • Download the [mssql-offline-plugins-7.5.2.zip](./mssql-offline-plugins-7.5.2.zip) plug-in.This is not necessary for Guardium Data Protection v12.0 and later.
 
-• Download the [mssql-jdbc-7.4.1.jre8](./mssql-jdbc-7.4.1.jre8.jar) jar.
+• Download the [mssql-jdbc-7.4.1.jre8](https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/7.4.1.jre8/mssql-jdbc-7.4.1.jre8.jar) jar.
 
 #### Procedure: 
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First Enable the Universal Guardium connector, if it is Disabled already.
 3. Click Upload File and select the offline [mssql-offline-plugins-7.5.2.zip](./mssql-offline-plugins-7.5.2.zip) plug-in. After it is uploaded, click OK.This is not necessary for Guardium Data Protection v12.0 and later.
-4. Click Upload File and select the [mssql-jdbc-7.4.1.jre8](./mssql-jdbc-7.4.1.jre8.jar) jar. After it is uploaded, click OK.
+4. Click Upload File and select the [mssql-jdbc-7.4.1.jre8](https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/7.4.1.jre8/mssql-jdbc-7.4.1.jre8.jar) jar. After it is uploaded, click OK.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
 7. Update the input section to add the details from [awsMSSQL.conf](./awsMSSQL.conf) for AWS MSSQL setup file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
@@ -227,3 +238,7 @@ On the first G machine, in the input section for the JDBC plug-in, update the **
 On the second G machine, in the input section for the JDBC plug-in,  update the **statement** field in the JDBC block:
 
 	SELECT event_time, session_id, database_name, client_ip, server_principal_name, application_name, statement, succeeded, DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) AS updatedeventtime FROM msdb.dbo.rds_fn_get_audit_file('D:\rdsdbdata\SQLAudit\*.sqlaudit', default, default ) Where schema_name not in ('sys') and object_name NOT IN ('dbo','syssubsystems','fn_sysdac_is_currentuser_sa','backupmediafamily','backupset','syspolicy_configuration','syspolicy_configuration_internal','syspolicy_system_health_state','syspolicy_system_health_state_internal','fn_syspolicy_is_automation_enabled','spt_values','sysdac_instances_internal','sysdac_instances') and database_principal_name not in('public') and ((succeeded =1) or (succeeded =0 and statement like '%Login failed%')) and statement != '' and session_id%2= 1 and DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) > :sql_last_value order by event_time;
+
+## 5. Configuring the AWS MSSQL Guardium Logstash filters in Guardium Insights
+
+To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)

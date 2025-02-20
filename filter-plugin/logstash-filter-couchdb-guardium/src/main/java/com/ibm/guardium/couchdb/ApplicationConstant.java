@@ -19,6 +19,8 @@ public interface ApplicationConstant {
 	public static final String DESCRIPTION = "description";
 	public static final String VERB = "verb";
 	public static final String TIMESTAMP = "timestamp";
+
+	public static final String MIN_OFFSET = "minOff";
 	public static final String LOGMESSAGE = "logmessage";
 	public static final String SERVER_IP = "server_ip";
 	public static final String DEFAULT_IP = "0.0.0.0";

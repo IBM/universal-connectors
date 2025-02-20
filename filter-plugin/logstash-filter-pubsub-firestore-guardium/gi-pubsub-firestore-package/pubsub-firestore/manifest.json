@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_Firestore_Filter_plugin",
+	"alias": "FireStore",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"FireStore","supportedVersions": [""]}],
+	"supported_input_plugins": ["Google_PubSub"],
+	"developer": "IBM",
+	"license": "Apache 2.0",
+	"description": "This package provides the data needed in order to support FireStore in Guardium Universal Connector.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-firestore-guardium/README.md"
+}

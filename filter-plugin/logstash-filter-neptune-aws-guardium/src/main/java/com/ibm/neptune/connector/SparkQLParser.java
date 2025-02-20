@@ -1,5 +1,5 @@
 /*
-* � Copyright IBM Corp. 2021, 2022 All rights reserved.
+* Copyright IBM Corp. 2021, 2022 All rights reserved.
 *SPDX-License-Identifier: Apache-2.0
 */
 
@@ -351,8 +351,8 @@ public class SparkQLParser {
 
 				@Override
 				public void meet(ProjectionElem node) throws Exception {
-					if (te instanceof DescribeOperator && !node.getSourceName().contains(ApplicationConstants.DESCRB)) {
-						list.add(node.getSourceName());
+					if (te instanceof DescribeOperator && !node.getName().contains(ApplicationConstants.DESCRB)) {
+						list.add(node.getName());
 					}
 					super.meet(node);
 				}

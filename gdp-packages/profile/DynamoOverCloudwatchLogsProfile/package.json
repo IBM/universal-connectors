@@ -53,6 +53,14 @@
         "sequence": 6,
         "exclusion_regex": "add_field => \\{ \"account_id\" => \"param_account_id\" \\}",
         "exclusion_replacement": ""
+      },
+      "prefix": {
+        "type": "boolean",
+        "default": false,
+        "label": "Log group prefix",
+        "optional": false,
+        "hidden": false,
+        "sequence": 7
       }
     }
   ],
