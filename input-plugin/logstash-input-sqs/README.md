@@ -1,4 +1,4 @@
-## sqs input plug-in
+## SQS input plug-in
 ### Meet SQS
 * Tested versions: 3.1.3
 * Developed by Elastic
@@ -14,8 +14,6 @@ This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the 
 This plug-in pulls events from an Amazon Web Services Simple Queue Service (SQS) queue.
 
 SQS is a simple, scalable queue system that is part of the Amazon Web Services suite of tools.
-
-**Note:** If the machine on which Guardium Data Protection is installed displays an incorrect time, update the time according to your location and restart the UC by disabling and then enabling it. 
 
 ### Creating the SQS queue
 **_Procedure_**
@@ -149,3 +147,18 @@ Other standard logstash parameters are available, such as:
 2. Issue these commands:
 		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
 		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
+
+### Troubleshooting
+#### To adjust the time on your Guardium machine based on your location, complete the following steps. 
+
+1. Set the correct time on the Guardium machine by using the following CLI commands.
+```
+store syst ntp server ntp.rtp.raleigh.ibm.com
+store syst ntp state on
+store sync_timezone
+```
+2. Restart the Sniffer service by using the following command.
+
+   ``` systemctl restart guard-snif ```
+   
+3. On the Guardium machine, go to **Setup > Tools and Views > Configure Universal Connector** page and restart the Universal Connector by disabling and then enabling it.
