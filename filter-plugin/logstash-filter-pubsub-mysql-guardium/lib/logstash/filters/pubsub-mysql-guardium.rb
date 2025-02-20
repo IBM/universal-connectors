@@ -39,7 +39,7 @@ class LogStash::Filters::PubsubMysql < LogStash::Filters::Base
 
          if match_data
            timestamp = match_data["ts"]
-           session_id = match_data["session_id"]
+           session_id = match_data["session_id"].to_s.empty? ? "" : match_data['session_id']
            severity_type = match_data["severity_type"]
            type_db = match_data["type_db"]
            type_host = match_data["type_host"]
@@ -47,6 +47,7 @@ class LogStash::Filters::PubsubMysql < LogStash::Filters::Base
          else
            puts "No match found."
          end
+
       session_id = message['session_id']
       event.set('[GuardRecord][sessionId]', session_id)
 
@@ -129,11 +130,11 @@ class LogStash::Filters::PubsubMysql < LogStash::Filters::Base
 
         event.set('[GuardRecord][data][construct]', nil)
 
-        event.set('[GuardRecord][sessionLocator][clientPort]', nil)
+        event.set('[GuardRecord][sessionLocator][clientPort]', -1)
         event.set('[GuardRecord][sessionLocator][clientIpv6]', nil)
         event.set('[GuardRecord][sessionLocator][serverIpv6]', nil)
         event.set('[GuardRecord][sessionLocator][clientIp]', '127.0.0.1')
-        event.set('[GuardRecord][sessionLocator][serverPort]', 3306)
+        event.set('[GuardRecord][sessionLocator][serverPort]', parse['session_id'].to_s.empty? ? -1 : 3306)
         event.set('[GuardRecord][sessionLocator][isIpv6]', false)
 
         event.set('[GuardRecord][accessor][serverType]', 'MySQL')

@@ -1,5 +1,5 @@
 {
-  "name": "Guardium_Mysql_Filter_plugin",
+  "name": "MysqlGooglePubSubFilterPlugin",
   "alias": "MySQL Google PubSub",
   "type": "filter",
   "pipeline_type":"pull",
