@@ -151,13 +151,14 @@ Other standard logstash parameters are available, such as:
 ### Troubleshooting
 #### To adjust the time on your Guardium machine based on your location, complete the following steps. 
 
-1. Set the correct time on the Guardium machine by using the following GRADPIs.
+1. Set the correct time on the Guardium machine by using the following CLI commands.
 ```
 store syst ntp server ntp.rtp.raleigh.ibm.com
 store syst ntp state on
 store sync_timezone
 ```
-2. On the Guardium machine, go to **Setup > Tools and Views > Configure Universal Connector** page and restart the Universal Connector by disabling and then enabling it.
-3. Restart the Sniffer service using the following commnad.
+2. Restart the Sniffer service by using the following command.
 
    ``` systemctl restart guard-snif ```
+   
+3. On the Guardium machine, go to **Setup > Tools and Views > Configure Universal Connector** page and restart the Universal Connector by disabling and then enabling it.
