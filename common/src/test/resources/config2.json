@@ -1,6 +1,6 @@
 {
     "sql_parsing_active": "true",
-    "parsing_type": "REGEX",
+    "parsing_type": "CUSTOM_PARSER",
     "object": "table",
     "verb": "verb",
     "session_id": "75849321",

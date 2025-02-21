@@ -1,11 +1,10 @@
 package com.ibm.guardium.universalconnector.commons.custom_parsing;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ibm.guardium.universalconnector.commons.custom_parsing.excepton.InvalidConfigurationException;
 import com.ibm.guardium.universalconnector.commons.structures.*;
-import org.apache.commons.validator.routines.InetAddressValidator;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,11 +19,8 @@ public class CustomParserTest {
     private static CustomParser customParser;
     private static Map<String, String> configValues;
 
-    @Mock
-    private InetAddressValidator inetAddressValidator;
-
     @BeforeClass
-    public static void setUp() throws IOException {
+    public static void setUp() throws IOException, InvalidConfigurationException {
         // Initialize the custom parser
         customParser = new CustomParser(ParserFactory.ParserType.regex) {
 
@@ -63,9 +59,9 @@ public class CustomParserTest {
 
         assertNotNull(record);
         assertEquals(configValues.get(PropertyConstant.SESSION_ID), record.getSessionId());
-        assertEquals(Integer.parseInt((String) configValues.get(PropertyConstant.CLIENT_PORT)),
+        assertEquals(Integer.parseInt(configValues.get(PropertyConstant.CLIENT_PORT)),
                 record.getSessionLocator().getClientPort());
-        assertEquals(Integer.parseInt((String) configValues.get(PropertyConstant.SERVER_PORT)),
+        assertEquals(Integer.parseInt(configValues.get(PropertyConstant.SERVER_PORT)),
                 record.getSessionLocator().getServerPort());
         assertEquals(configValues.get(PropertyConstant.DB_USER), record.getAccessor().getDbUser());
         assertEquals(configValues.get(PropertyConstant.SERVER_TYPE), record.getAccessor().getServerType());
@@ -82,6 +78,7 @@ public class CustomParserTest {
             public String getConfigFilePath() {
                 return "";
             }
+
             @Override
             public Map<String, String> getProperties() {
                 return props;
@@ -90,12 +87,12 @@ public class CustomParserTest {
         cp.properties = props;
         assertEquals("TEST", cp.getValue("whatever", PropertyConstant.DB_USER));
 
-        //Invalid regex wont cause exception
+        // Invalid regex wont cause exception
         assertNull(cp.parse("whatever", "invalid Regex"));
     }
 
     @Test
-    public void testGetProperties() {
+    public void testGetProperties() throws InvalidConfigurationException {
         Map<String, String> properties = customParser.getProperties();
         assertNotNull(properties);
         assertEquals(configValues.get(PropertyConstant.SESSION_ID), properties.get(PropertyConstant.SESSION_ID));
@@ -230,7 +227,7 @@ public class CustomParserTest {
 
         // Check if the parsing type is "REGEX"
         String parsingType = regexConfigValues.get("parsing_type");
-        assertEquals("Expected parsing type to be REGEX", "REGEX", parsingType);
+        assertEquals("Expected parsing type to be CUSTOM_PARSER", "CUSTOM_PARSER", parsingType);
 
         // Check additional fields
         assertNotNull("Expected sql_parsing_active to be defined", regexConfigValues.get("sql_parsing_active"));
@@ -273,39 +270,40 @@ public class CustomParserTest {
         // Test case 1: Valid properties
         Map<String, String> validProperties = new HashMap<>();
         validProperties.put(SQL_PARSING_ACTIVE, "true");
-        validProperties.put(PARSING_TYPE, "REGEX");
+        validProperties.put(PARSING_TYPE, "CUSTOM_PARSER");
         validProperties.put(OBJECT, "table");
         validProperties.put(VERB, "SELECT");
 
         customParser.properties = validProperties;
-        assertTrue("Expected isValid to return true for valid properties", customParser.isValid("some payload"));
+        assertTrue("Expected isValid to return true for valid properties",
+                customParser.arePropertiesValid(customParser.properties));
 
         // Test case 2: Invalid parsing type
         validProperties.put(PARSING_TYPE, "INVALID_TYPE");
-        assertFalse("Expected isValid to return false for invalid parsing type", customParser.isValid("some payload"));
+        assertFalse("Expected isValid to return false for invalid parsing type",
+                customParser.arePropertiesValid(customParser.properties));
 
         // Test case 3: Missing object
-        validProperties.put(PARSING_TYPE, "REGEX");
+        validProperties.put(PARSING_TYPE, "CUSTOM_PARSER");
         validProperties.remove(OBJECT);
-        assertFalse("Expected isValid to return false for missing object", customParser.isValid("some payload"));
+        assertFalse("Expected isValid to return false for missing object",
+                customParser.arePropertiesValid(customParser.properties));
 
         // Test case 4: Missing verb
         validProperties.put(OBJECT, "table");
         validProperties.remove(VERB);
-        assertFalse("Expected isValid to return false for missing verb", customParser.isValid("some payload"));
+        assertFalse("Expected isValid to return false for missing verb",
+                customParser.arePropertiesValid(customParser.properties));
 
         // Test case 5: SQL parsing inactive
         validProperties.put(SQL_PARSING_ACTIVE, "false");
         assertTrue("Expected isValid to return true when SQL parsing is inactive",
-                customParser.isValid("some payload"));
+                customParser.arePropertiesValid(customParser.properties));
 
         // Test case 6: Properties is null
         customParser.properties = null;
-        assertFalse("Expected isValid to return false when properties are null", customParser.isValid("some payload"));
-
-        // Test case 7: Payload is null
-        customParser.properties = validProperties; // Reset properties to valid
-        assertFalse("Expected isValid to return false when payload is null", customParser.isValid(null));
+        assertFalse("Expected isValid to return false when properties are null",
+                customParser.arePropertiesValid(customParser.properties));
     }
 
     @Test
@@ -325,7 +323,7 @@ public class CustomParserTest {
         assertEquals(SqlParser.ValidityCase.INVALID_PARSING_TYPE, SqlParser.isValid(properties, true, false, false));
 
         // Test isValid with valid REGEX parsing type but null object
-        properties.put(PARSING_TYPE, "REGEX");
+        properties.put(PARSING_TYPE, "CUSTOM_PARSER");
         properties.put(VERB, "SELECT");
         assertEquals(SqlParser.ValidityCase.NULL_OBJECT, SqlParser.isValid(properties, true, false, true));
 
@@ -359,7 +357,7 @@ public class CustomParserTest {
         map.put("parsing_type", "SNIFFER");
         assertTrue(SqlParser.isSnifferParsing(map));
 
-        map.put("parsing_type", "REGEX");
+        map.put("parsing_type", "CUSTOM_PARSER");
         assertFalse(SqlParser.isSnifferParsing(map));
 
         map.put("parsing_type", "JAVA");
@@ -370,7 +368,7 @@ public class CustomParserTest {
 
         // Test getDescription for each ValidityCase
         assertEquals("The SQL Parsing is valid", SqlParser.ValidityCase.VALID.getDescription());
-        assertEquals("Parsing type can only be REGEX or SNIFFER",
+        assertEquals("Parsing type can only be CUSTOM_PARSER (for Regex and Json) or SNIFFER",
                 SqlParser.ValidityCase.INVALID_PARSING_TYPE.getDescription());
         assertEquals("Sniffer Parser is invalid.", SqlParser.ValidityCase.INVALID_SNIFFER_PARSER.getDescription());
         assertEquals("The object field cannot be null.", SqlParser.ValidityCase.NULL_OBJECT.getDescription());
@@ -399,7 +397,6 @@ public class CustomParserTest {
         assertEquals("Expected data type to be TEXT", "TEXT", dataType);
     }
 
-    // ---- getMinDst() and getMinOffsetFromGMT() ---------//
     @Test
     public void testGetMinDstWithNullPayload() {
         String payload = "{}"; // Empty payload
@@ -427,8 +424,6 @@ public class CustomParserTest {
         Integer result = customParser.getMinOffsetFromGMT(payload);
         assertEquals(0, result.intValue()); // Cast to int to avoid ambiguity
     }
-
-    // -----------------------------------//
 
     @Test
     public void testGetOriginalSqlCommandWithNullPayload() {
@@ -460,4 +455,25 @@ public class CustomParserTest {
         assertEquals(originalSQLString, result.getConstruct().getFullSql());
     }
 
+    @Test
+    public void testJson() {
+        String payload = "{\"hostIdentifier\":\"7d058e67620c\",\"calendarTime\":\"Sun Apr 14 16:17:14 2019 UTC\","
+                + "\"unixTime\":\"1555258634\","
+                + "\"severity\":\"0\",\"filename\":\"aws_kinesis.cpp\",\"line\":\"142\",\"message\":\"Successfully sent 6 of 6 logs to Kinesis\","
+                + "\"version\":\"2.7.0\",\"decorations\":{\"customer_id\":\"1\",\"host_uuid\":\"33C9A321-088E-43FE-83D7-4C6A4D134937\",\"hostname\""
+                + ":\"7d058e67620c\"},\"log_type\":\"status\"}";
+
+        CustomParser cp = new CustomParser(ParserFactory.ParserType.json) {
+            @Override
+            public String getConfigFilePath() {
+                // Return the path to your configuration file
+                return "src/test/resources/jsonConfig.json";
+            }
+        };
+
+        Record record = cp.parseRecord(payload);
+
+        assertEquals("7d058e67620c", record.getSessionId());
+        assertEquals("PostgreSQL", record.getAccessor().getServerType());
+    }
 }
