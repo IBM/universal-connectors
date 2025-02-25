@@ -5,8 +5,8 @@
 * Environment: On-premise
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
-  * Guardium Data Protection: 11.4 and above
-  * Guardium Data Security Center: 3.7 and above
+  * Guardium Data Protection: 11.4 or later
+  * Guardium Data Security Center: 3.7 or later
   
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the intersystems-iris audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the 
 data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
@@ -61,13 +61,14 @@ Execute the below command.
 # chmod og+rx /tmp/iriskit 
 # umask 022 
 # gunzip -c <username>/<downloaded_iris_filename>| ( cd /tmp/iriskit ; tar xf - )
+
+```
 Ex : # gunzip -c /home/ubuntu/IRIS_Community-2023.1.0.229.0-lnxubuntu2204x64.tar.gz | ( cd /tmp/iriskit ; tar xf - )
 
-```
-### Installation and prompts during installation
+### Installing InterSystems IRIS
 
 #### Procedure:
-```
+
 1. Go to your IRIS_Community directory and run `sudo ./irisinstall` command to install iris. 
 2. Installation Prompts :
    Enter a destination directory for the new instance.
@@ -90,7 +91,7 @@ Ex : # gunzip -c /home/ubuntu/IRIS_Community-2023.1.0.229.0-lnxubuntu2204x64.tar
 7. InterSystems IRIS did not detect a license key file
    Do you want to enter a license key <No>?  No
 8. After the installation it will prompt to review the installation options and confirm  to install
-```
+
 ### Web based InterSystems IRIS Management Portal
 
 #### Procedure:
