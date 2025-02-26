@@ -30,6 +30,7 @@ filter-plugin/logstash-filter-azure-sql-guardium/AzureSQLOverJdbcPackage;logstas
 filter-plugin/logstash-filter-mssql-guardium/MssqlAWSOverJdbcPackage;
 filter-plugin/logstash-filter-mssql-guardium/MssqlOnPremOverJdbcPackage;
 filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage;logstash-filter-saphana_guardium_plugin_filter.zip
+filter-plugin/logstash-filter-intersystems-iris-guardium/gi-filter-intersystems-iris-package-1.0.zip
 #GCP plug-ins
 filter-plugin/logstash-filter-pubsub-apachesolr-guardium/PubSubApacheSolrPackage;logstash-filter-apache_solr_gcp_connector.zip
 filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage;logstash-filter-big_query_guardium_filter.zip
