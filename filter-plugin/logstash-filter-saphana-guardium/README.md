@@ -1,4 +1,19 @@
 # SAP HANA-Guardium Logstash filter plug-in
+### Meet SAP HANA
+* Tested versions: 2.00.033.00.1535711040
+* Environment: On-premise, Iaas
+* Supported Guardium versions:
+    * Guardium Data Protection: 11.4 and above
+        * Supported inputs:
+            * Filebeat (push)
+            * JDBC (pull)
+    * Guardium Insights: 3.3
+        * Supported inputs:
+            * Filebeat (push)
+    * Guardium Insights SaaS: 1.0
+        * Supported inputs:
+            * Filebeat (push)
+            * JDBC (pull)
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium.
 It parses events and messages from the SAP HANA audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard
