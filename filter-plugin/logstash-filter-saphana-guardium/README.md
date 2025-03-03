@@ -25,12 +25,12 @@ collections (objects) involved.
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter
 plug-ins for Guardium universal connector.
 
-## 1. Configuring the SAP HANA
+## Configuring the SAP HANA
 
 There are multiple ways to install a SAP HANA server. For this example, we will assume that we already have a working
 SAP HANA setup.
 
-## 2. Enabling the audit logs:
+## Enabling the audit logs:
 ### Procedure
 In the SAP HANA Studio, expand the system on which you would like to enable auditing.
 1. Expand the Security folder.
@@ -68,7 +68,7 @@ If you encounter an error like the following when trying to connect to the datab
 
 This error indicates an **authentication failure** when connecting to the database. It is often caused by issues with the provided credentials (username or password) or incorrect database configuration.
 
-### Steps to resolve:
+## Steps to resolve:
 
 1. **Verify Database Credentials**  
    Check the **username** and **password** provided in your database connection configuration. Ensure that:
