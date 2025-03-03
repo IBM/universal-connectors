@@ -21,6 +21,7 @@ Detailed breakdown:
 3. Download the Oracle JDBC driver. Download here:
    https://download.oracle.com/otn-pub/otn_software/jdbc/234/ojdbc8.jar
 4. Currently, this plug-in will work only on IBM Security Guardium Data Protection, not in Guardium Insights
+5. • Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies) for more information.
 
 ## Setup
 
