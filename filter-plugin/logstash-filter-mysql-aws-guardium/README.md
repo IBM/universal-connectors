@@ -40,6 +40,7 @@ To add the MariaDB plug-in to a MySQL instance, follow the instructions describe
 ## Configuring the AWS MySQL filters in Guardium
 
 #### Before you begin
+* Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies) for more information.
 * You must have permissions for the S-TAP Management role. The admin user includes this role by default.
 * This filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 * For Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12p15 download the [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip)
