@@ -110,6 +110,7 @@ The universal connector identifies and parses received events, and converts them
 The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements.
 
 ### Before you begin
+* Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role, by default.
 * Mysql-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 

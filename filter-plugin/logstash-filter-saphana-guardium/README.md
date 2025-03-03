@@ -241,6 +241,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 ### Before you begin
 
+* Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies) for more information.
 * You must have permissions for the S-Tap Management role. The admin user includes this role, by default.
 
 * Download the required (ngdbc)jars as per your database version from URL https://tools.hana.ondemand.com/#hanatools.

@@ -119,7 +119,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 #### Before you begin
 
-• You must have LFD policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+• Configure the policies you require. For more inforamtion, see [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies).
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
