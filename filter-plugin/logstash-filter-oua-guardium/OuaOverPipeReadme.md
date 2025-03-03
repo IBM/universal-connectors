@@ -25,6 +25,8 @@
 5. You must create a secret containing your OUA universal connector password.
    - Example: `grdapi universal_connector_keystore_add key=OUA_USER_PASS password=<PASSWORD>` where `<PASSWORD>` is the OUA universal connector user’s password for the database. `OUA_USER_PASS` will be used in the plug-in configuration as a variable for the password secret.
 
+6. Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies) for more information.
+
 Currently, this plug-in will work only on IBM Security Guardium Data Protection, not Guardium Insights
 
 ## Building
