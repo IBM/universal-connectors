@@ -94,3 +94,98 @@ This error indicates an **authentication failure** when connecting to the databa
 5. SAP HANA with JDBC shows server ip as 0.0.0.0
 6. Duplicate records will be seen in load balancing.
 7. SAPHANA SYSLOG does not natively support load balancing.
+
+## 5. Configuring the SAP HANA filters in Guardium
+
+The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector identifies and parses received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the SAP HANA template.
+
+### Before you begin
+
+* Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies) for more information.
+* You must have permissions for the S-Tap Management role. The admin user includes this role, by default.
+
+* Download the required (ngdbc)jars as per your database version from URL https://tools.hana.ondemand.com/#hanatools.
+
+* This plug-in is automatically available with Guardium Data Protection. versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+
+**Note:** For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the following plug-in. (Do not unzip the offline-package file throughout the procedure).
+* For CSVTEXTFILE-based auditing, refer to this [package](SaphanaOverFilebeatPackage) and download the [logstash-filter-saphana_guardium_plugin_filter.zip](SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).This step is not necessary for Guardium Data Protection v12.0 and later.
+* For CSTABLE based auditing, refer to this [package](SaphanaOverJdbcPackage) and download the [logstash-filter-saphana_guardium_plugin_filter.zip](SaphanaOverJdbcPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).This step is not necessary for Guardium Data Protection v12.0 and later.
+
+
+# Procedure
+1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
+2. First enable the Universal Guardium connector, if it is disabled already.
+3. For CSVTEXTFILE-based auditing, follow these steps:-
+    1. Click "Upload File" and select the [logstash-filter-saphana_guardium_plugin_filter.zip](SaphanaOverFilebeatPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK". This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+    2. Click the Plus sign to open the Connector Configuration dialog box.
+    3. Type a name in the Connector name field.
+    4. Update the input section. Use the [saphanaFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/saphanaFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+    5. Update the filter section. Use the [saphanaFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/saphanaFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+    6. The "type" field should match in the input and filter configuration section. This field should be unique for every individual connector added.
+    7. Click "Save". Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+
+4. For CSTABLE-based auditing, follow these steps:
+    1. Click "Upload File" and select the offline [SAPHANA-offline-plugin.zip](SaphanaOverJdbcPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK". This step is not necessary for Guardium Data Protection v12.0 and later.
+    2. Click "Upload File" again and select the ngdbc-2.9.12 jar file. After it is uploaded, click "OK".
+    3. Click the Plus sign to open the Connector Configuration dialog box.
+    4. Type a name in the Connector name field.
+    5. Update the input section . Use the [saphanaJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/saphanaJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+    6. Update the filter section for JDBC Plugin. Use the [saphanaJDBC.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-saphana-guardium/saphanaJDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+    7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
+    8. If using two jdbc plug-ins on same machine , the last_run_metadata_path file name should be different.
+
+       **Note: For moderate to large amounts of data, include pagination to facilitate the audit and to avoid out of memory errors.  Use the parameters below in the input section when using a JDBC connector, and remove the concluding semicolon ';' from the jdbc statement:**
+        ```
+       jdbc_paging_enabled => true 
+       jdbc_page_size => 1000
+       ```
+    9. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+
+## 6. JDBC Load Balancing Configuration
+
+In SAP HANA JDBC input plug-ins, we distribute load between two machines based on even and odd "sessionIds"
+
+### Procedure
+1. On the first G Machine, in the input section for JDBC Plug-in, update the "statement" field as follows:
+    ```sql
+   select 
+      audit_log.event_status,audit_log.client_ip,
+      audit_log.connection_id,audit_log.client_port,
+      SECONDS_BETWEEN('1970-01-01 00:00:00.00000',localtoutc(audit_log.timestamp)) as new_timestamp,
+      audit_log.event_action,audit_log.user_name,
+      audit_log.port,audit_log.client_host,
+      audit_log.service_name,audit_log.statement_string,
+      audit_log.application_name,audit_log.host,
+      audit_log.application_user_name,
+      M_DATABASE.database_name,M_DATABASE.system_id
+   from
+      M_DATABASE, audit_log
+   where
+      M_DATABASE.HOST = audit_log.HOST and audit_policy_name not in ('MandatoryAuditPolicy')
+      and SECONDS_BETWEEN ('1970-01-01 00:00:00.00000', localtoutc(audit_log.timestamp)) > :sql_last_value
+      and mod(connection_id, 2) = 0;
+    ```
+2. On the second G machine, in the input section for the JDBC Plug-in, update the  "statement" field as follows:
+    ```sql
+   select
+     audit_log.event_status,audit_log.client_ip,
+     audit_log.connection_id,audit_log.client_port,
+     SECONDS_BETWEEN('1970-01-01 00:00:00.00000',localtoutc(audit_log.timestamp)) as new_timestamp,
+     audit_log.event_action,audit_log.user_name,
+     audit_log.port,audit_log.client_host,
+     audit_log.service_name,audit_log.statement_string,
+     audit_log.application_name,audit_log.host,
+     audit_log.application_user_name,
+     M_DATABASE.database_name,M_DATABASE.system_id
+   from
+     M_DATABASE, audit_log
+   where
+     M_DATABASE.HOST = audit_log.HOST and audit_policy_name not in ('MandatoryAuditPolicy')
+     and SECONDS_BETWEEN ('1970-01-01 00:00:00.00000', localtoutc(audit_log.timestamp)) > :sql_last_value
+     and mod(connection_id, 2) = 1;
+   ```
+
+## 5. Configuring the SAP HANA filters in Guardium Data Security Center
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+For the input configuration step, refer to the [Filebeat section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#Filebeat-input-plug-in-configuration).
