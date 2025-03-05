@@ -1,7 +1,7 @@
 # SAP HANA-Guardium Logstash filter plug-in
 ### Meet SAP HANA
 * Tested versions: 2.00.033.00.1535711040
-* Environment: On-premise, Iaas
+* Environment: On-premise, Saas
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
         * Supported inputs:
