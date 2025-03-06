@@ -25,9 +25,12 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
   # auxilary functions for parsing
   def parsePostgresLog(event)
     begin
-      a = event.get('textPayload')
-      @logger.debug("Start parsing postgres log. payload: #{a}")
-      message = event.get('textPayload').match(/(?<ts>(\d*-){2}(\d*)\s(\d*:){2}(\d*.\d*))(\s)UTC(\s)\[(?<session_id>\d*)\].*db=(?<db_name>\S*),user=(?<uname>\S*)\s(?<severity>[A-Z]*):(?<msg>.*)/)
+      parseEvent = event.get('message')
+      parse = JSON.parse(parseEvent)
+      textPayload = parse["textPayload"]
+
+      @logger.debug("Start parsing postgres log. payload: #{textPayload}")
+      message = textPayload.match(/(?<ts>(\d*-){2}(\d*)\s(\d*:){2}(\d*.\d*))(\s)UTC(\s)\[(?<session_id>\d*)\].*db=(?<db_name>\S*),user=(?<uname>\S*)\s(?<severity>[A-Z]*):(?<msg>.*)/)
       msg = message['msg']
       severity = message['severity']
       db_name = message['db_name'].to_s.empty? ? "NA" : message['db_name']
@@ -81,15 +84,17 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
 
   def parsePgAudit(event)
     begin
-      a = event.get('protoPayload')
-      @logger.debug("Start parsing pg audit log. payload: #{a}")
-      protoPayload = event.get('protoPayload')
+      parseEvent = event.get('message')
+      parse = JSON.parse(parseEvent)
+
+      protoPayload = parse["protoPayload"]
+      @logger.debug("Start parsing pg audit log. payload: #{protoPayload}")
       request = protoPayload['request']
       original_sql = request['statement']
       session_id = request['databaseSessionId'].to_s.empty? ? "" : request['databaseSessionId']
       db_name = request['database'].to_s.empty? ? "NA" : request['database']
       uname = request['user'].to_s.empty? ? "NA" : request['user']
-      timestamp = event.get('timestamp')
+      timestamp = parse["timestamp"]
 
       event.set('[GuardRecord][data][originalSqlCommand]', original_sql)
       event.set('[GuardRecord][data][construct]', nil)
@@ -115,18 +120,24 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
 
     begin
       @logger.debug("Start processing new event: #{event}")
-      log_name_for_debug = event.get('logName')
+
+      message = event.get('message')
+      @logger.debug(" Debug Message :  #{message}")
+      parse = JSON.parse(message)
+      @logger.debug(" Parse message :  #{parse}")
+
+      log_name_for_debug = parse["logName"];
       @logger.debug("log name: #{log_name_for_debug}")
-      log_name = event.get('logName').match(/.*%2F(?<log_type>.*)/)
+      log_name = log_name_for_debug.match(/.*%2F(?<log_type>.*)/)
       log_type = log_name['log_type']
       @logger.debug("log type: #{log_type}")
 
-      resource = event.get('resource')
+      resource = parse["resource"]
       labels = resource['labels']
       database_id = labels['database_id']
       server_hostname = "#{labels["region"]}:#{database_id}"
-      severity = event.get('severity')
-      client_hostname = event.get('host')
+      severity = parse["severity"]
+      client_hostname = parse["host"]
 
       @logger.debug('Parsing by log type')
       case log_type
