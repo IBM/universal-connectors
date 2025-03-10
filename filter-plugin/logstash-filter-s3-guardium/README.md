@@ -7,11 +7,11 @@
     * Supported inputs:
       * Cloudwatch logs (pull)
       * SQS (pull)
-  * Guardium Insights: 3.2
+  * Guardium Data Security Center: 3.2
     * Supported inputs:
       * Cloudwatch logs (pull)
       * SQS (pull)
-  * Guardium Insights SaaS: 1.0
+  * Guardium Data Security Center SaaS: 1.0
     * Supported inputs:
       * Cloudwatch logs (pull)
       * SQS (pull)
