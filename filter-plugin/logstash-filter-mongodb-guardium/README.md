@@ -9,10 +9,10 @@
         * Filebeat (push)
         * [MongoDB Atlas](../../input-plugin/logstash-input-mongo-atlas/README.md) (pull)
 		* IBM Cloud KafkaStreams (pull)
-    * Guardium Insights: 3.2 and above
+    * Guardium Data Security Center: 3.2 and above
       * Supported inputs: 
         * Filebeat (push)
-    * Guardium Insights SaaS: 1.0
+    * Guardium Data Security Center SaaS: 1.0
       * Supported inputs:
         * Filebeat (push)
         * MongoDB Atlas (pull)

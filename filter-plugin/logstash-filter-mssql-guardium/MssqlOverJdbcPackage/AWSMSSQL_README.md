@@ -7,7 +7,7 @@
 * Supported Guardium versions:
 	* Guardium Data Protection: 11.4 and above
     * Guardium Insights :3.3
-	* Guardium Insights SaaS: 1.0
+	* Guardium Data Security Center SaaS: 1.0
 
 ## 1. Configuring AWS MSSQL RDS
 
