@@ -330,8 +330,8 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
    disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 
-## Configuring the Amazon S3 over Cloudwatch_logs in Guardium Insights
+## Configuring the Amazon S3 over Cloudwatch_logs in Guardium Data Security Center
 
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).
