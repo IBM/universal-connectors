@@ -53,6 +53,8 @@ There are multiple ways to install a Cassandra server. For this example, we will
 
 The audit logs can be viewed under the parameter `"${cassandra.logdir}/audit/"` under the file name `audit.log` in the `/etc/cassandra/conf/logback.xml` file.
 
+For more details, refer to the [Apache Cassandra Documentation](https://cassandra.apache.org/doc/stable/cassandra/operating/audit_logging.html).
+
 ## 4. Configuring Filebeat to push logs to Guardium
 
 ## a. Filebeat installation
