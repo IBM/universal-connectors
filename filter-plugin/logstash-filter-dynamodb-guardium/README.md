@@ -8,10 +8,10 @@
             * S3 (pull)
             * CloudWatch (pull)
             * SQS (Pull)
-    * Guardium Insights: 3.3
+    * Guardium Data Security Center: 3.3
         * Supported inputs:
             * CloudWatch (pull)
-    * Guardium Insights SaaS: 1.0
+    * Guardium Data Security Center SaaS: 1.0
         * Supported inputs:
             * CloudWatch (pull)
 

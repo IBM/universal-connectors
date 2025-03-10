@@ -9,10 +9,10 @@
         * Filebeat (push)
         * [MongoDB Atlas](../../input-plugin/logstash-input-mongo-atlas/README.md) (pull)
 		* IBM Cloud KafkaStreams (pull)
-    * Guardium Insights: 3.2 and above
+    * Guardium Data Security Center: 3.2 and above
       * Supported inputs: 
         * Filebeat (push)
-    * Guardium Insights SaaS: 1.0
+    * Guardium Data Security Center SaaS: 1.0
       * Supported inputs:
         * Filebeat (push)
         * MongoDB Atlas (pull)
@@ -341,8 +341,8 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
 Enable the universal connector on your collector. [Enabling the Guardium universal connector on collectors](https://www.ibm.com/docs/en/SSMPHH_11.4.0/com.ibm.guardium.doc.stap/guc/cfg_guc_input_filters.html)
 
 
-## Configuring the MongoDB filters in Guardium Insights
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+## Configuring the MongoDB filters in Guardium Data Security Center
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 In the input configuration section, refer to the Filebeat section.
 
 ### Not yet supported

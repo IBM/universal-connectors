@@ -7,7 +7,7 @@
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
   	* Guardium Data Protection: 11.4 and above
-  	* Guardium Insights SaaS: 1.0
+  	* Guardium Data Security Center SaaS: 1.0
 
 
 ## 1. Configuring On-Prem MSSQL
@@ -197,6 +197,6 @@ On the second G machine, in the input section for the JDBC plug-in, update the "
 
 	SELECT timestamp_utc,event_data,DATEDIFF_BIG(ns, ‘1970-01-01 00:00:00.00000’, timestamp_utc) AS updated_timestamp FROM sys.fn_xe_file_target_read_file(‘C:\temp\ErrorCapture*.xel’,null,null,null) where DATEDIFF_BIG(ss, ‘1970-01-01 00:00:00.00000’, timestamp_utc)%2 = 0 and DATEDIFF_BIG(ns, ‘1970-01-01 00:00:00.00000’, timestamp_utc) > :sql_last_value order by timestamp_utc
 
-## 5. Configuring the AWS ONPREMMSSQL Guardium Logstash filters in Guardium Insights
+## 5. Configuring the AWS ONPREMMSSQL Guardium Logstash filters in Guardium Data Security Center
 
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
