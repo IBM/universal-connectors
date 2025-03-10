@@ -45,13 +45,16 @@ that you have access to the [Snowflake database](https://docs.snowflake.com/en/s
 Run the following queries to provide access to a particular role.
 ```sql
   use role accountadmin;
+  CREATE ROLE <role-name>;
+  CREATE USER <username> PASSWORD = '<password>' ;
+
+  GRANT ROLE <role-name> TO USER <username>;
+  ALTER USER <username> SET DEFAULT_ROLE = <role-name>;
 
   grant imported privileges on database snowflake to role sysadmin;
-  grant imported privileges on database snowflake to role customrole1;
-
-  use role customrole1;
-
-  select database_name, database_owner from snowflake.account_usage.databases;
+  grant imported privileges on database snowflake to role <role-name>;
+  GRANT USAGE ON WAREHOUSE COMPUTE_WH TO ROLE <role-name>;
+  GRANT SELECT ON ALL TABLES IN SCHEMA snowflake.account_usage TO ROLE <role-name>;
 ``` 
 
 ## 3. Viewing the audit logs
