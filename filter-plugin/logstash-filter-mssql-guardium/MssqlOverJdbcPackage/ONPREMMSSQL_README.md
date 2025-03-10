@@ -7,7 +7,7 @@
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
   	* Guardium Data Protection: 11.4 and above
-  	* Guardium Insights SaaS: 1.0
+  	* Guardium Data Security Center SaaS: 1.0
 
 
 ## 1. Configuring On-Prem MSSQL
