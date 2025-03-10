@@ -239,6 +239,6 @@ On the second G machine, in the input section for the JDBC plug-in,  update the 
 
 	SELECT event_time, session_id, database_name, client_ip, server_principal_name, application_name, statement, succeeded, DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) AS updatedeventtime FROM msdb.dbo.rds_fn_get_audit_file('D:\rdsdbdata\SQLAudit\*.sqlaudit', default, default ) Where schema_name not in ('sys') and object_name NOT IN ('dbo','syssubsystems','fn_sysdac_is_currentuser_sa','backupmediafamily','backupset','syspolicy_configuration','syspolicy_configuration_internal','syspolicy_system_health_state','syspolicy_system_health_state_internal','fn_syspolicy_is_automation_enabled','spt_values','sysdac_instances_internal','sysdac_instances') and database_principal_name not in('public') and ((succeeded =1) or (succeeded =0 and statement like '%Login failed%')) and statement != '' and session_id%2= 1 and DATEDIFF_BIG(ns, '1970-01-01 00:00:00.00000', event_time) > :sql_last_value order by event_time;
 
-## 5. Configuring the AWS MSSQL Guardium Logstash filters in Guardium Insights
+## 5. Configuring the AWS MSSQL Guardium Logstash filters in Guardium Data Security Center
 
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
