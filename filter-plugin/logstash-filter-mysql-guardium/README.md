@@ -128,8 +128,8 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 8. Click ```Save```. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the ```Configure Universal Connector``` page.
 
-## 5. Configuring the MySQL filters in Guardium Insights
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+## 5. Configuring the MySQL filters in Guardium Data Security Center
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 In the ```Input configuration``` section, refer to the Filebeat section.
 
 
