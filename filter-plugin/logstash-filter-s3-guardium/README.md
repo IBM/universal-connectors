@@ -7,11 +7,11 @@
     * Supported inputs:
       * Cloudwatch logs (pull)
       * SQS (pull)
-  * Guardium Insights: 3.2
+  * Guardium Data Security Center: 3.2
     * Supported inputs:
       * Cloudwatch logs (pull)
       * SQS (pull)
-  * Guardium Insights SaaS: 1.0
+  * Guardium Data Security Center SaaS: 1.0
     * Supported inputs:
       * Cloudwatch logs (pull)
       * SQS (pull)
@@ -315,13 +315,13 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
        ![Connector configuration 4](/docs/images/cloudwatch/connector_configuration_4.png)
 
 5. If the audit logs are to be fetched from SQS LAMBDA,
-    1. Use the details from the [s3-over-sqs.conf](S3OverSQSUsingLambdaPackage/S3/s3OverSqs.conf) file.
+    1. Use the details from the [s3-over-sqs.conf](S3OverSQSPackage/S3/S3OverSQS.conf) file.
        Update the input section to add the details from the corresponding file's input part, omitting the
        keyword "input{" at the beginning and its corresponding "}" at the end. More details on how to configure the
        relevant input plugin can be found [here](../../input-plugin/logstash-input-cloudwatch-logs/README.md).
     2. Use the details
-       from the [s3-over-sqs.conf](S3OverSQSUsingLambdaPackage/S3/s3OverSqs.conf) file. Update the input section to add the details
-       from the corresponding file's input part, omitting the keyword "filter{" at the beginning and its corresponding "}"
+       from the [s3-over-sqs.conf](S3OverSQSPackage/S3/S3OverSQS.conf) file. Update the filter section to add the details
+       from the corresponding file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}"
        at the end. More details on how to configure the relevant input plugin can be
        found [here](../../input-plugin/logstash-input-cloudwatch-logs/README.md).
 
@@ -330,8 +330,8 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
    disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 
-## Configuring the Amazon S3 over Cloudwatch_logs in Guardium Insights
+## Configuring the Amazon S3 over Cloudwatch_logs in Guardium Data Security Center
 
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).

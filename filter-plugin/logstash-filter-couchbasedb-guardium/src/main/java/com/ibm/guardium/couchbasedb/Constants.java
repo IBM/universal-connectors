@@ -39,6 +39,7 @@ public interface Constants {
 	public static final String PORT = "port";
 	public static final String STATEMENT = "statement";
 	public static final String TIMESTAMP = "timestamp";
+	public static final String MIN_OFF = "Offset";
 	public static final String OBJECT_TYPE = "bucket";
 	public static final String NAME = "name";
 	public static final String BUCKET = "bucket_name";

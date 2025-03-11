@@ -5,8 +5,8 @@
 * Supported inputs: CloudWatch (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
-    * Guardium Insights: 3.2
-    * Guardium Insights SaaS: 1.0
+    * Guardium Data Security Center: 3.3
+    * Guardium Data Security Center SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Neptune audit logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the sessionLocator, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved. The Neptune plug-in only supports Guardium Data Protection as of now.
 
@@ -109,7 +109,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * You must have permission for the S-Tap Management role. The admin user includes this role by  default.
 
-* Download the [logstash-filter-neptune_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-neptune_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+* Download the [logstash-filter-neptune_guardium_filter.zip](./logstash-filter-neptune_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 * For Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12p15 download the [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip)
 
@@ -139,9 +139,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
      - The Neptune audit log doesn’t include error logs, so in Guardium we will not be able to show this in the in SQL_ERROR & LOGIN_FAILED report.In cases of invalid queries, an error message will appear in the Guardium logs instead of records.
 
 	
-## Configuring the AWS Neptune Guardium Logstash filters in Guardium Insights
-
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
-
+## Configuring the AWS Neptune Guardium Logstash filters in Guardium Data Security Center
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).
 

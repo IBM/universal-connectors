@@ -1,0 +1,51 @@
+{
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "authenticationInfo": {
+      "principalEmail": "test@abc.com"
+    },
+    "requestMetadata": {
+      "callerIp": "174.119.174.177",
+      "callerSuppliedUserAgent": "grpc-java-netty/1.67.0-SNAPSHOT",
+      "requestAttributes": {
+        "time": "2024-08-21T13:41:53.380481464Z",
+        "auth": {}
+      },
+      "destinationAttributes": {}
+    },
+    "serviceName": "bigtableadmin.googleapis.com",
+    "methodName": "google.bigtable.admin.v2.BigtableTableAdmin.GetTable",
+    "authorizationInfo": [
+      {
+        "resource": "projects/test-project-1234/instances/testbigtabletest/tables/pets",
+        "permission": "bigtable.tables.get",
+        "granted": true,
+        "resourceAttributes": {
+          "service": "bigtableadmin.googleapis.com",
+          "name": "projects/test-project-1234/instances/testbigtabletest/tables/pets",
+          "type": "bigtableadmin.googleapis.com/Table"
+        },
+        "permissionType": "ADMIN_READ"
+      }
+    ],
+    "resourceName": "projects/test-project-1234/instances/testbigtabletest/tables/pets",
+    "request": {
+      "view": "FULL",
+      "name": "projects/test-project-1234/instances/testbigtabletest/tables/pets",
+      "@type": "type.googleapis.com/google.bigtable.admin.v2.GetTableRequest"
+    }
+  },
+  "insertId": "1a2khrncx6j",
+  "resource": {
+    "type": "audited_resource",
+    "labels": {
+      "project_id": "test-project-1234",
+      "method": "google.bigtable.admin.v2.BigtableTableAdmin.GetTable",
+      "service": "bigtableadmin.googleapis.com"
+    }
+  },
+  "timestamp": "2024-08-21T13:41:53.379565874Z",
+  "severity": "INFO",
+  "logName": "projects/test-project-1234/logs/cloudaudit.googleapis.com%2Fdata_access",
+  "receiveTimestamp": "2024-08-21T13:41:54.090246801Z"
+}

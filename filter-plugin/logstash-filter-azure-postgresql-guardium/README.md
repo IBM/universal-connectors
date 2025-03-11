@@ -5,7 +5,8 @@
 * Supported inputs: Azure Event Hub (pull)
 * Supported Guardium versions:
    * Guardium Data Protection: 11.4 and above
-   * Guardium Insights SaaS: 1.0
+   * Guardium Data Security Center: 3.3
+   * Guardium Data Security Center SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the azure postgreSQL audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
@@ -29,6 +30,7 @@ This plug-in uses Azure Event Hub as the data streaming service.
 There are multiple ways to install a Postgres server. For this example, we will assume that we already have a working Azure Postgres setup.
 For information regarding setup, please refer [quickstart-create-server-portal](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-create-server-portal) link. 
 
+**Note:**  Here, we can opt for either a single server or a PostgreSQL Flexible server. The Single Server option is on the retirement path. For more information on the retirement schedule, please refer to the [official Microsoft documentation](https://learn.microsoft.com/en-us/azure/postgresql/migrate/whats-happening-to-postgresql-single-server?wt.mc_id=searchAPI_azureportal_inproduct_rmskilling&sessionId=d1a1e6c6a39842e1bc0191329167d1c3).
 	
 ## 2. Enabling Auditing
 
@@ -172,7 +174,11 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 3. Click Upload File and select the offline [logstash-filter-azure_postgresql_guardium_plugin_filter.zip](./logstash-filter-azure_postgresql_guardium_plugin_filter.zip) plugin. After it is uploaded,click OK. This is not necessary for Guardium Data Protection v12.0 and later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
-6. Update the input section to add the details from [azurepostgresql.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azurepostgresql.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+6. Update the input section to add the details from [azurepostgresql.conf](./azurepostgresql.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added. This is no longer required starting v12p20 and v12.1.
-8. Update the filter section to add the details from [azurepostgresql.conf](https://github.ibm.com/Activity-Insights/universal-connectors/blob/master/filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub/azurepostgresql/azurepostgresql.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+8. Update the filter section to add the details from [azurepostgresql.conf](./azurepostgresql.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 9. Click **Save**. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.
+
+
+## 6. Configuring the Azure Postgres filters in Guardium Data Security Center
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)

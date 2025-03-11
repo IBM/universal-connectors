@@ -52,6 +52,7 @@ public class GreenplumdbGuardiumFilterTest {
 		event.setField(ApplicationConstantTest.MESSAGE, message);
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-05 06:32:41.527966 UTC");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "172.31.7.158");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"+05:00");
 		event.setField(ApplicationConstantTest.REMOTE_PORT, "56116");
 		event.setField(ApplicationConstantTest.USER_NAME, "ec2-user");
 		event.setField(ApplicationConstantTest.DATABASE_NAME, "template1");
@@ -80,6 +81,7 @@ public class GreenplumdbGuardiumFilterTest {
 		event.setField(ApplicationConstantTest.MESSAGE, message);
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-05 06:32:41.527966 IST");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "172.31.7.158");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"-04:00");
 		event.setField(ApplicationConstantTest.REMOTE_PORT, "56116");
 		event.setField(ApplicationConstantTest.USER_NAME, "ec2-user");
 		event.setField(ApplicationConstantTest.DATABASE_NAME, "test1");
@@ -107,6 +109,7 @@ public class GreenplumdbGuardiumFilterTest {
 		event.setField(ApplicationConstantTest.MESSAGE, message);
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-05 06:32:41.527966 IST");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "172.31.7.158");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"+07:00");
 		event.setField(ApplicationConstantTest.REMOTE_PORT, "56116");
 		event.setField(ApplicationConstantTest.USER_NAME, "ec2-user");
 		event.setField(ApplicationConstantTest.DATABASE_NAME, "test1");
@@ -135,6 +138,7 @@ public class GreenplumdbGuardiumFilterTest {
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "172.31.7.158");
 		event.setField(ApplicationConstantTest.REMOTE_PORT, "56116");
 		event.setField(ApplicationConstantTest.USER_NAME, "ec2-user");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"+09:00");
 		event.setField(ApplicationConstantTest.DATABASE_NAME, "test1");
 		event.setField(ApplicationConstantTest.PROCESS_ID, "p1713");
 		event.setField(ApplicationConstantTest.CONNECTION_ID, "con7");
@@ -159,6 +163,7 @@ public class GreenplumdbGuardiumFilterTest {
 		event.setField(ApplicationConstantTest.MESSAGE, message);
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-05 06:32:41.527966 IST");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "172.31.7.158");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"-08:00");
 		event.setField(ApplicationConstantTest.REMOTE_PORT, "56116");
 		event.setField(ApplicationConstantTest.USER_NAME, "ec2-user");
 		event.setField(ApplicationConstantTest.DATABASE_NAME, "test1");
@@ -184,6 +189,7 @@ public class GreenplumdbGuardiumFilterTest {
 		events.add(event);
 		event.setField(ApplicationConstantTest.MESSAGE, message);
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-05 06:32:41.527966 IST");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"-08:00");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "2001:0db8:85a3:0000:0000:8a2e:0370:7334");
 		event.setField(ApplicationConstantTest.REMOTE_PORT, "56116");
 		event.setField(ApplicationConstantTest.USER_NAME, "ec2-user");
@@ -211,6 +217,7 @@ public class GreenplumdbGuardiumFilterTest {
 		events.add(event);
 		event.setField(ApplicationConstantTest.MESSAGE, message);
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-05 06:50:03.128588 UTC");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"-08:00");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "172.31.7.158");
 		event.setField(ApplicationConstantTest.REMOTE_PORT, "56224");
 		event.setField(ApplicationConstantTest.USER_NAME, "ec2-user");
@@ -239,6 +246,7 @@ public class GreenplumdbGuardiumFilterTest {
 		events.add(event);
 		event.setField(ApplicationConstantTest.MESSAGE, message);
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-05 06:50:03.128588 UTC");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"-04:30");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "172.31.7.158");
 		event.setField(ApplicationConstantTest.REMOTE_PORT, "56224");
 		event.setField(ApplicationConstantTest.USER_NAME, "ec2-user");
@@ -267,6 +275,7 @@ public class GreenplumdbGuardiumFilterTest {
 		events.add(event);
 		event.setField(ApplicationConstantTest.MESSAGE, message);
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-05 06:32:41.527966 UTC");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"-04:30");
 		event.setField(ApplicationConstant.SERVER_IP, "172.31.7.160");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "[local]");
 		event.setField(ApplicationConstantTest.USER_NAME, "ec2-user");
@@ -295,6 +304,7 @@ public class GreenplumdbGuardiumFilterTest {
 		events.add(event);
 		event.setField(ApplicationConstantTest.MESSAGE, message);
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-05 06:32:41.527966 UTC");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"-04:30");
 		event.setField(ApplicationConstant.REMOTE_PORT, "\"56224\"");
 		event.setField(ApplicationConstant.SERVER_IP, "172.31.7.160");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "172.31.7.158");
@@ -324,6 +334,7 @@ public class GreenplumdbGuardiumFilterTest {
 		events.add(event);
 		event.setField(ApplicationConstantTest.MESSAGE, message);
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-05 06:32:41.527966 UTC");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"-05:30");
 		event.setField(ApplicationConstant.REMOTE_PORT, "\"56224\"");
 		event.setField(ApplicationConstant.SERVER_IP, "172.31.7.160");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "172.31.7.158");
@@ -353,6 +364,7 @@ public class GreenplumdbGuardiumFilterTest {
 		events.add(event);
 		event.setField(ApplicationConstantTest.MESSAGE, message);
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-29 08:19:13.744998 UTC");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"-04:30");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "172.31.5.213");
 		event.setField(ApplicationConstantTest.REMOTE_PORT, "38380");
 		event.setField(ApplicationConstantTest.USER_NAME, "ec2-user");
@@ -385,6 +397,7 @@ public class GreenplumdbGuardiumFilterTest {
 		events.add(event);
 		event.setField(ApplicationConstantTest.MESSAGE, message);
 		event.setField(ApplicationConstantTest.TIMESTAMP, "2022-08-29 08:19:13.744998 UTC");
+		event.setField(ApplicationConstantTest.MIN_OFFSET,"-04:30");
 		event.setField(ApplicationConstantTest.REMOTE_HOST, "172.31.5.213");
 		event.setField(ApplicationConstantTest.REMOTE_PORT, "38380");
 		event.setField(ApplicationConstantTest.USER_NAME, "ec2-user");

@@ -5,7 +5,8 @@
 - Environment: IaaS
 - Supported Guardium versions:
     - Guardium Data Protection: 11.4 and later
-    - Guardium Insights SaaS: 1.0
+    - Guardium Data Security Center: 3.3
+    - Guardium Data Security Center SaaS: 1.0
 - Supported inputs:
     - JDBC (pull)
 
@@ -78,7 +79,14 @@ jdbc_connection_string => "jdbc:snowflake://<id>.<region>.<provider>.snowflakeco
 &db=<database>&useProxy=true&proxyHost=<proxy_hostname/proxy_ip_address>&proxyPort=<proxy_port>" 
 ```
 
-## 6. Configuring the Snowflake filter in Guardium
+## 6.  Prevent authenticating token expiration 
+Add [``CLIENT_SESSION_KEEP_ALIVE``](https://docs.snowflake.com/en/sql-reference/parameters#client-session-keep-alive) and [``CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY``](https://docs.snowflake.com/en/sql-reference/parameters#client-session-keep-alive-heartbeat-frequency) in the ``jdbc_connection_string`` as mentioned below. 
+   ```text  
+   jdbc_connection_string => jdbc:snowflake://<id>.<region>.<provider>.snowflakecomputing.com/?warehouse=<warehouse>&db=<database>
+   &CLIENT_SESSION_KEEP_ALIVE=true&CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY=60
+   ```
+
+## 7. Configuring the Snowflake filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector
 identifies and parses received events, and then converts them to a standard Guardium format. The output of the
 universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements.
@@ -137,7 +145,7 @@ you can turn it off. To do this, set the value to `false` for the following two 
     After it is validated, it appears in the Configure Universal Connector page.
 
 
-## 7. JDBC load-balancing configuration
+## 8. JDBC load-balancing configuration
 1. For Query auditing:
     * the load can be distributed between two machines based on the even and the odd values of `EXECUTION_TIME`.
     * **Procedure**,
@@ -239,3 +247,5 @@ Yes. The schema and connection behaviour for Snowflake are the same across all t
 providers. You may wish to deploy a Guardium collector in the same region as your Snowflake instance to
 reduce items such as egress costs.
 
+## 5. Configuring the SNOWFLAKE filters in Guardium Data Security Center
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)

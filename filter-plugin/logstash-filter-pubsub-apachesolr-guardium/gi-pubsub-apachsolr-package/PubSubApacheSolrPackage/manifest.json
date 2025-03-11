@@ -1,0 +1,15 @@
+{
+	"name": "Guardium_Apache_Solr_Filter_plugin",
+	"alias": "Pubsub_Apache_solr",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"Pubsub Apache Solr","supportedVersions": ["5.x"]}],
+	"supported_input_plugins": ["Google_PubSub"],
+	"developer": "IBM",
+	"license": "Apache 2.0",
+	"description": "This package provides the data needed in order to support GCP Apache solr DB in Guardium Universal Connector.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-apachesolr-guardium/README.md"
+}
+ 

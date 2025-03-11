@@ -1,0 +1,57 @@
+{
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "status": {},
+    "authenticationInfo": {
+      "principalEmail": "test@abc.com",
+      "principalSubject": "user:test@abc.com"
+    },
+    "requestMetadata": {
+      "callerIp": "192.159.178.221",
+      "requestAttributes": {
+        "time": "2024-08-25T17:17:50.241634012Z",
+        "auth": {}
+      },
+      "destinationAttributes": {}
+    },
+    "serviceName": "bigtableadmin.googleapis.com",
+    "methodName": "google.bigtable.admin.v2.BigtableInstanceAdmin.CreateInstance",
+    "authorizationInfo": [
+      {
+        "resource": "projects/charged-mind-281913",
+        "permission": "bigtable.instances.create",
+        "granted": true,
+        "resourceAttributes": {
+          "service": "bigtableadmin.googleapis.com",
+          "name": "projects/charged-mind-281913/instances/createinstancetest",
+          "type": "bigtableadmin.googleapis.com/Instance"
+        },
+        "permissionType": "ADMIN_WRITE"
+      }
+    ],
+    "resourceName": "projects/charged-mind-281913/instances/createinstancetest",
+    "response": {
+      "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
+      "type": "PRODUCTION",
+      "name": "projects/charged-mind-281913/instances/createinstancetest"
+    }
+  },
+  "insertId": "bev6i2bin",
+  "resource": {
+    "type": "audited_resource",
+    "labels": {
+      "project_id": "charged-mind-281913",
+      "method": "google.bigtable.admin.v2.BigtableInstanceAdmin.CreateInstance",
+      "service": "bigtableadmin.googleapis.com"
+    }
+  },
+  "timestamp": "2024-08-25T17:17:53.109414884Z",
+  "severity": "NOTICE",
+  "logName": "projects/charged-mind-281913/logs/cloudaudit.googleapis.com%2Factivity",
+  "operation": {
+    "id": "operations/projects/charged-mind-281913/instances/createinstancetest/locations/northamerica-northeast2-a/operations/5003528313522199720",
+    "producer": "bigtableadmin.googleapis.com",
+    "last": true
+  },
+  "receiveTimestamp": "2024-08-25T17:17:54.035633443Z"
+}

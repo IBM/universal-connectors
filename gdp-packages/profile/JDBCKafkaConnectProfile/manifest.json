@@ -1,0 +1,22 @@
+{
+  "name": "Kafka connect JDBC kerberos",
+  "alias": "Kafka",
+  "type": "kafka-connect",
+  "pipeline_type": null,
+  "plugin_version": "1.2.3",
+  "supportedDataSources": null,
+  "supportedInputPlugins": null,
+  "developer": "IBM",
+  "license": "Apache2.0",
+  "supported_input_plugins": [],
+  "description": "Pull events from the JDBC and send them to kafka topic",
+  "configuration_notes": "",
+  "documentation_path": "",
+  "pluginSHA256Checksum": -1,
+  "plugin_offline_package_path": "jdbc-connector-for-apache-kafka-6.10.0-SNAPSHOT",
+  "pluginConfigTemplateParams": null,
+  "pluginConfigTemplateStrings": null,
+  "uploadDate": null,
+  "uploadUser": null,
+  "auto_scaling": false
+}

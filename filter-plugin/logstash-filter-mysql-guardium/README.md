@@ -7,10 +7,10 @@
       * Supported inputs:
          * Syslog (push)
          * Filebeat (push)
-   * Guardium Insights: 3.2
+   * Guardium Data Security Center: 3.3
      *  Supported inputs:
         * Filebeat (push)
-   * Guardium Insights SaaS: 1.0
+   * Guardium Data Security Center SaaS: 1.0
      *  Supported inputs:
         * Filebeat (push)
 
@@ -110,6 +110,7 @@ The universal connector identifies and parses received events, and converts them
 The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements.
 
 ### Before you begin
+* Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role, by default.
 * Mysql-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
@@ -127,8 +128,8 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 8. Click ```Save```. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the ```Configure Universal Connector``` page.
 
-## 5. Configuring the MySQL filters in Guardium Insights
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+## 5. Configuring the MySQL filters in Guardium Data Security Center
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 In the ```Input configuration``` section, refer to the Filebeat section.
 
 
@@ -145,3 +146,10 @@ In the ```Input configuration``` section, refer to the Filebeat section.
 * *IPv6* addresses are typically supported by the MySQL and filter plug-ins, however this is not fully supported by the Guardium pipeline.
 * It is supported on Enterprise version only
 * Use JSON format for native logging (configurable in the database server). XML is not supported as of now.
+
+## Filter result
+
+The Guardium record that is added to Logstash event after examining the filter are handled by Guardium Universal Connector (in an output stage) and then loaded into Guardium.
+If an event message is not related to MySQL, then such event is not removed from the pipleline and is tagged as ‘_mysqlguardium_ignore’. If an event message is from MySQL but the JSON parsing has failed, then such event is tagged as ‘_mysqlguardium_parse_error’ and not removed from the pipeline. This may occur if the syslog message gets truncated due to its length.
+The ‘_mysqlguardium_ignore’ and  ‘_mysqlguardium_parse_error’ tags are useful for debugging purposes.
+

@@ -62,23 +62,25 @@ public class Parser {
 				
 				if(status.equals(Constants.SUCCESS)){
 					record.setData(Parser.parseDataForSniffer(data));
-				}else if(status.equals(Constants.FATAL) ||status.equals(Constants.ERRORS)){
+				} else if(status.equals(Constants.FATAL) ||status.equals(Constants.ERRORS)){
 					record.setException(Parser.parseExceptionForN1QL(data));
 				}	
 			}
-				}else {
-					if ((data.has(Constants.ERROR_MESSAGE) && !data.get(Constants.ERROR_MESSAGE).isJsonNull())) {
-						record.setException(Parser.parseExceptionForAPI(data));
-					} 
-					else {
-						if (data.get(Constants.ID).getAsInt() == 8264 || data.get(Constants.ID).getAsInt() == 8193) {
-							record.setException(Parser.parseExceptionForAPI(data));
-						}
-						else {
-							record.setData(Parser.parseData(data));
-						}
-						}
-					}
+
+		} else {
+			if ((data.has(Constants.ERROR_MESSAGE) && !data.get(Constants.ERROR_MESSAGE).isJsonNull())) {
+				record.setException(Parser.parseExceptionForAPI(data));
+			} else {
+				if (data.get(Constants.ID).getAsInt() == 8264 || 
+                    data.get(Constants.ID).getAsInt() == 8193 || 
+                    data.get(Constants.ID).getAsInt() == 20481 || 
+                    data.get(Constants.ID).getAsInt() == 32787 ) {
+                        record.setException(Parser.parseExceptionForAPI(data));
+				} else {
+					record.setData(Parser.parseData(data));
+				}
+			}
+		}
 	}
 	
 	public static String parseSessionID(final JsonObject data){
@@ -96,7 +98,6 @@ public class Parser {
 	
 	//Parse Timestamp
 	public static Time parseTimestamp(final JsonObject data) {
-		
 		String dateString = null;
 		if(data.has(Constants.TIMESTAMP) && !data.get(Constants.TIMESTAMP).isJsonNull()) {
 			dateString=data.get(Constants.TIMESTAMP).getAsString();
@@ -107,9 +108,9 @@ public class Parser {
 			int minOffset = date.getOffset().getTotalSeconds() / 60;
 			return new Time(millis, minOffset, 0);
 		}
-		
 		return null;
 	}
+
 
 
 	//Form Session Locator
@@ -191,7 +192,7 @@ public class Parser {
 		
 		accessor.setClient_mac(Constants.UNKNOWN_STRING);
 		accessor.setServerDescription(Constants.UNKNOWN_STRING);
-		accessor.setServiceName(Constants.UNKNOWN_STRING);
+		accessor.setServiceName(Constants.NOT_AVAILABLE);
 		
 		return accessor;
 	}
@@ -311,7 +312,11 @@ public class Parser {
 		ExceptionRecord exceptionRecord = new ExceptionRecord();
 		
 		if (data.has(Constants.ID) && !data.get(Constants.ID).isJsonNull()) {
-			if (data.get(Constants.ID).getAsInt() == 8193 || data.get(Constants.ID).getAsInt() == 8264) {
+            
+            if( data.get(Constants.ID).getAsInt() == 8264 || 
+                data.get(Constants.ID).getAsInt() == 8193 || 
+                data.get(Constants.ID).getAsInt() == 20481 || 
+                data.get(Constants.ID).getAsInt() == 32787) { 
 				exceptionRecord.setExceptionTypeId(Constants.LOGIN_FAILED);
 			} else {
 				exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
@@ -337,13 +342,19 @@ public class Parser {
 	private static ExceptionRecord parseExceptionForAPI(final JsonObject data) {
 
 		ExceptionRecord exceptionRecord = new ExceptionRecord();
-		if (data.has(Constants.ID) && !data.get(Constants.ID).isJsonNull()) {
-			if (data.get(Constants.ID).getAsInt() == 8193 || data.get(Constants.ID).getAsInt() == 8264) {
+
+        if (data.has(Constants.ID) && !data.get(Constants.ID).isJsonNull()) {
+
+            if( data.get(Constants.ID).getAsInt() == 8264 || 
+                data.get(Constants.ID).getAsInt() == 8193 || 
+                data.get(Constants.ID).getAsInt() == 20481 || 
+                data.get(Constants.ID).getAsInt() == 32787) { 
 				exceptionRecord.setExceptionTypeId(Constants.LOGIN_FAILED);
 			} else {
 				exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
 			}	
-		}else {
+
+        }else {
 			exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
 		}
 		

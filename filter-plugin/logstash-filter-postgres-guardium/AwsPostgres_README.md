@@ -6,7 +6,7 @@
 * Supported inputs: CloudWatch (pull), SQS (pull)
 * Supported Guardium versions: 
     * Guardium Data Protection: 11.4 and above
-    * Guardium Insights: 3.2 and above
+    * Guardium Data Security Center: 3.2 and above
 
 ## Configuring native logging
 
@@ -260,7 +260,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 3. Click **Upload File** and 
 	*  Select the [offline postgres-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/Postgres/postgres-offline-plugins-7.5.2.zip) plug-in. After it uploads, click **OK**. This is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
     for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
-	*  If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12p15, select the offline [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click **OK**.
+	*  If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505, 12.0 and/or 12p15, select the offline [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click **OK**.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the **Connector name** field.
 6. If the audit logs are to be fetched from CloudWatch directly, use the details from the [postgresCloudwatch.conf](./PostgresOverCloudWatchPackage/postgresCloudwatch.conf) file. But if the audit logs are to be fetched from SQS,  use the details from the [postgreSQS.conf](./PostgresOverSQSPackage/postgreSQS.conf) file. Update the input section to add the details from the corresponding file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. More details on how to configure the relevant input plugin, see [Cloudwatch_logs input plug-in](../../input-plugin/logstash-input-cloudwatch-logs/README.md). 
@@ -271,8 +271,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for  every individual connector added.
 9. Click **Save**. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 
-## Configuring the Postgres AWS Guardium Logstash filters in Guardium Insights
+## Configuring the Postgres AWS Guardium Logstash filters in Guardium Data Security Center
 
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).

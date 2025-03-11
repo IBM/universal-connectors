@@ -5,7 +5,6 @@
 * Supported inputs: Azure Event Hub (pull)
 * Supported Guardium versions:
   * Guardium Data Protection: 11.4 and above
-  * Guardium Insights: 3.3.1
   
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Azure MySQL audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the 
 data that contains SQL commands are not parsed by this plug-in but rather forwarded as it is to Guardium to do the SQL parsing.
@@ -180,6 +179,9 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Before you upload the universal connector, enable the connector if it is disabled.
 3. Click Upload File and select the offline [guardium_logstash-offline-plugins-azure-mysql.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mysql-azure-guardium/AzureMySQLOverAzureEventHub/guardium_logstash-offline-plugins-azure-mysql.zip) plug-in. After it is uploaded, click OK.
+
+    **Note**: You do not need to upload the Azure MySQL plug-in .zip file for Guardium Data Protection v12p20 or later, v11.0p550 or later, and v11.0p491 or later. 
+
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [azure_mysql.conf](azure_mysql.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.

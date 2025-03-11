@@ -7,7 +7,7 @@
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
   	* Guardium Data Protection: 11.4 and above
-  	* Guardium Insights SaaS: 1.0
+  	* Guardium Data Security Center SaaS: 1.0
 
 
 ## 1. Configuring On-Prem MSSQL
@@ -119,7 +119,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 #### Before you begin
 
-• You must have LFD policy enabled on the collector. The detailed steps can be found in step 4 on [this page](https://www.ibm.com/docs/en/guardium/11.4?topic=dpi-installing-testing-filter-input-plug-in-staging-guardium-system).
+• Configure the policies you require. For more inforamtion, see [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies).
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
 
@@ -134,9 +134,9 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 		Download [logstash-filter-xml-4.1.3-1.zip](./logstash-filter-xml-4.1.3-1.zip).<br>
 	III. If you are using Guardium 12.0 with patch p5 or earlier,
 		Download [logstash-filter-xml-4.2.0-1.zip](./logstash-filter-xml-4.2.0-1.zip).<br>
-	IV. For the Guardium 11.4(p490 or later),11.5(p540 or later) and 12.0(p10 or later),
+	IV. For the Guardium 11.4p490, 11.5p540 and 12.0p10,
 		Download [logstash-filter-xml-4.2.0-2.zip](./logstash-filter-xml-4.2.0-2.zip).<br>
-	V. For the Guardium 12.0(p15 or later), logstash-filter-xml.zip upload is not required.
+	V.  For the Guardium 11.4(p491 or later), 11.5(p545 or later) and 12.0(p15 or later), logstash-filter-xml.zip upload is not required.
 
 • Download the [mssql-jdbc-7.4.1.jre8](./mssql-jdbc-7.4.1.jre8.jar) jar.
 
@@ -154,7 +154,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
       Upload [logstash-filter-xml-4.2.0-1.zip](./logstash-filter-xml-4.2.0-1.zip).<br>
       IV. For the Guardium 11.4(p490 or later),11.5(p540 or later) and 12.0(p10 or later),
       Upload [logstash-filter-xml-4.2.0-2.zip](./logstash-filter-xml-4.2.0-2.zip).<br>
-   	  V. For the Guardium 12.0(p15 or later), logstash-filter-xml.zip upload is not required.
+   	  V. For the Guardium 11.4(p491 or later), 11.5(p545 or later) and 12.0(p15 or later), logstash-filter-xml.zip upload is not required.
 5. Click Upload File and select the [mssql-jdbc-7.4.1.jre8](./mssql-jdbc-7.4.1.jre8.jar) jar. After it is uploaded, click OK.
 6. Click the Plus sign to open the Connector Configuration dialog box.
 7. Type a name in the Connector name field.
@@ -196,3 +196,7 @@ On the first G machine, in the input section for the JDBC plug-in, update the "s
 On the second G machine, in the input section for the JDBC plug-in, update the "statement" field in the second JDBC block where tags => ["Failure"], as follows:
 
 	SELECT timestamp_utc,event_data,DATEDIFF_BIG(ns, ‘1970-01-01 00:00:00.00000’, timestamp_utc) AS updated_timestamp FROM sys.fn_xe_file_target_read_file(‘C:\temp\ErrorCapture*.xel’,null,null,null) where DATEDIFF_BIG(ss, ‘1970-01-01 00:00:00.00000’, timestamp_utc)%2 = 0 and DATEDIFF_BIG(ns, ‘1970-01-01 00:00:00.00000’, timestamp_utc) > :sql_last_value order by timestamp_utc
+
+## 5. Configuring the AWS ONPREMMSSQL Guardium Logstash filters in Guardium Data Security Center
+
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)

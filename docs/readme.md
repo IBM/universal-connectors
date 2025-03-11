@@ -10,10 +10,15 @@ See available plug-ins [here](/docs/available_plugins.md).
 
 ## Guardium Data Protection
 See our Guardium Data Protection documentation [here](/docs/Guardium%20Data%20Protection/).
+
 ## Guardium Insights
-See our Guardium Insights documentation [here](/docs/Guardium%20Insights/3.2.x/README.md).
+See Guardium Insights documentation for [3.2.x](https://github.com/IBM/universal-connectors/tree/main/docs/Guardium%20Insights/3.2.x) 
+
+See Guardium Insights documentation for [3.x](https://www.ibm.com/docs/en/guardium-insights/3.x?topic=connecting-data-sources)
+
 ## Guardium Insights SaaS
-See our Guardium Insights SaaS documentation [here](/docs/Guardium%20Insights/SaaS_1.0/)
+
+See our Guardium Insights documentation for [SaaS](https://www.ibm.com/docs/en/guardium-insights/saas?topic=connecting-data-sources)
 
 
 </details>

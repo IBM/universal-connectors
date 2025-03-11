@@ -1,6 +1,6 @@
 # Aurora Postgres
 
-## Enabling the PGAudit extension
+## 1. Enabling the PGAudit extension
 
 There are different ways of auditing and logging in postgres. For this exercise, we will use PGAudit, the open
 source audit logging extension for PostgreSQL 9.5+. This extension supports logging for Sessions or Objects.
@@ -90,7 +90,7 @@ Object auditing affects the performance less than session auditing, due to the f
 7. Reboot the database instance for the changes to take effect.
 
 
-## 3. Viewing the PGAudit logs
+## 2. Viewing the PGAudit logs
 
 The PGAudit logs (both session and object logs) can be seen in log files in RDS, and also on CloudWatch:
 
@@ -119,6 +119,106 @@ By default, each database instance has an associated log group with a name in th
 
 #### Notes
 * Guardium Data Protection requires installation of the [json_encode](https://www.elastic.co/guide/en/logstash-versioned-plugins/current/v3.0.3-plugins-filters-json_encode.html) filter plug-in.
+
+## 3. Exporting Cloudwatch Logs to SQS using lambda function
+
+In order to achieve load balancing of audit logs between different collectors, the audit logs must exported from Cloudwatch to SQS
+
+### Creating the SQS
+
+#### Procedure
+1. Go to https://console.aws.amazon.com/
+2. Click Services
+3. Search for SQS and click on Simple Queue Services
+4. Click on Create Queue
+5. Select the type as Standard
+6. Enter the name for the queue
+7. Keep the rest of the default settings
+
+#### Create Policy for the relevant IAM User
+1. For the IAM User using which the SQS logs are to be accessed in Guardium, perform the below steps
+2. Go to https://console.aws.amazon.com/
+3. Go to ```IAM service``` > ```Policies``` > ```Create Policy```
+4. Select ```service as SQS```
+5. Select the check boxes having actions as: ```ListQueues```, ```DeleteMessage```, ```DeleteMessageBatch```, ```GetQueueAttributes```, ```GetQueueUrl```, ```ReceiveMessage```, ```ChangeMessageVisibility```, ```ChangeMessageVisibilityBatch```
+6. In the resources, specify the ARN of the queue created in the above step
+7. Click ```Review policy``` and specify the policy name
+8. Click ```Create policy```
+9. Assign the policy to the user
+
+	a.	Log in to the IAM console as IAM user (https://console.aws.amazon.com/iam/)
+
+	b.	Go to ```Users``` on the console and select the relevant IAM user to whom you want to give permissions. Click the user name link
+
+	c.	In the ```Permissions``` tab, click ```Add permissions```
+
+	d.	Click ```Attach existing policies directly```
+
+	e.	Search for the policy created and check the checkbox next to it
+
+	f.	Click ```Next: Review```
+
+	g.	Click ```Add permissions```
+
+### Creating the lambda function
+
+#### Create IAM Role
+
+Create the IAM role that will be used in the Lambda function set up. The AWS lambda service will require permission to log events and write to the SQS created. Create the IAM Role “Export-RDS-CloudWatch-to-SQS-Lambda” with “AmazonSQSFullAccess”, “CloudWatchLogsFullAccess”, and “CloudWatchEventsFullAccess” policies.
+
+##### Procedure
+1. Go to https://console.aws.amazon.com/
+2. Go to ```IAM``` -> ```Roles```
+3. Click ```Create Role```
+4. Under ```use case``` select ```Lambda``` and click ```Next```
+5. Search for “AmazonSQSFullAccess” and select it
+6. Search for “CloudWatchLogsFullAccess” and select it
+7. Search for “CloudWatchEventsFullAccess” and select it
+8. Set the ```Role Name```: e.g., “Export-RDS-CloudWatch-to-SQS-Lambda” and click ```Create role```
+
+#### Create the lambda function
+
+#### Procedure
+1. Go to https://console.aws.amazon.com/
+2. Go to ```Services```. Search for lambda function
+3. Click ```Functions```
+4. Click ```Create Function```
+5. Keep ```Author for Scratch``` selected
+6. Set ```Function name``` e.g., Export-RDS-CloudWatch-Logs-To-SQS
+7. Under ```Runtime```, select ```Python 3.x```
+8. Under ```Permissions```, select ```Use an existing role``` and select the IAM role that you created in the previous step (Export-RDS-CloudWatch-to-SQS-Lambda)
+9. Click ```Create function``` and navigate to ```Code view```
+10. Add the function code from [lambdaFunction](./PostgresOverSQSPackage/postgresLambda.py)
+11. Click ```Configuration``` -> ```Environment Variables```
+12. Create 2 variables:
+	1. Key = GROUP_NAME  value = <Name of the log group in Cloudwatch whose logs are to be exported> e.g., /aws/rds/cluster/aurora-postgres/postgresql
+	2. Key = QUEUE_NAME  value = <Queue URL where logs are to be sent> e.g., https://sqs.ap-south-1.amazonaws.com/1111111111/PostgresQueue
+13. Save the function
+14. Click on the **Deploy** button
+
+#### Automating the lambda function
+
+#### Procedure
+1. Go to the CloudWatch dashboard
+2. Go to ```Events``` -> ```Rules``` on the left pane
+3. Click ```Create Rule```
+4. Enter the name for the rule e.g., cloudwatchToSqs
+5. Under ```Rule Type```, select ```Schedule```
+6. Define the schedule. In ```schedule pattern``` select a schedule that runs at a regular rate, such as every 10 minutes
+7. Enter the rate expression, meaning the rate at which the function should execute. This value must match the time specified in the lambda function code that calculates the time delta. (If the function code it is set to 2 minutes, set the rate to 2 minutes unless changed in the code). Click ```Next```
+8. Select the ```Target1```. Select the ```Target Type``` as ```AWS Service```
+9. Select ```Target``` as ```Lambda Function```
+10. Select the lambda function created in the above step. e.g., Export-RDS-CloudWatch-Logs-To-SQS
+11. Add the tag if needed
+12. Click ```Create Rule```
+
+#### Note
+1. Before making any changes to the lambda function code, first disable the above rule. Deploy the change and then re-enable the rule. 
+2. When large amount of events are to be pushed from Cloudwatch to SQS, it is possible that Lambda function may get timed out. In order to avoid data loss, 'Timeout' value needs to be updated. However, this value should be less than the value configured in scheduling of the Event Bridge Rule. We can even adjust the scheduling of the Event Bridge to suit the load requirements. The steps to change the timeout parameter :-
+	1. Edit the created Lambda function.
+   2. ```Click Configuration``` -> ```General configuration```
+   3. Click Edit
+   4. Set ```Timeout```,  eg : 1 min 45 sec
 
 ## 4. Configuring the Postgres filters in Guardium
 

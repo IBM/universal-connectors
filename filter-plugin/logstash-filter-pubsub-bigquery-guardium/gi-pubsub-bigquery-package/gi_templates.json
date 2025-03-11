@@ -1,0 +1,53 @@
+{
+  "plugin_name": "BigQuery Over PubSub",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-bigquery-guardium/README.md",
+  "input_name": "Google_PubSub",
+  "input_parameters": [
+    {
+      "project_id": {
+        "type": "text",
+        "label": "Project ID"
+      },
+      "topic": {
+        "type": "text",
+        "label": "Topic"
+      },
+      "subscription": {
+        "type": "text",
+        "label": "Subscription"
+      },
+      "client_id": {
+        "type": "text",
+        "label": "Client ID"
+      },
+      "type": {
+        "type": "text",
+        "default": "bigQuery",
+        "hidden": true
+      },
+      "private_id": {
+        "type": "text",
+        "label": "Private key id"
+      }
+    }
+  ],
+  "filter_name": "Guardium_Big_Query_filter_Plugin",
+  "filter_parameters": [],
+  "credentials": [
+    {
+      "private_key": {
+        "type": "password",
+        "label": "Private key"
+      }
+    }
+  ],
+  "auth_parameters": [
+    {
+      "guc_input_param_client_email": {
+        "type": "text",
+        "label": "Client Email"
+      }
+    }
+  ],
+  "supported_platforms": ["Google Cloud"]
+}

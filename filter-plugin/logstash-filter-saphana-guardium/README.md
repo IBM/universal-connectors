@@ -7,10 +7,10 @@
       * Supported inputs:
         * Filebeat (push)
         * JDBC (pull)
-	* Guardium Insights: 3.2
+	* Guardium Data Security Center: 3.3
       * Supported inputs:
         * Filebeat (push)
-    * Guardium Insights SaaS: 1.0
+    * Guardium Data Security Center SaaS: 1.0
       * Supported inputs:
         * Filebeat (push)
         * JDBC (pull)
@@ -241,6 +241,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 ### Before you begin
 
+* Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies) for more information.
 * You must have permissions for the S-Tap Management role. The admin user includes this role, by default.
 
 * Download the required (ngdbc)jars as per your database version from URL https://tools.hana.ondemand.com/#hanatools.
@@ -325,6 +326,6 @@ In SAP HANA JDBC input plug-ins, we distribute load between two machines based o
      and mod(connection_id, 2) = 1;
    ```
 
-## 5. Configuring the SAP HANA filters in Guardium Insights
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+## 5. Configuring the SAP HANA filters in Guardium Data Security Center
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 For the input configuration step, refer to the [Filebeat section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#Filebeat-input-plug-in-configuration).

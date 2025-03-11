@@ -8,7 +8,7 @@ zip_directories() {
     cd "$base_dir"
     for dir in ./*/; do
         dir_name=$(basename "$dir")
-        zip -r "${dir_name}.zip" "$dir" -x ".*"
+        zip -r "${dir_name}.zip" "$dir" -x ".*" > /dev/null 2>&1
     done
     cd ..
 }
@@ -16,7 +16,7 @@ zip_directories() {
 zip_profile() {
     cd "profile"
     local dir_name="$1"
-    zip -r "${dir_name}.zip" "${dir_name}" -x ".*"
+    zip -r "${dir_name}.zip" "${dir_name}" -x ".*" > /dev/null 2>&1
     cd ..
 }
 
@@ -34,3 +34,4 @@ mv profile/*.zip "$TEMPLATES_DIR"
 cd "$TEMPLATES_DIR"
 zip -r "$TEMPLATES_DIR" . -x ".*"
 mv gdp_plugins_templates.zip ../.
+cd ..

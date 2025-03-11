@@ -1,12 +1,12 @@
 ## Couchbase-Guardium Logstash filter plug-in
 ### Meet Couchbase
-* Tested versions: 6.6.2-9600
+* Tested versions: 6.6.2-9600, 7.2.5-7596, 7.6.1-3200, 7.6.3-4200, 7.6.4-5146
 * Environment: On-premise, Iaas
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
 	* Guardium Data Protection: 11.4 and above
-	* Guardium Insights: 3.2
-    * Guardium Insights SaaS: 1.0
+	* Guardium Data Security Center: 3.3
+    * Guardium Data Security Center SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Couchbase audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved. 
 
@@ -102,6 +102,13 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 		
 		• You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
 
+		• Locate "Processors" in the filebeat.yml file and then add below attribute to get timezone of Server:
+   		For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/add-locale.html
+   		For example:-
+       		processors:
+    		- add_locale: ~
+
+
 3. To learn how to start FileBeat, see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
 
 #### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
@@ -109,37 +116,39 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 ### Limitations
 
-• Java filter code is used to handle “Query and Index Service” events logs only. The code can be enhanced further, depending on the purpose, if you are using Couchbase for your individual projects. All other types of Audit Events (except “Query and Index Service”) are not in scope for now.			   
+	• DBName is set to 'NA' since it is not present in audit log.
+	• Java filter code is used to handle “Query and Index Service” events logs only. The code can be enhanced further, depending on the purpose, if you are using Couchbase for your individual projects. All other types of Audit Events (except “Query and Index Service”) are not in scope for now.
+
 ## 4. Configuring the Couchbase filter in Guardium
 
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector identifies and parses received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Couchbase template.
 
 #### Before you begin
 
-•  Configure the policies you require. See [policies](/docs/#policies) for more information.
+• Configure the policies you require. See [policies](/docs/#policies) for more information.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role, by default.
 
 • Couchbase-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [couchbase-offline-pack.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-couchbasedb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [couchbase-offline-pack.zip](logstash-filter-couchbasedb_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 
 #### Procedure
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First enable the Universal Guardium connector, if it is disabled already.
-3. Click Upload File and select the offline plug-in named [couchbase-offline-pack.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-couchbasedb_guardium_plugin_filter.zip). After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+3. Click Upload File and select the offline plug-in named [couchbase-offline-pack.zip](logstash-filter-couchbasedb_guardium_plugin_filter.zip). After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 4. Click the Plus sign icon. The Connector Configuration dialog box opens.
 5. Type a name in the Connector name field.
-6. Update the input section to add the details from the [couchbasedbFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-couchbasedb-guardium/couchbasedbFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. On the Logstash server, ensure that the port that you want to use is free. This port should should be same as the port number defined in the filebeat.yml file.
+6. Update the input section to add the details from the [couchbasedbFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-couchbasedb-guardium/couchbasedbFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. On the Logstash server, ensure that the port that you want to use is free. This port should be same as the port number defined in the filebeat.yml file.
 7. Update the filter section to add the details from the [couchbasedbFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-couchbasedb-guardium/couchbasedbFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 9. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, the connector appears in the Configure Universal Connector page.
 
-## 5. Configuring the Couchbase filter in Guardium Insights
+## 5. Configuring the Couchbase filter in Guardium Data Security Center
 
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 In the input configuration section, refer to the Filebeat section.
 

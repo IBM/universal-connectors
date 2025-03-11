@@ -5,8 +5,8 @@
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
   * Guardium Data Protection: 11.4 and above
-  * Guardium Insights: 3.2
-  * Guardium Insights SaaS: 1.0
+  * Guardium Data Security Center: 3.3
+  * Guardium Data Security Center SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the GreenplumDB log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). Information is then sent over to the Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query and the Guardium sniffer parses the Greenplum queries. As of now,the Greenplum plug-in only supports Guardium Data Protection.
 
@@ -102,6 +102,15 @@ For example:
 
 •You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
 ```
+```
+• Locate "Processors" in the filebeat.yml file and then add below attribute to get timezone of Server:
+	For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/add-locale.html
+	For example:-
+       processors:
+	 - add_locale: ~
+ ```
+
+  
 _For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output_
 
 
@@ -142,8 +151,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
   - OsUser: Not Available with audit logs.
   - ClientHostName: Not Available with audit logs.
 
-## 7. Configuring the Greenplum filter in Guardium Insights
+## 7. Configuring the Greenplum filter in Guardium Data Security Center
 
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 In the input configuration section, refer to the Filebeat section.

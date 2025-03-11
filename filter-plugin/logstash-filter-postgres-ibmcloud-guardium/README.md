@@ -12,6 +12,7 @@ This [Logstash](https://github.com/elastic/logstash) filter plug-in for IBM Secu
 The plug-in is free and open-source (Apache 2.0). You can use it as a starting point to develop additional filter plug-ins for the Guardium universal connector.
 
 ## 1. Configuring the IBM Cloud PostgresSQL service
+
 ### Procedure:
 1. Browse to https://cloud.ibm.com/login.
 2. On the home page search and select **Databases for PostgreSQL** option.
@@ -25,14 +26,17 @@ The plug-in is free and open-source (Apache 2.0). You can use it as a starting p
 4. Navigate to the Resource List and click **Databases**.
 5. Select the database (PostgreSQL-test1) that you created to see the details.
    **Note:** The database may take  15-20 minutes to become Active.
+
 ### Changing the Database Admin Password
 1. Select your newly created database, and go to **Settings**.
 2. In the **Change Database Admin Password** section, provide the new password and  click **Change Password**. YAt the "Are you sure you want to continue?" prompt, click **Change**.
+
 ### Connecting to Database through IBM Cloud Shell
 1. Select your new database and go to the Overview page. Browse to the **Endpoints** pane, which contains all of the relevant connection information.
 2. Under Quick start, copy the `Connect to your deployment` command.
 3. Open IBM Cloud shell console, paste the command, and click **Enter**.
 4. After you run the command, provide the database password (that you changed in the previous step).
+
 ## 2. Enabling the audit logs
 To enable pgAaudit session logging, connect as the admin user and call the set_pgaudit_session_logging function with the appropriate event parameters specified. Session logging is enabled directly in the database and no API or CLI access is provided.
 To enable various event types, connect to the cloud shell and then run the following commands:
@@ -53,7 +57,13 @@ Session logging is configured per event type. The supported event types across a
 - DDL : All DDL that is not included in the ROLE class.
 - MISC : Miscellaneous commands, e.g. DISCARD, FETCH, CHECKPOINT, VACUUM, SET.
 - MISC_SET : Miscellaneous SET commands, e.g. SET ROLE. (This additional type is only supported in PostgreSQL 12 or greater).
+
+## Note :
+
+If the instance of IBM Log Analysis and Event Stream is already configured in the region of IBM Cloud Account, then skip Step - 3 and Step - 4.
+
 ## 3. Viewing the Audit logs
+
 ### Creating an instance of IBM Log Analysis on IBM Cloud
 1. On the home page, search and select **IBM Log Analysis** option to create an instance.
 2. Choose Location (e.g.-`Dallas (us-south)`).
@@ -62,16 +72,20 @@ Session logging is configured per event type. The supported event types across a
 5. Choose the Resource Group same that you selected for the server.
 6. Click the T&C checkbox.
 7. Click **Create**.
+
 ### Configuring Platform Logs
 1. Navigate to the Resource List and select **Logging and Monitoring**.
 2. Select the IBM log analysis instance created in the previous step.
 3. Click **Configure platform logs**.
 4. Select the region and respective instance name.
 5. Click **Select**.  
+
 ### Viewing the logs entries on IBM Log Analysis Instance
 1. Navigate to the created instance and click **Open Dashboard**.
 2. After you run some queries on cloud shell (after enabling audit logging), the respective logs are reflected in the dashboard. 
+
 ## 4. Creating an instance of Event Streams on IBM Cloud
+
 ### Procedure:
 1. On the home page, search and select **Event Streams** to create the instance.
 2. Choose the Platform name - *Public Cloud*.
@@ -80,6 +94,7 @@ Session logging is configured per event type. The supported event types across a
 5. Enter Service Name (e.g. *Event streams-1*).
 6. Select the Resource Group that you selected for server.
 7. Click create.
+
 #### Creating the Topic
 1. Navigate to the Resource List and click on **Integration**.
 2. Select the Event Stream instance that you created in the previous step.
@@ -87,6 +102,7 @@ Session logging is configured per event type. The supported event types across a
 4. Enter a Topic Name.
 5. Keep the current defaults, click **Next**, and then click **Create topic**.
 **Note:** For load balancing, make sure that the number of partitions is set to two or more when you create the topic. Use the same number in the input configuration *consumer_threads* property.
+
 #### Creating Service Credentials
 1. Navigate to the newly created event stream and select **Service credentials** in the navigation panel.
 2. Click **New credential**.
@@ -94,6 +110,7 @@ Session logging is configured per event type. The supported event types across a
 4. Give the credential the Writer Role.
 5. Click **Add**. The new credential is added to the Service credentials table.
 6. To see the api_key, username, password and kafka_brokers_sasl values, click the dropdown menu by Service credentials.
+
 ###  Configuring the connection in Log Analysis to Event Streams
 1. Navigate to the IBM Log Analysis instance and click **Open Dashboard**.
 2. Click the Settings icon.
@@ -116,6 +133,7 @@ If you create more than one instance in same location and want to stream only th
 7. Leave the Query section blank.
 8. To see the traces of unstreamed logs in `Log-Analysis` dashboard, do not change the checkbox.
 9  Click **Save**. New rules might take a few minutes to take effect.
+
 ## 5. Limitations
 -  The Audit log does not contain a server IP. The default value for *server IP* is `0.0.0.0`.
 -  The following important fields cannot be mapped with PostgreSql logs:
@@ -123,12 +141,25 @@ If you create more than one instance in same location and want to stream only th
       - Client Hostname
 -  Success Audit logs for SELECT, INSERT, UPDATE, DELETE, DECLARE, TRUNCATE queries are not generated, but if those queries fail for some reason, then the appropriate Failure Log is captured in audit logs and in the Guardium Error Report.
 -  Create database instanes in different regions. This is an IBM platform limitation where we can't create two Kafka streams from a single IBM Log Analysis. 
+- Queries containing single line comments will not be parsed.
+- Multiline queries will not be parsed.
+
 ## 6. Configuring the IBM Cloud PostgresSQL filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the PostgreSQL template.
+
+**Important**:
+
+• Starting with Guardium Data Protection version 12.1, you can configuring the Universal Connectors in 2 ways. You can either use the legacy flow or the new flow.
+
+• To configure Universal Connector by using the new flow, see [Managing universal connector configuration](https://www.ibm.com/docs/en/gdp/12.x?topic=connector-managing-universal-configuration) topic. 
+
+• To configure the Universal Connector by using the legacy flow, use the procedure from this section.
+
 ### Before you begin
 - Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
 - You must have permission for the S-Tap Management role. The admin user includes this role by default.
 - Download the [guardium_logstash-offline-plugin-icd-postgresql.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-postgres-ibmcloud-guardium/IcdPostgresOverKafkaEvent/guardium_logstash-offline-plugin-icd-postgresql.zip) plug-in.
+
 ### Procedure
 1. On the collector, go to **Setup > Tools and Views > Configure Universal Connector**.
 2. Before you upload the universal connector, enable the connector if it is disabled.
@@ -137,5 +168,5 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 5. Enter a name in the Connector name field.
 6. Update the input section to add the details from [Postgres.conf](Postgres.conf) file's input part, omitting the keyword *input{* at the beginning and its corresponding curly brace *(})* at the end.
 7. Update the filter section to add the details from [Postgres.conf](Postgres.conf) file's filter part, omitting the keyword *filter{* at the beginning and its corresponding curly brace *(})* at the end.
-8. The "type" field should match in the input and filter configuration section. This field must be unique for every individual connector added.
+8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added. This is no longer required starting v12p20 and v12.1.
 9. Click **Save**. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.

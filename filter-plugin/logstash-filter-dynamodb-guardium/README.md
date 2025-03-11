@@ -8,10 +8,10 @@
             * S3 (pull)
             * CloudWatch (pull)
             * SQS (Pull)
-    * Guardium Insights: 3.2
+    * Guardium Data Security Center: 3.3
         * Supported inputs:
             * CloudWatch (pull)
-    * Guardium Insights SaaS: 1.0
+    * Guardium Data Security Center SaaS: 1.0
         * Supported inputs:
             * CloudWatch (pull)
 
@@ -69,11 +69,11 @@ There are different methods for auditing and logging. We will use CloudTrail for
 
 ## Follow the below link if DynamoDB is to be monitored using Cloudwatch
 
-[DynamoDB Over Cloudwatch](DynamodbOverCloudwatch/README.md)
+[DynamoDB Over Cloudwatch](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudwatch/README.md)
 
 ## Follow the below link if DynamoDB is to be monitored using Cloudtrail
 
-[DynamoDB Over Cloudtrail](DynamodbOverCloudtrail/README.md)
+[DynamoDB Over Cloudtrail](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudtrail/README.md)
 
 ### Limitations
 

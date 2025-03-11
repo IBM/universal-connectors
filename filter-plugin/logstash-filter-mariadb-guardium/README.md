@@ -5,8 +5,8 @@
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
-    * Guardium Insights: 3.2
-    * Guardium Insights: 1.0
+    * Guardium Data Security Center: 3.2
+    * Guardium Data Security Center: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the MariaDB audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query and Guardium sniffer parse the MariaDB queries. The MariaDB plugin supports only Guardium Data Protection as of now.
 
@@ -161,12 +161,12 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 * Download the filter plug-in configuration file [MariaDB.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-guardium/MariaDB.conf).
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-mariadb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-mariadb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).  
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-mariadb_guardium_filter.zip](MariaDBOverFilebeatPackage/MariaDB/logstash-filter-mariadb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).  
 
 ## Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Enable the universal connector if it is disabled.
-3. Click **Upload File** and select the offline [logstash-filter-mariadb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-mariadb_guardium_filter.zip) plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+3. Click **Upload File** and select the offline [logstash-filter-mariadb_guardium_filter.zip](MariaDBOverFilebeatPackage/MariaDB/logstash-filter-mariadb_guardium_filter.zip) plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from [mariadb.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-guardium/MariaDB.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
@@ -181,6 +181,6 @@ The Guardium universal connector is the Guardium entry point for native audit lo
     - ClientIP - Not avaiable in Audit Logs
     - Source Program - Not available in Audit Logs
 
-## 7. Configuring the Mariadb filters in Guardium Insights
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+## 7. Configuring the Mariadb filters in Guardium Data Security Center
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 For the input configuration step, refer to the [Filebeat section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#Filebeat-input-plug-in-configuration).
