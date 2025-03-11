@@ -6,7 +6,7 @@
 * Supported inputs: CloudWatch (pull), SQS (pull)
 * Supported Guardium versions: 
     * Guardium Data Protection: 11.4 and above
-    * Guardium Insights: 3.2 and above
+    * Guardium Data Security Center: 3.2 and above
 
 ## Configuring native logging
 
@@ -271,8 +271,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for  every individual connector added.
 9. Click **Save**. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 
-## Configuring the Postgres AWS Guardium Logstash filters in Guardium Insights
+## Configuring the Postgres AWS Guardium Logstash filters in Guardium Data Security Center
 
-To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
+To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).
