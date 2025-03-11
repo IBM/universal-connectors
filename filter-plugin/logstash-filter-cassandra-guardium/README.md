@@ -71,7 +71,7 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
 ### Procedure:
 
-1. Configure the input section :
+1. Configure the input section:
 
     • Locate "filebeat.inputs" in the filebeat.yml file, and then add the following parameters.
 
@@ -134,17 +134,18 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 **Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-cassandra_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-cassandra_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
 
-### Procedure
-
-1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
+#### Configuration
+1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
 2. Enable the universal connector if it is disabled.
-3. Click Upload File and select the offline [logstash-filter-cassandra_guardium_plugin_filter.zip plug-in.](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-cassandra_guardium_plugin_filter.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+3. Click ```Upload File``` and select the offline [logstash-filter-cassandra_guardium_plugin_filter.zip plug-in.](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-cassandra_guardium_plugin_filter.zip) plug-in. After it is uploaded, click ```OK```. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
-5. Type a name in the **Connector name** field.
+5. Type a name in the ```Connector name``` field.
 6. Update the input section to add the details from the [filter-test-beats.conf](./filter-test-beats.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 7. Update the filter section to add the details from the [filter-test-beats.conf](./filter-test-beats.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for  every individual connector added.
-9. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+8. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
+9. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+10. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the ```Disable/Enable``` button.
+
 
 ## 5. Configuring the Cassandra filters in Guardium Data Security Center
 To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
