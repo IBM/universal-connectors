@@ -6,8 +6,8 @@
 * Supported inputs: CloudWatch (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: 11.4 and above
-    * Guardium Insights: 3.3
-    * Guardium Insights SaaS: 1.0
+    * Guardium Data Security Center: 3.3
+    * Guardium Data Security Center SaaS: 1.0
 
 This is a Logstash filter configuration. This filter receives CloudWatch audit logs of AWS MySQL instances, filters those events, and parses them into a Guardium record instance. The information is then sent over to Guardium as a JSON GuardRecord.
 This filter is a script written in Ruby. It should be copied directly into the Guardium universal connector configuration. There is no need to modify the filter section (changes in the filter section may affect proper filtering).
