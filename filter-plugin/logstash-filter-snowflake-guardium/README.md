@@ -5,8 +5,8 @@
 - Environment: IaaS
 - Supported Guardium versions:
     - Guardium Data Protection: 11.4 and later
-    - Guardium Insights: 3.3
-    - Guardium Insights SaaS: 1.0
+    - Guardium Data Security Center: 3.3
+    - Guardium Data Security Center SaaS: 1.0
 - Supported inputs:
     - JDBC (pull)
 

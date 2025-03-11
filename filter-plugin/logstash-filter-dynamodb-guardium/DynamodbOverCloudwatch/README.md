@@ -180,12 +180,12 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
    disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 
-## Configuring the dynamodb filters in Guardium Insights
+## Configuring the dynamodb filters in Guardium Data Security Center
 
 Depending on your environment, see the instructions for configuring the DynamoDB filters in one of the following 
 locations,
 
-* Guardium Insights SaaS, follow [this guide](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/SaaS_1.0/UC_Configuration_GI.md).
-* Guardium Insights on-premises, follow [this guide](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md).
+* Guardium Data Security Center SaaS, follow [this guide](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/SaaS_1.0/UC_Configuration_GI.md).
+* Guardium Data Security Center on-premises, follow [this guide](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md).
 
 In the input configuration section, refer to the CloudWatch_logs section.
