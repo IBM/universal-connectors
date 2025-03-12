@@ -21,7 +21,8 @@
       },
       "account_id": {
         "type": "text",
-        "label": "Account id"
+        "label": "Account id",
+        "optional": true
       }
     }
   ],
