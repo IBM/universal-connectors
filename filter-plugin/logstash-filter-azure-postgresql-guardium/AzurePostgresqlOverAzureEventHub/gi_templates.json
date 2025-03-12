@@ -11,7 +11,7 @@
       },
       "event_hub_connections": {
         "type": "text",
-        "label": "event_hub_connections"
+        "label": "Event Hub Connections"
       },
       "initial_position": {
         "type": "text",
@@ -46,7 +46,7 @@
     {
       "guc_input_param_enrollmentId": {
         "type": "text",
-        "label": "enrollment Id"
+        "label": "Enrollment Id"
       }
     }
   ],
