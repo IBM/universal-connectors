@@ -3,14 +3,14 @@
 * Tested versions: 2.00.033.00.1535711040
 * Environment: On-premise, Saas
 * Supported Guardium versions:
-    * Guardium Data Protection: 11.4 and above
+    * Guardium Data Protection: 12.1 and above
         * Supported inputs:
             * Filebeat (push)
             * JDBC (pull)
-    * Guardium Insights: 3.3
+    * Guardium Data Security Center: 3.3 and above
         * Supported inputs:
             * Filebeat (push)
-    * Guardium Insights SaaS: 1.0
+    * Guardium Data Security Center SaaS: 1.0
         * Supported inputs:
             * Filebeat (push)
             * JDBC (pull)
