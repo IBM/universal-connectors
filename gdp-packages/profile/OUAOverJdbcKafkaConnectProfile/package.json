@@ -1,7 +1,7 @@
 {
   "plugin_name": "OUA over JDBC connect",
   "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-oua-guardium/README.md",
-  "kafka_connect_name": "Kafka connect JDBC kerberos",
+  "kafka_connect_name": "Kafka connect JDBC",
   "kafka_connect_parameters": [
     {
       "connector_class": {
