@@ -1,15 +1,17 @@
-### Meet SAP HANA Cloud
+### Meet SAP HANA
 * Tested versions: 2.00.033.00.1535711040
-* Environment: SAP HANA BTP 2024.28.6 (QRC 3/2024)
+* Environment: On-premise, Saas
 * Supported Guardium versions:
-    * Guardium Data Protection: v11.4, v11.5, v12.0, v12.1
+    * Guardium Data Protection: 12.1 and above
         * Supported inputs:
+            * Filebeat (push)
             * JDBC (pull)
-    * Guardium Insights: 3.2
+    * Guardium Data Security Center: 3.3 and above
         * Supported inputs:
-            * JDBC (pull)
-    * Guardium Insights SaaS: 1.0
+            * Filebeat (push)
+    * Guardium Data Security Center SaaS: 1.0
         * Supported inputs:
+            * Filebeat (push)
             * JDBC (pull)
 
 ## 1. Configuring the SAP HANA Cloud Logstash filter plug-in using JDBC input
