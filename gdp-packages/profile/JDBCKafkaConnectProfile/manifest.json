@@ -1,5 +1,5 @@
 {
-  "name": "Kafka connect JDBC kerberos",
+  "name": "Kafka connect JDBC",
   "alias": "Kafka",
   "type": "kafka-connect",
   "pipeline_type": null,
