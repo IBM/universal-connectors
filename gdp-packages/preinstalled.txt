@@ -21,3 +21,4 @@ PostgresOverSQSProfile
 S3OverCloudwatchLogsProfile
 JDBCKafkaConnectProfile
 OUAOverJdbcKafkaConnectProfile
+OUAMultiTenantOverJdbcKafkaConnectProfile
