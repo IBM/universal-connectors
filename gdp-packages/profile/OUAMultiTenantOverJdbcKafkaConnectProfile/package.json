@@ -80,7 +80,7 @@
     {
       "host": {
         "type": "text",
-        "default": "NA",
+        "default": "",
         "label": "Hostname",
         "optional": false,
         "sequence": 5
