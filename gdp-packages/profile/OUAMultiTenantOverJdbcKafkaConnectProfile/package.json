@@ -1,0 +1,129 @@
+{
+  "plugin_name": "OUA MultiTenant over JDBC connect",
+  "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-oua-guardium/README.md",
+  "kafka_connect_name": "Kafka connect JDBC",
+  "kafka_connect_parameters": [
+    {
+      "connector_class": {
+        "type": "text",
+        "default": "io.aiven.connect.jdbc.JdbcSourceConnector",
+        "hidden": true,
+        "optional": false,
+        "label": "Connector class",
+        "sequence": 11
+      },
+      "tracking_column_type": {
+        "type": "text",
+        "default": "timestamp",
+        "hidden": true,
+        "label": "Tracking column type",
+        "optional": false,
+        "sequence": 9
+      },
+      "tracking_column": {
+        "type": "text",
+        "default": "EVENT_TIMESTAMP_UTC",
+        "hidden": true,
+        "label": "Tracking column name",
+        "optional": false,
+        "sequence": 10
+      },
+      "timestamp_initial_ms": {
+        "type": "number",
+        "default": 0,
+        "hidden": false,
+        "label": "Initial time (milliseconds)",
+        "optional": false,
+        "sequence": 4
+      },
+      "service_name": {
+        "type": "text",
+        "default": "",
+        "hidden": false,
+        "label": "CBD Service name / SID",
+        "optional": false,
+        "sequence": 7
+      },
+      "query": {
+        "type": "text",
+        "default": "SELECT event_timestamp_utc, To_char(sessionid) AS SESSIONID, dbusername AS USERID, ( CASE WHEN execution_id IS NOT NULL THEN NULL ELSE ( SELECT global_name FROM Containers (global_name) WHERE  con_id = a.con_id ) END ) CON_NAME, os_username AS OS_USER, Substr(Regexp_substr(authentication_type, 'HOST=([^)]*)'), 6) AS CLIENT_HOST_IP, userhost AS CLIENT_HOST_NAME, (SELECT Sys_context('USERENV', 'SERVER_HOST_IP') FROM dual) SERVER_HOST_IP, client_program_name, To_char(dbid) AS DBID, (SELECT sys_context('USERENV', 'DB_NAME') FROM dual) DBNAME, To_char(return_code) AS RETURN_CODE, sql_text FROM cdb_unified_audit_trail a",
+        "hidden": false,
+        "label": "Query",
+        "optional": false,
+        "sequence": 8
+      }
+    }
+  ],
+  "input_name": "Kafka input",
+  "input_parameters": [
+    {
+      "topic": {
+        "type": "text",
+        "hidden": true,
+        "default": "DEFAULT_TOPIC_NAME",
+        "optional": false,
+        "label": "Topic",
+        "sequence": 4
+      },
+      "bootstrap_servers": {
+        "type": "text",
+        "default": "DEFAULT_BROKERS",
+        "label": "Brokers of kafka cluster",
+        "optional": false,
+        "hidden": true,
+        "sequence": 2
+      }
+    }
+  ],
+  "filter_name": "Guardium_OUA_filter",
+  "filter_parameters": [
+    {
+      "host": {
+        "type": "text",
+        "default": "NA",
+        "label": "Hostname",
+        "optional": false,
+        "sequence": 5
+      },
+      "port": {
+        "type": "text",
+        "default": "1521",
+        "label": "Port",
+        "optional": false,
+        "sequence": 6
+      },
+      "jdbc_driver_library": {
+        "type": "BINARY",
+        "label": "JDBC driver library",
+        "optional": false,
+        "hidden": false,
+        "sequence": 5
+      },
+      "max_poll_records": {
+        "type": "number",
+        "default": 1000,
+        "label": "Maximum poll records",
+        "optional": false,
+        "hidden": false,
+        "sequence": 3
+      },
+      "poll_timeout_ms": {
+        "type": "number",
+        "default": 500,
+        "label": "Poll timeout (milliseconds)",
+        "optional": false,
+        "hidden": false,
+        "sequence": 4
+      }
+    }
+  ],
+  "credentials": [
+    "Kerberos Ticket Cache",
+    "Kerberos Keytab Login",
+    "Kerberos Password Login",
+    "JDBC Credentials"
+  ],
+  "supported_platforms": [
+    "On-Premise"
+  ]
+}

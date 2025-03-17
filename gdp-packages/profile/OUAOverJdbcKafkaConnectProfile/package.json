@@ -38,7 +38,7 @@
       },
       "service_name": {
         "type": "text",
-        "default": "NA",
+        "default": "",
         "hidden": false,
         "label": "Service name / SID",
         "optional": false,
@@ -80,7 +80,7 @@
     {
       "host": {
         "type": "text",
-        "default": "NA",
+        "default": "",
         "label": "Hostname",
         "optional": false,
         "sequence": 5
