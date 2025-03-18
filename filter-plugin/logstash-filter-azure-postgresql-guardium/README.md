@@ -1,6 +1,6 @@
 # Azure PostgreSQL-Guardium Logstash filter plug-in
 ### Meet Azure PostgreSQL
-* Tested versions: 11
+* Tested versions: 11 (Single Server) & 16.4 (Flexible Server)
 * Environment: Azure
 * Supported inputs: Azure Event Hub (pull)
 * Supported Guardium versions:
