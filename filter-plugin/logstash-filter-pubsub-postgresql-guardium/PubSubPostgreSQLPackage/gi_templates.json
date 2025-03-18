@@ -1,7 +1,7 @@
 {
-  "plugin_name": "PostgreSQL Over Pub Sub",
+  "plugin_name": "PosgreSQL Over PubSub",
   "help_link": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-pubsub-postgresql-guardium/README.md",
-  "input_name": "Google_PubSub_input",
+  "input_name": "Google_PubSub",
   "input_parameters": [
     {
       "project_id": {
@@ -16,26 +16,37 @@
         "type": "text",
         "label": "Subscription"
       },
-      "include_metadata": {
-        "type": "boolean",
-        "default": false,
+      "client_id": {
+        "type": "text",
+        "label": "Client ID"
+      },
+      "type": {
+        "type": "text",
+        "default": "PubSubPostgreSQL",
         "hidden": true
       },
-      "json_key_file_name": {
+      "private_id": {
         "type": "text",
-        "label": "Json key file name (For example: file_name.json)"
+        "label": "Private key id"
+
       }
     }
   ],
-  "filter_name": "Guardium_GCP_PostgreSQL_filter",
+  "filter_name": "Guardium_PostgreSQL_Filter_Plugin",
   "filter_parameters": [],
+  "credentials": [
+    {
+      "private_key": {
+        "type": "password",
+        "label": "Private key"
+      }
+    }
+  ],
   "auth_parameters": [
     {
-      "guc_filter_param_type": {
-        "param_type": "filter",
+      "guc_input_param_client_email": {
         "type": "text",
-        "label": "Type",
-        "description": "Type field categorizes and filters incoming data."
+        "label": "Client Email"
       }
     }
   ],
