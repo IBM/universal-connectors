@@ -29,6 +29,7 @@ filter-plugin/logstash-filter-azure-sql-guardium/AzureSQLOverJdbcPackage
 filter-plugin/logstash-filter-mssql-guardium/MssqlAWSOverJdbcPackage
 filter-plugin/logstash-filter-mssql-guardium/MssqlOnPremOverJdbcPackage
 filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage
+filter-plugin/logstash-filter-intersystems-iris-guardium/gi-filter-intersystems-iris-package
 #Pubsub plug-ins
 filter-plugin/logstash-filter-pubsub-spanner-guardium/gi-pubsub-spanner-package
 filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/gi-pubsub-firebase-package
