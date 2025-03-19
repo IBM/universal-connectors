@@ -5,7 +5,7 @@
     "mode": "param_tracking_column_type",
     "timestamp.column.name": "param_tracking_column",
     "timestamp.initial.ms":"param_timestamp_initial_ms",
-    "topic.prefix": "param_topic_name",
+    "topic.prefix": "param_topic",
     "tasks.max": "1",
     "connection.user": "cred_username",
     "connection.password": "cred_password",
