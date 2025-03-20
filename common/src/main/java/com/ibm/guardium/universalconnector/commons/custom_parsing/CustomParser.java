@@ -33,7 +33,7 @@ public abstract class CustomParser {
     protected boolean hasSqlParsing = false;
     protected boolean parseUsingCustomParser = false;
 
-    public CustomParser(ParserFactory.ParserType parserType) {
+    protected CustomParser(ParserFactory.ParserType parserType) {
         parser = new ParserFactory().getParser(parserType);
         mapper = new ObjectMapper();
 
@@ -57,21 +57,21 @@ public abstract class CustomParser {
     }
 
     protected Record extractRecord(String payload) {
-        Record record = new Record();
+        Record rec = new Record();
 
-        record.setSessionId(getSessionId(payload));
-        record.setDbName(getDbName(payload));
-        record.setAppUserName(getAppUserName(payload));
+        rec.setSessionId(getSessionId(payload));
+        rec.setDbName(getDbName(payload));
+        rec.setAppUserName(getAppUserName(payload));
         String sqlString = getSqlString(payload);
-        record.setException(getException(payload, sqlString));
-        record.setAccessor(getAccessor(payload));
-        record.setSessionLocator(getSessionLocator(payload, record.getSessionId()));
-        record.setTime(getTimestamp(payload));
+        rec.setException(getException(payload, sqlString));
+        rec.setAccessor(getAccessor(payload));
+        rec.setSessionLocator(getSessionLocator(payload));
+        rec.setTime(getTimestamp(payload));
 
-        if (!record.isException())
-            record.setData(getData(payload, sqlString));
+        if (!rec.isException())
+            rec.setData(getData(payload, sqlString));
 
-        return record;
+        return rec;
     }
 
     protected String getValue(String payload, String fieldName) {
@@ -207,7 +207,7 @@ public abstract class CustomParser {
         return new Time(0L, 0, 0);
     }
 
-    protected SessionLocator getSessionLocator(String payload, String sessionId) {
+    protected SessionLocator getSessionLocator(String payload) {
         SessionLocator sessionLocator = new SessionLocator();
 
         // set default values
