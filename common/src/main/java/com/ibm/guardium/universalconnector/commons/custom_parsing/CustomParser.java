@@ -381,12 +381,12 @@ public abstract class CustomParser {
         return value != null ? value : PORT_DEFAULT;
     }
 
-    public abstract String getConfigFilePath();
+    public abstract String getConfigFileContent();
 
     public Map<String, String> getProperties() throws InvalidConfigurationException {
         Map<String, String> props;
         try {
-            String content = new String(Files.readAllBytes(Paths.get(getConfigFilePath())));
+            String content = getConfigFileContent();
             props = mapper.readValue(content, new TypeReference<HashMap<String, String>>() {
             });
             if (!arePropertiesValid(props))
