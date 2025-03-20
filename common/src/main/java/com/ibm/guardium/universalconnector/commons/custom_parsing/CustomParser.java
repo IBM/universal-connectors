@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.ibm.guardium.universalconnector.commons.custom_parsing.PropertyConstant.*;
 import static com.ibm.guardium.universalconnector.commons.structures.Accessor.DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL;
@@ -134,11 +135,12 @@ public abstract class CustomParser {
     }
 
     protected Data getData(String payload, String sqlString) {
+        Data data = new Data();
         if (!hasSqlParsing || parseUsingSniffer) {
-            return null;
+            data.setOriginalSqlCommand(sqlString);
+            return data;
         }
 
-        Data data = new Data();
         String object = getNotNullString(getValue(payload, OBJECT));
         String verb = getNotNullString(getValue(payload, VERB));
         Construct construct = new Construct();
@@ -149,7 +151,9 @@ public abstract class CustomParser {
         construct.setFullSql(sqlString);
 
         data.setConstruct(construct);
-        data.setOriginalSqlCommand(getOriginalSqlCommand(payload));
+        String originalSqlCommand = getOriginalSqlCommand(payload);
+        data.setOriginalSqlCommand(
+                !Objects.equals(originalSqlCommand, DEFAULT_STRING) ? originalSqlCommand : sqlString);
         return data;
     }
 
@@ -229,8 +233,8 @@ public abstract class CustomParser {
         }
 
         // Set port numbers
-        sessionLocator.setClientPort(getClientPort(sessionId, payload));
-        sessionLocator.setServerPort(getServerPort(sessionId, payload));
+        sessionLocator.setClientPort(getClientPort(payload));
+        sessionLocator.setServerPort(getServerPort(payload));
 
         return sessionLocator;
     }
@@ -367,18 +371,12 @@ public abstract class CustomParser {
         return value != null ? value : DEFAULT_STRING;
     }
 
-    protected Integer getClientPort(String sessionId, String payload) {
-        if (sessionId.isEmpty())
-            return PORT_DEFAULT;
-
+    protected Integer getClientPort(String payload) {
         Integer value = convertToInt(CLIENT_PORT, getValue(payload, CLIENT_PORT));
         return value != null ? value : PORT_DEFAULT;
     }
 
-    protected Integer getServerPort(String sessionId, String payload) {
-        if (sessionId.isEmpty())
-            return PORT_DEFAULT;
-
+    protected Integer getServerPort(String payload) {
         Integer value = convertToInt(SERVER_PORT, getValue(payload, SERVER_PORT));
         return value != null ? value : PORT_DEFAULT;
     }
