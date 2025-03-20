@@ -57,21 +57,21 @@ public abstract class CustomParser {
     }
 
     protected Record extractRecord(String payload) {
-        Record rec = new Record();
+        Record record = new Record();
 
-        rec.setSessionId(getSessionId(payload));
-        rec.setDbName(getDbName(payload));
-        rec.setAppUserName(getAppUserName(payload));
+        record.setSessionId(getSessionId(payload));
+        record.setDbName(getDbName(payload));
+        record.setAppUserName(getAppUserName(payload));
         String sqlString = getSqlString(payload);
-        rec.setException(getException(payload, sqlString));
-        rec.setAccessor(getAccessor(payload));
-        rec.setSessionLocator(getSessionLocator(payload));
-        rec.setTime(getTimestamp(payload));
+        record.setException(getException(payload, sqlString));
+        record.setAccessor(getAccessor(payload));
+        record.setSessionLocator(getSessionLocator(payload));
+        record.setTime(getTimestamp(payload));
 
-        if (!rec.isException())
-            rec.setData(getData(payload, sqlString));
+        if (!record.isException())
+            record.setData(getData(payload, sqlString));
 
-        return rec;
+        return record;
     }
 
     protected String getValue(String payload, String fieldName) {
