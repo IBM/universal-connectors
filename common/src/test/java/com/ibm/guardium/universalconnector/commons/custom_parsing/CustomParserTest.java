@@ -55,18 +55,18 @@ public class CustomParserTest {
                 configValues.get(PropertyConstant.DB_PROTOCOL),
                 configValues.get(PropertyConstant.EXCEPTION_TYPE_ID));
 
-        Record record = customParser.parseRecord(payload);
+        Record rec = customParser.parseRecord(payload);
 
-        assertNotNull(record);
-        assertEquals(configValues.get(PropertyConstant.SESSION_ID), record.getSessionId());
+        assertNotNull(rec);
+        assertEquals(configValues.get(PropertyConstant.SESSION_ID), rec.getSessionId());
         assertEquals(Integer.parseInt(configValues.get(PropertyConstant.CLIENT_PORT)),
-                record.getSessionLocator().getClientPort());
+                rec.getSessionLocator().getClientPort());
         assertEquals(Integer.parseInt(configValues.get(PropertyConstant.SERVER_PORT)),
-                record.getSessionLocator().getServerPort());
-        assertEquals(configValues.get(PropertyConstant.DB_USER), record.getAccessor().getDbUser());
-        assertEquals(configValues.get(PropertyConstant.SERVER_TYPE), record.getAccessor().getServerType());
-        assertEquals(configValues.get(PropertyConstant.DB_PROTOCOL), record.getAccessor().getDbProtocol());
-        assertEquals(configValues.get(PropertyConstant.EXCEPTION_TYPE_ID), record.getException().getExceptionTypeId());
+                rec.getSessionLocator().getServerPort());
+        assertEquals(configValues.get(PropertyConstant.DB_USER), rec.getAccessor().getDbUser());
+        assertEquals(configValues.get(PropertyConstant.SERVER_TYPE), rec.getAccessor().getServerType());
+        assertEquals(configValues.get(PropertyConstant.DB_PROTOCOL), rec.getAccessor().getDbProtocol());
+        assertEquals(configValues.get(PropertyConstant.EXCEPTION_TYPE_ID), rec.getException().getExceptionTypeId());
     }
 
     @Test
@@ -150,12 +150,12 @@ public class CustomParserTest {
     @Test
     public void testParseRecordWithMissingFields() {
         String payload = "[Session ID: ] [DB Name: ] [DB User: ]";
-        Record record = customParser.parseRecord(payload);
+        Record rec = customParser.parseRecord(payload);
 
-        assertNotNull(record);
-        assertEquals(PropertyConstant.DEFAULT_STRING, record.getSessionId());
-        assertEquals(PropertyConstant.DEFAULT_STRING, record.getDbName());
-        assertEquals(PropertyConstant.DEFAULT_STRING, record.getAppUserName());
+        assertNotNull(rec);
+        assertEquals(PropertyConstant.DEFAULT_STRING, rec.getSessionId());
+        assertEquals(PropertyConstant.DEFAULT_STRING, rec.getDbName());
+        assertEquals(PropertyConstant.DEFAULT_STRING, rec.getAppUserName());
     }
 
     @Test
@@ -202,19 +202,19 @@ public class CustomParserTest {
 
         // Parse the record using the custom parser
         customParser.properties = snifferConfigValues;
-        Record record = customParser.parseRecord(payload);
+        Record rec = customParser.parseRecord(payload);
 
         // Assertions to verify the parsed values
-        assertNotNull(record);
-        assertEquals(snifferConfigValues.get("session_id"), record.getSessionId());
+        assertNotNull(rec);
+        assertEquals(snifferConfigValues.get("session_id"), rec.getSessionId());
         assertEquals(Integer.parseInt(snifferConfigValues.get("client_port")),
-                record.getSessionLocator().getClientPort());
+                rec.getSessionLocator().getClientPort());
         assertEquals(Integer.parseInt(snifferConfigValues.get("server_port")),
-                record.getSessionLocator().getServerPort());
-        assertEquals(snifferConfigValues.get("db_user"), record.getAccessor().getDbUser());
-        assertEquals(snifferConfigValues.get("server_type"), record.getAccessor().getServerType());
-        assertEquals(snifferConfigValues.get("db_protocol"), record.getAccessor().getDbProtocol());
-        assertEquals(snifferConfigValues.get("exception_type_id"), record.getException().getExceptionTypeId());
+                rec.getSessionLocator().getServerPort());
+        assertEquals(snifferConfigValues.get("db_user"), rec.getAccessor().getDbUser());
+        assertEquals(snifferConfigValues.get("server_type"), rec.getAccessor().getServerType());
+        assertEquals(snifferConfigValues.get("db_protocol"), rec.getAccessor().getDbProtocol());
+        assertEquals(snifferConfigValues.get("exception_type_id"), rec.getException().getExceptionTypeId());
 
     }
 
@@ -249,19 +249,19 @@ public class CustomParserTest {
 
         // Parse the record using the custom parser
         customParser.properties = regexConfigValues;
-        Record record = customParser.parseRecord(payload);
+        Record rec = customParser.parseRecord(payload);
 
         // Assertions to verify the parsed values
-        assertNotNull(record);
-        assertEquals(regexConfigValues.get("session_id"), record.getSessionId());
+        assertNotNull(rec);
+        assertEquals(regexConfigValues.get("session_id"), rec.getSessionId());
         assertEquals(Integer.parseInt(regexConfigValues.get("client_port")),
-                record.getSessionLocator().getClientPort());
+                rec.getSessionLocator().getClientPort());
         assertEquals(Integer.parseInt(regexConfigValues.get("server_port")),
-                record.getSessionLocator().getServerPort());
-        assertEquals(regexConfigValues.get("db_user"), record.getAccessor().getDbUser());
-        assertEquals(regexConfigValues.get("server_type"), record.getAccessor().getServerType());
-        assertEquals(regexConfigValues.get("db_protocol"), record.getAccessor().getDbProtocol());
-        assertEquals(regexConfigValues.get("exception_type_id"), record.getException().getExceptionTypeId());
+                rec.getSessionLocator().getServerPort());
+        assertEquals(regexConfigValues.get("db_user"), rec.getAccessor().getDbUser());
+        assertEquals(regexConfigValues.get("server_type"), rec.getAccessor().getServerType());
+        assertEquals(regexConfigValues.get("db_protocol"), rec.getAccessor().getDbProtocol());
+        assertEquals(regexConfigValues.get("exception_type_id"), rec.getException().getExceptionTypeId());
     }
 
     @Test
@@ -471,9 +471,9 @@ public class CustomParserTest {
             }
         };
 
-        Record record = cp.parseRecord(payload);
+        Record rec = cp.parseRecord(payload);
 
-        assertEquals("7d058e67620c", record.getSessionId());
-        assertEquals("PostgreSQL", record.getAccessor().getServerType());
+        assertEquals("7d058e67620c", rec.getSessionId());
+        assertEquals("PostgreSQL", rec.getAccessor().getServerType());
     }
 }
