@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,14 +22,18 @@ public class CustomParserTest {
     private static Map<String, String> configValues;
 
     @BeforeClass
-    public static void setUp() throws IOException, InvalidConfigurationException {
+    public static void setUp() throws IOException {
         // Initialize the custom parser
         customParser = new CustomParser(ParserFactory.ParserType.regex) {
 
             @Override
-            public String getConfigFilePath() {
+            public String getConfigFileContent() {
                 // Return the path to your configuration file
-                return "src/test/resources/config.json";
+                try {
+                    return new String(Files.readAllBytes(Paths.get("src/test/resources/config.json")));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             @Override
@@ -38,7 +44,8 @@ public class CustomParserTest {
 
         // Load the JSON configuration
         ObjectMapper objectMapper = new ObjectMapper();
-        configValues = objectMapper.readValue(new File(customParser.getConfigFilePath()), Map.class);
+        configValues = objectMapper
+                .readValue(new String(Files.readAllBytes(Paths.get("src/test/resources/config.json"))), Map.class);
         // Initialize properties
         customParser.properties = configValues;
     }
@@ -75,7 +82,7 @@ public class CustomParserTest {
         props.put(PropertyConstant.DB_USER, "{TEST}");
         CustomParser cp = new CustomParser(ParserFactory.ParserType.regex) {
             @Override
-            public String getConfigFilePath() {
+            public String getConfigFileContent() {
                 return "";
             }
 
@@ -465,9 +472,13 @@ public class CustomParserTest {
 
         CustomParser cp = new CustomParser(ParserFactory.ParserType.json) {
             @Override
-            public String getConfigFilePath() {
+            public String getConfigFileContent() {
                 // Return the path to your configuration file
-                return "src/test/resources/jsonConfig.json";
+                try {
+                    return new String(Files.readAllBytes(Paths.get("src/test/resources/jsonConfig.json")));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
 
