@@ -20,7 +20,7 @@ public class CustomParserTest {
     private static Map<String, String> configValues;
 
     @BeforeClass
-    public static void setUp() throws IOException, InvalidConfigurationException {
+    public static void setUp() throws IOException {
         // Initialize the custom parser
         customParser = new CustomParser(ParserFactory.ParserType.regex) {
 
