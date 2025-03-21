@@ -62,6 +62,13 @@ Your UC is now configured and ready to receive new events from the data source.
 ```bash
 service rsyslog status
 ```
+
+In some environment, below command can be used.
+```
+sudo yum list --available | grep rsyslog | grep kafka
+```
+
+
 ### 2.2 Installing rsyslog on the database server
 
 1. Install rsyslog by using one of the following commands based on your system:
