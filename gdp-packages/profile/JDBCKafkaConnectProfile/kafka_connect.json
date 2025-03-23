@@ -17,6 +17,7 @@
     "query": "param_query",
     "connection.url": "jdbc:oracle:thin:@//param_host:param_port/param_service_name",
     "metadata.mode": "param_metadata",
-    "datatype": "param_type"
+    "datatype": "param_type",
+    "value.converter": "org.apache.kafka.connect.storage.StringConverter"
   }
 }
