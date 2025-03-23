@@ -51,6 +51,22 @@
         "label": "Query",
         "optional": false,
         "sequence": 8
+      },
+      "metadata": {
+        "type": "boolean",
+        "default": false,
+        "label": "Add metadata",
+        "optional": false,
+        "hidden": false,
+        "sequence": 5
+      },
+      "type": {
+        "type": "text",
+        "default": "OUA",
+        "label": "Datasource type",
+        "optional": false,
+        "hidden": true,
+        "sequence": 6
       }
     }
   ],
