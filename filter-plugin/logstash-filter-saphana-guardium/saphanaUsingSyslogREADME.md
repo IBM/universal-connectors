@@ -1,9 +1,9 @@
-## 1. Configuring the SAP HANA Logstash filter plug-in using Syslog input
+## Configuring the SAP HANA Logstash filter plug-in using Syslog input
 
 There are multiple ways to install a SAP HANA server. For this example, we will assume that we already have a working
 SAP HANA setup.
 
-## 2. Enabling the audit logs:
+## Enabling the audit logs:
 ### Procedure
 In the SAP HANA Studio, expand the system on which you would like to enable auditing.
 1. Expand the Security folder.
@@ -36,7 +36,7 @@ Configure syslogprotocol audit trail on Saphana instance, on T1 database:
 
 2. After running the previous command, restart the container and refresh the added systems.
 
-## 3. Common steps for either auditing type
+## Common steps for either auditing type
 
 ### Creating an audit policy
 
@@ -93,7 +93,7 @@ AUDIT ADMIN system rights. Creating an audit policy is a common step for both ty
 
       **Note: For this policy, select "Audited Action Status=Successful".**
 
-## 4.  Viewing the audit logs
+## Viewing the audit logs
 
 ### View the SAP HANA audit logs for SYSLOG auditing.
 
@@ -105,7 +105,7 @@ AUDIT ADMIN system rights. Creating an audit policy is a common step for both ty
    cat /var/log/secure
    
    ```
-## 5. Configuring Syslogs to push logs to Guardium
+## Configuring Syslogs to push logs to Guardium
 ## a. Syslogs configuration:
 To make the Logstash able to process the data collected by syslogs, we need to configure available syslog utility.
 
@@ -119,7 +119,7 @@ The example is based on `rsyslog` utility available in many versions of the Linu
 3. Restart the `rsyslog` utility once above file is updated and make sure status is running.
    `systemctl restart rsyslog.service`
 
-## 6. Configuring the SAP HANA filters in Guardium
+## Configuring the SAP HANA filters in Guardium
 
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector
 identifies and parses received events, and converts them to a standard Guardium format. The output of the
