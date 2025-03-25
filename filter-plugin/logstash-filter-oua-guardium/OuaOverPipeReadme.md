@@ -84,30 +84,50 @@ Update the variables in Makefile for your environment's Java home and Logstash l
          - Paste the content from the  "[ouaPipe.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-oua-guardium/ouaPipe.conf)" in the **Input configuration** field
 
              ```
-           pipe {
-             type => "oua"
-             command => "${OUA_BINARY_PATH} -c ${THIRD_PARTY_PATH} -s ${THIRD_PARTY_PATH} -r 100 -t 1000 -p 10 -j <USER>/${OUA_USER_PASS}@<SERVER_ADDRESS>:<SERVER_PORT>/<INSTANCE_NAME>"
-                         add_field => {"SERVER_ADDRESS" => "<Enter_Server_Address>"}
-                             add_field => {"SERVER_PORT" => "<Enter_Server_Port>"} }
+	         pipe {
+               type => "oua"
+               command => "${OUA_BINARY_PATH} -c ${THIRD_PARTY_PATH} -s ${THIRD_PARTY_PATH} -r 1 -t 1000 -p 10 -j <USER>/${OUA_USER_PASS}@<SERVER_ADDRESS>:<SERVER_PORT>/<INSTANCE_NAME>"
+               add_field => {"SERVER_ADDRESS" => "<Enter_Server_Address>"}
+               add_field => {"SERVER_PORT" => "<Enter_Server_Port>"}
+               #provide accountId incase of AWS ORACLE instance
+               add_field => {"ACCOUNT_ID" => "<Enter_Account_Id>"}
+            }
            ```
 
          - Paste the content from the  "[ouaPipe.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-oua-guardium/ouaPipe.conf)" in the **Filter configuration** field
 
              ```
-                if [type] == "oua" {
-             json {
-                 source => "message"
-             }
-                 mutate {
-                         add_field => {"[HostName]" => "%{SERVER_ADDRESS}" }
-                         add_field => {"[PortNumber]" => "%{SERVER_PORT}" }
-                         }
-             if "_jsonparsefailure" not in [tags] {
-                 oua_filter {}
-             }
-           }
-
-             ```
+            if [type] == "oua" {
+               ruby {
+               code => "
+                  if event.get('message')
+                     event.set('message', event.get('message').gsub('\\\\\\', '\\\\\\\\'))
+                  end
+                  "
+               }
+               mutate {
+                        gsub => [
+                           "command", "\w+/[^\s@]+@", "*****@"
+                        ]
+                     }
+               json {
+                  source => "message"
+               }
+               if [obj_owner] == "SYS" or [obj_owner] == "AUDSYS" or [obj_owner] == "RDSADMIN"
+                                    or [current_user] == "RDSADMIN" or [current_user] == "SYS" or [sql_text] =~ "DBMS_OUTPUT.GET_LINE"
+                                 {
+                                 drop{}
+                                 }
+                  mutate {
+                           add_field => {"[HostName]" => "%{SERVER_ADDRESS}" }
+                           add_field => {"[PortNumber]" => "%{SERVER_PORT}" }
+                           add_field => {"[accountId]" => "%{ACCOUNT_ID}" }
+                           }
+               if "_jsonparsefailure" not in [tags] {
+                  oua_filter {}
+               }
+            }
+            ```
 
       - **NOTE**: The type specified for the filters must be unique among Universal Connectors and be identical in the input and filter configurations
 
