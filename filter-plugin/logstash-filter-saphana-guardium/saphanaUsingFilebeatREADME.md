@@ -1,9 +1,9 @@
-## 1. Configuring the SAP HANA Logstash filter plug-in using Filebeat input
+## Configuring the SAP HANA Logstash filter plug-in using Filebeat input
 
 There are multiple ways to install a SAP HANA server. For this example, we will assume that we already have a working
 SAP HANA setup.
 
-## 2. Enabling the audit logs:
+## Enabling the audit logs:
 Here we will check about CSVTEXTFILE base auditing.
 * CSVTEXTFILE base auditing - Audit-trail target is a file, requires Beat input plugin.
 
@@ -32,7 +32,7 @@ and then run these Commands:
 2. After running the previous command, restart the container and refresh the added systems.
 
 
-## 3. Common steps for either auditing type
+## Common steps for either auditing type
 
 ### Creating an audit policy
 
@@ -89,7 +89,7 @@ AUDIT ADMIN system rights. Creating an audit policy is a common step for both ty
 
       **Note: For this policy, select "Audited Action Status=Successful".**
 
-## 4.  Viewing the audit logs
+## Viewing the audit logs
 
 ### View the SAP HANA audit logs for CSVTEXTFILE-based auditing.
 
@@ -102,7 +102,7 @@ AUDIT ADMIN system rights. Creating an audit policy is a common step for both ty
     3. Click on the diagnostic file tab.
     4. Click on filter and Search for “*.audit_trail.csv”
 
-## 4. Configuring Filebeat to push logs to Guardium
+## Configuring Filebeat to push logs to Guardium
 
 This configuration is required to pull logs when CSVTEXTFILE-based auditing is enabled.
 
@@ -159,7 +159,7 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
     9. To learn how to start FileBeat,
        see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
 
-## 5. Configuring the SAP HANA filters in Guardium
+## Configuring the SAP HANA filters in Guardium
 
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector
 identifies and parses received events, and converts them to a standard Guardium format. The output of the
