@@ -106,14 +106,14 @@ AUDIT ADMIN system rights. Creating an audit policy is a common step for both ty
 
 This configuration is required to pull logs when CSVTEXTFILE-based auditing is enabled.
 
-## a. Filebeat installation
+## Filebeat installation
 
 ### Procedure:
 
 1. To install Filebeat on your system, follow the steps in this topic:
    https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#installation
 
-## b. Filebeat configuration:
+## Filebeat configuration:
 
 To use Logstash to perform additional processing on the data collected by Filebeat, we need
 to configure Filebeat to use Logstash. To do this, modify the filebeat.yml file which you can find inside the
