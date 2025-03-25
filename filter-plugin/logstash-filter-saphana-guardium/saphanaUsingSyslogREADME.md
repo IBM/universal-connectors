@@ -106,7 +106,7 @@ AUDIT ADMIN system rights. Creating an audit policy is a common step for both ty
    
    ```
 ## Configuring Syslogs to push logs to Guardium
-## a. Syslogs configuration:
+## Syslogs configuration:
 To make the Logstash able to process the data collected by syslogs, we need to configure available syslog utility.
 
 The example is based on `rsyslog` utility available in many versions of the Linux distributions.
