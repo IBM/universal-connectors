@@ -5,7 +5,7 @@
     "mode": "param_tracking_column_type",
     "timestamp.column.name": "param_tracking_column",
     "timestamp.initial.ms":"param_timestamp_initial_ms",
-    "topic.prefix": "profile_name",
+    "topic.prefix": "param_topic",
     "tasks.max": "1",
     "connection.user": "cred_username",
     "connection.password": "cred_password",
@@ -15,6 +15,7 @@
     "connection.oracle.krb.keytab": "cred_keytab_krb",
     "connection.oracle.krb.cc": "cred_cc_krb",
     "query": "param_query",
-    "connection.url": "jdbc:oracle:thin:@//param_host:param_port/param_service_name"
+    "connection.url": "jdbc:oracle:thin:@//param_host:param_port/param_service_name",
+    "value.converter": "org.apache.kafka.connect.storage.StringConverter"
   }
 }
