@@ -1,4 +1,4 @@
-## 1. Configuring SAP HANA Logstash filter plug-in using JDBC input
+## Configuring SAP HANA Logstash filter plug-in using JDBC input
 
 SAP HANA server can be installed in various ways. For this example, you must have a functional SAP HANA configuration.
 ### Audit Log Configuration with a new User
@@ -20,7 +20,7 @@ To create a user for auditing the log configurations, complete the following ste
    ```
 Ensure that all the changes are committed to the database.
 
-## 2. Enabling the audit logs:
+## Enabling the audit logs:
 ### Procedure
 In the SAP HANA Studio, expand the system on which you would like to enable auditing.
 1. Expand the Security folder.
@@ -57,7 +57,7 @@ and then run these Commands:
 
 2. After running the previous command, restart the container and refresh the added systems.
 
-## 3. Common steps for either auditing type
+## Common steps for either auditing type
 
 ### Creating an audit policy
 
@@ -114,7 +114,7 @@ AUDIT ADMIN system rights. Creating an audit policy is a common step for both ty
 
       **Note: For this policy, select "Audited Action Status=Successful".**
 
-## 4.  Viewing the audit logs
+## Viewing the audit logs
 
 ### View the SAP HANA audit logs for CSTABLE-based auditing.
 
@@ -127,7 +127,7 @@ AUDIT ADMIN system rights. Creating an audit policy is a common step for both ty
      select * from AUDIT_LOG;
    ```
 
-## 5. Configuring the SAP HANA filters in Guardium
+## Configuring the SAP HANA filters in Guardium
 
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector
 identifies and parses received events, and converts them to a standard Guardium format. The output of the
@@ -163,7 +163,7 @@ enforcements. Configure Guardium to read the native audit logs by customizing th
 9. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled.
    After it is validated, it appears in the Configure Universal Connector page.
 
-## 6. JDBC Load Balancing Configuration
+## JDBC Load Balancing Configuration
 
 In SAP HANA JDBC input plug-ins , we distribute load between two machines based on even and odd "sessionIds"
 

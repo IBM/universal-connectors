@@ -1,8 +1,8 @@
-## 1. Configuring the SAP HANA Cloud Logstash filter plug-in using JDBC input
+## Configuring the SAP HANA Cloud Logstash filter plug-in using JDBC input
 
 There are multiple ways to install a SAP HANA Cloud. For this example we are using SAP BTP Cockpit, we will assume that we already have a working SAP HANA Cloud setup.
 
-## 2. Enabling the audit logs:
+## Enabling the audit logs:
 ### Procedure
 In the SAP HANA Cloud Central, expand the system for which you would like to enable auditing.
 Following this link to enable Audit logs: https://help.sap.com/docs/SAP_HANA_COCKPIT/afa922439b204e9caf22c78b6b69e4f2/db8cca116f1d45e085a68ffdc0dfb92b.html
@@ -12,7 +12,7 @@ Here we will review CSTABLE base auditing.
 
 For SAP Hana Cloud, CSTABLE-based auditing (where the audit trail is stored in a table) is enabled by default, so no additional steps are required.
 
-## 3. Common steps for either auditing type
+## Common steps for either auditing type
 
 ### Creating an audit policy (Optional)
 
@@ -28,7 +28,7 @@ In SAP HANA Cloud, default audit policies already exist. If you want to create a
 
 * Detailed steps can be found here: https://help.sap.com/docs/SAP_HANA_COCKPIT/afa922439b204e9caf22c78b6b69e4f2/c5f5344403cb40d3a2ed72912a46beb3.html
 
-## 4.  Viewing the audit logs
+## Viewing the audit logs
 
 ### View the SAP HANA audit logs for CSTABLE-based auditing.
 
@@ -41,7 +41,7 @@ There are two ways to view audit logs
      select * from AUDIT_LOG;
    ```
 
-## 5. Configuring the SAP HANA Cloud filters in Guardium
+## Configuring the SAP HANA Cloud filters in Guardium
 
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector
 identifies and parses received events, and converts them to a standard Guardium format. The output of the
@@ -77,7 +77,7 @@ concluding semicolon ';' from the jdbc statement:**
 11. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled.
     Once validated, it appears in the Configure Universal Connector page.
 
-## 6. Configuring the SAP HANA Cloud filters in Guardium Data Security Center
+## Configuring the SAP HANA Cloud filters in Guardium Data Security Center
 1. In the main menu, click **Configurations** > **Connections** > **Monitored Data Stores**.
 2. On the **Connections** page, click **Manage** > **Universal Connector Plugins**.
 3. Click **Add Plugin**, upload the zip package file as SAPHANA-offline-plugin.zip.
@@ -88,7 +88,7 @@ concluding semicolon ';' from the jdbc statement:**
 8. Enter the additional information from the JDBC connection string .conf file.
 9. Click **Configure** and then **Done**.
 
-## 7. JDBC Load Balancing Configuration
+## JDBC Load Balancing Configuration
 
 In SAP HANA JDBC input plug-ins, we distribute load between two machines based on even and odd "sessionIds"
 
