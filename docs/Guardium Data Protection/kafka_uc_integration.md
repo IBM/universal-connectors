@@ -184,18 +184,22 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 
 	- **Message format:** Replace the `<SERVER_IP>` with the server IP for example: `1.11.11.11`.
 	
-	- **Input:** Replace `<PATH_TO_DIRECTORY>` with the actual path to the datasource logs directory, such as `/var/lib/edb/as15/data`.
+	- **Input:** Replace `<PATH_TO_DIRECTORY>` with the actual path to the datasource logs directory, such as `/var/lib/edb/as15/data` and replace `<SECONDS>` with non-zore value to avoid data loss when files that are produced by the database are rotated.
 	
 	- **Action:** Replace the `<TOPIC_NAME>` with your database server name (without domain).
 	
 	- **Action:** Replace the brokers (`<MANAGED_UNIT_#>`) with the hosts of the managed units in the Kafka cluster established earlier. Note that the port remains constant at `9093`, as the Kafka 	cluster is configured to listen on this port.
+ - - **Confparam:** 
+	* For more information on `acks` parameter, see [acks](https://kafka.apache.org/documentation/#producerconfigs_acks). 
+	* For more information on `linger.ms` parameter, see [linger.ms](https://kafka.apache.org/documentation/#producerconfigs_linger.ms).
+	* For more information on `batch.size` parameter, see [batch.size](https://kafka.apache.org/documentation/#producerconfigs_batch.size).
 
 	**Syslog configuration for PostgreSQL**:
 	```conf
 	module(load="imfile")
 	# Select input configuration by datasource: 
 	# Use the following input for Postgres
-	input(type="imfile" Tag="postgres" startmsg.regex="^[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}" File="<PATH_TO_DIRECTORY>/*.csv" ruleset="kafkaRuleset")
+	input(type="imfile" Tag="postgres" startmsg.regex="^[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}" File="<PATH_TO_DIRECTORY>/*.csv" ruleset="kafkaRuleset" readTimeout=<SECONDS>)
 	
 	# Template for audit message that will be sent to Kafka topic of UC. 
 	$template UcMessageFormat,"%timegenerated:::date-rfc3339%,%HOSTNAME%,<SERVER_IP>,%msg%"
@@ -232,7 +236,10 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	               	"socket.keepalive.enable=true",
 			"security.protocol=ssl",
 			"debug=all",
-	                "ssl.ca.location=<_ENTER_CERTIFICATE>"
+	                "ssl.ca.location=<_ENTER_CERTIFICATE>",
+ 			"acks=<POSSIBLE VALUES: all,-1,0,1>",
+	       		"linger.ms=10",
+ 	       		"batch.size=32000"
 	           ]
 		)
 	}
@@ -299,7 +306,10 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	            "socket.keepalive.enable=true",
 	            "security.protocol=ssl",
 	            "debug=all",
-	            "ssl.ca.location=<ENTER_CERTIFICATE_PATH>"
+	            "ssl.ca.location=<ENTER_CERTIFICATE_PATH>",
+    		    "acks=<POSSIBLE VALUES: all,-1,0,1>",
+	            "linger.ms=10",
+ 	            "batch.size=32000"
 	        ]
 	    )
 	}
@@ -332,7 +342,10 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	                "socket.keepalive.enable=true",
 	            	"security.protocol=ssl",
 			"debug=all",
-			"ssl.ca.location=<ENTER_CERTIFICATE_PATH>"
+			"ssl.ca.location=<ENTER_CERTIFICATE_PATH>",
+ 			"acks=<POSSIBLE VALUES: all,-1,0,1>",
+			"linger.ms=10",
+ 	      		 "batch.size=32000"
 	            ]
 	        )
 	    }
