@@ -74,16 +74,21 @@ public class Parser {
 	 *
 	 */
 	public static Record parseRecord(JsonObject inputJson) {
-		JsonObject protoPayload = null;
-		JsonObject metaDataJson = null;
+		JsonObject protoPayload = new JsonObject();
+		JsonObject metaDataJson = new JsonObject();
 
 		Record record = new Record();
 
-		if(inputJson.has(ApplicationConstants.PROTO_PAYLOAD) && inputJson.get(ApplicationConstants.PROTO_PAYLOAD).getAsJsonObject() != null && !inputJson.get(ApplicationConstants.PROTO_PAYLOAD).getAsJsonObject().entrySet().isEmpty());
-		{
+		if(inputJson.has(ApplicationConstants.PROTO_PAYLOAD) &&
+				inputJson.get(ApplicationConstants.PROTO_PAYLOAD).getAsJsonObject() != null &&
+				!inputJson.get(ApplicationConstants.PROTO_PAYLOAD).getAsJsonObject().entrySet().isEmpty()) {
+
 			protoPayload = inputJson.get(ApplicationConstants.PROTO_PAYLOAD).getAsJsonObject();
-			if(protoPayload.has(ApplicationConstants.METADATA) && protoPayload.get(ApplicationConstants.METADATA).getAsJsonObject() != null && !protoPayload.get(ApplicationConstants.METADATA).getAsJsonObject().entrySet().isEmpty());
-			{
+
+			if(protoPayload.has(ApplicationConstants.METADATA) &&
+					protoPayload.get(ApplicationConstants.METADATA).getAsJsonObject() != null &&
+					!protoPayload.get(ApplicationConstants.METADATA).getAsJsonObject().entrySet().isEmpty()) {
+
 				metaDataJson = protoPayload.get(ApplicationConstants.METADATA).getAsJsonObject();
 			}
 
@@ -96,15 +101,19 @@ public class Parser {
 		String auditType = StringUtils.EMPTY;
 		String projectId = getTypeMetaData(inputJson);
 
-		if (protoPayload.has(ApplicationConstants.SERVICE_DATA) && !protoPayload.get(ApplicationConstants.SERVICE_DATA).isJsonNull())
+		if (protoPayload.has(ApplicationConstants.SERVICE_DATA) &&
+				!protoPayload.get(ApplicationConstants.SERVICE_DATA).isJsonNull()) {
 			auditType = ApplicationConstants.SERVICE_DATA;
-		else if (protoPayload.has(ApplicationConstants.METADATA) && !protoPayload.get(ApplicationConstants.METADATA).isJsonNull())
+		} else if (protoPayload.has(ApplicationConstants.METADATA) &&
+				!protoPayload.get(ApplicationConstants.METADATA).isJsonNull()) {
 			auditType = ApplicationConstants.METADATA;
+		}
 
 		if (metaDataJson != null && !metaDataJson.entrySet().isEmpty()) {
 			sql = getEventQueryFromMetaData(metaDataJson);
 			databaseName = getDatabaseNameFromMetaData(inputJson);
 		}
+
 		if (StringUtils.isEmpty(sql)) {
 			sql = getSql(sql, inputJson, protoPayload, metaDataJson);
 		}
@@ -117,7 +126,8 @@ public class Parser {
 
 
 		if (null == record.getException()) {
-			bigQueryDTO = parseAsConstruct(sql);
+			bigQueryDTO = parseAsData(sql);
+
 			record.setData(bigQueryDTO.getData());
 			if (StringUtils.isEmpty(databaseName) && !StringUtils.isEmpty(sql)) {
 				databaseName = !bigQueryDTO.getDBName().isEmpty() ? bigQueryDTO.getDBName().toArray()[0].toString()
@@ -127,6 +137,15 @@ public class Parser {
 				}
 			}
 		}
+		else {
+			int exceptionCode = getExceptionCode(protoPayload);
+
+			if (exceptionCode == 6 || exceptionCode == 5){
+				bigQueryDTO = parseAsData(sql);
+				record.setData(bigQueryDTO.getData());
+			}
+		}
+
 		record.setDbName(projectId + ":" + databaseName);
 		record.setAppUserName(appUserName);
 		record.setAccessor(parseAccessor(appUserName, inputJson, databaseName, sql,
@@ -139,6 +158,8 @@ public class Parser {
 
 		return record;
 	}
+
+
 
 	/**
 	 * getDataSetNameBySQLQuery() method will perform operation on String inputs,
@@ -285,6 +306,17 @@ public class Parser {
 		construct.setFullSql((sqlQuery));
 		bigQueryDTO.getData().setConstruct(construct);
 		return bigQueryDTO;
+	}
+
+	private static BigQueryDTO parseAsData(String sql) {
+
+		BigQueryDTO bigQueryDTO = null;
+
+		bigQueryDTO = parseAsConstruct(sql);
+
+
+		return bigQueryDTO;
+
 	}
 
 	/**
@@ -722,6 +754,15 @@ public class Parser {
 			return StringUtils.EMPTY;
 		}
 		return CommonUtils.convertIntoString(status.get(ApplicationConstants.MESSAGE));
+
+	}
+
+	private static int getExceptionCode(JsonObject protoPayload) {
+		JsonObject status = validateKeyExistance(protoPayload, ApplicationConstants.STATUS);
+		if (status.entrySet().isEmpty()) {
+			return -1;
+		}
+		return status.get(ApplicationConstants.CODE).getAsInt();
 
 	}
 

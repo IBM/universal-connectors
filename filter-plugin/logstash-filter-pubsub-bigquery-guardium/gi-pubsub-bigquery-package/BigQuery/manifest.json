@@ -1,5 +1,5 @@
 {
-	"name": "Guardium_Big_Query_filter_Plugin",
+	"name": "BigQueryFilterPlugin",
 	"alias": "BigQuery Filter Plugin",
 	"type": "filter",
 	"pipeline_type":"pull",
