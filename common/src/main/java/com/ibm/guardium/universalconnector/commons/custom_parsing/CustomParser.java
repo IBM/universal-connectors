@@ -223,7 +223,7 @@ public abstract class CustomParser {
             sessionLocator.setClientIpv6(clientIpv6);
             sessionLocator.setServerIpv6(getServerIpv6(payload)); // Set server IP to default IPv6
 
-        } else if (inetAddressValidator.isValidInet4Address(clientIp)) {
+        } else if (clientIp != null && inetAddressValidator.isValidInet4Address(clientIp)) {
             // If client IP is IPv4, set both client and server IP to IPv4
             sessionLocator.setClientIp(clientIp);
             // Cloud Databases: Set server IP to 0.0.0.0
