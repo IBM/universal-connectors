@@ -14,7 +14,7 @@ public class PropertyConstant {
     public static final String EXCEPTION_TYPE_ID = "exception_type_id";
     public static final String DEFAULT_IPV6 = "0000:0000:0000:0000:0000:FFFF:0000:0000";
     public static final String DEFAULT_IP = "0.0.0.0";
-    public static final String SERVICE_NAME = "serviceName";
+    public static final String SERVICE_NAME = "service_name";
     public static final String APP_USER_NAME = "app_user_name";
     public static final String CLIENT_HOSTNAME = "client_hostname";
     public static final String CLIENT_IP = "client_ip";
