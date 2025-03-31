@@ -1,0 +1,21 @@
+{
+ "db_name": "DatabaseName",
+ "db_user": "User",
+ "app_user_name": "User",
+ "client_ip": "ClientIP",
+ "client_port": "ClientPort",
+ "exception_type_id": "Error",
+ "exception_desc": "Error",
+ "db_protocol": "{Trino}",
+ "object": "",
+ "timstamp": "Time",
+ "server_ip": "ServerIP",
+ "server_port": "ServerPort",
+ "server_type": "$vendor$",
+ "session_id": "",
+ "event_id": "$eventid$",
+ "status": "$eventid$",
+ "sniffer_parser": "FREE_TEXT",
+ "sql_string": "SQLCommand"
+}
+
