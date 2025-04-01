@@ -119,13 +119,11 @@ public abstract class CustomParser {
     }
 
     protected String getClientIpv6(String payload) {
-        String value = getValue(payload, CLIENT_IPV6);
-        return value != null ? value : DEFAULT_IPV6;
+        return getValue(payload, CLIENT_IPV6);
     }
 
     protected String getClientIp(String payload) {
-        String value = getValue(payload, CLIENT_IP);
-        return value != null ? value : DEFAULT_IP;
+        return getValue(payload, CLIENT_IP);
     }
 
     protected Data getDataForException(String sqlString) {
@@ -219,13 +217,13 @@ public abstract class CustomParser {
 
         String clientIp = getClientIp(payload);
         String clientIpv6 = getClientIpv6(payload);
-        if (inetAddressValidator.isValidInet6Address(clientIpv6)) {
+        if (clientIpv6 != null && inetAddressValidator.isValidInet6Address(clientIpv6)) {
             // If client IP is IPv6, set both client and server to IPv6
             sessionLocator.setIpv6(true);
             sessionLocator.setClientIpv6(clientIpv6);
             sessionLocator.setServerIpv6(getServerIpv6(payload)); // Set server IP to default IPv6
 
-        } else if (inetAddressValidator.isValidInet4Address(clientIp)) {
+        } else if (clientIp != null && inetAddressValidator.isValidInet4Address(clientIp)) {
             // If client IP is IPv4, set both client and server IP to IPv4
             sessionLocator.setClientIp(clientIp);
             // Cloud Databases: Set server IP to 0.0.0.0
