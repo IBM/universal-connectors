@@ -127,6 +127,39 @@ public class ParserTest {
         Assert.assertEquals(true,b);        
         
     }
+
+    @Test
+    public void testForCreateUserGroupLogs() throws ParseException {
+
+        //frequency very high
+        final String dummy="{\"description\":\"User group was added or updated\",\"group_name\":\"testgp-007\",\"id\":8244,\"local\":{\"ip\":\"9.46.82.181\",\"port\":8091},\"name\":\"set user group\",\"real_userid\":{\"domain\":\"builtin\",\"user\":\"Administrator\"},\"reason\":\"added\",\"remote\":{\"ip\":\"9.67.127.86\",\"port\":62415},\"roles\":[],\"sessionid\":\"98caa65ac3d0edcd006f0db99373c95415e970b0\",\"timestamp\":\"2025-03-13T13:15:08.560-07:00\"}";
+        final JsonObject testJson = JsonParser.parseString(dummy).getAsJsonObject();
+        final Construct construct = Parser.parseAsConstruct(testJson);
+        Assert.assertEquals("set user group", construct.getSentences().get(0).getVerb());
+        Assert.assertEquals("testgp-007", construct.getSentences().get(0).getObjects().get(0).getName());
+    }
+
+    @Test
+    public void testForCreateUserLogs() throws ParseException {
+
+        //frequency very high
+        final String dummy="{\"description\":\"User was added or updated\",\"full_name\":\"test user007\",\"groups\":[],\"id\":8232,\"identity\":{\"domain\":\"local\",\"user\":\"testuser007\"},\"local\":{\"ip\":\"9.46.82.181\",\"port\":8091},\"name\":\"set user\",\"real_userid\":{\"domain\":\"builtin\",\"user\":\"Administrator\"},\"reason\":\"added\",\"remote\":{\"ip\":\"9.67.127.86\",\"port\":62423},\"roles\":[],\"sessionid\":\"98caa65ac3d0edcd006f0db99373c95415e970b0\",\"timestamp\":\"2025-03-13T13:15:44.897-07:00\"}";
+        final JsonObject testJson = JsonParser.parseString(dummy).getAsJsonObject();
+        final Construct construct = Parser.parseAsConstruct(testJson);
+        Assert.assertEquals("set user", construct.getSentences().get(0).getVerb());
+        Assert.assertEquals("testuser007", construct.getSentences().get(0).getObjects().get(0).getName());
+    }
+
+    @Test
+    public void testForDeleteUserLogs() throws ParseException {
+
+        //frequency very high
+        final String dummy="{\"description\":\"User was deleted\",\"id\":8194,\"identity\":{\"domain\":\"local\",\"user\":\"testuser_2703_1515\"},\"local\":{\"ip\":\"9.30.147.9\",\"port\":8091},\"name\":\"delete user\",\"real_userid\":{\"domain\":\"builtin\",\"user\":\"Administrator\"},\"remote\":{\"ip\":\"9.43.18.13\",\"port\":51435},\"sessionid\":\"fa7ea402fcd1546d22c3f5c979a9d269819f49d9\",\"timestamp\":\"2025-03-27T07:48:27.005-07:00\"}";
+        final JsonObject testJson = JsonParser.parseString(dummy).getAsJsonObject();
+        final Construct construct = Parser.parseAsConstruct(testJson);
+        Assert.assertEquals("delete user", construct.getSentences().get(0).getVerb());
+        Assert.assertEquals("testuser_2703_1515", construct.getSentences().get(0).getObjects().get(0).getName());
+    }
     
     @Test 
     public void nullCheck() throws ParseException {
