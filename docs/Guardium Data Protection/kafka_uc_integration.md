@@ -9,8 +9,8 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 1. [Set up UC Configurations on Guardium](#1-Configuring-UC-on-Guardium-Data-Protection)
     - 1.1 [Creating a Kafka Cluster on Guardium](#11-Creating-a-Kafka-Cluster-on-Guardium)
     - 1.2 [Configuring Universal Connector](#12-Configuring-Universal-Connector)
-      	- 1.2.1 [Configuring UC on Guardium using the new flow](#121-Configuring-UC-on-Guardium-using-the-new-flow)
-      	- 1.2.2 [Configuring UC on Guardium using the legacy flow](#122-Configuring-UC-on-Guardium-using-the-legacy-flow)
+      	- 1.2.1 [Configuring UC on Guardium by using the Central Manager](#121-Configuring-UC-on-Guardium-by-using-the-Central-Manager)
+      	- 1.2.2 [Configuring UC on Guardium by using the legacy workflow](#122-Configuring-UC-on-Guardium-by-using-the-legacy-workflow)
 
 2. [Configuring native audit and rsyslog on Datasource Server](#2-Configuring-native-audit-and-rsyslog-on-Datasource-Server)
     - 2.1 [Prerequisite ](#21-prerequisite)
@@ -26,14 +26,14 @@ Welcome to the configuration guide for integrating a Universal Connector (UC) wi
 
 ## 1 Configuring Universal Connector on Guardium Data Protection 
 ### 1.1 Creating a Kafka Cluster on Guardium
-For information on creating Kafka Clusters, see the [Managing Kafka clusters](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-managing-kafka-clusters) topic.
+For information on creating Kafka Clusters, see the [Creating Kafka clusters](https://www.ibm.com/docs/en/gdp/12.x?topic=manager-creating-kafka-clusters) topic.
 
 ### 1.2 Configuring Universal Connector 
 
-#### 1.2.1 Configuring UC on Guardium using the new flow
-For information on configuring the Universal Connector on Guardium using the new flow, see [Managing universal connector configuration](https://www.ibm.com/docs/en/gdp/12.x?topic=connector-managing-universal-configuration) topic.
+#### 1.2.1 Configuring UC on Guardium by using the Central Manager 
+For information on configuring the Universal Connector on Guardium using the new workflow, see [Configuring a universal connector by using Central Manager](https://www.ibm.com/docs/en/gdp/12.x?topic=connector-configuring-universal-by-using-central-manager) topic.
 
-#### 1.2.2 Configuring UC on Guardium using the legacy flow
+#### 1.2.2 Configuring UC on Guardium by using the legacy workflow
 
 1. On the **Guadium Managed Unit** machine, go to **Setup** > **Tools and Views** > **Configure Universal Connector** page.
 
@@ -189,7 +189,8 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	- **Action:** Replace the `<TOPIC_NAME>` with your database server name (without domain).
 	
 	- **Action:** Replace the brokers (`<MANAGED_UNIT_#>`) with the hosts of the managed units in the Kafka cluster established earlier. Note that the port remains constant at `9093`, as the Kafka 	cluster is configured to listen on this port.
-
+	- **Topic:** Replace '<UC_Connection_Name>_<Connector_ID>' with the UC connection name followed by an underscore and then the Connector ID. You can find the Connector ID after underscore on the         Kafka cluster Management page > Topic details column. For example, if the Univeral Connector Connection name is 'EDB_PG' then **Topic** name is 'EDB_PG_2', where 2 is the collector ID.
+     
 	**Syslog configuration for PostgreSQL**:
 	```conf
 	module(load="imfile")
@@ -210,8 +211,8 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	ruleset(name="kafkaRuleset") {
 	       action(type="omkafka"
 	           template="UcMessageFormat"
-	           broker=["<KAFKA_NODE_1>:9093", "<KAFKA_NODE_2>:9093", "<KAFKA_NODE_3>:9093"]
-	           topic="<_ENTER_CONNECTOR_NAME>"
+	           broker=["<KAFKA_NODE_1>:9093, <KAFKA_NODE_2>:9093, <KAFKA_NODE_3>:9093"]
+	           topic="<UC_Connection_Name>_<Connector ID>"
 	           dynakey = "on"
 	           key = "UcSessionID"
 	           queue.filename="omkafkaq"
@@ -276,8 +277,8 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	ruleset(name="kafkaRuleset_postgresql") {
 	    action(type="omkafka"
 	        template="UcMessageFormat"
-	        broker=["<KAFKA_NODE_1>:9093", "<KAFKA_NODE_2>:9093", "<KAFKA_NODE_3>:9093"]
-	        topic="<ENTER_CONNECTOR_NAME>"
+	        broker=["<KAFKA_NODE_1>:9093, <KAFKA_NODE_2>:9093, <KAFKA_NODE_3>:9093"]
+	        topic="<UC_Connection_Name>_<Connector_ID>"
 	        dynakey="on"
 	        key="UcSessionID_PostgreSQL"
 	        queue.filename="omkafkaq_postgres"
@@ -309,8 +310,8 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	    if $msg contains "source" and $msg contains "port" then {
 	        action(type="omkafka"
 	            template="UcMessageFormat"
-	            broker=["<MANAGED_UNIT_1>:9093", "<MANAGED_UNIT_2>:9093", "<MANAGED_UNIT_3>:9093"]
-	            topic="<ENTER_CONNECTOR_NAME>"
+	            broker=["<MANAGED_UNIT_1>:9093, <MANAGED_UNIT_2>:9093, <MANAGED_UNIT_3>:9093"]
+	            topic="<UC_Connection_Name>_<Connector_ID>"
 	            dynakey="on"
 	            key="UcSessionID_Yugabyte"
 	            queue.filename="omkafkaq_yugabyte"
