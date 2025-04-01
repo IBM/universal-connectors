@@ -49,5 +49,11 @@ public interface Constants {
 	public static final String HTTP_METHOD="httpMethod";
 	public static final String SQL_ERROR="SQL_ERROR";
 	public static final String LOGIN_FAILED="LOGIN_FAILED";
+
+	public static final String GROUP_NAME = "group_name";
+	
+	public static final String FULL_NAME = "full_name";
+
+	public static final String IDENTITY = "identity";
 	
 }
