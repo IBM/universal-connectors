@@ -8,7 +8,7 @@ public interface Constants {
 	public static final String MESSAGE = "message";
 	public static final String SERVER_IP = "serverIP";
 	public static final String SERVER_HOSTNAME = "serverHostname";
-	public static final String NOT_AVAILABLE = "NA";
+	public static final String NOT_AVAILABLE = "N.A.";
 	public static final String DEFAULT_IP = "0.0.0.0";
 	public static final String LOOPBACK_ADDRESS = "127.0.0.1";
 	public static final int DEFAULT_SERVER_PORT = -1;
@@ -49,5 +49,11 @@ public interface Constants {
 	public static final String HTTP_METHOD="httpMethod";
 	public static final String SQL_ERROR="SQL_ERROR";
 	public static final String LOGIN_FAILED="LOGIN_FAILED";
+
+	public static final String GROUP_NAME = "group_name";
+
+	public static final String FULL_NAME = "full_name";
+
+	public static final String IDENTITY = "identity";
 	
 }
