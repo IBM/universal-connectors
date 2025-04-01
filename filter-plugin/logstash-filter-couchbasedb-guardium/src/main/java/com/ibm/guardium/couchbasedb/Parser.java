@@ -277,31 +277,54 @@ public class Parser {
 	protected static Sentence parseSentence(final JsonObject data) {
 
 		Sentence sentence = null;
-		String verb = Constants.UNKNOWN_STRING;
-		String object_name = Constants.UNKNOWN_STRING;
-		
-		if (data.has(Constants.HTTP_METHOD) && !data.get(Constants.HTTP_METHOD).isJsonNull()) {
-				verb = data.get(Constants.HTTP_METHOD).getAsString();
-				sentence = new Sentence(verb);
-				if (data.has(Constants.NAME) && !data.get(Constants.NAME).isJsonNull()) {
-					object_name = data.get(Constants.NAME).getAsString();
-			}
-		}//else block is added for testing only so as to see, not properly handled events on QS page
-		else {
-			if(data.has(Constants.DESCRIPTION) && !data.get(Constants.DESCRIPTION).isJsonNull()) {
-				verb=data.get(Constants.DESCRIPTION).getAsString();
-				sentence = new Sentence(verb);
-			}
-			if(data.has(Constants.NAME) && !data.get(Constants.NAME).isJsonNull()) {
-				object_name=data.get(Constants.NAME).getAsString();
-			}
-		}
+		String verb = getVerb(data);
+		String object_name = getObject(data);
+
+		sentence = new Sentence(verb);
 
 		SentenceObject sentenceObject = new SentenceObject(object_name);
 		sentenceObject.setType(Constants.OBJECT_TYPE);
 		sentence.getObjects().add(sentenceObject);
 
 		return sentence;
+	}
+
+	private static String getObject (final JsonObject data) {
+		String object_name = Constants.NOT_AVAILABLE;
+		if (data.has(Constants.HTTP_METHOD) && !data.get(Constants.HTTP_METHOD).isJsonNull()) {
+			if (data.has(Constants.NAME) && !data.get(Constants.NAME).isJsonNull()) {
+				object_name = data.get(Constants.NAME).getAsString();
+			}
+		}//else block is added for testing only so as to see, not properly handled events on QS page
+		else {
+			if(data.has(Constants.GROUP_NAME) && !data.get(Constants.GROUP_NAME).isJsonNull()){
+				object_name = data.get(Constants.GROUP_NAME).getAsString();
+			}
+			else {
+				if (data.has(Constants.IDENTITY) && !data.get(Constants.IDENTITY).isJsonNull()) {
+					JsonObject identityUserID = data.getAsJsonObject(Constants.IDENTITY);
+
+					if (identityUserID.has(Constants.USER) && !identityUserID.get(Constants.USER).isJsonNull()) {
+						object_name = identityUserID.get(Constants.USER).getAsString();
+					}
+				}
+			}
+		}
+		return object_name;
+	}
+
+	private static String getVerb (final JsonObject data) {
+		String verb = Constants.NOT_AVAILABLE;
+		if (data.has(Constants.HTTP_METHOD) && !data.get(Constants.HTTP_METHOD).isJsonNull()) {
+			verb = data.get(Constants.HTTP_METHOD).getAsString();
+
+		}//else block is added for testing only so as to see, not properly handled events on QS page
+		else {
+			if(data.has(Constants.NAME) && !data.get(Constants.NAME).isJsonNull()) {
+				verb=data.get(Constants.NAME).getAsString();
+			}
+		}
+		return verb;
 	}
 
 	
