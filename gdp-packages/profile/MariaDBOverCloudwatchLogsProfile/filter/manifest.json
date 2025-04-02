@@ -1,6 +1,6 @@
 {
-	"name": "Guardium_MariaDB_filter",
-	"alias": "MariaDB",
+	"name": "Guardium_MariaDB_AWS_filter",
+	"alias": "MariaDB-AWS",
 	"type": "filter",
 	"pipeline_type":"pull",
 	"distribute_to_many": "false", 
