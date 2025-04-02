@@ -67,7 +67,7 @@
       }
     }
   ],
-  "filter_name": "Guardium_MariaDB_filter",
+  "filter_name": "Guardium_MariaDB_AWS_filter",
   "filter_parameters": [],
   "supported_platforms": [
     "AWS"
