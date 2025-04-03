@@ -40,17 +40,41 @@
         "type": "text",
         "default": "",
         "hidden": false,
-        "label": "CBD Service name / SID",
+        "label": "CDB Service name / SID",
         "optional": false,
         "sequence": 7
       },
       "query": {
         "type": "text",
-        "default": "SELECT event_timestamp_utc, To_char(sessionid) AS SESSIONID, dbusername AS USERID, ( CASE WHEN execution_id IS NOT NULL THEN NULL ELSE ( SELECT global_name FROM Containers (global_name) WHERE  con_id = a.con_id ) END ) CON_NAME, os_username AS OS_USER, Substr(Regexp_substr(authentication_type, 'HOST=([^)]*)'), 6) AS CLIENT_HOST_IP, userhost AS CLIENT_HOST_NAME, (SELECT Sys_context('USERENV', 'SERVER_HOST_IP') FROM dual) SERVER_HOST_IP, client_program_name, To_char(dbid) AS DBID, (SELECT sys_context('USERENV', 'DB_NAME') FROM dual) DBNAME, To_char(return_code) AS RETURN_CODE, sql_text FROM cdb_unified_audit_trail a",
+        "default": "SELECT EVENT_TIMESTAMP_UTC, To_char(sessionid) AS SESSION_ID, dbusername AS USER_ID, ( CASE WHEN execution_id IS NOT NULL THEN NULL ELSE ( SELECT global_name FROM Containers (global_name) WHERE con_id = a.con_id ) END ) CON_NAME, os_username AS OS_USER, Substr(Regexp_substr(authentication_type, 'HOST=([^)]*)'), 6) AS CLIENT_HOST_IP, userhost AS CLIENT_HOST_NAME, (SELECT Sys_context('USERENV', 'SERVER_HOST_IP') FROM dual) SERVER_HOST_IP, client_program_name, To_char(dbid) AS DB_ID, (SELECT sys_context('USERENV', 'DB_NAME') FROM dual) DB_NAME, To_char(return_code) AS RETURN_CODE, SQL_TEXT FROM cdb_unified_audit_trail a",
         "hidden": false,
         "label": "Query",
         "optional": false,
         "sequence": 8
+      },
+      "datatype": {
+        "type": "text",
+        "default": "OUA",
+        "hidden": true,
+        "label": "Datatype",
+        "optional": false,
+        "sequence": 12
+      },
+      "value_converter": {
+        "type": "text",
+        "default": "org.apache.kafka.connect.converters.ByteArrayConverter",
+        "hidden": true,
+        "label": "Record Value Converter",
+        "optional": false,
+        "sequence": 13
+      },
+      "key_converter": {
+        "type": "text",
+        "default": "org.apache.kafka.connect.storage.StringConverter",
+        "hidden": true,
+        "label": "Record Key Converter",
+        "optional": false,
+        "sequence": 14
       }
     }
   ],
