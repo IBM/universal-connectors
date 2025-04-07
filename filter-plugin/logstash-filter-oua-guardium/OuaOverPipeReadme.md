@@ -83,31 +83,7 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 
          - Paste the content from the  "[ouaPipe.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-oua-guardium/ouaPipe.conf)" in the **Input configuration** field
 
-             ```
-           pipe {
-             type => "oua"
-             command => "${OUA_BINARY_PATH} -c ${THIRD_PARTY_PATH} -s ${THIRD_PARTY_PATH} -r 100 -t 1000 -p 10 -j <USER>/${OUA_USER_PASS}@<SERVER_ADDRESS>:<SERVER_PORT>/<INSTANCE_NAME>"
-                         add_field => {"SERVER_ADDRESS" => "<Enter_Server_Address>"}
-                             add_field => {"SERVER_PORT" => "<Enter_Server_Port>"} }
-           ```
-
          - Paste the content from the  "[ouaPipe.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-oua-guardium/ouaPipe.conf)" in the **Filter configuration** field
-
-             ```
-                if [type] == "oua" {
-             json {
-                 source => "message"
-             }
-                 mutate {
-                         add_field => {"[HostName]" => "%{SERVER_ADDRESS}" }
-                         add_field => {"[PortNumber]" => "%{SERVER_PORT}" }
-                         }
-             if "_jsonparsefailure" not in [tags] {
-                 oua_filter {}
-             }
-           }
-
-             ```
 
       - **NOTE**: The type specified for the filters must be unique among Universal Connectors and be identical in the input and filter configurations
 
@@ -125,4 +101,4 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 ## Limitation
 - Normally, the "statement type" attribute for the "FULL SQL" entity in Guardium reports shows us whether a full SQL statement is a prepared statement. However, because OUA doesn't give us information about whether a statement is a prepared statement or not, the "Statement type" attribute is not applicable for the OUA universal connector plug-in.
 - The "record affected" field is not supported when using Oracle with the universal connector.
-- If you restart the database, then any Universal Connector that uses the OUA plugin must also be restarted.
+- If you restart the database, then any Universal Connector that uses the OUA plugin must also be restarted.
