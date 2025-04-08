@@ -22,3 +22,5 @@ S3OverCloudwatchLogsProfile
 JDBCKafkaConnectProfile
 OUAOverJdbcKafkaConnectProfile
 OUAMultiTenantOverJdbcKafkaConnectProfile
+OUAOverJdbcKafkaConnectProfile_sink
+KafkaSinkPackage

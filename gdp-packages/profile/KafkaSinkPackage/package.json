@@ -1,0 +1,9 @@
+{
+    "plugin_name": "Guardium Sniffer Sink Connector",
+    "help_link": "",
+    "input_name": "Guardium Sniffer Sink Connector",
+    "input_parameters": [],
+    "filter_name": "",
+    "filter_parameters": [],
+    "auth_parameters": []
+}

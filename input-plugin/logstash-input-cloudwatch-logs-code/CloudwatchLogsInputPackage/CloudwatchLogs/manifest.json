@@ -1,0 +1,22 @@
+{
+  "name": "Cloudwatch_logs_input",
+  "alias": "Cloudwatch",
+  "type": "input",
+  "pipeline_type": null,
+  "plugin_version": "3.0.8",
+  "supportedDataSources": null,
+  "supportedInputPlugins": null,
+  "developer": "Elastic",
+  "license": "Apache2.0",
+  "supported_input_plugins": [],
+  "description": "Pull events from the Amazon CloudWatch API and passes them to the filter stage",
+  "configuration_notes": "This plugin is based on lukewaite/logstash-input-cloudwatch-logs, but with the option to add a custom event_filter and role_arn to filter unwanted events.",
+  "documentation_path": "",
+  "pluginSHA256Checksum": -1,
+  "pluginOfflinePackagePath": null,
+  "pluginConfigTemplateParams": null,
+  "pluginConfigTemplateStrings": null,
+  "uploadDate": null,
+  "uploadUser": null,
+  "auto_scaling": false
+}

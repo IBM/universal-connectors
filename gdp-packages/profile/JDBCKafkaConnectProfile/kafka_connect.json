@@ -16,6 +16,8 @@
     "connection.oracle.krb.cc": "cred_cc_krb",
     "query": "param_query",
     "connection.url": "jdbc:oracle:thin:@//param_host:param_port/param_service_name",
-    "value.converter": "org.apache.kafka.connect.storage.StringConverter"
+    "value.converter": "org.apache.kafka.connect.converters.ByteArrayConverter",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "datatype": "param_connector_type"
   }
 }

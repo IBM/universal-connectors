@@ -1,0 +1,14 @@
+{
+	"name": "kafka_sink",
+	"alias": "OUA",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"distribute_to_many": "true", 
+	"plugin_version": "2.0.0",
+	"datasourceTypes": ["OracleUnifiedAudit"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "This example provides the data needed in order to support Oracle Unified Audit in Guardium Universal Connector.",
+	"configuration_notes": "Only supported from GDP 12.1 p120 and up",
+	"documentation_path": "https://www.ibm.com/docs/en/guardium/11.4"
+}

@@ -96,6 +96,11 @@
         "type": "text",
         "default": "Snowflake",
         "hidden": true
+      },
+      "pattern": {
+        "type": "text",
+        "default": "aisjiojasoidj",
+        "hidden": true
       }
     }
   ],
