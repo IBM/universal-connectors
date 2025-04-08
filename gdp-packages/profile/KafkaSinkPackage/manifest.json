@@ -1,0 +1,22 @@
+{
+  "name": "Kafka Sink",
+  "alias": "Sniffer Sink",
+  "type": "kafka-connect",
+  "pipeline_type": null,
+  "plugin_version": "2.0.0",
+  "supportedDataSources": null,
+  "supportedInputPlugins": null,
+  "developer": "IBM",
+  "license": "Apache2.0",
+  "supported_input_plugins": [],
+  "description": "Consumes events from kafka topic and sends to sniffer",
+  "configuration_notes": "",
+  "documentation_path": "",
+  "pluginSHA256Checksum": -1,
+  "plugin_offline_package_path": "sniffer-sink-connector",
+  "pluginConfigTemplateParams": null,
+  "pluginConfigTemplateStrings": null,
+  "uploadDate": null,
+  "uploadUser": null,
+  "auto_scaling": false
+}

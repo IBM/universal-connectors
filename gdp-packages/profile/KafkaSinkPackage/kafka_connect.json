@@ -1,0 +1,20 @@
+{
+  "name": "sink_profile_name_param_sniffer_host",
+  "config": {
+    "connector.class": "com.ibm.guardium.SnifferSinkConnector",
+    "topics": "param_topic",
+    "tasks.max": "1",
+    "sniffer.port": "param_sniffer_port",
+    "sniffer.host": "param_sniffer_host",
+    "sniffer.ssl": "param_sniffer_ssl",
+    "sniffer.secondary.host": "param_sniffer_host",
+    "container.unique.id":"2",
+    "connector.id":"profile_name",
+    "connector.ip":"param_sniffer_host",
+    "connector.type": "param_connector_type",
+    "status.writer.type":"LOG",
+    "sniffer.connections.limit": "param_sniffer_connections_limit",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.converters.ByteArrayConverter"
+  }
+}
