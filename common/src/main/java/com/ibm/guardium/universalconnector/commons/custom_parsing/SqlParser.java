@@ -33,6 +33,9 @@ public class SqlParser {
         map.put("REDIS", "REDIS");
         map.put("COCKROACH", "COCKROACH");
         map.put("SNOWFLAKE", "SNOWFLAKE");
+        map.put("MILVUS", "MILVUS");
+        map.put("OPEN_SEARCH", "Opensearch");
+
         validSnifferParsers = Collections.unmodifiableMap(map);
     }
 
