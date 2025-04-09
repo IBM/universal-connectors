@@ -40,7 +40,7 @@ public class PropertyConstant {
     public static final String SNIFFER_PARSER = "sniffer_parser";
     public static final String PARSING_TYPE = "parsing_type";
     public static final String SQL_PARSING_ACTIVE = "sql_parsing_active";
-    public static final String TIMESTAMP = "timstamp";
+    public static final String TIMESTAMP = "timestamp";
     public static final String ACCESSOR_TYPE = "accessor_type";   //just used this for accessor.type need to update it after discussing
     public static final String DATABASE_NOT_AVAILABLE = "N.A.";
 }
