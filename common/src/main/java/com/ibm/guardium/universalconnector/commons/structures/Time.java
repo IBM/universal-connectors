@@ -46,7 +46,7 @@ public class Time {
     @Override
     public String toString() {
         return "Time{" +
-                "timstamp=" + timstamp +
+                "timestamp=" + timstamp +
                 ", minOffsetFromGMT=" + minOffsetFromGMT +
                 ", minDst=" + minDst +
                 '}';
