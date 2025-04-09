@@ -7,4 +7,4 @@ before_script:
   - echo "Running before script..."
 
 script:
-  - ./gdp-packages/publishTemplatesGDP.sh
+    - echo "No scripts are defined"
