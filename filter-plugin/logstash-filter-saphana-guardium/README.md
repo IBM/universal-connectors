@@ -52,11 +52,6 @@ There are multiple ways to enable auditing in SAP HANA, You can choose as per yo
 
   [SAPHANA Using FILEBEAT Input](./saphanaUsingFilebeatREADME.md)
 
-* SYSLOG base auditing -Audit-trail target is a syslog, requires syslog input plug-in.
-
-  [SAPHANA Using SYSLOG Input](./saphanaUsingSyslogREADME.md)
-
-
 
 ## Troubleshooting
 
