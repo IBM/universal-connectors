@@ -138,7 +138,7 @@ enforcements. Configure Guardium to read the native audit logs by customizing th
 
 * You must have permissions for the S-Tap Management role. The admin user includes this role, by default.
 * Download the required (ngdbc)jars as per your database version from URL https://tools.hana.ondemand.com/#hanatools.
-* For CSTABLE based auditing, refer to this [package](SaphanaOverJdbcPackage) and download the [SAPHANA-offline-plugin.zip](SaphanaOverJdbcPackage/SAPHANA-offline-plugin.zip) plug-in.
+* For CSTABLE based auditing, refer to this [package](SaphanaOverJdbcPackage) and download the [SAPHANA-offline-plugin.zip](SaphanaOverJdbcPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in.
 
 
 # Procedure
