@@ -138,18 +138,18 @@ enforcements. Configure Guardium to read the native audit logs by customizing th
 
 * You must have permissions for the S-Tap Management role. The admin user includes this role, by default.
 * Download the required (ngdbc)jars as per your database version from URL https://tools.hana.ondemand.com/#hanatools.
-* For CSTABLE based auditing, refer to this [package](SaphanaOverJdbcPackage) and download the [SAPHANA-offline-plugin.zip](SaphanaOverJdbcPackage/SAPHANA-offline-plugin.zip) plug-in.
+* For CSTABLE based auditing, refer to this [package](SaphanaOverJdbcPackage) and download the [SAPHANA-offline-plugin.zip](SaphanaOverJdbcPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in.
 
 
 # Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First enable the Universal Guardium connector, if it is disabled already.
-3. Click "Upload File" and select the offline [SAPHANA-offline-plugin.zip](SaphanaOverJdbcPackage/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK".
+3. Click "Upload File" and select the offline [SAPHANA-offline-plugin.zip](SaphanaOverJdbcPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK".
 4. Click "Upload File" again and select the ngdbc-2.9.12 jar file. After it is uploaded, click "OK".
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
-7. Update the input section . Use the [saphanaJDBC.conf](SaphanaOverJdbcPackage/saphanaJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-8. Update the filter section for JDBC Plugin. Use the [saphanaJDBC.conf](SaphanaOverJdbcPackage/saphanaJDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+7. Update the input section . Use the [saphanaJDBC.conf](saphanaJDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+8. Update the filter section for JDBC Plugin. Use the [saphanaJDBC.conf](saphanaJDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added. This is no longer required starting v12p20 and v12.1.
 8. If using two jdbc plug-ins on same machine , the last_run_metadata_path file name should be different.
 
