@@ -85,8 +85,8 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=cloud.mongodb.co
 3. Click ```Upload File``` and select the offline [logstash-input-mongo_atlas_input.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.2/logstash-input-mongo_atlas_input.zip) plug-in. After it is uploaded, click ```OK```.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the ```Connector name``` field.
-6. Update the input section to add the details from the https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-mongo-atlas/input-mongo-atlas.conf file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7. Update the filter section to add the details from the https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-mongo-atlas/input-mongo-atlas.conf file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+6. Update the input section to add the details from the [input-mongo-atlas.conf](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-mongo-atlas/input-mongo-atlas.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from the [input-mongo-atlas.conf](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-mongo-atlas/input-mongo-atlas.conf) file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. Make sure that the ```type``` filed matches in both the input and filter configuration section. This field must be unique for every individual connector that you add.
 9. Click ```Save```. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
