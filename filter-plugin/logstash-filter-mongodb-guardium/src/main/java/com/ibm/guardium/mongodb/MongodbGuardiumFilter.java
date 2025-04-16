@@ -79,6 +79,14 @@ public class MongodbGuardiumFilter implements Filter {
             // from config, use Object f = e.getField(sourceField);
             if (e.getField("message") instanceof String) {
                 String messageString = e.getField("message").toString();
+
+                //Skip the event
+                if (messageString.contains("__system") || messageString.contains("\"c\":\"CONTROL\"")){
+                    e.tag(LOGSTASH_TAG_SKIP);
+                    skippedEvents.add(e);
+                    continue;
+                }
+
                 // finding "mongod:" to be general (syslog, filebeat); it's not [client] source program
                 // alternatively, throw JSON audit part into a specific field
                 int mongodIndex = getAuditMsgStartIndex(messageString);
@@ -86,6 +94,12 @@ public class MongodbGuardiumFilter implements Filter {
                     String input = messageString.substring(mongodIndex + MONGOD_AUDIT_START_SIGNAL.length());
                     try {
                         JsonObject inputJSON = (JsonObject) JsonParser.parseString(input);
+
+                        if (inputJSON==null){
+                            e.tag(LOGSTASH_TAG_SKIP);
+                            skippedEvents.add(e);
+                            continue;
+                        }
                         
                         // filter internal and not parsed events
                         BaseParser parser = ParserFactory.getParser(inputJSON);
