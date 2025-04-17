@@ -252,6 +252,9 @@ public abstract class BaseParser {
         } else if (resultCode.equals("18")) {
             exceptionRecord.setExceptionTypeId(EXCEPTION_TYPE_AUTHENTICATION_STRING);
             exceptionRecord.setDescription("Authentication Failed (18)");
+        } else if(resultCode.equals("11")) {
+            exceptionRecord.setExceptionTypeId(Parser.EXCEPTION_TYPE_AUTHENTICATION_STRING);
+            exceptionRecord.setDescription("User Not Found (11)");
         } else { // prep for unknown error code
             exceptionRecord.setExceptionTypeId(EXCEPTION_TYPE_AUTHORIZATION_STRING);
             exceptionRecord.setDescription("Error (" + resultCode + ")"); // let Guardium handle, if you'd like

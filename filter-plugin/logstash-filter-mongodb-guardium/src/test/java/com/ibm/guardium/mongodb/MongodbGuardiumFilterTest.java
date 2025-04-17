@@ -480,5 +480,22 @@ public class MongodbGuardiumFilterTest {
             MongodbGuardiumFilter.LOGSTASH_TAG_JSON_PARSE_ERROR));
         Assert.assertEquals(0, matchListener.getMatchCount()); // just sigals as not a match, so no further tags will be added, in pipeline.
     }
+
+    @Test
+    public void testIcdLog() {
+        String messageString = "%{otherdetail} mongod: { \\\"atype\\\" : \\\"createIndex\\\", \\\"ts\\\" : { \\\"$date\\\" : \\\"2025-03-25T04:20:54.349+00:00\\\" }, \\\"uuid\\\" : { \\\"$binary\\\" : \\\"1Abh27aUQFaZG4bAMTCe1g==\\\", \\\"$type\\\" : \\\"04\\\" }, \\\"local\\\" : { \\\"ip\\\" : \\\"172.30.241.136\\\", \\\"port\\\" : 31519 }, \\\"remote\\\" : { \\\"ip\\\" : \\\"172.30.22.74\\\", \\\"port\\\" : 50034 }, \\\"users\\\" : [ { \\\"user\\\" : \\\"admin\\\", \\\"db\\\" : \\\"admin\\\" } ], \\\"roles\\\" : [ { \\\"role\\\" : \\\"dbAdminAnyDatabase\\\", \\\"db\\\" : \\\"admin\\\" }, { \\\"role\\\" : \\\"readWriteAnyDatabase\\\", \\\"db\\\" : \\\"admin\\\" }, { \\\"role\\\" : \\\"userAdminAnyDatabase\\\", \\\"db\\\" : \\\"admin\\\" } ], \\\"param\\\" : { \\\"ns\\\" : \\\"guardium_dev.testtttt2503_0950\\\", \\\"indexName\\\" : \\\"_id_\\\", \\\"indexSpec\\\" : { \\\"v\\\" : 2, \\\"key\\\" : { \\\"_id\\\" : 1 }, \\\"name\\\" : \\\"_id_\\\" }, \\\"indexBuildState\\\" : \\\"IndexBuildSucceeded\\\" }, \\\"result\\\" : 0 }";
+        Context context = new ContextImpl(null, null);
+        MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        TestMatchListener matchListener = new TestMatchListener();
+
+        e.setField("message", messageString);
+        ArrayList<Event> events = new ArrayList<>(Arrays.asList(new Event[]{e}));
+        Collection<Event> results = filter.filter(events, matchListener);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals(0, matchListener.getMatchCount());
+    }
 }
 
