@@ -4,15 +4,15 @@
 * Environment: On-premise, Iaas
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
-    * Guardium Data Protection: 11.4 and above
-    * Guardium Data Security Center: 3.3
-    * Guardium Data Security Center SaaS: 1.0
+  * Guardium Data Protection: 11.4 and above
+  * Guardium Data Security Center: 3.3
+  * Guardium Data Security Center SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the CouchDB log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query and Guardium sniffer parse the CouchDB queries.This plug-in prepares the Guardium Record object and relies on Guardium internal CouchDB parser to parse the database command. The CouchDB plugin supports only Guardium Data Protection as of now.
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
-## 1. Installing CouchDB on Linux 
+## 1. Installing CouchDB on Linux
 ## Procedure:
 1. Enabling the Apache CouchDB package repository
 ```
@@ -28,7 +28,7 @@ sudo apt update
 sudo apt install -y couchdb
 ```
 3. After this,in that prompt,select options to configure CouchDB.configure either in standalone or clustered mode. Since we are installing on a single server, we will opt for the single-server standalone option.
-4. In the next prompt, the user is supposed to configure the network interface which the CouchDB will bind to. In standalone server mode, the default is 127.0.0.1 
+4. In the next prompt, the user is supposed to configure the network interface which the CouchDB will bind to. In standalone server mode, the default is 127.0.0.1
 5. If you opt for clustered configuration, you are prompted to enter the Erlang Node Name of your server.
 6. The user is supposed to enter this private DNS name in the form, by keeping the prefix couchdb@.
 7. Set the Erlang Magic Cookie. This is a unique identifier to authenticate for your cluster. All nodes must have the same cookie.
@@ -38,7 +38,7 @@ sudo apt install -y couchdb
 ```
 $ curl http://127.0.0.1:5984/
 ```
-  [Click Here](https://docs.couchdb.org/en/stable/config/intro.html) to learn more about CouchDB configuration
+[Click Here](https://docs.couchdb.org/en/stable/config/intro.html) to learn more about CouchDB configuration
 
 ## 2. Viewing the audit logs
 
@@ -64,7 +64,7 @@ Filebeat must be configured to send the output to the chosen Logstash host and p
 
 1. Configuring the input section :-
 
-    •  Locate "filebeat.inputs" in the filebeat.yml file and then use the "paths" attribute to set the location of the couchdb logs:
+   •  Locate "filebeat.inputs" in the filebeat.yml file and then use the "paths" attribute to set the location of the couchdb logs:
 ```
     filebeat.inputs:
    - type: log
@@ -107,36 +107,36 @@ For example:
 ## 4. Configuring the CouchDB filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the CouchDB template.
 
-## Before you begin
+### Before you begin
 * Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role.The admin user includes this role by default.
 * CouchDB-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection. versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
 **Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-couchdb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-couchdb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
-  
+
 * Download the plugin filter configuration file [couchdb.conf](couchdb.conf).
 
-## Procedure
-1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
-2. Enable the connector if it is disabled before uploading the UC plug-in.
-3. Click Upload File and select the offline [logstash-filter-couchdb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-couchdb_guardium_filter.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+### Configuration
+1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
+2. Enable the universal connector if it is disabled.
+3. Click ```Upload File``` and select the offline [logstash-filter-couchdb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-couchdb_guardium_filter.zip) plug-in. After it is uploaded, click ```OK```. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
-5. Type a name in the Connector name field.
-6. Update the input section to add the details from [couchdb.conf](couchdb.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7. Update the filter section to add the details from [couchdb.conf](couchdb.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-8. The "type" fields should match in input and filter configuration sections. This field should be unique for every individual connector added.
-9. The "tags" parameter in the filter configuration should match the value of the attribute tags configured in the Filebeat configuration for a connector.
-10. Click Save. Guardium validates the new connector, and enables the universal connector if it was
-disabled. After it is validated, it appears in the Configure Universal Connector page.
+5. Type a name in the ```Connector name``` field.
+6. Update the input section to add the details from the [couchdb.conf](couchdb.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from the [couchdb.conf](couchdb.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+8. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
+9. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+10. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the ```Disable/Enable``` button.
+
 
 ## 5. Limitations
- - A delay in generating logs is observed for SQL error exceptions in Guardium.
- - We have setup a DbUser value to NA instead of undefined for login failed exceptions.
- - The Following important fields couldn't be mapped with CouchDB logs    
-    - Source program : Not available with logs 
-    - OS User : Not available with logs    
-    - Client port : Not available with logs
-    - Client HostName : Not available with logs  
+- A delay in generating logs is observed for SQL error exceptions in Guardium.
+- We have setup a DbUser value to NA instead of undefined for login failed exceptions.
+- The Following important fields couldn't be mapped with CouchDB logs
+  - Source program : Not available with logs
+  - OS User : Not available with logs
+  - Client port : Not available with logs
+  - Client HostName : Not available with logs
 
 ## 6. Configuring the Couchdb filters in Guardium Data Security Center
 To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
