@@ -1,10 +1,11 @@
 //
-// Copyright 2020-2021 IBM Inc. All rights reserved
+// Copyright 2024-2025 IBM Inc. All rights reserved
 // SPDX-License-Identifier: Apache2.0
 //
 
 package com.ibm.guardium.neodb;
-
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -156,6 +157,15 @@ public class Parser {
 			String[] clientIpPort = clientIp.split(":");
 			clientIpAdd = clientIpPort[0];
 			clientPort = Integer.parseInt(clientIpPort[1]);
+
+			if (isIPv6Address(clientIpAdd)) {
+				sessionLocator.setIpv6(true);
+				sessionLocator.setClientIpv6(clientIpAdd);
+				clientIpAdd = Constants.UNKNOWN_STRING;
+			} else {
+				sessionLocator.setClientIpv6(Constants.UNKNOWN_STRING);
+			}
+
 		}
 
 		if (data.has(Constants.SERVER_IP)) {
@@ -164,6 +174,14 @@ public class Parser {
 			String[] serverIpPort = serverIp.split(":");
 			serverIpAdd = serverIpPort[0];
 			serverPort = Integer.parseInt(serverIpPort[1]);
+
+			if (isIPv6Address(serverIpAdd)) {
+				sessionLocator.setIpv6(true);
+				sessionLocator.setServerIpv6(serverIpAdd);
+				serverIpAdd = Constants.UNKNOWN_STRING;
+			} else {
+				sessionLocator.setServerIpv6(Constants.UNKNOWN_STRING);
+			}
 		}
 
 		sessionLocator.setClientIp(clientIpAdd);
@@ -175,6 +193,15 @@ public class Parser {
 		sessionLocator.setServerIpv6(Constants.UNKNOWN_STRING);
 
 		return sessionLocator;
+	}
+
+	private static boolean isIPv6Address(String ip) {
+		try {
+			InetAddress inetAddress = InetAddress.getByName(ip);
+			return inetAddress instanceof java.net.Inet6Address;
+		} catch (UnknownHostException e) {
+			return false;
+		}
 	}
 
 //	-----------------------------------------------Timestamp-----------------
