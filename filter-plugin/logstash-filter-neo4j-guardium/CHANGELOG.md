@@ -8,5 +8,8 @@ Notable changes will be documented in this file.
 ### Added
 - Initial release, in parallel to Guardium v11.4.
 
-
+## [1.0.2] - 2025-03-10
+### Added
+- Added nullChecks and EmptyChecks for 'Query STATEMENT'.
+- Added check for IPv6.
 

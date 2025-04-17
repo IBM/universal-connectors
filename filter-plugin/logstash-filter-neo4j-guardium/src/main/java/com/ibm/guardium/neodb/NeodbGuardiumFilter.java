@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 IBM Inc. All rights reserved
+// Copyright 2024-2025 IBM Inc. All rights reserved
 // SPDX-License-Identifier: Apache2.0
 //
 
@@ -9,7 +9,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Collections;
-
+import com.google.gson.JsonElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -30,6 +30,9 @@ import co.elastic.logstash.api.PluginConfigSpec;
 
 @LogstashPlugin(name = "neodb_guardium_filter")
 public class NeodbGuardiumFilter implements Filter {
+
+	private static Logger logger = LogManager.getLogger(NeodbGuardiumFilter.class);
+
 
 	public static final String LOG42_CONF = "log4j2uc.properties";
 	static {
@@ -66,6 +69,9 @@ public class NeodbGuardiumFilter implements Filter {
 	public Collection<Event> filter(Collection<Event> events, FilterMatchListener matchListener) {
 
 		for (Event e : events) {
+			if(logger.isDebugEnabled()){
+				logger.debug("Event Now: {}", e.getData());
+			}
 
 			try {
 				JsonObject inputData = inputData(e);
@@ -97,14 +103,21 @@ public class NeodbGuardiumFilter implements Filter {
 	}
 
 	private boolean isNotSystemGeneratedEvent(JsonObject inputData) {
+		if (inputData == null || !inputData.has(Constants.QUERY_STATEMENT)) {
+			return false;  // Treat as system-generated if missing QUERY_STATEMENT or inputData is null
+		}
 
-		String queryStatement = inputData.get(Constants.QUERY_STATEMENT).getAsString();
+		JsonElement queryElement = inputData.get(Constants.QUERY_STATEMENT);
+		if (queryElement == null || queryElement.isJsonNull()) {
+			return false;  // Treat as system-generated if queryElement is null or JsonNull
+		}
 
-		if (queryStatement.startsWith("EXPLAIN"))
-			return false;
+		String queryStatement = queryElement.getAsString();
+		if (queryStatement == null || queryStatement.isEmpty() || queryStatement.startsWith("EXPLAIN")) {
+			return false;  // Treat as system-generated if queryStatement is null, empty, or starts with "EXPLAIN"
+		}
 
-		return true;
-
+		return true;  // Otherwise, it is not a system-generated event
 	}
 
 	private JsonObject inputData(Event e) {
