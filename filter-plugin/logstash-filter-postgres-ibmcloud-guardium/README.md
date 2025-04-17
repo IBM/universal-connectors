@@ -17,12 +17,13 @@ The plug-in is free and open-source (Apache 2.0). You can use it as a starting p
 1. Browse to https://cloud.ibm.com/login.
 2. On the home page search and select **Databases for PostgreSQL** option.
 3. Create a PostgreSQL database as follows:
-      - Select Platform name - *IBM Cloud*.
-      - In **Service Details** define the Service Name (e.g.- *PostgreSQL-test1*).
-      - Choose a **Resource Group**. 
-      - Choose a **Location** (e.g.- `Dallas (us-south)`).
-      - Under **Resource allocation**, select an initial resource allocation preset, or customize your deployments resources custom option (e.g.- RAM - 1 GB Dedicated Core – 3 cores, Disk Usage – 5 GB). 
-      - Click **Create**.
+   - Select Platform name - *IBM Cloud*.
+   - In **Service Details** define the Service Name (e.g.- *PostgreSQL-test1*).
+   - Choose a **Resource Group**.
+   - Choose a **Location** (e.g.- `Dallas (us-south)`).
+   - Under **Resource allocation**, select an initial resource allocation preset, or customize your deployments resources custom option (e.g.- RAM - 1 GB Dedicated Core – 3 cores, Disk Usage – 5 GB).
+      - Under **Service Configuration**, select *Public Network* in *Endpoints*.
+   - Click **Create**.
 4. Navigate to the Resource List and click **Databases**.
 5. Select the database (PostgreSQL-test1) that you created to see the details.
    **Note:** The database may take  15-20 minutes to become Active.
@@ -64,8 +65,8 @@ If the instance of IBM Log Analysis and Event Stream is already configured in th
 
 ## 3. Viewing the Audit logs
 
-### Creating an instance of IBM Log Analysis on IBM Cloud
-1. On the home page, search and select **IBM Log Analysis** option to create an instance.
+### Creating an instance of IBM Cloud Log
+1. On the home page, search and select **IBM Cloud Log** option to create an instance.
 2. Choose Location (e.g.-`Dallas (us-south)`).
 3. In the Pricing Plan field, select **7 days Log Search**.
 4. Enter the Service Name (e.g.- *IBM Log Analysis Test-1*).
@@ -75,14 +76,14 @@ If the instance of IBM Log Analysis and Event Stream is already configured in th
 
 ### Configuring Platform Logs
 1. Navigate to the Resource List and select **Logging and Monitoring**.
-2. Select the IBM log analysis instance created in the previous step.
-3. Click **Configure platform logs**.
-4. Select the region and respective instance name.
-5. Click **Select**.  
+2. Select the IBM cloud log instance created in the step above.
+3. Click Manage of Logs Routing in Integrations section.
+4. Select the region and set the target as the instance name you specified previously.
+5. Click **Save**.
 
-### Viewing the logs entries on IBM Log Analysis Instance
+### Viewing the logs entries on IBM Cloud Log Instance
 1. Navigate to the created instance and click **Open Dashboard**.
-2. After you run some queries on cloud shell (after enabling audit logging), the respective logs are reflected in the dashboard. 
+2. After you run some queries on cloud shell (after enabling audit logging), the respective logs are reflected in the dashboard.
 
 ## 4. Creating an instance of Event Streams on IBM Cloud
 
@@ -101,7 +102,7 @@ If the instance of IBM Log Analysis and Event Stream is already configured in th
 3. Select the Topics tab and then select **Create Topic**.
 4. Enter a Topic Name.
 5. Keep the current defaults, click **Next**, and then click **Create topic**.
-**Note:** For load balancing, make sure that the number of partitions is set to two or more when you create the topic. Use the same number in the input configuration *consumer_threads* property.
+   **Note:** For load balancing, make sure that the number of partitions is set to two or more when you create the topic. Use the same number in the input configuration *consumer_threads* property.
 
 #### Creating Service Credentials
 1. Navigate to the newly created event stream and select **Service credentials** in the navigation panel.
@@ -111,36 +112,23 @@ If the instance of IBM Log Analysis and Event Stream is already configured in th
 5. Click **Add**. The new credential is added to the Service credentials table.
 6. To see the api_key, username, password and kafka_brokers_sasl values, click the dropdown menu by Service credentials.
 
-###  Configuring the connection in Log Analysis to Event Streams
-1. Navigate to the IBM Log Analysis instance and click **Open Dashboard**.
-2. Click the Settings icon.
-3. Select **Streaming > Configuration**.
-4. Select Kafka as the streaming type, then enter the following information:
-      - In the Username field, enter the `user` value from the Service credential.
-      - In the Password field, enter the `API key` or `Password` from the Service credential.
-      - In the Bootstrap Server URL section, enter the `kafka_brokers_sasl` values that are listed in the Service credential.
-      **Note:** You must enter each URL as an individual entry. If you need to add additional URLs, click **Add another URL**.
-      - Enter the `topic` name that you  created earlier and then click **Save**. 
-      - Verify all of the information and click **Yes**. Then click **Start stream**.
-If you create more than one instance in same location and want to stream only the audit logs for a specific instance, then you need to add `Exclusion Rules` in Log-Analysis, as follows:
- 
-1. Brows to the **Log-Analysis** dashboard.
-2. Click **Usage**.
-3. From the Usage dashboard, browse to **Exclusion Rules**. 
-4. Click **Add Rule** and provide a rule name.
-5. Select the Host( For example: *ibm-cloud-databases-prod().
-6. Select **Apps**. You can include all of the instances for which you want to exclude audit log streaming.
-7. Leave the Query section blank.
-8. To see the traces of unstreamed logs in `Log-Analysis` dashboard, do not change the checkbox.
-9  Click **Save**. New rules might take a few minutes to take effect.
+###  Configuring the connection in Cloud Log to Event Streams
+Note : Verify [here](https://ondeck.console.cloud.ibm.com/docs/cloud-logs?topic=cloud-logs-iam-service-auth-es&interface=ui ) whether required permission are present.
+1. Navigate to the IBM Cloud Log instance and click **Open Dashboard**.
+2. Click the Data Pipeline icon.
+3. Select **Streams > Add Stream**.
+4. Enter the following information:
+   - In the Stream name field, enter the Stream name.
+   - In the Stream Url section, enter the `kafka_brokers_sasl` values that are listed in the Service credential.
+   - Enter the `topic` name that you  created earlier.
+   - Verify all of the information and click **Create stream**.
 
 ## 5. Limitations
 -  The Audit log does not contain a server IP. The default value for *server IP* is `0.0.0.0`.
 -  The following important fields cannot be mapped with PostgreSql logs:
-      - Source program
-      - Client Hostname
+   - Client Hostname
 -  Success Audit logs for SELECT, INSERT, UPDATE, DELETE, DECLARE, TRUNCATE queries are not generated, but if those queries fail for some reason, then the appropriate Failure Log is captured in audit logs and in the Guardium Error Report.
--  Create database instanes in different regions. This is an IBM platform limitation where we can't create two Kafka streams from a single IBM Log Analysis. 
+-  Create database instances in different regions. This is an IBM platform limitation where we can't create two Kafka streams from a single IBM Log Analysis.
 - Queries containing single line comments will not be parsed.
 - Multiline queries will not be parsed.
 
