@@ -1,0 +1,15 @@
+{
+	"name": "Guardium_Intersystems_Iris_filter",
+	"alias": "InterSystems IRIS",
+	"type": "filter",
+	"pipeline_type":"pull",
+	"plugin_version": "0.0.18",
+	"datasourceTypes": [{"type":"InterSystems IRIS","supportedVersions": ["2023.1"]}],
+	"supported_input_plugins": ["JDBC_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses intersystems iris events into Guardium",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-intersystems-iris-guardium/README.md",
+	"third_parties" : ["intersystems-jdbc-3.7.1.jar"]
+}
