@@ -285,7 +285,7 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 
 ### Before you begin
 
-* For Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12p15 download the [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip)
+* For Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12.0 and/or 12p15 download the [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip)
 
 1. Log in to Guardium
 
@@ -293,7 +293,7 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 
 3. If the audit logs are to be fetched from Cloudwatch directly,
 
-    1. Click **Upload File**, If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12p15, select the offline [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click OK.
+    1. Click **Upload File**, If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12.0 and/or 12p15, select the offline [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click OK.
 
     2. Select Connector template as Amazon S3 using CloudWatch
 
