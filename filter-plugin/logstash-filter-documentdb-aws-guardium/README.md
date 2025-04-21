@@ -71,9 +71,9 @@ The Guardium universal connector is the Guardium entry point for native audit/pr
 ### Authorizing outgoing traffic from AWS to Guardium
 1. Log in to the Guardium API.
 2. Issue these commands:
-   
-     * grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
-
+```
+    grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
+```
 ### Before you begin
 * Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role.The admin user includes this role by     default.
@@ -84,30 +84,30 @@ The Guardium universal connector is the Guardium entry point for native audit/pr
 **Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-documentdb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-documentdb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 
-### Procedure
-1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
+### Configuration
+1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
 2. Enable the universal connector if it is disabled.
-3. Click Upload File 
-	*  Select the [logstash-filter-documentdb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-documentdb_guardium_filter.zip) plug-in. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
-	*  If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12.0 and/or 12p15, select the offline [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click **OK**.
+3. Click ```Upload File``` and select the offline [logstash-filter-documentdb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-documentdb_guardium_filter.zip) plug-in. After it is uploaded, click ```OK```. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+    *  If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12.0 and/or 12p15, select the offline [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click ```OK```.
 4. Click the Plus sign to open the Connector Configuration dialog box.
-5. Type a name in the Connector name field.
-6. Update the input section to add the details from [documentDBCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-documentdb-aws-guardium/documentDBCloudwatch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+5. Type a name in the ```Connector name``` field.
+6. Update the input section to add the details from the [documentDBCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-documentdb-aws-guardium/documentDBCloudwatch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 
    **Note**: If you want to configure Cloudwatch with role_arn instead of access_key and secret_key then refer to the [Configuration for role_arn parameter in the cloudwatch_logs input plug-in](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-cloudwatch-logs/SettingsForRoleArn.md#configuration-for-role_arn-parameter-in-the-cloudwatch_logs-input-plug-in) topic.
 
-7. Update the filter section to add the details from [documentDBCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-documentdb-aws-guardium/documentDBCloudwatch.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-8. The "type" field should match in the input and filter configuration sections. This field should be unique for  every individual connector added.
-9. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+7. Update the filter section to add the details from the [documentDBCloudwatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-documentdb-aws-guardium/documentDBCloudwatch.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+8. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
+9. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+10. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the ```Disable/Enable``` button.
 
 ## 6. Limitations
-- DocumentDB Profiler logs capture any database operations that take longer than some period of time(e. g. 100 ms). If the threshold value is not configurable and set value is too high, then profiler logs may not get captured for every database operation. 
+- DocumentDB Profiler logs capture any database operations that take longer than some period of time(e. g. 100 ms). If the threshold value is not configurable and set value is too high, then profiler logs may not get captured for every database operation.
 - The Following important fields couldn't be mapped with DocumentDB audit/profiler logs
-     - Source program : Only available in case of "aggregate" query
-     - OS User : Not available with Audit/Profier logs
-     - Client HostName : Not available with Audit/Profier logs
+    - Source program : Only available in case of "aggregate" query
+    - OS User : Not available with Audit/Profier logs
+    - Client HostName : Not available with Audit/Profier logs
 - Server IPs are also not reported because they are not part of the audit stream. That said, the "add_field" clause in the configuration adds a user defined Server Host Name that can be used in reports and policies if desired.
-- Because Sniffer saves the DB name once when a new session is created, and not with every event, DB name will be updated and populated correctly in Guardium only when everytime a new database connection is established with database name. If Database connection is established without database name, then the database on which the first query for that session runs, will be retained in Guardium. Even if user switches between the databases for the same session.     
+- Because Sniffer saves the DB name once when a new session is created, and not with every event, DB name will be updated and populated correctly in Guardium only when everytime a new database connection is established with database name. If Database connection is established without database name, then the database on which the first query for that session runs, will be retained in Guardium. Even if user switches between the databases for the same session.
 
 ## Configuring the DocumentDB Guardium Logstash filters in Guardium Data Security Center
 
