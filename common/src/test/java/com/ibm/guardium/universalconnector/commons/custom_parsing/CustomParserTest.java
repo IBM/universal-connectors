@@ -121,6 +121,9 @@ public class CustomParserTest {
         assertEquals(Integer.valueOf(53422), customParser.convertToInt(PropertyConstant.CLIENT_PORT,
                 (String) configValues.get(PropertyConstant.CLIENT_PORT)));
         assertNull(customParser.convertToInt(PropertyConstant.CLIENT_PORT, "invalid"));
+
+        assertNull(customParser.convertToInt(PropertyConstant.CLIENT_PORT, ""));
+        assertNull(customParser.convertToInt(PropertyConstant.CLIENT_PORT, null));
     }
 
     @Test
