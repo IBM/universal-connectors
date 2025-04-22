@@ -161,7 +161,7 @@ public abstract class CustomParser {
 
     protected Integer getMinDst(String payload) {
         Integer value = convertToInt(MIN_DST, getValue(payload, MIN_DST));
-        return value != null ? value : 0;
+        return value != null ? value : ZERO;
     }
 
     protected Integer getMinOffsetFromGMT(String payload) {
@@ -396,11 +396,14 @@ public abstract class CustomParser {
     }
 
     protected Integer convertToInt(String fieldName, String value) {
+        if (value == null || Objects.equals(value, DEFAULT_STRING)) {
+            return null;
+        }
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
             if (logger.isDebugEnabled())
-                logger.debug("{} {}is not a valid integer.", fieldName, value);
+                logger.debug("{} is not a valid value for {}.", value, fieldName);
         }
         return null;
     }
