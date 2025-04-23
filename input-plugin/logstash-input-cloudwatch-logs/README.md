@@ -5,7 +5,7 @@
 * Configuration instructions can be found on every relevant filter plugin readme page. For example: [AWS PostgresSQL](../../filter-plugin/logstash-filter-azure-postgresql-guardium/README.md#procedure)
 * Supported Guardium versions:
 	* Guardium Data Protection: 11.3 and above
-	* Guardium Insights: 3.2
+	* Guardium Data Security Center: 3.2
 
 This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the universal connector that is featured in IBM Security Guardium. It pulls events from the Amazon Web Services CloudWatch API. The events are then sent over to corresponding filter plugin which transforms these audit logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java)  instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
@@ -19,7 +19,7 @@ Optionally, you may set the log_group_prefix parameter to true which will scan f
 ## Usage:
 
 ### Parameters:
-	
+
 | Parameter | Input Type | Required | Default |
 |-----------|------------|----------|---------|
 | log_group | string or Array of strings | Yes | |
@@ -105,5 +105,7 @@ Other standard logstash parameters are available such as:
 #### Procedure
 1. Log in to the Guardium Collector's API.
 2. Issue these commands:
-		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
-		• grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
+```
+	grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
+	grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
+```
