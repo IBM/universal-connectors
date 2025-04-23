@@ -1,6 +1,6 @@
 ## Configuration for role_arn parameter in the cloudwatch_logs input plug-in
 
-For input plug-ins like cloudwatch_logs, the AWS credentials are required to access the AWS endpoint for cloudwatch_logs log_group. However, instead of using the AWS access_key and secret_key, using the role_arn setting can be preferable. 
+For input plug-ins like cloudwatch_logs, the AWS credentials are required to access the AWS endpoint for cloudwatch_logs log_group. However, instead of using the AWS access_key and secret_key, using the role_arn setting can be preferable.
 
 ### Note:
 
@@ -8,22 +8,22 @@ These settings can be used only when the Guardium Data Protection is hosted on A
 
 ## Configuration for IAM Role when the Guardium Data Protection and the Database to be monitored are in the same AWS account
 
-### Procedure :
+### Configuration:
 
 1.  Log in to your IAM console (https://console.aws.amazon.com/iam/)
-2.  Click the **Roles** tab under **Access Management**
-3.  Click the **Create Role** button
-4.  For **Trusted Entity Type**, select AWS Service
-5.  For **Use case**, select EC2
-6.  Click **Next**
+2.  Click the ```Roles``` tab under ```Access Management```
+3.  Click the ```Create Role``` button
+4.  For ```Trusted Entity Type```, select AWS Service
+5.  For ```Use case```, select EC2
+6.  Click ```Next```
 7.  Steps to set the Permissions Policies
 	1. Search CloudWatchLogsReadOnlyAccess and select it
-8.  Click **Next**
+8.  Click ```Next```
 9.  Enter the role name
-10. Click **Create Role**
+10. Click ```Create Role```
 11. Search for the created role and open it
-12.	In the **Permissions** tab, click the **Add Permissions** button and select **Create Inline Policy**
-13.	On the **Create Policy** page, select JSON editor and add the below policy
+12.	In the ```Permissions``` tab, click the ```Add Permissions``` button and select ```Create Inline Policy```
+13.	On the ```Create Policy``` page, select JSON editor and add the below policy
 
 ```
 {
@@ -42,12 +42,12 @@ These settings can be used only when the Guardium Data Protection is hosted on A
 	}]
 }
 ```
-	
-14. Click **Review Policy**
-15. Enter the policy Name and click **Create Policy**
+
+14. Click ```Review Policy```
+15. Enter the policy Name and click ```Create Policy```
 16. In order to restrict access to a particular log group only, perform below steps else move to Step 21
-17. In the Permissions tab, click the Add Permissions button and select Create Inline Policy
-18. On the Create Policy page, select JSON editor and add the below policy
+17.	In the ```Permissions``` tab, click the ```Add Permissions``` button and select ```Create Inline Policy```
+18.	On the ```Create Policy``` page, select JSON editor and add the below policy
 
 ```
 {
@@ -62,11 +62,11 @@ These settings can be used only when the Guardium Data Protection is hosted on A
 }
 ```
 
-19. Click Review Policy
-20. Enter the policy Name and click Create Policy
+19. Click ```Review Policy```
+20. Enter the policy Name and click ```Create Policy```
 21. Select the role created above
-22. Click the **Trust relationships** tab and click **Edit trust policy**
-23. Add the below statement in the trust policy and click **Update Policy**
+22. Click the ```Trust relationships``` tab and click ```Edit trust policy```
+23. Add the below statement in the trust policy and click ```Update Policy```
 
 ```
 {
@@ -85,7 +85,7 @@ These settings can be used only when the Guardium Data Protection is hosted on A
 
 ## Configuration for IAM Role when the Guardium Data Protection and the Database to be monitored are in different AWS accounts
 
-### Prerequisites :
+### Prerequisites:
 
 1.  AWS Account1 where IBM Guardium is hosted on EC2 instance. For simplicity consider this as Account with Account ID 111111
 2.  AWS Account2 where RDS is present. For simplicity consider this as Account with Account ID 222222
@@ -94,21 +94,21 @@ These settings can be used only when the Guardium Data Protection is hosted on A
 ### Steps to create Roles:
 
 1.  Log in to your IAM console (https://console.aws.amazon.com/iam/) of first AWS Account where IBM Guardium is hosted for e.g., with Account ID 111111
-2.  Click the **Roles** tab under **Access Management**
-3.  Click the **Create Role** button
-4.  For **Trusted Entity Type**, select AWS Service
-5.  For **Use case**, select EC2
-6.  Click **Next**
+2.  Click the ```Roles``` tab under ```Access Management```
+3.  Click the ```Create Role``` button
+4.  For ```Trusted Entity Type```, select AWS Service
+5.  For ```Use case```, select EC2
+6.  Click ```Next```
 9.  Enter the role name e.g., role_on_111111
-10. Click **Create Role**
+10. Click ```Create Role```
 11. Repeat steps fom 1 to 10 on second AWS Account i.e., with Account ID 222222 and create a role with name for e.g., role_on_222222
 
 ### Steps to add Permissions and Policies to the Role created on the Account that has Guardium EC2:
 
 1.  Log in back to the first AWS Account.
 2.  Search for the created role i.e., role_on_111111 and open it
-3.	In the **Permissions** tab, click the **Add Permissions** button and select **Create Inline Policy**
-4.	On the **Create Policy** page, select JSON editor and add the below policy
+3.	In the ```Permissions``` tab, click the ```Add Permissions``` button and select ```Create Inline Policy```
+4.	On the ```Create Policy``` page, select JSON editor and add the below policy
 
 ```
 	{
@@ -141,8 +141,8 @@ e.g.,
 }
 ```
 
-5.  Click **Review Policy**
-6.  Enter the policy Name and click **Create Policy**
+5.  Click ```Review Policy```
+6.  Enter the policy Name and click ```Create Policy```
 7.  The role named role_on_111111 is edited with the above inline policy.
 
 ### Steps to add Permissions and Policies to the Role created on the Account that has the RDS:
@@ -151,9 +151,9 @@ e.g.,
 2.  Search for the created role i.e., role_on_222222 and open it
 3.  Steps to set the Permissions Policies, to allow read permissions to CloudWatchLogs
 	1. Search CloudWatchLogsReadOnlyAccess and select it
-4.	In the **Permissions** tab, click the **Add Permissions** button and select **Create Inline Policy**
+4.	In the ```Permissions``` tab, click the ```Add Permissions``` button and select ```Create Inline Policy```
 5.  Here you can add policy to eliminate access except for the one log group e.g., test-log-group.
-5.	On the **Create Policy** page, select JSON editor and add the below policy
+5.	On the ```Create Policy``` page, select JSON editor and add the below policy
 
 Inline policy –
 ```
@@ -185,8 +185,8 @@ Inline policy –
 ```
 
 6. Select the role created above
-7. Click the **Trust relationships** tab and click **Edit trust policy**
-8. Add the below statement in the trust policy and click **Update Policy**
+7. Click the ```Trust relationships``` tab and click ```Edit trust policy```
+8. Add the below statement in the trust policy and click ```Update Policy```
 
 ```
 {
@@ -216,7 +216,7 @@ e.g.,
 	}]
 }
 ```
-	
+
 9. Set the role created on first AWS Account i.e., role_on_111111 to the EC2 machine hosting Guardium
 10. Go to the EC2 machine hosting Guardium
 11. Right click on the EC2 instance, select the Security Option, and modify the IAM role
@@ -225,11 +225,11 @@ e.g.,
 
 ## Configuring input plugin on Guardium:
 
-### Procedure :
-    
-   Update the input section to add the details from the corresponding file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-   
-   The sample configuration looks like :-
+### Configuration:
+
+Update the input section to add the details from the corresponding file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+
+The sample configuration looks like:
 
 ```
 input {
