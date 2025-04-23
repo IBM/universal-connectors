@@ -229,7 +229,7 @@ e.g.,
 
 Update the input section to add the details from the corresponding file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 
-The sample configuration looks like :-
+The sample configuration looks like:
 
 ```
 input {
