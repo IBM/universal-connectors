@@ -2,6 +2,11 @@
 Notable changes will be documented in this file.
 
 ## [Unreleased]
+
+## [0.6.12]
+### Changed
+- Added support for IBM Cloud Logs.
+
 ## [0.6.5]
 ### Changed 
 - Changed imports to guardium-universalconnector-commons, whatever version.
