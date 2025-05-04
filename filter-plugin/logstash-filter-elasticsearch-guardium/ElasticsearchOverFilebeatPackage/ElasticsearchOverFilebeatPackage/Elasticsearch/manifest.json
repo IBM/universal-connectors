@@ -1,0 +1,14 @@
+{
+	"name": "elasticsearch_guardium_filter",
+	"alias": "Elasticsearch",
+	"type": "filter",
+	"pipeline_type":"push",
+	"plugin_version": "0.0.13",
+	"datasourceTypes": [{"type":"Elasticsearch","supportedVersions": ["8.9"]}],
+	"supported_input_plugins": ["Filebeat_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses Elasticsearch activity audit log messages before insertion into Guardium. Enterprise version is required.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-elasticsearch-guardium/README.md"
+}
