@@ -1,0 +1,14 @@
+{
+    "customers": [
+        {
+            "customerId": "customer1",
+            "email": "ashish.mehta4@ibm.com",
+            "repositories": [
+                {
+                    "repo": "github.com/ashish-mehta4/universal-connectors",
+                    "files": ["filter-plugin/logstash-filter-aurora-mysql-guardium/auroraMysqlCloudwatch.conf", "README.md"]
+                }
+            ]
+        }
+    ]
+}
