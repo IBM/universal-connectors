@@ -2,6 +2,7 @@ package com.ibm.guardium.universalconnector.commons.custom_parsing;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.guardium.universalconnector.commons.custom_parsing.excepton.InvalidConfigurationException;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.structures.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
