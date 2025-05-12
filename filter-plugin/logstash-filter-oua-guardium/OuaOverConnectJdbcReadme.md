@@ -83,6 +83,21 @@ Detailed breakdown:
         ```
 **For further details about configuring audit policies, see [official Oracle documentation](https://docs.oracle.com/en/database/oracle/oracle-database/19/dbseg/configuring-audit-policies.html).**
 ## Configuring Universal Connector on Guardium Data Protection
+
+### Limitations
+
+**GDP versions available with OUA over JDBC credential Support**
+  
+   * OUA Over JDBC Connect is supported with JDBC credentials only on Guardium Data Protection version 12.1, along with appliance patch 105 (2024 Q4) and Universal Connector patch 1006. 
+   * OUA over JDBC Connect is supported with JDBC credentials and Kerberos authentication on Guardium Data Protection version 12.1, along with appliance patch 115 (2025 Q1) and Universal Connector patch 1006. 
+   * OUA Over JDBC Connect is supported with JDBC credentials and kerberos authentication (UC 2.0 implementation only on kafka cluster) on Guardium Data Protection version 12.1, along with appliance patch 120 
+     (2025 Q2) and Universal Connector patch 5002.
+
+**GDP versions not available with OUA over JDBC credential Support**
+   * OUA over JDBC Connect is not supported on Guadrium Data Protection version 12.1, along with Universal Conenctor patch 1006.
+
+For more information on GDP patches, see [Understanding Guardium patch types and patch names](https://www.ibm.com/support/pages/understanding-guardium-patch-types-and-patch-names-0).
+
 ### Configuring Universal Connector Profile
 1. See [Creating data source profile topic](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-creating-data-source-profiles) to create a datasource profile.
 2. Select '**OUA over JDBC connect**' in the plug-ins list
