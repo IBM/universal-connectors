@@ -275,3 +275,46 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).
+
+### Troubleshooting
+
+If you encounter one of the following errors:
+
+```
+Exception: Seahorse::Client::NetworkingError
+```
+
+or
+
+```
+Exception: Seahorse::Client::NetworkingError: Socket closed
+```
+
+These errors typically indicate an issue with the AWS credentials or network configuration inside your Docker container. Follow the steps below to verify the issue:
+
+### 1. Run `aws configure`
+Ensure that your AWS credentials are correctly configured inside the Docker container(Klaus) within Collector. Run the following command to set up your AWS CLI configuration:
+
+```bash
+aws configure
+```
+
+This will prompt you to enter your AWS Access Key ID, Secret Access Key, default region, and output format. Make sure to provide valid credentials with the necessary permissions to access the required AWS services.
+
+### 2. Verify AWS Identity with `aws sts get-caller-identity`
+After configuring your AWS CLI credentials, verify that your AWS setup is correct by running the following command:
+
+```bash
+aws sts get-caller-identity
+```
+
+This command returns the IAM user or role associated with the AWS credentials being used. If the command fails, it may indicate that the credentials are misconfigured or missing required permissions.
+
+### Additional Notes
+
+* If you encounter the `Seahorse::Client::NetworkingError`, it suggests a network or connectivity issue, typically indicating that the AWS CLI (in our case Plugin) cannot establish a connection to AWS services. Ensure that the container has proper network access and can reach the AWS endpoints.
+* If the error is `Seahorse::Client::NetworkingError: Socket closed`, it might indicate that the AWS CLI (in our case Plugin) connection was unexpectedly closed or terminated. This could be caused by network interruptions, firewall issues, or invalid credentials.
+* If the network issue is resolved, you can re-establish the connection between UC and AWS using the following CLI command:
+```
+grdapi restart_universal_connector overwrite_old_instance="true"
+```
