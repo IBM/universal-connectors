@@ -66,6 +66,9 @@ To add `MARIADB_AUDIT_PLUGIN` which will enable Server Audit Logs.
    - Change the `SERVER_AUDIT_EXCL_USERS` value to rdsadmin
    - To enable the option immediately, choose **Yes** for **Apply Immediately**. (By default, **No** is selected instead.) Keep this default selection if you want the option enabled for each associated database instance during its next maintenance window.
    - Click **Add option**.
+
+To add the MariaDB plug-in to a MySQL instance, follow the instructions described [here](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.AuditPlugin.html).
+
 ### Note
 The 'rdsadmin' user queries the database every second to check its health. This activity may cause the log file to grow quickly to a very large size, which could result in unnecessary data proccessing in the filter. If recording this activity is not required, add the rdsadmin user to the `SERVER_AUDIT_EXCL_USERS` list.
 	
