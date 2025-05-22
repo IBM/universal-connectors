@@ -58,16 +58,24 @@ public class MultilineEventParser {
 		} else {
 			String singleLineMessage = event.getField(ApplicationConstant.MESSAGE).toString();
 			JsonObject jsonObject = JsonParser.parseString(singleLineMessage).getAsJsonObject();
-			message = jsonObject.get(ApplicationConstant.MESSAGE).getAsString();
-			logSourceCRN = jsonObject.get(ApplicationConstant.LOG_SOURCE_CRN).toString();
+			JsonObject jsonMessage = jsonObject;
+			if(jsonObject.has("data")) {
+				String data = jsonObject.get("data").toString();
+				JsonObject dataObject = JsonParser.parseString(data).getAsJsonObject();
+				jsonMessage = dataObject.getAsJsonObject(ApplicationConstant.MESSAGE).getAsJsonObject();
+			}
+
+			message = jsonMessage.get(ApplicationConstant.MESSAGE).getAsString();
+			logSourceCRN = jsonMessage.get(ApplicationConstant.LOG_SOURCE_CRN).toString();
 			Matcher matcher;
 			if (message.contains(ApplicationConstant.STATEMENT_EVENT)) {
 				matcher = Pattern.compile(EVENT_STATEMENT_REGEX).matcher(message);
 			} else if (message.contains(ApplicationConstant.FATAL_EVENT)){
 				matcher = Pattern.compile(FATAL_STATEMENT_REGEX).matcher(message);
-			}
-			else {
+			} else if (message.endsWith("<not logged>")){
 				matcher = Pattern.compile(MAIN_EVENT_REGEX_SINGLELINE_EVENT).matcher(message);
+			} else {
+				matcher = Pattern.compile(MAIN_EVENT_REGEX).matcher(message);
 			}
 
 			if (matcher.find()) {
