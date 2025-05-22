@@ -1,6 +1,7 @@
 package com.ibm.guardium.mongodb.parsersbytype;
 
 import com.google.gson.*;
+import com.ibm.guardium.mongodb.Parser;
 import com.ibm.guardium.universalconnector.commons.Util;
 import com.ibm.guardium.universalconnector.commons.structures.*;
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +29,7 @@ public abstract class BaseParser {
     public static final String EXCEPTION_TYPE_AUTHENTICATION_STRING = "LOGIN_FAILED";
     public static final String COMPOUND_OBJECT_STRING = "[json-object]";
     /**
-     * These arguments will not be redacted, as they only contain 
+     * These arguments will not be redacted, as they only contain
      * collection/field names rather than sensitive values.
      */
     public static Set<String> REDACTION_IGNORE_STRINGS = new HashSet<>(
@@ -94,52 +95,43 @@ public abstract class BaseParser {
         Time time = getTime(dateString);
         record.setTime(time);
 
-        fixSessionId(record);
 
         return record;
     }
 
-    private void fixSessionId(Record record) {
-        String sessionId = record.getSessionId();
-        if (sessionId==null || sessionId.trim().length()==0){
-            // must generate unique value that could identify session and we are not provided with real session id value
-            StringBuffer sb = new StringBuffer();
-            sb.append(record.getDbName())
-                    .append(record.getAppUserName())
-                    .append(sessionLocatorToString(record.getSessionLocator()))
-                    .append(accessorToString(record.getAccessor()));
-            record.setSessionId(sb.toString());
-        }
-    }
 
     protected String sessionLocatorToString(SessionLocator sessionLocator) {
         StringBuffer sb = new StringBuffer();
         sb.append(sessionLocator.getServerIp())
-            .append(sessionLocator.getClientIp())
-            .append(sessionLocator.getClientPort())
-            .append(sessionLocator.getServerPort())
-            .append(sessionLocator.getServerIpv6())
-            .append(sessionLocator.getClientIpv6());
+                .append(sessionLocator.getClientIp())
+                .append(sessionLocator.getClientPort())
+                .append(sessionLocator.getServerPort())
+                .append(sessionLocator.getServerIpv6())
+                .append(sessionLocator.getClientIpv6());
         return sb.toString();
     }
 
     protected String accessorToString(Accessor accessor){
         StringBuffer sb = new StringBuffer();
         sb.append(accessor.getDbUser())
-            .append(accessor.getClientOs())
-            .append(accessor.getServerOs())
-            .append(accessor.getClient_mac())
-            .append(accessor.getServerType())
-            .append(accessor.getDataType())
-            .append(accessor.getLanguage())
-            .append(accessor.getServiceName())
-            .append(accessor.getDbProtocol())
-            .append(accessor.getOsUser())
-            .append(accessor.getSourceProgram());
+                .append(accessor.getClientOs())
+                .append(accessor.getServerOs())
+                .append(accessor.getClient_mac())
+                .append(accessor.getServerType())
+                .append(accessor.getDataType())
+                .append(accessor.getLanguage())
+                .append(accessor.getServiceName())
+                .append(accessor.getDbProtocol())
+                .append(accessor.getOsUser())
+                .append(accessor.getSourceProgram());
         return sb.toString();
     }
 
     protected String parseSessionId(JsonObject args){
+        // Session Id is kept as empty string by default
+        // If details of SessionId is available from the event, it will be used.
+        // Else sniffer will generate the session Id.
+        //
         String sessionId = UNKOWN_STRING;
         if (args != null && args.has("lsid")) {
             JsonObject lsid = args.getAsJsonObject("lsid");
@@ -252,6 +244,9 @@ public abstract class BaseParser {
         } else if (resultCode.equals("18")) {
             exceptionRecord.setExceptionTypeId(EXCEPTION_TYPE_AUTHENTICATION_STRING);
             exceptionRecord.setDescription("Authentication Failed (18)");
+        } else if(resultCode.equals("11")) {
+            exceptionRecord.setExceptionTypeId(Parser.EXCEPTION_TYPE_AUTHENTICATION_STRING);
+            exceptionRecord.setDescription("User Not Found (11)");
         } else { // prep for unknown error code
             exceptionRecord.setExceptionTypeId(EXCEPTION_TYPE_AUTHORIZATION_STRING);
             exceptionRecord.setDescription("Error (" + resultCode + ")"); // let Guardium handle, if you'd like

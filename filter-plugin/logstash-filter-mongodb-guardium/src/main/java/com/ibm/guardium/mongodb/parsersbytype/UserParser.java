@@ -1,8 +1,6 @@
 package com.ibm.guardium.mongodb.parsersbytype;
 
 import com.google.gson.JsonObject;
-import com.ibm.guardium.mongodb.parsersbytype.BaseParser;
-import com.ibm.guardium.mongodb.parsersbytype.RoleParser;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 
