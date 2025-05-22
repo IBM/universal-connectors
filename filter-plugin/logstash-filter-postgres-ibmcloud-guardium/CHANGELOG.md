@@ -1,6 +1,9 @@
 # Changelog
 Notable changes will be documented in this file.
 
+## 0.0.12
+	- Add support for IBM Cloud Logs.
+
 ## 0.0.11
 	- Multiline queries will not be parsed.
     - Add support for filtering based on logsourceCRN
