@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.ibm.guardium.mongodb.AType;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Construct;
@@ -22,6 +23,7 @@ public class LoginParser extends BaseParser {
     private static final String PARAM = "param";
     private static final String UNKNOWN = "";
     private static final String UUID = "uuid";
+    private static final String NOT_AVAILABLE = "N.A.";
 
     @Override
     public boolean validate(JsonObject data) {
@@ -131,7 +133,7 @@ public class LoginParser extends BaseParser {
             serverIp = optServerIP.get().getAsString();
         }
 
-        int serverPort = 0;
+        Integer serverPort = 0;
         if(optServerPort.isPresent()) {
             serverPort = optServerPort.get().getAsInt();
         }
@@ -152,7 +154,7 @@ public class LoginParser extends BaseParser {
             clientIp = optClientIP.get().getAsString();
         }
 
-        int clientPort = 0;
+        Integer clientPort = 0;
         if(optClientPort.isPresent()) {
             clientPort = optClientPort.get().getAsInt();
         }
@@ -222,3 +224,4 @@ public class LoginParser extends BaseParser {
     }
 
 }
+

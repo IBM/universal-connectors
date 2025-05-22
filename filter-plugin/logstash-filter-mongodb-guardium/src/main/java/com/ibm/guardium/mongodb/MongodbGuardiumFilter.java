@@ -45,8 +45,8 @@ public class MongodbGuardiumFilter implements Filter {
 
     public static final PluginConfigSpec<String> SOURCE_CONFIG = PluginConfigSpec.stringSetting("source", "message");
     public static final String LOGSTASH_TAG_SKIP_NOT_MONGODB = "_mongoguardium_skip_not_mongodb"; // skip messages that
-                                                                                                  // do not contain
-                                                                                                  // "mongod:"
+    // do not contain
+    // "mongod:"
     /*
      * skipping non-mongo syslog messages, and non-relevant log events like
      * "createUser", "createCollection", ... as these are already parsed in prior
@@ -61,7 +61,6 @@ public class MongodbGuardiumFilter implements Filter {
     private final static String MONGO_INTERNAL_API_IP = "(NONE)";
     private static final InetAddressValidator inetAddressValidator = InetAddressValidator.getInstance();
 
-    //2020-10-08 15:56:24 DEBUG MongodbGuardiumFilter:64 - MongoDB filter: Got Event: { "source_program" : "mongos","@timestamp" : "2020-10-08T15:56:24.422Z","server_hostname" : "hgdb-srv04","@version" : "1","syslog_timestamp" : "Oct  8 13:58:00","program" : "mongos","syslog_message" : "{ "atype" : "authCheck", "ts" : { "$date" : "2020-10-08T13:58:00.222+0300" }, "local" : { "ip" : "127.0.0.1", "port" : 28017 }, "remote" : { "ip" : "127.0.0.1", "port" : 45824 }, "users" : [ { "user" : "admin", "db" : "admin" } ], "roles" : [ { "role" : "root", "db" : "admin" } ], "param" : { "command" : "replSetGetStatus", "ns" : "admin", "args" : { "replSetGetStatus" : 1, "forShell" : 1, "$clusterTime" : { "clusterTime" : { "$timestamp" : { "t" : 1602154677, "i" : 1 } }, "signature" : { "hash" : { "$binary" : "LYKHSxxbXvcIDvX3FAhpam1SdYk=", "$type" : "00" }, "keyId" : { "$numberLong" : "6880241122304589825" } } }, "$db" : "admin" } }, "result" : 0 }","type" : "syslog","server_ip" : "9.147.31.29","message" : "<14>Oct  8 13:58:00 hgdb-srv04 mongos: { "atype" : "authCheck", "ts" : { "$date" : "2020-10-08T13:58:00.222+0300" }, "local" : { "ip" : "127.0.0.1", "port" : 28017 }, "remote" : { "ip" : "127.0.0.1", "port" : 45824 }, "users" : [ { "user" : "admin", "db" : "admin" } ], "roles" : [ { "role" : "root", "db" : "admin" } ], "param" : { "command" : "replSetGetStatus", "ns" : "admin", "args" : { "replSetGetStatus" : 1, "forShell" : 1, "$clusterTime" : { "clusterTime" : { "$timestamp" : { "t" : 1602154677, "i" : 1 } }, "signature" : { "hash" : { "$binary" : "LYKHSxxbXvcIDvX3FAhpam1SdYk=", "$type" : "00" }, "keyId" : { "$numberLong" : "6880241122304589825" } } }, "$db" : "admin" } }, "result" : 0 }" }
     private final static Set<String> LOCAL_IP_LIST = new HashSet<>(Arrays.asList("127.0.0.1", "0:0:0:0:0:0:0:1"));
 
     public MongodbGuardiumFilter(String id, Configuration config, Context context) {
@@ -79,6 +78,14 @@ public class MongodbGuardiumFilter implements Filter {
             // from config, use Object f = e.getField(sourceField);
             if (e.getField("message") instanceof String) {
                 String messageString = e.getField("message").toString();
+
+                //Skip the event
+                if (messageString.contains("__system") || messageString.contains("\"c\":\"CONTROL\"")){
+                    e.tag(LOGSTASH_TAG_SKIP);
+                    skippedEvents.add(e);
+                    continue;
+                }
+
                 // finding "mongod:" to be general (syslog, filebeat); it's not [client] source program
                 // alternatively, throw JSON audit part into a specific field
                 int mongodIndex = getAuditMsgStartIndex(messageString);
@@ -86,7 +93,13 @@ public class MongodbGuardiumFilter implements Filter {
                     String input = messageString.substring(mongodIndex + MONGOD_AUDIT_START_SIGNAL.length());
                     try {
                         JsonObject inputJSON = (JsonObject) JsonParser.parseString(input);
-                        
+
+                        if (inputJSON==null){
+                            e.tag(LOGSTASH_TAG_SKIP);
+                            skippedEvents.add(e);
+                            continue;
+                        }
+
                         // filter internal and not parsed events
                         BaseParser parser = ParserFactory.getParser(inputJSON);
 
@@ -111,13 +124,19 @@ public class MongodbGuardiumFilter implements Filter {
                         if(optSourceProgram.isPresent()){
                             record.getAccessor().setSourceProgram(optSourceProgram.get().toString());
                         }
-                        
+
+                        //Server port is set to -1, according to GRD-98654
+                        if (e.getField("icd_default_serverport")!=null && e.getField("icd_default_serverport") instanceof String) {
+                            int serverport = Integer.parseInt(e.getField("icd_default_serverport").toString());
+                            record.getSessionLocator().setServerPort(serverport);
+                        }
+
                         // DbName
                         if (e.getField("dbname_prefix")!=null && !e.getField("dbname_prefix").toString().isEmpty()) {
-                        	String dbPrefix = e.getField("dbname_prefix").toString();
-                        	String dbName = record.getDbName();
-                        	record.setDbName(!dbName.isEmpty()?dbPrefix+":"+dbName:dbPrefix);
-                        	record.getAccessor().setServiceName(record.getDbName());
+                            String dbPrefix = e.getField("dbname_prefix").toString();
+                            String dbName = record.getDbName();
+                            record.setDbName(!dbName.isEmpty()?dbPrefix+":"+dbName:dbPrefix);
+                            record.getAccessor().setServiceName(record.getDbName());
                         }
 
                         this.correctIPs(e, record);
@@ -128,7 +147,7 @@ public class MongodbGuardiumFilter implements Filter {
                         e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
 
                         matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
-                        
+
                     } catch (Exception exception) {
                         // don't let event pass filter
                         //events.remove(e);
@@ -165,7 +184,7 @@ public class MongodbGuardiumFilter implements Filter {
 
     /**
      * Overrides MongoDB local/remote IP 127.0.0.1, if Logstash Event contains "server_ip".
-     * 
+     *
      * @param e - Logstash Event
      * @param record - Record after parsing.
      */
