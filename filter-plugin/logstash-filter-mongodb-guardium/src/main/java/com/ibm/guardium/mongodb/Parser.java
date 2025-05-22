@@ -34,12 +34,18 @@ public class Parser {
     public static final String EXCEPTION_TYPE_AUTHORIZATION_STRING = "SQL_ERROR";
     public static final String EXCEPTION_TYPE_AUTHENTICATION_STRING = "LOGIN_FAILED";
     public static final String COMPOUND_OBJECT_STRING = "[json-object]";
+
     /**
-     * These arguments will not be redacted, as they only contain 
+     * These arguments will not be redacted, as they only contain
      * collection/field names rather than sensitive values.
      */
     public static Set<String> REDACTION_IGNORE_STRINGS = new HashSet<>(
-            Arrays.asList("from", "localField", "foreignField", "as", "connectFromField", "connectToField"));
+            Arrays.asList("from",
+                    "localField",
+                    "foreignField",
+                    "as",
+                    "connectFromField",
+                    "connectToField"));
 
     private static final DateTimeFormatterBuilder dateTimeFormatterBuilder = new DateTimeFormatterBuilder()
             .append(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS[[XXX][X]]"));
@@ -49,7 +55,7 @@ public class Parser {
     /**
      * Parses a MongoDB native audit sent over syslog. Format looks as the
      * database.profiler.
-     * 
+     *
      * @param data
      * @return
      */
@@ -73,7 +79,7 @@ public class Parser {
 
     /**
      * Parses a MongoDB native audit sent over syslog.
-     * 
+     *
      * JSON format appreas after "mongod: " string and expected format is the same
      * as mongodb database.profiler. For example: { "atype": "authCheck", "ts": {
      * "$date": "2020-01-14T10:46:02.431-0500" }, "local": { "ip": "127.0.0.1",
@@ -82,38 +88,38 @@ public class Parser {
      * "find": "bios", "filter": {}, "lsid": { "id": { "$binary":
      * "hg6ugx4ASiGWKSPiDRlEFw==", "$type": "04" } }, "$db": "test" } }, "result": 0
      * },
-     * 
+     *
      * @return Construct Used by Parse and for easier testing, as well
      * @author Tal Daniel
      */
     public static Construct parseAsConstruct(final JsonObject data) {
         try {
             final Sentence sentence = Parser.parseSentence(data);
-            
+
             final Construct construct = new Construct();
             construct.sentences.add(sentence);
-            
+
             construct.setFullSql(data.toString());
-            
+
             if (data.get("atype").getAsString().equals("authCheck")) {
                 // redact, though docs state args may be already redacted.
                 Parser.RedactWithExceptions(data); // Warning: overwrites data.param.args
             }
-            
+
             construct.setRedactedSensitiveDataSql(data.toString());
             return construct;
         } catch (final Exception e) {
             throw e;
         }
     }
-    
+
     protected static Sentence parseSentence(final JsonObject data) {
-        
+
         Sentence sentence = null;
-        
+
         final String atype = data.get("atype").getAsString();
         final JsonObject param = data.get("param").getAsJsonObject();
-        
+
         switch (atype) {
             case "authCheck":
                 final String command = param.get("command").getAsString();
@@ -127,7 +133,7 @@ public class Parser {
                     sentence.getObjects().add(parseSentenceObject(args, command.toLowerCase()));
                 }
 
-                
+
 
                 switch (command) {
                     case "aggregate":
@@ -200,15 +206,16 @@ public class Parser {
             final JsonObject lsid = args.getAsJsonObject("lsid");
             sessionId = lsid.getAsJsonObject("id").get("$binary").getAsString();
         }
+
         record.setSessionId(sessionId);
 
         String dbName = Parser.UNKOWN_STRING;
         if (args != null && args.has("$db")) {
             dbName = args.get("$db").getAsString();
-        } else if (param != null && param.has("db")) { // in "authenticate" error message 
+        } else if (param != null && param.has("db")) { // in "authenticate" error message
             dbName = param.get("db").getAsString();
         } else if (param != null && param.has("ns")) {
-            final String ns = param.get("ns").getAsString(); 
+            final String ns = param.get("ns").getAsString();
             dbName = ns.split("\\.")[0]; // sometimes contains "."; fallback OK.
         }
         record.setDbName(dbName);
@@ -250,6 +257,9 @@ public class Parser {
         } else if (resultCode.equals("18")) {
             exceptionRecord.setExceptionTypeId(Parser.EXCEPTION_TYPE_AUTHENTICATION_STRING);
             exceptionRecord.setDescription("Authentication Failed (18)");
+        } else if(resultCode.equals("11")) {
+            exceptionRecord.setExceptionTypeId(Parser.EXCEPTION_TYPE_AUTHENTICATION_STRING);
+            exceptionRecord.setDescription("User Not Found (11)");
         } else { // prep for unknown error code
             exceptionRecord.setExceptionTypeId(Parser.EXCEPTION_TYPE_AUTHORIZATION_STRING);
             exceptionRecord.setDescription("Error (" + resultCode + ")"); // let Guardium handle, if you'd like
@@ -280,8 +290,8 @@ public class Parser {
                     dbUsers = param.get("user").getAsString();
                 }
             }
-        } 
-        
+        }
+
         accessor.setDbUser(dbUsers);
 
         accessor.setServerHostName(Parser.UNKOWN_STRING); // populated from Event, later
@@ -347,10 +357,10 @@ public class Parser {
     /**
      * Parses the query and returns a Data instance. Note: Setting timestamp
      * deferred, to be set by Parser.parseRecord().
-     * 
+     *
      * @param inputJSON
      * @return
-     * 
+     *
      * @see Data
      */
     public static Data parseData(JsonObject inputJSON) {
@@ -398,12 +408,12 @@ public class Parser {
         final JsonObject param = data.get("param").getAsJsonObject();
         final String command = param.get("command").getAsString();
         final JsonObject args = param.getAsJsonObject("args");
-        
+
         final JsonElement originalCollection = args.get(command);
         final JsonElement originalDB = args.get("$db");
-        
+
         final JsonElement redactedArgs = Parser.Redact(args);
-        
+
         // restore common field values not to redact
         args.remove(command);
         args.add(command, originalCollection);
@@ -424,35 +434,35 @@ public class Parser {
     static JsonElement Redact(JsonElement data) {
         // if final-leaf value (string, number) return "?"
         // else {
-            // if reserved word: Redact valueRedact 
-            // }
-            if (data.isJsonPrimitive()) {
-                return new JsonPrimitive(Parser.MASK_STRING);
-            }
+        // if reserved word: Redact valueRedact
+        // }
+        if (data.isJsonPrimitive()) {
+            return new JsonPrimitive(Parser.MASK_STRING);
+        }
 
-            else if (data.isJsonArray()) { 
-                JsonArray array = data.getAsJsonArray(); 
-                    for (int i=0; i<array.size(); i++) {
-                        JsonElement redactedElement = Parser.Redact(array.get(i));
-                        array.set(i, redactedElement);
-                    }
-            } 
-            else if (data.isJsonObject()) {
-                JsonObject object = data.getAsJsonObject();
-                final Set<String> keys = object.keySet();
-                final Set<String> keysCopy = new HashSet<>(); // make a copy, as keys changes on every remove/add, below  
-                for (String key : keys) {
-                    keysCopy.add(key);
-                }
-                for (String key : keysCopy) { 
-                    if (!REDACTION_IGNORE_STRINGS.contains(key)) {
-                        JsonElement redactedValue = Redact(object.get(key));
-                        object.remove(key);
-                        object.add(key, redactedValue); 
-                    } 
+        else if (data.isJsonArray()) {
+            JsonArray array = data.getAsJsonArray();
+            for (int i=0; i<array.size(); i++) {
+                JsonElement redactedElement = Parser.Redact(array.get(i));
+                array.set(i, redactedElement);
+            }
+        }
+        else if (data.isJsonObject()) {
+            JsonObject object = data.getAsJsonObject();
+            final Set<String> keys = object.keySet();
+            final Set<String> keysCopy = new HashSet<>(); // make a copy, as keys changes on every remove/add, below
+            for (String key : keys) {
+                keysCopy.add(key);
+            }
+            for (String key : keysCopy) {
+                if (!REDACTION_IGNORE_STRINGS.contains(key)) {
+                    JsonElement redactedValue = Redact(object.get(key));
+                    object.remove(key);
+                    object.add(key, redactedValue);
                 }
             }
+        }
 
-            return /* changed */ data;
+        return /* changed */ data;
     }
 }
