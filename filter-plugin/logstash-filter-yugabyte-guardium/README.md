@@ -11,28 +11,29 @@ This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the
 
 The plug-in is free and open-source (Apache 2.0). The plug-in is written in Java. There is no need for plug-in code, only a jar archive.
 
-Yugabyte DB re-uses Postgres Query language (PSQL) and Cassandra Query Language (CQL) just for database interactions. PSQL is renamed as `ysql` and CQL is renamed as `ycql`. However, the YB database engine is not built on Postgres or Cassandra. 
+Yugabyte DB re-uses Postgres Query language (PSQL) and Cassandra Query Language (CQL) just for database interactions.
+PSQL is renamed as `ysql` and CQL is renamed as `ycql`. However, the YB database engine is not built on Postgres or
+Cassandra.
 Hence, a developer can take advantage of SQL syntax, NoSQL syntax, or both. Yugabyte is a distributed SQL database that supports distributed transactions.
 
-
-## Enabling the audit logs:
+## Enabling the audit logs
 
 ### Procedure
 
-1. Yugabyte supports the below log types :
-   
-		a. postgres-*.log: The logs related to the operations performed using the API `ysql`.
+1. Yugabyte supports the below log types:
 
-		b. yb-tserver.*.*.log.(WARNING|INFO|ERROR|FATAL).*-*.*: The logs related to the operations performed using the API `ycql`.
+   	a. postgres-*.log: The logs related to the operations performed using the API `ysql`.
 
- These instructions will use both types of files for the Guardium filter, as it contains all database-related log events.
-   
+   	b. yb-tserver.*.*.log.(WARNING|INFO|ERROR|FATAL).*-*.*: The logs related to the operations performed using the API `ycql`.
+
+These instructions will use both types of files for the Guardium filter, as it contains all database-related log events.
+
 Log configuration:
-   
+
     a. YugabyteDB YSQL -
-   
-   uses PostgreSQL Audit Extension (pgAudit)
-   
+
+uses PostgreSQL Audit Extension (pgAudit)
+
         1. By using and providing value to the flag `--ysql_pg_conf_csv`, log output can be configured.
    
         2. This flag should be passed while starting the YB server using the utility `ybctl`.
@@ -42,7 +43,7 @@ Log configuration:
         1. Logs can be enables by setting the flag `--ycql_enable_audit_log=true` for ycql APIs.
    
     c. The minimum settings are mentioned here so that Guardium can collect minimum data to serve useful information.
-    
+
    ```
         --ysql_pg_conf_csv=pgaudit.log='ALL',pgaudit.log_level=INFO,pgaudit.log_parameter=true,pgaudit.log_relation=on,log_line_prefix='%n %r [%p] %a %u %d %c %x '
         --ycql_enable_audit_log=true
@@ -64,18 +65,18 @@ To view the logs, go to the path `yb_data/logs` relative to Yugabyte installatio
 
 ## a. Filebeat installation
 
-### Procedure:
+### Procedure
 
 To install Filebeat on your system, follow the steps in this topic:
-    https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#installation
+https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#installation
 
-## b. Filebeat configuration:
+## b. Filebeat configuration
 
 To use Logstash to perform additional processing on the data collected by Filebeat, we need to configure Filebeat to use Logstash. To do this, modify the filebeat.yml file which you can find inside the folder where Filebeat is installed. Follow these instructions for finding the installation directory: https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
-### Procedure:
+### Procedure
 
-1. Configuring the input section :
+1. Configuring the input section:
 
 * Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
 ```
@@ -104,16 +105,19 @@ tags : ["Yugabyte"]
 ```
 
 2. Configuring the output section:
-   1. Locate "output" in the filebeat.yml file, then add the following parameters. 
-   2. Disable Elasticsearch output by commenting it out. 
-   3. Enable Logstash output by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
-   4. For example:
-	```
-	output.logstash:
-      hosts: [<host>:<port>]
-	```
-   5. The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections. 
-   6. You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
+    1. Locate "output" in the filebeat.yml file, then add the following parameters.
+    2. Disable Elasticsearch output by commenting it out.
+    3. Enable Logstash output by uncommenting the Logstash section. For more information,
+       see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
+    4. For example:
+   ```
+   output.logstash:
+     hosts: [<host>:<port>]
+   ```
+    5. The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for
+       incoming Beats connections.
+    6. You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and
+       v11.4 ).
 
 #### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
 
@@ -128,23 +132,33 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 ### Before you begin
 
-• Configure the policies you require. See [policies](/docs/#policies) for more information.
--  You must have permission for the S-Tap Management role. The admin user includes this role by default.
+- Configure the policies you require. See [policies](/docs/#policies) for more information.
+- You must have permission for the S-Tap Management role. The admin user includes this role by default.
 - Yugabyte-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
 **Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-yugabytedb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-yugabytedb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
-# Procedure
+# Configuration
 
-1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
+1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
 2. Enable the universal connector if it is disabled.
-3. Click Upload File and select the offline [logstash-filter-yugabytedb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-yugabytedb_guardium_filter.zip) plug-in. After it is uploaded, click OK. This is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+3. Click ```Upload File``` and select the
+   offline [logstash-filter-yugabytedb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-yugabytedb_guardium_filter.zip)
+   plug-in. After it is uploaded, click ```OK```. This is not necessary for Guardium Data Protection v11.0p490 or later,
+   v11.0p540 or later, v12.0 or later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
-5. Type a name in the Connector name field.
-6. Update the input section to add the details from the [yugabyteFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-yugabyte-guardium/yugabyteFilebeat.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7. Update the filter section to add the details from the [yugabyteFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-yugabyte-guardium/yugabyteFilebeat.conf)  file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-8. The "type" fields should match in the input and the filter configuration section. This field should be unique for  every individual connector added.
-9. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+5. Type a name in the ```Connector name``` field.
+6. Update the input section to add the details from
+   the [yugabyteFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-yugabyte-guardium/yugabyteFilebeat.conf)
+   file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from
+   the [yugabyteFilebeat.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-yugabyte-guardium/yugabyteFilebeat.conf)
+   file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+8. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every
+   individual connector added.
+9. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+10. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart
+    the Universal Connector using the ```Disable/Enable``` button.
 
 ## Configuring the Yugabyte filters in Guardium Data Security Center
 To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
