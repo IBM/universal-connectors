@@ -7,6 +7,8 @@
 * Supported Oracle versions: 19,21
 * Supported Guardium versions:
     * Guardium Data Protection: appliance bundle 12.1p105 or later.
+ 
+**Note**: This readme is also applicable for **OUA over JDBC connect 2.0** and **OUA Multitenant over JDBC connect 2.0** plug-ins.
 
 kafka-connect is framework for streaming data between Apache Kafka and other systems.
 Detailed breakdown:
@@ -113,7 +115,8 @@ For more information on GDP patches, see [Understanding Guardium patch types and
 | **Hostname**             | Specifies the hostname or IP address of the Oracle database server. It is the address where the Oracle instance can be accessed for establishing a JDBC connection.                                                                                                |
 | **JDBC driver library**  | The Oracle JDBC driver JAR file (e.g., `ojdbc8.jar`) is required for the connector to communicate with the Oracle database. Download the [Oracle JDBC driver JAR file](https://download.oracle.com/otn-pub/otn_software/jdbc/234/ojdbc8.jar) and upload it to the Kafka Connect environment. |
 | **Port**                 | Specifies the port number used to connect to the Oracle database. The default port number is 1521, but it can vary depending on the Oracle configuration. Port 1521 must be open and accessible for the connection.                                                 |
-| **Service Name / SID**   | Specifies the Oracle service name (or SID if it's an older configuration) for the Kafka connector to connect. The service name uniquely identifies a database service within an Oracle environment and is provided by the database administrator.                   |
+| **Service Name / SID**   | Specifies the Oracle service name (or SID if it's an older configuration) for the Kafka connector to connect. The service name uniquely identifies a database service within an Oracle environment and is provided by the database administrator. For OUA over JDBC data is retrived from the service itself: unified_audit_trail .                  |
+| **CDB Service Name / SID**   | OUA over JDBC Connect 2.0 and OUA multitenant over JDBC Connect, data is retrived from CDB service audit log: cdb_unified_audit_trail. |
 
 
 4. Continue from step 3 of [Creating data source profile topic](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-creating-data-source-profiles) to complete creating a datasource profile. 
