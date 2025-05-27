@@ -52,6 +52,16 @@ function sendNotification(email, repoName, files) {
         to: email,
         subject: `Repository Update Notification: ${repoName}`,
         text: `The following files were updated in ${repoName}: ${files.join(', ')}`,
+        html: `
+            <div style="font-family: Arial, sans-serif;">
+                <h2 style="color: #2d3748;">Repository Update Notification</h2>
+                <p><b>Repository:</b> <i>${repoName}</i></p>
+                <p><b>The following files were updated in <i>GitHub</i>:</b></p>
+                <ul>
+                    ${files.map(file => `<li><b>${file}</b></li>`).join('')}
+                </ul>
+            </div>
+        `
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
