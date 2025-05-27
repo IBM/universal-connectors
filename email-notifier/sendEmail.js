@@ -50,11 +50,11 @@ function sendNotification(email, repoName, files) {
     const mailOptions = {
         from: process.env.GMAIL_USER,
         to: email,
-        subject: `Repository Update Notification: ${repoName}`,
+        subject: `Universal Connector Repository Update Notification`,
         text: `The following files were updated in ${repoName}: ${files.join(', ')}`,
         html: `
             <div style="font-family: Arial, sans-serif;">
-                <h2 style="color: #2d3748;">Repository Update Notification</h2>
+                <h2 style="color: #2d3748;">Universal Connector Notification</h2>
                 <p><b>Repository:</b> <i>${repoName}</i></p>
                 <p><b>The following files were updated in <i>GitHub</i>:</b></p>
                 <ul>
