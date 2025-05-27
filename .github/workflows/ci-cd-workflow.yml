@@ -1,0 +1,36 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ main ]
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Fetch full git history
+        run: git fetch --unshallow
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: cd email-notifier && npm install
+
+      - name: Run webhook listener
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_PASS: ${{ secrets.GMAIL_PASS }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+        run: cd email-notifier && node sendEmail.js
