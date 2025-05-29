@@ -2,7 +2,7 @@
 
 ### Meet AzureSQL
 * Tested versions: 12.0.2000.8
-* Environment: Azure
+* Environment: Azure, Azure SQL Managed Instance, MS SQL deployed on VMs in Azure
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
    * Guardium Data Protection: 11.4 and above
