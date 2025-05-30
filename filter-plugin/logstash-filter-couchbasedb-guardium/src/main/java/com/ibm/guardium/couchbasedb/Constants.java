@@ -1,3 +1,8 @@
+//
+// Copyright 2020- IBM Inc. All rights reserved
+// SPDX-License-Identifier: Apache2.0
+//
+
 package com.ibm.guardium.couchbasedb;
 
 public interface Constants {
@@ -49,11 +54,15 @@ public interface Constants {
 	public static final String HTTP_METHOD="httpMethod";
 	public static final String SQL_ERROR="SQL_ERROR";
 	public static final String LOGIN_FAILED="LOGIN_FAILED";
-
 	public static final String GROUP_NAME = "group_name";
-
 	public static final String FULL_NAME = "full_name";
-
 	public static final String IDENTITY = "identity";
-	
+
+	public static final String BUCKET_NAME = "bucket_name";
+	public static final String ROLES = "roles";
+	public static final String SCOPE_NAME = "scope_name";
+	public static final String DOC_ID = "doc_id";
+	public static final String LOGIN_SUCCESS = "login success";
+	public static final String LOGOUT_SUCCESS = "logout success";
+	public static final String SESSION_TIMEOUT = "session timeout";
 }
