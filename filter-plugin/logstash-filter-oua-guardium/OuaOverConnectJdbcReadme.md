@@ -13,9 +13,20 @@
 kafka-connect is framework for streaming data between Apache Kafka and other systems.
 Detailed breakdown:
 1. Kafka-connect JDBC Connector: used to pull data from `UNIFIED_AUDIT_TRAIL`.
-2. Produce to Kafka: The queried data is then sent (produced) to a Kafka topic.
+2. Kafka-connect JDBC Connector for OUA Multitenant over JDBC connect 2.0: used to pull data from `CDB_UNIFIED_AUDIT_TRAIL`.
 3. Consume with UC: The data in the Kafka topic is consumed by kafka-input plugin and process by the 'guardium-oua-uc' filter plug-in,
    a specific Unified Connector designed for your use case.
+
+**Tip**:IBM recommends creating a Kafka cluster only after your environment is patched with appliance bundle p120 for Guardium Data Protection version 12.1, as using a Kafka cluster before appliance bundle p120 may provide undesirable results and does not support disaster recovery scenarios. This ensures that profiles using the Kafka cluster are applied correctly.
+
+### GDP versions available with OUA over JDBC credential support
+| Credential types                     | Patch details for availability                                                                      |
+|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **JDBC**           | GDP version 12.1 + Appliance bundle patch 105 + Universal connector patch 1006 and later                                                                                                       |
+| **JDBC & Kerbseros**  | GDP version 12.1 + Appliance bundle patch 115 + Universal connector patch 1006 and later |
+| **JDBC & Kerbseros for OUA 2.0** | GDP version 12.1 + Appliance bundle patch 120 + Universal connector patch p5002 |
+
+
 
 ### Requirements
 1. This feature currently only supported in environment with CM management 12.1 and kafka cluster
@@ -23,7 +34,7 @@ Detailed breakdown:
 3. Download the Oracle JDBC driver. Download here:
    https://download.oracle.com/otn-pub/otn_software/jdbc/234/ojdbc8.jar
 4. Currently, this plug-in will work only on IBM Security Guardium Data Protection, not in Guardium Insights
-5. • Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies) for more information.
+
 
 ## Setup
 
@@ -95,9 +106,6 @@ Detailed breakdown:
    * OUA Over JDBC Connect is supported with JDBC credentials and kerberos authentication (UC 2.0 implementation only on kafka cluster) on Guardium Data Protection version 12.1, along with appliance patch 120 
      (2025 Q2) and Universal Connector patch 5002.
 
-**GDP versions not available with OUA over JDBC credential Support**
-   * OUA over JDBC Connect is not supported on Guadrium Data Protection version 12.1, along with Universal Conenctor patch 1006.
-
 For more information on GDP patches, see [Understanding Guardium patch types and patch names](https://www.ibm.com/support/pages/understanding-guardium-patch-types-and-patch-names-0).
 
 ### Configuring Universal Connector Profile
@@ -120,9 +128,6 @@ For more information on GDP patches, see [Understanding Guardium patch types and
 
 
 4. Continue from step 3 of [Creating data source profile topic](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-creating-data-source-profiles) to complete creating a datasource profile. 
-### Limitations 
-- Traffic is not getting captured on the Guardium report after the Oracle DB server reboot - as a temporary workaround, uninstalling and then installing the profile again will work in this case.
-- Currently, the following activities are not being captured in the Guardian reports:
   - Logon/Logoff
   - Startup/Shutdown
   - backup/restore
