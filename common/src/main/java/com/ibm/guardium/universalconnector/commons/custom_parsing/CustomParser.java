@@ -114,7 +114,7 @@ public abstract class CustomParser {
 
     protected String getAppUserName(String payload) {
         String value = getValue(payload, APP_USER_NAME);
-        return value != null ? value : DEFAULT_STRING;
+        return value != null ? value : DATABASE_NOT_AVAILABLE;
     }
 
     protected String getClientIpv6(String payload) {
@@ -281,7 +281,7 @@ public abstract class CustomParser {
 
     protected String getDbName(String payload) {
         String value = getValue(payload, DB_NAME);
-        return value != null ? value : DEFAULT_STRING;
+        return value != null ? value : DATABASE_NOT_AVAILABLE;
     }
 
     protected String getDbProtocol(String payload) {
@@ -316,7 +316,7 @@ public abstract class CustomParser {
 
     protected String getOsUser(String payload) {
         String value = getValue(payload, OS_USER);
-        return value != null ? value : DEFAULT_STRING;
+        return value != null ? value : DATABASE_NOT_AVAILABLE;
     }
 
     protected String getSourceProgram(String payload) {
