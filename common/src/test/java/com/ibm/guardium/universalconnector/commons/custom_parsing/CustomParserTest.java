@@ -165,8 +165,8 @@ public class CustomParserTest {
 
         assertNotNull(record);
         assertEquals(PropertyConstant.DEFAULT_STRING, record.getSessionId());
-        assertEquals(PropertyConstant.DEFAULT_STRING, record.getDbName());
-        assertEquals(PropertyConstant.DEFAULT_STRING, record.getAppUserName());
+        assertEquals(PropertyConstant.DATABASE_NOT_AVAILABLE, record.getDbName());
+        assertEquals(PropertyConstant.DATABASE_NOT_AVAILABLE, record.getAppUserName());
     }
 
     @Test
