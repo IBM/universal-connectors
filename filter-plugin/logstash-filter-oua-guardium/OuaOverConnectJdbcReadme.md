@@ -97,6 +97,9 @@ Detailed breakdown:
 **For further details about configuring audit policies, see [official Oracle documentation](https://docs.oracle.com/en/database/oracle/oracle-database/19/dbseg/configuring-audit-policies.html).**
 ## Configuring Universal Connector on Guardium Data Protection
 
+### Before you begin 
+* Configure the policies you require. See [policies](/docs/#policies) for more information.
+
 ### Limitations
 
 **GDP versions available with OUA over JDBC credential Support**
@@ -132,4 +135,4 @@ For more information on GDP patches, see [Understanding Guardium patch types and
   - Startup/Shutdown
   - backup/restore
   
-  We are aware of this limitation and are actively working on a resolution, which will be included in the upcoming UC version
+  We are aware of this limitation and are actively working on a resolution, which will be included in the upcoming UC version.
