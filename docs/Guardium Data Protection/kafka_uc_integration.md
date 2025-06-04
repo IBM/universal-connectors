@@ -189,9 +189,13 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	- **Action:** Replace the `<TOPIC_NAME>` with your database server name (without domain).
 	
 	- **Action:** Replace the brokers (`<MANAGED_UNIT_#>`) with the hosts of the managed units in the Kafka cluster established earlier. Note that the port remains constant at `9093`, as the Kafka 	cluster is configured to listen on this port.
-	- **Topic:** Replace '<UC_Connection_Name>_<Connector_ID>' with the UC connection name followed by an underscore and then the Connector ID. You can find the Connector ID after underscore on the         Kafka cluster Management page > Topic details column. For example, if the Univeral Connector Connection name is 'EDB_PG' then **Topic** name is 'EDB_PG_2', where 2 is the collector ID.
-     
-	**Syslog configuration for PostgreSQL**:
+	- **Topic:** Replace '<UC_Connector_Name>_<Connector_ID>' with the UC connection name followed by an underscore and then the Connector ID. You can find the Connector ID after underscore on the         **Kafka cluster Management page > Topic details** column. For example, if the Univeral Connector Connection name is 'EDB_PG' then **Topic** name is 'EDB_PG_2', where 2 is the collector ID.
+
+	**Note:** For Guardium Data Protection version 12.0 or prior and Guardium Data Protection version 12.1 appliance bundle p115, **Topic Name** is same as the 		Connector Name.
+	For Guardium Data Protection version 12.1 appliance patch p115 and later, **Topic Name** is <UC_Connector_Name>_<Connector_ID>.     
+	
+ 
+ **Syslog configuration for PostgreSQL**:
 	```conf
 	module(load="imfile")
 	# Select input configuration by datasource: 
@@ -212,7 +216,7 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	       action(type="omkafka"
 	           template="UcMessageFormat"
 	           broker=["<KAFKA_NODE_1>:9093, <KAFKA_NODE_2>:9093, <KAFKA_NODE_3>:9093"]
-	           topic="<UC_Connection_Name>_<Connector ID>"
+	           topic="<UC_Connector_Name>_<Connector ID>"
 	           dynakey = "on"
 	           key = "UcSessionID"
 	           queue.filename="omkafkaq"
@@ -278,7 +282,7 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	    action(type="omkafka"
 	        template="UcMessageFormat"
 	        broker=["<KAFKA_NODE_1>:9093, <KAFKA_NODE_2>:9093, <KAFKA_NODE_3>:9093"]
-	        topic="<UC_Connection_Name>_<Connector_ID>"
+	        topic="<UC_Connector_Name>_<Connector_ID>"
 	        dynakey="on"
 	        key="UcSessionID_PostgreSQL"
 	        queue.filename="omkafkaq_postgres"
