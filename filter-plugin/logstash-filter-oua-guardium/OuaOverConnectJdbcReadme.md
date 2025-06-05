@@ -13,26 +13,26 @@
 Kafka-connect is framework for streaming data between Apache Kafka and other systems.
 
 Detailed breakdown:
-1. Kafka-connect JDBC Connector: used to pull data from `UNIFIED_AUDIT_TRAIL`.
-2. Kafka-connect JDBC Connector for OUA Multitenant over JDBC connect 2.0: used to pull data from `CDB_UNIFIED_AUDIT_TRAIL`.
-3. Consume with UC: The data in the Kafka topic is consumed by kafka-input plugin and process by the 'guardium-oua-uc' filter plug-in,
+1. Kafka-connect JDBC Connector: pulls data from `UNIFIED_AUDIT_TRAIL`.
+2. Kafka-connect JDBC Connector for OUA Multitenant over JDBC connect 2.0: pulls data from `CDB_UNIFIED_AUDIT_TRAIL`.
+3. The data in the Kafka topic is consumed by kafka-input plugin and process by the 'guardium-oua-uc' filter plug-in,
    a specific Unified Connector designed for your use case.
 
-**Tip**:IBM recommends creating a Kafka cluster only after your environment is patched with appliance bundle p120+ uc p5002 for Guardium Data Protection version 12.1, as using a Kafka cluster before appliance bundle p120 + uc p5002 may provide undesirable results and does not support disaster recovery scenarios. This ensures that profiles using the Kafka cluster are applied correctly.
+**Tip**: IBM recommends creating a Kafka cluster only after your environment is patched with appliance bundle 12.0p120+ 12.0p5002 for Guardium Data Protection version 12.1, as using a Kafka cluster before appliance bundle 12.0p120 + UC 12.0p5002 may provide undesirable results and does not support disaster recovery scenarios. This ensures that profiles using the Kafka cluster are applied correctly.
 
 ### GDP versions available with OUA over JDBC credential support
 | Credential types                     | Patch details for availability                                                                      |
 |--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **JDBC**           | GDP version 12.1 + Appliance bundle patch 105 + Universal connector patch 1006 and later                                                                                                       |
-| **JDBC & Kerbseros**  | GDP version 12.1 + Appliance bundle patch 115 + Universal connector patch 1006 and later |
+| **JDBC & Kerbseros**  | GDP version 12.1 + Appliance bundle patch 115 + Universal connector patch 5002 and later |
 | **JDBC & Kerbseros for OUA 2.0** | GDP version 12.1 + Appliance bundle patch 120 + Universal connector patch p5002 |
 
 
 
 ### Requirements
-1. This feature currently only supported in environment with CM management 12.1 and kafka cluster
+1. This feature is currently supported only in environments that is using central manager workflow and a Kafka cluster, in Guardium Data Protection version 12.1.
 2. Unified auditing must be enabled in an Oracle database that will be monitored by this method
-3. Download the Oracle JDBC driver from the **Configuring Universal Connector Profile** topic. 
+3. Download Oracle JDBC driver according to the details mentioned in the **[JDBC driver library](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-oua-guardium/OuaOverConnectJdbcReadme.md#configuring-universal-connector-profile)** field. 
 
 ## Setup
 
@@ -41,12 +41,12 @@ Detailed breakdown:
     - Connect to Oracle using sysdba account and execute the following commands:
 
         ```
-        CREATE USER guardium IDENTIFIED BY password;
-        GRANT CONNECT, RESOURCE to guardium;
-        GRANT SELECT ANY DICTIONARY TO guardium;
+        CREATE USER <guardium_user> IDENTIFIED BY <guardium_user_password>;
+        GRANT CONNECT, RESOURCE to <guardium_user>;
+        GRANT SELECT ANY DICTIONARY TO <guardium_user>;
         ```
 
-    - To verify your new user's privileges, connect to the Oracle instance that you planning to monitor using the name and credentials for your designated user and run the following statements:
+    - To verify your new user's privileges, connect to the Oracle instance that you are planning to monitor using the name and credentials for your designated user and run the following statements:
 
         ```
         select count(*) from AUDSYS.AUD$UNIFIED;
@@ -60,8 +60,7 @@ Detailed breakdown:
         AUDIT POLICY system_param_changes;
         ```
       
-   2. **Exclude Auditing for the DB User Performing JDBC Queries
-      To avoid 'self-monitoring' of the database user executing JDBC queries, follow these steps to exclude the user from being audited:**
+   2. **To exclude auditing for a database user who executes JDBC queries and avoid self-monitoring, run the following queries**
         ```
         # Connect as SYSDBA
         sqlplus / AS SYSDBA
@@ -74,7 +73,7 @@ Detailed breakdown:
    
         # Create a new user with connect and dictionary privilege (for example: AUDITUSER)
 
-        CREATE USER  AUDITUSER IDENTIFIED BY guardium;
+        CREATE USER  AUDITUSER IDENTIFIED BY <guardium_audit_user_password>;
         GRANT CONNECT, RESOURCE to AUDITUSER;
         GRANT SELECT ANY DICTIONARY TO AUDITUSER;
 
@@ -107,8 +106,7 @@ Detailed breakdown:
 |--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Credential**           | Create JDBC credentials. For more information, see [Creating Credentials](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-creating-credentials).                                                                                                         |
 | **Kafka cluster**        | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/gdp/12.x?topic=flow-creating-kafka-clusters).                   |
-| **Maximum poll records** | By default, the value is 1000. To get more efficient results, you can increase the Kafka cluster partition by setting this value to 2000. **Restriction**: Once partitions are increased, they cannot be decreased. After updating this value, reinstall the profile. |
-| **Poll timeout (ms)**    | By default, the value is 500.                                                                                                                                                                                                                                       |
+| **No traffic threshold (minutes)**    | Default value is 60. If there is no incoming traffic for an hour, S-TAP displays a red status. Once incoming traffic resumes, the status returns to green.                                                                                                                                                    |
 | **Initial Time (ms)**    | The timestamp from which the connector starts polling for changes in the database. Setting this to 0 means the connector starts from the earliest available data. For incremental data fetching, this ensures only new data (after the initial time) is retrieved.  |
 | **Hostname**             | Specifies the hostname or IP address of the Oracle database server. It is the address where the Oracle instance can be accessed for establishing a JDBC connection.                                                                                                |
 | **JDBC driver library**  | The Oracle JDBC driver JAR file (e.g., `ojdbc8.jar`) is required for the connector to communicate with the Oracle database. Download the [Oracle JDBC driver JAR file](https://download.oracle.com/otn-pub/otn_software/jdbc/234/ojdbc8.jar) and upload it to the Kafka Connect environment. |
