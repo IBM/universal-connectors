@@ -46,13 +46,13 @@ Detailed breakdown:
         GRANT SELECT ANY DICTIONARY TO <guardium_user>;
         ```
 
-    - To verify your new user's privileges, connect to the Oracle instance that you are planning to monitor using the name and credentials for your designated user and run the following statements:
+    - To verify your new user's privileges, connect to the Oracle instance that you are planning to monitor using the name and credentials for your designated user and run the following command:
 
         ```
         select count(*) from AUDSYS.AUD$UNIFIED;
         ```
 
-    - If there are no errors that means you can use this new user for this UC method
+      If there are no errors, then you can use <guardium_user> to configure the universal connector.
    
     - Apply the following policy to capture changes to system parameters:
         ```
