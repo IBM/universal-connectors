@@ -1,6 +1,6 @@
 # Neo4j-Guardium Logstash filter plug-in
 ### Meet Neo4j
-* Tested versions: 4.4.3
+* Tested versions: 4.4.3, 5.26.0
 * Environment: On-premise, Iaas
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
@@ -20,7 +20,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ### Procedure
 
-	1. Neo4j supports the below log types :
+	1. Neo4j supports the below log types:
 		a. Debug.log: Information useful when debugging problems with Neo4j.
 		b. neo4j.log: The standard log, where general information about Neo4j is written.
 		c. query.log: Log of executed queries that takes longer than a specified threshold.
@@ -29,7 +29,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 		f. gc.log: Garbage collection logging provided by the Java Virtual Machine (JVM).
 		g. service-error.log: (Windows) Log of errors encountered when installing or running the Windows service.
 	2. These instructions will use query.log for the Guardium filter, as it contains all database-related log events.
-	3. Log configuration: Create this configuration in the neo4j.conf file located at {NeoInstallationDir}/neo4jDatabases/{DB_Name}/installation-4.1.0/conf:
+	3. Log configuration: Create this configuration in the neo4j.conf file located at {NeoInstallationDir}/neo4jDatabases/{DB_Name}/installation-4.1.0/conf:[For version 4.x and below]
 		a. Provide database name:
 				dbms.default_database=<DB_Name>
 		b. Enable audit logs:
@@ -42,8 +42,11 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 				dbms.logs.query.allocation_logging_enabled=true
 		f. Include page hit and page fault information for the executed queries being logged:
 				dbms.logs.query.page_logging_enabled=true
-	4. Cleanup for log files: You can set a maximum number of history files to be kept on the system for the query log. To enable this, include this configuration in the neo4j.conf file:
+	4. Cleanup for log files: You can set a maximum number of history files to be kept on the system for the query log. To enable this, include this configuration in the neo4j.conf file:[For version 4.x and below]
 				dbms.logs.query.rotation.keep_number=7
+    5. Log configuration: Create this configuration in the neo4j.conf file located at {NeoInstallationDir}/neo4jDatabases/{DB_Name}/installation-4.1.0/conf:[For version 5.x and above]
+         a. Provide database name:
+                dbms.default_database=<DB_Name>
 
 ## Viewing the audit logs
 
