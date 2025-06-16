@@ -63,32 +63,36 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 	
 		tags: ["guc_postgres_param"]
 	
-2. Configuring the output section:
+   2. Configuring the output section:
 
-	• Locate "Outputs" in the filebeat.yml file, then add the following parameters.
+       • Locate "Outputs" in the filebeat.yml file.
 
-    • Disable "Elasticsearch output" by commenting it out.
+       • Disable "Elasticsearch output" by commenting it out.
 
-	• Enable "Logstash Output" by uncommenting the Logstash section. For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
+       • Enable "Logstash Output" by uncommenting the Logstash section.
+      	
+  		 For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output
 
-		For example:-
-		output.logstash:
-		hosts: ["<host>:<port>"]
-	• The hosts option specifies the Logstash server and the port where Logstash is configured to listen for incoming Beats connections.
+              For example:-
+              output.logstash:
+              hosts: ["<host>:<port>"]
+          • The hosts option specifies the Logstash server and the port where Logstash is configured to listen for incoming Beats connections.
 
-	• You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
+          • You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4 ).
 
-	• Locate "Processors" in the filebeat.yml file and then add below attribute to get timezone of Server:
-	For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/add-locale.html
+          • Locate "Processors" in the filebeat.yml file and then add below attribute to get timezone of Server:
 	
-		For example:-
-    	processors:
-		- add_locale: ~
-		- add_host_metadata:
-			when.not.contains.tags: forwarded
-		- add_cloud_metadata: ~
-		- add_docker_metadata: ~
-		- add_kubernetes_metadata: ~
+          For more information, see https://www.elastic.co/guide/en/beats/filebeat/current/add-locale.html
+	
+          For example:-
+
+                 processors:
+                 - add_locale: ~
+                 - add_host_metadata:
+                     when.not.contains.tags: forwarded
+                 - add_cloud_metadata: ~
+                 - add_docker_metadata: ~
+                 - add_kubernetes_metadata: ~
 
 
 3. To learn how to start FileBeat, see https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#start
