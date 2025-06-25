@@ -114,6 +114,7 @@ shadowJar {
 dependencies
  {
     implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
     implementation 'org.apache.commons:commons-lang3:3.7'
     implementation 'com.google.code.gson:gson:2.8.9'
