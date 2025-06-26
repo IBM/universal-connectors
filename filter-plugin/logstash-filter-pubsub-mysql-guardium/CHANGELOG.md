@@ -1,3 +1,6 @@
+## 3.0.5
+- Upgrade commons-beanutils version to 1.11.0
+
 ## 3.0.4
  - Adjusted error logs handling to suit the output plug-in recent patch v1.0.4
 ## 3.0.3
