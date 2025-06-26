@@ -1,6 +1,9 @@
 # Changelog
 Notable changes will be documented in this file.
 
+## 1.0.12
+- Upgrade commons-beanutils version to 1.11.0
+
 ## [1.0.11] 
 - Updated Hashcode for SessionId.
 - Readme updated as per new template.

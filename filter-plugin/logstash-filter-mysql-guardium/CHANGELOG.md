@@ -1,3 +1,6 @@
+## 1.0.2
+- Upgrade commons-beanutils version to 1.11.0
+
 ## 1.0.0
 - Updated for GA release of native support for Java plugins. Includes:
   - Improved Gradle task wrappers

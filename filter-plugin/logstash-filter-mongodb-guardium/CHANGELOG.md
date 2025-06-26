@@ -3,6 +3,9 @@ Notable changes will be documented in this file.
 
 ## [Unreleased]
 
+## 0.6.13
+- Upgrade commons-beanutils version to 1.11.0
+
 ## [0.6.12]
 ### Changed
 - Added support for IBM Cloud Logs.

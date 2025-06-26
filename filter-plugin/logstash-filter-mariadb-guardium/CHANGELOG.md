@@ -1,5 +1,7 @@
 # Changelog
 Notable changes will be documented in this file.
+## 2.3.71
+- Upgrade commons-beanutils version to 1.11.0
 
 ## [2.3.70]
 - Downgraded gradle version to 6.5.1

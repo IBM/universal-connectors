@@ -1,3 +1,6 @@
+## 1.0.6
+- Upgrade commons-beanutils version to 1.11.0
+
 ## 1.0.4
   - Assign default values to the database user and database name.
 ## 1.0.3

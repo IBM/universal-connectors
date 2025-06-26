@@ -1,6 +1,9 @@
 # Changelog
 Notable changes will be documented in this file.
 
+## 0.1.23
+- Upgrade commons-beanutils version to 1.11.0
+
 ## [0.1.22]
 - SQL query will not appear in Object and Verb column.
 - Service name and Database name should be identical.
