@@ -1,5 +1,7 @@
 # Changelog
 Notable changes will be documented in this file.
+## 1.0.16
+- Upgrade commons-beanutils version to 1.11.0
 
 ## [1.0.15]
 - Serverhostname fall back to mariaDB.aws.com

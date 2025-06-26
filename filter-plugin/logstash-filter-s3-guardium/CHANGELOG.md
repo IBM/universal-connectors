@@ -3,6 +3,10 @@
 Notable changes will be documented in this file.
 
 ## [Unreleased]
+
+## 0.5.5
+- Upgrade commons-beanutils version to 1.11.0
+
 ## [0.3.2]
 ### Changed
 - Removed mongoDB messages with empty users[], as they are either internal or occur during authentication.

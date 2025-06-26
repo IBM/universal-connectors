@@ -2,7 +2,8 @@
 # Changelog
 Notable changes will be documented in this file.
 
- 
+## 1.0.27
+- Upgrade commons-beanutils version to 1.11.0
 
 ## [1.0.26]
 
