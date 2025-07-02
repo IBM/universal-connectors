@@ -65,7 +65,7 @@ In this plugin we have used Azure Event Hub.
 	  -	Enter a unique name for the namespace.
 	  -	Select same location for the namespace which you selected for server.
 	  -	Choose appropriate pricing tier.
-	  -	Leave the throughput units (or processing units for standard and premium tier) settings as it is.
+	  -	Set the throughput units (or processing units for standard and premium tiers) as 10 to prevent data loss. You can update the throughput units as per your requirement (some pricing tiers provide Auto-inflate feature). In Azure, 1 throughput unit handles incoming data of up to 1 MB/second/1000 events and outgoing data of up to 2MB/second/4096 events.
 	  -	Click on Review + Create at the bottom of the page.
 	  -	Review the settings and select Create.
 	  -	After successful creation recently created namespace will appear in resource group.
