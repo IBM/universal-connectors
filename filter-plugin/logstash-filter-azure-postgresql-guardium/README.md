@@ -74,7 +74,7 @@ For information regarding setup, please refer [quickstart-create-server-portal](
     3. Enter a unique name for the namespace.
     4. Select a location for the namespace.
     5. Choose the appropriate pricing tier.(In this case, we selected basic.)
-    6. Leave the throughput units settings (or processing units settings for standard and premium tiers) as it is.
+    6. Set the throughput units (or processing units for standard and premium tiers) as 10 to prevent data loss. You can update the throughput units as per your requirement (some pricing tiers provide Auto-inflate feature). In Azure, 1 throughput unit handles incoming data of up to 1 MB/second/1000 events and outgoing data of up to 2MB/second/4096 events.
     7. Select **Review + Create**.
     8. Review the settings and select **create**.
     9. After successful creation, the recently created namespace appears in the resource group.
