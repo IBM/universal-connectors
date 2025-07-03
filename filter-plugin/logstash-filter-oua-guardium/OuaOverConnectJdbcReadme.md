@@ -53,7 +53,19 @@ Detailed breakdown:
         ```
 
       If there are no errors, then you can use <guardium_user> to configure the universal connector.
-   
+
+    - NOTE:  If the Guardium user requires only a limited set of privileges, install the UC Q3 2025 patch. Alternatively, you can download the updated packages from [OUA2-P5002](https://github.com/IBM/universal-connectors/releases/tag/OUA2-p5002) and upload to Guardium CM via package management page. Grant the very minimum subset of privileges: 
+
+        ```
+        CREATE USER <guardium_user> IDENTIFIED BY <guardium_user_password>;
+        GRANT CONNECT,AUDIT_VIEWER TO <guardium_user> CONTAINER=ALL;
+        ```
+
+    - To verify your new user's privileges, connect to the Oracle instance that you are planning to monitor using the name and credentials for your designated user and run the following command:
+        ```
+        select count(*) from UNIFIED_AUDIT_TRAIL;
+        ```
+        
     - Apply the following policy to capture changes to system parameters:
         ```
         CREATE AUDIT POLICY system_param_changes ACTIONS ALTER SYSTEM;
