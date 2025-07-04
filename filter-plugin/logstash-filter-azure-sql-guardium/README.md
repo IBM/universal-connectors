@@ -6,7 +6,6 @@
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
    * Guardium Data Protection: 11.4 and above
-   * Guardium Data Security Center: 3.3
    * Guardium Data Security Center SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the azureSQL audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
