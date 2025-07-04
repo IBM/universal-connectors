@@ -7,9 +7,6 @@
         * Supported inputs:
             * Filebeat (push)
             * JDBC (pull)
-    * Guardium Data Security Center: 3.3
-        * Supported inputs:
-            * Filebeat (push)
     * Guardium Data Security Center SaaS: 1.0
         * Supported inputs:
             * Filebeat (push)
