@@ -48,6 +48,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [Snowflake](../filter-plugin/logstash-filter-snowflake-guardium/README.md)
 * [Teradata](../filter-plugin/logstash-filter-teradatadb-guardium/README.md)
 * [Yugabyte](../filter-plugin/logstash-filter-yugabyte-guardium/README.md)
+* [Databricks](../filter-plugin/logstash-filter-databricks-guardium/README.md)
 
 ## Developing Plug-ins
 Users can develop their own universal connector plug-ins, if needed, and contribute them back to the open source project, if desired.
