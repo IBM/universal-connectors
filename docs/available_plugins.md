@@ -48,6 +48,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [ScyllaDB](../filter-plugin/logstash-filter-scylldb-guardium/README.md)
 * [Snowflake](../filter-plugin/logstash-filter-snowflake-guardium/README.md)
 * [Teradata](../filter-plugin/logstash-filter-teradatadb-guardium/README.md)
+* [Trino](../filter-plugin/logstash-filter-trino-guardium/README.md)
 * [Yugabyte](../filter-plugin/logstash-filter-yugabyte-guardium/README.md)
 
 ## Developing Plug-ins
