@@ -48,10 +48,6 @@ buildscript {
         classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
-
-    ext {
-        snakeYamlVersion = '2.2'
-    }
 }
 
 def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
