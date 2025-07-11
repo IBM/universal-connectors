@@ -3,7 +3,7 @@
 ### Meet Couchbase Capella
 * Tested versions: 1.0.0
 * Developed by IBM
-* Configuration instructions can be found on [Guardium Couchbase Capella documentation](../../input-plugin/logstash-input-couchbase-capella/README.md)
+* Configuration instructions can be found on [Guardium Couchbase Capella documentation](../../input-plugin/logstash-input-couchbase-capella/README.md#setup-couchbase-capella-cluster)
 * Supported Guardium versions:
     * Guardium Data Protection: 12.0 and above
 
