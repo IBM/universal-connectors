@@ -93,7 +93,7 @@ dependencies {
     implementation group: 'org.glassfish', name: 'javax.json', version: versions.dependencies.javaxJson
     testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 }
-println "GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH: ${GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH}"
+
 clean {
     delete "${projectDir}/Gemfile"
     delete "${projectDir}/" + pluginInfo.pluginFullName() + ".gemspec"
