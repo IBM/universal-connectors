@@ -17,6 +17,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [Azure Database for PostgreSQL](../filter-plugin/logstash-filter-azure-postgresql-guardium/README.md)
 * [Azure MYSQL](../filter-plugin/logstash-filter-mysql-azure-guardium/README.md)
 * [Azure SQL](../filter-plugin/logstash-filter-azure-sql-guardium/README.md)
+* [Capella](../filter-plugin/logstash-filter-capella-guardium/README.md)
 * [Couchbase](../filter-plugin/logstash-filter-couchbasedb-guardium/README.md)
 * [CouchDB](../filter-plugin/logstash-filter-couchdb-guardium/README.md)
 * [DocumentDB](../filter-plugin/logstash-filter-documentdb-aws-guardium/README.md)
@@ -48,7 +49,6 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [Snowflake](../filter-plugin/logstash-filter-snowflake-guardium/README.md)
 * [Teradata](../filter-plugin/logstash-filter-teradatadb-guardium/README.md)
 * [Yugabyte](../filter-plugin/logstash-filter-yugabyte-guardium/README.md)
-* [Capella](../filter-plugin/logstash-filter-capella-guardium/README.md)
 
 ## Developing Plug-ins
 Users can develop their own universal connector plug-ins, if needed, and contribute them back to the open source project, if desired.
