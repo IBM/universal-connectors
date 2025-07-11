@@ -189,7 +189,7 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 
 Logstash Filter PubSub MySQL Plugin is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-pubsub-mysql-guardium-7.16.4.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.4.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 ### Note
 To install on your local machine that is running Logstash, execute:
@@ -230,16 +230,16 @@ pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 * Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies) for more information.
 
 * To install this plug-in, you need to download the relevant plugin based on the version of the Guardium.
-  1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip)
-  2. For the Guardium 12.x, download [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
+  1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.4.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.4.zip)
+  2. For the Guardium 12.x, download [logstash-filter-pubsub-mysql-guardium-8.3.4.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.4.zip)
 
 
 ### Procedure
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Ensure that the universal connector is enabled. 
 3. Click Upload File and select the relevant plugin based on the version of the Guardium and after it is uploads, click OK.
-    * For Guardium 11.x, download the [logstash-filter-pubsub-mysql-guardium-7.16.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.3.zip)
-    * For Guardium 12.x, download the [logstash-filter-pubsub-mysql-guardium-8.3.3.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.3.zip)
+    * For Guardium 11.x, download the [logstash-filter-pubsub-mysql-guardium-7.16.4.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.4.zip)
+    * For Guardium 12.x, download the [logstash-filter-pubsub-mysql-guardium-8.3.4.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-8.3.4.zip)
 4. Click Upload File and select the key.json file and click OK.
 5. Click the plus sign to open the Connector Configuration dialog box.
 6. In the Connector name field, enter a name. 

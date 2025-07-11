@@ -62,15 +62,36 @@ module DataAccessLogParser
 
       begin
         if is_proxy
-         ip_prefix = 'cloudsqlproxy~'
+          ip_prefix = 'cloudsqlproxy~'
         else
           ip_prefix = ''
         end
 
-        server_ip_array = request['ip'].match(/#{ip_prefix}(?<ip_address>\d*.\d*.\d*.\d*)/)
-        server_ip = server_ip_array['ip_address']
-      rescue StandardError
-        raise FilterException::BadIPPrefixCloudSQL
+        if request.nil?
+          raise FilterException::BadIPPrefixCloudSQL, "Missing request object"
+        end
+
+        # if ip field is not exist, use host field
+        if request['ip']
+          ip_value = request['ip']
+        else
+          ip_value = request['host']
+        end
+
+        if ip_value.nil?
+          server_ip = '0.0.0.0' # default value if both ip and host not exists
+        elsif ip_value == "#{ip_prefix}localhost" || ip_value == "localhost"
+          server_ip = 'localhost'
+        else
+          server_ip_array = ip_value.match(/#{ip_prefix}(?<ip_address>\d*.\d*.\d*.\d*)/)
+          if server_ip_array.nil? || server_ip_array['ip_address'].nil?
+            raise FilterException::BadIPPrefixCloudSQL, "Unable to extract IP"
+          end
+          server_ip = server_ip_array['ip_address']
+        end
+
+      rescue StandardError => e
+        raise FilterException::BadIPPrefixCloudSQL, e.message
       end
 
       # generate a consistent hash key for db_name
