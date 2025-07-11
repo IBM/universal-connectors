@@ -1,0 +1,204 @@
+import java.nio.file.Files
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+        gradlePluginPortal()
+        jcenter()
+    }
+}
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'java'
+    id 'jacoco'
+    id("org.barfuin.gradle.jacocolog") version "3.1.0"
+}
+
+ext {
+    snakeYamlVersion = '2.2'
+    shadowGradlePluginVersion = '8.1.1'
+}
+
+apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
+
+// ===========================================================================
+// plugin info
+// ===========================================================================
+group                      'org.logstashplugins' // must match the package of the main plugin class
+version                    "${file("VERSION").text.trim()}" // read from required VERSION file
+description                = "Couchbase-Capella-Guardium Java input implementation"
+pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
+pluginInfo.longDescription = "This gem is a Logstash Couchbase Capella input plugin required to be installed on top of the Logstash core pipeline using \$LS_HOME/bin/logstash-plugin install gemname. " +
+        "It is part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program"
+pluginInfo.authors         = ['IBM']
+pluginInfo.email           = ['']
+pluginInfo.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
+pluginInfo.pluginType      = "input"
+pluginInfo.pluginClass     = "CouchbaseCapellaInput"
+pluginInfo.pluginName      = "couchbase_capella_input" // must match the @LogstashPlugin annotation in the main plugin class
+// ===========================================================================
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
+}
+
+def jacocoVersion = '0.8.4'
+// minimumCoverage can be set by Travis ENV
+def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
+if (minimumCoverageStr.endsWith("%")) {
+    minimumCoverageStr = minimumCoverageStr.substring(0, minimumCoverageStr.length() - 1)
+}
+def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
+
+
+
+repositories {
+    mavenCentral()
+}
+
+shadowJar {
+    archiveClassifier.set('')
+}
+
+dependencies {
+    implementation 'org.apache.commons:commons-lang3:3.7'
+    compileOnly 'org.apache.logging.log4j:log4j-api:2.17.0' // provided by Logstash
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.0' // provided by Logstash
+ 
+    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "**/logstash-core.jar")
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.google.guava:guava:30.1-jre'
+
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.jruby:jruby-complete:9.4.7.0'
+    testImplementation 'org.mock-server:mockserver-netty:5.14.0'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.17'
+
+}
+
+clean {
+    delete "${projectDir}/Gemfile"
+    delete "${projectDir}/" + pluginInfo.pluginFullName() + ".gemspec"
+    delete "${projectDir}/lib/"
+    delete "${projectDir}/vendor/"
+    new FileNameFinder().getFileNames(projectDir.toString(), pluginInfo.pluginFullName() + "-?.?.?.gem").each { filename ->
+        delete filename
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.register("vendor"){
+    dependsOn shadowJar
+    doLast {
+        String vendorPathPrefix = "vendor/jar-dependencies"
+        String projectGroupPath = project.group.replaceAll('\\.', '/')
+        File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
+        projectJarFile.mkdirs()
+        Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
+        validatePluginJar(projectJarFile, project.group)
+    }
+}
+
+tasks.register("generateRubySupportFiles") {
+    doLast {
+        generateRubySupportFilesForPlugin(project.description, project.group, version)
+    }
+}
+
+tasks.register("removeObsoleteJars") {
+    doLast {
+        new FileNameFinder().getFileNames(
+                projectDir.toString(),
+                "vendor/**/" + pluginInfo.pluginFullName() + "*.jar",
+                "vendor/**/" + pluginInfo.pluginFullName() + "-" + version + ".jar").each { f ->
+            delete f
+        }
+    }
+}
+
+tasks.register("gem"){
+    dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
+    doLast {
+        buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
+    }
+}
+
+tasks.register("copyDependencyLibs", Copy){
+    into "dependenciesLib"
+    from configurations.compileClasspath
+    from configurations.runtimeClasspath
+    from configurations.testCompileClasspath
+    from configurations.testRuntimeClasspath
+}
+
+
+
+// ------------------------------------
+// JaCoCo is a code coverage tool
+// ------------------------------------
+jacoco {
+    toolVersion = "${jacocoVersion}"
+}
+
+jacocoTestReport {
+    // You will see "Report -> file://...." at the end of a JaCoCo build
+    // If no output, run this first:   ./gradlew test
+    reports {
+        html {
+            enabled false
+        }
+        xml {
+            enabled true
+        }
+        csv {
+            enabled true
+        }
+        html.destination file("${buildDir}/reports/jacoco")
+        csv.destination file("${buildDir}/reports/jacoco/all.csv")
+    }
+    executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: [
+            '**/*.exec'
+    ])
+    afterEvaluate {
+        // objective is to test TicketingService class
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [])
+        }))
+    }
+    doLast {
+        println "Report -> file://${buildDir}/reports/jacoco/index.html"
+    }
+}
+test.finalizedBy jacocoTestReport
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = minimumCoverage
+            }
+        }
+    }
+    executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: [
+            '**/*.exec'
+    ])
+    afterEvaluate {
+        // objective is to test TicketingService class
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [])
+        }))
+    }
+}
+
+project.tasks.check.dependsOn(jacocoTestCoverageVerification, jacocoTestReport)
