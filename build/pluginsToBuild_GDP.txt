@@ -37,3 +37,8 @@ filter-plugin/logstash-filter-postgres-ibmcloud-guardium
 filter-plugin/logstash-filter-mysql-azure-guardium
 filter-plugin/logstash-filter-scylldb-guardium
 input-plugin/logstash-input-mongo-atlas
+input-plugin/logstash-input-couchbase-capella
+input-plugin/logstash-input-http
+filter-plugin/logstash-filter-capella-guardium
+filter-plugin/logstash-filter-databricks-guardium
+filter-plugin/logstash-filter-trino-guardium
