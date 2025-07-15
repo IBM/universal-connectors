@@ -14,7 +14,7 @@ IBM Security Guardium. It parses events and messages from the Trino audit log in
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter
 plug-ins for Guardium universal connector.
 
-## 1. Configuring ONPREM MSSQL
+## 1. Configuring ONPREM TRINO
 
 ### Procedure
 
