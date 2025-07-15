@@ -59,7 +59,7 @@ https://docs.couchbase.com/server/current/manage/manage-security/manage-auditing
 |----------------|------------|----------|--------------|
 | query-interval | number     | Yes      | 8*3600       |
 | query_length    | number     | Yes      |   3600       |
-| api_base_url    | string     | Yes      |https://cloudapi.cloud.couchbase.com/v4          |
+| api_base_url    | string     | Yes      |`https://cloudapi.cloud.couchbase.com/v4`  |
 | organization_id | string     | Yes      |              |
 | project_id       | string     | Yes      |              |
 | cluster_id       | string     | Yes      |  |
