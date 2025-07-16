@@ -3,7 +3,7 @@ dependencies:
   commonsValidator: 1.7
   log4jCore: 2.22.0
   log4jApi: 2.17.2
-  commonsLang: 3.7
+  commonsLang: 3.18.0
   gson: 2.8.9
   junit: 4.12
   jrubyComplete: 9.2.7.0
