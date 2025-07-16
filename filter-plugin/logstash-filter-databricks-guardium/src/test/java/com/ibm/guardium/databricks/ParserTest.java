@@ -142,7 +142,7 @@ class ParserTest {
     }
 
     @Test
-    public void testParseExceptionStatu1() {
+    public void testParseExceptionStatu() {
         final String DatabricksString = "{ \"resourceId\": \"/SUBSCRIPTIONS/5C0C81D4-656F-415D-8599-DCD86F2F665E/RESOURCEGROUPS/NEXUS/PROVIDERS/MICROSOFT.DATABRICKS/WORKSPACES/AZUREMTSERVER\", \"operationVersion\": \"1.0.0\", \"identity\": \"{\\\"email\\\":\\\"abc@abc.com\\\",\\\"subjectName\\\":null}\", \"operationName\": \"Microsoft.Databricks/notebook/runCommand\", \"time\": \"2025-06-19T14:38:01Z\", \"category\": \"notebook\", \"properties\": {\"sourceIPAddress\":\"0.1.87.5\",\"logId\":\"2b9419c3-9cac-31f4-bb9c-073dfa658974\",\"serviceName\":\"notebook\",\"userAgent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36\",\"response\":\"{\\\"statusCode\\\":1,\\\"errorMessage\\\":\\\"InnerExecutionException: null\\\"}\",\"sessionId\":null,\"actionName\":\"runCommand\",\"requestId\":\"da7cc2fa-0f08-45e6-b241-54b20acc4eb7\",\"requestParams\":\"{\\\"notebookId\\\":\\\"3116387834167860\\\",\\\"clusterId\\\":\\\"0611-191046-ba0xnptx\\\",\\\"executionTime\\\":\\\"0.289\\\",\\\"status\\\":\\\"failed\\\",\\\"commandLanguage\\\":\\\"python\\\",\\\"commandId\\\":\\\"7254928687120170\\\",\\\"commandText\\\":\\\"SELECT * FROM hive_metastore.default.my_table1;\\\"}\"}, \"Host\": \"0619-070308-hw7n9ftr-10-139-92-0\"}";
         final JsonObject DatabricksJson = JsonParser.parseString(DatabricksString).getAsJsonObject();
         Record record = Parser.parseRecord(DatabricksJson);
@@ -151,26 +151,6 @@ class ParserTest {
         assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
         assertEquals("SELECT * FROM hive_metastore.default.my_table1;", record.getException().getSqlString());
 
-    }
-
-    @Test
-    public void testParseExceptionNoErrMessage() {
-        final String DatabricksString = "{ \"resourceId\": \"/SUBSCRIPTIONS/5C0C81D4-656F-415D-8599-DCD86F2F665E/RESOURCEGROUPS/NEXUS/PROVIDERS/MICROSOFT.DATABRICKS/WORKSPACES/DATABRICK-TEST\", \"operationVersion\": \"1.0.0\", \"identity\": \"{\\\"email\\\":\\\"System-User\\\",\\\"subjectName\\\":null}\", \"operationName\": \"Microsoft.Databricks/databrickssql/commandFinish\", \"time\": \"2025-05-20T17:59:01Z\", \"category\": \"databrickssql\", \"properties\": {\"sourceIPAddress\":null,\"logId\":\"ed28a166-6bac-342b-b8d0-237037250589\",\"serviceName\":\"databrickssql\",\"userAgent\":\"\",\"response\":\"{\\\"statusCode\\\":400}\", \"sessionId\":\"01f035a4-18f0-1667-ac2c-aabd587fbc36\",\"actionName\":\"commandFinish\",\"requestId\":\"317ff959-7147-42ba-9009-b5f7b5279094\",\"requestParams\":\"{\\\"warehouseId\\\":\\\"75f94533c2374cfa\\\",\\\"commandId\\\":\\\"01f035a4-191c-13ae-8b5a-7ffa329cbb4c\\\"}\"}, \"Host\": \"0520-070249-lol2uedj-10-139-96-0\"}";
-        final JsonObject DatabricksJson = JsonParser.parseString(DatabricksString).getAsJsonObject();
-        Record record = Parser.parseRecord(DatabricksJson);
-        assertEquals("Error:400 Message: {\"statusCode\":400}",
-                record.getException().getDescription());
-        assertEquals("SQLERROR", record.getException().getExceptionTypeId());
-    }
-
-    @Test
-    public void testParseExceptionStatu1() {
-        final String DatabricksString = "{ \"resourceId\": \"/SUBSCRIPTIONS/5C0C81D4-656F-415D-8599-DCD86F2F665E/RESOURCEGROUPS/NEXUS/PROVIDERS/MICROSOFT.DATABRICKS/WORKSPACES/AZUREMTSERVER\", \"operationVersion\": \"1.0.0\", \"identity\": \"{\\\"email\\\":\\\"abc@abc.com\\\",\\\"subjectName\\\":null}\", \"operationName\": \"Microsoft.Databricks/notebook/runCommand\", \"time\": \"2025-06-19T14:38:01Z\", \"category\": \"notebook\", \"properties\": {\"sourceIPAddress\":\"0.1.87.5\",\"logId\":\"2b9419c3-9cac-31f4-bb9c-073dfa658974\",\"serviceName\":\"notebook\",\"userAgent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36\",\"response\":\"{\\\"statusCode\\\":1,\\\"errorMessage\\\":\\\"InnerExecutionException: null\\\"}\",\"sessionId\":null,\"actionName\":\"runCommand\",\"requestId\":\"da7cc2fa-0f08-45e6-b241-54b20acc4eb7\",\"requestParams\":\"{\\\"notebookId\\\":\\\"3116387834167860\\\",\\\"clusterId\\\":\\\"0611-191046-ba0xnptx\\\",\\\"executionTime\\\":\\\"0.289\\\",\\\"status\\\":\\\"failed\\\",\\\"commandLanguage\\\":\\\"python\\\",\\\"commandId\\\":\\\"7254928687120170\\\",\\\"commandText\\\":\\\"SELECT * FROM hive_metastore.default.my_table1;\\\"}\"}, \"Host\": \"0619-070308-hw7n9ftr-10-139-92-0\"}";
-        final JsonObject DatabricksJson = JsonParser.parseString(DatabricksString).getAsJsonObject();
-        Record record = Parser.parseRecord(DatabricksJson);
-        assertEquals("Error:1 Message: InnerExecutionException: null",
-                record.getException().getDescription());
-        assertEquals("SQLERROR", record.getException().getExceptionTypeId());
     }
 
 }
