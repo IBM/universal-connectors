@@ -133,9 +133,9 @@ Azure-Databricks-Guardium Logstash filter plug-in is automatically available wit
  plug-in. After it is uploaded, click ```OK```.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the ```Connector name``` field.
-6. Update the input section to add the details from the [databricks.conf](../../filter-plugin/logstash-filter-databricks-guardium/AzureDatabrciksOverAzureEventHub/databricks.conf)  file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+6. Update the input section to add the details from the [databricks.conf](../../filter-plugin/logstash-filter-databricks-guardium/AzureDatabricksOverAzureEventHub/databricks.conf)  file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
     - Insert the Connection string in storage_connection from the Access Keys present in the Storage account from the Azure portal.
-7. Update the filter section to add the details from the [databricks.conf](../../filter-plugin/logstash-filter-databricks-guardium/AzureDatabrciksOverAzureEventHub/databricks.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from the [databricks.conf](../../filter-plugin/logstash-filter-databricks-guardium/AzureDatabricksOverAzureEventHub/databricks.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
 9. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 10. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the ```Disable/Enable``` button.
