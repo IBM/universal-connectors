@@ -52,6 +52,7 @@ filter-plugin/logstash-filter-yugabyte-guardium/YugabyteOverSyslogPackage;
 #Other
 filter-plugin/logstash-filter-mongodb-guardium/MongodbOverMongoAtlasPackage;logstash-filter-mongodb_guardium_filter.zip
 filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub;logstash-filter-azure_postgresql_guardium_plugin_filter.zip
+filter-plugin/logstash-filter-databricks-guardium/AzureDatabrciksOverAzureEventHub;logstash-filter-databricks_guardium_filter.zip
 #Input plug-ins
 input-plugin/logstash-input-azure-event-hubs/AzureEventHubsInputPackage;
 input-plugin/logstash-input-beats/FilebeatInputPackage;
