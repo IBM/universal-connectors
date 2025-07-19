@@ -1,4 +1,4 @@
-package com.ibm.guardium.capella;
+package com.ibm.guardium.capella;G
 
 import com.ibm.guardium.universalconnector.commons.custom_parsing.ParserFactory;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
@@ -753,5 +753,6 @@ class ParserTest {
     assertEquals("COUCHB", record.getAccessor().getLanguage());
     assertEquals("UNRECOGNIZED statement", record.getException().getDescription());
     assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
+    assertEquals("select * fro test;", record.getException().getSqlString());
   }
 }

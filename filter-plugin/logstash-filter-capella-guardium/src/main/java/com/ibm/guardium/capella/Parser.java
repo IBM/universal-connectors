@@ -130,7 +130,7 @@ public class Parser extends CustomParser {
       return exceptionRecord;
     } else if (statement != null && !status.contains(SUCCESS_STATUS)) {
       exceptionRecord.setDescription(serviceName);
-      exceptionRecord.setSqlString(sqlString);
+      exceptionRecord.setSqlString(statement);
       exceptionRecord.setExceptionTypeId(SQL_ERROR);
       return exceptionRecord;
     }
