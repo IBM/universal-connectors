@@ -1,4 +1,4 @@
-package com.ibm.guardium.capella;
+package com.ibm.guardium.capella;G
 
 import com.ibm.guardium.universalconnector.commons.custom_parsing.ParserFactory;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
