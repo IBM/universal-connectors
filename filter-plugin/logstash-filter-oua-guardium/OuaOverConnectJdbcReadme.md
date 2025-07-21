@@ -110,14 +110,14 @@ Detailed breakdown:
 * Configure the policies you require. See [policies](/docs/#policies) for more information.
 
 ### Configuring Universal Connector Profile
-1. See [Creating data source profile topic](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-creating-data-source-profiles) to create a datasource profile.
+1. To create a datasource profile, see [Creating data source profiles](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_datasource_profile_management.html).
 2. Select '**OUA over JDBC connect**' in the plug-ins list
 3. Update the parameters as follows:
 
 | Field                    | Description                                                                                                                                                                                                                                                         |
 |--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Credential**           | Create JDBC credentials. For more information, see [Creating Credentials](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-creating-credentials).                                                                                                         |
-| **Kafka cluster**        | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/gdp/12.x?topic=flow-creating-kafka-clusters).                   |
+| **Credential**           | Create JDBC credentials. For more information, see [Creating Credentials](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_credential_management.html).                                                                                                         |
+| **Kafka cluster**        | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_kafka_cluster_management.html).                   |
 | **No traffic threshold (minutes)**    | Default value is 60. If there is no incoming traffic for an hour, S-TAP displays a red status. Once incoming traffic resumes, the status returns to green.                                                                                                                                                    |
 | **Initial Time (ms)**    | The timestamp from which the connector starts polling for changes in the database. Setting this to 0 means the connector starts from the earliest available data. For incremental data fetching, this ensures only new data (after the initial time) is retrieved.  |
 | **Hostname**             | Specifies the hostname or IP address of the Oracle database server. It is the address where the Oracle instance can be accessed for establishing a JDBC connection.                                                                                                |
@@ -127,4 +127,4 @@ Detailed breakdown:
 | **CDB Service Name / SID**   | OUA over JDBC Connect 2.0 and OUA multitenant over JDBC Connect, data is retrived from CDB service audit log: cdb_unified_audit_trail. |
 
 
-4. Continue from step 3 of [Creating data source profile topic](https://www.ibm.com/docs/en/gdp/12.x?topic=configuration-creating-data-source-profiles) to complete creating a datasource profile. 
+4. Continue from step 3 of [Creating data source profile topic](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_datasource_profile_management.html) to complete creating a datasource profile. 
