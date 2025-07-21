@@ -1,6 +1,6 @@
 # Teradata-Guardium Logstash filter plug-in
 ### Meet Teradata
-* Tested versions: 16.20, 17.5
+* Tested versions: 16.20, 17.5, 17.20
 * Environment: Cloud, On-premise
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
