@@ -52,12 +52,12 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 
        - For other environments including RDS in AWS and Oracle Databases On-Premises run the following commands:
          ```
-         CREATE USER guardium IDENTIFIED BY password;
-         GRANT CONNECT, RESOURCE to guardium;
-         GRANT SELECT ANY DICTIONARY TO guardium;
-         exec DBMS_NETWORK_ACL_ADMIN.APPEND_HOST_ACE(host => 'localhost',
-         ace => xs$ace_type(privilege_list => xs$name_list('connect',
-         'resolve'), principal_name => 'guardium', principal_type => xs_acl.ptype_db));
+         CREATE USER <guardium_user> IDENTIFIED BY <guardium_user>; 
+         GRANT CONNECT to <guardium_user>; 
+         GRANT AUDIT_VIEWER to <guardium_user>; 
+         GRANT SELECT ON v_$INSTANCE to <guardium_user>; 
+         GRANT SELECT ON v_$DATABASE to <guardium_user>; 
+         GRANT SELECT ON v_$MYSTAT to <guardium_user>;
          ```
 
    - To verify your new user's privileges, connect to the Oracle instance that you planning to monitor using the name and credentials for your designated user and run the following statements:
