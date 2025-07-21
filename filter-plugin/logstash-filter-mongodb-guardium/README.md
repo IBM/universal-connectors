@@ -60,14 +60,14 @@ The filter plug-in also supports sending errors. For this, MongoDB access contro
 * The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
 
 ## Example 
-### Sample Audit Log
+### Filebeat input
 
 A typical original log file looks like:
 
 ```
 { "atype" : "authCheck", "ts" : { "$date" : "2020-02-16T03:21:58.185-0500" }, "local" : { "ip" : "127.0.30.1", "port" : 0 }, "remote" : { "ip" : "127.0.20.1", "port" : 0 }, "users" : [], "roles" : [], "param" : { "command" : "find", "ns" : "config.transactions", "args" : { "find" : "transactions", "filter" : { "lastWriteDate" : { "$lt" : { "$date" : "2020-02-16T02:51:58.185-0500" } } }, "projection" : { "_id" : 1 }, "sort" : { "_id" : 1 }, "$db" : "config" } }, "result" : 0 }
 ```
-### The Filebeat version of the same Sample Audit Log looks like:
+The Filebeat version of the same file looks like:
 ```
 {
  "@version" => "1",
@@ -192,8 +192,8 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
 
     c.  If you send multiple, different data sources from the same server on the same port:
 
-    - Attach a different tag to each input log. Then, use the tags when you configure the connector
-    - Use the ```tags``` parameter from the following code while configuring the connector:
+- Attach a different tag to each input log. Then, use the tags when you configure the connector
+- Use the ```tags``` parameter from the following code while configuring the connector:
 
             
             # ============================== Filebeat inputs ===============================
@@ -211,15 +211,15 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
 
     d.  In the Outputs section:
 
-    - Make sure that Elasticsearch output is commented out.
-      - Add or uncomment the Logstash output and edit the following parameters:
-      - Add all the Guardium Universal Connector IPs and ports:
+- Make sure that Elasticsearch output is commented out.
+  - Add or uncomment the Logstash output and edit the following parameters:
+  - Add all the Guardium Universal Connector IPs and ports:
 
             hosts: [“<ipaddress1>:<port>”,”<ipaddress2>:<port>,”<ipaddress3>:<port>”...]
                 
 
-      - Use the same port you selected when configuring the Universal Connector.
-      - Enable load balancing:
+  - Use the same port you selected when configuring the Universal Connector.
+  - Enable load balancing:
 
                 
             loadbalance: true
@@ -228,6 +228,50 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
 
   - More optional parameters are described in the Elastic official documentation: [https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html](https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html)
 
+      A typical original log file looks like:
+
+  ```
+        { "atype" : "authCheck", "ts" : { "$date" : "2020-02-16T03:21:58.185-0500" }, "local" : { "ip" : "127.0.30.1", "port" : 0 }, "remote" : { "ip" : "127.0.20.1", "port" : 0 }, "users" : [], "roles" : [], "param" : { "command" : "find", "ns" : "config.transactions", "args" : { "find" : "transactions", "filter" : { "lastWriteDate" : { "$lt" : { "$date" : "2020-02-16T02:51:58.185-0500" } } }, "projection" : { "_id" : 1 }, "sort" : { "_id" : 1 }, "$db" : "config" } }, "result" : 0 }
+  ```
+
+      The Filebeat version of the same file looks like:
+
+        
+        {
+         "@version" => "1",
+         "input" => { "type" => "log"},
+         "tags" => [[0] "beats_input_codec_plain_applied"],
+         "@timestamp" => 2020-06-11T13:46:20.663Z,
+         "log" => {"offset" => 1997890,"file" => { "path" =>"C:\\Users\\Name\\Desktop\\p1.log" }},
+         "ecs" => {"version" => "1.4.0"},
+         "type" => "filebeat",
+         "agent" => {
+          "ephemeral_id" =>
+          "b7d849f9-dfa9-4d27-be8c-20061b1facdf",
+          "id" =>
+          "a54b2184-0bb5-4683-a039-7e1c70f1a57c",
+          "version" => "7.6.2",
+          "type" => "filebeat",
+          "hostname" => "<name>"
+         },
+         "message" =>"{ \"atype\" : \"authCheck\", \"ts\" : { \"$date\" : \"2020-02-16T03:21:58.185-0500\" }, \"local\" : { \"ip\" : \"127.0.30.1\", \"port\" : 0 }, \"remote\" : { \"ip\" : \"127.0.20.1\", \"port\" : 0 }, \"users\" : [], \"roles\" : [], \"param\" : { \"command\" : \"find\", \"ns\" : \"config.transactions\", \"args\" : { \"find\" : \"transactions\", \"filter\" : { \"lastWriteDate\" : { \"$lt\" : { \"$date\" : \"2020-02-16T02:51:58.185-0500\" } } }, \"projection\" : { \"_id\" : 1 }, \"sort\" : { \"_id\" : 1 }, \"$db\" : \"config\" } }, \"result\" : 0 }",
+         "host" => {
+          "architecture" =>
+          "x86_64",
+          "id" => "d4e2c297-47bf-443a-8af8-e921715ed047",
+          "os" => {
+           "version" => "10.0",
+           "kernel" => "10.0.18362.836 (WinBuild.160101.0800)",
+           "build" => "18363.836",
+           "name" => "Windows 10 Enterprise",
+           "platform" => "windows",
+           "family" => "windows"
+          },
+          "name" => "<name>",
+          "hostname" => "<name>"
+         }
+        }
+        
 
 3.  Restart Filebeat to effect these changes.
 
@@ -242,130 +286,9 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
 #### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
 
 
-## Configuring Syslog to push logs to Guardium
+### What to do next
 
-### Syslogs configuration:
-To make the Logstash able to process the data collected by syslogs, configure available 
-syslog utility. The example is based on rsyslog utility available in many 
-versions of the Linux distributions. To check the service is active and running, execute the below 
-command:
-
-```text
-systemctl status rsyslog
-```
-
-#### Rsyslog installation guide:
-* [Ubuntu](https://www.rsyslog.com/ubuntu-repository)
-* [RHEL](https://www.rsyslog.com/rhelcentos-rpms)
-
-1. Generate Certificate Authority (CA):
-   * **Guardium Data Protection** <br/>
-   To obtain the Certificate Authority content on the Collector, run the following API command:
-     ```text
-     grdapi generate_ssl_key_universal_connector
-     ```
-     This API command will display the content of the public Certificate Authority. Copy this certificate authority content to your database source and save it as a file named 'ca.pem' .
-
-   * **Guardium Data Security Center - SaaS** <br/>
-   Refer to the instructions provided [here](https://www.ibm.com/docs/en/gdsc/saas?topic=connector-connecting-data-source-by-using-universal#plugin_connection_configuration__title__15) to obtain the Certificate Authority 
-   and connection details for Guardium Insights-SaaS.
-2. Create a file with name `mongo_syslog.conf` in the /etc/rsyslog.d/ directory with the content below in the 
-snippet and change the values of target and port,
-   ```text
-    global(DefaultNetstreamDriverCAFile="/path/to/ca_file/ca.pem")
-    # The template for message formatting
-    $template UcMessageFormat,"%HOSTNAME%,<SERVER_IP>,%msg%"
-
-    module(load="imfile")
-    ruleset(name="imfile_to_gdp") {
-            action(type="omfwd"
-            protocol="tcp"
-            StreamDriver="gtls"
-            StreamDriverMode="1"
-            StreamDriverAuthMode="x509/certvalid"
-            template="UcMessageFormat"
-            target="<target_host>"
-            port="<target_port>")
-    }   
-
-    input(
-        type="imfile"
-        file="/path/to/logs/directory/auditLog.json"
-        # Keep the value of tag below as same as here,
-        tag="syslog"
-        ruleset="imfile_to_gdp"
-    )
-    ```
-   This configuration reads the logs from the MongoDB log directory path and sends 
-the syslog messages to the provided host (target_host) at the provided port (target_port).<br/> <br/>
-
-   **NOTE**: For further configuration requirements that are specific to Guardium Insights - SaaS 
-environment, please follow the instructions provided [here](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/SaaS_1.0/UC_Configuration_GI.md#tcp-input-plug-in-configuration-for-connection-with-syslog).
-   <br/><br/>
-
-3. Include this file in the main rsyslog configurations file.
-   1. Open the file `/etc/rsyslog.conf`.
-   2. Append the below line at the end.
-      ```text
-      $IncludeConfig /etc/rsyslog.d/mongo_syslog.conf 
-      ```
-4. Restart the rsyslog utility.
-   ```text
-    systemctl restart rsyslog
-   ```
-
-## Configuring the MongoDB filters in Guardium
-The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector identifies and parses received events, and then converts them to a standard Guardium format. The output of the universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the MongoDB template.
-
-**Important**
-
-• Starting with Guardium Data Protection version 12.1, you can configuring the Universal Connectors in 2 ways. You can either use the legacy flow or the new flow.
-
-• To configure Universal Connector by using the new flow, see [Managing universal connector configuration](https://www.ibm.com/docs/en/gdp/12.x?topic=connector-managing-universal-configuration) on the Guardium Universal Connector page.
-
-• To configure the Universal Connector by using the legacy flow, use the procedure in this topic.
-
-### Limitations
-* The filter supports events sent through Syslog or Filebeat. It relies on the "mongod:" or "mongos:" prefixes in 
-the event message for the JSON portion of the audit to be parsed.
-* Field **server_hostname** (required) - Server hostname is expected (extracted from the nested field "name" 
-inside the host object of the Filebeat message).
-* Field **server_ip** - States the IP address of the MongoDB server, if it is available to the 
-filter plug-in. The filter will use this IP address instead of localhost IP addresses 
-that are reported by MongoDB, if actions were performed directly on the database server.
-* The client "Source program" is not available in messages sent by MongoDB. This is because 
-this data is sent only in the first audit log message upon database connection - and the 
-filter plug-in doesn't aggregate data from different messages.
-
-
-### Before You Begin
-* Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Data%20Protection/uc_policies_gdp.md) for more information.
-* You must have permission for the S-Tap Management role. The admin user includes this role by default.
-
-
-### Configuration
-1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
-2. Enable the universal connector if it is disabled.
-3. Click the plus sign to open the Connector Configuration dialog box.
-4. Type a name in the ```Connector name``` field.
-5. Update the input section,
-   1. To collect data over Filebeat, add the details from [mongoDBFilebeat.conf](./MongodbOverFilebeatPackage/mongodbFilebeat.conf) 
-   file input section, omitting the keyword "input{" at the beginning and its corresponding "}" 
-   at the end.
-   2. To collect data over Syslogs, add the details from [mongoDBSyslog.conf](./MongoDBOverSyslogPackage/mongodbSyslog.conf) file input section, 
-   omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-   3. To collect data over Mongo Atlas API, add the details from [mongoAtlas.conf](./MongodbOverMongoAtlasPackage/mongodbAtlas.conf) file input section,
-   omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-6. Update the filter section,
-   1. To filter the data collected from the Filebeat, add the details from the
-      [mongoDBFilebeat.conf](./MongodbOverFilebeatPackage/mongodbFilebeat.conf) file filter section, omitting the keyword 
-      "filter{" at the beginning and its corresponding "}" at the end.
-   2. To filter the data collected from the Syslogs, add the details from the
-      [mongoDBSyslog.conf](MongoDBOverSyslogPackage/mongodbSyslog.conf) file filter section, 
-      omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-   3. To filter the data collected from the Mongo Atlas API, add the details from the [mongoAtlas.conf](./MongodbOverMongoAtlasPackage/mongodbAtlas.conf)       file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-7. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added. This is no longer required starting v12p20 and v12.1.
-8. Click ```Save```. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
+Enable the universal connector on your collector. [Enabling the Guardium universal connector on collectors](https://www.ibm.com/docs/en/SSMPHH_11.4.0/com.ibm.guardium.doc.stap/guc/cfg_guc_input_filters.html)
 
 
 ## Configuring the MongoDB filters in Guardium Data Security Center
