@@ -60,7 +60,7 @@ public class CouchbaseCapellaInputTest {
         var baseUrl = String.format("http://%s:%d/%s", mockServerHost, mockServerPort, mockServerApiBasePath);
         Map<String, Object> configValues = new HashMap<>();
         configValues.put(CouchbaseCapellaInput.INTERVAL_CONFIG.name(), 2L);
-        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 1L);
+        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 20 * 60L);
         configValues.put(CouchbaseCapellaInput.API_BASE_URL_CONFIG.name(), baseUrl);
         configValues.put(CouchbaseCapellaInput.ORG_ID_CONFIG.name(), "success-org");
         configValues.put(CouchbaseCapellaInput.PROJECT_ID_CONFIG.name(), "success-project");
@@ -109,7 +109,7 @@ public class CouchbaseCapellaInputTest {
         var baseUrl = String.format("http://%s:%d/%s", mockServerHost, mockServerPort, mockServerApiBasePath);
         Map<String, Object> configValues = new HashMap<>();
         configValues.put(CouchbaseCapellaInput.INTERVAL_CONFIG.name(), 2L);
-        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 1L);
+        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 20 * 60L);
         configValues.put(CouchbaseCapellaInput.API_BASE_URL_CONFIG.name(), baseUrl);
         configValues.put(CouchbaseCapellaInput.ORG_ID_CONFIG.name(), "success-org");
         configValues.put(CouchbaseCapellaInput.PROJECT_ID_CONFIG.name(), "success-project");
@@ -128,7 +128,7 @@ public class CouchbaseCapellaInputTest {
 
         Map<String, Object> configValues = new HashMap<>();
         configValues.put(CouchbaseCapellaInput.INTERVAL_CONFIG.name(), 2L);
-        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 1L);
+        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 20 * 60L);
         configValues.put(CouchbaseCapellaInput.API_BASE_URL_CONFIG.name(), "");
         configValues.put(CouchbaseCapellaInput.ORG_ID_CONFIG.name(), "success-org");
         configValues.put(CouchbaseCapellaInput.PROJECT_ID_CONFIG.name(), "success-project");
@@ -147,7 +147,7 @@ public class CouchbaseCapellaInputTest {
         var baseUrl = String.format("http://%s:%d/%s", mockServerHost, mockServerPort, mockServerApiBasePath);
         Map<String, Object> configValues = new HashMap<>();
         configValues.put(CouchbaseCapellaInput.INTERVAL_CONFIG.name(), 2L);
-        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 1L);
+        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 20 * 60L);
         configValues.put(CouchbaseCapellaInput.API_BASE_URL_CONFIG.name(), baseUrl);
         configValues.put(CouchbaseCapellaInput.ORG_ID_CONFIG.name(), "");
         configValues.put(CouchbaseCapellaInput.PROJECT_ID_CONFIG.name(), "success-project");
@@ -166,7 +166,7 @@ public class CouchbaseCapellaInputTest {
         var baseUrl = String.format("http://%s:%d/%s", mockServerHost, mockServerPort, mockServerApiBasePath);
         Map<String, Object> configValues = new HashMap<>();
         configValues.put(CouchbaseCapellaInput.INTERVAL_CONFIG.name(), 2L);
-        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 1L);
+        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 20 * 60L);
         configValues.put(CouchbaseCapellaInput.API_BASE_URL_CONFIG.name(), baseUrl);
         configValues.put(CouchbaseCapellaInput.ORG_ID_CONFIG.name(), "success-org");
         configValues.put(CouchbaseCapellaInput.PROJECT_ID_CONFIG.name(), "");
@@ -185,7 +185,7 @@ public class CouchbaseCapellaInputTest {
         var baseUrl = String.format("http://%s:%d/%s", mockServerHost, mockServerPort, mockServerApiBasePath);
         Map<String, Object> configValues = new HashMap<>();
         configValues.put(CouchbaseCapellaInput.INTERVAL_CONFIG.name(), 2L);
-        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 1L);
+        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 20 * 60L);
         configValues.put(CouchbaseCapellaInput.API_BASE_URL_CONFIG.name(), baseUrl);
         configValues.put(CouchbaseCapellaInput.ORG_ID_CONFIG.name(), "success-org");
         configValues.put(CouchbaseCapellaInput.PROJECT_ID_CONFIG.name(), "success-project");
@@ -204,7 +204,7 @@ public class CouchbaseCapellaInputTest {
         var baseUrl = String.format("http://%s:%d/%s", mockServerHost, mockServerPort, mockServerApiBasePath);
         Map<String, Object> configValues = new HashMap<>();
         configValues.put(CouchbaseCapellaInput.INTERVAL_CONFIG.name(), 2L);
-        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 1L);
+        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 20 * 60L);
         configValues.put(CouchbaseCapellaInput.API_BASE_URL_CONFIG.name(), baseUrl);
         configValues.put(CouchbaseCapellaInput.ORG_ID_CONFIG.name(), "success-org");
         configValues.put(CouchbaseCapellaInput.PROJECT_ID_CONFIG.name(), "success-project");
