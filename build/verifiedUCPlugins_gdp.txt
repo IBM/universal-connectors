@@ -43,6 +43,7 @@ filter-plugin/logstash-filter-mysql-guardium/MySQLOverSyslogPackage
 #Other
 filter-plugin/logstash-filter-mongodb-guardium/MongodbOverMongoAtlasPackage
 filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub
+logstash-filter-capella-guardium/capellaCouchbaseOverCapellaPackage/capella
 filter-plugin/logstash-filter-databricks-guardium/AzureDatabricksOverAzureEventHub
 filter-plugin/logstash-filter-trino-guardium/TrinoOverSyslogPackage
 #Input plug-ins
