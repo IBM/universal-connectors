@@ -39,3 +39,4 @@ filter-plugin/logstash-filter-scylldb-guardium/logstash-filter-scylladb_guardium
 filter-plugin/logstash-filter-databricks-guardium/logstash-filter-databricks_guardium_filter
 filter-plugin/logstash-filter-trino-guardium/logstash-filter-trino_guardium_plugin_filter
 input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input
+
