@@ -59,7 +59,7 @@ BEGIN QUERY LOGGING WITH SQL LIMIT SQLTEXT=0 ON ALL;
 ```
 To check if the audit log is on/off, run:
 ```dtd
-		select * from DBC.DBQLRulesV;
+select * from DBC.DBQLRulesV;
 ```
 ## 3. Steps to disable Auditing
 Auditing can be disabled similarly to how we enabled auditing by logging in with dbc user or any other user that has access to DBQLAccessMacro.
