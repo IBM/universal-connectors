@@ -58,7 +58,7 @@ For **Teradata VCE on Azure**, run the following query to turn the audit log on.
 BEGIN QUERY LOGGING WITH SQL LIMIT SQLTEXT=0 ON ALL;
 ```
 To check if the audit log is on/off, run:
-```dtd
+```
 select * from DBC.DBQLRulesV;
 ```
 ## 3. Steps to disable Auditing
