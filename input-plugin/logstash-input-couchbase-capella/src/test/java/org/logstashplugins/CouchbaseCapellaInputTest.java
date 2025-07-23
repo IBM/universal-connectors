@@ -106,21 +106,28 @@ public class CouchbaseCapellaInputTest {
     @Test
     public void testCouchbaseCapellaInput_EpochToISO8601() {
 
-        var baseUrl = String.format("http://%s:%d/%s", mockServerHost, mockServerPort, mockServerApiBasePath);
-        Map<String, Object> configValues = new HashMap<>();
-        configValues.put(CouchbaseCapellaInput.INTERVAL_CONFIG.name(), 2L);
-        configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 20 * 60L);
-        configValues.put(CouchbaseCapellaInput.API_BASE_URL_CONFIG.name(), baseUrl);
-        configValues.put(CouchbaseCapellaInput.ORG_ID_CONFIG.name(), "success-org");
-        configValues.put(CouchbaseCapellaInput.PROJECT_ID_CONFIG.name(), "success-project");
-        configValues.put(CouchbaseCapellaInput.CLUSTER_ID_CONFIG.name(), "success-cluster");
-        configValues.put(CouchbaseCapellaInput.AUTH_TOKEN_CONFIG.name(), "Bearer good_token");
+        TimeZone originalTimeZone = TimeZone.getDefault();
 
-        Configuration config = new ConfigurationImpl(configValues);
-        CouchbaseCapellaInput input = new CouchbaseCapellaInput("test-id", config, null);
+        try {
+            TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+            var baseUrl = String.format("http://%s:%d/%s", mockServerHost, mockServerPort, mockServerApiBasePath);
+            Map<String, Object> configValues = new HashMap<>();
+            configValues.put(CouchbaseCapellaInput.INTERVAL_CONFIG.name(), 2L);
+            configValues.put(CouchbaseCapellaInput.QUERY_LENGTH_CONFIG.name(), 20 * 60L);
+            configValues.put(CouchbaseCapellaInput.API_BASE_URL_CONFIG.name(), baseUrl);
+            configValues.put(CouchbaseCapellaInput.ORG_ID_CONFIG.name(), "success-org");
+            configValues.put(CouchbaseCapellaInput.PROJECT_ID_CONFIG.name(), "success-project");
+            configValues.put(CouchbaseCapellaInput.CLUSTER_ID_CONFIG.name(), "success-cluster");
+            configValues.put(CouchbaseCapellaInput.AUTH_TOKEN_CONFIG.name(), "Bearer good_token");
 
-        var dateTimeStr = input.epochSecToISO8601DateTimeString(1747702429L);
-        Assert.assertEquals("2025-05-19T20:53:49Z", dateTimeStr);
+            Configuration config = new ConfigurationImpl(configValues);
+            CouchbaseCapellaInput input = new CouchbaseCapellaInput("test-id", config, null);
+
+            var dateTimeStr = input.epochSecToISO8601DateTimeString(1747702429L);
+            Assert.assertEquals("2025-05-20T00:53:49Z", dateTimeStr);
+        } finally {
+            TimeZone.setDefault(originalTimeZone); // Restore after test
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
