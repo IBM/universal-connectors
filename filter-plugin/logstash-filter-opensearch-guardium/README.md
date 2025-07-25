@@ -6,7 +6,7 @@
 * Environment: AWS
 * Supported inputs: CloudWatch (pull)
 * Supported Guardium versions:
-    * Guardium Data Protection 12.0 and later
+    * Guardium Data Protection 12.2 and later
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in
 IBM Security Guardium. It parses events and messages from the Amazon OpenSearch audit log into
