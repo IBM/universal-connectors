@@ -98,8 +98,8 @@ For more information, reference here https://docs.couchbase.com/server/current/a
 * No more than three historical export requests are permitted over 24-hour period.
 
 Notes:
-* Data may take around 15–20 minutes to show up in the Full SQL report.
-* Multiple entries may appear on the S-TAP page when the server is accessed through different ports.
+* It may take approximately 15–20 minutes for data to appear in the Full SQL report.
+* The S-TAP page may display multiple entries if the server is accessed using different ports.
 
 * ## Suggestion 
 * In the configuration file, query_interval and query_length have no restrictions, with both fields defaulting to 1 hour. However, we recommend using shorter intervals rather than longer ones, as a larger interval may result in unnecessary waiting time before the next cycle, leading to resource inefficiency.
