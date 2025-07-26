@@ -38,5 +38,8 @@ filter-plugin/logstash-filter-mysql-azure-guardium/logstash-filter-azure_mysql_g
 filter-plugin/logstash-filter-scylldb-guardium/logstash-filter-scylladb_guardium_filter
 filter-plugin/logstash-filter-databricks-guardium/logstash-filter-databricks_guardium_filter
 filter-plugin/logstash-filter-trino-guardium/logstash-filter-trino_guardium_filter
+filter-plugin/logstash-filter-capella-guardium/logstash-filter-capella_guardium_filter
+filter-plugin/logstash-filter-opensearch-guardium/logstash-filter-opensearch_guardium_filter
+input-plugin/logstash-input-couchbase-capella/logstash-input-couchbase_capella_input
 input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input
 

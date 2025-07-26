@@ -47,8 +47,8 @@ https://docs.couchbase.com/server/current/manage/manage-security/manage-auditing
 3. Click ```Upload File``` and select the offline  [logstash-input-couchbase_capella_input](logstash-input-couchbase_capella_input.zip) plug-in. After it is uploaded, click ```OK```.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
-6. Update the input section to add the details from the [capellaCouchbase.conf](../../filter-plugin/logstash-filter-capella-guardium/capellaCouchbaseOverCapellaPackage/capellaCouchbase.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-7. Update the filter section to add the details from the [capellaCouchbase.conf](../../filter-plugin/logstash-filter-capella-guardium/capellaCouchbaseOverCapellaPackage/capellaCouchbase.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
+6. Update the input section to add the details from the [capellaCouchbase.conf](../../filter-plugin/logstash-filter-capella-guardium/CapellaCouchbaseOverCapellaPackage/capellaCouchbase.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+7. Update the filter section to add the details from the [capellaCouchbase.conf](../../filter-plugin/logstash-filter-capella-guardium/CapellaCouchbaseOverCapellaPackage/capellaCouchbase.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
 9. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 10. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the ```Disable/Enable``` button.
@@ -96,6 +96,10 @@ For more information, reference here https://docs.couchbase.com/server/current/a
 ##  Limitations
 * ## Limitations
 * No more than three historical export requests are permitted over 24-hour period.
+
+Notes:
+* It may take approximately 15–20 minutes for data to appear in the Full SQL report.
+* The S-TAP page may display multiple entries if the server is accessed using different ports.
 
 * ## Suggestion 
 * In the configuration file, query_interval and query_length have no restrictions, with both fields defaulting to 1 hour. However, we recommend using shorter intervals rather than longer ones, as a larger interval may result in unnecessary waiting time before the next cycle, leading to resource inefficiency.
