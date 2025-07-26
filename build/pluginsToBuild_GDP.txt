@@ -41,4 +41,5 @@ filter-plugin/logstash-filter-trino-guardium
 filter-plugin/logstash-filter-capella-guardium
 filter-plugin/logstash-filter-opensearch-guardium
 input-plugin/logstash-input-couchbase-capella
+input-plugin/logstash-input-http
 input-plugin/logstash-input-mongo-atlas
