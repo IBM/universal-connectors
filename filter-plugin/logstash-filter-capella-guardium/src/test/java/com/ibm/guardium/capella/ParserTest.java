@@ -753,5 +753,6 @@ class ParserTest {
     assertEquals("COUCHB", record.getAccessor().getLanguage());
     assertEquals("UNRECOGNIZED statement", record.getException().getDescription());
     assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
+    assertEquals("select * fro test;", record.getException().getSqlString());
   }
 }

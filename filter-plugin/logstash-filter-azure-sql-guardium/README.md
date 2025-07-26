@@ -108,7 +108,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 **Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-azuresql_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
-• Download the mssql-jdbc-7.4.1.jre8 from [here](https://jar-download.com/artifacts/com.microsoft.sqlserver/mssql-jdbc/7.4.1.jre8)
+• Download the mssql-jdbc-7.4.1.jre8 from [here](https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/7.4.1.jre8/mssql-jdbc-7.4.1.jre8.jar)
 
 #### Configuration
 
