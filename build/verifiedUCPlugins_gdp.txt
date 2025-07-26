@@ -45,7 +45,8 @@ filter-plugin/logstash-filter-mongodb-guardium/MongodbOverMongoAtlasPackage
 filter-plugin/logstash-filter-azure-postgresql-guardium/AzurePostgresqlOverAzureEventHub
 filter-plugin/logstash-filter-databricks-guardium/AzureDatabricksOverAzureEventHub
 filter-plugin/logstash-filter-trino-guardium/TrinoOverSyslogPackage
-filter-plugin/logstash-filter-capella-guardium/capellaCouchbaseOverCapellaPackage
+filter-plugin/logstash-filter-capella-guardium/CapellaCouchbaseOverCapellaPackage
+filter-plugin/logstash-filter-opensearch-guardium/OpenSearchOverCloudwatchPackage
 #Input plug-ins
 input-plugin/logstash-input-azure-event-hubs/AzureEventHubsInputPackage
 input-plugin/logstash-input-beats/FilebeatInputPackage
