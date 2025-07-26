@@ -134,10 +134,10 @@ enforcements. Configure Guardium to read the native audit/data_access logs by cu
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from
-   the [capellaCouchbase.conf](capellaCouchbaseOverCapellaPackage/capellaCouchbase.conf) file's input part,
+   the [capellaCouchbase.conf](CapellaCouchbaseOverCapellaPackage/capellaCouchbase.conf) file's input part,
    omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 7. Update the filter section to add the details from
-   the [capellaCouchbase.conf](capellaCouchbaseOverCapellaPackage/capellaCouchbase.conf) file's filter part,
+   the [capellaCouchbase.conf](CapellaCouchbaseOverCapellaPackage/capellaCouchbase.conf) file's filter part,
    omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every
    individual connector added.
