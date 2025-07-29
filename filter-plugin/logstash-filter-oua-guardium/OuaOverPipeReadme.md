@@ -52,7 +52,7 @@ Update the variables in Makefile for your environment's Java home and Logstash l
 
        - For other environments including RDS in AWS and Oracle Databases On-Premises run the following commands:
          ```
-         CREATE USER <guardium_user> IDENTIFIED BY <guardium_user>; 
+         CREATE USER <guardium_user> IDENTIFIED BY <guardium_password>; 
          GRANT CONNECT to <guardium_user>; 
          GRANT AUDIT_VIEWER to <guardium_user>; 
          GRANT SELECT ON v_$INSTANCE to <guardium_user>; 
