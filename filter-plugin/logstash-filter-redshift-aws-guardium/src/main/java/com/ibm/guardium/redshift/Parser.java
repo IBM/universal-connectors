@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,32 +28,32 @@ import co.elastic.logstash.api.Event;
 /**
  * Parser class is responsible to parse data of events object and set to guard
  * object.
- * 
+ *
  * @author Ankita Pawar
  */
 public class Parser {
 
-	private static final DateTimeFormatterBuilder dateTimeFormatterBuilder = new DateTimeFormatterBuilder()
+	private final DateTimeFormatterBuilder dateTimeFormatterBuilder = new DateTimeFormatterBuilder()
 			.append(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS[[XXX][X]]"));
 
-	private static final DateTimeFormatter DATE_TIME_FORMATTER = dateTimeFormatterBuilder.toFormatter();
-	private static Logger log = LogManager.getLogger(Parser.class);
+	private final DateTimeFormatter DATE_TIME_FORMATTER = dateTimeFormatterBuilder.toFormatter();
+	private Logger log = LogManager.getLogger(Parser.class);
 	final static String regex = "(\\w+\\s+(?i)External\\s+(?i)table)\\s+['\\\"\\`]?([a-zA-Z_.]+)*|((?i)show\\s+(?i)table)\\s+['\\\"\\`]?([a-zA-Z0-9_.]+)*|((?i)alter\\s+(?i)table)\\s+['\\\"\\`]?([a-zA-Z0-9_.]+)*|((?i)create\\s+(?i)table)\\s+['\\\"\\`]?([a-zA-Z0-9_]+)*|(\\w+\\s+(?i)PROCEDURE)\\s+['\\\"\\`]?([a-zA-Z0-9_.]+)*|(\\w+\\s+(?i)DATASHARE)\\s+['\\\"\\`]?(\\w+)*|(\\w+\\s+(?i)DATASHARES)\\s+['\\\"\\`]?(?i)like\\s+'([a-zA-Z_%-0-9]+)'*|(\\w+\\s+(?i)DATASHARES)|(\\w+\\s+(?i)library)\\s+['\\\"\\`]?([a-zA-Z0-9_.]+)*|(\\w+\\s+(?i)model)\\s+['\\\"\\`]?(\\w+)*|(\\w+\\s+(?i)Identity\\s+(?i)provider)\\s+['\\\"\\`]?([a-zA-Z0-9_.]+)*|(\\w+\\s+(?i)EXTERNAL\\s+(?i)FUNCTION)\\s+['\\\"\\`]?([a-zA-Z0-9_.]+)*|(\\w+\\s+(?i)EXTERNAL\\s+(?i)SCHEMA)\\s+['\\\"\\`]?([a-zA-Z0-9_.]+)*|(\\w+\\s+(?i)view)\\s+['\\\"\\`]?([a-zA-Z0-9_.]+)*|(\\w+\\s+(?i)compression)\\s+['\\\"\\`]?([a-zA-Z0-9_.]+)*|((?i)copy)\\s+['\\\"\\`]?([a-zA-Z0-9_.]+)*|((?i)vacuum)\\s+((?i)sort|(?i)delete)\\s+(?i)only\\s+['\\\"\\`]?(\\w+)|((?i)vacuum)\\s+(?i)reindex\\s+['\\\"\\`]?(\\w+)|((?i)vacuum)\\s*['\\\"\\`]?(\\w+)*|((?i)cancel)|((?i)unload)\\s+\\('([^']+)'\\)\\s+to\\s+'([^']+)'|(\\w+\\s+(?i)database)\\s+['\\\"\\`]?(\\w+)*|(\\w+\\s+(?i)materialized\\s+(?i)view)\\s+((?i)if\\s+(?i)exists\\s+)?['\\\"\\`]?(\\w+)*|(\\w+\\s+(?i)role)\\s+['\\\"\\`]?(\\w+)*|((?i)create\\s+(?i)or\\s+(?i)replace\\s+(?i)function)\\s+['\\\"\\`]?(\\w+)*|(\\w+\\s+(?i)function)\\s+['\\\"\\`]?(\\w+)*";
 	final static Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
-	static List<String> lst = new ArrayList<>();
+	List<String> lst = new ArrayList<>();
 
 	/**
-	 * 
+	 *
 	 * @param event
 	 * @return record
 	 */
-	public static Record parseRecord(final Event event) throws ParseException {
+	public Record parseRecord(final Event event) throws ParseException {
 		Record record = new Record();
-		String sessionId = RedShiftTags.NA_STRING;
 		String dbName = RedShiftTags.UNKNOWN_STRING;
 		record.setSessionId(
-				event.getField(RedShiftTags.ID) != null ? event.getField(RedShiftTags.ID).toString() : sessionId);
+				event.getField(RedShiftTags.ID) != null ? event.getField(RedShiftTags.ID).toString() : RedShiftTags.NA_STRING);
 
+		// Set dbName if present
 		if (event.getField(RedShiftTags.DB) != null && event.getField(RedShiftTags.DBPREFIX) != null) {
 
 			dbName = event.getField(RedShiftTags.DBPREFIX).toString() + ":"
@@ -92,11 +93,11 @@ public class Parser {
 
 	/**
 	 * Populating SessionLocator from event.
-	 * 
+	 *
 	 * @param event
 	 * @return SessionLocator
 	 */
-	public static SessionLocator parseSessionLocator(final Event event) {
+	public SessionLocator parseSessionLocator(final Event event) {
 		SessionLocator sessionLocator = new SessionLocator();
 		sessionLocator.setIpv6(false);
 		if (event.getField(RedShiftTags.REMOTEHOST) != null && event.getField(RedShiftTags.REMOTEPORT) != null) {
@@ -124,11 +125,11 @@ public class Parser {
 
 	/**
 	 * Populating Accessor from event.
-	 * 
+	 *
 	 * @param event
 	 * @return Accessor
 	 */
-	public static Accessor parseAccessor(final Event event, final Record record) {
+	public Accessor parseAccessor(final Event event, final Record record) {
 		Accessor accessor = new Accessor();
 		if (event.getField(RedShiftTags.U_IDENTIFIER) != null) {
 			accessor.setDbUser(event.getField(RedShiftTags.U_IDENTIFIER).toString());
@@ -168,6 +169,8 @@ public class Parser {
 					lst.add(matcher.group(i));
 				}
 			}
+		}
+		if(!lst.isEmpty()) {
 			accessor.setLanguage(Accessor.LANGUAGE_FREE_TEXT_STRING);
 			accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL);
 		} else {
@@ -180,11 +183,11 @@ public class Parser {
 
 	/**
 	 * Populating data object.
-	 * 
+	 *
 	 * @param event
 	 * @return Data
 	 */
-	public static Data parseData(final Event event) {
+	public Data parseData(final Event event) {
 		Data data = new Data();
 		data.setOriginalSqlCommand(regexCustomReplace(event));
 		return data;
@@ -192,17 +195,17 @@ public class Parser {
 
 	/**
 	 * Populating data object.
-	 * 
+	 *
 	 * @param event
 	 * @return Data
 	 */
-	private static Data parseDataRegex(final Event event) {
+	private Data parseDataRegex(final Event event) {
 		Data data = new Data();
 		data.setConstruct(parseAsConstruct(event));
 		return data;
 	}
 
-	private static Construct parseAsConstruct(final Event event) {
+	private Construct parseAsConstruct(final Event event) {
 		final Construct construct = new Construct();
 		final Sentence sentence = parseSentence(event);
 		// String test=regexCustomReplace(event);
@@ -214,7 +217,7 @@ public class Parser {
 
 	}
 
-	private static Sentence parseSentence(final Event event) {
+	private Sentence parseSentence(final Event event) {
 		Sentence sentence = null;
 		sentence = new Sentence(lst.get(0));
 		if (lst.size() == 1) {
@@ -231,11 +234,11 @@ public class Parser {
 	 * Using this to perform operation on input, convert String core into
 	 * sentenceObject Object and then return the value as response
 	 *
-	 * @param String core
+	 * @param message
 	 * @return sentenceobject
 	 *
 	 */
-	private static SentenceObject parseSentenceObject(String message) {
+	private SentenceObject parseSentenceObject(String message) {
 		SentenceObject sentenceObject = null;
 		sentenceObject = new SentenceObject(message);
 		sentenceObject.setName(message);
@@ -243,7 +246,7 @@ public class Parser {
 		return sentenceObject;
 	}
 
-	private static String regexCustomReplace(final Event event) {
+	private String regexCustomReplace(final Event event) {
 		String query = RedShiftTags.UNKNOWN_STRING;
 		if (event.getField(RedShiftTags.SQLQUERY) != null) {
 			query = event.getField(RedShiftTags.SQLQUERY).toString();
@@ -256,35 +259,39 @@ public class Parser {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param event
 	 * @return Time
 	 */
-	public static Time getConnTime(final Event event) {
-		String day = event.getField("day").toString();
-		String month = event.getField("month").toString();
-		String year = event.getField("year").toString();
-		String md = event.getField("md").toString();
-		String rdtime = event.getField("time").toString();
-		String concatStr = day + ", " + md + " " + month + " " + year + " " + rdtime;
-		Date date = null;
-		SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss:SSS");
+	public Time getConnTime(final Event event) {
 		try {
-			date = formatter.parse(concatStr);
+			String day = event.getField("day").toString();
+			String md = event.getField("md").toString();
+			String month = event.getField("month").toString();
+			String year = event.getField("year").toString();
+			String rdtime = event.getField("time").toString();
+
+			String concatStr = day + ", " + md + " " + month + " " + year + " " + rdtime;
+
+			SimpleDateFormat formatter =
+					new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss:SSS", Locale.ENGLISH);
+			Date date = formatter.parse(concatStr);
+			long millis = date.getTime();
+
+			return new Time(millis, date.getTimezoneOffset(), 0);
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error("An error occurred during parsing the time for event: {}", event, ex);
+			return new Time(0, 0, 0);
 		}
-		long millis = date.getTime();
-		return new Time(millis, date.getTimezoneOffset(), 0);
 	}
 
 	/**
-	 * 
+	 *
 	 * @param event
 	 * @return Time
 	 */
-	public static Time getTime(Event event) {
+	public Time getTime(Event event) {
 		String dateString = event.getField(RedShiftTags.TIMESTAMP).toString();
 		ZonedDateTime date = ZonedDateTime.parse(dateString);
 		long millis = date.toInstant().toEpochMilli();
@@ -293,11 +300,11 @@ public class Parser {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param event
 	 * @return Exception
 	 */
-	public static ExceptionRecord parseException(final Event event) {
+	public ExceptionRecord parseException(final Event event) {
 		ExceptionRecord exceptionRecord = new ExceptionRecord();
 		exceptionRecord.setExceptionTypeId(RedShiftTags.EXCEPTION_TYPE_AUTHENTICATION_STRING);
 		exceptionRecord.setDescription("LOGIN_FAILED");
@@ -305,7 +312,7 @@ public class Parser {
 		return exceptionRecord;
 	}
 
-	public static boolean isIpv6(final String address) {
+	public boolean isIpv6(final String address) {
 		return address.contains(":");
 
 	}
