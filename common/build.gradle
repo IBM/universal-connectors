@@ -64,3 +64,11 @@ artifacts {
      archives sourcesJar
      archives javadocJar
 }
+
+task copyDependencies(type: Copy) {
+    description 'Copies all runtime dependencies into build/libs directory'
+    from configurations.runtimeClasspath
+    into "${buildDir}/libs"
+}
+
+jar.finalizedBy(copyDependencies)
