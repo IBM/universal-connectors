@@ -320,15 +320,17 @@ This command returns the IAM user or role associated with the AWS credentials be
 ```
 grdapi restart_universal_connector overwrite_old_instance="true"
 ```
-## 2. Configuring Event Filtering (Optional)
+## 2. Configuring event filters
 
-To improve data processing efficiency and avoid delays, customers can configure **event filtering** to collect only specific types of events from AWS into Guardium. This is done using the `event_filter` parameter under the input filter configuration.
+Note: This is an optional step
 
-### Example Configuration
+To improve data processing efficiency and avoid delays, you can configure **event filtering** to collect specific types of events from AWS into Guardium. This is done using the `event_filter` parameter under the input filter configuration.
+
+For example
 
 ```text
 event_filter => '?delete ?DELETE ?insert ?INSERT'
 ```
-This example filters for only DELETE and INSERT operations (case-insensitive), reducing unnecessary event processing.
+This query filters DELETE and INSERT operations (case-insensitive) and reduces unnecessary event processing.
 
-You can customize the filter further based on the specific events relevant to your use case. Simply modify the event types listed in the event_filter string as needed.
+You can customize the filter based on specific events that are relevant to your use case. To update the filter, modify the event types such as delete and insert that are listed in the event_filter string.
