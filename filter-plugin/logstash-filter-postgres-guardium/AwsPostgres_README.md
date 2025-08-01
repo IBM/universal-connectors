@@ -276,7 +276,9 @@ To configure this plug-in for Guardium Data Security Center, follow [this guide.
 
 For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).
 
-### Troubleshooting
+# Troubleshooting
+
+## 1. Troubleshooting for Seahorse Networking errors
 
 If you encounter one of the following errors:
 
@@ -318,3 +320,17 @@ This command returns the IAM user or role associated with the AWS credentials be
 ```
 grdapi restart_universal_connector overwrite_old_instance="true"
 ```
+## 2. Configuring Event Filtering (Optional)
+
+To improve data processing efficiency and avoid delays, customers can configure **event filtering** to collect only specific types of events from AWS into Guardium. This is done using the `event_filter` parameter under the input filter configuration.
+
+### Example Configuration
+
+```text
+event_filter => '?delete ?DELETE ?insert ?INSERT'
+```
+
+
+This example filters for only DELETE and INSERT operations (case-insensitive), reducing unnecessary event processing.
+
+You can customize the filter further based on the specific events relevant to your use case. Simply modify the event types listed in the event_filter string as needed.
