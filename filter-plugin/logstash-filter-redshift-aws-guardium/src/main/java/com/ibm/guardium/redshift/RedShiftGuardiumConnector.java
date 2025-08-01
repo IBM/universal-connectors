@@ -44,24 +44,29 @@ public class RedShiftGuardiumConnector implements Filter {
 
 	/**
 	 * This filter method invoked by the Logstash execution engine.
-	 * 
+	 *
 	 * @param events , matchListener
 	 * @return events
 	 */
 	@Override
 	public Collection<Event> filter(Collection<Event> events, FilterMatchListener matchListener) {
 		ArrayList<Event> skippedEvents = new ArrayList<>();
+		Parser parser = new Parser();
 
 		for (Event e : events) {
+			if (log.isDebugEnabled()) {
+				log.debug("Event Now: {}", e.getData());
+			}
 			if ((e.getField(RedShiftTags.SQLQUERY) != null && e.getField(RedShiftTags.U_IDENTIFIER) != null
 					&& e.getField(RedShiftTags.SQLQUERY).toString() instanceof String
 					&& e.getField(RedShiftTags.SQLQUERY).toString().contains("LOG")
 					&& !(e.getField(RedShiftTags.U_IDENTIFIER).toString().equalsIgnoreCase("RDSDB")))
 					|| (e.getField(RedShiftTags.USER_NAME) != null
-							&& !e.getField(RedShiftTags.USER_NAME).toString().equalsIgnoreCase("RDSDB")
-							&& e.getField(RedShiftTags.STATUS).toString().equalsIgnoreCase("authentication failure"))) {
+					&& !e.getField(RedShiftTags.USER_NAME).toString().equalsIgnoreCase("RDSDB")
+					&& e.getField(RedShiftTags.STATUS).toString().equalsIgnoreCase("authentication failure"))) {
 				try {
-					Record record = Parser.parseRecord(e);
+
+					Record record = parser.parseRecord(e);
 					final GsonBuilder builder = new GsonBuilder();
 					builder.serializeNulls();
 					final Gson gson = builder.create();
