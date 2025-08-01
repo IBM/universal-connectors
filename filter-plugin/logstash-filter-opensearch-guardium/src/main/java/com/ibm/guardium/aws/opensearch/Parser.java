@@ -308,7 +308,7 @@ public class Parser extends CustomParser {
 
 
     public static String normalizeReservedKeyword(String word) {
-        Set<String> snifRestrictedKeywords = Set.of("template", "mappings", "get", "aliases", "user");
+        Set<String> snifRestrictedKeywords = Set.of("template", "mappings", "get", "aliases", "user", "info", "account", "actiongroups", "actions");
         if (word != null && snifRestrictedKeywords.contains(word)) {
             return "_" + word;
         }
