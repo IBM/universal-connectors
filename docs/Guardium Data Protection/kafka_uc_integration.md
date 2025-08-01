@@ -223,22 +223,25 @@ To configure audit logs for Yugabyte DB, see [Enabling the audit logs](https://g
 	           key = "UcSessionID"
 	           queue.filename="omkafkaq"
 	           queue.spoolDirectory="/var/lib/rsyslog"
-	           queue.size="300000"
+	           queue.size="500000"
 	           queue.maxdiskspace="536870912"
 	           queue.lowwatermark="20000"
-	           queue.highwatermark="200000"
+	           queue.highwatermark="400000"
 	           queue.discardmark="250000"
 	           queue.type="LinkedList"
-	           queue.discardseverity="4"
+	           queue.discardseverity="8"
 	           queue.saveonshutdown="on"
-	           queue.dequeuebatchsize="4"
+	           queue.dequeuebatchsize="1024"
 	           partitions.auto="on"
+	           action.resumeRetryCount="-1"
+	           action.resumeInterval="10"
+	           action.reportSuspension="on"
 	           errorFile="/var/log/rsyslog.err"
 	           confParam=[ "compression.codec=snappy",
-	               	"socket.timeout.ms=1000",
-	               	"socket.keepalive.enable=true",
-			"security.protocol=ssl",
-			"debug=all",
+	           		"queue.buffering.max.messages=10000000",
+                	"socket.timeout.ms=1000",
+               		"socket.keepalive.enable=true","security.protocol=ssl",
+               		"debug=all",
 	                "ssl.ca.location=<_ENTER_CERTIFICATE>"
 	           ]
 		)
