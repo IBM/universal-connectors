@@ -329,8 +329,6 @@ To improve data processing efficiency and avoid delays, customers can configure 
 ```text
 event_filter => '?delete ?DELETE ?insert ?INSERT'
 ```
-
-
 This example filters for only DELETE and INSERT operations (case-insensitive), reducing unnecessary event processing.
 
 You can customize the filter further based on the specific events relevant to your use case. Simply modify the event types listed in the event_filter string as needed.
