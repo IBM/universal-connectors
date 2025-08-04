@@ -1,5 +1,6 @@
 # Teradata-Guardium Logstash filter plug-in
 ### Meet Teradata
+
 * Tested versions: 16.20, 17.20, Azure VCE 17.20/20.0
 * Environment: Cloud, On-premise, Azure VCE 17.2/20.0
 * Supported inputs: JDBC (pull)
