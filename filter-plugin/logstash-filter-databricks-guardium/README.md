@@ -115,6 +115,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
     The following field are not found in original audit log from Azure Databricks: Database name, ProtocolVersion, AppUserName, Client mac, Common Protocol, Os User, ClientOs, ServerOs.
 2. The log with sql excution will not have client ip, but it will come with another log with action name of "commandFinish". 
 3. The eventhub takes 10~30 minutes to receive raw logs from Databricks, the same delay time for Guardium is expected.
+4. If queries are submitted as part of a notebook cell, job, or script, Databricks may log the entire execution context (e.g., the notebook run or job task) rather than each individual SQL query, in this case, Guardium will not be able to form separate records.
 
 ## 6. Configuring the Azure-Databricks filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Azure-Databricks template.
