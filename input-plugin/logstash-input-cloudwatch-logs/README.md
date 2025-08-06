@@ -67,8 +67,11 @@ The `session_token` setting allows specifying a AWS Session token for temporary 
 #### `region`
 The `region` setting allows specify the region in which the Cloudwatch log group exists.
 
-#### `codec`
-The `codec` setting allows specify, the codec used for input data. Input codecs are a convenient method for decoding the data before it enters the input, without needing a separate filter in the Logstash pipeline.
+#### `codec pattern`
+The `codec pattern` setting allows specify, the codec used for input data. Input codecs are a convenient method for decoding the data before it enters the input, without needing a separate filter in the Logstash pipeline.
+For the Redshift and Postgres plug-ins, update the value of the pattern parameter from the inputs section as specified in the codec pattern.
+For Redshift, add pattern from [here] ( https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-redshift-aws-guardium/redshift-over-cloudwatch.conf )
+For Postgres, add pattern from [here] ( https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/postgresCloudwatch.conf )
 
 #### `role_arn`
 The role_arn setting allows you to specify which AWS IAM Role to assume, if any. This is used to generate temporary credentials, typically for cross-account access. To understand more about the settings to be followed while using this parameter, click [here]( ./SettingsForRoleArn.md )
