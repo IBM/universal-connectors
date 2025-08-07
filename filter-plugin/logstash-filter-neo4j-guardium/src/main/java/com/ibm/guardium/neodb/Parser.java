@@ -240,9 +240,12 @@ public class Parser {
 
 		String queryStatement = data.get(Constants.QUERY_STATEMENT).getAsString();
 		String[] queryData = queryStatement.split("'} - ");
+		if(queryData.length == 1){
+			queryData = queryStatement.split("} - ");
+		}
 
 		String query = queryData[0].toString();
-		String exceptionDes = queryData[1].toString();
+		String exceptionDes = queryData[queryData.length - 1].toString();
 		exceptionRecord.setDescription(exceptionDes);
 
 		exceptionRecord.setSqlString(query);
