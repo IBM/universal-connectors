@@ -70,6 +70,7 @@ For more information about the audit logging fields, refer to the [Audit log fie
 - OpenSearch may log FAILED_LOGIN REST messages during idle periods in Dev Tools due to background requests (like session keep-alives or auth checks) failing authentication, even if no user-initiated requests are made.
 - Certain reserved keywords (template, mappings, get, aliases, user) are automatically prefixed with an underscore (_) during sanitization to prevent OpenSearch URI parsing errors or endpoint conflicts.
 - Based on the enabled audit options, multiple entries may appear on the S-TAP page when the server is accessed through different ports.
+- ClientHostName is not available in the audit logs for OpenSearch.
 
 ## Guardium Data Protection
 
