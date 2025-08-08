@@ -14,7 +14,7 @@ IBM Security Guardium. It parses events and messages from the Trino audit log in
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter
 plug-ins for Guardium universal connector.
 
-## 1. Configuring ONPREM TRINO
+## 1. Configuring ONPREM MSSQL
 
 ### Procedure
 
@@ -77,7 +77,7 @@ enforcements.
 * Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default
 * Download
-  the [logstash-filter-trino_guardium_filter](../../filter-plugin/logstash-filter-trino-guardium/logstash-filter-trino_guardium_filter.zip)
+  the [logstash-filter-trino_guardium_filter](./logstash-filter-trino_guardium_plugin_filter.zip)
   plug-in.
 * Verify that the http input plugin is available on the GDP system. If the plugin is missing, download and install
   the  [logstash-input-http](../../input-plugin/logstash-input-http/logstash-input-http_guardium_filter.zip)
@@ -88,18 +88,17 @@ enforcements.
 1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
 2. Enable the universal connector if it is disabled.
 3. Click ```Upload File``` and select the
-   offline  [logstash-filter-trino_guardium_filter](../../filter-plugin/logstash-filter-trino-guardium/logstash-filter-trino_guardium_filter.zip)
+   offline  [logstash-filter-trino_guardium_filter](./logstash-filter-trino_guardium_plugin_filter.zip)
    plug-in. After it is uploaded, click ```OK```.
 4. Click ```Upload File``` and select the key.json file. After it is uploaded, click ```OK```.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
-7. Update the input section to add the details from the [TrinoSyslog.conf](../../filter-plugin/logstash-filter-trino-guardium/TrinoOverSyslogPackage/TrinoSyslog.conf)
+7. Update the input section to add the details from the [TrinoSyslog.conf](./TrinoOverSyslogPackage/TrinoSyslog.conf)
    file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-8. Update the filter section to add the details from the [TrinoSyslog.conf](../../filter-plugin/logstash-filter-trino-guardium/TrinoOverSyslogPackage/TrinoSyslog.conf)
+8. Update the filter section to add the details from the [TrinoSyslog.conf](./TrinoOverSyslogPackage/TrinoSyslog.conf)
    file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 9. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every
    individual connector added.
 10. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 11. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart
     the Universal Connector using the ```Disable/Enable``` button.
-
