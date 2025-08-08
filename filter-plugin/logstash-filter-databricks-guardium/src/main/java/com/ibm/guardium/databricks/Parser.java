@@ -68,7 +68,7 @@ public class Parser {
                 record.setDbName(Constants.UNKNOWN_STRING);
                 record.setAppUserName(Constants.UNKNOWN_STRING);
                 record.setAccessor(parseAccessor(subId, accountId, properties, records));
-                record.getAccessor().setServiceName(serviceName);
+                record.getAccessor().setServiceName(Constants.NOT_AVAILABLE);
                 record.setSessionLocator(parserSessionLocator(properties));
 
                 String response = properties.get(Constants.RESPONSE).toString();
