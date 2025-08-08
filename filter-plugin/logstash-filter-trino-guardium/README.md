@@ -14,7 +14,7 @@ IBM Security Guardium. It parses events and messages from the Trino audit log in
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter
 plug-ins for Guardium universal connector.
 
-## 1. Configuring ONPREM MSSQL
+## 1. Configuring ONPREM TRINO
 
 ### Procedure
 
@@ -88,7 +88,6 @@ enforcements.
 3. Click ```Upload File``` and select the
    offline  [logstash-filter-trino_guardium_filter](./logstash-filter-trino_guardium_filter.zip)
    plug-in. After it is uploaded, click ```OK```.
-4. Click ```Upload File``` and select the key.json file. After it is uploaded, click ```OK```.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
 7. Update the input section to add the details from the [TrinoOverHttp.conf](./TrinoOverHttpPackage/TrinoOverHttp.conf)
