@@ -24,7 +24,7 @@ public class ConfigFileContent {
         config.append(" \"server_port\": \"{-1}\",\n");
         config.append(" \"server_type\": \"{Opensearch}\",\n");
         config.append(" \"service_name\": \"audit_cluster_name\",\n");
-        config.append(" \"session_id\": \"audit_node_id\",\n");
+        config.append(" \"session_id\": \"\",\n");
         config.append(" \"source_program\": \"audit_request_origin\",\n");
         config.append(" \"sql_parsing_active\": \"true\",\n");
         config.append(" \"timestamp\": \"@timestamp\",\n");
