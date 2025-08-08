@@ -5,6 +5,7 @@ SPDX-License-Identifier: Apache-2.0
 
 package com.ibm.guardium.aws.opensearch;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -16,15 +17,13 @@ import com.ibm.guardium.universalconnector.commons.structures.Time;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Parser Class will perform operation on parsing events and messages from the
@@ -237,7 +236,14 @@ public class Parser extends CustomParser {
             resolvedIndex =  getValueFromPayload(payload, "audit_trace_indices");
         }
         if (!resolvedIndex.isEmpty()) {
-            sb.append(", \"_indices\":\"").append(sanitizeResolvedIndices(resolvedIndex)).append("\"");
+            List<String> sanitized = sanitizeResolvedIndices(resolvedIndex);
+            try {
+                sb.append(", \"_indices\":").append(mapper.writeValueAsString(sanitized));
+            } catch (JsonProcessingException e) {
+                logger.warn("Error serializing resolved indices: " + e.getMessage(), e);
+                sb.append(", \"_indices\":[]");
+            }
+
         }
 
         sb.append("}");
@@ -276,11 +282,8 @@ public class Parser extends CustomParser {
 
         uri = uri.replaceAll("\\[.*?\\]", "");
 
-        try {
-            uri = URLDecoder.decode(uri, StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException e) {
+
             uri = uri.replaceAll("%", "_");
-            }
 
         uri = uri.replace(":", "/");
 
