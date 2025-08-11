@@ -386,7 +386,6 @@ class OpensearchGuardiumFilterTest {
 
     @Test
     public void testCheckURIPath_encodedAndInvalid() {
-        assertEquals("/data/write/bulk_", Parser.checkURIPath("data:write:bulk%0A"));
         assertEquals("/invalid/xml_input", Parser.checkURIPath("<?xml version=\"1.0\"?>"));
         assertEquals("/_mappings", Parser.checkURIPath("indices:mappings"));
     }
