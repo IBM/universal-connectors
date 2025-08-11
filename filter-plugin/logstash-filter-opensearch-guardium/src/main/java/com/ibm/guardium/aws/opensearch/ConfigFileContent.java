@@ -19,7 +19,7 @@ public class ConfigFileContent {
         config.append(" \"db_protocol\": \"{OPSEARCH}\",\n");
         config.append(" \"db_user\": \"audit_request_effective_user\",\n");
         config.append(" \"db_user_initiating_user\": \"audit_request_effective_user\",\n");
-        config.append(" \"server_hostname\": \"audit_node_name\",\n");
+        config.append(" \"server_hostname\": \"{opensearch.aws.com}\",\n");
         config.append(" \"server_ip\": \"\",\n");
         config.append(" \"server_port\": \"{-1}\",\n");
         config.append(" \"server_type\": \"{Opensearch}\",\n");
