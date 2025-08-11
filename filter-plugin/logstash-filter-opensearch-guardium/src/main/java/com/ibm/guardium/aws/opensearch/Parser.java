@@ -237,7 +237,22 @@ public class Parser extends CustomParser {
 
         String body = getValueFromPayload(payload, "audit_request_body");
         if (body != null && !body.isEmpty()) {
+            // Check if the body contains multiple JSON objects (bulk operations)
+            if (body.trim().startsWith("{") && body.contains("}\n{")) {
+                // Convert newline-separated JSON objects to a JSON array
+                String[] jsonObjects = body.split("\\n");
+                sb.append(", \"_query\":[");
+                for (int i = 0; i < jsonObjects.length; i++) {
+                    if (i > 0) {
+                        sb.append(",");
+                    }
+                    sb.append(jsonObjects[i]);
+                }
+                sb.append("]");
+            } else {
+                // Single JSON object, append as is
             sb.append(", \"_query\":").append(body);
+        }
         }
 
         String resolvedIndex = getValueFromPayload(payload, "audit_trace_resolved_indices");
