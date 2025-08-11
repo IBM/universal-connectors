@@ -12,7 +12,7 @@ public class ConfigurationGenerator {
         + "  \"index\": \"/\\\"index_name\\\"\",\n"
         + "  \"service_name\": \"/\\\"name\\\"\",\n"
         + "  \"parsing_type\": \"CUSTOM_PARSER\",\n"
-        + "  \"server_port\": \"/\\\"local\\\"/\\\"port\\\"\",\n"
+        + "  \"server_port\": \"{-1}\",\n"
         + "  \"server_ip\": \"/\\\"local\\\"/\\\"ip\\\"\",\n"
         + "  \"server_ipv6\": \"/\\\"local\\\"/\\\"ip\\\"\",\n"
         + "  \"client_ip\": \"/\\\"remote\\\"/\\\"ip\\\"\",\n"
@@ -29,7 +29,7 @@ public class ConfigurationGenerator {
         + "  \"sql_string\": \"/\\\"description\\\"\",\n"
         + "  \"statement\": \"/\\\"statement\\\"\",\n"
         + "  \"status\": \"/\\\"status\\\"\",\n"
-        + "  \"server_hostname\": \"/\\\"serverHostName\\\"\"\n"
+        + "  \"server_hostname\": \"{cloud.couchbase.com}\"\n"
         + "}";
   }
 }
