@@ -122,6 +122,15 @@ public class Parser extends CustomParser {
 
     @Override
     protected Record extractRecord(String payload) {
+        String category = getValueFromPayload(payload, Constants.AUDIT_CATEGORY);
+        if (Constants.CATEGORY_REST_FAILED_LOGIN.equals(category)) {
+            String dbUser = this.getValue(payload, "db_user");
+            if (dbUser == null || dbUser.isEmpty() || "<NONE>".equalsIgnoreCase(dbUser)) {
+                logger.debug("Skipping REST_FAILED_LOGIN event with db user <NONE>");
+                return null;
+            }
+        }
+
         Record record = new Record();
         record.setSessionId(this.getSessionId(payload));
         record.setDbName(this.getDbName(payload));
@@ -354,7 +363,10 @@ public class Parser extends CustomParser {
         if (value == null || value.isEmpty()) {
             value = this.getValue(payload, "db_user_initiating_user");
         }
-        return (value == null || value.isEmpty()) ? "N.A." : value;
+        if (value == null || value.isEmpty() || "<NONE>".equalsIgnoreCase(value)) {
+            return "N.A";
+        };
+        return value;
     }
 
     public static Time parseTimestamp(String timestamp) {
