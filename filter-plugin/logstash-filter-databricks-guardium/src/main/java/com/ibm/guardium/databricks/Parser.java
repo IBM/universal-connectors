@@ -365,9 +365,7 @@ public class Parser {
         accessor.setServerType(Constants.SERVER_TYPE);
         accessor.setDbProtocol(Constants.DATA_PROTOCOL);
         accessor.setDbProtocolVersion(Constants.UNKNOWN_STRING);
-        accessor.setServiceName(properties.has(Constants.SERVICE_NAME)
-                ? properties.get(Constants.SERVICE_NAME).toString()
-                : Constants.UNKNOWN_STRING);
+        accessor.setServiceName(Constants.NOT_AVAILABLE);
 
         // Set source program (user agent)
         accessor.setSourceProgram(properties.has(Constants.USER_AGENT)
