@@ -68,6 +68,7 @@ For more information about the audit logging fields, refer to the [Audit log fie
 ### Limitations
 - Audit logging in OpenSearch can be accessed in two different ways – via the OpenSearch Dashboards or through CloudWatch Logs. However, this filter plugin only parses and processes audit logs that are streamed to CloudWatch. Audit logs stored directly in OpenSearch indices or viewed in the Dashboards are not supported for parsing.
 - OpenSearch may log FAILED_LOGIN REST messages during idle periods in Dev Tools due to background requests (like session keep-alives or auth checks) failing authentication, even if no user-initiated requests are made.
+- FAILED_LOGIN REST messages will appear in FULL SQL & FAILED LOGIN report.
 - Certain reserved keywords (template, mappings, get, aliases, user) are automatically prefixed with an underscore (_) during sanitization to prevent OpenSearch URI parsing errors or endpoint conflicts.
 - Based on the enabled audit options, multiple entries may appear on the S-TAP page when the server is accessed through different ports.
 - ClientHostName is not available in the audit logs for OpenSearch.
