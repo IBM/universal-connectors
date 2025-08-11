@@ -109,3 +109,44 @@ Other standard logstash parameters are available such as:
 	grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
 	grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 ```
+```
+
+
+##  Troubleshooting: 
+### Using VPC Endpoints for AWS Connectivity
+
+If Logstash is unable to connect to AWS CloudWatch Logs due to **network restrictions** (e.g.  Traffic restricted to private subnets), you may need to route the connection through an **AWS VPC Endpoint**.
+
+### Solution: Use a VPC Endpoint with a Custom Endpoint URL
+
+When running Logstash inside a **VPC** (Virtual Private Cloud), especially in private subnets, the AWS SDK cannot reach the public `logs.{region}.amazonaws.com` endpoint unless explicitly allowed.  
+To solve this, configure the plugin to use your VPC Endpoint along with AWS's bundled Certificate Authority (CA) for secure communication.
+
+#### Example Configuration
+
+```logstash
+input {
+  cloudwatch_logs {
+	# Default Configuration
+    log_group => "/aws/lambda/my-lambda-function"
+    region => "us-east-1"
+    access_key_id => "YOUR_ACCESS_KEY"
+    secret_access_key => "YOUR_SECRET_KEY"
+
+    # Use your private VPC Endpoint instead of the public AWS endpoint
+    endpoint => "https://vpce-xxxxxxxxabcdef.logs.us-east-1.vpce.amazonaws.com"
+    # Ensures the connection uses AWS's trusted root certificates
+    use_aws_bundled_ca => true
+  }
+}
+```
+
+> **Note**: Replace the `endpoint` URL with your actual VPC Endpoint DNS name. You can find this in the AWS Console under **VPC > Endpoints**.
+
+###  Additional Notes
+
+- Make sure the VPC Endpoint is created for the **CloudWatch Logs interface service** (`com.amazonaws.us-east-1.logs`).
+- Ensure your **subnet** and **security group** allow HTTPS traffic to the endpoint.
+- If you're using **IAM roles** (e.g., EC2 instance roles), you can omit the access keys.
+
+For more information, see the official AWS docs: [VPC Interface Endpoints for CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatchLogs-and-InterfaceVPC.html).
