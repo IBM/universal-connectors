@@ -99,3 +99,6 @@ enforcements.
 10. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 11. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart
     the Universal Connector using the ```Disable/Enable``` button.
+
+#### Limitations
+    • Client Hostname and Source Program will be seen as blank in report.
