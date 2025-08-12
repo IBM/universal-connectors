@@ -69,6 +69,11 @@ The `region` setting allows specify the region in which the Cloudwatch log group
 
 #### `codec`
 The `codec` setting allows specify, the codec used for input data. Input codecs are a convenient method for decoding the data before it enters the input, without needing a separate filter in the Logstash pipeline.
+   	##### `codec pattern`
+    The `codec pattern` is a regular expression that Logstash uses to identify lines that are either the start of a new multiline event or a continuation of a previous one.
+	For the Redshift and Postgres plug-ins, update the value of the pattern parameter from the inputs section as specified in the codec pattern.
+	For Redshift, add pattern from [here] ( https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-redshift-aws-guardium/redshift-over-cloudwatch.conf )
+	For Postgres, add pattern from [here] ( https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/postgresCloudwatch.conf )
 
 #### `role_arn`
 The role_arn setting allows you to specify which AWS IAM Role to assume, if any. This is used to generate temporary credentials, typically for cross-account access. To understand more about the settings to be followed while using this parameter, click [here]( ./SettingsForRoleArn.md )
