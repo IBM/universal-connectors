@@ -65,7 +65,7 @@ public class Parser {
                 String sessionId = getSessionId(requestParams);
                 String serviceName = getServiceName(properties);
                 record.setSessionId(sessionId);
-                record.setDbName(Constants.UNKNOWN_STRING);
+                record.setDbName(dbName);
                 record.setAppUserName(Constants.UNKNOWN_STRING);
                 record.setAccessor(parseAccessor(subId, accountId, properties, records));
                 record.getAccessor().setServiceName(Constants.NOT_AVAILABLE);
