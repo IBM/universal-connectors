@@ -195,7 +195,7 @@ Verify [here](https://ondeck.console.cloud.ibm.com/docs/cloud-logs?topic=cloud-l
     - Verify all of the information and click ```Create stream```.
 
 ## 4. Limitations
-1. The analysis is based on IBM Cloud Database for MongoDB 4.4.
+1. The analysis is based on IBM Cloud Database for MongoDB 7.0.
 2. Logs for SQL errors do not get generated from the data source.
 3. IBM Cloud Databases for MongoDB only supports 22 events. See [here](https://cloud.ibm.com/docs/databases-for-mongodb?topic=databases-for-mongodb-auditlogging) for more information.
 4. In this example, we used both CLI and UI queries to run the analysis.
