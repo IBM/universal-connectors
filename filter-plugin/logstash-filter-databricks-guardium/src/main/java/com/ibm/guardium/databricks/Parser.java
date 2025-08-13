@@ -64,11 +64,12 @@ public class Parser {
                 String accountId = getAccountId(records);// second part of resourceId
                 String sessionId = getSessionId(requestParams);
                 String serviceName = getServiceName(properties);
+                String dbName = subId+":"+serviceName;
                 record.setSessionId(sessionId);
-                record.setDbName(Constants.UNKNOWN_STRING);
+                record.setDbName(dbName);
                 record.setAppUserName(Constants.UNKNOWN_STRING);
                 record.setAccessor(parseAccessor(subId, accountId, properties, records));
-                record.getAccessor().setServiceName(Constants.NOT_AVAILABLE);
+                record.getAccessor().setServiceName(dbName);
                 record.setSessionLocator(parserSessionLocator(properties));
 
                 String response = properties.get(Constants.RESPONSE).toString();
@@ -365,7 +366,6 @@ public class Parser {
         accessor.setServerType(Constants.SERVER_TYPE);
         accessor.setDbProtocol(Constants.DATA_PROTOCOL);
         accessor.setDbProtocolVersion(Constants.UNKNOWN_STRING);
-        accessor.setServiceName(Constants.NOT_AVAILABLE);
 
         // Set source program (user agent)
         accessor.setSourceProgram(properties.has(Constants.USER_AGENT)
