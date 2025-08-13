@@ -92,13 +92,14 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
      - Click **Create** after you review all the parameters.
 
 
+
 ### Link event hub to Databricks
 
 1. Login to https://portal.azure.com.
 2. Navigate to your Azure Databricks. Open the Diagnostic settings pane under the Monitoring section.
 3. After the page opens, you will need to create a new diagnostic setting.
 4. In the Diagnostic settings pane, fill in the form with your preferred categories.
-5. Select your categories details, and then send your logs to your preferred destination, in this case, we check **Stream to an event hub**, and put prefered event hub information in.
+5. Select your categories details, and then send your logs to your preferred destination, in this case, we check **Stream to an event hub** and **Archive to a storage account**, and put prefered event hub and Storage account information in.
 6. Launch your Databricks Workspace and go to profile at top right corner. 
 7. click ```Settings```, go to ```Advanced```, search for ```Verbose Audit Logs``` and turn it on.
 
