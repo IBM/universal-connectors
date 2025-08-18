@@ -13,6 +13,7 @@ The PostgreSQL filter plug-in supports Guardium Data Protection and Guardium Dat
 ### Note
 - This plug-in contains a runtime dependency of Logstash Google PubSub input plug-in (version ~> 1.2.1, i.e. at least 1.2.1).
 - This version is compliant with GDP v11.4 or later and Guardium Data Security Center version 3.3.x or later. To create an input plugin, refer to the [input plug-in's repository](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub).
+- If GCP postgres is configured prior to upgrade to 12.2 then udpate the filter conf after upgrade.
 
 ## Configuration
 
