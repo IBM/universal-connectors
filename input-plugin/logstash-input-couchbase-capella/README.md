@@ -98,7 +98,7 @@ For more information, reference here https://docs.couchbase.com/server/current/a
 * No more than three historical export requests are permitted over 24-hour period.
 
 Notes:
-* It may take approximately 15–20 minutes for data to appear in the Full SQL report.
+* It may take approximately 30 minutes for data to appear in the Full SQL report.
 * The S-TAP page may display multiple entries if the server is accessed using different ports.
 
 * ## Suggestion 
