@@ -33,6 +33,8 @@ class ParserTest {
     assertEquals(
         "SELECT * FROM hive.test_db.test_table LIMIT 10", record.getData().getOriginalSqlCommand());
     assertEquals(1749493601470L, record.getTime().getTimstamp());
+    assertEquals("test_db", record.getAccessor().getServiceName());
+    assertEquals(record.getDbName(), record.getAccessor().getServiceName());
   }
 
   @Test

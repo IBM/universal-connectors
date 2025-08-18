@@ -145,3 +145,9 @@ enforcements. Configure Guardium to read the native audit/data_access logs by cu
 10. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart
     the Universal Connector using the ```Disable/Enable``` button.
 
+##  Limitations
+* No more than three historical export requests are permitted over 24-hour period.
+
+Notes:
+* It may take approximately 30 minutes for data to appear in the Full SQL report.
+* The S-TAP page may display multiple entries if the server is accessed using different ports.

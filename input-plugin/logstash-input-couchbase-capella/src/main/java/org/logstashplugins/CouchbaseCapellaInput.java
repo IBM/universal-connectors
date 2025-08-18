@@ -230,6 +230,13 @@ public class CouchbaseCapellaInput implements Input {
                             log.debug("invalid json exception: {}", originalLine);
                             continue;
                         }
+
+                        // Drop system generated logs
+                        if (line.contains("\"user\":\"@cbq-engine\"") || line.contains("\"user\":\"@projector\"")|| line.contains("\"user\":\"@ns_server\"")){
+                            log.debug("Drop logs: {}", line);
+                            continue;
+                        }
+                        
                         HashMap map = new HashMap();
                         map.put(Constants.OUTPUT_KEY_MESSAGE, line);
                         map.put(Constants.OUTPUT_KEY_ORG, organizationID);

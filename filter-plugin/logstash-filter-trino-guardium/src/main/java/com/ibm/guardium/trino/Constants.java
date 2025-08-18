@@ -12,10 +12,8 @@ public class Constants {
   static final String Context = "context";
   static final String URL = "url";
   static final String URI = "uri";
-
   static final String ClientIP = "remoteClientAddress";
   static final String ServerIP = "serverAddress";
-
   static final String DBUser = "user";
   static final String SQLCommand = "query";
   static final String QueryId = "QueryId";
