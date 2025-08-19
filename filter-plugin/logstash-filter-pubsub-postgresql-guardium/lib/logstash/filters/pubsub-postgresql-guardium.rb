@@ -121,7 +121,12 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
 
     begin
 
-      pmessage = event.get('pmessage')
+    pmessage = {
+      "resource" => event.get("resource"),
+      "logName" => event.get("logName"),
+      "severity" => event.get("severity"),
+      "host" => event.get("host")
+     }
 
       @logger.debug("Start processing new event: #{pmessage}")
 
