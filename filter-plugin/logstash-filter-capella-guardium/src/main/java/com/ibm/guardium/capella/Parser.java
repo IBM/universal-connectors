@@ -108,8 +108,7 @@ public class Parser extends CustomParser {
 
   @Override
   protected String getServiceName(String payload) {
-    String value = getValue(payload, SERVICE_NAME);
-    return value != null ? value : DEFAULT_STRING;
+    return getDbName(payload);
   }
 
   protected String getStatus(String payload) {
