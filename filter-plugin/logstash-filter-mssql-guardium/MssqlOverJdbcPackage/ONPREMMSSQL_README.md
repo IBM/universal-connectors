@@ -116,6 +116,11 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ### Authorizing outgoing traffic from AWS to Guardium
 
 #### Procedure
+- not required on the 11.5+535
+1. Log in to the Guardium API.
+2. Issue these commands:
+	• grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
+	• grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 
 #### Before you begin
 
