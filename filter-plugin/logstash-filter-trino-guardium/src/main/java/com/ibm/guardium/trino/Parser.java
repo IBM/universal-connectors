@@ -40,7 +40,7 @@ public class Parser {
   public static Record parseRecord(JsonObject data) {
     Record record = new Record();
     record.setSessionId(EMPTY);
-    String DbName = data.has(Metadata) ? getDbName(data.getAsJsonObject(Metadata)) : NOT_AVAILABLE;
+    String DbName = data.has(Context) ? getDbName(data.getAsJsonObject(Context)) : NOT_AVAILABLE;
     record.setDbName(DbName);
     record.setAppUserName(NOT_AVAILABLE);
     String sqlString = data.has(Metadata) ? getSqlString(data.getAsJsonObject(Metadata)) : EMPTY;
@@ -86,11 +86,11 @@ public class Parser {
   }
 
   private static String getDbName(JsonObject metadata) {
-    return (metadata.has("tables")
-            && metadata.getAsJsonArray("tables").size() > 0
-            && metadata.getAsJsonArray("tables").get(0).getAsJsonObject().has("schema"))
-            ? metadata.getAsJsonArray("tables").get(0).getAsJsonObject().get("schema").getAsString()
+    return metadata.has("schema")
+            ? !metadata.get("schema").isJsonNull() ? metadata.get("schema").getAsString()
+            : NOT_AVAILABLE
             : NOT_AVAILABLE;
+
   }
 
   private static String getDbUser(JsonObject context) {
