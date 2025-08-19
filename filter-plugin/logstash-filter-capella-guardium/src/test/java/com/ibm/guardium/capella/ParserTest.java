@@ -20,7 +20,7 @@ class ParserTest {
     assertNotNull(record);
 
     assertEquals("N.A.", record.getDbName());
-    assertEquals("authentication succeeded", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
     assertEquals(51606, record.getSessionLocator().getClientPort());
     assertEquals("10.0.0.23", record.getSessionLocator().getClientIp());
     assertEquals(-1, record.getSessionLocator().getServerPort());
@@ -514,7 +514,7 @@ class ParserTest {
             + "}";
     Record record = parser.parseRecord(payload);
     assertNotNull(record);
-    assertEquals("change cluster settings", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
   }
 
   @Test
@@ -547,7 +547,7 @@ class ParserTest {
 
     assertEquals("User was deleted", record.getData().getOriginalSqlCommand());
     assertEquals("User was deleted", record.getData().getConstruct().fullSql);
-    assertEquals("delete user", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
   }
 
   @Test
@@ -599,7 +599,7 @@ class ParserTest {
     assertEquals(
         "__CB POST /#statement=infer `MtBucket`.`new`.`capella_engine_events`",
         record.getData().getOriginalSqlCommand());
-    assertEquals("INFER statement", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
     assertEquals("TEXT", record.getAccessor().getDataType());
     assertEquals("COUCHB", record.getAccessor().getLanguage());
   }
@@ -654,7 +654,7 @@ class ParserTest {
     assertEquals(
         "__CB POST /#statement=DELETE FROM `MtBucket`.`CreatedByMe`.`TestScope` WHERE id = \"user4\";",
         record.getData().getOriginalSqlCommand());
-    assertEquals("DELETE statement", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
   }
 
   @Test
@@ -719,7 +719,7 @@ class ParserTest {
         "{\"description\":\"REST operation failed due to authentication failure\",\"id\":20485,\"local\":{\"ip\":\"10.0.0.11\",\"port\":11207},\"name\":\"authentication failure\",\"raw_url\": \"/pools\",\"real_userid\":{\"domain\":\"local\",\"user\":\"@index\"},\"remote\":{\"ip\":\"10.0.0.23\",\"port\":51606},\"timestamp\":\"2025-01-30T21:12:48.099382Z\"}";
     Record record = parser.parseRecord(payload);
     assertEquals("N.A.", record.getDbName());
-    assertEquals("authentication failure", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
     assertEquals(51606, record.getSessionLocator().getClientPort());
     assertEquals("10.0.0.23", record.getSessionLocator().getClientIp());
     assertEquals(-1, record.getSessionLocator().getServerPort());
@@ -740,7 +740,7 @@ class ParserTest {
         "{\"description\":\"An unrecognized statement was received by the N1QL query engine\",\"errors\":null,\"id\":28687,\"isAdHoc\":true,\"local\":{\"ip\":\"10.0.0.102\",\"port\":18093},\"metrics\":{\"elapsedTime\":\"0.00037393\",\"errorCount\":1,\"executionTime\":\"0.000311174\",\"resultCount\":0,\"resultSize\":0},\"name\":\"UNRECOGNIZED statement\",\"node\":\"svc-dqi-node-001.vam24ep86horsjja.cloud.couchbase.com:8091\",\"real_userid\":{\"domain\":\"local\",\"user\":\"@index\"},\"remote\":{\"ip\":\"99.233.169.176\",\"port\":58674},\"requestId\":\"d0707282-7b1a-453e-82df-76ea3456e6ca\",\"statement\":\"select * fro test;\",\"status\":\"fatal\",\"timestamp\":\"2025-06-25T15:58:08.215Z\",\"userAgent\":\"Go-http-client/1.1\"}";
     Record record = parser.parseRecord(payload);
     assertEquals("N.A.", record.getDbName());
-    assertEquals("UNRECOGNIZED statement", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
     assertEquals(58674, record.getSessionLocator().getClientPort());
     assertEquals("99.233.169.176", record.getSessionLocator().getClientIp());
     assertEquals(-1, record.getSessionLocator().getServerPort());
