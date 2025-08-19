@@ -1,0 +1,14 @@
+{
+    "name": "webhook-listener",
+    "version": "1.0.0",
+    "description": "A webhook listener for sending notifications",
+    "main": "webhook-listener.js",
+    "scripts": {
+      "start": "node webhook-listener.js"
+    },
+    "dependencies": {
+      "express": "^4.18.2",
+      "nodemailer": "^6.9.3",
+      "simple-git": "^3.21.0"
+    }
+  }
