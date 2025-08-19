@@ -108,7 +108,8 @@ public class Parser {
 		if (data.has(Constants.CLIENT_IP) && !data.get(Constants.CLIENT_IP).isJsonNull())
 			sessionLocator.setClientIp(data.get(Constants.CLIENT_IP).getAsString());
 		else
-			sessionLocator.setClientIp(Constants.NOT_AVAILABLE);
+			sessionLocator.setClientIp(Constants.IP);
+
 
 		if (data.has(Constants.CLIENT_PORT) && !data.get(Constants.CLIENT_PORT).isJsonNull())
 			sessionLocator.setClientPort(data.get(Constants.CLIENT_PORT).getAsInt());
