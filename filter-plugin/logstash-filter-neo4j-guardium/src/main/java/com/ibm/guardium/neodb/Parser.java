@@ -423,29 +423,31 @@ public class Parser {
 		Sentence originalSentence = null;
 
 		for (String keys : alKeys) {
-			ArrayList<String> operation = operations.get(keys);
+			if (!operations.isEmpty()) {
+				ArrayList<String> operation = operations.get(keys);
 
-			for (String string : operation) {
+				for (String string : operation) {
 
-				if(j == 1) {
-					originalSentence = new Sentence(string);
-					sentenceObject = new SentenceObject(variables.get(keys));
-					if(sentenceObject.getName() == null)
-						sentenceObject.setName(Constants.EVERYTHING);
-					sentenceObject.setType(Constants.TYPE); // In graph database, graphs are equivalent to tables in RDBMS
+					if(j == 1) {
+						originalSentence = new Sentence(string);
+						sentenceObject = new SentenceObject(variables.get(keys));
+						if(sentenceObject.getName() == null)
+							sentenceObject.setName(Constants.EVERYTHING);
+						sentenceObject.setType(Constants.TYPE); // In graph database, graphs are equivalent to tables in RDBMS
 
-					originalSentence.getObjects().add(sentenceObject);
-					j++;
-				}
-				else {
-					Sentence decendant = new Sentence(string);
-					sentenceObject = new SentenceObject(variables.get(keys));
-					if(sentenceObject.getName() == null)
-						sentenceObject.setName(Constants.EVERYTHING);
-					sentenceObject.setType(Constants.TYPE); // In graph database, graphs are equivalent to tables in RDBMS
+						originalSentence.getObjects().add(sentenceObject);
+						j++;
+					}
+					else {
+						Sentence decendant = new Sentence(string);
+						sentenceObject = new SentenceObject(variables.get(keys));
+						if (sentenceObject.getName() == null)
+							sentenceObject.setName(Constants.EVERYTHING);
+						sentenceObject.setType(Constants.TYPE); // In graph database, graphs are equivalent to tables in RDBMS
 
-					decendant.getObjects().add(sentenceObject);
-					originalSentence.getDescendants().add(decendant);
+						decendant.getObjects().add(sentenceObject);
+						originalSentence.getDescendants().add(decendant);
+					}
 				}
 			}
 		}
