@@ -15,14 +15,14 @@ class ParserTest {
   @Test
   void testRecord() {
     String payload =
-        "{\"createTime\":\"2025-06-09T18:26:41.470Z\",\"context\":{\"user\":\"trino\",\"originalUser\":\"trino\",\"principal\":\"trino\",\"enabledRoles\":[],\"groups\":[],\"remoteClientAddress\":\"127.0.0.1\",\"userAgent\":\"trino-cli\",\"clientTags\":[],\"clientCapabilities\":[\"PATH\",\"PARAMETRIC_DATETIME\",\"SESSION_AUTHORIZATION\"],\"source\":\"trino-cli\",\"timezone\":\"UTC\",\"resourceGroupId\":[\"global\"],\"sessionProperties\":{},\"resourceEstimates\":{},\"serverAddress\":\"172.19.0.6\",\"serverVersion\":\"466\",\"environment\":\"production\",\"queryType\":\"SELECT\",\"retryPolicy\":\"NONE\"},\"metadata\":{\"queryId\":\"20250609_182641_00011_mtb2e\",\"transactionId\":\"03463dad-f1e8-4915-885c-d3a1c2bdedd6\",\"query\":\"SELECT * FROM hive.test_db.test_table LIMIT 10\",\"queryState\":\"QUEUED\",\"tables\":[{\"catalog\":\"hive\",\"schema\":\"test_db\",\"table\":\"test_table\",\"authorization\":\"trino\",\"filters\":[],\"columns\":[{\"column\":\"city\"},{\"column\":\"name\"},{\"column\":\"id\"},{\"column\":\"age\"}],\"directlyReferenced\":true,\"referenceChain\":[]}],\"routines\":[],\"uri\":\"http://172.19.0.6:8080/v1/query/20250609_182641_00011_mtb2e\"}}";
+            "{\"createTime\":\"2025-06-09T18:26:41.470Z\",\"context\":{\"user\":\"trino\",\"originalUser\":\"trino\",\"principal\":\"trino\",\"schema\":\"my_database1\",\"enabledRoles\":[],\"groups\":[],\"remoteClientAddress\":\"127.0.0.1\",\"userAgent\":\"trino-cli\",\"clientTags\":[],\"clientCapabilities\":[\"PATH\",\"PARAMETRIC_DATETIME\",\"SESSION_AUTHORIZATION\"],\"source\":\"trino-cli\",\"timezone\":\"UTC\",\"resourceGroupId\":[\"global\"],\"sessionProperties\":{},\"resourceEstimates\":{},\"serverAddress\":\"172.19.0.6\",\"serverVersion\":\"466\",\"environment\":\"production\",\"queryType\":\"SELECT\",\"retryPolicy\":\"NONE\"},\"metadata\":{\"queryId\":\"20250609_182641_00011_mtb2e\",\"transactionId\":\"03463dad-f1e8-4915-885c-d3a1c2bdedd6\",\"query\":\"SELECT * FROM hive.test_db.test_table LIMIT 10\",\"queryState\":\"QUEUED\",\"tables\":[{\"catalog\":\"hive\",\"schema\":\"my_database1\",\"table\":\"test_table\",\"authorization\":\"trino\",\"filters\":[],\"columns\":[{\"column\":\"city\"},{\"column\":\"name\"},{\"column\":\"id\"},{\"column\":\"age\"}],\"directlyReferenced\":true,\"referenceChain\":[]}],\"routines\":[],\"uri\":\"http://172.19.0.6:8080/v1/query/20250609_182641_00011_mtb2e\"}}";
 
     final JsonObject data = new Gson().fromJson(payload, JsonObject.class);
     Record record = Parser.parseRecord(data);
 
     assertNotNull(record);
 
-    assertEquals("test_db", record.getDbName());
+    assertEquals("my_database1", record.getDbName());
     assertEquals(-1, record.getSessionLocator().getClientPort());
     assertEquals("127.0.0.1", record.getSessionLocator().getClientIp());
     assertEquals("Trino", record.getAccessor().getDbProtocol());
@@ -33,7 +33,7 @@ class ParserTest {
     assertEquals(
         "SELECT * FROM hive.test_db.test_table LIMIT 10", record.getData().getOriginalSqlCommand());
     assertEquals(1749493601470L, record.getTime().getTimstamp());
-    assertEquals("test_db", record.getAccessor().getServiceName());
+    assertEquals("my_database1", record.getAccessor().getServiceName());
     assertEquals(record.getDbName(), record.getAccessor().getServiceName());
   }
 
