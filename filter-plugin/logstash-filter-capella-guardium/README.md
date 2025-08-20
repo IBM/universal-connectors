@@ -151,3 +151,5 @@ enforcements. Configure Guardium to read the native audit/data_access logs by cu
 Notes:
 * It may take approximately 30 minutes for data to appear in the Full SQL report.
 * The S-TAP page may display multiple entries if the server is accessed using different ports.
+
+**Tip:** This plugin queries Capella audit logs based on two parameters: query_interval (how often to query) and length (time span of audit logs to fetch per query). If these values are too short, audit logs may not exist yet, resulting in 404 errors. If too long, audit files can become large and delay the job cycle. A recommended default is setting both to 1 hour to balance reliability and performance.
