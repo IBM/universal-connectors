@@ -53,7 +53,7 @@ This is a java [Logstash](https://github.com/elastic/logstash) input plug-in for
 
 ##  Limitations
 * No more than three historical export requests are permitted over 24-hour period.
-* * The following fields are not found in original audit log from Capella: Database name, Service Name.
+* The original Capella audit log contains no values for the following fields: Database Name, Service Name.
 
 Notes:
 * It may take approximately 30 minutes for data to appear in the Full SQL report.
