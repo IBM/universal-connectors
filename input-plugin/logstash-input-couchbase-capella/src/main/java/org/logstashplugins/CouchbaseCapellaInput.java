@@ -232,7 +232,7 @@ public class CouchbaseCapellaInput implements Input {
                         }
                         
                         // Drop system generated logs
-                        if (line.contains("\"user\":\"@cbq-engine\"") || line.contains("\"user\":\"@projector\"")|| line.contains("\"user\":\"@ns_server\"")){
+                        if (line.contains("\"user\":\"@")){
                             log.debug("Drop logs: {}", line);
                             continue;
                         }
