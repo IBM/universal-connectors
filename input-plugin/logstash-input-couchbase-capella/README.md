@@ -58,7 +58,7 @@ https://docs.couchbase.com/server/current/manage/manage-security/manage-auditing
 
 Notes:
 * It may take approximately 30 minutes for data to appear in the Full SQL report.
-* The following fields are not found in original audit log from Capella: Database name, Service Name.
+* The original Capella audit log contains no values for the following fields: Database Name, Service Name.
 
 # Usage
 ### Parameters
