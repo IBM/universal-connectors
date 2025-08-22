@@ -53,6 +53,13 @@ https://docs.couchbase.com/server/current/manage/manage-security/manage-auditing
 9. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 10. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the ```Disable/Enable``` button.
 
+##  Limitations
+* No more than three historical export requests are permitted over 24-hour period.
+
+Notes:
+* It may take approximately 30 minutes for data to appear in the Full SQL report.
+* The following fields are not found in original audit log from Capella: Database name, Service Name.
+
 # Usage
 ### Parameters
 | Parameter      | Input Type | Required | Default      |
@@ -92,13 +99,5 @@ https://docs.couchbase.com/server/current/manage/manage-security/manage-auditing
 
 ## Supported audit messages
 For more information, reference here https://docs.couchbase.com/server/current/audit-event-reference/audit-event-reference.html
-
-##  Limitations
-* ## Limitations
-* No more than three historical export requests are permitted over 24-hour period.
-
-Notes:
-* It may take approximately 30 minutes for data to appear in the Full SQL report.
-* The S-TAP page may display multiple entries if the server is accessed using different ports.
 
 **Tip:** This plugin queries Capella audit logs based on two parameters: query_interval (how often to query) and length (time span of audit logs to fetch per query). If these values are too short, audit logs may not exist yet, resulting in 404 errors. If too long, audit files can become large and delay the job cycle. A recommended default is setting both to 1 hour to balance reliability and performance.

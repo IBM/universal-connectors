@@ -99,10 +99,6 @@ Note: If successful, the request returns an array of all the audit log export jo
 For each audit log export job, when the export is ready, the download_id field gives a URL that you can use to download
 the exported audit log.
 
-## Limitations
-
-* No more than three historical export requests are permitted in a 24-hour period.
-
 ## Configuring the Capella filter in Guardium
 
 The Guardium universal connector is the Guardium entry point for native audit/data_access logs. The Guardium universal
@@ -147,7 +143,7 @@ enforcements. Configure Guardium to read the native audit/data_access logs by cu
 
 ##  Limitations
 * No more than three historical export requests are permitted over 24-hour period.
+* The following fields are not found in original audit log from Capella: Database name, Service Name.
 
 Notes:
 * It may take approximately 30 minutes for data to appear in the Full SQL report.
-* The S-TAP page may display multiple entries if the server is accessed using different ports.
