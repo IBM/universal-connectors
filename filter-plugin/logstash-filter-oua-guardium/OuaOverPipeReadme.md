@@ -46,10 +46,9 @@ Update the variables in Makefile for your environment's Java home and Logstash l
          CREATE USER guardium IDENTIFIED BY password;
          GRANT CONNECT to guardium;
          GRANT SELECT ANY DICTIONARY to guardium;
-         GRANT AUDIT_VIEWER to guardium;
-         GRANT SELECT ON v$INSTANCE to guardium;
-         GRANT SELECT ON v$DATABASE to guardium;
-         GRANT SELECT ON v$MYSTAT to guardium;
+         GRANT SELECT ON v_$INSTANCE to guardium;
+         GRANT SELECT ON v_$DATABASE to guardium;
+         GRANT SELECT ON v_$MYSTAT to guardium;
          ```
 
        - For other environments including RDS in AWS and Oracle Databases On-Premises run the following commands:
