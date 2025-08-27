@@ -11,7 +11,6 @@ import com.ibm.guardium.universalconnector.commons.structures.*;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.junit.Assert;
 import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedHashMap;
@@ -67,7 +66,7 @@ public class ParserTest {
                 "    \"dbuser\": \"neo4j \",\n" +
                 "    \"queryStatement\": \"CREATE (friend:Person {name: 'Mark'})   RETURN friend - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}\"\n" +
                 "  }";
-        Event e = getParsedEvent(neoString_grokOutput, neoString);
+        Event e = getParsedEvent(neoString_grokOutput,neoString);
 
         JsonObject inputData = inputData(e);
 
@@ -96,7 +95,7 @@ public class ParserTest {
                 "    \"dbuser\": \"neo4j \",\n" +
                 "    \"queryStatement\": \"MERGE (mark:Person {name: 'Mark'})   RETURN mark - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}\"\n" +
                 "  }";
-        Event e = getParsedEvent(neoString_grokOutput, neoString);
+        Event e = getParsedEvent(neoString_grokOutput,neoString);
         e.setField("minoff", "+04:00");
         JsonObject inputData = inputData(e);
 
@@ -139,7 +138,7 @@ public class ParserTest {
     @Test
     public void testParseAccessor() {
 
-        Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
+        Event e = getParsedEvent(neoSuccessString_grokOutput,neoSuccessString);
         JsonObject inputData = inputData(e);
 
         Parser parser = new Parser();
@@ -236,46 +235,46 @@ public class ParserTest {
 
 //	    ----------------------------------- ---------------------------------------------------
 
-    private JsonObject inputData(Event e) {
+    private JsonObject inputData(Event e){
         JsonObject data = new JsonObject();
 
-        if (e.getField(Constants.CLIENT_IP).toString() != null && !e.getField(Constants.CLIENT_IP).toString().isEmpty()) {
+        if(e.getField(Constants.CLIENT_IP).toString() != null && !e.getField(Constants.CLIENT_IP).toString().isEmpty()){
             data.addProperty(Constants.CLIENT_IP, e.getField(Constants.CLIENT_IP).toString());
         }
-        if (e.getField(Constants.SERVER_IP).toString() != null && !e.getField(Constants.SERVER_IP).toString().isEmpty()) {
+        if(e.getField(Constants.SERVER_IP).toString() != null && !e.getField(Constants.SERVER_IP).toString().isEmpty()){
             data.addProperty(Constants.SERVER_IP, e.getField(Constants.SERVER_IP).toString());
         }
-        if (e.getField(Constants.DB_PROTOCOL).toString() != null && e.getField(Constants.DB_PROTOCOL).toString().isEmpty()) {
+        if(e.getField(Constants.DB_PROTOCOL).toString() != null && e.getField(Constants.DB_PROTOCOL).toString().isEmpty()){
             data.addProperty(Constants.DB_PROTOCOL, e.getField(Constants.DB_PROTOCOL).toString());
         }
-        if (e.getField(Constants.TIMESTAMP).toString() != null && !e.getField(Constants.TIMESTAMP).toString().isEmpty()) {
+        if(e.getField(Constants.TIMESTAMP).toString() != null && !e.getField(Constants.TIMESTAMP).toString().isEmpty()){
             data.addProperty(Constants.TIMESTAMP, e.getField(Constants.TIMESTAMP).toString());
         }
-        if (e.getField(Constants.LOG_LEVEL).toString() != null && !e.getField(Constants.LOG_LEVEL).toString().isEmpty()) {
+        if(e.getField(Constants.LOG_LEVEL).toString() != null && !e.getField(Constants.LOG_LEVEL).toString().isEmpty()){
             data.addProperty(Constants.LOG_LEVEL, e.getField(Constants.LOG_LEVEL).toString());
         }
-        if (e.getField(Constants.DB_USER).toString() != null && !e.getField(Constants.DB_USER).toString().isEmpty()) {
+        if(e.getField(Constants.DB_USER).toString() != null && !e.getField(Constants.DB_USER).toString().isEmpty()){
             data.addProperty(Constants.DB_USER, e.getField(Constants.DB_USER).toString());
         }
-        if (e.getField(Constants.DB_NAME).toString() != null && !e.getField(Constants.DB_NAME).toString().isEmpty()) {
+        if(e.getField(Constants.DB_NAME).toString() != null && !e.getField(Constants.DB_NAME).toString().isEmpty()){
             data.addProperty(Constants.DB_NAME, e.getField(Constants.DB_NAME).toString());
         }
-        if (e.getField(Constants.SOURCE_PROGRAM).toString() != null && !e.getField(Constants.SOURCE_PROGRAM).toString().isEmpty()) {
+        if(e.getField(Constants.SOURCE_PROGRAM).toString() != null && !e.getField(Constants.SOURCE_PROGRAM).toString().isEmpty()){
             data.addProperty(Constants.SOURCE_PROGRAM, e.getField(Constants.SOURCE_PROGRAM).toString());
         }
-        if (e.getField(Constants.QUERY_STATEMENT).toString() != null && !e.getField(Constants.QUERY_STATEMENT).toString().isEmpty()) {
+        if(e.getField(Constants.QUERY_STATEMENT).toString() != null && !e.getField(Constants.QUERY_STATEMENT).toString().isEmpty()){
             data.addProperty(Constants.QUERY_STATEMENT, e.getField(Constants.QUERY_STATEMENT).toString());
         }
-        if (e.getField(Constants.MESSAGE).toString() != null && !e.getField(Constants.MESSAGE).toString().isEmpty()) {
+        if(e.getField(Constants.MESSAGE).toString() != null && !e.getField(Constants.MESSAGE).toString().isEmpty()){
             data.addProperty(Constants.MESSAGE, e.getField(Constants.MESSAGE).toString());
         }
         return data;
     }
 
 
-    public static Event getParsedEvent(String logEvent_json, String logEvent) {
+    public static Event getParsedEvent(String logEvent_json , String logEvent) {
 
-        Map<String, String> results = parseJson(logEvent_json);
+        Map<String,String> results = parseJson(logEvent_json);
         Event e = new org.logstash.Event();
         e.setField("message", logEvent);
 
