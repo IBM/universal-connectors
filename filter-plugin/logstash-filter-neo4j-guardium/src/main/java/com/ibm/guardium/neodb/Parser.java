@@ -462,7 +462,6 @@ public class Parser {
 					}
 				}
 			}
-		}
 
 		return originalSentence;
 	}
