@@ -62,6 +62,7 @@ public class Parser {
 
 	// New instance method that contains the original parseRecord logic
 	public Record parseRecordInternal(final JsonObject data) throws ParseException {
+		Record record = new Record();
 		if (data != null) {
 
 			record.setAppUserName(Constants.NOT_AVAILABLE);
@@ -290,7 +291,7 @@ public class Parser {
 
 	public Construct parseAsConstruct(final JsonObject data) {
 		try {
-			final Sentence sentence = Parser.parseSentence(data);
+			final Sentence sentence = parseSentence(data);
 
 			final Construct construct = new Construct();
 			construct.sentences.add(sentence);
