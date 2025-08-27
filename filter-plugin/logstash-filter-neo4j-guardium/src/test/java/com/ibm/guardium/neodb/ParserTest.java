@@ -32,202 +32,152 @@ public class ParserTest {
 			"    \"queryStatement\": \"MATCH (Ishant:player {name: 'Ishant Sharma', YOB: 1988, POB: 'Delhi'}) DETACH DELETE Ishant - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}\\\";\"\n" +
 			"  }";
 
-	@Test
-	public void testParseAsConstruct_Match() {
+	    @Test
+	    public void testParseAsConstruct_Match() {
 
-		Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
+	    	Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
 
-		JsonObject inputData = inputData(e);
-		Parser parser = new Parser();
-		final Construct result = parser.parseAsConstruct(inputData);
+	    	JsonObject inputData = inputData(e);
+			final Construct result = Parser.parseAsConstruct(inputData);
 
-		final Sentence sentence = result.sentences.get(0);
+	        final Sentence sentence = result.sentences.get(0);
 
-		Assert.assertEquals("MATCH", sentence.getVerb().trim());
-		Assert.assertEquals("player", sentence.getObjects().get(0).name.trim());
-		Assert.assertEquals("graph", sentence.getObjects().get(0).type);
-	}
+	        Assert.assertEquals("MATCH", sentence.getVerb().trim());
+	        Assert.assertEquals("player", sentence.getObjects().get(0).name.trim());
+	        Assert.assertEquals("graph", sentence.getObjects().get(0).type);
+	    }
 
-	@Test
-	public void testParseAsConstruct_Create() {
-		String neoString = "2021-08-06 15:57:11.502+0000 INFO  2 ms: (planning: 1, waiting: 0) - 1704 B - 0 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.3.1		client/127.0.0.1:54356	server/127.0.0.1:11004>	neo4j - neo4j - CREATE (friend:Person {name: 'Mark'})   RETURN friend - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}";
-		String neoString_grokOutput = "{\n" +
-				"    \"ts\": \"2021-08-06 15:57:11.502+0000\",\n" +
-				"    \"log_level\": \"INFO\",\n" +
-				"    \"metadata1\": \" 2 ms: (planning: 1, waiting: 0) - 1704 B - 0 page hits, 0 page faults - bolt-session\",\n" +
-				"    \"protocol\": \"bolt\",\n" +
-				"    \"driverVersion\": \"neo4j-browser/v4.3.1\",\n" +
-				"    \"client_ip\": \"client/127.0.0.1:54356\",\n" +
-				"    \"server_ip\": \"server/127.0.0.1:11004\",\n" +
-				"    \"dbname\": \"neo4j \",\n" +
-				"    \"dbuser\": \"neo4j \",\n" +
-				"    \"queryStatement\": \"CREATE (friend:Person {name: 'Mark'})   RETURN friend - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}\"\n" +
-				"  }";
-		Event e = getParsedEvent(neoString_grokOutput,neoString);
+	    @Test
+	    public void testParseAsConstruct_Create() {
+	        String neoString = "2021-08-06 15:57:11.502+0000 INFO  2 ms: (planning: 1, waiting: 0) - 1704 B - 0 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.3.1		client/127.0.0.1:54356	server/127.0.0.1:11004>	neo4j - neo4j - CREATE (friend:Person {name: 'Mark'})   RETURN friend - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}";
+			String neoString_grokOutput = "{\n" +
+					"    \"ts\": \"2021-08-06 15:57:11.502+0000\",\n" +
+					"    \"log_level\": \"INFO\",\n" +
+					"    \"metadata1\": \" 2 ms: (planning: 1, waiting: 0) - 1704 B - 0 page hits, 0 page faults - bolt-session\",\n" +
+					"    \"protocol\": \"bolt\",\n" +
+					"    \"driverVersion\": \"neo4j-browser/v4.3.1\",\n" +
+					"    \"client_ip\": \"client/127.0.0.1:54356\",\n" +
+					"    \"server_ip\": \"server/127.0.0.1:11004\",\n" +
+					"    \"dbname\": \"neo4j \",\n" +
+					"    \"dbuser\": \"neo4j \",\n" +
+					"    \"queryStatement\": \"CREATE (friend:Person {name: 'Mark'})   RETURN friend - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}\"\n" +
+					"  }";
+	    	Event e = getParsedEvent(neoString_grokOutput,neoString);
 
-		JsonObject inputData = inputData(e);
+	    	JsonObject inputData = inputData(e);
 
-		Parser parser = new Parser();
-		final Construct result = parser.parseAsConstruct(inputData);
+	        final Construct result = Parser.parseAsConstruct(inputData);
 
-		final Sentence sentence = result.sentences.get(0);
+	        final Sentence sentence = result.sentences.get(0);
 
-		Assert.assertEquals("CREATE", sentence.getVerb().trim());
-		Assert.assertEquals("Person", sentence.getObjects().get(0).name.trim());
-		Assert.assertEquals("graph", sentence.getObjects().get(0).type);
-	}
+	        Assert.assertEquals("CREATE", sentence.getVerb().trim());
+	        Assert.assertEquals("Person", sentence.getObjects().get(0).name.trim());
+	        Assert.assertEquals("graph", sentence.getObjects().get(0).type);
+	    }
 
+	    @Test
+	    public void testParseAsConstruct_Merge() {
+	        String neoString = "2021-08-06 15:56:12.097+0000 INFO  4 ms: (planning: 1, waiting: 0) - 0 B - 6 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.3.1		client/127.0.0.1:54356	server/127.0.0.1:11004>	neo4j - neo4j - MERGE (mark:Person {name: 'Mark'})   RETURN mark - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}";
+			String neoString_grokOutput = "{\n" +
+					"    \"ts\": \"2021-08-06 15:56:12.097+0000\",\n" +
+					"    \"log_level\": \"INFO\",\n" +
+					"    \"metadata1\": \" 4 ms: (planning: 1, waiting: 0) - 0 B - 6 page hits, 0 page faults - bolt-session\",\n" +
+					"    \"protocol\": \"bolt\",\n" +
+					"    \"driverVersion\": \"neo4j-browser/v4.3.1\",\n" +
+					"    \"client_ip\": \"client/127.0.0.1:54356\",\n" +
+					"    \"server_ip\": \"server/127.0.0.1:11004\",\n" +
+					"    \"dbname\": \"neo4j \",\n" +
+					"    \"dbuser\": \"neo4j \",\n" +
+					"    \"queryStatement\": \"MERGE (mark:Person {name: 'Mark'})   RETURN mark - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}\"\n" +
+					"  }";
+	    	Event e = getParsedEvent(neoString_grokOutput,neoString);
+			e.setField("minoff", "+04:00");
+			JsonObject inputData = inputData(e);
 
-	@Test
-	public void testDBNameAndServiceNameEqual() throws ParseException {
-		String neoString = "2021-08-06 15:57:11.502+0000 INFO  2 ms: (planning: 1, waiting: 0) - 1704 B - 0 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.3.1		client/127.0.0.1:54356	server/127.0.0.1:11004>	neo4j - neo4j - CREATE (friend:Person {name: 'Mark'})   RETURN friend - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}";
-		String neoString_grokOutput = "{\n" +
-				"    \"ts\": \"2021-08-06 15:57:11.502+0000\",\n" +
-				"    \"log_level\": \"INFO\",\n" +
-				"    \"metadata1\": \" 2 ms: (planning: 1, waiting: 0) - 1704 B - 0 page hits, 0 page faults - bolt-session\",\n" +
-				"    \"protocol\": \"bolt\",\n" +
-				"    \"driverVersion\": \"neo4j-browser/v4.3.1\",\n" +
-				"    \"client_ip\": \"client/127.0.0.1:54356\",\n" +
-				"    \"server_ip\": \"server/127.0.0.1:11004\",\n" +
-				"    \"dbname\": \"neo4jDB \",\n" +
-				"    \"dbuser\": \"neo4j \",\n" +
-				"    \"queryStatement\": \"CREATE (friend:Person {name: 'Mark'})   RETURN friend - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}\"\n" +
-				"  }";
+	        final Construct result = Parser.parseAsConstruct(inputData);
 
-		Event e = getParsedEvent(neoString_grokOutput,neoString);
-		e.setField("minoff", "+07:00");
+	        final Sentence sentence = result.sentences.get(0);
 
-		JsonObject inputData = inputData(e);
+	        Assert.assertEquals("MERGE", sentence.getVerb().trim());
+	        Assert.assertEquals("Person", sentence.getObjects().get(0).name.trim());
+	        Assert.assertEquals("graph", sentence.getObjects().get(0).type);
+	    }
 
-		Parser parser = new Parser();
-		final Record record = parser.parseRecord(inputData);
-		Assert.assertEquals(record.getDbName(), record.getAccessor().getServiceName());
-	}
+	    @Test
+	    public void testParseException_DELETE() {
+	        String neoString = "2021-03-03 08:49:32.367+0000 ERROR 7 ms: (planning: 7, waiting: 0) - 0 B - 0 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.2.1		client/127.0.0.1:62845	server/127.0.0.1:7687>	<none> - neo4j - DETACH DELETE node - {} - runtime=null - {type: 'user-action', app: 'neo4j-browser_v4.2.1'} - Variable `node` not defined (line 1, column 23 (offset: 22))";
+			String neoString_grokOutput = "{\n" +
+					"    \"ts\": \"2021-03-03 08:49:32.367+0000\",\n" +
+					"    \"log_level\": \"ERROR\",\n" +
+					"    \"metadata1\": \"7 ms: (planning: 7, waiting: 0) - 0 B - 0 page hits, 0 page faults - bolt-session\",\n" +
+					"    \"protocol\": \"bolt\",\n" +
+					"    \"driverVersion\": \"neo4j-browser/v4.2.1\",\n" +
+					"    \"client_ip\": \"client/127.0.0.1:62845\",\n" +
+					"    \"server_ip\": \"server/127.0.0.1:7687\",\n" +
+					"    \"dbname\": \"<none> \",\n" +
+					"    \"dbuser\": \"neo4j \",\n" +
+					"    \"queryStatement\": \"DETACH DELETE node - {} - runtime=null - {type: 'user-action', app: 'neo4j-browser_v4.2.1'} - Variable `node` not defined (line 1, column 23 (offset: 22))\\\";\"\n" +
+					"  }";
+			Event e = getParsedEvent(neoString_grokOutput, neoString);
+			e.setField("minoff", "+07:00");
+			JsonObject inputData = inputData(e);
 
-	@Test
-	public void testParseAsConstruct_Merge() {
-		String neoString = "2021-08-06 15:56:12.097+0000 INFO  4 ms: (planning: 1, waiting: 0) - 0 B - 6 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.3.1		client/127.0.0.1:54356	server/127.0.0.1:11004>	neo4j - neo4j - MERGE (mark:Person {name: 'Mark'})   RETURN mark - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}";
-		String neoString_grokOutput = "{\n" +
-				"    \"ts\": \"2021-08-06 15:56:12.097+0000\",\n" +
-				"    \"log_level\": \"INFO\",\n" +
-				"    \"metadata1\": \" 4 ms: (planning: 1, waiting: 0) - 0 B - 6 page hits, 0 page faults - bolt-session\",\n" +
-				"    \"protocol\": \"bolt\",\n" +
-				"    \"driverVersion\": \"neo4j-browser/v4.3.1\",\n" +
-				"    \"client_ip\": \"client/127.0.0.1:54356\",\n" +
-				"    \"server_ip\": \"server/127.0.0.1:11004\",\n" +
-				"    \"dbname\": \"neo4j \",\n" +
-				"    \"dbuser\": \"neo4j \",\n" +
-				"    \"queryStatement\": \"MERGE (mark:Person {name: 'Mark'})   RETURN mark - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}\"\n" +
-				"  }";
-		Event e = getParsedEvent(neoString_grokOutput,neoString);
-		e.setField("minoff", "+04:00");
+	        final ExceptionRecord exceptionRecord = Parser.parseException(inputData);
 
-		JsonObject inputData = inputData(e);
+	        Assert.assertEquals("Variable `node` not defined (line 1, column 23 (offset: 22))", exceptionRecord.getDescription().trim());
+	        Assert.assertEquals("DETACH DELETE node - {} - runtime=null - {type: 'user-action', app: 'neo4j-browser_v4.2.1", exceptionRecord.getSqlString().trim());
+	    }
 
-		Parser parser = new Parser();
-		final Construct result = parser.parseAsConstruct(inputData);
+	    @Test
+	    public void testParseAccessor() {
 
-		final Sentence sentence = result.sentences.get(0);
+	    	Event e = getParsedEvent(neoSuccessString_grokOutput,neoSuccessString);
 
-		Assert.assertEquals("MERGE", sentence.getVerb().trim());
-		Assert.assertEquals("Person", sentence.getObjects().get(0).name.trim());
-		Assert.assertEquals("graph", sentence.getObjects().get(0).type);
-	}
+	    	JsonObject inputData = inputData(e);
 
-	@Test
-	public void testParseException_DELETE() {
-		String neoString = "2021-03-03 08:49:32.367+0000 ERROR 7 ms: (planning: 7, waiting: 0) - 0 B - 0 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.2.1		client/127.0.0.1:62845	server/127.0.0.1:7687>	<none> - neo4j - DETACH DELETE node - {} - runtime=null - {type: 'user-action', app: 'neo4j-browser_v4.2.1'} - Variable `node` not defined (line 1, column 23 (offset: 22))";
-		String neoString_grokOutput = "{\n" +
-				"    \"ts\": \"2021-03-03 08:49:32.367+0000\",\n" +
-				"    \"log_level\": \"ERROR\",\n" +
-				"    \"metadata1\": \"7 ms: (planning: 7, waiting: 0) - 0 B - 0 page hits, 0 page faults - bolt-session\",\n" +
-				"    \"protocol\": \"bolt\",\n" +
-				"    \"driverVersion\": \"neo4j-browser/v4.2.1\",\n" +
-				"    \"client_ip\": \"client/127.0.0.1:62845\",\n" +
-				"    \"server_ip\": \"server/127.0.0.1:7687\",\n" +
-				"    \"dbname\": \"<none> \",\n" +
-				"    \"dbuser\": \"neo4j \",\n" +
-				"    \"queryStatement\": \"DETACH DELETE node - {} - runtime=null - {type: 'user-action', app: 'neo4j-browser_v4.2.1'} - Variable `node` not defined (line 1, column 23 (offset: 22))\\\";\"\n" +
-				"  }";
-		Event e = getParsedEvent(neoString_grokOutput, neoString);
-		JsonObject inputData = inputData(e);
-		e.setField("minoff", "+07:00");
+	        final Accessor accessor = Parser.parseAccessor(inputData);
 
-		Parser parser = new Parser();
-		final ExceptionRecord exceptionRecord = parser.parseException(inputData);
+	        Assert.assertEquals("Bolt database protocol", accessor.getDbProtocol().toString().trim());
+	        Assert.assertEquals("NEO4J", accessor.getServerType().toString().trim());
+	        Assert.assertEquals("neo4j", accessor.getDbUser().toString().trim());
+	        Assert.assertEquals("FREE_TEXT", accessor.getLanguage().toString().trim());
+	    }
 
-		Assert.assertEquals("Variable `node` not defined (line 1, column 23 (offset: 22))", exceptionRecord.getDescription().trim());
-		Assert.assertEquals("DETACH DELETE node - {} - runtime=null - {type: 'user-action', app: 'neo4j-browser_v4.2.1", exceptionRecord.getSqlString().trim());
-	}
+	    @Test
+	    public void testParseSessionLocator() {
 
-	@Test
-	public void testParseAccessor() {
+	    	Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
 
-		Event e = getParsedEvent(neoSuccessString_grokOutput,neoSuccessString);
+	    	JsonObject inputData = inputData(e);
 
-		JsonObject inputData = inputData(e);
+	        final SessionLocator sessionLocator = Parser.parseSessionLocator(inputData);
 
-		Parser parser = new Parser();
-		final Accessor accessor = parser.parseAccessor(inputData);
+	        Assert.assertEquals("127.0.0.1", sessionLocator.getClientIp().toString().trim());
+	        Assert.assertEquals(51372, sessionLocator.getClientPort());
+	        Assert.assertEquals("127.0.0.1", sessionLocator.getServerIp().toString().trim());
+	        Assert.assertEquals(11004, sessionLocator.getServerPort());
 
-		Assert.assertEquals("Bolt database protocol", accessor.getDbProtocol().toString().trim());
-		Assert.assertEquals("NEO4J", accessor.getServerType().toString().trim());
-		Assert.assertEquals("neo4j", accessor.getDbUser().toString().trim());
-		Assert.assertEquals("FREE_TEXT", accessor.getLanguage().toString().trim());
-	}
+	    }
 
-	@Test
-	public void testParseSessionLocator() {
+	    @Test
+	    public void testParseTimestamp() {
 
-		Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
+	    	Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
+	    	e.setField(Constants.TIMESTAMP, "2021-01-25 11:17:09.099+0000");
+	    	JsonObject inputData = inputData(e);
 
-		JsonObject inputData = inputData(e);
+	        final String timestamp = Parser.parseTimestamp(inputData);
 
-		Parser parser = new Parser();
-		final SessionLocator sessionLocator = parser.parseSessionLocator(inputData);
+	        Assert.assertEquals("2021-01-25 11:17:09.099+0000", timestamp);
 
-		Assert.assertEquals("127.0.0.1", sessionLocator.getClientIp().toString().trim());
-		Assert.assertEquals(-1, sessionLocator.getClientPort());
-		Assert.assertEquals("127.0.0.1", sessionLocator.getServerIp().toString().trim());
-		Assert.assertEquals(-1, sessionLocator.getServerPort());
-
-	}
-
-	@Test
-	public void testParseSessionId() throws ParseException {
-
-		Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
-
-		JsonObject inputData = inputData(e);
-
-		Parser parser = new Parser();
-		final Record record = parser.parseRecord(inputData);
-
-		Assert.assertEquals(Constants.UNKNOWN_STRING, record.getSessionId());
-
-	}
-
-	@Test
-	public void testParseTimestamp() {
-
-		Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
-		e.setField(Constants.TIMESTAMP, "2021-01-25 11:17:09.099+0000");
-		JsonObject inputData = inputData(e);
-
-		Parser parser = new Parser();
-		final String timestamp = parser.parseTimestamp(inputData);
-
-		Assert.assertEquals("2021-01-25 11:17:09.099+0000", timestamp);
-
-	}
+	    }
 
 	@Test
 	public void testGetTime() {
 
 		String dateString = "2021-01-25 11:17:09.099+0000";
 		String timeZone = "-04:00";
-		Parser parser = new Parser();
-		final Time time = parser.getTime(dateString, timeZone);
+		final Time time = Parser.getTime(dateString, timeZone);
 
 		Assert.assertEquals(0, time.getMinDst());
 		Assert.assertEquals(-240, time.getMinOffsetFromGMT());
@@ -235,79 +185,71 @@ public class ParserTest {
 
 	}
 
-	@Test
-	public void testParseSentence() {
+	    @Test
+	    public void testParseSentence() {
 
-		Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
+	    	Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
 
-		JsonObject inputData = inputData(e);
+	    	JsonObject inputData = inputData(e);
 
-		Parser parser = new Parser();
-		final Sentence sentence = parser.parseSentence(inputData);
+	        final Sentence sentence = Parser.parseSentence(inputData);
 
-		Assert.assertEquals("MATCH", sentence.getVerb());
-		Assert.assertEquals("player", sentence.getObjects().get(0).name.trim());
-		Assert.assertEquals("graph", sentence.getObjects().get(0).type);
+	        Assert.assertEquals("MATCH", sentence.getVerb());
+	        Assert.assertEquals("player", sentence.getObjects().get(0).name.trim());
+	        Assert.assertEquals("graph", sentence.getObjects().get(0).type);
 
-	}
+	    }
 
-	@Test
-	public void testParseRedactedSensitiveDataSql() {
+	    @Test
+	    public void testParseRedactedSensitiveDataSql() {
 
-		Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
+	    	Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
 
-		JsonObject inputData = inputData(e);
-		Parser parser = new Parser();
-		final String redacted = parser.parseRedactedSensitiveDataSql(inputData);
+	    	JsonObject inputData = inputData(e);
 
-		Assert.assertEquals("2021-08-06 17:09:40.008+0000 INFO  9 ms: (planning: 1, waiting: 0) - 0 B - 4 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.3.1		client/127.0.0.1:51372	server/127.0.0.1:11004>	neo4j - neo4j - MATCH (Ishant:player {name: 'Ishant Sharma', YOB: 1988, POB: 'Delhi'}) DETACH DELETE Ishant - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}", redacted);
+	    	final String redacted = Parser.parseRedactedSensitiveDataSql(inputData);
 
-	}
+	        Assert.assertEquals("2021-08-06 17:09:40.008+0000 INFO  9 ms: (planning: 1, waiting: 0) - 0 B - 4 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.3.1		client/127.0.0.1:51372	server/127.0.0.1:11004>	neo4j - neo4j - MATCH (Ishant:player {name: 'Ishant Sharma', YOB: 1988, POB: 'Delhi'}) DETACH DELETE Ishant - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}", redacted);
 
-	@Test
-	public void testEmptyOperations() {
-		LinkedHashMap<String, ArrayList<String>> operations = new LinkedHashMap<String, ArrayList<String>>();
-		List<String> alKeys = new ArrayList<String>(operations.keySet());
-		Assert.assertEquals(true, alKeys.isEmpty());
-	}
+	    }
 
 //	    ----------------------------------- ---------------------------------------------------
 
-	private JsonObject inputData(Event e){
-		JsonObject data = new JsonObject();
+	    private JsonObject inputData(Event e){
+			JsonObject data = new JsonObject();
 
-		if(e.getField(Constants.CLIENT_IP).toString() != null && !e.getField(Constants.CLIENT_IP).toString().isEmpty()){
-			data.addProperty(Constants.CLIENT_IP, e.getField(Constants.CLIENT_IP).toString());
+			if(e.getField(Constants.CLIENT_IP).toString() != null && !e.getField(Constants.CLIENT_IP).toString().isEmpty()){
+				data.addProperty(Constants.CLIENT_IP, e.getField(Constants.CLIENT_IP).toString());
+			}
+			if(e.getField(Constants.SERVER_IP).toString() != null && !e.getField(Constants.SERVER_IP).toString().isEmpty()){
+				data.addProperty(Constants.SERVER_IP, e.getField(Constants.SERVER_IP).toString());
+			}
+			if(e.getField(Constants.DB_PROTOCOL).toString() != null && e.getField(Constants.DB_PROTOCOL).toString().isEmpty()){
+				data.addProperty(Constants.DB_PROTOCOL, e.getField(Constants.DB_PROTOCOL).toString());
+			}
+			if(e.getField(Constants.TIMESTAMP).toString() != null && !e.getField(Constants.TIMESTAMP).toString().isEmpty()){
+				data.addProperty(Constants.TIMESTAMP, e.getField(Constants.TIMESTAMP).toString());
+			}
+			if(e.getField(Constants.LOG_LEVEL).toString() != null && !e.getField(Constants.LOG_LEVEL).toString().isEmpty()){
+				data.addProperty(Constants.LOG_LEVEL, e.getField(Constants.LOG_LEVEL).toString());
+			}
+			if(e.getField(Constants.DB_USER).toString() != null && !e.getField(Constants.DB_USER).toString().isEmpty()){
+				data.addProperty(Constants.DB_USER, e.getField(Constants.DB_USER).toString());
+			}
+			if(e.getField(Constants.DB_NAME).toString() != null && !e.getField(Constants.DB_NAME).toString().isEmpty()){
+				data.addProperty(Constants.DB_NAME, e.getField(Constants.DB_NAME).toString());
+			}
+			if(e.getField(Constants.SOURCE_PROGRAM).toString() != null && !e.getField(Constants.SOURCE_PROGRAM).toString().isEmpty()){
+				data.addProperty(Constants.SOURCE_PROGRAM, e.getField(Constants.SOURCE_PROGRAM).toString());
+			}
+			if(e.getField(Constants.QUERY_STATEMENT).toString() != null && !e.getField(Constants.QUERY_STATEMENT).toString().isEmpty()){
+				data.addProperty(Constants.QUERY_STATEMENT, e.getField(Constants.QUERY_STATEMENT).toString());
+			}
+			if(e.getField(Constants.MESSAGE).toString() != null && !e.getField(Constants.MESSAGE).toString().isEmpty()){
+				data.addProperty(Constants.MESSAGE, e.getField(Constants.MESSAGE).toString());
+			}
+			return data;
 		}
-		if(e.getField(Constants.SERVER_IP).toString() != null && !e.getField(Constants.SERVER_IP).toString().isEmpty()){
-			data.addProperty(Constants.SERVER_IP, e.getField(Constants.SERVER_IP).toString());
-		}
-		if(e.getField(Constants.DB_PROTOCOL).toString() != null && e.getField(Constants.DB_PROTOCOL).toString().isEmpty()){
-			data.addProperty(Constants.DB_PROTOCOL, e.getField(Constants.DB_PROTOCOL).toString());
-		}
-		if(e.getField(Constants.TIMESTAMP).toString() != null && !e.getField(Constants.TIMESTAMP).toString().isEmpty()){
-			data.addProperty(Constants.TIMESTAMP, e.getField(Constants.TIMESTAMP).toString());
-		}
-		if(e.getField(Constants.LOG_LEVEL).toString() != null && !e.getField(Constants.LOG_LEVEL).toString().isEmpty()){
-			data.addProperty(Constants.LOG_LEVEL, e.getField(Constants.LOG_LEVEL).toString());
-		}
-		if(e.getField(Constants.DB_USER).toString() != null && !e.getField(Constants.DB_USER).toString().isEmpty()){
-			data.addProperty(Constants.DB_USER, e.getField(Constants.DB_USER).toString());
-		}
-		if(e.getField(Constants.DB_NAME).toString() != null && !e.getField(Constants.DB_NAME).toString().isEmpty()){
-			data.addProperty(Constants.DB_NAME, e.getField(Constants.DB_NAME).toString());
-		}
-		if(e.getField(Constants.SOURCE_PROGRAM).toString() != null && !e.getField(Constants.SOURCE_PROGRAM).toString().isEmpty()){
-			data.addProperty(Constants.SOURCE_PROGRAM, e.getField(Constants.SOURCE_PROGRAM).toString());
-		}
-		if(e.getField(Constants.QUERY_STATEMENT).toString() != null && !e.getField(Constants.QUERY_STATEMENT).toString().isEmpty()){
-			data.addProperty(Constants.QUERY_STATEMENT, e.getField(Constants.QUERY_STATEMENT).toString());
-		}
-		if(e.getField(Constants.MESSAGE).toString() != null && !e.getField(Constants.MESSAGE).toString().isEmpty()){
-			data.addProperty(Constants.MESSAGE, e.getField(Constants.MESSAGE).toString());
-		}
-		return data;
-	}
 
 
 	public static Event getParsedEvent(String logEvent_json , String logEvent) {

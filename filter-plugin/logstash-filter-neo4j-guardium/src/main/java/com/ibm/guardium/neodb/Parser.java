@@ -62,8 +62,6 @@ public class Parser {
 
 	// New instance method that contains the original parseRecord logic
 	public Record parseRecordInternal(final JsonObject data) throws ParseException {
-		Record record = new Record();
-
 		if (data != null) {
 
 			record.setAppUserName(Constants.NOT_AVAILABLE);
@@ -88,13 +86,13 @@ public class Parser {
 			if (time != null) {
 				record.setTime(time);
 			}
-			// SessionLocator
+			// SeessionLocator
 			record.setSessionLocator(parseSessionLocator(data));
 
 			// Accessor
 			record.setAccessor(parseAccessor(data));
 
-			record.setSessionId(Constants.UNKNOWN_STRING);
+			record.parseSessionId(record);
 
 			// Data
 			if (data.get(Constants.LOG_LEVEL).toString().contains("INFO")) {
@@ -105,6 +103,15 @@ public class Parser {
 
 		}
 		return record;
+	}
+
+// 	---------------------- Session Id -----------------------
+
+	public void parseSessionId(Record record) {
+
+		Integer hashCode = (record.getSessionLocator().getClientIp() + record.getSessionLocator().getClientPort()
+					+ record.getDbName()).hashCode();
+		record.setSessionId(hashCode.toString());
 	}
 
 //	-----------------------------------------------Accessor-----------------
@@ -141,14 +148,7 @@ public class Parser {
 		accessor.setOsUser(Constants.UNKNOWN_STRING);
 		accessor.setServerDescription(Constants.UNKNOWN_STRING);
 		accessor.setServerOs(Constants.UNKNOWN_STRING);
-
-		String serviceName = Constants.NOT_AVAILABLE;
-
-		if (data.has(Constants.DB_NAME) && data.get(Constants.DB_NAME) != null) {
-			serviceName = data.get(Constants.DB_NAME).getAsString();
-		}
-
-		accessor.setServiceName(serviceName);
+		accessor.setServiceName(Constants.UNKNOWN_STRING);
 
 		return accessor;
 	}
@@ -159,8 +159,8 @@ public class Parser {
 		SessionLocator sessionLocator = new SessionLocator();
 		sessionLocator.setIpv6(false);
 
-		int clientPort = Constants.DEFAULT_PORT;
-		int serverPort = Constants.DEFAULT_PORT;
+		int clientPort = 0;
+		int serverPort = 0;
 		String clientIpAdd = Constants.NOT_AVAILABLE;
 		String serverIpAdd = Constants.NOT_AVAILABLE;
 
@@ -169,6 +169,7 @@ public class Parser {
 			String clientIp = clientIpPortDetails.substring(7);
 			String[] clientIpPort = clientIp.split(":");
 			clientIpAdd = clientIpPort[0];
+			clientPort = Integer.parseInt(clientIpPort[1]);
 
 			if (isIPv6Address(clientIpAdd)) {
 				sessionLocator.setIpv6(true);
@@ -185,7 +186,7 @@ public class Parser {
 			String serverIp = serverIPPortDetails.substring(7);
 			String[] serverIpPort = serverIp.split(":");
 			serverIpAdd = serverIpPort[0];
-
+			serverPort = Integer.parseInt(serverIpPort[1]);
 
 			if (isIPv6Address(serverIpAdd)) {
 				sessionLocator.setIpv6(true);
@@ -194,7 +195,6 @@ public class Parser {
 			} else {
 				sessionLocator.setServerIpv6(Constants.UNKNOWN_STRING);
 			}
-
 		}
 
 		sessionLocator.setClientIp(clientIpAdd);
@@ -221,12 +221,12 @@ public class Parser {
 
 	public String parseTimestamp(final JsonObject data) {
 		String dateString = null;
-		if (data.has(Constants.TIMESTAMP))
-		{
+		if (data.has(Constants.TIMESTAMP)) {
 			dateString = data.get(Constants.TIMESTAMP).getAsString();
 		}
 		return dateString;
 	}
+
 
 	public Time getTime(String dateString, String timeZone) {
 		if (dateString != null) {
@@ -290,7 +290,7 @@ public class Parser {
 
 	public Construct parseAsConstruct(final JsonObject data) {
 		try {
-			final Sentence sentence = parseSentence(data);
+			final Sentence sentence = Parser.parseSentence(data);
 
 			final Construct construct = new Construct();
 			construct.sentences.add(sentence);
@@ -429,6 +429,7 @@ public class Parser {
 
 		// convert to ArrayList of key set
 		List<String> alKeys = new ArrayList<String>(operations.keySet());
+
 		SentenceObject sentenceObject = null;
 		Sentence originalSentence = null;
 		int j = 1;
@@ -457,6 +458,7 @@ public class Parser {
 
 					decendant.getObjects().add(sentenceObject);
 					originalSentence.getDescendants().add(decendant);
+					}
 				}
 			}
 		}
@@ -621,7 +623,7 @@ public class Parser {
 	 * basis of index, function/method is called. Variable map is used to store the alias
 	 * and nodeName. Operation map is used to store the alias and operation
 	 * performed.
-	 */
+	*/
 
 	private String squareBracket(String query, String operation) {
 
@@ -631,6 +633,7 @@ public class Parser {
 		ArrayList<String> operationPerfomed = new ArrayList<String>();
 
 		String[] arr = query.split("\\[", 2);
+
 		String[] arrs = arr[1].split(":", 2);
 
 		if (arrs.length == 2) {
