@@ -92,7 +92,7 @@ public class Parser {
 			// Accessor
 			record.setAccessor(parseAccessor(data));
 
-			record.parseSessionId(record);
+			record.setSessionId(Constants.UNKNOWN_STRING);
 
 			// Data
 			if (data.get(Constants.LOG_LEVEL).toString().contains("INFO")) {
@@ -439,7 +439,7 @@ public class Parser {
 		for (String keys : alKeys) {
 			if (!operations.containsKey(keys)) continue;
 			String name = Constants.EVERYTHING;
-			if(variables.containsKey(keys) && variables.get(keys) != null)
+			if (variables.containsKey(keys) && variables.get(keys) != null)
 				name = variables.get(keys);
 
 			ArrayList<String> operation = operations.get(keys);
