@@ -8,9 +8,12 @@ package com.ibm.guardium.neodb;
 import co.elastic.logstash.api.Event;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.junit.Assert;
 import org.junit.Test;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -38,7 +41,8 @@ public class ParserTest {
 	    	Event e = getParsedEvent(neoSuccessString_grokOutput, neoSuccessString);
 
 	    	JsonObject inputData = inputData(e);
-			final Construct result = Parser.parseAsConstruct(inputData);
+			Parser parser = new Parser();
+			final Construct result = parser.parseAsConstruct(inputData);
 
 	        final Sentence sentence = result.sentences.get(0);
 
@@ -66,7 +70,8 @@ public class ParserTest {
 
 	    	JsonObject inputData = inputData(e);
 
-	        final Construct result = Parser.parseAsConstruct(inputData);
+			Parser parser = new Parser();
+			final Construct result = parser.parseAsConstruct(inputData);
 
 	        final Sentence sentence = result.sentences.get(0);
 
@@ -94,7 +99,8 @@ public class ParserTest {
 			e.setField("minoff", "+04:00");
 			JsonObject inputData = inputData(e);
 
-	        final Construct result = Parser.parseAsConstruct(inputData);
+			Parser parser = new Parser();
+	        final Construct result = parser.parseAsConstruct(inputData);
 
 	        final Sentence sentence = result.sentences.get(0);
 
@@ -122,7 +128,8 @@ public class ParserTest {
 			e.setField("minoff", "+07:00");
 			JsonObject inputData = inputData(e);
 
-	        final ExceptionRecord exceptionRecord = Parser.parseException(inputData);
+			Parser parser = new Parser();
+	        final ExceptionRecord exceptionRecord = parser.parseException(inputData);
 
 	        Assert.assertEquals("Variable `node` not defined (line 1, column 23 (offset: 22))", exceptionRecord.getDescription().trim());
 	        Assert.assertEquals("DETACH DELETE node - {} - runtime=null - {type: 'user-action', app: 'neo4j-browser_v4.2.1", exceptionRecord.getSqlString().trim());
@@ -132,10 +139,10 @@ public class ParserTest {
 	    public void testParseAccessor() {
 
 	    	Event e = getParsedEvent(neoSuccessString_grokOutput,neoSuccessString);
-
 	    	JsonObject inputData = inputData(e);
 
-	        final Accessor accessor = Parser.parseAccessor(inputData);
+			Parser parser = new Parser();
+	        final Accessor accessor = parser.parseAccessor(inputData);
 
 	        Assert.assertEquals("Bolt database protocol", accessor.getDbProtocol().toString().trim());
 	        Assert.assertEquals("NEO4J", accessor.getServerType().toString().trim());
@@ -150,7 +157,8 @@ public class ParserTest {
 
 	    	JsonObject inputData = inputData(e);
 
-	        final SessionLocator sessionLocator = Parser.parseSessionLocator(inputData);
+			Parser parser = new Parser();
+			final SessionLocator sessionLocator = parser.parseSessionLocator(inputData);
 
 	        Assert.assertEquals("127.0.0.1", sessionLocator.getClientIp().toString().trim());
 	        Assert.assertEquals(51372, sessionLocator.getClientPort());
@@ -166,7 +174,8 @@ public class ParserTest {
 	    	e.setField(Constants.TIMESTAMP, "2021-01-25 11:17:09.099+0000");
 	    	JsonObject inputData = inputData(e);
 
-	        final String timestamp = Parser.parseTimestamp(inputData);
+			Parser parser = new Parser();
+			final String timestamp = parser.parseTimestamp(inputData);
 
 	        Assert.assertEquals("2021-01-25 11:17:09.099+0000", timestamp);
 
@@ -177,7 +186,9 @@ public class ParserTest {
 
 		String dateString = "2021-01-25 11:17:09.099+0000";
 		String timeZone = "-04:00";
-		final Time time = Parser.getTime(dateString, timeZone);
+
+		Parser parser = new Parser();
+		final Time time = parser.getTime(dateString, timeZone);
 
 		Assert.assertEquals(0, time.getMinDst());
 		Assert.assertEquals(-240, time.getMinOffsetFromGMT());
@@ -192,7 +203,8 @@ public class ParserTest {
 
 	    	JsonObject inputData = inputData(e);
 
-	        final Sentence sentence = Parser.parseSentence(inputData);
+			Parser parser = new Parser();
+	        final Sentence sentence = parser.parseSentence(inputData);
 
 	        Assert.assertEquals("MATCH", sentence.getVerb());
 	        Assert.assertEquals("player", sentence.getObjects().get(0).name.trim());
@@ -207,11 +219,19 @@ public class ParserTest {
 
 	    	JsonObject inputData = inputData(e);
 
-	    	final String redacted = Parser.parseRedactedSensitiveDataSql(inputData);
+			Parser parser = new Parser();
+	    	final String redacted = parser.parseRedactedSensitiveDataSql(inputData);
 
 	        Assert.assertEquals("2021-08-06 17:09:40.008+0000 INFO  9 ms: (planning: 1, waiting: 0) - 0 B - 4 page hits, 0 page faults - bolt-session	bolt	neo4j-browser/v4.3.1		client/127.0.0.1:51372	server/127.0.0.1:11004>	neo4j - neo4j - MATCH (Ishant:player {name: 'Ishant Sharma', YOB: 1988, POB: 'Delhi'}) DETACH DELETE Ishant - {} - runtime=slotted - {type: 'user-direct', app: 'neo4j-browser_v4.3.1'}", redacted);
 
 	    }
+
+		@Test
+		public void testEmptyOperations() {
+			LinkedHashMap<String, ArrayList<String>> operations = new LinkedHashMap<String, ArrayList<String>>();
+			List<String> alKeys = new ArrayList<String>(operations.keySet());
+			Assert.assertEquals(true, alKeys.isEmpty());
+		}
 
 //	    ----------------------------------- ---------------------------------------------------
 
