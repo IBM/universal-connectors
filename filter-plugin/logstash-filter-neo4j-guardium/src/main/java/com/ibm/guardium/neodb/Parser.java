@@ -42,13 +42,27 @@ public class Parser {
 
 	private static final DateTimeFormatter DATE_TIME_FORMATTER = dateTimeFormatterBuilder.toFormatter();
 
-	static LinkedHashMap<String, ArrayList<String>> operations = null;
-	static LinkedHashMap<String, String> variables = null;
-	static Character randomValue = 65;
+	// Removed static modifiers from these variables
+	LinkedHashMap<String, ArrayList<String>> operations = null;
+	LinkedHashMap<String, String> variables = null;
+	Character randomValue = 65;
 
+	// Added constructor to initialize instance variables
+	public Parser() {
+		operations = null;
+		variables = null;
+		randomValue = 65;
+	}
+
+	// Keep this method static as an entry point
 	public static Record parseRecord(final JsonObject data) throws ParseException {
-		Record record = new Record();
+		Parser parser = new Parser();
+		return parser.parseRecordInternal(data);
+	}
 
+	// New instance method that contains the original parseRecord logic
+	public Record parseRecordInternal(final JsonObject data) throws ParseException {
+		Record record = new Record();
 		if (data != null) {
 
 			record.setAppUserName(Constants.NOT_AVAILABLE);
@@ -63,29 +77,29 @@ public class Parser {
 			record.setDbName(dbName);
 
 			// Time
-			String dateString = Parser.parseTimestamp(data);
+			String dateString = parseTimestamp(data);
 			String timeZone = null;
 			if (data.has(Constants.MIN_OFF)) {
 				timeZone = data.get(Constants.MIN_OFF).getAsString();
 			}
-			Time time = Parser.getTime(dateString, timeZone);
+			Time time = getTime(dateString, timeZone);
 
 			if (time != null) {
 				record.setTime(time);
 			}
 			// SeessionLocator
-			record.setSessionLocator(Parser.parseSessionLocator(data));
+			record.setSessionLocator(parseSessionLocator(data));
 
 			// Accessor
-			record.setAccessor(Parser.parseAccessor(data));
+			record.setAccessor(parseAccessor(data));
 
-			Parser.parseSessionId(record);
+			record.setSessionId(Constants.UNKNOWN_STRING);
 
 			// Data
 			if (data.get(Constants.LOG_LEVEL).toString().contains("INFO")) {
-				record.setData(Parser.parseData(data));
+				record.setData(parseData(data));
 			} else {
-				record.setException(Parser.parseException(data));
+				record.setException(parseException(data));
 			}
 
 		}
@@ -94,16 +108,16 @@ public class Parser {
 
 // 	---------------------- Session Id -----------------------
 
-	public static void parseSessionId(Record record) {
+	public void parseSessionId(Record record) {
 
 		Integer hashCode = (record.getSessionLocator().getClientIp() + record.getSessionLocator().getClientPort()
-					+ record.getDbName()).hashCode();
+				+ record.getDbName()).hashCode();
 		record.setSessionId(hashCode.toString());
 	}
 
 //	-----------------------------------------------Accessor-----------------
 
-	public static Accessor parseAccessor(JsonObject data) {
+	public Accessor parseAccessor(JsonObject data) {
 		Accessor accessor = new Accessor();
 
 		accessor.setDbProtocol(Constants.DATA_PROTOCOL_STRING);
@@ -142,7 +156,7 @@ public class Parser {
 
 //	-----------------------------------------------SessionLocator-----------------
 
-	public static SessionLocator parseSessionLocator(JsonObject data) {
+	public SessionLocator parseSessionLocator(JsonObject data) {
 		SessionLocator sessionLocator = new SessionLocator();
 		sessionLocator.setIpv6(false);
 
@@ -195,7 +209,7 @@ public class Parser {
 		return sessionLocator;
 	}
 
-	private static boolean isIPv6Address(String ip) {
+	private boolean isIPv6Address(String ip) {
 		try {
 			InetAddress inetAddress = InetAddress.getByName(ip);
 			return inetAddress instanceof java.net.Inet6Address;
@@ -206,7 +220,7 @@ public class Parser {
 
 //	-----------------------------------------------Timestamp-----------------
 
-	public static String parseTimestamp(final JsonObject data) {
+	public String parseTimestamp(final JsonObject data) {
 		String dateString = null;
 		if (data.has(Constants.TIMESTAMP)) {
 			dateString = data.get(Constants.TIMESTAMP).getAsString();
@@ -215,7 +229,7 @@ public class Parser {
 	}
 
 
-	public static Time getTime(String dateString, String timeZone) {
+	public Time getTime(String dateString, String timeZone) {
 		if (dateString != null) {
 			JsonObject data = new JsonObject();
 			LocalDateTime dt = LocalDateTime.parse(dateString, DATE_TIME_FORMATTER);
@@ -233,7 +247,7 @@ public class Parser {
 
 //  -----------------------------------------------Exception-----------------
 
-	public static ExceptionRecord parseException(JsonObject data) {
+	public ExceptionRecord parseException(JsonObject data) {
 		ExceptionRecord exceptionRecord = new ExceptionRecord();
 
 		exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
@@ -254,7 +268,7 @@ public class Parser {
 
 //	-----------------------------------------------Data Construct----------------
 
-	public static Data parseData(JsonObject inputJSON) {
+	public Data parseData(JsonObject inputJSON) {
 		Data data = new Data();
 		try {
 			Construct construct = parseAsConstruct(inputJSON);
@@ -275,9 +289,9 @@ public class Parser {
 		return data;
 	}
 
-	public static Construct parseAsConstruct(final JsonObject data) {
+	public Construct parseAsConstruct(final JsonObject data) {
 		try {
-			final Sentence sentence = Parser.parseSentence(data);
+			final Sentence sentence = parseSentence(data);
 
 			final Construct construct = new Construct();
 			construct.sentences.add(sentence);
@@ -289,14 +303,14 @@ public class Parser {
 				construct.setFullSql(fullSql[0].substring(1).trim());
 			else
 				construct.setFullSql(query[0].substring(1).trim());
-			construct.setRedactedSensitiveDataSql(Parser.parseRedactedSensitiveDataSql(data));
+			construct.setRedactedSensitiveDataSql(parseRedactedSensitiveDataSql(data));
 			return construct;
 		} catch (final Exception e) {
 			throw e;
 		}
 	}
 
-	protected static Sentence parseSentence(final JsonObject data) {
+	protected Sentence parseSentence(final JsonObject data) {
 
 		Sentence sentence = null;
 
@@ -304,7 +318,7 @@ public class Parser {
 			String queryStatement = data.get(Constants.QUERY_STATEMENT).getAsString();
 
 			sentence = parseQuery(queryStatement.trim());
-			
+
 			//For Match (n) return n
 			if(sentence == null) {
 				Sentence validSentence = new Sentence("MATCH");
@@ -320,7 +334,7 @@ public class Parser {
 		return sentence;
 	}
 
-	public static Sentence parseQuery(String query) {
+	public Sentence parseQuery(String query) {
 
 		ArrayList<String> gfg = new ArrayList<String>() {
 			{
@@ -418,306 +432,304 @@ public class Parser {
 		List<String> alKeys = new ArrayList<String>(operations.keySet());
 
 		SentenceObject sentenceObject = null;
-
-		int j = 1;
 		Sentence originalSentence = null;
+		int j = 1;
+
+		if (operations.isEmpty() || variables.isEmpty() || alKeys.isEmpty()) return originalSentence;
 
 		for (String keys : alKeys) {
-			if (!operations.isEmpty()) {
-				ArrayList<String> operation = operations.get(keys);
+			if (!operations.containsKey(keys)) continue;
+			String name = Constants.EVERYTHING;
+			if (variables.containsKey(keys) && variables.get(keys) != null)
+				name = variables.get(keys);
 
-				for (String string : operation) {
+			ArrayList<String> operation = operations.get(keys);
+			for (String string : operation) {
+				if (j == 1) {
+					originalSentence = new Sentence(string);
+					sentenceObject = new SentenceObject(name);
+					sentenceObject.setType(Constants.TYPE); // In graph database, graphs are equivalent to tables in RDBMS
 
-					if(j == 1) {
-						originalSentence = new Sentence(string);
-						sentenceObject = new SentenceObject(variables.get(keys));
-						if(sentenceObject.getName() == null)
-							sentenceObject.setName(Constants.EVERYTHING);
-						sentenceObject.setType(Constants.TYPE); // In graph database, graphs are equivalent to tables in RDBMS
+					originalSentence.getObjects().add(sentenceObject);
+					j++;
+				} else {
+					Sentence decendant = new Sentence(string);
+					sentenceObject = new SentenceObject(name);
+					sentenceObject.setType(Constants.TYPE); // In graph database, graphs are equivalent to tables in RDBMS
 
-						originalSentence.getObjects().add(sentenceObject);
-						j++;
-					}
-					else {
-						Sentence decendant = new Sentence(string);
-						sentenceObject = new SentenceObject(variables.get(keys));
-						if (sentenceObject.getName() == null)
-							sentenceObject.setName(Constants.EVERYTHING);
-						sentenceObject.setType(Constants.TYPE); // In graph database, graphs are equivalent to tables in RDBMS
-
-						decendant.getObjects().add(sentenceObject);
-						originalSentence.getDescendants().add(decendant);
-					}
+					decendant.getObjects().add(sentenceObject);
+					originalSentence.getDescendants().add(decendant);
 				}
 			}
 		}
+	}
 
 		return originalSentence;
-	}
+}
 
-	private static void remove(String queryString) {
+private void remove(String queryString) {
 
-		ArrayList<String> operationPerfomed = new ArrayList<>();
-		String arr[] = queryString.split(Constants.REMOVE);
-		String alias = "";
-		if (arr[1].contains(".")) {
-			String arrs[] = arr[1].split("\\.", 2);
-			alias = arrs[0].trim();
-		} else if (arr[1].contains(":")) {
-			String arrs[] = arr[1].split("\\:", 2);
-			alias = arrs[0].trim();
-		}
-
-		if (operations.containsKey(alias)) {
-			operationPerfomed = operations.get(alias);
-			operations.remove(alias);
-		}
-		operationPerfomed.add(Constants.REMOVE);
-		operations.put(alias, operationPerfomed);
-	}
-
-	private static void delete(String queryString) {
-
-		ArrayList<String> operationPerfomed = new ArrayList<>();
-		String arr[] = queryString.split(Constants.DELETE);
-		String alias = arr[1].trim();
-		if (alias.contains("-")) {
-			String arrs[] = alias.split("-", 2);
-			alias = arrs[0].trim();
-		}
-		if (operations.containsKey(alias)) {
-			operationPerfomed = operations.get(alias);
-			operations.remove(alias);
-		}
-		operationPerfomed.add(Constants.DELETE);
-		operations.put(alias, operationPerfomed);
-	}
-
-	private static void detachDelete(String queryString) {
-
-		ArrayList<String> operationPerfomed = new ArrayList<>();
-		String arr[] = queryString.split(Constants.DETACH_DELET);
-		String alias = arr[1].trim();
-		if (alias.contains("-")) {
-			String arrs[] = alias.split("-", 2);
-			alias = arrs[0].trim();
-		}
-		if (operations.containsKey(alias)) {
-			operationPerfomed = operations.get(alias);
-			operations.remove(alias);
-		}
-		operationPerfomed.add(Constants.DETACH_DELETE);
-		operations.put(alias, operationPerfomed);
-	}
-
-	private static void onMatchSet(String queryString) {
-
-		ArrayList<String> operationPerfomed = new ArrayList<>();
-		String arr[] = queryString.split(Constants.ON_MATC_ST);
+	ArrayList<String> operationPerfomed = new ArrayList<>();
+	String arr[] = queryString.split(Constants.REMOVE);
+	String alias = "";
+	if (arr[1].contains(".")) {
 		String arrs[] = arr[1].split("\\.", 2);
-		String alias = arrs[0].trim();
-		if (operations.containsKey(alias)) {
-			operationPerfomed = operations.get(alias);
-			operations.remove(alias);
+		alias = arrs[0].trim();
+	} else if (arr[1].contains(":")) {
+		String arrs[] = arr[1].split("\\:", 2);
+		alias = arrs[0].trim();
+	}
+
+	if (operations.containsKey(alias)) {
+		operationPerfomed = operations.get(alias);
+		operations.remove(alias);
+	}
+	operationPerfomed.add(Constants.REMOVE);
+	operations.put(alias, operationPerfomed);
+}
+
+private void delete(String queryString) {
+
+	ArrayList<String> operationPerfomed = new ArrayList<>();
+	String arr[] = queryString.split(Constants.DELETE);
+	String alias = arr[1].trim();
+	if (alias.contains("-")) {
+		String arrs[] = alias.split("-", 2);
+		alias = arrs[0].trim();
+	}
+	if (operations.containsKey(alias)) {
+		operationPerfomed = operations.get(alias);
+		operations.remove(alias);
+	}
+	operationPerfomed.add(Constants.DELETE);
+	operations.put(alias, operationPerfomed);
+}
+
+private void detachDelete(String queryString) {
+
+	ArrayList<String> operationPerfomed = new ArrayList<>();
+	String arr[] = queryString.split(Constants.DETACH_DELET);
+	String alias = arr[1].trim();
+	if (alias.contains("-")) {
+		String arrs[] = alias.split("-", 2);
+		alias = arrs[0].trim();
+	}
+	if (operations.containsKey(alias)) {
+		operationPerfomed = operations.get(alias);
+		operations.remove(alias);
+	}
+	operationPerfomed.add(Constants.DETACH_DELETE);
+	operations.put(alias, operationPerfomed);
+}
+
+private void onMatchSet(String queryString) {
+
+	ArrayList<String> operationPerfomed = new ArrayList<>();
+	String arr[] = queryString.split(Constants.ON_MATC_ST);
+	String arrs[] = arr[1].split("\\.", 2);
+	String alias = arrs[0].trim();
+	if (operations.containsKey(alias)) {
+		operationPerfomed = operations.get(alias);
+		operations.remove(alias);
+	}
+	operationPerfomed.add(Constants.ON_MATCH_SET);
+	operations.put(alias, operationPerfomed);
+}
+
+private void onCreateSet(String queryString) {
+
+	ArrayList<String> operationPerfomed = new ArrayList<>();
+	String arr[] = queryString.split(Constants.ON_CREAT_ST);
+	String arrs[] = arr[1].split("\\.", 2);
+	String alias = arrs[0].trim();
+	if (operations.containsKey(alias)) {
+		operationPerfomed = operations.get(alias);
+		operations.remove(alias);
+	}
+	operationPerfomed.add(Constants.ON_CREATE_SET);
+	operations.put(alias, operationPerfomed);
+
+}
+
+private void set(String queryString) {
+
+	ArrayList<String> operationPerfomed = new ArrayList<>();
+	String arr[] = queryString.split(Constants.SET);
+	String arrs[] = arr[1].split("\\.", 2);
+	String alias = arrs[0].trim();
+	if (operations.containsKey(alias)) {
+		operationPerfomed = operations.get(alias);
+		operations.remove(alias);
+	}
+	operationPerfomed.add(Constants.SET);
+	operations.put(alias, operationPerfomed);
+}
+
+private void match(String query) {
+
+	String closingBracket = query;
+
+	do {
+		int roundIndex = closingBracket.indexOf("(");
+		int squareIndex = closingBracket.indexOf("[");
+
+		if (roundIndex != -1 && (roundIndex < squareIndex || squareIndex == -1))
+			closingBracket = roundBracket(closingBracket, Constants.MATCH).trim();
+		else if (squareIndex != -1 && (roundIndex > squareIndex || roundIndex == -1))
+			closingBracket = squareBracket(closingBracket, Constants.MATCH).trim();
+		else
+			break;
+	} while (!closingBracket.isEmpty());
+
+}
+
+private void create(String query) {
+
+	String closingBracket = query;
+
+	do {
+		int roundIndex = closingBracket.indexOf("(");
+		int squareIndex = closingBracket.indexOf("[");
+
+		if (roundIndex != -1 && (roundIndex < squareIndex || squareIndex == -1))
+			closingBracket = roundBracket(closingBracket, Constants.CREATE).trim();
+		else if (squareIndex != -1 && (roundIndex > squareIndex || roundIndex == -1))
+			closingBracket = squareBracket(closingBracket, Constants.CREATE).trim();
+		else
+			break;
+	} while (!closingBracket.isEmpty());
+
+}
+
+private void merge(String query) {
+
+	String closingBracket = query;
+
+	do {
+		int roundIndex = closingBracket.indexOf("(");
+		int squareIndex = closingBracket.indexOf("[");
+
+		if (roundIndex != -1 && (roundIndex < squareIndex || squareIndex == -1))
+			closingBracket = roundBracket(closingBracket, Constants.MERGE).trim();
+		else if (squareIndex != -1 && (roundIndex > squareIndex || roundIndex == -1))
+			closingBracket = squareBracket(closingBracket, Constants.MERGE).trim();
+		else
+			break;
+	} while (!closingBracket.isEmpty());
+
+}
+
+/*
+ * In order to fetch the alias and the node we use the indexing. On the
+ * basis of index, function/method is called. Variable map is used to store the alias
+ * and nodeName. Operation map is used to store the alias and operation
+ * performed.
+ */
+
+private String squareBracket(String query, String operation) {
+
+	String closingBracket = "";
+	String value = "";
+	String operationValue = operation;
+	ArrayList<String> operationPerfomed = new ArrayList<String>();
+
+	String[] arr = query.split("\\[", 2);
+
+	String[] arrs = arr[1].split(":", 2);
+
+	if (arrs.length == 2) {
+		Pattern pattern = Pattern.compile("^[A-Za-z_|]+[\\sA-Za-z_|]*");
+		Matcher matcher = pattern.matcher(arrs[1]);
+		if (matcher.find()) {
+			value = matcher.group(0);
 		}
-		operationPerfomed.add(Constants.ON_MATCH_SET);
-		operations.put(alias, operationPerfomed);
-	}
 
-	private static void onCreateSet(String queryString) {
+		// in order to get the alias only and remove all the extra characters.
+		// EX : -[rel returns rel
+		arrs[0] = arrs[0].replaceAll("[^A-Za-z]+", "");
 
-		ArrayList<String> operationPerfomed = new ArrayList<>();
-		String arr[] = queryString.split(Constants.ON_CREAT_ST);
-		String arrs[] = arr[1].split("\\.", 2);
-		String alias = arrs[0].trim();
-		if (operations.containsKey(alias)) {
-			operationPerfomed = operations.get(alias);
-			operations.remove(alias);
-		}
-		operationPerfomed.add(Constants.ON_CREATE_SET);
-		operations.put(alias, operationPerfomed);
-
-	}
-
-	private static void set(String queryString) {
-
-		ArrayList<String> operationPerfomed = new ArrayList<>();
-		String arr[] = queryString.split(Constants.SET);
-		String arrs[] = arr[1].split("\\.", 2);
-		String alias = arrs[0].trim();
-		if (operations.containsKey(alias)) {
-			operationPerfomed = operations.get(alias);
-			operations.remove(alias);
-		}
-		operationPerfomed.add(Constants.SET);
-		operations.put(alias, operationPerfomed);
-	}
-
-	private static void match(String query) {
-
-		String closingBracket = query;
-
-		do {
-			int roundIndex = closingBracket.indexOf("(");
-			int squareIndex = closingBracket.indexOf("[");
-
-			if (roundIndex != -1 && (roundIndex < squareIndex || squareIndex == -1))
-				closingBracket = roundBracket(closingBracket, Constants.MATCH).trim();
-			else if (squareIndex != -1 && (roundIndex > squareIndex || roundIndex == -1))
-				closingBracket = squareBracket(closingBracket, Constants.MATCH).trim();
-			else
-				break;
-		} while (!closingBracket.isEmpty());
-
-	}
-
-	private static void create(String query) {
-
-		String closingBracket = query;
-
-		do {
-			int roundIndex = closingBracket.indexOf("(");
-			int squareIndex = closingBracket.indexOf("[");
-
-			if (roundIndex != -1 && (roundIndex < squareIndex || squareIndex == -1))
-				closingBracket = roundBracket(closingBracket, Constants.CREATE).trim();
-			else if (squareIndex != -1 && (roundIndex > squareIndex || roundIndex == -1))
-				closingBracket = squareBracket(closingBracket, Constants.CREATE).trim();
-			else
-				break;
-		} while (!closingBracket.isEmpty());
-
-	}
-
-	private static void merge(String query) {
-
-		String closingBracket = query;
-
-		do {
-			int roundIndex = closingBracket.indexOf("(");
-			int squareIndex = closingBracket.indexOf("[");
-
-			if (roundIndex != -1 && (roundIndex < squareIndex || squareIndex == -1))
-				closingBracket = roundBracket(closingBracket, Constants.MERGE).trim();
-			else if (squareIndex != -1 && (roundIndex > squareIndex || roundIndex == -1))
-				closingBracket = squareBracket(closingBracket, Constants.MERGE).trim();
-			else
-				break;
-		} while (!closingBracket.isEmpty());
-
-	}
-
-	/*
-	 * In order to fetch the alias and the node we use the indexing. On the
-	 * basis of index, function/method is called. Variable map is used to store the alias
-	 * and nodeName. Operation map is used to store the alias and operation
-	 * performed.
-	*/
-	
-	private static String squareBracket(String query, String operation) {
-
-		String closingBracket = "";
-		String value = "";
-		String operationValue = operation;
-		ArrayList<String> operationPerfomed = new ArrayList<String>();
-
-		String[] arr = query.split("\\[", 2);
-
-		String[] arrs = arr[1].split(":", 2);
-
-		if (arrs.length == 2) {
-			Pattern pattern = Pattern.compile("^[A-Za-z_|]+[\\sA-Za-z_|]*");
-			Matcher matcher = pattern.matcher(arrs[1]);
-			if (matcher.find()) {
-				value = matcher.group(0);
-			}
-
-			// in order to get the alias only and remove all the extra characters.
-			// EX : -[rel returns rel
-			arrs[0] = arrs[0].replaceAll("[^A-Za-z]+", "");
-
-			pattern = Pattern.compile("^[A-Za-z]+[\\sA-Za-z]*");
-			matcher = pattern.matcher(arrs[0]);
-			if (!matcher.find()) {
-				arrs[0] = "" + randomValue;
-				randomValue++;
-			}
-
-			if (operations.containsKey(arrs[0].trim())) {
-				operationPerfomed = operations.get(arrs[0]);
-				operationPerfomed.add(operationValue);
-				operations.replace(arrs[0].trim(), operationPerfomed);
-			} else {
-				operationPerfomed.add(operationValue);
-				operations.put(arrs[0].trim(), operationPerfomed);
-			}
-
-			variables.put(arrs[0].trim(), value.trim());
-
-			String[] roundValue = arrs[1].split("\\]", 2);
-			closingBracket = roundValue[1];
+		pattern = Pattern.compile("^[A-Za-z]+[\\sA-Za-z]*");
+		matcher = pattern.matcher(arrs[0]);
+		if (!matcher.find()) {
+			arrs[0] = "" + randomValue;
+			randomValue++;
 		}
 
-		return closingBracket;
-
-	}
-
-	protected static String roundBracket(String query, String operation) {
-
-		String closingBracket = "";
-		String value = "";
-		String operationValue = operation;
-		ArrayList<String> operationPerfomed = new ArrayList<String>();
-
-		String[] arr = query.split("\\(", 2);
-
-		if (arr[1].indexOf(")") < arr[1].indexOf(":")) {
-			String temp[] = arr[1].split("\\)", 2);
-			arr[1] = temp[1];
-		}
-
-		String[] arrs = arr[1].split(":", 2);
-
-		if (arrs.length == 2) {
-			Pattern pattern = Pattern.compile("^[A-Za-z_]+[\\sA-Za-z_]*");
-			Matcher matcher = pattern.matcher(arrs[1]);
-			if (matcher.find()) {
-				value = matcher.group(0);
-			}
-
-			// in order to get the alias only and remove all the extra characters.
-			// EX : -[rel returns rel
-			arrs[0] = arrs[0].replaceAll("[^A-Za-z]+", "");
-
-			pattern = Pattern.compile("^[A-Za-z]+[\\sA-Za-z]*");
-			matcher = pattern.matcher(arrs[0]);
-			if (!matcher.find()) {
-				arrs[0] = "" + randomValue;
-				randomValue++;
-			}
-
-			if (operations.containsKey(arrs[0].trim())) {
-				operationPerfomed = operations.get(arrs[0]);
-				operations.remove(arrs[0]);
-			}
+		if (operations.containsKey(arrs[0].trim())) {
+			operationPerfomed = operations.get(arrs[0]);
+			operationPerfomed.add(operationValue);
+			operations.replace(arrs[0].trim(), operationPerfomed);
+		} else {
 			operationPerfomed.add(operationValue);
 			operations.put(arrs[0].trim(), operationPerfomed);
-
-			variables.put(arrs[0].trim(), value.trim());
-
-			String[] roundValue = arrs[1].split("\\)", 2);
-			closingBracket = roundValue[1];
 		}
 
-		return closingBracket;
+		variables.put(arrs[0].trim(), value.trim());
 
+		String[] roundValue = arrs[1].split("\\]", 2);
+		closingBracket = roundValue[1];
 	}
 
-	protected static String parseRedactedSensitiveDataSql(JsonObject data) {
-		String redactedData = "";
-		redactedData = data.get(Constants.MESSAGE).getAsString();
+	return closingBracket;
 
-		return redactedData;
+}
+
+protected String roundBracket(String query, String operation) {
+
+	String closingBracket = "";
+	String value = "";
+	String operationValue = operation;
+	ArrayList<String> operationPerfomed = new ArrayList<String>();
+
+	String[] arr = query.split("\\(", 2);
+
+	if (arr[1].indexOf(")") < arr[1].indexOf(":")) {
+		String temp[] = arr[1].split("\\)", 2);
+		arr[1] = temp[1];
 	}
+
+	String[] arrs = arr[1].split(":", 2);
+
+	if (arrs.length == 2) {
+		Pattern pattern = Pattern.compile("^[A-Za-z_]+[\\sA-Za-z_]*");
+		Matcher matcher = pattern.matcher(arrs[1]);
+		if (matcher.find()) {
+			value = matcher.group(0);
+		}
+
+		// in order to get the alias only and remove all the extra characters.
+		// EX : -[rel returns rel
+		arrs[0] = arrs[0].replaceAll("[^A-Za-z]+", "");
+
+		pattern = Pattern.compile("^[A-Za-z]+[\\sA-Za-z]*");
+		matcher = pattern.matcher(arrs[0]);
+		if (!matcher.find()) {
+			arrs[0] = "" + randomValue;
+			randomValue++;
+		}
+
+		if (operations.containsKey(arrs[0].trim())) {
+			operationPerfomed = operations.get(arrs[0]);
+			operations.remove(arrs[0]);
+		}
+		operationPerfomed.add(operationValue);
+		operations.put(arrs[0].trim(), operationPerfomed);
+
+		variables.put(arrs[0].trim(), value.trim());
+
+		String[] roundValue = arrs[1].split("\\)", 2);
+		closingBracket = roundValue[1];
+	}
+
+	return closingBracket;
+
+}
+
+protected String parseRedactedSensitiveDataSql(JsonObject data) {
+	String redactedData = "";
+	redactedData = data.get(Constants.MESSAGE).getAsString();
+
+	return redactedData;
+}
 
 }
