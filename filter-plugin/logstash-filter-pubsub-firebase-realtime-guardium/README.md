@@ -167,3 +167,4 @@ The Guardium universal connector is the Guardium entry point for native audit/da
    - Firebase does not generate logs for GetDatabaseInstance event.
 - While using Firebase CLI(third-party tool), the GetDatabaseInstance event populates all data operations (GET/PUSH/UPDATE/REMOVE) inside the logs.
 - The "logging.googleapis.com" service is a general logging service that logs various activities, such as switching between databases or clicking on different tabs. The service is available on the Firebase UI, and when updating JSON files using the UI. Logs for the Firebase UI and the JSON file updates on the UI will generate the same logs with no new information.
+- Error queries are not supported in GCP for Firebase.
