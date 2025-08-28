@@ -142,3 +142,4 @@ The Guardium universal connector is the Guardium entry point for native audit/da
    - Source program : Not available with logs<br>
    - OS User : Not available with logs<br>
    - Client HostName : Not available with logs
+- Error queries are not supported in GCP for Firestore.

@@ -120,6 +120,7 @@ To use Logstash to perform additional processing on the data collected by Filebe
 3. Neo4j logs some queries multiple times, since they are executed in pipeline, so the same will be reflected in the Reports
 4. Multiple system related queries are logged, which cannot be skipped, so will be seen in the Reports
 5. Neo4j does not support Failed Login.
+6. Syntactically incorrect queries are executed as success queries and not as Sql Error.
 
 
 #### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
