@@ -114,7 +114,7 @@ The `create_subscription` setting, if set true, will have the input plugin creat
     - This requires additional permissions to be granted to the client (i.e. the Service Account) and is not recommended for most use-cases. If you still need to use it, grant the Service Account the "Cloud Pub/Sub Service Agent" Role in *IAM & Admin > Service Accounts > Grant Access*
 
 #### `max_messages`
-The `max_messages` setting, helps to mitigate the issues caused due to subscriber client processing and acknowledging the messages more slowly than Pub/Sub sending them to the client. This option helps to control the rate at which the subscriber receives messages. The value is adjusted according to the traffic load. 
+The `max_messages` setting, helps to mitigate the issues caused due to subscriber client processing and acknowledging the messages more slowly than Pub/Sub sending them to the client. This option helps to control the rate at which the subscriber receives messages. The value needs to adjusted according to traffic load. 
 
 
 #### Logstash Default config params
