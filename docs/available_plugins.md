@@ -1,8 +1,8 @@
 # Available Plug-ins
 
-## Supported data sources
+## Supported Data Sources
 The following plug-ins are supported by the latest product versions. Exceptions are noted next to each plug-in name.
-To see if a particular plug-in is supported by older versions, please refer to the "supported versions" section inside each plug-in page.
+To see if a particular plug-in is supported by older versions, please refer to the "Supported Versions" section inside each plug-in page.
 
 * [Amazon Aurora MySQL](../filter-plugin/logstash-filter-aurora-mysql-guardium/README.md)
 * [Amazon DynamoDB](../filter-plugin/logstash-filter-dynamodb-guardium/README.md)
@@ -54,7 +54,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [Yugabyte](../filter-plugin/logstash-filter-yugabyte-guardium/README.md)
 
 ## Developing Plug-ins
-Users can develop their own universal connector plug-ins, if needed, and contribute them back to the open source project, if desired.
+Users can develop their own Universal Connector plug-ins, if needed, and contribute them back to the open source project, if desired.
 
 [Here](../docs/Guardium%20Data%20Protection/developing_plugins_gdp.md) is a guide for developing new plug-ins for Guardium Data Protection.
 

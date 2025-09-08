@@ -1,24 +1,24 @@
-## Cloudwatch_logs input plug-in
-### Meet Cloudwatch
+# CloudWatch Logs Input Plug-in
+### Meet CloudWatch
 * Tested versions: 1.0.3
 * Developed by [Luke Waite](https://github.com/lukewaite)
-* Configuration instructions can be found on every relevant filter plugin readme page. For example: [AWS PostgresSQL](../../filter-plugin/logstash-filter-azure-postgresql-guardium/README.md#procedure)
+* Configuration instructions can be found on every relevant filter plugin readme page. For example: [AWS PostgreSQL](../../filter-plugin/logstash-filter-azure-postgresql-guardium/README.md#procedure)
 * Supported Guardium versions:
-	* Guardium Data Protection: 11.3 and above
-	* Guardium Data Security Center: 3.2
+  * Guardium Data Protection: 11.3 and above
+  * Guardium Data Security Center: 3.2
 
-This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the universal connector that is featured in IBM Security Guardium. It pulls events from the Amazon Web Services CloudWatch API. The events are then sent over to corresponding filter plugin which transforms these audit logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java)  instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
+This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the Universal Connector that is featured in IBM Security Guardium. It pulls events from the Amazon Web Services CloudWatch API. The events are then sent over to the corresponding filter plugin which transforms these audit logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
 
-## Purpose:
+## Purpose
 
-Specify an individual log group or array of groups, and this plugin will scan all log streams in that group, and pull in any new log events.
+Specify an individual log group or array of groups, and this plugin will scan all log streams in that group and pull in any new log events.
 
 Optionally, you may set the log_group_prefix parameter to true which will scan for all log groups matching the specified prefix(s) and ingest all logs available in all of the matching groups.
 
-## Usage:
+## Usage
 
-### Parameters:
+### Parameters
 
 | Parameter | Input Type | Required | Default |
 |-----------|------------|----------|---------|
@@ -34,9 +34,8 @@ Optionally, you may set the log_group_prefix parameter to true which will scan f
 | codec | string | No | `plain` |
 | role_arn | string | No |  |
 
-
 #### `log_group`
-The `log_group` setting allows specifying either a single or array of log groups, that are to be monitored for audit logs.
+The `log_group` setting allows specifying either a single or array of log groups that are to be monitored for audit logs.
 
 #### `log_group_prefix`
 The `log_group_prefix` setting allows specifying a prefix that can be matched to all the log groups whose name contains the specified prefix string and logs are pulled over from all groups.
@@ -53,78 +52,78 @@ Valid options for `start_position` are:
 The `interval` setting allows specifying after how many seconds the log groups should be polled for new logs.
 
 #### `aws_credentials_file`
-The `aws_credentials_file` setting allows specifying a aws credentials file, which contains the acces key and secret to connect to AWS cloudwatch instance
+The `aws_credentials_file` setting allows specifying an AWS credentials file, which contains the access key and secret to connect to AWS CloudWatch instance.
 
 #### `access_key_id`
-The `access_key_id` setting allows specifying the access key id of the IAM user having cloudwatch access to read the logs.
+The `access_key_id` setting allows specifying the access key ID of the IAM user having CloudWatch access to read the logs.
 
 #### `secret_access_key`
-The `secret_access_key` setting allows specifying the access secret key id of the IAM user having cloudwatch access to read the logs.
+The `secret_access_key` setting allows specifying the access secret key ID of the IAM user having CloudWatch access to read the logs.
 
 #### `session_token`
-The `session_token` setting allows specifying a AWS Session token for temporary credential
+The `session_token` setting allows specifying an AWS Session token for temporary credential.
 
 #### `region`
-The `region` setting allows specify the region in which the Cloudwatch log group exists.
+The `region` setting allows specifying the region in which the CloudWatch log group exists.
 
 #### `codec`
-The `codec` setting allows specify, the codec used for input data. Input codecs are a convenient method for decoding the data before it enters the input, without needing a separate filter in the Logstash pipeline.
+The `codec` setting allows specifying the codec used for input data. Input codecs are a convenient method for decoding the data before it enters the input, without needing a separate filter in the Logstash pipeline.
    	##### `codec pattern`
     The `codec pattern` is a regular expression that Logstash uses to identify lines that are either the start of a new multiline event or a continuation of a previous one.
 	For the Redshift and Postgres plug-ins, update the value of the pattern parameter from the inputs section as specified in the codec pattern.
-	For Redshift, add pattern from [here] ( https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-redshift-aws-guardium/redshift-over-cloudwatch.conf )
-	For Postgres, add pattern from [here] ( https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/postgresCloudwatch.conf )
+	For Redshift, add pattern from [here](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-redshift-aws-guardium/redshift-over-cloudwatch.conf)
+	For Postgres, add pattern from [here](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/postgresCloudwatch.conf)
 
 #### `role_arn`
-The role_arn setting allows you to specify which AWS IAM Role to assume, if any. This is used to generate temporary credentials, typically for cross-account access. To understand more about the settings to be followed while using this parameter, click [here]( ./SettingsForRoleArn.md )
+The `role_arn` setting allows you to specify which AWS IAM Role to assume, if any. This is used to generate temporary credentials, typically for cross-account access. To understand more about the settings to be followed while using this parameter, click [here](./SettingsForRoleArn.md)
 
-
-#### Logstash Default config params
-Other standard logstash parameters are available such as:
+#### Logstash Default Config Parameters
+Other standard Logstash parameters are available such as:
 * `add_field`
 * `type`
 * `tags`
 
 ### Example
 
-	input {
-    cloudwatch_logs {
-		log_group => [ "/aws/rds/instance/test/postgresql"]
-		start_position => "end"
-		access_key_id => "<Enter the access key id>"
-		secret_access_key => "<<Enter the secret access key id>>"
-		region => "ap-south-1" #Default value: us-east-1
-		interval => 1
-		codec => multiline {
-          pattern => ""
-          negate => false
-          what => "previous"
-        }
-		type => "test"
-		add_field => {"account_id" => "<Enter the account id>"}
-		add_field => {"abc" => "value"}
-	}
+```
+input {
+  cloudwatch_logs {
+    log_group => [ "/aws/rds/instance/test/postgresql"]
+    start_position => "end"
+    access_key_id => "<Enter the access key id>"
+    secret_access_key => "<Enter the secret access key id>"
+    region => "ap-south-1" #Default value: us-east-1
+    interval => 1
+    codec => multiline {
+      pattern => ""
+      negate => false
+      what => "previous"
+    }
+    type => "test"
+    add_field => {"account_id" => "<Enter the account id>"}
+    add_field => {"abc" => "value"}
+  }
+}
+```
 
-### Authorizing outgoing traffic from AWS to Guardium
+### Authorizing Outgoing Traffic from AWS to Guardium
 
 #### Procedure
 1. Log in to the Guardium Collector's API.
 2. Issue these commands:
 ```
-	grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
-	grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
-```
+grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
+grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 ```
 
-
-##  Troubleshooting: 
+## Troubleshooting
 ### Using VPC Endpoints for AWS Connectivity
 
-If Logstash is unable to connect to AWS CloudWatch Logs due to **network restrictions** (e.g.  Traffic restricted to private subnets), you may need to route the connection through an **AWS VPC Endpoint**.
+If Logstash is unable to connect to AWS CloudWatch Logs due to **network restrictions** (e.g., traffic restricted to private subnets), you may need to route the connection through an **AWS VPC Endpoint**.
 
 ### Solution: Use a VPC Endpoint with a Custom Endpoint URL
 
-When running Logstash inside a **VPC** (Virtual Private Cloud), especially in private subnets, the AWS SDK cannot reach the public `logs.{region}.amazonaws.com` endpoint unless explicitly allowed.  
+When running Logstash inside a **VPC** (Virtual Private Cloud), especially in private subnets, the AWS SDK cannot reach the public `logs.{region}.amazonaws.com` endpoint unless explicitly allowed.
 To solve this, configure the plugin to use your VPC Endpoint along with AWS's bundled Certificate Authority (CA) for secure communication.
 
 #### Example Configuration
@@ -132,7 +131,7 @@ To solve this, configure the plugin to use your VPC Endpoint along with AWS's bu
 ```logstash
 input {
   cloudwatch_logs {
-	# Default Configuration
+    # Default Configuration
     log_group => "/aws/lambda/my-lambda-function"
     region => "us-east-1"
     access_key_id => "YOUR_ACCESS_KEY"
@@ -148,7 +147,7 @@ input {
 
 > **Note**: Replace the `endpoint` URL with your actual VPC Endpoint DNS name. You can find this in the AWS Console under **VPC > Endpoints**.
 
-###  Additional Notes
+### Additional Notes
 
 - Make sure the VPC Endpoint is created for the **CloudWatch Logs interface service** (`com.amazonaws.us-east-1.logs`).
 - Ensure your **subnet** and **security group** allow HTTPS traffic to the endpoint.
