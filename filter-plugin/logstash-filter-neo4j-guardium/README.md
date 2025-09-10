@@ -71,7 +71,8 @@ To use Logstash to perform additional processing on the data collected by Filebe
    • Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
 
         filebeat.inputs:
-        - type: log
+        - type: filestream
+        - id: <ID>
         enabled: true
         paths :  - /path/to/query.log
 
