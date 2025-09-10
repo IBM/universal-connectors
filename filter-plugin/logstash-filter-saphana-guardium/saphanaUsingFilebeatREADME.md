@@ -125,7 +125,8 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
     * Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
        ```
        filebeat.inputs:
-         - type: log
+         - type: filestream
+         - id: <ID>
            enabled: true
            paths:
              - <host_name/trace/DB_<DB_Name>/*.audit_trail.csv>
