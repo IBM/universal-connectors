@@ -66,7 +66,8 @@ Filebeat must be configured to send the output to the chosen Logstash host and p
    •  Locate "filebeat.inputs" in the filebeat.yml file and then use the "paths" attribute to set the location of the couchdb logs:
 ```
     filebeat.inputs:
-   - type: log
+   - type: filestream
+   - id: <ID>
   enabled: true
     paths:
     - /var/log/couchdb/*.log 

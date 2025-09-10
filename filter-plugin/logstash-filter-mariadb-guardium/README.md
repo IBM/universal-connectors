@@ -64,7 +64,8 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
     • Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters. 
 ```
     filebeat.inputs:
-       - type: log   
+       - type: filestream   
+       - id: <ID>
        enabled: true
         paths:
        -/var/lib/mysql/*.log
