@@ -75,7 +75,8 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
     • Locate "filebeat.inputs" in the filebeat.yml file, and then add the following parameters.
 
 		filebeat.inputs:
-			- type: log   
+			- type: filestream   
+            - id: <ID>
 			- enabled: true
 		paths:
 			- <path_of_log_file as specified in /etc/cassandra/conf/logback.xml file>

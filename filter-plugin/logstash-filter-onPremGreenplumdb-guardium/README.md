@@ -70,7 +70,8 @@ Filebeat must be configured to send the output to the chosen Logstash host and p
 ```
 • Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
     filebeat.inputs:
-    - type: log
+    - type: filestream
+    - id: <ID>
     enabled: true
     paths:
     - /home/ec2-user/greenplum-db-node/gpmaster/gpsne-1/pg_log/*.csv
