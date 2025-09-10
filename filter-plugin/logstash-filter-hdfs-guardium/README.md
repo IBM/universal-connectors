@@ -37,7 +37,8 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
     ```
     filebeat.inputs:
-   - type: log
+   - type: filestream
+   - id: <ID>
      enabled: true
      paths:
        - /var/log/hadoop-hdfs/hdfs-audit.log*
