@@ -1,0 +1,27 @@
+{
+  "plugin_name": "Scylladb over syslog",
+  "help_link": "https://github.ibm.com/Activity-Insights/universal-connectors/tree/master/filter-plugin/logstash-filter-scylldb-guardium/README.md",
+  "input_name": "syslog_input",
+  "input_parameters": [
+    {
+	  "type": {
+        "type": "text",
+        "default": "scylladb",
+        "hidden": true
+		}
+	}
+  ],
+  "filter_name": "Guardium_Scylladb_Syslog_filter",
+  "filter_parameters": [],
+  "auth_parameters": [
+    {
+      "guc_filter_param_datasource_tag": {
+        "param_type": "filter",
+        "type": "text",
+        "label": "Datasource Tag",
+        "description": "Tag that uses for syslog events"
+      }
+    }
+  ],
+  "supported_platforms": ["on-premise"]
+}
