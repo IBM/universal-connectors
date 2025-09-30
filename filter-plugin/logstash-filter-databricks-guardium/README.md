@@ -4,7 +4,7 @@
 * Environment: Azure
 * Supported inputs: Azure Event Hub (pull)
 * Supported Guardium versions:
-  * Guardium Data Protection: 11.4 and above
+  * Guardium Data Protection: 11.5 and later
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Azure-Databricks audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the
 data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved. 
@@ -117,6 +117,8 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 2. The log with sql execution will not have client ip, but it will come with another log with action name of "commandFinish". 
 3. The eventhub takes 10~30 minutes to receive raw logs from Databricks, the same delay time for Guardium is expected.
 4. If queries are submitted as part of a notebook cell, job, or script, Databricks may log the entire execution context (e.g., the notebook run or job task) rather than each individual SQL query. In this case, Guardium will not be able to form separate records and only parse the first statement.
+5. The Databricks auditing does not audit authentication failure(Login Failed) operations.
+
 
 ## 4. Configuring the Azure-Databricks filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Azure-Databricks template.
