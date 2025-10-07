@@ -97,6 +97,7 @@ class ParserTest {
     assertEquals("0.0.0.0", record.getSessionLocator().getClientIp());
     assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("0.0.0.0", record.getSessionLocator().getServerIp());
+    assertFalse(record.getSessionLocator().isIpv6());
     assertEquals("ALLOYDB", record.getAccessor().getDbProtocol());
     assertEquals("postgres", record.getAccessor().getDbUser());
     assertEquals("ALLOYDB", record.getAccessor().getServerType());
