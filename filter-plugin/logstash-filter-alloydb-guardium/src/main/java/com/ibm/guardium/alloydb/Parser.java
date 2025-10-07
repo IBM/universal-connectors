@@ -211,6 +211,16 @@ public class Parser extends CustomParser {
   }
 
   @Override
+  protected String getServerHostName(String payload) {
+    return NOT_AVAILABLE;
+  }
+
+  @Override
+  protected String getSessionId(String payload) {
+    return DEFAULT_STRING;
+  }
+
+  @Override
   protected ExceptionRecord getException(String payload, String sqlString) {
     String severityType = getValue(payload, Constants.EXCEPTION_TYPE_ID);
     if (!Objects.equals(severityType, "ERROR")
