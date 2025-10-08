@@ -1,0 +1,12 @@
+__MLVS { "identifier":"",
+"action":"",
+"query_expression":"",
+"dev_time":"Time{timstamp=1738876805353, minOffsetFromGMT=0, minDst=0}",
+"partition_name":"",
+"trace_id":"",
+"responseSize":"",
+"time_cost":"",
+"time_start":"",
+"time_end":"",
+"sdk_version":""
+}
