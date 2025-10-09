@@ -1,10 +1,10 @@
 # Oracle Unified Audit Universal Connector Over JDBC Connect
 
 ## Meet Oracle Unified Audit Over JDBC Connect
-* Tested versions: 19,21
+* Tested versions: 19, 21
 * Environments: On-prem, RDS in AWS
 * Supported inputs: Kafka Input (pull)
-* Supported Oracle versions: 19,21
+* Supported Oracle versions: 19, 21
 * Supported Guardium versions:
     * Guardium Data Protection: appliance bundle 12.1p105 or later.
  
@@ -23,9 +23,9 @@ Detailed breakdown:
 ### GDP versions available with OUA over JDBC credential support
 | Credential types                     | Patch details for availability                                                                      |
 |--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **JDBC**           | GDP version 12.1 + Appliance bundle patch 105 + Universal connector patch 1006 and later                                                                                                       |
-| **JDBC & Kerbseros**  | GDP version 12.1 + Appliance bundle patch 115 + Universal connector patch 5002 and later |
-| **JDBC & Kerbseros for OUA 2.0** | GDP version 12.1 + Appliance bundle patch 120 + Universal connector patch p5002 |
+| **JDBC**           | GDP version 12.1 + Appliance bundle patch 105 or 115 + Universal connector patch 1006 and later                                                                                                       |
+| **JDBC & Kerberos**  | GDP version 12.1 + Appliance bundle patch 115 + Universal connector patch 5002 and later |
+| **JDBC & Kerberos for OUA 2.0** | GDP version 12.1 + Appliance bundle patch 120 + Universal connector patch p5002 |
 
 
 
