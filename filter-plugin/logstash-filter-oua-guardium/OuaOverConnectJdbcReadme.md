@@ -2,7 +2,7 @@
 
 ## Meet Oracle Unified Audit Over JDBC Connect
 * Tested versions: 19, 21
-* Environments: On-prem, RDS in AWS
+* Environments: On-prem, RDS in AWS, Oracle Base Database Service in OCI
 * Supported inputs: Kafka Input (pull)
 * Supported Oracle versions: 19, 21
 * Supported Guardium versions:
