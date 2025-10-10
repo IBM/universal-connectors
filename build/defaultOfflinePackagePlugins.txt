@@ -41,7 +41,7 @@ filter-plugin/logstash-filter-trino-guardium/logstash-filter-trino_guardium_filt
 filter-plugin/logstash-filter-capella-guardium/logstash-filter-capella_guardium_filter
 filter-plugin/logstash-filter-opensearch-guardium/logstash-filter-opensearch_guardium_filter
 filter-plugin/logstash-filter-milvus-guardium/logstash-filter-milvus_guardium_filter
-filter-plugin/logstash-filter-singlestore-guardium/logstash-filter-singlestore_guardium_filter
+filter-plugin/logstash-filter-singlestore-guardium/logstash-filter-singlestoredb_guardium_filter
 filter-plugin/logstash-filter-alloydb-guardium/logstash-filter-alloydb_guardium_filter
 input-plugin/logstash-input-couchbase-capella/logstash-input-couchbase_capella_input
 input-plugin/logstash-input-http/logstash-offline-input-http-plugins

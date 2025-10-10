@@ -24,7 +24,7 @@ filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage;logstash-f
 filter-plugin/logstash-filter-onPremGreenplumdb-guardium/GreenplumdbOverFilebeatPackage;logstash-filter-greenplumdb_guardium_filter.zip
 filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresOverFilebeatPackage;
 filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage;logstash-filter-saphana_guardium_plugin_filter.zip
-filter-plugin/logstash-filter-singlestore-guardium/SingleStoreOverFilebeatPackage;logstash-filter-singlestore_guardium_filter.zip
+filter-plugin/logstash-filter-singlestore-guardium/SingleStoreOverFilebeatPackage;logstash-filter-singlestoredb_guardium_filter.zip
 filter-plugin/logstash-filter-yugabyte-guardium/YugabytedbOverFilebeatPackage;logstash-filter-yugabytedb_guardium_filter.zip
 #JDBC plug-ins
 filter-plugin/logstash-filter-snowflake-guardium/SnowflakeOverJbdcPackage;
