@@ -4,6 +4,7 @@
 The following plug-ins are supported by the latest product versions. Exceptions are noted next to each plug-in name.
 To see if a particular plug-in is supported by older versions, please refer to the "supported versions" section inside each plug-in page.
 
+* [Alloy_DB](../filter-plugin/logstash-filter-alloydb-guardium/README.md)
 * [Amazon Aurora MySQL](../filter-plugin/logstash-filter-aurora-mysql-guardium/README.md)
 * [Amazon DynamoDB](../filter-plugin/logstash-filter-dynamodb-guardium/README.md)
 * [Amazon OpenSearch](../filter-plugin/logstash-filter-opensearch-guardium/README.md)
@@ -38,6 +39,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [Intersystems IRIS](../filter-plugin/logstash-filter-intersystems-iris-guardium/README.md)
 * [MariaDB](../filter-plugin/logstash-filter-mariadb-guardium/README.md)
 * [Microsoft SQL Server](../filter-plugin/logstash-filter-mssql-guardium/MssqlOverJdbcPackage/README.md)
+* [milvus_DB](../filter-plugin/logstash-filter-milvus-guardium/README.md)
 * [MongoDB](../filter-plugin/logstash-filter-mongodb-guardium/README.md)
 * [MySQL](../filter-plugin/logstash-filter-mysql-guardium/README.md)
 * [MySQL Percona](../filter-plugin/logstash-filter-mysql-percona-guardium/README.md)
@@ -48,6 +50,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [ProgressDB](../filter-plugin/logstash-filter-progressdb-guardium/README.md)
 * [SAP HANA](../filter-plugin/logstash-filter-saphana-guardium/README.md)
 * [ScyllaDB](../filter-plugin/logstash-filter-scylldb-guardium/README.md)
+* [Singlestore](../filter-plugin/logstash-filter-singlestore-guardium/README.md)
 * [Snowflake](../filter-plugin/logstash-filter-snowflake-guardium/README.md)
 * [Teradata](../filter-plugin/logstash-filter-teradatadb-guardium/README.md)
 * [Trino](../filter-plugin/logstash-filter-trino-guardium/README.md)
