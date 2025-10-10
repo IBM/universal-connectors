@@ -69,7 +69,7 @@ public class Parser {
     accessor.setServerOs(EMPTY);
     accessor.setServerDescription(EMPTY);
     accessor.setServerHostName(EMPTY);
-    accessor.setClientHostName(EMPTY);
+    accessor.setClientHostName(NOT_AVAILABLE);
     accessor.setClient_mac(EMPTY);
     accessor.setClientOs(EMPTY);
     accessor.setCommProtocol(EMPTY);
