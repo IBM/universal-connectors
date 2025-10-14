@@ -27,7 +27,7 @@ class ParserTest {
     assertEquals("127.0.0.1", record.getSessionLocator().getClientIp());
     assertEquals("Trino", record.getAccessor().getDbProtocol());
     assertEquals("172.19.0.6", record.getSessionLocator().getServerIp());
-    assertEquals(8080, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("trino", record.getAccessor().getDbUser());
     assertEquals("Trino", record.getAccessor().getServerType());
     assertEquals(

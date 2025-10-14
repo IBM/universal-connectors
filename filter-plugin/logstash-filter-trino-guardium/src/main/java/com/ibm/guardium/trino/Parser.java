@@ -145,8 +145,7 @@ public class Parser {
 
     // Set port numbers
     sessionLocator.setClientPort(DEFAULT_PORT);
-    sessionLocator.setServerPort(
-            data.has(Metadata) ? getServerPort(data.getAsJsonObject(Metadata)) : DEFAULT_PORT);
+    sessionLocator.setServerPort(DEFAULT_PORT);
 
     return sessionLocator;
   }
