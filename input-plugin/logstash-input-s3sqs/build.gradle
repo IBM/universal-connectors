@@ -1,0 +1,128 @@
+import java.nio.file.Files
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
+
+apply plugin: 'java'
+apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
+
+// ===========================================================================
+// plugin info
+// ===========================================================================
+group                      'org.logstashplugins' // must match the package of the main plugin class
+version                    "${file("VERSION").text.trim()}" // read from required VERSION file
+description                = "S3SQS-Guardium input plugin"
+pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
+pluginInfo.longDescription = "This gem is a Logstash S3SQS filter plugin required to be installed as part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program."
+pluginInfo.authors         = ['IBM']
+pluginInfo.email           = ['']
+pluginInfo.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
+pluginInfo.pluginType      = "input"
+pluginInfo.pluginClass     = "S3SQS"
+pluginInfo.pluginName      = "s3_sqs" // must match the @LogstashPlugin annotation in the main plugin class
+// ===========================================================================
+
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
+
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+shadowJar {
+    zip64 true
+}
+
+dependencies {
+
+    implementation group: 'commons-io', name: 'commons-io', version: '2.18.0'
+
+    implementation group: 'software.amazon.awssdk', name: 's3', version: '2.30.17'
+
+    implementation group: 'software.amazon.awssdk', name: 'sqs', version: '2.30.17'
+
+    implementation group: 'software.amazon.awssdk', name: 'sts', version: '2.30.19'
+
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.17.0'
+
+    implementation group: 'org.json', name: 'json', version: '20250107'
+
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
+
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.2'
+
+    implementation("org.apache.commons:commons-csv:1.14.0")
+
+
+    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "**/logstash-core*.jar")
+    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
+
+
+    testCompile 'junit:junit:4.13.1'
+    testCompile 'org.jruby:jruby-complete:9.3.2.0'
+
+    testCompile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.1")
+
+}
+
+clean {
+    delete "${projectDir}/Gemfile"
+    delete "${projectDir}/" + pluginInfo.pluginFullName() + ".gemspec"
+    delete "${projectDir}/lib/"
+    delete "${projectDir}/vendor/"
+    new FileNameFinder().getFileNames(projectDir.toString(), pluginInfo.pluginFullName() + "-?.?.?.gem").each { filename ->
+        delete filename
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.register("vendor"){
+    dependsOn shadowJar
+    doLast {
+        String vendorPathPrefix = "vendor/jar-dependencies"
+        String projectGroupPath = project.group.replaceAll('\\.', '/')
+        File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
+        projectJarFile.mkdirs()
+        Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
+        validatePluginJar(projectJarFile, project.group)
+    }
+}
+
+tasks.register("generateRubySupportFiles") {
+    doLast {
+        generateRubySupportFilesForPlugin(project.description, project.group, version)
+    }
+}
+
+tasks.register("removeObsoleteJars") {
+    doLast {
+        new FileNameFinder().getFileNames(
+                projectDir.toString(),
+                "vendor/**/" + pluginInfo.pluginFullName() + "*.jar",
+                "vendor/**/" + pluginInfo.pluginFullName() + "-" + version + ".jar").each { f ->
+            delete f
+        }
+    }
+}
+
+tasks.register("gem"){
+    dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
+    doLast {
+        buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
+    }
+}
