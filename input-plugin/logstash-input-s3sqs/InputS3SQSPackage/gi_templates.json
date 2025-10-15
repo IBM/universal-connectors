@@ -1,0 +1,11 @@
+{
+  "plugin_name": "S3 SQS Input",
+  "help_link": "",
+  "input_name": "s3_sqs",
+  "input_parameters": [
+  ],
+  "filter_name": "",
+  "filter_parameters": [],
+  "auth_parameters": [
+  ]
+}
