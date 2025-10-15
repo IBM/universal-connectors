@@ -36,13 +36,13 @@ and collections (objects) involved. The AlloyDB Logstash filter plug-in supports
 1. To view the detailed audit logs, enable the following flags on your database instance:
 
 * `log_statement: all` - View executed SQL statements in audit logs.
-* `log_connections: on`, `log_disconnections: on` - View client port, host, etc. in audit logs (if you want to see
-  connection related logs, otherwise the flag can be set to off).
 
 2. To reduce the volume of audit logs, you can turn off the following flags, as they do not contain any details about the run queries:
 
 * `autovacuum: off`
 * `log_checkpoints: off`
+* `log_connections: off`
+* `log_disconnections: off` 
 
 ## Configuring the AlloyDB filter in Guardium
 
