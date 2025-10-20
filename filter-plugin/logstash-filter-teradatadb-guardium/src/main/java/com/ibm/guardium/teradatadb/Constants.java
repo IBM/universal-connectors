@@ -6,6 +6,7 @@ public interface Constants {
 	public static final String DEFAULT_IP = "0.0.0.0";
 	public static final int DEFAULT_PORT = -1;
 	public static final String UNKNOWN_STRING = "";
+	public static final String NOT_AVAILABLE = "N.A.";
 	public static final String SERVER_TYPE_STRING = "TRD";
 	public static final String DATA_PROTOCOL_STRING = "TeradataDB native audit";
 	public static final String TERADATA_LANGUAGE="TRD";
