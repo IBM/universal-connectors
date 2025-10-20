@@ -37,6 +37,8 @@ public class Parser extends CustomParser {
   private static final String DB_REGEX = "db=([^,]+)";
   private static final String USER_REGEX = "user=([^ ]+)";
   private static final String SQL_STATEMENT_REGEX = "(?i)statement:\\s+(.*)";
+  private static final String ALTERNATE_SQL_STATEMENT_REGEX =
+      "(?i)execute\\s*<\\s*unnamed\\s*>\\s*:\\s*(.*)$";
   private static final String ERROR_REGEX = "ERROR:(.*)";
   private static final String FATAL_ERROR_REGEX = "FATAL:(.*)";
   ;
@@ -45,6 +47,8 @@ public class Parser extends CustomParser {
   private static final Pattern portPattern = Pattern.compile(PORT_REGEX);
   private static final Pattern sqlStatementPattern =
       Pattern.compile(SQL_STATEMENT_REGEX, Pattern.DOTALL);
+  private static final Pattern alternateSqlStatementPattern =
+      Pattern.compile(ALTERNATE_SQL_STATEMENT_REGEX, Pattern.DOTALL);
   private static final Pattern dbPattern = Pattern.compile(DB_REGEX);
   private static final Pattern dbUserPattern = Pattern.compile(USER_REGEX);
   private static final Pattern errorPattern = Pattern.compile(ERROR_REGEX);
@@ -62,19 +66,26 @@ public class Parser extends CustomParser {
   @Override
   public Record parseRecord(String payload) {
     textPayloadFields = new HashMap<>();
-    if (!isValid(payload)) return null;
+    if (!isValid(payload)) {
+      logger.debug("Invalid AlloyDB Guardium log record: " + payload);
+      return null;
+    }
 
     String textPayload = getValue(payload, TEXT_PAYLOAD);
     parseTextPayload(textPayload);
     Record record = extractRecord(payload);
     Data data = record.getData();
     if (data != null && Objects.equals(data.getOriginalSqlCommand(), NOT_AVAILABLE)) {
-      throw new RuntimeException("SQL command is not available" + payload);
+      logger.debug("Skipping event " + payload);
+      throw new RuntimeException(
+          "Adding payload to skipped events since SQL command is not available " + payload);
     }
+    logger.debug("Successfully parsed AlloyDB Guardium log record: " + payload);
     return record;
   }
 
   private void parseTextPayload(String textPayload) {
+    logger.debug("Parsing text payload: " + textPayload);
     textPayloadFields.put(IP, DEFAULT_IP);
     textPayloadFields.put(PORT, "-1");
     textPayloadFields.put(Constants.DB_USER, NOT_AVAILABLE);
@@ -82,6 +93,8 @@ public class Parser extends CustomParser {
     textPayloadFields.put(Constants.DB_NAME, NOT_AVAILABLE);
     textPayloadFields.put(ERROR, NOT_AVAILABLE);
     if (textPayload == null) {
+      logger.debug(
+          "textPayload is null, leaving defaults in textPayloadFields={}", textPayloadFields);
       return;
     }
 
@@ -96,6 +109,11 @@ public class Parser extends CustomParser {
     }
 
     matcher = sqlStatementPattern.matcher(textPayload);
+    if (matcher.find()) {
+      textPayloadFields.put(SQL_STATEMENT, matcher.group(1));
+    }
+
+    matcher = alternateSqlStatementPattern.matcher(textPayload);
     if (matcher.find()) {
       textPayloadFields.put(SQL_STATEMENT, matcher.group(1));
     }
@@ -126,6 +144,7 @@ public class Parser extends CustomParser {
     int clientPort;
     try {
       clientPort = Integer.parseInt(textPayloadFields.get(PORT));
+      logger.debug("Parsed client port: {}", clientPort);
       return clientPort;
     } catch (Exception e) {
       return -1;
@@ -140,6 +159,7 @@ public class Parser extends CustomParser {
     } else {
       clientIp = textPayloadFields.get(IP);
     }
+    logger.debug("Parsed client ip: {}", clientIp);
 
     if (Objects.equals(clientIp, "") || clientIp == null) {
       return DEFAULT_IP;
@@ -155,6 +175,7 @@ public class Parser extends CustomParser {
     } else {
       clientIp = textPayloadFields.get(IP);
     }
+    logger.debug("Parsed client ipv6: {}", clientIp);
 
     if (Objects.equals(clientIp, "") || clientIp == null) {
       return DEFAULT_IPV6;
@@ -165,6 +186,7 @@ public class Parser extends CustomParser {
   @Override
   protected String getSqlString(String payload) {
     String sqlString = textPayloadFields.get(SQL_STATEMENT);
+    logger.debug("Extracted SQL string from textPayloadFields: {}", sqlString);
     if (sqlString != null && !sqlString.equals(NOT_AVAILABLE)) {
       return sqlString
           .replace("\n", " ")
@@ -173,8 +195,14 @@ public class Parser extends CustomParser {
           .replaceAll("\\s+\\)", ")")
           .trim();
     } else {
-      return sqlString;
+      logger.debug("SQL string not available in textPayloadFields, returning NOT_AVAILABLE");
+      return NOT_AVAILABLE;
     }
+  }
+
+  @Override
+  protected String getServerHostName(String payload) {
+    return NOT_AVAILABLE;
   }
 
   @Override
@@ -185,6 +213,7 @@ public class Parser extends CustomParser {
     } else {
       dbUser = textPayloadFields.get(Constants.DB_USER);
     }
+    logger.debug("Parsed dbUser: {}", dbUser);
     if (Objects.equals(dbUser, "") || dbUser == null) {
       dbUser = NOT_AVAILABLE;
     }
@@ -199,6 +228,7 @@ public class Parser extends CustomParser {
     } else {
       dbName = textPayloadFields.get(Constants.DB_NAME);
     }
+    logger.debug("Parsed dbName: {}", dbName);
     if (Objects.equals(dbName, "") || dbName == null) {
       dbName = NOT_AVAILABLE;
     }
@@ -211,16 +241,6 @@ public class Parser extends CustomParser {
   }
 
   @Override
-  protected String getServerHostName(String payload) {
-    return NOT_AVAILABLE;
-  }
-
-  @Override
-  protected String getSessionId(String payload) {
-    return DEFAULT_STRING;
-  }
-
-  @Override
   protected ExceptionRecord getException(String payload, String sqlString) {
     String severityType = getValue(payload, Constants.EXCEPTION_TYPE_ID);
     if (!Objects.equals(severityType, "ERROR")
@@ -230,6 +250,7 @@ public class Parser extends CustomParser {
       return null;
     } else {
       ExceptionRecord exceptionRecord = new ExceptionRecord();
+      logger.debug("Creating ExceptionRecord with severityType: {}", severityType);
       if (Objects.equals(severityType, "ALERT")) {
         exceptionRecord.setExceptionTypeId(EXCEPTION_TYPE_AUTHENTICATION_STRING);
       } else {
@@ -239,6 +260,11 @@ public class Parser extends CustomParser {
       exceptionRecord.setSqlString(getSqlString(payload));
       return exceptionRecord;
     }
+  }
+
+  @Override
+  protected String getSessionId(String payload) {
+    return DEFAULT_STRING;
   }
 
   @Override
