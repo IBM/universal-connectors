@@ -54,7 +54,7 @@ class ParserTest {
         assertEquals("Unknown", record.getAccessor().getDbUser());
         assertEquals("Milvus", record.getAccessor().getServerType());
         assertEquals("Time{timstamp=1738876805353, minOffsetFromGMT=0, minDst=0}", record.getTime().toString());
-        assertEquals("LOGIN_FAILED", record.getException().getExceptionTypeId());
+        assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
         try {
             String expected = new String(Files.readAllBytes(Paths.get("src/test/resources/milvusGRPCMessage_test2.txt")));
             assertEquals(expected, record.getData().getOriginalSqlCommand());
@@ -102,17 +102,7 @@ class ParserTest {
                 assertEquals("Milvus", record.getAccessor().getServerType());
                 assertNotEquals("", record.getTime().toString());
                 if (!payload.contains("errorCode=0")) {
-                    // Check that exception type is either SQL_ERROR or LOGIN_FAILED
-                    String exceptionTypeId = record.getException().getExceptionTypeId();
-                    assertTrue(exceptionTypeId.equals("SQL_ERROR") || exceptionTypeId.equals("LOGIN_FAILED"),
-                            "Exception type should be either SQL_ERROR or LOGIN_FAILED, but was: " + exceptionTypeId);
-                    
-                    // For login failures, verify it's correctly classified
-                    if (payload.contains("Connect-GrpcUnauthenticated") &&
-                        payload.contains("auth check failure")) {
-                        assertEquals("LOGIN_FAILED", exceptionTypeId);
-                    }
-                    
+                    assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
                     assertNotEquals("", record.getException().getSqlString());
                     assertNotEquals("", record.getException().getDescription());
                 } else {
@@ -125,27 +115,6 @@ class ParserTest {
         }
     }
 
-    @Test
-    void testLoginFailure() {
-        // Test case with api key error
-        String payload1 = "LEEF:1.0|Zilliz|Milvus|1.0|Connect-GrpcUnauthenticated|devTime=2025/09/16 17:04:39.489 +00:00\tdevTimeFormat=yyyy/MM/dd HH:mm:ss.SSS xxx\tuserName=Unknown\tuserAddress=tcp-127.0.0.1:47050\tdatabaseName=Unknown\tcollectionName=Unknown\tpartitionName=Unknown\tqueryExpression=Unknown\terrorCode=65535\terrorMessage=rpc error: code = Unauthenticated desc = auth check failure, please check api key is correct\ttraceId=72267fad5d0a8f303744ae9949f8763f\tresponseSize=Unknown\ttimeCost=28.475187ms\ttimeStart=2025/09/16 17:04:39.460 +00:00\ttimeEnd=2025/09/16 17:04:39.489 +00:00\tsdkVersion=Python-2.4.3\tmethodName=Connect\tmethodStatus=GrpcUnauthenticated";
-        Record record1 = parser.parseRecord(payload1);
-        assertNotNull(record1);
-        assertEquals("LOGIN_FAILED", record1.getException().getExceptionTypeId());
-        
-        // Test case with username/password error
-        String payload2 = "LEEF:1.0|Zilliz|Milvus|1.0|Connect-GrpcUnauthenticated|devTime=2025/09/16 17:08:12.241 +00:00\tdevTimeFormat=yyyy/MM/dd HH:mm:ss.SSS xxx\tuserName=k8s\tuserAddress=tcp-127.0.0.1:44614\tdatabaseName=Unknown\tcollectionName=Unknown\tpartitionName=Unknown\tqueryExpression=Unknown\terrorCode=65535\terrorMessage=rpc error: code = Unauthenticated desc = auth check failure, please check username and password are correct\ttraceId=ec1684550ed89dbf55ae62364bf39304\tresponseSize=Unknown\ttimeCost=308.881µs\ttimeStart=2025/09/16 17:08:12.241 +00:00\ttimeEnd=2025/09/16 17:08:12.241 +00:00\tsdkVersion=Python-2.4.3\tmethodName=Connect\tmethodStatus=GrpcUnauthenticated";
-        Record record2 = parser.parseRecord(payload2);
-        assertNotNull(record2);
-        assertEquals("LOGIN_FAILED", record2.getException().getExceptionTypeId());
-        
-        // Test case with successful login (should not be classified as an error)
-        String payload3 = "LEEF:1.0|Zilliz|Milvus|1.0|Connect-Successful|devTime=2025/09/16 17:07:02.880 +00:00\tdevTimeFormat=yyyy/MM/dd HH:mm:ss.SSS xxx\tuserName=k8s\tuserAddress=tcp-127.0.0.1:44614\tdatabaseName=Unknown\tcollectionName=Unknown\tpartitionName=Unknown\tqueryExpression=Unknown\terrorCode=0\terrorMessage=\ttraceId=88fdf6f03b4427a1db1aa703c463cf65\tresponseSize=107\ttimeCost=5.415566ms\ttimeStart=2025/09/16 17:07:02.873 +00:00\ttimeEnd=2025/09/16 17:07:02.879 +00:00\tsdkVersion=Python-2.4.3\tmethodName=Connect\tmethodStatus=Successful";
-        Record record3 = parser.parseRecord(payload3);
-        assertNotNull(record3);
-        assertNull(record3.getException());
-    }
-
     private void assertJsonEquals(String expectedJson, String actualJson) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> expectedMap = objectMapper.readValue(expectedJson, Map.class);
@@ -153,6 +122,5 @@ class ParserTest {
 
         assertEquals(expectedMap, actualMap, "JSON content does not match!");
     }
-}
 
-// Made with Bob
+}

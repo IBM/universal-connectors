@@ -45,8 +45,7 @@ Guardium uses the Filebeat input plugin to ingest access logs from Milvus. For m
 3. In the `filebeat.yml` file, navigate to the `filebeat.inputs` section and add the following parameters. Make sure to add the ``milvus`` tag to identify the Milvus events from other data.
    ```
    filebeat.inputs:
-        - type: filestream   
-        - id: <ID>
+   - type: log
      enabled: true
      paths:
        - <directory path to access log file>
