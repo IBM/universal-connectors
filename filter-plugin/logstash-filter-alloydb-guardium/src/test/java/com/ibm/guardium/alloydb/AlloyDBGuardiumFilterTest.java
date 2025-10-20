@@ -43,10 +43,10 @@ class AlloyDBGuardiumFilterTest {
             + "    \"labels\": {\n"
             + "        \"DATABASE_VERSION\": \"POSTGRES_15\",\n"
             + "        \"CONSUMER_PROJECT_NUMBER\": \"485533885456\",\n"
-            + "        \"CONSUMER_PROJECT\": \"charged-mind-281913\",\n"
+            + "        \"CONSUMER_PROJECT\": \"project-name\",\n"
             + "        \"NODE_ID\": \"kvqd\"\n"
             + "    },\n"
-            + "    \"logName\": \"projects/charged-mind-281913/logs/alloydb.googleapis.com%2Fpostgres.log\",\n"
+            + "    \"logName\": \"projects/project-name/logs/alloydb.googleapis.com%2Fpostgres.log\",\n"
             + "    \"receiveTimestamp\": \"2025-05-05T19:11:05.292741654Z\"\n"
             + "}";
 
