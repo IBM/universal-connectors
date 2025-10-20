@@ -85,16 +85,7 @@ public class Parser extends CustomParser {
         String value = getValue(payload, EXCEPTION_TYPE_ID);
         if (value == null || value.equals("0"))
             return DEFAULT_STRING;
-        
-        // Check if this is a login failure
-        String eventId = getValue(payload, EVENT_ID);
-        String methodStatus = getValue(payload, METHOD_STATUS);
-        
-        // Identify login failures by checking multiple indicators
-        boolean isLoginFailure = (eventId != null && eventId.contains("Connect-GrpcUnauthenticated"))
-        || (methodStatus != null && methodStatus.equals("GrpcUnauthenticated"));
-
-        return isLoginFailure ? LOGIN_FAILED : SQL_ERROR;
+        return SQL_ERROR;
     }
 
     @Override
