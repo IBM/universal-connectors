@@ -195,21 +195,6 @@ For this setup, we'll use the following terminology:
 > - `<Account2_ID>` with the account ID where your SQS/S3 resources are located (e.g., 222222)
 > - `<Role_In_Account2>` with the name of the role you'll create in Account2 (e.g., role_on_222222)
 
-For example:
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "VisualEditor0",
-      "Effect": "Allow",
-      "Action": "sts:AssumeRole",
-      "Resource": "arn:aws:iam::222222:role/role_on_222222"
-    }
-  ]
-}
-```
-
 8. Name this policy (e.g., `CrossAccountAssumeRolePolicy`) and click **Create policy**
 9. Return to the role creation tab, refresh the policy list, and attach the newly created policy
 10. Click **Next**
@@ -244,8 +229,8 @@ For example:
 1. Log in to your IAM console (https://console.aws.amazon.com/iam/) of Account2 where SQS/S3 resources are located (e.g., Account ID: 222222)
 2. Click the **Roles** tab under **Access Management**
 3. Click the **Create Role** button
-4. For **Trusted Entity Type**, select AWS Service
-5. For **Use case**, select EC2
+4. For **Trusted Entity Type**, select **Another AWS account**
+5. Enter the **Account ID of Account1** (e.g., 111111)
 6. Click **Next**
 7. Enter the role name (e.g., `role_on_222222`)
 8. Click **Create Role**
@@ -263,20 +248,17 @@ For example:
       "Action": [
         "sqs:ReceiveMessage",
         "sqs:DeleteMessage",
+        "sqs:DeleteMessageBatch",
+        "sqs:ChangeMessageVisibility",
+        "sqs:ChangeMessageVisibilityBatch",
         "sqs:GetQueueAttributes",
-        "sqs:GetQueueUrl",
-        "sqs:ListQueues"
+        "sqs:GetQueueUrl"
       ],
       "Resource": "arn:aws:sqs:<Region>:<Account2_ID>:<Queue_Name>"
     }
   ]
 }
 ```
-
-> Replace:
-> - `<Region>` with the AWS region where your SQS queue is located (e.g., us-east-1)
-> - `<Account2_ID>` with the account ID of Account2 (e.g., 222222)
-> - `<Queue_Name>` with your SQS queue name in Account2
 
 11. Click **Review Policy**
 12. Enter the policy name (e.g., `SQSAccessPolicy`) and click **Create Policy**
@@ -293,8 +275,7 @@ For example:
         "s3:GetObject"
       ],
       "Resource": [
-        "arn:aws:s3:::<BUCKET_NAME>",
-        "arn:aws:s3:::<BUCKET_NAME>/*"
+        "arn:aws:s3:::<BUCKET_NAME>/AWSLogs/<Account2_ID>/*"
       ]
     },
     {
@@ -302,7 +283,10 @@ For example:
       "Action": [
         "s3:ListBucket"
       ],
-      "Resource": "arn:aws:s3:::<BUCKET_NAME>"
+      "Resource": "arn:aws:s3:::<BUCKET_NAME>",
+      "Condition": {
+        "StringLike": { "s3:prefix": ["AWSLogs/<Account2_ID>/*"] }
+      }
     }
   ]
 }
@@ -312,9 +296,8 @@ For example:
 
 15. Click **Review Policy**
 16. Enter the policy name (e.g., `S3AccessPolicy`) and click **Create Policy**
-17. Select the role created above (e.g., `role_on_222222`)
-18. Click the **Trust relationships** tab and click **Edit trust policy**
-19. Replace the trust policy with:
+17. In the **Trust relationships** tab, click **Edit trust policy**
+18. Replace the trust policy with:
 
 ```json
 {
@@ -331,27 +314,9 @@ For example:
 }
 ```
 
-> Replace:
-> - `<Account1_ID>` with the account ID where your EC2 instance is located (e.g., 111111)
-> - `<Role_In_Account1>` with the name of the role you created in Account1 (e.g., role_on_111111)
+19. Click **Update Trust Policy**
 
-For example:
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::111111:role/role_on_111111"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-```
-
-20. Click **Update Trust Policy**
+---
 
 #### C. Configure Role ARN in Logstash Input Plugin
 
@@ -361,13 +326,13 @@ In your Logstash configuration file, set the `role_arn` parameter to the ARN of 
 input {
   s3sqs {
     # Other parameters...
-    role_arn => "<ROLE_ARN_ON_ACCOUNT2>"   # e.g., "arn:aws:iam::222222:role/role_on_222222"
+    role_arn => "arn:aws:iam::<Account2_ID>:role/<Role_In_Account2>"   # e.g., "arn:aws:iam::222222:role/role_on_222222"
     # Additional parameters...
   }
 }
 ```
 
-> Replace `<ROLE_ARN_ON_ACCOUNT2>` with the ARN of the role you created in Account2 (e.g., "arn:aws:iam::222222:role/role_on_222222").
+> Replace `<Account2_ID>` and `<Role_In_Account2>` with your actual values.
 
 ---
 
@@ -412,7 +377,7 @@ input {
 1. Go to **EC2 > Instances**
 2. Select your instance > **Actions > Security > Modify IAM role**
 3. Choose the role `<ROLE_NAME>` and click **Update IAM role**
-
+ 
 ---
 
 ## References
