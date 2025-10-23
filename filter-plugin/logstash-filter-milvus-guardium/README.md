@@ -2,7 +2,7 @@
 
 ### Meet Milvus
 
-* Tested versions: v1
+* Tested versions: 2.4.4 or later
 * Environment: Milvus Standalone (Docker Linux), Milvus Distributed (Milvus Operator)
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions: Guardium Data Protection 12.0 and later
@@ -24,7 +24,23 @@ Install Milvus. For more information, see [Milvus](https://milvus.io/docs).
 
 ### Procedure
 
-1. Configure access logs for **Milvus**. For more information, see [Configure Access logs](https://milvus.io/docs/configure_access_logs.md).
+1. Configure access logs for **Milvus**.
+
+      In the ``milvus.yaml`` file, find the ``proxy | accessLog`` section and configure the following parameters:
+
+      - Set ``accessLog | enable`` to ``true``.
+      - In the ``localPath`` parameter, enter the directory where the access log file is located.
+      - In the ``filename`` parameter, enter the name of your access log file.
+        <br></br> 
+      ```
+      proxy:
+            accessLog:
+              enable: true
+              localPath: /tmp/milvus_access
+              filename: access.log
+      ```  
+      For more information, see [Configure Access logs](https://milvus.io/docs/configure_access_logs.md).
+
 2. The Milvus filter requires IBM Log Event Extended Format (LEEF) for the access log entry. For more information, see [LEEF overview](https://www.ibm.com/docs/en/dsm?topic=leef-overview).
 3. Update the ``formatters`` section in your Milvus configuration file to use LEEF.
    
@@ -88,17 +104,17 @@ The Guardium universal connector is the Guardium entry point for native access l
 ### Before you begin
 * Configure the policies you need. For more information, see [Policies](/docs/#policies).
 * You must have permissions for the S-Tap Management role. By default, the admin user is assigned the S-Tap Management role.
-* Download the [logstash-filter-milvus-guardium](logstash-filter-milvus-guardium/logstash-filter-milvus_guardium_filter.zip) plug-in.
+* Download the [logstash-filter-milvus-guardium](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-milvus_guardium_filter.zip) plug-in.
 
 ### Procedure
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. Enable the universal connector if it is disabled.
-3. Click **Upload File** and select the offline [logstash-filter-milvus-guardium](logstash-filter-milvus-guardium/logstash-filter-milvus_guardium_filter.zip) plug-in. After it is uploaded, click **OK**.
+3. Click **Upload File** and select the offline [logstash-filter-milvus-guardium](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-milvus_guardium_filter.zip) plug-in. After it is uploaded, click **OK**.
 4. Click **Upload File** and select the ``key.json`` file. After it is uploaded, click **OK**.
 5. Click the **Plus** sign to open the Connector Configuration dialog box.
 6. In the **Connector name** field, enter a name.
-7. Update the input section to add the details from the [``milvusOverFilebeat.conf``](logstash-filter-milvus-guardium/milvusOverFilebeat.conf) file's ``input`` section, omitting the keyword ``input{`` at the beginning and its corresponding ``}`` at the end.
-8. Update the filter section to add the details from the [``milvusOverFilebeat.conf``](logstash-filter-milvus-guardium/milvusOverFilebeat.conf) file's ``filter`` section, omitting the keyword ``filter{`` at the beginning and its corresponding ``}`` at the end.
+7. Update the input section to add the details from the [``milvusOverFilebeat.conf``](milvusOverFilebeat.conf) file's ``input`` section, omitting the keyword ``input{`` at the beginning and its corresponding ``}`` at the end.
+8. Update the filter section to add the details from the [``milvusOverFilebeat.conf``](milvusOverFilebeat.conf) file's ``filter`` section, omitting the keyword ``filter{`` at the beginning and its corresponding ``}`` at the end.
 9. Make sure that the ``type`` fields in the ``input`` and ``filter`` configuration sections align. This field must be unique for each connector added to the system.
 10. Click **Save**. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 11. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the universal connector by using the **Disable/Enable** button.
