@@ -59,7 +59,7 @@ public class Parser extends CustomParser {
                 "    \"client\": \"userAddress\",\n" +
                 "    \"exception_type_id\": \"errorCode\",\n" +
                 "    \"exception_desc\": \"errorMessage\",\n" +
-                "    \"object\": \"collectionName\",\n" +
+                "    \"collection_name\": \"collectionName\",\n" +
                 "    \"partition\": \"partitionName\",\n" +
                 "    \"query_expression\": \"queryExpression\",\n" +
                 "    \"trace_id\": \"traceId\",\n" +
@@ -201,6 +201,11 @@ public class Parser extends CustomParser {
 
         return record;
     }
+    
+    @Override
+    protected String getServiceName(String payload) {
+        return getDbName(payload);
+    }
 
     private String getMlvsGrpcMessage(String payload) throws Exception {
 
@@ -208,7 +213,8 @@ public class Parser extends CustomParser {
 
         sb.append("__MLVS { ");
         sb.append("\"identifier\":\"").append(getTraceId(payload)).append("\",\n");
-        sb.append("\"action\":\"").append(getMethodName(payload)).append("\",\n");
+        sb.append("\"collection_name\":=\'").append(getCollectionName(payload)).append("\',\n");//object
+        sb.append("\"action\":\"").append(getMethodName(payload)).append("\",\n"); //verb
         sb.append("\"query_expression\":\"").append(getQueryExpression(payload)).append("\",\n");
         sb.append("\"dev_time\":\"").append(this.getTimestamp(payload).toString()).append("\",\n");
         sb.append("\"partition_name\":\"").append(getPartitionName(payload)).append("\",\n");
@@ -265,6 +271,11 @@ public class Parser extends CustomParser {
 
     private String getTraceId(String payload) {
         String value = this.getValue(payload, "trace_id");
+        return value != null ? value : "";
+    }
+
+    private String getCollectionName(String payload) {
+        String value = this.getValue(payload, "collection_name");
         return value != null ? value : "";
     }
 
