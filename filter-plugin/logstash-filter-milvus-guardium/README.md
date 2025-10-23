@@ -104,12 +104,12 @@ The Guardium universal connector is the Guardium entry point for native access l
 ### Before you begin
 * Configure the policies you need. For more information, see [Policies](/docs/#policies).
 * You must have permissions for the S-Tap Management role. By default, the admin user is assigned the S-Tap Management role.
-* Download the [logstash-filter-milvus-guardium](MilvusOverFilebeatPackage-1.0.zip) plug-in.
+* Download the [logstash-filter-milvus-guardium](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-milvus_guardium_filter.zip) plug-in.
 
 ### Procedure
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. Enable the universal connector if it is disabled.
-3. Click **Upload File** and select the offline [logstash-filter-milvus-guardium](MilvusOverFilebeatPackage-1.0.zip) plug-in. After it is uploaded, click **OK**.
+3. Click **Upload File** and select the offline [logstash-filter-milvus-guardium](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-milvus_guardium_filter.zip) plug-in. After it is uploaded, click **OK**.
 4. Click **Upload File** and select the ``key.json`` file. After it is uploaded, click **OK**.
 5. Click the **Plus** sign to open the Connector Configuration dialog box.
 6. In the **Connector name** field, enter a name.
