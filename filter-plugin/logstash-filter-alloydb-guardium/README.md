@@ -29,20 +29,28 @@ and collections (objects) involved. The AlloyDB Logstash filter plug-in supports
 5. [Create a log sink in Pub/Sub](https://cloud.google.com/logging/docs/export/configure_export_v2#creating_sink).
     * Use the following inclusion filter for ```Choose logs to include in sink``` during log sink creation to specify which logs to route. The following filter captures relevant logs based on data access and activity logs:
 
-              ((resource.type="alloydb.googleapis.com/Instance" logName="projects/charged-mind-281913/logs/alloydb.googleapis.com%2Fpostgres.log" )) 
+              ((resource.type="alloydb.googleapis.com/Instance" logName="projects/<project-name>/logs/alloydb.googleapis.com%2Fpostgres.log" )) 
+
+## Configuring GCP for the input plug-in
+1. [Create a topic in Pub/Sub](https://cloud.google.com/pubsub/docs/create-topic#create_a_topic_2).
+2. [Create a subscription in Pub/Sub](https://cloud.google.com/pubsub/docs/create-subscription#create_a_pull_subscription)
+3. [Create service account credentials](https://developers.google.com/workspace/guides/create-credentials#create_a_service_account):
+    - To provide subscription access to the service account, select the **Pub/Sub Subscriber** role from the role selection list during the service account creation process.
+    - You do not need to grant users access to this service account.
+4. [Create credentials for a service account](https://developers.google.com/workspace/guides/create-credentials#create_credentials_for_a_service_account). The key is used by the Logstash input plug-in configuration file.
 
 ## Enabling audit logs:
 
 1. To view the detailed audit logs, enable the following flags on your database instance:
 
 * `log_statement: all` - View executed SQL statements in audit logs.
-* `log_connections: on`, `log_disconnections: on` - View client port, host, etc. in audit logs (if you want to see
-  connection related logs, otherwise the flag can be set to off).
 
 2. To reduce the volume of audit logs, you can turn off the following flags, as they do not contain any details about the run queries:
 
 * `autovacuum: off`
 * `log_checkpoints: off`
+* `log_connections: off`
+* `log_disconnections: off`
 
 ## Configuring the AlloyDB filter in Guardium
 
@@ -63,6 +71,7 @@ enforcements. Configure Guardium to read the native audit and data access logs b
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. Enable the universal connector if it is disabled.
 3. Click **Upload File** and select the offline [logstash-filter-alloydb_guardium_filter](AlloyDBoverPubSubPackage/logstash-filter-alloydb_guardium_filter.zip) plug-in. After it is uploaded, click **OK**.
+4. Click **Upload File** and select the key.json file. After it is uploaded, click OK.
 4. Click the **Plus** sign to open the Connector Configuration dialog.
 5. In the **Connector name** field, enter a name.
 6. Update the input section to add the details from
