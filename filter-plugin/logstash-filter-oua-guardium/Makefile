@@ -1,5 +1,5 @@
-logstash_dir=/home/marockar/oua_uc/logstash-7.5.2
-java_home_dir=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.322.b06-2.el8_5.x86_64
+logstash_dir=${HOME}/tools/logstash_8.13.4
+java_home_dir=/Library/Java/JavaVirtualMachines/ibm-jdk-8//Contents/Home/
 version=$(shell cat VERSION)
 
 all: jar gem
