@@ -44,12 +44,9 @@ buildscript {
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
         classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
-        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+
     }
 }
-
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 
 repositories {
     mavenCentral()
@@ -74,17 +71,20 @@ shadowJar {
 }
 
 dependencies {
-    implementation group: 'commons-validator', name: 'commons-validator', version: versions.dependencies.commonsValidator
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
-    implementation 'org.apache.commons:commons-lang3:' + versions.dependencies.commonsLang
-    implementation 'com.google.code.gson:gson:' + versions.dependencies.gson
+    implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
+    implementation 'org.apache.commons:commons-lang3:3.7'
+    implementation 'com.google.code.gson:gson:2.8.9'
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
-    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
+    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
+    //implementation 'com.google.code.gson:gson:2.8.9'
 
-    testImplementation 'junit:junit:' + versions.dependencies.junit
-    testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.jruby:jruby-complete:9.2.7.0'
 
-    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
+
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include:  "guardium-universalconnector-commons-*.*.*.jar")
+
 }
 
 clean {
