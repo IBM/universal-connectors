@@ -164,7 +164,7 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
       destination: file
       format: JSON
       path: /var/lib/mongo/auditLog.json
-      filter: '{"$or": [{ atype: { $ne: ["authCheck"] }, "param.command": { $in: [ "find", "insert", "delete", "update", "findandmodify", "create", "drop", "mapReduce", "applyOps", "eval", "resetError","renameCollection","adminCommand"] } },{ atype: "authCheck", "param.command": { $in: ["aggregate"]}}]}'
+      filter: '{"$or": [{ atype: { $ne: ["authCheck"] }, "param.command": { $in: [ "find", "insert", "delete", "update", "findandmodify", "create", "drop", "mapReduce", "applyOps", "eval", "resetError","renameCollection","adminCommand"] } },{ atype: "authCheck", "param.command": { $in: ["aggregate"]}},{atype:"authenticate", result:{ $ne: 0 }}]}'
       setParameter: {auditAuthorizationSuccess: true}
       ...
       security:
