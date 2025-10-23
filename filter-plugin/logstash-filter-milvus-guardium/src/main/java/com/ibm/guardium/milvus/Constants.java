@@ -13,5 +13,6 @@ public class Constants {
     static final String USER_ADDR = "client";
     static final String DB_PROTOCOL = "MILVUS GRPC";
     static final String METHOD_STATUS = "method_status";
+    static final String SERVER_HOSTNAME = "serverHostname";
 
 }

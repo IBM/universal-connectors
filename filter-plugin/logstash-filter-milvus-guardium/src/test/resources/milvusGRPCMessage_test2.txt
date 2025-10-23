@@ -1,4 +1,5 @@
 __MLVS { "identifier":"",
+"collection_name":='',
 "action":"",
 "query_expression":"",
 "dev_time":"Time{timstamp=1738876805353, minOffsetFromGMT=0, minDst=0}",
