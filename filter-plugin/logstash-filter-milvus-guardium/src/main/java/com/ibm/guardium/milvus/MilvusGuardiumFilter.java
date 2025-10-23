@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import static com.ibm.guardium.milvus.Constants.*;
+import static com.ibm.guardium.milvus.Constants.SERVER_HOSTNAME;
 
 @LogstashPlugin(name = "milvus_guardium_filter")
 public class MilvusGuardiumFilter implements Filter {
@@ -75,7 +76,31 @@ public class MilvusGuardiumFilter implements Filter {
                 skippedEvents.add(e);
             } else {
 
-                Record record = this.parser.parseRecord(e.getField(MESSAGE).toString());
+                // Get the message content
+                String messageContent = e.getField(MESSAGE).toString();
+                
+                // Get the server hostname if available
+                String serverHostname = "";
+                if (e.getField(SERVER_HOSTNAME) != null) {
+                    serverHostname = e.getField(SERVER_HOSTNAME).toString();
+                    logger.debug("Found serverHostname in event: {}", serverHostname);
+                }
+                
+                // Parse the record
+                Record record = this.parser.parseRecord(messageContent);
+
+                if(record == null) {
+                     e.tag(INVALID_MSG);
+                    skippedEvents.add(e);
+                    logger.debug("Invalid event skipped: {}", e);
+                    continue;
+                }
+                // Set the server hostname in the accessor if available
+                if (record.getAccessor() != null) {
+                    record.getAccessor().setServerHostName(serverHostname);
+                    logger.debug("Set serverHostName in accessor: {}", serverHostname);
+                }
+                
                 final Gson gson = new GsonBuilder().disableHtmlEscaping().serializeNulls().create();
                 e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
                 filterMatchListener.filterMatched(e);
