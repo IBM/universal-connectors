@@ -6,9 +6,8 @@
 
 ## Follow this link to set up and use Oracle Unified Audit Universal Connector over JDBC Connect
 
-<<<<<<< Updated upstream
 [OuaOverConnectJdbc](./OuaOverConnectJdbcReadme.md)
-=======
+
 ## Follow the below link to setup and use AWS OUA using Cloudwatch input.
 
 [AWS OUA-Cloudwatch README](./OuaOverCloudwatch.md)
@@ -24,4 +23,3 @@
 ## Limitations
 
 - A syntactically correct SQL query which results in a database server error will appear in both the full SQL report and the exception report.
->>>>>>> Stashed changes
