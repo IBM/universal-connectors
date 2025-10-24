@@ -10,4 +10,4 @@
 
 ## Limitations
 
-- A syntactically correct SQL query which results in a database server error will appear in both the full SQL report and the exception report.
+- If a syntactically correct SQL query causes a database server error, the query appears in both the full SQL report and the exception report.
