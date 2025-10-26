@@ -85,6 +85,7 @@ dependencies {
     implementation 'commons-validator:commons-validator:' + versions.dependencies.commonsValidator
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.17.2'
     implementation group: 'com.github.jsqlparser', name: 'jsqlparser', version: '5.2'
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
 
     testImplementation group: 'org.mockito', name: 'mockito-all', version: versions.dependencies.mockitoAll
     testImplementation 'org.junit.jupiter:junit-jupiter:' + versions.dependencies.junitJupiter
