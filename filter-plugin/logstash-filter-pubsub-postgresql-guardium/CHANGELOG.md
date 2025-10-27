@@ -1,3 +1,5 @@
+## 1.0.5
+  - Added new parse message to avoid ruby hash convert issue
 ## 1.0.4
   - Assign default values to the database user and database name.
 ## 1.0.3

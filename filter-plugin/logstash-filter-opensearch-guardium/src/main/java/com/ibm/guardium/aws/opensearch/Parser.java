@@ -5,6 +5,7 @@ SPDX-License-Identifier: Apache-2.0
 
 package com.ibm.guardium.aws.opensearch;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -16,15 +17,13 @@ import com.ibm.guardium.universalconnector.commons.structures.Time;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Parser Class will perform operation on parsing events and messages from the
@@ -123,6 +122,15 @@ public class Parser extends CustomParser {
 
     @Override
     protected Record extractRecord(String payload) {
+        String category = getValueFromPayload(payload, Constants.AUDIT_CATEGORY);
+        if (Constants.CATEGORY_REST_FAILED_LOGIN.equals(category)) {
+            String dbUser = this.getValue(payload, "db_user");
+            if (dbUser == null || dbUser.isEmpty() || "<NONE>".equalsIgnoreCase(dbUser)) {
+                logger.debug("Skipping REST_FAILED_LOGIN event with db user <NONE>");
+                return null;
+            }
+        }
+
         Record record = new Record();
         record.setSessionId(this.getSessionId(payload));
         record.setDbName(this.getDbName(payload));
@@ -229,7 +237,22 @@ public class Parser extends CustomParser {
 
         String body = getValueFromPayload(payload, "audit_request_body");
         if (body != null && !body.isEmpty()) {
+            // Check if the body contains multiple JSON objects (bulk operations)
+            if (body.trim().startsWith("{") && body.contains("}\n{")) {
+                // Convert newline-separated JSON objects to a JSON array
+                String[] jsonObjects = body.split("\\n");
+                sb.append(", \"_query\":[");
+                for (int i = 0; i < jsonObjects.length; i++) {
+                    if (i > 0) {
+                        sb.append(",");
+                    }
+                    sb.append(jsonObjects[i]);
+                }
+                sb.append("]");
+            } else {
+                // Single JSON object, append as is
             sb.append(", \"_query\":").append(body);
+        }
         }
 
         String resolvedIndex = getValueFromPayload(payload, "audit_trace_resolved_indices");
@@ -237,7 +260,14 @@ public class Parser extends CustomParser {
             resolvedIndex =  getValueFromPayload(payload, "audit_trace_indices");
         }
         if (!resolvedIndex.isEmpty()) {
-            sb.append(", \"_indices\":\"").append(sanitizeResolvedIndices(resolvedIndex)).append("\"");
+            List<String> sanitized = sanitizeResolvedIndices(resolvedIndex);
+            try {
+                sb.append(", \"_indices\":").append(mapper.writeValueAsString(sanitized));
+            } catch (JsonProcessingException e) {
+                logger.warn("Error serializing resolved indices: " + e.getMessage(), e);
+                sb.append(", \"_indices\":[]");
+            }
+
         }
 
         sb.append("}");
@@ -276,11 +306,8 @@ public class Parser extends CustomParser {
 
         uri = uri.replaceAll("\\[.*?\\]", "");
 
-        try {
-            uri = URLDecoder.decode(uri, StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException e) {
+
             uri = uri.replaceAll("%", "_");
-            }
 
         uri = uri.replace(":", "/");
 
@@ -308,7 +335,7 @@ public class Parser extends CustomParser {
 
 
     public static String normalizeReservedKeyword(String word) {
-        Set<String> snifRestrictedKeywords = Set.of("template", "mappings", "get", "aliases", "user");
+        Set<String> snifRestrictedKeywords = Set.of("template", "mappings", "get", "aliases", "user", "info", "account", "actiongroups", "actions");
         if (word != null && snifRestrictedKeywords.contains(word)) {
             return "_" + word;
         }
@@ -351,7 +378,10 @@ public class Parser extends CustomParser {
         if (value == null || value.isEmpty()) {
             value = this.getValue(payload, "db_user_initiating_user");
         }
-        return (value == null || value.isEmpty()) ? "N.A." : value;
+        if (value == null || value.isEmpty() || "<NONE>".equalsIgnoreCase(value)) {
+            return "N.A";
+        };
+        return value;
     }
 
     public static Time parseTimestamp(String timestamp) {

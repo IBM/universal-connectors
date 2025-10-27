@@ -107,6 +107,7 @@ The Guardium universal connector is the Guardium entry point for native audit/pr
     - Client HostName : Not available with Audit/Profier logs
 - Server IPs are also not reported because they are not part of the audit stream. That said, the "add_field" clause in the configuration adds a user defined Server Host Name that can be used in reports and policies if desired.
 - Because Sniffer saves the DB name once when a new session is created, and not with every event, DB name will be updated and populated correctly in Guardium only when everytime a new database connection is established with database name. If Database connection is established without database name, then the database on which the first query for that session runs, will be retained in Guardium. Even if user switches between the databases for the same session.
+- Sql Errors are not supported.
 
 ## Configuring the DocumentDB Guardium Logstash filters in Guardium Data Security Center
 

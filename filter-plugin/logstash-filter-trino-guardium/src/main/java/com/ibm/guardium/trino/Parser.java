@@ -33,22 +33,23 @@ public class Parser {
 
   private static final SqlParser sqlParser = new SqlParser();
   private static final InetAddressValidator inetAddressValidator =
-      InetAddressValidator.getInstance();
+          InetAddressValidator.getInstance();
 
   public Parser() {}
 
   public static Record parseRecord(JsonObject data) {
     Record record = new Record();
     record.setSessionId(EMPTY);
-    record.setDbName(
-        data.has(Metadata) ? getDbName(data.getAsJsonObject(Metadata)) : NOT_AVAILABLE);
+    String DbName = data.has(Context) ? getDbName(data.getAsJsonObject(Context)) : NOT_AVAILABLE;
+    record.setDbName(DbName);
     record.setAppUserName(NOT_AVAILABLE);
     String sqlString = data.has(Metadata) ? getSqlString(data.getAsJsonObject(Metadata)) : EMPTY;
     record.setException(
-        data.has(FailureInfo)
-            ? getException(data.getAsJsonObject(FailureInfo), sqlString)
-            : getException(data, sqlString));
+            data.has(FailureInfo)
+                    ? getException(data.getAsJsonObject(FailureInfo), sqlString)
+                    : getException(data, sqlString));
     record.setAccessor(getAccessor(data));
+    record.getAccessor().setServiceName(DbName);
     record.setSessionLocator(getSessionLocator(data));
     record.setTime(getTimestamp(data));
     if (!record.isException()) record.setData(getData(sqlString));
@@ -61,14 +62,14 @@ public class Parser {
 
     accessor.setServiceName(TRINO);
     accessor.setDbUser(
-        data.has(Context) ? getDbUser(data.getAsJsonObject(Context)) : NOT_AVAILABLE);
+            data.has(Context) ? getDbUser(data.getAsJsonObject(Context)) : NOT_AVAILABLE);
     accessor.setDbProtocolVersion(EMPTY);
     accessor.setDbProtocol(DB_PROTOCOL);
     accessor.setServerType(SERVER_TYPE);
     accessor.setServerOs(EMPTY);
     accessor.setServerDescription(EMPTY);
     accessor.setServerHostName(EMPTY);
-    accessor.setClientHostName(EMPTY);
+    accessor.setClientHostName(NOT_AVAILABLE);
     accessor.setClient_mac(EMPTY);
     accessor.setClientOs(EMPTY);
     accessor.setCommProtocol(EMPTY);
@@ -85,11 +86,11 @@ public class Parser {
   }
 
   private static String getDbName(JsonObject metadata) {
-    return (metadata.has("tables")
-            && metadata.getAsJsonArray("tables").size() > 0
-            && metadata.getAsJsonArray("tables").get(0).getAsJsonObject().has("schema"))
-        ? metadata.getAsJsonArray("tables").get(0).getAsJsonObject().get("schema").getAsString()
-        : NOT_AVAILABLE;
+    return metadata.has("schema")
+            ? !metadata.get("schema").isJsonNull() ? metadata.get("schema").getAsString()
+            : NOT_AVAILABLE
+            : NOT_AVAILABLE;
+
   }
 
   private static String getDbUser(JsonObject context) {
@@ -144,8 +145,7 @@ public class Parser {
 
     // Set port numbers
     sessionLocator.setClientPort(DEFAULT_PORT);
-    sessionLocator.setServerPort(
-        data.has(Metadata) ? getServerPort(data.getAsJsonObject(Metadata)) : DEFAULT_PORT);
+    sessionLocator.setServerPort(DEFAULT_PORT);
 
     return sessionLocator;
   }

@@ -182,7 +182,8 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
 
         
         filebeat.inputs
-        - type: log
+        - type: filestream
+        - id: <ID>
           enabled: true
           paths:
             - /var/log/mongodb/auditLog.json
@@ -201,7 +202,8 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
             # Each -is an input. Most options can be set at the input level, so
             # you can use different inputs for various configurations.
             # Below are the input specific configurations.
-            -type: log  
+            -type: filestream  
+            - id: <ID>
             # Change to true to enable this input configuration.
               enabled: true  
               # Paths that should be crawled and fetched. Glob based paths.

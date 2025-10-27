@@ -64,11 +64,12 @@ public class Parser {
                 String accountId = getAccountId(records);// second part of resourceId
                 String sessionId = getSessionId(requestParams);
                 String serviceName = getServiceName(properties);
+                String dbName = subId+":"+serviceName;
                 record.setSessionId(sessionId);
-                record.setDbName(Constants.UNKNOWN_STRING);
+                record.setDbName(dbName);
                 record.setAppUserName(Constants.UNKNOWN_STRING);
                 record.setAccessor(parseAccessor(subId, accountId, properties, records));
-                record.getAccessor().setServiceName(serviceName);
+                record.getAccessor().setServiceName(dbName);
                 record.setSessionLocator(parserSessionLocator(properties));
 
                 String response = properties.get(Constants.RESPONSE).toString();
@@ -90,7 +91,7 @@ public class Parser {
 
     /**
      * Method to get queryStatement from JsonObject
-     * 
+     *
      * @param properties
      * @return
      */
@@ -163,6 +164,24 @@ public class Parser {
             }
         }
         return subId;
+    }
+
+    /**
+     * Method to get InstanceName from the JsonObject
+     *
+     * @param records
+     * @return
+     */
+    private static String getInstanceName(JsonObject records) {
+        String instanceName = Constants.UNKNOWN_STRING;
+        if (records.has(Constants.RESOURCEID)) {
+            instanceName = records.get(Constants.RESOURCEID).getAsString();
+            if (instanceName.contains("/")) {
+                String[] stringArr =instanceName.split("/");
+                instanceName = stringArr[stringArr.length-1];
+            }
+        }
+        return instanceName;
     }
 
     /**
@@ -260,7 +279,7 @@ public class Parser {
 
     /**
      * Method to get queryStatement from JsonObject
-     * 
+     *
      * @param commandText
      * @return
      */
@@ -346,11 +365,10 @@ public class Parser {
             clientHostName = properties.get(Constants.SOURCE_IP).getAsString();
         }
         accessor.setClientHostName(clientHostName);
-
         accessor.setServerHostName(
                 !subId.isEmpty() && !accountId.isEmpty()
-                        ? subId.concat("-").concat(accountId).concat("azuredatabricks.net")
-                        : "databricks.net");
+                        ? subId+":"+getInstanceName(record)
+                        : Constants.UNKNOWN_STRING);
 
         // Set database user
 
@@ -365,13 +383,10 @@ public class Parser {
         accessor.setServerType(Constants.SERVER_TYPE);
         accessor.setDbProtocol(Constants.DATA_PROTOCOL);
         accessor.setDbProtocolVersion(Constants.UNKNOWN_STRING);
-        accessor.setServiceName(properties.has(Constants.SERVICE_NAME)
-                ? properties.get(Constants.SERVICE_NAME).toString()
-                : Constants.UNKNOWN_STRING);
 
         // Set source program (user agent)
         accessor.setSourceProgram(properties.has(Constants.USER_AGENT)
-                ? properties.get(Constants.USER_AGENT).toString()
+                ? (properties.get(Constants.USER_AGENT).toString().isEmpty()||properties.get(Constants.USER_AGENT).toString().contains("\"")?Constants.UNKNOWN_STRING:properties.get(Constants.USER_AGENT).toString())
                 : Constants.UNKNOWN_STRING);
 
         // Set server description
