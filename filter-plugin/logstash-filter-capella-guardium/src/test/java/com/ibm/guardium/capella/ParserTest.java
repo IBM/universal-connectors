@@ -20,10 +20,10 @@ class ParserTest {
     assertNotNull(record);
 
     assertEquals("N.A.", record.getDbName());
-    assertEquals("authentication succeeded", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
     assertEquals(51606, record.getSessionLocator().getClientPort());
     assertEquals("10.0.0.23", record.getSessionLocator().getClientIp());
-    assertEquals(11207, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("10.0.0.11", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("@index@local", record.getAccessor().getDbUser());
@@ -52,7 +52,7 @@ class ParserTest {
     assertEquals("ZeeshanTestBucket", record.getDbName());
     assertEquals(44518, record.getSessionLocator().getClientPort());
     assertEquals("127.0.0.1", record.getSessionLocator().getClientIp());
-    assertEquals(11209, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("127.0.0.1", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("@ns_server@local", record.getAccessor().getDbUser());
@@ -101,7 +101,7 @@ class ParserTest {
     assertEquals("ba2760cee506d0293a8b4a0bf83687b807329667", record.getSessionId());
     assertEquals(53322, record.getSessionLocator().getClientPort());
     assertEquals("10.144.210.1", record.getSessionLocator().getClientIp());
-    assertEquals(8091, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("10.144.210.101", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("testUser@local", record.getAccessor().getDbUser());
@@ -147,7 +147,7 @@ class ParserTest {
     assertEquals("", record.getSessionId());
     assertEquals(53348, record.getSessionLocator().getClientPort());
     assertEquals("10.144.210.1", record.getSessionLocator().getClientIp());
-    assertEquals(8091, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("10.144.210.101", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("newUser@rejected", record.getAccessor().getDbUser());
@@ -214,7 +214,7 @@ class ParserTest {
     assertEquals("3f8472056c30014d32f19aca0bb22b10d5cefbee", record.getSessionId());
     assertEquals(53837, record.getSessionLocator().getClientPort());
     assertEquals("10.144.231.1", record.getSessionLocator().getClientIp());
-    assertEquals(8091, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("10.144.231.102", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("Administrator@builtin", record.getAccessor().getDbUser());
@@ -266,7 +266,7 @@ class ParserTest {
     assertEquals("", record.getSessionId());
     assertEquals(39575, record.getSessionLocator().getClientPort());
     assertEquals("127.0.0.1", record.getSessionLocator().getClientIp());
-    assertEquals(8094, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("127.0.0.1", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("Administrator@builtin", record.getAccessor().getDbUser());
@@ -330,7 +330,7 @@ class ParserTest {
     assertEquals("eb1411eaa5eb041ea07fb86ffe93a94a59f8e8e2", record.getSessionId());
     assertEquals(53397, record.getSessionLocator().getClientPort());
     assertEquals("10.144.210.1", record.getSessionLocator().getClientIp());
-    assertEquals(8091, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("10.144.210.101", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("Administrator@builtin", record.getAccessor().getDbUser());
@@ -392,7 +392,7 @@ class ParserTest {
     assertEquals("eb1411eaa5eb041ea07fb86ffe93a94a59f8e8e2", record.getSessionId());
     assertEquals(53444, record.getSessionLocator().getClientPort());
     assertEquals("10.144.210.1", record.getSessionLocator().getClientIp());
-    assertEquals(8091, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("10.144.210.101", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("Administrator@builtin", record.getAccessor().getDbUser());
@@ -416,7 +416,7 @@ class ParserTest {
     assertEquals("deleteMeBucket", record.getDbName());
     assertEquals(35264, record.getSessionLocator().getClientPort());
     assertEquals("127.0.0.1", record.getSessionLocator().getClientIp());
-    assertEquals(11209, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("127.0.0.2", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("@ns_server@local", record.getAccessor().getDbUser());
@@ -469,7 +469,7 @@ class ParserTest {
     assertEquals("N.A.", record.getDbName());
     assertEquals(56928, record.getSessionLocator().getClientPort());
     assertEquals("127.0.0.1", record.getSessionLocator().getClientIp());
-    assertEquals(18093, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("127.0.0.1", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("2209d939-681d-44ed-a47c-4757d13344a2@local", record.getAccessor().getDbUser());
@@ -514,7 +514,7 @@ class ParserTest {
             + "}";
     Record record = parser.parseRecord(payload);
     assertNotNull(record);
-    assertEquals("change cluster settings", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
   }
 
   @Test
@@ -547,7 +547,7 @@ class ParserTest {
 
     assertEquals("User was deleted", record.getData().getOriginalSqlCommand());
     assertEquals("User was deleted", record.getData().getConstruct().fullSql);
-    assertEquals("delete user", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
   }
 
   @Test
@@ -591,7 +591,7 @@ class ParserTest {
     assertEquals("N.A.", record.getDbName());
     assertEquals(54908, record.getSessionLocator().getClientPort());
     assertEquals("127.0.0.1", record.getSessionLocator().getClientIp());
-    assertEquals(18093, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("127.0.0.1", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("e1028d45-5814-44de-b299-af8302f64629@local", record.getAccessor().getDbUser());
@@ -599,7 +599,7 @@ class ParserTest {
     assertEquals(
         "__CB POST /#statement=infer `MtBucket`.`new`.`capella_engine_events`",
         record.getData().getOriginalSqlCommand());
-    assertEquals("INFER statement", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
     assertEquals("TEXT", record.getAccessor().getDataType());
     assertEquals("COUCHB", record.getAccessor().getLanguage());
   }
@@ -646,7 +646,7 @@ class ParserTest {
     assertEquals("N.A.", record.getDbName());
     assertEquals(53221, record.getSessionLocator().getClientPort());
     assertEquals("99.233.169.176", record.getSessionLocator().getClientIp());
-    assertEquals(18093, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("10.0.0.123", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("admin@local", record.getAccessor().getDbUser());
@@ -654,7 +654,7 @@ class ParserTest {
     assertEquals(
         "__CB POST /#statement=DELETE FROM `MtBucket`.`CreatedByMe`.`TestScope` WHERE id = \"user4\";",
         record.getData().getOriginalSqlCommand());
-    assertEquals("DELETE statement", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
   }
 
   @Test
@@ -698,7 +698,7 @@ class ParserTest {
     assertEquals("N.A.", record.getDbName());
     assertEquals(43060, record.getSessionLocator().getClientPort());
     assertEquals("127.0.0.1", record.getSessionLocator().getClientIp());
-    assertEquals(18093, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("127.0.0.1", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("2209d939-681d-44ed-a47c-4757d13344a2@local", record.getAccessor().getDbUser());
@@ -719,10 +719,10 @@ class ParserTest {
         "{\"description\":\"REST operation failed due to authentication failure\",\"id\":20485,\"local\":{\"ip\":\"10.0.0.11\",\"port\":11207},\"name\":\"authentication failure\",\"raw_url\": \"/pools\",\"real_userid\":{\"domain\":\"local\",\"user\":\"@index\"},\"remote\":{\"ip\":\"10.0.0.23\",\"port\":51606},\"timestamp\":\"2025-01-30T21:12:48.099382Z\"}";
     Record record = parser.parseRecord(payload);
     assertEquals("N.A.", record.getDbName());
-    assertEquals("authentication failure", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
     assertEquals(51606, record.getSessionLocator().getClientPort());
     assertEquals("10.0.0.23", record.getSessionLocator().getClientIp());
-    assertEquals(11207, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("10.0.0.11", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("@index@local", record.getAccessor().getDbUser());
@@ -740,10 +740,10 @@ class ParserTest {
         "{\"description\":\"An unrecognized statement was received by the N1QL query engine\",\"errors\":null,\"id\":28687,\"isAdHoc\":true,\"local\":{\"ip\":\"10.0.0.102\",\"port\":18093},\"metrics\":{\"elapsedTime\":\"0.00037393\",\"errorCount\":1,\"executionTime\":\"0.000311174\",\"resultCount\":0,\"resultSize\":0},\"name\":\"UNRECOGNIZED statement\",\"node\":\"svc-dqi-node-001.vam24ep86horsjja.cloud.couchbase.com:8091\",\"real_userid\":{\"domain\":\"local\",\"user\":\"@index\"},\"remote\":{\"ip\":\"99.233.169.176\",\"port\":58674},\"requestId\":\"d0707282-7b1a-453e-82df-76ea3456e6ca\",\"statement\":\"select * fro test;\",\"status\":\"fatal\",\"timestamp\":\"2025-06-25T15:58:08.215Z\",\"userAgent\":\"Go-http-client/1.1\"}";
     Record record = parser.parseRecord(payload);
     assertEquals("N.A.", record.getDbName());
-    assertEquals("UNRECOGNIZED statement", record.getAccessor().getServiceName());
+    assertEquals("N.A.", record.getAccessor().getServiceName());
     assertEquals(58674, record.getSessionLocator().getClientPort());
     assertEquals("99.233.169.176", record.getSessionLocator().getClientIp());
-    assertEquals(18093, record.getSessionLocator().getServerPort());
+    assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("10.0.0.102", record.getSessionLocator().getServerIp());
     assertEquals("CAPELLA", record.getAccessor().getDbProtocol());
     assertEquals("@index@local", record.getAccessor().getDbUser());

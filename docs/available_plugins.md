@@ -6,6 +6,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 
 * [Amazon Aurora MySQL](../filter-plugin/logstash-filter-aurora-mysql-guardium/README.md)
 * [Amazon DynamoDB](../filter-plugin/logstash-filter-dynamodb-guardium/README.md)
+* [Amazon OpenSearch](../filter-plugin/logstash-filter-opensearch-guardium/README.md)
 * [Amazon RDS for MariaDB](../filter-plugin/logstash-filter-mariadb-aws-guardium/README.md)
 * [Amazon RDS for MySQL](../filter-plugin/logstash-filter-mysql-aws-guardium/README.md)
 * [Amazon RDS for Postgres and Aurora Postgres](../filter-plugin/logstash-filter-postgres-guardium/README.md)

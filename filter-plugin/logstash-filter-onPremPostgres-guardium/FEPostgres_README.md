@@ -57,7 +57,8 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
        
 	For example:-
 	   filebeat.inputs:
-       - type: log   
+       - type: filestream
+       - id: <ID>
        enabled: true
         paths:
        - <directory specified in pgaudit.conf under "log_directory" parameter, if not specified it is pgaudit_log directory>

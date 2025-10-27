@@ -48,7 +48,8 @@ In addition, events are configured with the include_lines, exclude_lines, and ad
     • Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
 
             filebeat.inputs:
-            - type: log
+            - type: filestream
+            - id: <ID>
             enabled: true
             paths:
               - /var/solr/logs/solr.log

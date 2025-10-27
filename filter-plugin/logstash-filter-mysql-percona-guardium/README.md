@@ -51,7 +51,8 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
    • Locate "filebeat.inputs" in the filebeat.yml file, and then add the following parameters.
 
     ```
-    type: log
+    type: filestream
+    id: <ID>
     #Change to true to enable this input configuration.
     enabled: true 
     paths:

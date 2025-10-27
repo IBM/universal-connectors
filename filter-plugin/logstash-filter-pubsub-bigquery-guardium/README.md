@@ -139,6 +139,7 @@ project-id_bigquery.googleapis.com.
 (protoPayload.metadata.jobChange.job.jobStatus.jobState = DONE AND -protoPayload.metadata.jobChange.job.jobConfig.queryConfig.statementType = "SCRIPT"))"
 13. The parser does not support queries in which a keyword is used as a table name or column name, or in scenarios of nested parameters inside functions.
 14. The BigQuery audit log doesn’t include login failed logs, so these will not appear in the guardium LOGIN_FAILED report.
+15. Syntactically correct SQL queries that fail on Database will be captured only in SQL_Error report.
 
 ## Configuring the BigQuery filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit/data_access logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit/data_access logs by customizing the BigQuery template.

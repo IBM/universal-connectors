@@ -83,7 +83,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:' + versions.dependencies.commonsLang
     implementation 'commons-validator:commons-validator:' + versions.dependencies.commonsValidator
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.17.2'
-
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
     testImplementation group: 'org.mockito', name: 'mockito-all', version: versions.dependencies.mockitoAll
     testImplementation 'org.junit.jupiter:junit-jupiter:' + versions.dependencies.junitJupiter
     testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete

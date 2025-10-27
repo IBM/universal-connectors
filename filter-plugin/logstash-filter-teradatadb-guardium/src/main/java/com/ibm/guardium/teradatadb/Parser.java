@@ -21,7 +21,7 @@ public class Parser {
 		
 			record.setSessionId(e.getField(Constants.SESSION_ID).toString());
 			
-			record.setDbName(Constants.UNKNOWN_STRING);
+			record.setDbName(Constants.NOT_AVAILABLE);
 			
 			record.setAppUserName(Constants.UNKNOWN_STRING);
 			
@@ -90,7 +90,7 @@ public class Parser {
 			accessor.setSourceProgram(e.getField(Constants.LOGON_SOURCE).toString());
 			accessor.setClient_mac(Constants.UNKNOWN_STRING);
 			accessor.setServerDescription(Constants.UNKNOWN_STRING);
-			accessor.setServiceName(Constants.UNKNOWN_STRING);
+			accessor.setServiceName(Constants.NOT_AVAILABLE);
 			accessor.setServerOs(Constants.UNKNOWN_STRING);
 			accessor.setServerHostName(e.getField(Constants.SERVER_HOSTNAME).toString());
 			accessor.setOsUser(e.getField(Constants.OS_USER).toString());
