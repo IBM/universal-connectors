@@ -82,7 +82,7 @@ dependencies {
     implementation group: 'org.apache.tinkerpop', name: 'tinkergraph-gremlin', version: versions.dependencies.tinkergraphGremlin
     implementation group: 'org.eclipse.rdf4j', name: 'rdf4j-queryparser-sparql', version:   versions.dependencies.rdf4jQueryparserSparql
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
-    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsConfiguration2
+    implementation group: 'org.apache.commons', name: 'commons-configuration2', version: versions.dependencies.commonsConfiguration2
 
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
