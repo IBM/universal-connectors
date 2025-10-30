@@ -286,7 +286,8 @@ public class Parser extends CustomParser {
         private int port = 0;
 
         Client(String protocol, String ip, String port) {
-            this.protocol = protocol;
+            // Always use the constant instead of the extracted protocol
+            this.protocol = Constants.DB_PROTOCOL;
             this.ip = ip;
             try {
                 this.port = Integer.parseInt(port);
