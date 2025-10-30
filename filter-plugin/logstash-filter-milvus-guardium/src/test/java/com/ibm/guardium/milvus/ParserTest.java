@@ -26,7 +26,7 @@ class ParserTest {
         assertEquals("Unknown", record.getDbName());
         assertEquals(35050, record.getSessionLocator().getClientPort());
         assertEquals("172.17.0.1", record.getSessionLocator().getClientIp());
-        assertEquals("tcp", record.getAccessor().getDbProtocol());
+        assertEquals("MILVUS", record.getAccessor().getDbProtocol());
         assertEquals("Unknown", record.getAccessor().getDbUser());
         assertEquals("Milvus", record.getAccessor().getServerType());
         assertEquals("Time{timstamp=1743635661017, minOffsetFromGMT=0, minDst=0}", record.getTime().toString());
@@ -50,7 +50,7 @@ class ParserTest {
         assertEquals("TestDB", record.getDbName());
         assertEquals(46936, record.getSessionLocator().getClientPort());
         assertEquals("172.17.0.1", record.getSessionLocator().getClientIp());
-        assertEquals("tcp", record.getAccessor().getDbProtocol());
+        assertEquals("MILVUS", record.getAccessor().getDbProtocol());
         assertEquals("Unknown", record.getAccessor().getDbUser());
         assertEquals("Milvus", record.getAccessor().getServerType());
         assertEquals("Time{timstamp=1738876805353, minOffsetFromGMT=0, minDst=0}", record.getTime().toString());
@@ -76,7 +76,7 @@ class ParserTest {
         assertEquals("default", record.getDbName());
         assertEquals(47286, record.getSessionLocator().getClientPort());
         assertEquals("172.17.0.1", record.getSessionLocator().getClientIp());
-        assertEquals("tcp", record.getAccessor().getDbProtocol());
+        assertEquals("MILVUS", record.getAccessor().getDbProtocol());
         assertEquals("zilliz", record.getAccessor().getDbUser());
         assertEquals("Milvus", record.getAccessor().getServerType());
         assertEquals("Time{timstamp=1738877933557, minOffsetFromGMT=0, minDst=0}", record.getTime().toString());
