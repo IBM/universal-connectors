@@ -11,7 +11,7 @@ public class Constants {
     static final String ERROR_MSG = "exception_desc";
     static final String EVENT_ID = "event_id";
     static final String USER_ADDR = "client";
-    static final String DB_PROTOCOL = "MILVUS GRPC";
+    static final String DB_PROTOCOL = "MILVUS";
     static final String METHOD_STATUS = "method_status";
     static final String SERVER_HOSTNAME = "serverHostname";
 
