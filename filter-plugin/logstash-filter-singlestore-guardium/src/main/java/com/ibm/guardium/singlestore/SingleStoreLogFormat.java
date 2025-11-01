@@ -81,7 +81,7 @@ public class SingleStoreLogFormat {
                         query.append(",").append(values[i]);
                     }
                 }
-                logMap.put(QUERY, query.toString().replace("\\", ""));
+                logMap.put(QUERY, query.toString());
             } else {
                 logMap.put(QUERY, "");
             }
