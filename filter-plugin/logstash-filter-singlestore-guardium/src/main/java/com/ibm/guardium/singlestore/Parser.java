@@ -6,12 +6,14 @@ package com.ibm.guardium.singlestore;
 
 import com.google.gson.JsonObject;
 import com.ibm.guardium.universalconnector.commons.structures.*;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.TextStyle;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,7 +23,11 @@ public class Parser {
 	private static final Logger log = LogManager.getLogger(Parser.class);
 
 	private static final DateTimeFormatterBuilder dateTimeFormatterBuilder = new DateTimeFormatterBuilder()
-			.append(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSz"));
+			.appendPattern("yyyy-MM-dd HH:mm:ss.SSS")
+			.optionalStart()
+			.appendLiteral(' ')
+			.optionalEnd()
+			.appendZoneText(TextStyle.SHORT);
 
 	private static final DateTimeFormatter DATE_TIME_FORMATTER = dateTimeFormatterBuilder.toFormatter();
 
@@ -278,22 +284,23 @@ public class Parser {
 			return data;
 		}
 
-		String originalQuery = inputJSON.get(Constants.QUERY_STATEMENT).toString();
+		String originalQuery = inputJSON.get(Constants.QUERY_STATEMENT).getAsString();
+		originalQuery = StringEscapeUtils.unescapeJava(originalQuery);
 
-		if (originalQuery != null) {
-			if (originalQuery.startsWith("\"")) {
-				originalQuery = originalQuery.substring(1);
-			}
-			if (originalQuery.endsWith("\"")) {
-				originalQuery = originalQuery.substring(0, originalQuery.length() - 1);
-			}
-		} else {
+		if (originalQuery != null && originalQuery.startsWith("\"") && originalQuery.endsWith("\"")) {
+
+			originalQuery = originalQuery.substring(1);
+			originalQuery = originalQuery.substring(0, originalQuery.length() - 1);
+		}
+
+		if (originalQuery == null || originalQuery.trim().isEmpty()) {
 			originalQuery = Constants.UNKNOWN_STRING;
 		}
 
 		String query = Parser.cleanQuery(originalQuery);
 
-		construct.setFullSql(originalQuery);
+		// Use the cleaned query instead of the original query
+		construct.setFullSql(query);
 
 		if (construct.getFullSql() == null || construct.getFullSql().isEmpty()) {
 			construct.setFullSql(Constants.UNKNOWN_STRING);
@@ -398,6 +405,7 @@ public class Parser {
 		try {
 			String regexObject = "OBJECT\\(\\)\\*/\\s*SELECT";
 			String regex = "/\\*!\\d+\\s+";
+			String commentRegex = "^\\s*/\\*.*?\\*/\\s*"; // More general pattern to match any comment at the beginning
 			String NESTED_SELECT_REGEX = "(?i)(?<=SELECT\\s)(.*?\\((?:[^()]*|\\((?:[^()]*|\\([^()]*\\))*\\))*\\))";
 
 			// Compile the pattern
@@ -420,7 +428,17 @@ public class Parser {
 				query = matcher.replaceAll("SELECT");
 			}
 
-			query = query.replace("*/", "");
+			// Compile the pattern for SQL comments at the beginning of queries
+			pattern = Pattern.compile(commentRegex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+
+			// Create a matcher for the input query
+			matcher = pattern.matcher(query);
+
+			// Only remove the comment if it exists, otherwise leave the query unchanged
+			if (matcher.find()) {
+				query = matcher.replaceAll("");
+			}
+
 			query = query.replace("`", "");
 
 			if (query.length() >= 6 && query.toUpperCase().startsWith("SELECT")) {
