@@ -178,7 +178,7 @@ public class ParserTest {
 			e.setField(Constants.SERVER_IP, "0.0.0.0");
 			e.setField(Constants.SERVER_HOSTNAME,server_hostname);
 			e.setField(Constants.SERVER_PORT,server_port);
-			e.setField(Constants.TIMESTAMP, values[1]+values[2]);
+			e.setField(Constants.TIMESTAMP, values[1]+" "+values[2]);
 			e.setField(Constants.DB_USER, values[7]);
 
 			if(values.length>12){
