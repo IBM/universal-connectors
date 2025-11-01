@@ -248,7 +248,7 @@ public class SingleStoredbGuardiumFilter implements Filter {
 			String timestampDate = logMap.get(SingleStoreLogFormat.TIMESTAMP_DATE);
 			String timestampTime = logMap.get(SingleStoreLogFormat.TIMESTAMP_TIME);
 			if (timestampDate != null && timestampTime != null) {
-				event.setField(Constants.TIMESTAMP, timestampDate + timestampTime);
+				event.setField(Constants.TIMESTAMP, timestampDate + " " + timestampTime);
 			}
 
 			String dbUser = logMap.get(SingleStoreLogFormat.DB_USER);
