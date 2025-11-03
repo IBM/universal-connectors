@@ -100,7 +100,7 @@ Use the following command to retrieve the log files that are stored in the audit
 ### Limitations  
 • Source Program is not part of the SingleStore logs.  
 • Client IP can only be retrieved in login / logout actions.  
-• SQL Errors are not logged by SingleStore.
+• Queries with SQL errors are included in the `Full SQL` report and are not displayed in `SQL Errors`.
 
 **Note:** For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
 
