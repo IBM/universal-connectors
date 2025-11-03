@@ -8,6 +8,7 @@ package com.ibm.guardium.singlestore;
 import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
 import co.elastic.logstash.api.FilterMatchListener;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
@@ -63,6 +64,15 @@ public class SingleStoredbGuardiumFilterTest {
             Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         }
 
+    }
+    @Test
+    public void TestCleanQuery (){
+        String originalQuery = "/* ApplicationName=DBeaver 25.1.0 - SQLEditor <Script-13.sql> */ SELECT * FROM customers WHERE city = \"Pune\"";
+        String expectedCleanedQuery = "SELECT * FROM customers WHERE city = \"Pune\"";
+
+        String actualCleanedQuery = Parser.cleanQuery(originalQuery);
+
+        Assert.assertEquals(expectedCleanedQuery, actualCleanedQuery);
     }
 
 }
