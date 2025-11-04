@@ -134,7 +134,7 @@ Azure-Databricks-Guardium Logstash filter plug-in is automatically available wit
 ### Configuration
 1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
 2. Enable the universal connector if it is disabled.
-3. Click ```Upload File``` and select the offline  [logstash-filter-databricks_guardium_filter.zip](../../filter-plugin/logstash-filter-databricks-guardium/logstash-filter-databricks_guardium_filter.zip)
+3. Click ```Upload File``` and select the offline  [logstash-filter-databricks_guardium_filter-1.0.1.zip](../../filter-plugin/logstash-filter-databricks-guardium/AzureDatabricksOverAzureEventHub/logstash-filter-databricks_guardium_filter-1.0.1.zip)
  plug-in. After it is uploaded, click ```OK```.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the ```Connector name``` field.
