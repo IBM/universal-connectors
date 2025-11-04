@@ -6,6 +6,7 @@ package com.ibm.guardium.singlestore;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -100,3 +101,4 @@ public class SingleStoreLogFormat {
         }
     }
 }
+
