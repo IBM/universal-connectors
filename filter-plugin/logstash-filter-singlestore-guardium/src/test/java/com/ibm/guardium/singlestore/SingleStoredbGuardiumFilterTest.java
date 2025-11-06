@@ -8,6 +8,7 @@ package com.ibm.guardium.singlestore;
 import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
 import co.elastic.logstash.api.FilterMatchListener;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
@@ -18,10 +19,10 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SingleStoredbGuardiumFilterTest {
-	
+
 
     /**
-     * To feed Guardium universal connector, a "GuardRecord" fields must exist. 
+     * To feed Guardium universal connector, a "GuardRecord" fields must exist.
      * Filter should add field "GuardRecord" to the Event, which Universal connector then inserts into Guardium.
      */
     @Test
@@ -49,13 +50,13 @@ public class SingleStoredbGuardiumFilterTest {
 
 
         Context context = new ContextImpl(null, null);
-        SingleStoredbGuardiumFilter filter = new SingleStoredbGuardiumFilter("test-id",null, context);
+        SingleStoredbGuardiumFilter filter = new SingleStoredbGuardiumFilter("test-id", null, context);
 
         Event e = ParserTest.getParsedEvent(singlestoreString);
 
         TestMatchListener matchListener = new TestMatchListener();
 
-        if(e!=null){
+        if (e != null) {
             e.setField(Constants.SERVER_IP, "1.1.1.1");
             e.setField(Constants.SERVER_HOSTNAME, "singlestore.server.com");
             Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
@@ -63,6 +64,17 @@ public class SingleStoredbGuardiumFilterTest {
             Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         }
 
+    }
+
+    @Test
+    public void TestCleanQuery() {
+        String originalQuery = "/* ApplicationName=DBeaver 25.1.0 - SQLEditor <Script-13.sql> */ SELECT * FROM customers WHERE city = \"Pune\"";
+        String expectedCleanedQuery = "SELECT * FROM customers WHERE city = \"Pune\"";
+
+        Parser parser = new Parser();
+        String actualCleanedQuery = parser.cleanQuery(originalQuery);
+
+        Assert.assertEquals(expectedCleanedQuery, actualCleanedQuery);
     }
 
 }
@@ -76,3 +88,4 @@ class TestMatchListener implements FilterMatchListener {
         matchCount.incrementAndGet();
     }
 }
+
