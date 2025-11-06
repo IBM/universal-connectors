@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.client.config.ClientOverrideConfiguration;
 import software.amazon.awssdk.regions.Region;
@@ -88,12 +89,17 @@ public class S3SQS implements Input, AutoCloseable {
         this.pollingFrequency = (1000 * config.get(SQS_POLLING_FREQUENCY));
 
         AwsCredentialsProvider credentialsProvider;
-
         if (arn != null && !arn.isEmpty()) {
-            StsClient stsClientRoleARN = StsClient.builder().region(Region.of(region)).build();
-            credentialsProvider = StsAssumeRoleCredentialsProvider.builder().
-                    stsClient(stsClientRoleARN).
-                    refreshRequest( r -> r.roleArn(arn).roleSessionName(type)).build();
+            credentialsProvider = StsAssumeRoleCredentialsProvider.builder()
+                    .refreshRequest(b -> b
+                            .roleArn(arn)
+                            .roleSessionName((type != null && !type.isEmpty())? type : "S3SQS-session"))
+                    .stsClient(software.amazon.awssdk.services.sts.StsClient.builder()
+                            .region(Region.of(region))
+                            .credentialsProvider(DefaultCredentialsProvider.create())
+                            .build())
+                    .build();
+
         } else {
             credentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKeyId, secretAccessKey));
         }
