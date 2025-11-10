@@ -9,6 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 
 public class Constants {
     public static final String NOT_AVAILABLE = "NA";
+
+    public static final String DEFAULT_IP = "0.0.0.0";
+
     public static final String UNKNOWN_STRING = StringUtils.EMPTY;
 
     public static final String LANGUAGE_SNOWFLAKE= "SNOWFLAKE";

@@ -63,7 +63,8 @@ public class Parser {
 
 				SessionLocator sessionLocator = new SessionLocator();
 			
-				sessionLocator.setClientIp(e.getField(Constants.Client_IP).toString());
+				String clientIp = (e.getField(Constants.Client_IP) != null && !e.getField(Constants.Client_IP).toString().isEmpty()) ? e.getField(Constants.Client_IP).toString() : Constants.DEFAULT_IP;
+				sessionLocator.setClientIp(clientIp);
 				sessionLocator.setClientPort(Constants.DEFAULT_PORT);
 				sessionLocator.setServerIp(Constants.DEFAULT_IP);
 				sessionLocator.setServerPort(Constants.DEFAULT_PORT);
