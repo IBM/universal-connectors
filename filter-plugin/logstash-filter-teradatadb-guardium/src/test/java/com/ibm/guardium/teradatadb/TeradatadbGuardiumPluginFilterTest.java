@@ -32,6 +32,7 @@ public class TeradatadbGuardiumPluginFilterTest {
 	    e.setField(Constants.SESSION_ID, "6968");
 		e.setField(Constants.TIME_FIELD, "2021-11-16T07:49:41.220Z");
 		e.setField(Constants.CLIENT_IP, "194.2.127.16");
+		e.setField(Constants.SERVER_IP, "194.2.127.161");
 		e.setField(Constants.USER_NAME, "SYSDBA");
 		e.setField(Constants.SERVER_HOSTNAME, "server.com");
 		e.setField(Constants.SQL_TEXT_INFO, "select * from employee;");
