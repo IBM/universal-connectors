@@ -26,6 +26,7 @@ public class ParserTest {
 	    e.setField(Constants.SESSION_ID, "6968");
 		e.setField(Constants.TIME_FIELD, "2021-11-16T07:49:41.220Z");
 		e.setField(Constants.CLIENT_IP, "9.211.127.160");
+        e.setField(Constants.SERVER_IP, "9.211.127.161");
 		e.setField(Constants.USER_NAME, "SYSDBA");
 		e.setField(Constants.SERVER_HOSTNAME, "1.1.1.1");
 		e.setField(Constants.SQL_TEXT_INFO, "select * from employee;");
