@@ -52,7 +52,7 @@ public class Parser {
             data.has(FailureInfo)
                     ? getException(data.getAsJsonObject(FailureInfo), sqlString)
                     : getException(data, sqlString));
-    record.setAccessor(getAccessor(data,DbName));
+    record.setAccessor(getAccessor(data, DbName));
     record.setSessionLocator(getSessionLocator(data));
     record.setTime(getTimestamp(data));
     if (!record.isException()) record.setData(getData(sqlString));
@@ -60,7 +60,7 @@ public class Parser {
     return record;
   }
 
-  protected static Accessor getAccessor(JsonObject data,String DbName) {
+  protected static Accessor getAccessor(JsonObject data, String DbName) {
     Accessor accessor = new Accessor();
 
     accessor.setServiceName(DbName);
@@ -71,7 +71,7 @@ public class Parser {
     accessor.setServerType(SERVER_TYPE);
     accessor.setServerOs(EMPTY);
     accessor.setServerDescription(EMPTY);
-    accessor.setServerHostName(DEFAULT_IP);
+    accessor.setServerHostName(NOT_AVAILABLE);
     accessor.setClientHostName(EMPTY);
     accessor.setClient_mac(EMPTY);
     accessor.setClientOs(EMPTY);
@@ -132,7 +132,7 @@ public class Parser {
     sessionLocator.setServerIp(DEFAULT_IP);
 
     String clientIp = data.has(Context) ? getClientIp(data.getAsJsonObject(Context)) : DEFAULT_IP;
-    String serverIp = DEFAULT_IP;
+    String serverIp = data.has(Context) ? getServerIp(data.getAsJsonObject(Context)) : DEFAULT_IP;
     if (clientIp != null && inetAddressValidator.isValidInet6Address(clientIp)) {
       // If client IP is IPv6, set both client and server to IPv6
       sessionLocator.setIpv6(true);
@@ -155,6 +155,10 @@ public class Parser {
 
   private static String getClientIp(JsonObject context) {
     return context.has(ClientIP) ? context.get(ClientIP).getAsString() : DEFAULT_IP;
+  }
+
+  private static String getServerIp(JsonObject context) {
+    return context.has(ServerIP) ? context.get(ServerIP).getAsString() : DEFAULT_IP;
   }
 
   private static final Pattern URI_PORT_PATTERN = Pattern.compile("http://[^:/]+:(\\d+)/.*");
