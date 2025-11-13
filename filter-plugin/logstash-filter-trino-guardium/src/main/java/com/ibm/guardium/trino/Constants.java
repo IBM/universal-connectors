@@ -23,4 +23,5 @@ public class Constants {
   static final int DEFAULT_PORT = -1;
   static final String Original = "original";
   static final String FailureInfo = "failureInfo";
+  static final String DEFAULT_IP = "0.0.0.0";
 }
