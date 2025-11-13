@@ -18,8 +18,11 @@ import java.util.regex.Pattern;
 import static com.ibm.guardium.trino.Constants.*;
 import static com.ibm.guardium.trino.Constants.DB_PROTOCOL;
 import static com.ibm.guardium.trino.Constants.SERVER_TYPE;
+import static com.ibm.guardium.trino.Constants.DEFAULT_IP;
+
 import static com.ibm.guardium.universalconnector.commons.custom_parsing.PropertyConstant.*;
 import static com.ibm.guardium.universalconnector.commons.structures.Accessor.LANGUAGE_FREE_TEXT_STRING;
+
 import com.ibm.guardium.trino.sql_parsing.SqlParser;
 
 /**
@@ -35,7 +38,8 @@ public class Parser {
   private static final InetAddressValidator inetAddressValidator =
           InetAddressValidator.getInstance();
 
-  public Parser() {}
+  public Parser() {
+  }
 
   public static Record parseRecord(JsonObject data) {
     Record record = new Record();
@@ -48,8 +52,7 @@ public class Parser {
             data.has(FailureInfo)
                     ? getException(data.getAsJsonObject(FailureInfo), sqlString)
                     : getException(data, sqlString));
-    record.setAccessor(getAccessor(data));
-    record.getAccessor().setServiceName(DbName);
+    record.setAccessor(getAccessor(data,DbName));
     record.setSessionLocator(getSessionLocator(data));
     record.setTime(getTimestamp(data));
     if (!record.isException()) record.setData(getData(sqlString));
@@ -57,10 +60,10 @@ public class Parser {
     return record;
   }
 
-  protected static Accessor getAccessor(JsonObject data) {
+  protected static Accessor getAccessor(JsonObject data,String DbName) {
     Accessor accessor = new Accessor();
 
-    accessor.setServiceName(TRINO);
+    accessor.setServiceName(DbName);
     accessor.setDbUser(
             data.has(Context) ? getDbUser(data.getAsJsonObject(Context)) : NOT_AVAILABLE);
     accessor.setDbProtocolVersion(EMPTY);
@@ -68,8 +71,8 @@ public class Parser {
     accessor.setServerType(SERVER_TYPE);
     accessor.setServerOs(EMPTY);
     accessor.setServerDescription(EMPTY);
-    accessor.setServerHostName(EMPTY);
-    accessor.setClientHostName(NOT_AVAILABLE);
+    accessor.setServerHostName(DEFAULT_IP);
+    accessor.setClientHostName(EMPTY);
     accessor.setClient_mac(EMPTY);
     accessor.setClientOs(EMPTY);
     accessor.setCommProtocol(EMPTY);
@@ -129,7 +132,7 @@ public class Parser {
     sessionLocator.setServerIp(DEFAULT_IP);
 
     String clientIp = data.has(Context) ? getClientIp(data.getAsJsonObject(Context)) : DEFAULT_IP;
-    String serverIp = data.has(Context) ? getServerIp(data.getAsJsonObject(Context)) : DEFAULT_IP;
+    String serverIp = DEFAULT_IP;
     if (clientIp != null && inetAddressValidator.isValidInet6Address(clientIp)) {
       // If client IP is IPv6, set both client and server to IPv6
       sessionLocator.setIpv6(true);
@@ -152,10 +155,6 @@ public class Parser {
 
   private static String getClientIp(JsonObject context) {
     return context.has(ClientIP) ? context.get(ClientIP).getAsString() : DEFAULT_IP;
-  }
-
-  private static String getServerIp(JsonObject context) {
-    return context.has(ServerIP) ? context.get(ServerIP).getAsString() : DEFAULT_IP;
   }
 
   private static final Pattern URI_PORT_PATTERN = Pattern.compile("http://[^:/]+:(\\d+)/.*");
