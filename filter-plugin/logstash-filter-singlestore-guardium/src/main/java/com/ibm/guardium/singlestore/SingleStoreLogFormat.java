@@ -46,7 +46,19 @@ public class SingleStoreLogFormat {
         }
 
         try {
-            String[] values = logMessage.split(",");
+            // Split on commas that are NOT preceded by backslash
+            // This handles escaped commas (\,) in the log format
+            String[] values = logMessage.split("(?<!\\\\),");
+
+            // Unescape both comma separators AND backslashes to get original SQL
+            for (int i = 0; i < values.length; i++) {
+                if (values[i] != null) {
+                    // Unescape commas that were used as field separators
+                    values[i] = values[i].replace("\\,", ",");
+                    // Unescape double backslashes to single backslashes (original SQL format)
+                    values[i] = values[i].replace("\\\\", "\\");
+                }
+            }
 
             // Basic validation
             if (values.length < 12) {
@@ -74,15 +86,10 @@ public class SingleStoreLogFormat {
                 logMap.put(SERVER_PORT, "");
             }
 
-            // Handle query statement which might contain commas
+            // Query is now correctly in values[11] - no need to reassemble
+            // Backslashes are preserved as-is from the original log
             if (values.length > 11 && values[11] != null) {
-                StringBuilder query = new StringBuilder(values[11]);
-                for (int i = 12; i < values.length; i++) {
-                    if (values[i] != null) {
-                        query.append(",").append(values[i]);
-                    }
-                }
-                logMap.put(QUERY, query.toString());
+                logMap.put(QUERY, values[11]);
             } else {
                 logMap.put(QUERY, "");
             }
