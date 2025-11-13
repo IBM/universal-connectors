@@ -26,7 +26,7 @@ class ParserTest {
     assertEquals(-1, record.getSessionLocator().getClientPort());
     assertEquals("127.0.0.1", record.getSessionLocator().getClientIp());
     assertEquals("Trino", record.getAccessor().getDbProtocol());
-    assertEquals("172.19.0.6", record.getSessionLocator().getServerIp());
+    assertEquals("0.0.0.0", record.getSessionLocator().getServerIp());
     assertEquals(-1, record.getSessionLocator().getServerPort());
     assertEquals("trino", record.getAccessor().getDbUser());
     assertEquals("Trino", record.getAccessor().getServerType());
@@ -65,7 +65,7 @@ class ParserTest {
   void testDBUser() {
     String payload = "{\"DatabaseName\":\"db_name\",\"createTime\":\"2025-06-05T19:50:09.402Z\"}";
     final JsonObject data = new Gson().fromJson(payload, JsonObject.class);
-    Accessor record = Parser.getAccessor(data);
+    Accessor record = Parser.getAccessor(data, "N.A.");
     assertEquals("N.A.", record.getDbUser());
   }
 
