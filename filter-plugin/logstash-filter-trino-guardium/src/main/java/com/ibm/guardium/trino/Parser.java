@@ -52,7 +52,7 @@ public class Parser {
             data.has(FailureInfo)
                     ? getException(data.getAsJsonObject(FailureInfo), sqlString)
                     : getException(data, sqlString));
-    record.setAccessor(getAccessor(data),DbName);
+    record.setAccessor(getAccessor(data,DbName));
     record.setSessionLocator(getSessionLocator(data));
     record.setTime(getTimestamp(data));
     if (!record.isException()) record.setData(getData(sqlString));
