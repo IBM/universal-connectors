@@ -246,7 +246,6 @@ public class Parser {
         Data data = new Data();
 
         String originalQuery = inputJSON.get(Constants.QUERY_STATEMENT).getAsString();
-        originalQuery = StringEscapeUtils.unescapeJava(originalQuery);
 
         if (originalQuery != null && originalQuery.startsWith("\"") && originalQuery.endsWith("\"")) {
             originalQuery = originalQuery.substring(1);
