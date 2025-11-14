@@ -87,20 +87,16 @@ This configuration reads the data from the Adabas Auditing Server and write the 
 ```
 input {
   adabas_auditing_input { 
-    brokerClass => "REPTOR" 
-    brokerServer => "GERATA" 
-    brokerService => "GER-ATA-OUT7" 
-    host => "10.20.74.81" 
-    port => 19999 
-    token => "GERTOKEN7" 
-    user => "GER7" 
+    brokerClass => "class" 
+    brokerServer => "server" 
+    brokerService => "service" 
+    host => "host" 
+    port => 3000 
+    token => "token" 
+    user => "user" 
   }
 }
 output {
-  elasticsearch {
-    hosts => ["localhost:9200"]
-    index => "adabas-auditing-%{+YYYY-MM-dd}"
-  }
   stdout { 
     codec => rubydebug
   }
