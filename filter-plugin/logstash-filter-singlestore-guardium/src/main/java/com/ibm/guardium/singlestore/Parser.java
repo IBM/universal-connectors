@@ -222,9 +222,8 @@ public class Parser {
         }
         accessor.setDbUser(dbUser);
 
-        if (data.has(Constants.SERVER_HOSTNAME) && !data.get(Constants.SERVER_HOSTNAME).isJsonNull()) {
-            accessor.setServerHostName(data.get(Constants.SERVER_HOSTNAME).getAsString());
-        }
+        // GRD-114546: Set to N.A. to fix multiple S-Taps
+		accessor.setServerHostName(Constants.NOT_AVAILABLE);
 
         accessor.setLanguage(Constants.LANGUAGE_MEMSQL_STRING);
         accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
