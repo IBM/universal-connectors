@@ -1,0 +1,13 @@
+__MLVS { "identifier":"cf03d862397e1fc9339f717865ae31f0",
+"collection_name":='Unknown',
+"action":"Connect",
+"query_expression":"",
+"dev_time":"Time{timstamp=1743635661017, minOffsetFromGMT=0, minDst=0}",
+"partition_name":"",
+"trace_id":"cf03d862397e1fc9339f717865ae31f0",
+"responseSize":"105",
+"time_cost":"2.737959ms",
+"time_start":"2025/04/02 23:14:21.014 +00:00",
+"time_end":"2025/04/02 23:14:21.017 +00:00",
+"sdk_version":"Python-2.4.3"
+}
