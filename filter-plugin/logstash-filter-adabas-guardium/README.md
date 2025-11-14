@@ -71,14 +71,14 @@ The build of this plugin requires the access to an installation of Logstash.
 6. Set the property variable **GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH** to the directory of jars from step 4. This could be done in gradle.properties file
 7. Assemble plugin with the command `./gradlew assemble gem`
 
-After that successful build a file **logstash-input-adabas_auditing_filter-<version>-java.gem** is created in the root directory of the project.
+After that successful build a file **logstash-input-adabas_guardium_filter-<version>-java.gem** is created in the root directory of the project.
 
 See also [Developing new plug-ins for Guardium Data Protection](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Data%20Protection/developing_plugins_gdp.md).
 
 ## Install Plugin
 To install the plugin use the command 
 ```
-logstash-plugin install --no-verify --local <full-path>/logstash-input-adabas_auditing_filter-<version>-java.gem
+logstash-plugin install --no-verify --local <full-path>/logstash-input-adabas_guardium_filter-<version>-java.gem
 ```
 
 ## Run Logstash
@@ -90,24 +90,20 @@ This configuration reads the data from the Adabas Auditing Server and write the 
 ```
 input {
   adabas_auditing_input { 
-    brokerClass => "REPTOR" 
-    brokerServer => "GERATA" 
-    brokerService => "GER-ATA-OUT7" 
-    host => "10.20.74.81" 
-    port => 19999 
-    token => "GERTOKEN7" 
-    user => "GER7" 
+    brokerClass => "class" 
+    brokerServer => "server" 
+    brokerService => "service" 
+    host => "host" 
+    port => 3000 
+    token => "token" 
+    user => "user" 
   }
 }
 filter {
-  adabas_auditing_filter {
+  adabas_guardium_filter {
   }
 }
 output {
-  elasticsearch {
-    hosts => ["localhost:9200"]
-    index => "adabas-auditing-%{+YYYY-MM-dd}"
-  }
   stdout { 
     codec => rubydebug
   }
