@@ -60,6 +60,8 @@ public class OuaFilter implements Filter {
 	public static final String DATA_PROTOCOL_STRING = "Oracle Unified Audit";
 	public static final String LANGUAGE_STRING = "ORACLE";
 	public static final String UNKNOWN_STRING = "";
+	public static final String NOT_AVAILABLE = "N.A.";
+
 
 	public static final String CLIENT_IP_TAG = "client_host_ip";
 	public static final String SERVER_IP_TAG = "server_host_ip";
@@ -149,7 +151,7 @@ public class OuaFilter implements Filter {
 		if (event.getField(OuaFilter.DB_NAME_TAG) instanceof String) {
 			record.setDbName(event.getField(OuaFilter.DB_NAME_TAG).toString());
 		} else {
-			record.setDbName(OuaFilter.UNKNOWN_STRING);
+			record.setDbName(OuaFilter.NOT_AVAILABLE);
 		}
 
 		if (event.getField(OuaFilter.SESSION_ID_TAG) instanceof Long) {
@@ -174,7 +176,7 @@ public class OuaFilter implements Filter {
 		if (event.getField(OuaFilter.DB_NAME_TAG) instanceof String) {
 			record.setDbName(event.getField(OuaFilter.DB_NAME_TAG).toString());
 		} else {
-			record.setDbName(OuaFilter.UNKNOWN_STRING);
+			record.setDbName(OuaFilter.NOT_AVAILABLE);
 		}
 
 		if (event.getField(OuaFilter.SESSION_ID_TAG) instanceof Long) {
@@ -338,13 +340,13 @@ public class OuaFilter implements Filter {
 		if (event.getField(OuaFilter.DB_USER_TAG) instanceof String) {
 			accessor.setDbUser(event.getField(OuaFilter.DB_USER_TAG).toString());
 		} else {
-			accessor.setDbUser(OuaFilter.UNKNOWN_STRING);
+			accessor.setDbUser(OuaFilter.NOT_AVAILABLE);
 		}
 
 		if (event.getField(OuaFilter.CON_NAME_TAG) instanceof String) {
 			accessor.setServiceName(event.getField(OuaFilter.CON_NAME_TAG).toString());
 		} else {
-			accessor.setServiceName(OuaFilter.UNKNOWN_STRING);
+			accessor.setServiceName(OuaFilter.NOT_AVAILABLE);
 		}
 
         return accessor;
