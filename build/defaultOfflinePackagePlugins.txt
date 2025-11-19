@@ -43,4 +43,5 @@ filter-plugin/logstash-filter-opensearch-guardium/logstash-filter-opensearch_gua
 input-plugin/logstash-input-couchbase-capella/logstash-input-couchbase_capella_input
 input-plugin/logstash-input-http/logstash-offline-input-http-plugins
 input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input
+input-plugin/logstash-input-beats-gi/logstash-input-Filebeat_input
 
