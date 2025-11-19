@@ -1,2 +1,4 @@
 ## 0.0.1
-- Changed server type to "MS SQL SERVER" from "MS SQL" for bug GRD-114698
+Ticket:https://ibm-datasecurity.atlassian.net/browse/GRD-114698
+Release: Q12026
+Description: Change server type from "MSSQL" to "MS SQL SERVER"
