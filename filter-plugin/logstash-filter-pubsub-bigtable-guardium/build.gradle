@@ -82,6 +82,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:' + versions.dependencies.gson
     implementation 'org.apache.commons:commons-lang3:' + versions.dependencies.commonsLang
     implementation 'commons-validator:commons-validator:' + versions.dependencies.commonsValidator
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
 
     testImplementation group: 'org.mockito', name: 'mockito-all', version: versions.dependencies.mockitoAll
     testImplementation 'org.junit.jupiter:junit-jupiter:' + versions.dependencies.junitJupiter
