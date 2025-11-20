@@ -59,3 +59,7 @@ You can use the account_id to specify the AWS account ID
 
 ## Note:
 For detailed instructions on collecting RDS audit logs with Amazon Kinesis Data Firehose, please refer "[S3SQSWithFireHose](S3SQSWithFirehose.md)".
+
+## Limitations:
+Duplicate Event Delivery: Amazon S3 does not support sending event notifications to FIFO SQS queues. Only Standard queues are compatible with S3 event notifications.
+The plugin relies on Amazon SQS Standard queues, which guarantee at-least-once delivery. As a result, the same S3 event may be delivered multiple times, leading to duplicate processing of S3 objects.
