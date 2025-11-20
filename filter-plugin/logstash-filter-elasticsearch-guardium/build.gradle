@@ -53,6 +53,7 @@ shadowJar {
 dependencies {
     compile group: 'commons-validator', name: 'commons-validator', version: '1.7'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
     compile 'org.apache.commons:commons-lang3:3.7'
     compile 'com.google.code.gson:gson:2.8.9'
     compile fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
