@@ -46,4 +46,5 @@ filter-plugin/logstash-filter-alloydb-guardium/logstash-filter-alloydb_guardium_
 input-plugin/logstash-input-couchbase-capella/logstash-input-couchbase_capella_input
 input-plugin/logstash-input-http/logstash-offline-input-http-plugins
 input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input
+input-plugin/logstash-input-s3sqs/logstash-input-s3_sqs_input
 
