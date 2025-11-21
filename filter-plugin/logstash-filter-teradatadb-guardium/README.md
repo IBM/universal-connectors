@@ -109,6 +109,8 @@ DELETE FROM DBC.DBQLSqlTbl WHERE (DATE '2021-12-16' - cast(collecttimestamp as D
 
 5] Stored Procedure and User Defined Functions
 
+6] DBQL tables do not capture 100% of Teradata workload due to configurable filters, aggregation options, memory caching with periodic writes (e.g., every 10 minutes via DBQLFlushRate), and potential data loss during system restarts before cache flush. Reference: https://www.dwhpro.com/teradata-query-logging-dbql/
+
 • The Teradata auditing does not audit authentication failure(Login Failed) operations.
 
 • Following important field couldn't mapped with TeradataDB audit logs.
