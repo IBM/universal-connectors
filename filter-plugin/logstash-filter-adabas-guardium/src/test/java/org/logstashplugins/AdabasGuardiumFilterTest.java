@@ -14,14 +14,14 @@ import org.logstash.plugins.ConfigurationImpl;
 import org.logstash.plugins.ContextImpl;
 
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.softwareag.adabas.auditing.logstash.AdabasAuditingFilter;
+import com.softwareag.adabas.auditing.logstash.AdabasGuardiumFilter;
 
 import co.elastic.logstash.api.Configuration;
 import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
 import co.elastic.logstash.api.FilterMatchListener;
 
-public class AdabasAuditingFilterTest {
+public class AdabasGuardiumFilterTest {
 
     @Test
     public void testAdabasReadFilter() throws ParseException {
@@ -31,7 +31,7 @@ public class AdabasAuditingFilterTest {
         Configuration config = new ConfigurationImpl(Collections.singletonMap("source", sourceField));
 
         Context context = new ContextImpl(null, null);
-        AdabasAuditingFilter filter = new AdabasAuditingFilter("test-id", config, context);
+        AdabasGuardiumFilter filter = new AdabasGuardiumFilter("test-id", config, context);
 
         Event e = new org.logstash.Event();
         TestMatchListener matchListener = new TestMatchListener();

@@ -37,4 +37,14 @@ public final class Constants {
     public static final String ACCESSOR_DB_USER = "NATUID";
     public static final String ACCESSOR_SERVER_HOST_NAME = "LPARNAME";
     public static final String ACCESSOR_SOURCE_PROGRAM = "NATPROG";
+
+    // ACBX fields
+    public static final String ACBX_RSP_CODE = "RSPCODE";
+    public static final String ACBX_RSP_SUB_CODE = "RSPSUBCODE";
+    public static final String ACBX_CMD_CODE = "CMDCODE";
+    public static final String ACBX_ISN = "ISN";
+
+    // Error type
+    public static final String SQL_ERROR = "SQL_ERROR";
+
 }

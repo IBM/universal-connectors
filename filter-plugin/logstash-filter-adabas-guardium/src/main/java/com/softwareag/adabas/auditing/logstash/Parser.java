@@ -17,7 +17,7 @@
  *
  */
 
- package com.softwareag.adabas.auditing.logstash;
+package com.softwareag.adabas.auditing.logstash;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +30,7 @@ import org.apache.logging.log4j.Logger;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
+import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
@@ -77,6 +78,22 @@ public class Parser {
                                 if (acbx.containsKey(Constants.RECORD_SESSION_ID)) {
                                     record.setSessionId(acbx.get(Constants.RECORD_SESSION_ID).toString());
                                 }
+                                if (acbx.containsKey(Constants.ACBX_RSP_CODE)) {
+                                    int rspCode = (int) acbx.get(Constants.ACBX_RSP_CODE);
+                                    if (rspCode != 0) {
+                                        ExceptionRecord exceptionRecord = new ExceptionRecord();
+                                        exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
+                                        exceptionRecord
+                                                .setDescription("Response Code "
+                                                        + acbx.get(Constants.ACBX_RSP_CODE).toString() + "("
+                                                        + acbx.get(Constants.ACBX_RSP_SUB_CODE).toString()
+                                                        + ") received.");
+                                        exceptionRecord.setSqlString(
+                                                acbx.get(Constants.ACBX_CMD_CODE).toString() + " with ISN "
+                                                        + acbx.get(Constants.ACBX_ISN).toString());
+                                        record.setException(exceptionRecord);
+                                    }
+                                }
                             }
                             if (itemMap.containsKey("PAYLOAD_FBUF")) {
                                 fbuf = (HashMap<String, Object>) itemMap.get("PAYLOAD_FBUF");
@@ -103,12 +120,16 @@ public class Parser {
         accessor.setDbProtocol(Constants.DATA_PROTOCOL_STRING);
         accessor.setServerType(Constants.SERVER_TYPE_STRING);
 
-        accessor.setDbUser(clnt.containsKey(Constants.ACCESSOR_DB_USER) ? clnt.get(Constants.ACCESSOR_DB_USER).toString() : Constants.UNKNOWN_STRING);
+        accessor.setDbUser(
+                clnt.containsKey(Constants.ACCESSOR_DB_USER) ? clnt.get(Constants.ACCESSOR_DB_USER).toString()
+                        : Constants.UNKNOWN_STRING);
         accessor.setServerHostName(
-                clnt.containsKey(Constants.ACCESSOR_SERVER_HOST_NAME) ? clnt.get(Constants.ACCESSOR_SERVER_HOST_NAME).toString()
+                clnt.containsKey(Constants.ACCESSOR_SERVER_HOST_NAME)
+                        ? clnt.get(Constants.ACCESSOR_SERVER_HOST_NAME).toString()
                         : Constants.UNKNOWN_STRING);
         accessor.setSourceProgram(
-                clnt.containsKey(Constants.ACCESSOR_SOURCE_PROGRAM) ? clnt.get(Constants.ACCESSOR_SOURCE_PROGRAM).toString()
+                clnt.containsKey(Constants.ACCESSOR_SOURCE_PROGRAM)
+                        ? clnt.get(Constants.ACCESSOR_SOURCE_PROGRAM).toString()
                         : Constants.UNKNOWN_STRING);
         accessor.setLanguage(Accessor.LANGUAGE_FREE_TEXT_STRING);
         accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL);
