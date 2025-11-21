@@ -78,7 +78,7 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 ### Before you begin
 * Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default
-* Download the [logstash-filter-aws_opensearch_guardium_filter](logstash-filter-opensearch_guardium_filter.zip) plug-in.
+* Download the [logstash-filter-aws_opensearch_guardium_filter](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-opensearch_guardium_filter.zip) plug-in.
 
 ### Procedure
 1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
