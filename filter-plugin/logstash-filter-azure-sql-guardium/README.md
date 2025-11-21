@@ -51,6 +51,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
    g. Then, click on ```Save``` Button.
 
+**Note:** Since auditing configuration differs between Azure SQL Database and Azure SQL Managed Instance, please follow the given link to [enable auditing for Azure SQL Managed Instance](https://learn.microsoft.com/en-us/azure/azure-sql/managed-instance/auditing-configure?view=azuresql)
 
 ## Connecting to AzureSQL Database
 
