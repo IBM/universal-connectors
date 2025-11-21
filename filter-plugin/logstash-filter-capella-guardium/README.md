@@ -127,7 +127,7 @@ enforcements. Configure Guardium to read the native audit/data_access logs by cu
 1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
 2. Enable the universal connector if it is disabled.
 3. Click ```Upload File``` and select the
-   offline  [logstash-filter-capella_guardium_filter](logstash-filter-capella_guardium_filter.zip)
+   offline  [logstash-filter-capella_guardium_filter](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-capella_guardium_filter.zip)
    plug-in. After it is uploaded, click ```OK```.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
