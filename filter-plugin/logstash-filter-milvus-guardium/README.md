@@ -5,7 +5,7 @@
 * Tested versions: 2.4.4 or later
 * Environment: Milvus Standalone (Docker Linux), Milvus Distributed (Milvus Operator)
 * Supported inputs: Filebeat (push)
-* Supported Guardium versions: Guardium Data Protection 12.0 and later
+* Supported Guardium versions: Guardium Data Protection 12.2 and later
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Zilliz Milvus access log into a Guardium Record.
 
