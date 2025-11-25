@@ -19,6 +19,7 @@ public class JavaInputExampleTest{
         configValues.put(MongoAtlasInput.GROUP_ID_CONFIG.name(), "123456789abcefg");
         configValues.put(MongoAtlasInput.HOSTNAME_CONFIG.name(), "cluster1-shard-12-34.i1234.mongodb.net");
         configValues.put(MongoAtlasInput.TYPE_CONFIG.name(), "mongodbatlas");
+        configValues.put(MongoAtlasInput.MONGO_API_URL_CONFIG.name(), "https://cloud.mongodb.com/api/atlas/v1.0/groups/");
 
         Configuration config = new ConfigurationImpl(configValues);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
