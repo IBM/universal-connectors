@@ -25,5 +25,5 @@ public interface Constants {
 	public static final String SQL_ERROR = "SQL_ERROR";
 	public static final String ZERO = "0";
 	public static final String ADDITIONAL_INFORMATION = "ADDITIONAL_INFORMATION";
-	
+	public static final String NOT_AVAILABLE = "N.A.";
 }
