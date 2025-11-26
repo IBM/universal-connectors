@@ -123,9 +123,9 @@ DELETE FROM DBC.DBQLSqlTbl WHERE (DATE '2021-12-16' - cast(collecttimestamp as D
 
 • This plug-in supports queries that are approximately 32,000 characters long. When the count of characters in a query exceed the given count, the remaining part of the query is stored in other rows. This is why the SQLTextInfo column of the table DBC.DBQLSqlTbl has more than one row per QueryID.
 
-• serverIp is hardcoded to "0.0.0.0" in this plugin, as tables referred in configuration file do not have an attribute that directly holds actual serverIp value but that can be checked from column LogonSource(from DBC.DBQLOGTBL ) or sourceProgram  attribute.
+• Client IP and Server IP are retrieved from DBC.QryLogClientAttrV view using ClientIPAddrByClient and ServerIPAddrByServer fields respectively, as recommended by Teradata support. The deprecated logonsource field is no longer used for IP address retrieval.
 
-For more information on how to check the serverIp from LogonSource, please refer this [doc](https://docs.teradata.com/r/ANYCOtbX9Q1iyd~Uiok8gA/VPQKKhAyOf6hzUc4sfciIQ)
+For more information on DBC.QryLogClientAttrV, please refer to this [documentation](https://docs.teradata.com/r/Enterprise_IntelliFlex_VMware/Data-Dictionary/Views-Reference/QryLogClientAttrV).
 
 ## 5. Configuring the Teradata filters in Guardium
 
