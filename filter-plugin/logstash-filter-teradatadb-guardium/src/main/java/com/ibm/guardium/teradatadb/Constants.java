@@ -13,6 +13,7 @@ public interface Constants {
 	public static final String SESSION_ID = "Session_ID";
 	public static final String TIME_FIELD = "Time_Field";
 	public static final String CLIENT_IP = "Client_IP";
+	public static final String SERVER_IP = "Server_IP";
 	public static final String USER_NAME = "User_Name";
 	public static final String SQL_TEXT_INFO = "Sql_Text_Info";
 	public static final String SQL_ERROR = "SQL_ERROR";
