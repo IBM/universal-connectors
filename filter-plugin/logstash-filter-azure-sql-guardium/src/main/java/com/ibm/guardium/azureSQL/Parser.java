@@ -29,7 +29,7 @@ public class Parser {
     Record record = new Record();
     record.setSessionId(getFieldString(e, Constants.Session_ID, Constants.UNKNOWN_STRING));
 
-    String databaseName = "N.A.";
+    String databaseName = Constants.NOT_AVAILABLE;
     if (e.getField(Constants.DATABASE_NAME) != null) {
       databaseName = e.getField(Constants.DATABASE_NAME).toString();
     }
@@ -45,14 +45,14 @@ public class Parser {
 
     if (e.getField(Constants.SUCCEEDED).toString().contains("true")) {
       Data data = new Data();
-      data.setOriginalSqlCommand(getFieldString(e, Constants.STATEMENT, "N.A."));
+      data.setOriginalSqlCommand(getFieldString(e, Constants.STATEMENT, Constants.NOT_AVAILABLE));
       record.setData(data);
     } else {
       ExceptionRecord exceptionRecord = new ExceptionRecord();
       exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
       exceptionRecord.setDescription(
           getFieldString(e, Constants.ADDITIONAL_INFORMATION, Constants.UNKNOWN_STRING));
-      exceptionRecord.setSqlString(getFieldString(e, Constants.STATEMENT, "N.A."));
+      exceptionRecord.setSqlString(getFieldString(e, Constants.STATEMENT, Constants.NOT_AVAILABLE));
       record.setException(exceptionRecord);
     }
     return record;
@@ -95,16 +95,16 @@ public class Parser {
     accessor.setClientHostName(
         getFieldString(e, Constants.CLIENT_HOST_NAME, Constants.UNKNOWN_STRING));
     accessor.setClientOs(Constants.UNKNOWN_STRING);
-    accessor.setDbUser(getFieldString(e, Constants.User_Name, "N.A."));
+    accessor.setDbUser(getFieldString(e, Constants.User_Name, Constants.NOT_AVAILABLE));
     accessor.setServerType(Constants.SERVER_TYPE_STRING);
     accessor.setCommProtocol(Constants.UNKNOWN_STRING);
     accessor.setDbProtocol(Constants.DATA_PROTOCOL_STRING);
     accessor.setDbProtocolVersion(Constants.UNKNOWN_STRING);
-    accessor.setSourceProgram(getFieldString(e, Constants.APPLICATION_NAME, "N.A."));
+    accessor.setSourceProgram(getFieldString(e, Constants.APPLICATION_NAME, Constants.NOT_AVAILABLE));
     accessor.setClient_mac(Constants.UNKNOWN_STRING);
     accessor.setServerDescription(Constants.UNKNOWN_STRING);
 
-    String databaseName = "N.A.";
+    String databaseName = Constants.NOT_AVAILABLE;
     if (e.getField(Constants.DATABASE_NAME) != null) {
       databaseName = e.getField(Constants.DATABASE_NAME).toString();
     }
