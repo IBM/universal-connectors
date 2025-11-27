@@ -29,10 +29,7 @@ public class Parser {
     Record record = new Record();
     record.setSessionId(getFieldString(e, Constants.Session_ID, Constants.UNKNOWN_STRING));
 
-    String databaseName = Constants.NOT_AVAILABLE;
-    if (e.getField(Constants.DATABASE_NAME) != null) {
-      databaseName = e.getField(Constants.DATABASE_NAME).toString();
-    }
+    String databaseName = getFieldString(e, Constants.DATABASE_NAME, Constants.NOT_AVAILABLE);
     record.setDbName(databaseName);
 
     record.setAppUserName(Constants.APP_USER_NAME);
@@ -43,7 +40,7 @@ public class Parser {
 
     record.setAccessor(Parser.parseAccessor(e));
 
-    if (e.getField(Constants.SUCCEEDED).toString().contains("true")) {
+    if (getFieldString(e, Constants.SUCCEEDED, Constants.UNKNOWN_STRING).contains("true")) {
       Data data = new Data();
       data.setOriginalSqlCommand(getFieldString(e, Constants.STATEMENT, Constants.NOT_AVAILABLE));
       record.setData(data);
@@ -60,16 +57,14 @@ public class Parser {
 
   public static Time parseTimestamp(final Event e) {
     long date = 0;
-    String dateString = e.getField(Constants.TIMESTAMP).toString();
+    String dateString = getFieldString(e, Constants.TIMESTAMP, "");
     try {
       date = Long.parseLong(dateString);
+	  long mini = date / 1000000;
+	  return new Time(mini, 0, 0);
     } catch (NumberFormatException nfe) {
-      // fallback to current time in nanoseconds to avoid failure
-      date = System.currentTimeMillis() * 1_000_000L;
+      return new Time(0, 0, 0);
     }
-    long mini = date / 1000000;
-
-    return new Time(mini, 0, 0);
   }
 
   public static SessionLocator parseSessionLocator(final Event e) {
@@ -104,10 +99,7 @@ public class Parser {
     accessor.setClient_mac(Constants.UNKNOWN_STRING);
     accessor.setServerDescription(Constants.UNKNOWN_STRING);
 
-    String databaseName = Constants.NOT_AVAILABLE;
-    if (e.getField(Constants.DATABASE_NAME) != null) {
-      databaseName = e.getField(Constants.DATABASE_NAME).toString();
-    }
+    String databaseName = getFieldString(e, Constants.DATABASE_NAME, Constants.NOT_AVAILABLE);
     accessor.setServiceName(databaseName);
     accessor.setServerOs(Constants.UNKNOWN_STRING);
     accessor.setServerHostName(
