@@ -63,6 +63,7 @@ To add `MARIADB_AUDIT_PLUGIN` which will enable Server Audit Logs.
    - Select the created Option groups and then click **Add options**.
    - Set the **option name** to MARIADB_AUDIT_PLUGIN, and then keep option setting parameters with the default values
    - Change the `SERVER_AUDIT_EXCL_USERS` value to rdsadmin
+   - Set the value for `SERVER_AUDIT_EVENTS` to `QUERY, CONNECT` in order to see query and connection logs.
    - To enable the option immediately, choose **Yes** for **Apply Immediately**. (By default, **No** is selected instead.) Keep this default selection if you want the option enabled for each associated database instance during its next maintenance window.
    - Click **Add option**.
 
