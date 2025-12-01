@@ -84,6 +84,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:' + versions.dependencies.junitJupiter
     testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
     testImplementation 'junit:junit:' + versions.dependencies.junit
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
 
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
