@@ -148,7 +148,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
      - Client HostName : Not available with audit logs when we connect to the MariaDB instance through SQL standard and third party tools.
 	 - serverIP : This field is populated with 0.0.0.0, as this information is not embedded in the messages pulled from AWS Cloudwatch.
      - clientPort and serverPort : Not available with audit logs
- - For system generated LOGIN_FAILED logs, the Dbuser value not available,so we set it as "NA".
+ - For system generated LOGIN_FAILED logs, the Dbuser value not available,so we set it as "N.A.".
+ - Large SQL statements are truncated by AWS by default which can cause a GuardUCInvalidRecordException as the event is no longer valid.
  
 ## 7. Configuring the AWS MariaDB Guardium Logstash filters in Guardium Data Security Center
 
