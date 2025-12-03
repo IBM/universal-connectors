@@ -52,6 +52,8 @@ public class MongoAtlasInput implements Input {
             PluginConfigSpec.stringSetting("group-id", "message");
     public static final PluginConfigSpec<String> HOSTNAME_CONFIG =
             PluginConfigSpec.stringSetting("hostname", "message");
+    public static final PluginConfigSpec<String> MONGO_API_URL_CONFIG =
+            PluginConfigSpec.stringSetting("mongo-api-url", "https://cloud.mongodb.com/api/atlas/v1.0/groups/");
     public static final PluginConfigSpec<String> FILE_NAME_CONFIG =
             PluginConfigSpec.stringSetting("filename", "mongodb-audit-log.gz");
     private String id;
@@ -60,6 +62,7 @@ public class MongoAtlasInput implements Input {
     private String publicKey;
     private String groupId;
     private String hostname;
+    private String mongoApiUrl;
     private String fileName;
     private String pluginType;
     private final CountDownLatch done = new CountDownLatch(1);
@@ -74,6 +77,7 @@ public class MongoAtlasInput implements Input {
         publicKey = config.get(PUBLIC_KEY_CONFIG);
         groupId = config.get(GROUP_ID_CONFIG);
         hostname = config.get(HOSTNAME_CONFIG);
+        mongoApiUrl = config.get(MONGO_API_URL_CONFIG);
         fileName = config.get(FILE_NAME_CONFIG);
         pluginType = config.get(TYPE_CONFIG);
     }
@@ -95,7 +99,7 @@ public class MongoAtlasInput implements Input {
         try {
             while (!stopped) {
                     loopStartTime = System.currentTimeMillis() / 1000L;
-                    String allText = MongoApi.getResponseFromJsonURL(this.publicKey, this.privateKey,this.groupId,this.hostname,this.fileName, lasttime, loopStartTime);
+                    String allText = MongoApi.getResponseFromJsonURL(this.publicKey, this.privateKey, this.groupId, this.mongoApiUrl, this.hostname,this.fileName, lasttime, loopStartTime);
                     if (allText != null) {
                         lasttime = loopStartTime;
                         String lines[] = allText.split("\\r?\\n");
@@ -103,6 +107,7 @@ public class MongoAtlasInput implements Input {
                         ) {
                             HashMap map = new HashMap();
                             map.put("message", line);
+                            map.put("mongoApiUrl", mongoApiUrl);
                             map.put("hostname", hostname);
                             map.put("groupId", groupId);
                             map.put("type", pluginType);
@@ -142,7 +147,7 @@ public class MongoAtlasInput implements Input {
     @Override
     public Collection<PluginConfigSpec<?>> configSchema() {
         // should return a list of all configuration options for this plugin
-        return Arrays.asList(INTERVAL_CONFIG,PUBLIC_KEY_CONFIG,PRIVATE_KEY_CONFIG,GROUP_ID_CONFIG,HOSTNAME_CONFIG,TYPE_CONFIG);
+        return Arrays.asList(INTERVAL_CONFIG,PUBLIC_KEY_CONFIG,PRIVATE_KEY_CONFIG,GROUP_ID_CONFIG,MONGO_API_URL_CONFIG,HOSTNAME_CONFIG,TYPE_CONFIG);
     }
 
     @Override

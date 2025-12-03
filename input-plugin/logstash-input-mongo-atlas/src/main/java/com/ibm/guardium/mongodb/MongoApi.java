@@ -80,16 +80,23 @@ public class MongoApi {
      * @param privateKey
      * @param groupId
      * @param hostname
+     * @param mongoApiUrl
      * @param fileName
      * @param startDateInEpoch
      * @param endDateInEpoch
      * @return
      */
-    public static String getResponseFromJsonURL(String publicKey, String privateKey, String groupId, String hostname, String fileName, long startDateInEpoch, long endDateInEpoch) {
+    public static String getResponseFromJsonURL(String publicKey, String privateKey, String groupId, String mongoApiUrl, String hostname, String fileName, long startDateInEpoch, long endDateInEpoch) {
+        // Use default API URL if mongoApiUrl is null or empty
+        if (mongoApiUrl == null || mongoApiUrl.isEmpty()) {
+            log.info("MongoDB API URL is not set, using default: {}", MONGO_API_URL);
+            mongoApiUrl = MONGO_API_URL;
+        }
+
         //build url
-        String url = MONGO_API_URL + groupId + "/clusters/" + hostname + "/logs/"+fileName+"?startDate=" + startDateInEpoch + "&endDate=" + endDateInEpoch;
+        String url = mongoApiUrl + groupId + "/clusters/" + hostname + "/logs/"+fileName+"?startDate=" + startDateInEpoch + "&endDate=" + endDateInEpoch;
         if (log.isDebugEnabled()) {
-            log.debug(url);
+            log.debug("Constructed MongoDB Atlas API URL: {}", url);
         }
 
         try {
