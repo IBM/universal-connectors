@@ -21,20 +21,21 @@ public class ParserTest {
     Parser parser = new Parser();
     Event e = new org.logstash.Event();
     
-    Event intitalizeEventObject() {	
+    Event intitalizeEventObject() {
     	
-	    e.setField(Constants.SESSION_ID, "6968");
-		e.setField(Constants.TIME_FIELD, "2021-11-16T07:49:41.220Z");
-		e.setField(Constants.CLIENT_IP, "9.211.127.160");
-		e.setField(Constants.USER_NAME, "SYSDBA");
-		e.setField(Constants.SERVER_HOSTNAME, "1.1.1.1");
-		e.setField(Constants.SQL_TEXT_INFO, "select * from employee;");
-		e.setField(Constants.ERROR_TEXT, null);
-		e.setField(Constants.LOGON_SOURCE, "(TCP/IP) c089 194.2.127.16 DBS-TERADATA1620.COM;DB-TERA CID=2D39989 "
-				+ "AVT666744 JDBC17.10.00.14;1.8.0_202 01 LSS");
+     e.setField(Constants.SESSION_ID, "6968");
+  e.setField(Constants.TIME_FIELD, "2021-11-16T07:49:41.220Z");
+  e.setField(Constants.CLIENT_IP, "9.211.127.160");
+  e.setField(Constants.SERVER_IP, "1.1.1.1");
+  e.setField(Constants.USER_NAME, "SYSDBA");
+  e.setField(Constants.SERVER_HOSTNAME, "1.1.1.1");
+  e.setField(Constants.SQL_TEXT_INFO, "select * from employee;");
+  e.setField(Constants.ERROR_TEXT, null);
+  e.setField(Constants.LOGON_SOURCE, "(TCP/IP) c089 194.2.127.16 DBS-TERADATA1620.COM;DB-TERA CID=2D39989 "
+    + "AVT666744 JDBC17.10.00.14;1.8.0_202 01 LSS");
         e.setField(Constants.OS_USER, "TESTUSER");
-		return e;
-   } 
+  return e;
+   }
    
     @Test 
     public void createQuery() throws ParseException {
