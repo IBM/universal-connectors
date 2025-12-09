@@ -211,7 +211,7 @@ Verify [here](https://ondeck.console.cloud.ibm.com/docs/cloud-logs?topic=cloud-l
 6. IBM Cloud Platform doesn't retain the source IP addresses of the connection. Instead, an internal IP addresses (local and remote) are shown in audit logs for each connection.
 7. The following important fields cannot be mapped with MongoDB logs:
    - Client HostName 
-9. For admin user, Failed Login is not supported.
+8. For admin DB, Failed Login is not supported for admin user.
 
 ## 5. Configuring the IBM Cloud MongoDB filter in Guardium
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the MongoDB template.
