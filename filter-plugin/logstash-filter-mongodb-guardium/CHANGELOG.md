@@ -3,6 +3,10 @@ Notable changes will be documented in this file.
 
 ## [Unreleased]
 
+## [0.6.13]
+### Changed
+- GRD-114688: Guardium Implementation for Mongo Atlas. Modify MongoDB Atlas config to include API base URL.
+
 ## [0.6.12]
 ### Changed
 - Added support for IBM Cloud Logs.
