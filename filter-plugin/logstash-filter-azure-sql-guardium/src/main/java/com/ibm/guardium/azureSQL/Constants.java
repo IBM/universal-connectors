@@ -19,11 +19,11 @@ public interface Constants {
 	public static final String DEFAULT_IP = "0.0.0.0";
 	public static final int DEFAULT_PORT = -1;
 	public static final String UNKNOWN_STRING = "";
-	public static final String SERVER_TYPE_STRING = "MSSQL";
+	public static final String SERVER_TYPE_STRING = "MS SQL SERVER";
 	public static final String DATA_PROTOCOL_STRING = "AzureSQL native audit";
 	public static final String LANGUAGE="MSSQL";
 	public static final String SQL_ERROR = "SQL_ERROR";
 	public static final String ZERO = "0";
 	public static final String ADDITIONAL_INFORMATION = "ADDITIONAL_INFORMATION";
-	
+	public static final String NOT_AVAILABLE = "N.A.";
 }
