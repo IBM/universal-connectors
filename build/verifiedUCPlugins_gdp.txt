@@ -58,6 +58,7 @@ input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage
 input-plugin/logstash-input-jdbc/JdbcInputPackage
 input-plugin/logstash-input-mongo-atlas/InputMongoAtlasPackage
 input-plugin/logstash-input-sqs/SQSInputPackage
+input-plugin/logstash-input-s3sqs/InputS3SQSPackage;
 input-plugin/logstash-input-tcp-syslog/SyslogInputPackage
 input-plugin/logstash-input-http/httpInputPackage
 input-plugin/logstash-input-google-pubsub/GooglePubSubPackage

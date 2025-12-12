@@ -1,8 +1,8 @@
 # Teradata-Guardium Logstash filter plug-in
 ### Meet Teradata
 
-* Tested versions: 16.20, 17.20, Azure VCE 17.20/20.0, AWS VCL 17.20/20.0
-* Environment: Cloud, On-premise, Azure VCE 17.2/20.0, AWS VCL 17.20/20.0
+* Tested versions: 16.2, 17.2 and 20.0
+* Environment: On-premises, VCE on Azure, VCL on AWS, VCL on Azure
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
 	* Guardium Data Protection: 11.4 and later
@@ -109,6 +109,8 @@ DELETE FROM DBC.DBQLSqlTbl WHERE (DATE '2021-12-16' - cast(collecttimestamp as D
 
 5] Stored Procedure and User Defined Functions
 
+6] DBQL tables do not capture 100% of Teradata workload due to configurable filters, aggregation options, memory caching with periodic writes (e.g., every 10 minutes via DBQLFlushRate), and potential data loss during system restarts before cache flush. Reference: https://www.dwhpro.com/teradata-query-logging-dbql/
+
 • The Teradata auditing does not audit authentication failure(Login Failed) operations.
 
 • Following important field couldn't mapped with TeradataDB audit logs.
@@ -121,9 +123,9 @@ DELETE FROM DBC.DBQLSqlTbl WHERE (DATE '2021-12-16' - cast(collecttimestamp as D
 
 • This plug-in supports queries that are approximately 32,000 characters long. When the count of characters in a query exceed the given count, the remaining part of the query is stored in other rows. This is why the SQLTextInfo column of the table DBC.DBQLSqlTbl has more than one row per QueryID.
 
-• serverIp is hardcoded to "0.0.0.0" in this plugin, as tables referred in configuration file do not have an attribute that directly holds actual serverIp value but that can be checked from column LogonSource(from DBC.DBQLOGTBL ) or sourceProgram  attribute.
+• Client IP and Server IP are retrieved from DBC.QryLogClientAttrV view using ClientIPAddrByClient and ServerIPAddrByServer fields respectively, as recommended by Teradata support. The deprecated logonsource field is no longer used for IP address retrieval.
 
-For more information on how to check the serverIp from LogonSource, please refer this [doc](https://docs.teradata.com/r/ANYCOtbX9Q1iyd~Uiok8gA/VPQKKhAyOf6hzUc4sfciIQ)
+For more information on DBC.QryLogClientAttrV, please refer to this [documentation](https://docs.teradata.com/r/Enterprise_IntelliFlex_VMware/Data-Dictionary/Views-Reference/QryLogClientAttrV).
 
 ## 5. Configuring the Teradata filters in Guardium
 

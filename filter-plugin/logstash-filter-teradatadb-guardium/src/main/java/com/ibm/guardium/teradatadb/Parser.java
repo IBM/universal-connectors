@@ -66,7 +66,7 @@ public class Parser {
 			
 				sessionLocator.setClientIp(e.getField(Constants.CLIENT_IP).toString());
 				sessionLocator.setClientPort(Constants.DEFAULT_PORT);
-				sessionLocator.setServerIp(Constants.DEFAULT_IP);
+				sessionLocator.setServerIp(e.getField(Constants.SERVER_IP).toString());
 				sessionLocator.setServerPort(Constants.DEFAULT_PORT);
 				sessionLocator.setIpv6(false);
 				sessionLocator.setClientIpv6(Constants.UNKNOWN_STRING);
