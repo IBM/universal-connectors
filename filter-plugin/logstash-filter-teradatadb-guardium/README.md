@@ -1,8 +1,8 @@
 # Teradata-Guardium Logstash filter plug-in
 ### Meet Teradata
 
-* Tested versions: 16.20, 17.20, Azure VCE 17.20/20.0
-* Environment: Cloud, On-premise, Azure VCE 17.2/20.0
+* Tested versions: 16.20, 17.20, Azure VCE 17.20/20.0, AWS VCL 17.20/20.0
+* Environment: Cloud, On-premise, Azure VCE 17.2/20.0, AWS VCL 17.20/20.0
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
 	* Guardium Data Protection: 11.4 and later
@@ -54,7 +54,7 @@ DBQL Query Logging can be explored further in this [document](https://docs.terad
 
 		select * from DBC.DBQLRulesV;	
 ### Notes:
-For **Teradata VCE on Azure**, run the following query to turn the audit log on.
+For **Teradata VCE on Azure** or **Teradata VCL on AWS**, run the following query to turn the audit log on.
 ```
 BEGIN QUERY LOGGING WITH SQL LIMIT SQLTEXT=0 ON ALL;
 ```
