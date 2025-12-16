@@ -16,7 +16,6 @@
       },
       "interval": {
         "type": "number",
-        "default": 900,
         "label": "Interval"
       },
       "region": {
@@ -28,10 +27,22 @@
         "optional": true,
         "label": "Event filter (optional)"
       },
-      "codec": {
+      "codec_pattern": {
+        "type": "text",
+        "optional": false,
+        "label": "Codec pattern"
+      },
+      "negate": {
+        "type": "boolean",
+        "hidden": true,
+        "default": false,
+        "label": "Multiline Negate"
+      },
+      "cluster_name": {
         "type": "text",
         "optional": true,
-        "label": "codec (optional)"
+        "hidden": true,
+        "default": ""
       },
       "account_id": {
         "type": "text",
