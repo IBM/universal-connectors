@@ -10,8 +10,6 @@ This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the
 
 Currently, this plug-in will work only with IBM Security Guardium Data Protection, and not Guardium Insights.
 
-SingleStore-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
-
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
 ## 1. Enabling the audit logs
