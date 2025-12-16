@@ -4,7 +4,7 @@
 	"type": "filter",
 	"pipeline_type":"pull",
 	"plugin_version": "1.0.0",
-	"datasourceTypes": [{"type":"Amazon RDS for PostgreSQL","supportedVersions": [""]}],
+	"datasourceTypes": [{"type":"Postgres","supportedVersions": [""]}],
 	"supported_input_plugins": ["Cloudwatch_logs_input"],
 	"developer": "IBM",
 	"license": "Apache2.0",

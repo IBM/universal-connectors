@@ -63,6 +63,27 @@ Use the following command to retrieve the log files that are stored in the audit
 			match: after
 		tags : ["singlestore"] 
 	```
+     ```text
+    # If filestream is not supported, use the log input as shown below:
+    filebeat.inputs:
+      type: log
+      # Unique ID among all inputs, an ID is required.
+      id: <ID>
+ 
+      # Change to true to enable this input configuration.
+      enabled: true
+      allow_deprecated_use: true
+      # Paths that should be crawled and fetched. Glob based paths.
+      paths:
+        - /singlestoredata/*/auditlogs/*.log
+ 
+      multiline.type: pattern
+      multiline.pattern: '^\d+,'
+      multiline.negate: true
+      multiline.match: after
+ 
+      tags: ["singlestore"]
+     ```
 	**Note:** Add the tags to uniquely identify the SingleStore events from the rest.  
 
 	b. Configuring the output section.  
@@ -79,7 +100,7 @@ Use the following command to retrieve the log files that are stored in the audit
 ### Limitations  
 • Source Program is not part of the SingleStore logs.  
 • Client IP can only be retrieved in login / logout actions.  
-• SQL Errors are not logged by SingleStore.
+• Queries with SQL errors are included in the `Full SQL` report and are not displayed in `SQL Errors`.
 
 **Note:** For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
 
@@ -98,7 +119,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First enable the Universal Guardium connector, if it is disabled already.
-3. Click Upload File and select the offline [logstash-filter-singlestore_guardium_filter.zip](./logstash-filter-singlestore_guardium_filter.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+3. Click Upload File and select the offline [logstash-filter-singlestoredb_guardium_filter.zip](logstash-filter-singlestoredb_guardium_filter.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from the [singlestoreFilebeat.conf](./singleStoreFilebeat.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
