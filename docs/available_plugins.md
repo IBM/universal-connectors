@@ -55,6 +55,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [Teradata](../filter-plugin/logstash-filter-teradatadb-guardium/README.md)
 * [Trino](../filter-plugin/logstash-filter-trino-guardium/README.md)
 * [Yugabyte](../filter-plugin/logstash-filter-yugabyte-guardium/README.md)
+* [Sybase](../docs/KafkaBasedUCs/SybaseJDBCKafkaConnect.md)
 
 ## Developing Plug-ins
 Users can develop their own universal connector plug-ins, if needed, and contribute them back to the open source project, if desired.
