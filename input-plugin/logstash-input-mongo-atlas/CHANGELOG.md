@@ -4,6 +4,9 @@
 ## 1.0.7
 - GRD-114688: Guardium Implementation for Mongo Atlas.
 
+## 1.0.1
+- Fix gradle incompatibility issue with Logstash 7.9 and above.
+
 ## 1.0.0
 - Updated for GA release of native support for Java plugins. Includes:
   - Improved Gradle task wrappers
