@@ -192,41 +192,52 @@ Create the IAM role that will be used in the Lambda function set up. The AWS lam
 #### Create the lambda function
 
 #### Procedure
-1. Go to https://console.aws.amazon.com/
-2. Go to ```Services```. Search for lambda function
-3. Click ```Functions```
-4. Click ```Create Function```
-5. Keep ```Author for Scratch``` selected
-6. Set ```Function name``` e.g., Export-RDS-CloudWatch-Logs-To-SQS
-7. Under ```Runtime```, select ```Python 3.x```
-8. Under ```Permissions```, select ```Use an existing role``` and select the IAM role that you created in the previous step (Export-RDS-CloudWatch-to-SQS-Lambda)
-9. Click ```Create function``` and navigate to ```Code view```
-10. Add the function code from [lambdaFunction](./PostgresOverSQSPackage/postgresLambda.py)
-11. Click ```Configuration``` -> ```Environment Variables```
-12. Create 2 variables:
-	1. Key = GROUP_NAME  value = <Name of the log group in Cloudwatch whose logs are to be exported> e.g., /aws/rds/instance/database-1/postgresql
-	2. Key = QUEUE_NAME  value = <Queue URL where logs are to be sent> e.g., https://sqs.ap-south-1.amazonaws.com/11111111111/PostgresQueue
-13. Save the function
-14. Click on the **Deploy** button
+1. Go to https://console.aws.amazon.com/.
+2. Go to **Services** and search for ``lambda function``.
+3. Click **Functions > Create Function**.
+4. Make sure **Author for Scratch** is selected.
+5. Enter a **Function name**. For example, ``Export-RDS-CloudWatch-Logs-To-SQS``.
+6. Under **Runtime**, select **Python 3.x**.
+7. Under **Permissions**, select **Use an existing role**. Then select the IAM role that you created in the previous step (Export-RDS-CloudWatch-to-SQS-Lambda).
+8. Click **Create function** and navigate to **Code view**.
+9. Add the function code from [lambdaFunction](./PostgresOverSQSPackage/postgresLambda.py).
+10. Click **Configuration > Environment Variables**.
+11. Create two variables: </br>
+	a. Key = GROUP_NAME value = Name of the log group in CloudWatch from where logs are to be exported. For example, /aws/rds/instance/database-1/postgresql. </br>
+	b. Key = QUEUE_NAME value = Queue URL where logs are to be sent. For example, https://sqs.ap-south-1.amazonaws.com/11111111/PostgresQueue. </br>
+	c. Key = PARAMETER_NAME value = Name of the parameter store in the System Manager Parameter Store. For example, "LastExecutionTimestamp". </br>
+	d. Key = ENABLE_DEBUG value = <True/False>. This setting controls the debugging statements. </br>
+12. Click **Save** to save the environment variables.
+13. From the **Code** tab, deploy the function by using one of the following methods:
+	* **New Lambda Editor**: From the left sidebar, go to **EXPLORER > DEPLOY** and click **Deploy**.
+	* **Classic Lambda Editor**: Click **Deploy** in the top-right area of the code editor.
+14. Wait for the deployment to complete. A message is displayed when the deployment is successful.
 
 #### Automating the lambda function
 
-#### Procedure
-1. Go to the CloudWatch dashboard
-2. Go to ```Events``` -> ```Rules``` on the left pane
-3. Click ```Create Rule```
-4. Enter the name for the rule e.g., cloudwatchToSqs
-5. Under ```Rule Type```, select ```Schedule```
-6. Define the schedule. In ```schedule pattern``` select a schedule that runs at a regular rate, such as every 10 minutes
-7. Enter the rate expression, meaning the rate at which the function should execute. This value must match the time specified in the lambda function code that calculates the time delta. (If the function code it is set to 2 minutes, set the rate to 2 minutes unless changed in the code). Click ```Next```
-8. Select the ```Target1```. Select the ```Target Type``` as ```AWS Service```
-9. Select ```Target``` as ```Lambda Function```
-10. Select the lambda function created in the above step. e.g., Export-RDS-CloudWatch-Logs-To-SQS
-11. Add the tag if needed
-12. Click ```Create Rule```
+**Note**: AWS has migrated CloudWatch Events to Amazon EventBridge. Use the EventBridge service to create scheduling rules for Lambda functions.
 
-#### Note
-Before making any changes to the lambda function code, first disable the above rule. Deploy the change and then re-enable the rule.
+1. Go to the AWS Console and search for ``EventBridge``.
+2. To open the EventBridge dashboard, click **Amazon EventBridge**.
+3. In the left navigation pane, click **Rules** under **Events**.
+4. Click **Create rule**, and enter the rule details. </br>
+	a. **Name**: Enter a name for the rule. For example, `cloudwatchToSqs`. </br>
+	b. **Description**: (Optional) Add a description. </br>
+	c. **Event bus**: Select **default**. </br>
+5. In the **Rule type** field, select **Schedule** and click **Next**.
+6. Define the schedule pattern. </br>
+	a. Select **A schedule that runs at a regular rate, such as every 10 minutes**. </br>
+	b. Enter the rate expression (e.g., ``2`` minutes). This value must match the time specified in the lambda function code that calculates the time delta. If the function code is set to 2 minutes, set the rate to 2 minutes unless it is changed in the code. </br>
+	c. Click **Next**.
+7. Select the target. </br>
+	a. In the **Target types** field, select **AWS service**. </br>
+	b. In the **Select a target** field, select **Lambda function**. </br>
+   	c. In the **Function** field, select the Lambda function that you created in the previous step. For example, **Export-RDS-CloudWatch-Logs-To-SQS**. </br>
+   	d. Click **Next**. </br>
+8. (Optional) Add tags if needed, then click **Next**.
+9. Review the rule configuration and click **Create rule**.
+
+**Note:** Before making any changes to the Lambda function code, you must disable this rule. Once you deploy the change, you can re-enable the rule.
 
 ## Configuring the Postgres filters in Guardium
 
