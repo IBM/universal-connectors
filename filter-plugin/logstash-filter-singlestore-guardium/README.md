@@ -88,7 +88,7 @@ Use the following command to retrieve the log files that are stored in the audit
 		&nbsp;&nbsp;1.In the output section, disable the Elasticsearch output by commenting it out.  
 		&nbsp;&nbsp;2. Enable Logstash output by uncommenting the Logstash section.  For more information, see [Configure the Logstash output
 ](https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html#logstash-output).  <br><br>
-		**Note:** The hosts option specifies the Logstash server and the port (5001) where Logstash is configured to listen for incoming Beats connections. You can set any port number except 5044, 5141, and 5000 (as these are currently reserved in Guardium v11.3 and v11.4).  
+		**Note:** The hosts option specifies the Logstash server and the port where Logstash is configured to listen for incoming Beats connections.
 		For example:  
 	```text
 	output.logstash:  
@@ -117,7 +117,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First enable the Universal Guardium connector, if it is disabled already.
-3. Click Upload File and select the offline [logstash-filter-singlestoredb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-singlestoredb_guardium_filter.zip) plug-in. After it is uploaded, click OK. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+3. Click Upload File and select the offline [logstash-filter-singlestoredb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-singlestoredb_guardium_filter.zip) plug-in. After it is uploaded, click OK.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
 6. Update the input section to add the details from the [singlestoreFilebeat.conf](./singleStoreFilebeat.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
