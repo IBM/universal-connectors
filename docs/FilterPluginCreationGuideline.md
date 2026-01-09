@@ -1,4 +1,4 @@
-# Setting Up Logstash Development Environment: A Complete Guide
+# Setting up Logstash Development Environment: A Complete Guide
 
 ## Introduction
 
