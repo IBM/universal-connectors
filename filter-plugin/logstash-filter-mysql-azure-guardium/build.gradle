@@ -48,7 +48,7 @@ repositories {
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-    classifier = null
+    archiveClassifier = null
     transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer)
 }
 
