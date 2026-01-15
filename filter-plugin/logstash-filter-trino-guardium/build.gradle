@@ -75,7 +75,7 @@ tasks.register("vendor") {
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-    classifier = null
+    archiveClassifier = null
 }
 
 
