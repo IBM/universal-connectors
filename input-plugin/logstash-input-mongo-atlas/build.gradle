@@ -50,7 +50,7 @@ repositories {
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-    classifier = null
+    archiveClassifier = null
 }
 
 dependencies {

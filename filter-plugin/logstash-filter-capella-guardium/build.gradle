@@ -73,7 +73,7 @@ tasks.register("vendor"){
 }
 
 shadowJar {
-    classifier = null
+    archiveClassifier = null
 }
 
 
