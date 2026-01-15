@@ -4,6 +4,7 @@
 The following plug-ins are supported by the latest product versions. Exceptions are noted next to each plug-in name.
 To see if a particular plug-in is supported by older versions, please refer to the "supported versions" section inside each plug-in page.
 
+* [Adabas](../filter-plugin/logstash-filter-adabas-guardium/README.md)
 * [Alloy_DB](../filter-plugin/logstash-filter-alloydb-guardium/README.md)
 * [Amazon Aurora MySQL](../filter-plugin/logstash-filter-aurora-mysql-guardium/README.md)
 * [Amazon DynamoDB](../filter-plugin/logstash-filter-dynamodb-guardium/README.md)
