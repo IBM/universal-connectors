@@ -2,6 +2,22 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
+}
+
+def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
+
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
 // ===========================================================================
@@ -23,20 +39,6 @@ pluginInfo.pluginName      = "s3_sqs" // must match the @LogstashPlugin annotati
 sourceCompatibility = 1.11
 targetCompatibility = 1.11
 
-buildscript {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-    }
-
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
-        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
-    }
-}
-
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 
 repositories {
     mavenCentral()

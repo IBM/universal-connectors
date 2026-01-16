@@ -2,6 +2,27 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
+
+buildscript {
+    repositories {
+    	mavenCentral()
+    	jcenter()
+        maven {
+      		url "https://plugins.gradle.org/m2/"
+   		}
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
+       	//classpath 'org.owasp:dependency-check-gradle:8.3.1'
+       //classpath "com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.8"
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
+}
+
+def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
+
 apply plugin: 'jacoco'
 apply plugin: 'eclipse'
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
@@ -24,24 +45,6 @@ pluginInfo.pluginName      = "scylladb_guardium_filter" // must match the @Logst
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-buildscript {
-    repositories {
-    	mavenCentral()
-    	jcenter()
-        maven {
-      		url "https://plugins.gradle.org/m2/"
-   		}
-    }
-
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
-       	//classpath 'org.owasp:dependency-check-gradle:8.3.1'
-       //classpath "com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.8"
-        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
-    }
-}
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 
 repositories {
     mavenCentral()
