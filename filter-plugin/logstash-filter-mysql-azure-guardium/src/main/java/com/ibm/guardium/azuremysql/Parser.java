@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.azuremysql.Constants;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
 import co.elastic.logstash.api.Event;
 import org.apache.logging.log4j.LogManager;

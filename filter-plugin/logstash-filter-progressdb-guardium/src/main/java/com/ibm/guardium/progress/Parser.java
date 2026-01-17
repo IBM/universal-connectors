@@ -5,7 +5,7 @@
 package com.ibm.guardium.progress;
 
 import com.google.gson.JsonObject;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.text.ParseException;

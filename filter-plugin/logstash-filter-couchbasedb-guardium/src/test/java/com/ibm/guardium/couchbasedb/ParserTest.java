@@ -6,7 +6,7 @@ package com.ibm.guardium.couchbasedb;
 
 import java.text.ParseException;
 
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.junit.Assert;
 import org.junit.Test;
 

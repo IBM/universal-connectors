@@ -173,8 +173,8 @@ jacocoTestReport {
         csv {
             enabled true
         }
-        html.destination file("${buildDir}/reports/jacoco")
-        csv.destination file("${buildDir}/reports/jacoco/all.csv")
+        html.outputLocation = file("${buildDir}/reports/jacoco")
+        csv.outputLocation = file("${buildDir}/reports/jacoco/all.csv")
     }
     executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: [
             '**/*.exec'

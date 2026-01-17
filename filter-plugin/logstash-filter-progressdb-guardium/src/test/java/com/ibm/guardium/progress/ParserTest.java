@@ -5,7 +5,7 @@
 package com.ibm.guardium.progress;
 
 import com.google.gson.JsonObject;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.junit.Test;
 import java.text.ParseException;
 import static com.ibm.guardium.progress.Constants.minOffset;
