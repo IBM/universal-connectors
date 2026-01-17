@@ -5,7 +5,7 @@
 package com.ibm.guardium.singlestore;
 
 import com.google.gson.JsonObject;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.logging.log4j.LogManager;

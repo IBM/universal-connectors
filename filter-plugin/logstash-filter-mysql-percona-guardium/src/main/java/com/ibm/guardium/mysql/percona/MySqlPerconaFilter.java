@@ -24,7 +24,7 @@ import java.util.*;
 import java.io.File;
 import java.time.ZonedDateTime;
 
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.Util;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 

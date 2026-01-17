@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ibm.guardium.mongodb.parsersbytype.BaseParser;
 import com.ibm.guardium.mongodb.parsersbytype.LoginParser;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 import org.junit.Assert;
 import org.junit.Test;

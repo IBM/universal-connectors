@@ -7,7 +7,7 @@ package com.ibm.guardium.trino;
 
 import com.google.gson.JsonObject;
 
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.apache.commons.validator.routines.InetAddressValidator;
 
 import java.time.ZonedDateTime;

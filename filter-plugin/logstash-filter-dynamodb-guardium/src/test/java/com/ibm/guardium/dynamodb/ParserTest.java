@@ -8,7 +8,7 @@ import java.text.ParseException;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 import org.junit.Assert;
 import org.junit.Test;

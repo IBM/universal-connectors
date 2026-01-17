@@ -13,7 +13,7 @@ import static com.ibm.guardium.alloydb.Constants.*;
 import static com.ibm.guardium.universalconnector.commons.custom_parsing.PropertyConstant.*;
 
 import com.ibm.guardium.universalconnector.commons.custom_parsing.SqlParser;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
