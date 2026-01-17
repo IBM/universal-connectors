@@ -15,7 +15,7 @@ import com.google.gson.*;
 import com.ibm.guardium.mongodb.parsersbytype.BaseParser;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.logging.log4j.LogManager;

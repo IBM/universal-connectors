@@ -7,7 +7,7 @@ package com.ibm.guardium.singlestore;
 
 import co.elastic.logstash.api.Event;
 import com.google.gson.JsonObject;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 import java.util.ArrayList;

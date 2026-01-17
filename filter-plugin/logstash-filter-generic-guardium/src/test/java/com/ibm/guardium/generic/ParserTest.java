@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ibm.guardium.generic.Constants;
 import com.ibm.guardium.generic.Parser;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 import org.junit.Assert;
 import org.junit.Test;

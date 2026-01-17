@@ -160,11 +160,11 @@ jacocoTestReport {
     // You will see "Report -> file://...." at the end of a JaCoCo build
     // If no output, run this first:   ./gradlew test
     reports {
-        html.enabled = true
-        xml.enabled = true
-        csv.enabled = true
-        html.destination file("${buildDir}/reports/jacoco")
-        csv.destination file("${buildDir}/reports/jacoco/all.csv")
+        html.required = true
+        xml.required = true
+        csv.required = true
+        html.outputLocation = file("${buildDir}/reports/jacoco")
+        csv.outputLocation = file("${buildDir}/reports/jacoco/all.csv")
     }
     executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: [
             '**/*.exec'

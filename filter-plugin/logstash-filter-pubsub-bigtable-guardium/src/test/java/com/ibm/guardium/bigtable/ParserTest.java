@@ -3,7 +3,7 @@ package com.ibm.guardium.bigtable;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.bigtable.errorcode.BigTableErrorCodes;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
