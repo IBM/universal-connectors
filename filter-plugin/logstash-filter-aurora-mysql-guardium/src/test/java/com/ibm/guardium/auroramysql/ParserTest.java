@@ -8,7 +8,7 @@ import java.text.ParseException;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.auroramysql.Constants;
 import com.ibm.guardium.auroramysql.Parser;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 import org.junit.Assert;

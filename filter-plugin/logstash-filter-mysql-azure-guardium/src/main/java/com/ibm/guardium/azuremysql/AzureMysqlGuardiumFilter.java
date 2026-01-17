@@ -15,7 +15,7 @@ import com.google.gson.*;
 import com.ibm.guardium.azuremysql.Parser;
 import com.ibm.guardium.azuremysql.Constants;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 import org.apache.logging.log4j.LogManager;
