@@ -16,7 +16,8 @@ buildscript {
 }
 
 def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
