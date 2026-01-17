@@ -85,6 +85,17 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+test {
+    jvmArgs = [
+        '--add-opens=java.base/java.lang=ALL-UNNAMED',
+        '--add-opens=java.base/java.util=ALL-UNNAMED',
+        '--add-opens=java.base/java.text=ALL-UNNAMED',
+        '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
+        '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
+        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
+    ]
+}
+
 tasks.register("vendor"){
     dependsOn shadowJar
     doLast {
