@@ -148,15 +148,14 @@ apply plugin: "org.barfuin.gradle.jacocolog"
 // ------------------------------------
 jacoco {
     toolVersion = "${jacocoVersion}"
-    reportsDir = file("$buildDir/reports/jacoco")
 }
 jacocoTestReport {
     // You will see "Report -> file://...." at the end of a JaCoCo build
     // If no output, run this first:   ./gradlew test
     reports {
-        html.enabled true
-        xml.enabled true
-        csv.enabled true
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = true
         html.destination file("${buildDir}/reports/jacoco")
         csv.destination file("${buildDir}/reports/jacoco/all.csv")
     }
