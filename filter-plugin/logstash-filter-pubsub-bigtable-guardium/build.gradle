@@ -14,7 +14,7 @@ buildscript {
 
     dependencies {
         classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0"
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
 }
@@ -48,7 +48,7 @@ pluginInfo.pluginName      = "big_table_guardium_filter" // must match the @Logs
 sourceCompatibility = 11
 targetCompatibility = 11
 
-def jacocoVersion = '0.8.4'
+def jacocoVersion = '0.8.11'
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
