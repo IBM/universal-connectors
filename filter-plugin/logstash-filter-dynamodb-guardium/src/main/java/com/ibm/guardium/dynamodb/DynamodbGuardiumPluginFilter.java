@@ -15,7 +15,7 @@ import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
