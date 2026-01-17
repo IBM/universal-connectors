@@ -3,7 +3,15 @@ package com.ibm.guardium.bigtable;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.bigtable.errorcode.BigTableErrorCodes;
+import com.ibm.guardium.universalconnector.commons.structures.Accessor;
+import com.ibm.guardium.universalconnector.commons.structures.Construct;
+import com.ibm.guardium.universalconnector.commons.structures.Data;
+import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.Sentence;
+import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
+import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
+import com.ibm.guardium.universalconnector.commons.structures.Time;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
