@@ -7,7 +7,7 @@ package com.ibm.guardium.capella;
 
 import com.ibm.guardium.universalconnector.commons.custom_parsing.CustomParser;
 import com.ibm.guardium.universalconnector.commons.custom_parsing.ParserFactory;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -5,7 +5,7 @@
 
 package com.ibm.guardium.snowflakedb.utils;
 
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 public class DefaultGuardRecordBuilder {
     public Record buildGuardRecordWithDefaultValues(){

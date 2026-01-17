@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import com.ibm.guardium.snowflakedb.utils.Constants;
 import com.ibm.guardium.snowflakedb.utils.DefaultGuardRecordBuilder;
 import com.ibm.guardium.snowflakedb.exceptions.ParseException;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
