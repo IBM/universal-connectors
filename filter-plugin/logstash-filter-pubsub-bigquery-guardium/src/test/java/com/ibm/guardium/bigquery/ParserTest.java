@@ -20,8 +20,6 @@ import org.junit.jupiter.params.shadow.com.univocity.parsers.csv.CsvWriterSettin
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
@@ -30,8 +28,6 @@ import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 
 public class ParserTest {
 	private  String gcpString2 = "{\"protoPayload\":{\"@type\":\"type.googleapis.com\\/google.cloud.audit.AuditLog\",\"status\":{},\"authenticationInfo\":{\"principalEmail\":\"user@test.com\"},\"requestMetadata\":{\"callerIp\":\"136.185.149.223\",\"callerSuppliedUserAgent\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/99.0.4844.51 Safari\\/537.36 Edg\\/99.0.1150.39,gzip(gfe),gzip(gfe)\",\"requestAttributes\":{},\"destinationAttributes\":{}},\"serviceName\":\"bigquery.googleapis.com\",\"methodName\":\"google.cloud.bigquery.v2.JobService.InsertJob\",\"authorizationInfo\":[{\"resource\":\"projects\\/project-sccd\",\"permission\":\"bigquery.jobs.create\",\"granted\":true,\"resourceAttributes\":{}}],\"resourceName\":\"projects\\/project-sccd\\/jobs\\/bquxjob_2efa9cd5_17fcfe7b26f\",\"metadata\":{\"@type\":\"type.googleapis.com\\/google.cloud.audit.BigQueryAuditMetadata\",\"jobChange\":{\"job\":{\"jobStatus\":{\"jobState\":\"DONE\"},\"jobName\":\"projects\\/project-sccd\\/jobs\\/bquxjob_2efa9cd5_17fcfe7b26f\",\"jobConfig\":{\"queryConfig\":{\"statementType\":\"select\",\"priority\":\"QUERY_INTERACTIVE\",\"createDisposition\":\"create_if_needed\",\"destinationTable\":\"projects\\/project-sccd\\/datasets\\/_1b12d4043516e7fe556c67c37894adb7c0c3588b\\/tables\\/anon0d36a80a5698fbaec071061444ad0e4a4d2d2e24\",\"writeDisposition\":\"WRITE_TRUNCATE\",\"query\":\"select * from project-sccd.Bigquerydataset_M_15Apr.nvjnfv\"},\"type\":\"QUERY\"},\"jobStats\":{\"queryStats\":{\"referencedTables\":[\"projects\\/project-sccd\\/datasets\\/Newdatademo\\/tables\\/demoibm\"],\"billingTier\":1,\"totalProcessedBytes\":\"28\",\"outputRowCount\":\"2\",\"totalBilledBytes\":\"10485760\"},\"endTime\":\"2022-03-28T09:42:23.627Z\",\"createTime\":\"2022-03-28T09:42:23.237Z\",\"startTime\":\"2022-03-28T09:42:23.380Z\",\"totalSlotMs\":\"56\"}},\"after\":\"DONE\"}}},\"insertId\":\"-uso33ze1h99r\",\"resource\":{\"type\":\"bigquery_project\",\"labels\":{\"project_id\":\"project-sccd\",\"location\":\"US\"}},\"timestamp\":\"2022-03-28T09:42:23.630852Z\",\"severity\":\"INFO\",\"logName\":\"projects\\/project-sccd\\/logs\\/cloudaudit.googleapis.com%2Fdata_access\",\"operation\":{\"id\":\"1648460543237-project-sccd:bquxjob_2efa9cd5_17fcfe7b26f\",\"producer\":\"bigquery.googleapis.com\",\"last\":true},\"receiveTimestamp\":\"2022-03-28T09:42:23.997320883Z\"}";
