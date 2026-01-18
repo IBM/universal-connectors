@@ -111,7 +111,8 @@ test {
         '--add-opens=java.base/java.text=ALL-UNNAMED',
         '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
         '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
+        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED',
+        '--add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED'
     ]
 }
 
