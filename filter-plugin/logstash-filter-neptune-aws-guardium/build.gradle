@@ -4,6 +4,11 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 apply plugin: 'java'
 
 buildscript {
+
+    ext {
+        snakeYamlVersion = '2.2'
+    }
+
     repositories {
         maven {
             url "https://plugins.gradle.org/m2/"
@@ -84,6 +89,7 @@ dependencies {
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
     implementation group: 'org.apache.commons', name: 'commons-text', version: versions.dependencies.commonsText
     implementation group: 'org.apache.tinkerpop', name: 'tinkergraph-gremlin', version: versions.dependencies.tinkergraphGremlin
+    implementation group: 'org.apache.commons', name: 'commons-configuration2', version: '2.13.0'
     implementation group: 'org.eclipse.rdf4j', name: 'rdf4j-queryparser-sparql', version:   versions.dependencies.rdf4jQueryparserSparql
 
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
