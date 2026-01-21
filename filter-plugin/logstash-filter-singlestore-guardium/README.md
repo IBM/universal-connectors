@@ -1,6 +1,6 @@
 ## SingleStore-Guardium Logstash filter plug-in
 ## Meet SingleStore
-* Tested versions: 8.7.12
+* Tested versions: 5.7.32
 * Environment: On-premise, Iaas
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
