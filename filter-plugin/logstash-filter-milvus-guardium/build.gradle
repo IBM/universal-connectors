@@ -89,6 +89,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:' + versions.dependencies.gson
     implementation 'org.apache.commons:commons-lang3:' + versions.dependencies.commonsLang
     implementation 'commons-validator:commons-validator:' + versions.dependencies.commonsValidator
+    implementation 'commons-beanutils:commons-beanutils:' + versions.dependencies.commonsBeanutils
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.17.2'
 
     testImplementation group: 'org.mockito', name: 'mockito-all', version: versions.dependencies.mockitoAll
