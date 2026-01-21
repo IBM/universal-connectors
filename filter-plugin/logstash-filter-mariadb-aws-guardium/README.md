@@ -148,6 +148,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 	 - serverIP : This field is populated with 0.0.0.0, as this information is not embedded in the messages pulled from AWS Cloudwatch.
      - clientPort and serverPort : Not available with audit logs
  - For system generated LOGIN_FAILED logs, the Dbuser value not available,so we set it as "NA".
+ - Currently, S‑TAP registration is restricted to one primary MU, meaning the S‑TAP and its logs appear only on the initial primary MU even when multiple primary MUs are present.
  
 ## 7. Configuring the AWS MariaDB Guardium Logstash filters in Guardium Data Security Center
 
