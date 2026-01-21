@@ -83,7 +83,7 @@ dependencies {
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "**/logstash-core.jar")
     implementation 'org.apache.httpcomponents:httpclient:4.5.13'
     implementation 'com.google.code.gson:gson:2.8.9'
-    implementation 'com.google.guava:guava:30.1-jre'
+    implementation 'com.google.guava:guava:' + versions.dependencies.guava
 
 
     testImplementation 'junit:junit:4.12'
