@@ -180,6 +180,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
     - OS User  - Not available in Audit logs
     - ClientIP - Not avaiable in Audit Logs
     - Source Program - Not available in Audit Logs
+- Currently, S‑TAP registration is restricted to one primary MU, meaning the S‑TAP and its logs appear only on the initial primary MU even when multiple primary MUs are present.
 
 ## 7. Configuring the Mariadb filters in Guardium Data Security Center
 To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
