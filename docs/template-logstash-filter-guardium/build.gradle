@@ -157,5 +157,3 @@ jacocoTestReport {
 }
 
 test.finalizedBy jacocoTestReport
-
-// Made with Bob
