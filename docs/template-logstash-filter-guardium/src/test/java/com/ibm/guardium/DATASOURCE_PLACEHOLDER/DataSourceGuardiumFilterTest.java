@@ -243,5 +243,3 @@ public class DataSourceGuardiumFilterTest {
 	// - Stored procedures/functions
 	// - etc.
 }
-
-// Made with Bob
