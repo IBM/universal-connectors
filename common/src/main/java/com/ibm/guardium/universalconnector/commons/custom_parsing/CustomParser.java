@@ -216,7 +216,7 @@ public abstract class CustomParser {
 
         String clientIp = getClientIp(payload);
         String clientIpv6 = getClientIpv6(payload);
-        if (clientIpv6 != null && inetAddressValidator.isValidInet6Address(clientIpv6)) {
+        if (clientIpv6 != null && !clientIpv6.equals(DEFAULT_IPV6) && inetAddressValidator.isValidInet6Address(clientIpv6)) {
             // If client IP is IPv6, set both client and server to IPv6
             sessionLocator.setIpv6(true);
             sessionLocator.setClientIpv6(clientIpv6);

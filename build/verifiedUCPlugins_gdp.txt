@@ -16,12 +16,14 @@ filter-plugin/logstash-filter-couchdb-guardium/CouchdbOverFilebeatPackage
 filter-plugin/logstash-filter-hdfs-guardium/HdfsOverFilebeatPackage
 filter-plugin/logstash-filter-mariadb-guardium/MariaDBOverFilebeatPackage
 filter-plugin/logstash-filter-mongodb-guardium/MongodbOverFilebeatPackage
+filter-plugin/logstash-filter-milvus-guardium/MilvusOverFilebeatPackage
 filter-plugin/logstash-filter-mysql-guardium/MysqlOverFilebeatPackage
 filter-plugin/logstash-filter-mysql-percona-guardium/MysqlPerconaOverFilebeatPackage
 filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage
 filter-plugin/logstash-filter-onPremGreenplumdb-guardium/GreenplumdbOverFilebeatPackage
 filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresOverFilebeatPackage
 filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage
+filter-plugin/logstash-filter-singlestore-guardium/SingleStoreOverFilebeatPackage
 filter-plugin/logstash-filter-yugabyte-guardium/YugabytedbOverFilebeatPackage
 #JDBC plug-ins
 filter-plugin/logstash-filter-snowflake-guardium/SnowflakeOverJbdcPackage
@@ -37,6 +39,7 @@ filter-plugin/logstash-filter-pubsub-firestore-guardium/PubSubFireStorePackage
 filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage
 filter-plugin/logstash-filter-pubsub-postgresql-guardium/PubSubPostgreSQLPackage
 filter-plugin/logstash-filter-pubsub-bigtable-guardium/gdp-pubsub-bigtable-package
+filter-plugin/logstash-filter-alloydb-guardium/AlloyDBoverPubSubPackage
 #Syslog plug-ins
 filter-plugin/logstash-filter-mongodb-guardium/MongoDBOverSyslogPackage
 filter-plugin/logstash-filter-mysql-guardium/MySQLOverSyslogPackage
@@ -55,6 +58,7 @@ input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage
 input-plugin/logstash-input-jdbc/JdbcInputPackage
 input-plugin/logstash-input-mongo-atlas/InputMongoAtlasPackage
 input-plugin/logstash-input-sqs/SQSInputPackage
+input-plugin/logstash-input-s3sqs/InputS3SQSPackage;
 input-plugin/logstash-input-tcp-syslog/SyslogInputPackage
 input-plugin/logstash-input-http/httpInputPackage
 input-plugin/logstash-input-google-pubsub/GooglePubSubPackage

@@ -1,0 +1,22 @@
+{
+  "name": "s3_sqs_input",
+  "alias": "s3_sqs",
+  "type": "input",
+  "pipeline_type": null,
+  "plugin_version": "1.0.0",
+  "supportedDataSources": null,
+  "supportedInputPlugins": null,
+  "developer": "Elastic",
+  "license": "Apache2.0",
+  "supported_input_plugins": [],
+  "description": "Listens for events in S3SQS. Incoming events are passed on to the filter stage.",
+  "configuration_notes": "",
+  "documentation_path": "",
+  "pluginSHA256Checksum": -1,
+  "pluginOfflinePackagePath": null,
+  "pluginConfigTemplateParams": null,
+  "pluginConfigTemplateStrings": null,
+  "uploadDate": null,
+  "uploadUser": null,
+  "auto_scaling": false
+}
