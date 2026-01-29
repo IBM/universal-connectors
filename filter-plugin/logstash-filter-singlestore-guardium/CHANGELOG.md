@@ -1,12 +1,12 @@
 # Changelog
 Notable changes will be documented in this file.
 
-## [Unreleased]
+## [1.0.1]
+- Change DB protocol from "Singlestore Native Audit" to "SinglestoreDB"
 
-## [1.0.0] - 2024-07-02
+## [1.0.0]
 
 ### Added
-- Initial release, in parallel to Guardium v12.
-
+- Initial release of SingleStore UC
 
 

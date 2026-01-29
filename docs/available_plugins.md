@@ -4,6 +4,7 @@
 The following plug-ins are supported by the latest product versions. Exceptions are noted next to each plug-in name.
 To see if a particular plug-in is supported by older versions, please refer to the "supported versions" section inside each plug-in page.
 
+* [Adabas](../filter-plugin/logstash-filter-adabas-guardium/README.md)
 * [Alloy_DB](../filter-plugin/logstash-filter-alloydb-guardium/README.md)
 * [Amazon Aurora MySQL](../filter-plugin/logstash-filter-aurora-mysql-guardium/README.md)
 * [Amazon DynamoDB](../filter-plugin/logstash-filter-dynamodb-guardium/README.md)
@@ -55,6 +56,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [Teradata](../filter-plugin/logstash-filter-teradatadb-guardium/README.md)
 * [Trino](../filter-plugin/logstash-filter-trino-guardium/README.md)
 * [Yugabyte](../filter-plugin/logstash-filter-yugabyte-guardium/README.md)
+* [Sybase](../docs/KafkaBasedUCs/SybaseJDBCKafkaConnect.md)
 
 ## Developing Plug-ins
 Users can develop their own universal connector plug-ins, if needed, and contribute them back to the open source project, if desired.
