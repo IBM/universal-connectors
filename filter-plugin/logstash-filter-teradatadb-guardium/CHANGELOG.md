@@ -1,6 +1,9 @@
 # Changelog
 Notable changes will be documented in this file.
 
+## [1.1.4]
+- Change DB protocol from "TeradataDB native audit" to "TeradataDB"
+
 ## [1.1.2]
 - Replace "TERADATA" with "TRD" for SERVER_TYPE_STRING
 - 
