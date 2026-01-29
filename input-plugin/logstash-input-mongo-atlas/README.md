@@ -82,7 +82,7 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=cloud.mongodb.co
 ## Procedure
 1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
 2. Enable the Guardium Universal Connector if is in disabled state before uploading the UC plug-in.
-3. Click ```Upload File``` and select the offline [logstash-input-mongo_atlas_input.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.2/logstash-input-mongo_atlas_input.zip) plug-in. After it is uploaded, click ```OK```.
+3. Click ```Upload File``` and select the offline [logstash-input-mongo_atlas_input.zip](https://github.com/IBM/universal-connectors/releases/download/main_dev/logstash-input-mongo_atlas_input.zip) plug-in. After it is uploaded, click ```OK```.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the ```Connector name``` field.
 6. Update the input section to add the details from the [input-mongo-atlas.conf](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-mongo-atlas/input-mongo-atlas.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.

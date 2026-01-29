@@ -6,7 +6,9 @@
 * Environment: Trino DB
 * Supported inputs: http (pull)
 * Supported Guardium versions:
-    * Guardium Data Protection 11.4 and above
+   * Guardium Data Protection 12.0 patch 5005 and above
+   * Guardium Data Protection 12.1 patch 5005 and above
+   * Guardium Data Protection 12.2 and above
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in
 IBM Security Guardium. It parses events and messages from the Trino audit log into a Guardium Record.
@@ -77,7 +79,7 @@ enforcements.
 * Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default
 * Download
-  the [logstash-filter-trino_guardium_filter](./logstash-filter-trino_guardium_filter.zip)
+  the [logstash-filter-trino_guardium_filter](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-trino_guardium_filter.zip)
   plug-in.
 * Verify that the http input plugin is available on the GDP system. 
 
@@ -86,7 +88,7 @@ enforcements.
 1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
 2. Enable the universal connector if it is disabled.
 3. Click ```Upload File``` and select the
-   offline  [logstash-filter-trino_guardium_filter](./logstash-filter-trino_guardium_filter.zip)
+   offline  [logstash-filter-trino_guardium_filter](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-trino_guardium_filter.zip)
    plug-in. After it is uploaded, click ```OK```.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
