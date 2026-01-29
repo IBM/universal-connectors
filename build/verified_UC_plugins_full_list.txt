@@ -17,12 +17,14 @@ filter-plugin/logstash-filter-couchdb-guardium/CouchdbOverFilebeatPackage;logsta
 filter-plugin/logstash-filter-hdfs-guardium/HdfsOverFilebeatPackage;logstash-filter-hdfs_guardium_filter.zip
 filter-plugin/logstash-filter-mariadb-guardium/MariaDBOverFilebeatPackage;logstash-filter-mariadb_guardium_filter.zip
 filter-plugin/logstash-filter-mongodb-guardium/MongodbOverFilebeatPackage;logstash-filter-mongodb_guardium_filter.zip
+filter-plugin/logstash-filter-milvus-guardium/MilvusOverFilebeatPackage;logstash-filter-milvus_guardium_filter.zip
 filter-plugin/logstash-filter-mysql-guardium/MysqlOverFilebeatPackage;logstash-filter-mysql_filter_guardium.zip
 filter-plugin/logstash-filter-mysql-percona-guardium/MysqlPerconaOverFilebeatPackage;logstash-filter-mysql_percona_filter.zip
 filter-plugin/logstash-filter-neo4j-guardium/NeodbOverFilebeatPackage;logstash-filter-neodb_guardium_filter.zip
 filter-plugin/logstash-filter-onPremGreenplumdb-guardium/GreenplumdbOverFilebeatPackage;logstash-filter-greenplumdb_guardium_filter.zip
 filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresOverFilebeatPackage;
 filter-plugin/logstash-filter-saphana-guardium/SaphanaOverFilebeatPackage;logstash-filter-saphana_guardium_plugin_filter.zip
+filter-plugin/logstash-filter-singlestore-guardium/SingleStoreOverFilebeatPackage;logstash-filter-singlestoredb_guardium_filter.zip
 filter-plugin/logstash-filter-yugabyte-guardium/YugabytedbOverFilebeatPackage;logstash-filter-yugabytedb_guardium_filter.zip
 #JDBC plug-ins
 filter-plugin/logstash-filter-snowflake-guardium/SnowflakeOverJbdcPackage;
@@ -32,6 +34,7 @@ filter-plugin/logstash-filter-mssql-guardium/MssqlOnPremOverJdbcPackage;
 filter-plugin/logstash-filter-saphana-guardium/SaphanaOverJdbcPackage;logstash-filter-saphana_guardium_plugin_filter.zip
 filter-plugin/logstash-filter-intersystems-iris-guardium/gi-filter-intersystems-iris-package;gi-filter-intersystems-iris-package.zip
 #GCP plug-ins
+filter-plugin/logstash-filter-alloydb-guardium/AlloyDBoverPubSubPackage;logstash-filter-alloydb_guardium_filter.zip
 filter-plugin/logstash-filter-pubsub-apachesolr-guardium/PubSubApacheSolrPackage;logstash-filter-apache_solr_gcp_connector.zip
 filter-plugin/logstash-filter-pubsub-bigquery-guardium/BigQueryOverPubSubPackage;logstash-filter-big_query_guardium_filter.zip
 filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium/PubSubFirebasePackage;logstash-filter-fire_base_guardium_filter.zip
@@ -59,6 +62,7 @@ input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage
 input-plugin/logstash-input-jdbc/JdbcInputPackage;
 input-plugin/logstash-input-mongo-atlas/InputMongoAtlasPackage;logstash-input-mongo_atlas_input.zip
 input-plugin/logstash-input-sqs/SQSInputPackage;
+input-plugin/logstash-input-s3sqs/InputS3SQSPackage;
 input-plugin/logstash-input-tcp-syslog/TCPInputPackage;
 input-plugin/logstash-input-google-pubsub/GooglePubSubPackage;
 input-plugin/logstash-input-google-pubsub/gi-pubsub-package;

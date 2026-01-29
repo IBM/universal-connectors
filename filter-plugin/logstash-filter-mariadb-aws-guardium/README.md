@@ -63,6 +63,7 @@ To add `MARIADB_AUDIT_PLUGIN` which will enable Server Audit Logs.
    - Select the created Option groups and then click **Add options**.
    - Set the **option name** to MARIADB_AUDIT_PLUGIN, and then keep option setting parameters with the default values
    - Change the `SERVER_AUDIT_EXCL_USERS` value to rdsadmin
+   - Set the value for `SERVER_AUDIT_EVENTS` to `QUERY, CONNECT` in order to see query and connection logs.
    - To enable the option immediately, choose **Yes** for **Apply Immediately**. (By default, **No** is selected instead.) Keep this default selection if you want the option enabled for each associated database instance during its next maintenance window.
    - Click **Add option**.
 
@@ -147,7 +148,8 @@ The Guardium universal connector is the Guardium entry point for native audit lo
      - Client HostName : Not available with audit logs when we connect to the MariaDB instance through SQL standard and third party tools.
 	 - serverIP : This field is populated with 0.0.0.0, as this information is not embedded in the messages pulled from AWS Cloudwatch.
      - clientPort and serverPort : Not available with audit logs
- - For system generated LOGIN_FAILED logs, the Dbuser value not available,so we set it as "NA".
+ - For system generated LOGIN_FAILED logs, the Dbuser value not available,so we set it as "N.A.".
+ - Large SQL statements are truncated by AWS by default which can cause a GuardUCInvalidRecordException as the event is no longer valid.
  
 ## 7. Configuring the AWS MariaDB Guardium Logstash filters in Guardium Data Security Center
 

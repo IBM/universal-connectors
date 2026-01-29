@@ -6,7 +6,7 @@ package com.ibm.guardium.dynamodb;
 
 public interface Constants {
 	
-	public static final String NOT_AVAILABLE = "NA";
+	public static final String NOT_AVAILABLE = "N.A.";
 	public static final String DATA_PROTOCOL_STRING = "AMAZON DYNAMODB";
 	public static final String UNKNOWN_STRING = "";
 	public static final String SERVER_TYPE_STRING = "DYNAMODB";

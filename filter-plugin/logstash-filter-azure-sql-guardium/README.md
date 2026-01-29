@@ -51,6 +51,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
    g. Then, click on ```Save``` Button.
 
+**Note:** Since auditing configuration differs between Azure SQL Database and Azure SQL Managed Instance, please follow the given link to [enable auditing for Azure SQL Managed Instance](https://learn.microsoft.com/en-us/azure/azure-sql/managed-instance/auditing-configure?view=azuresql)
 
 ## Connecting to AzureSQL Database
 
@@ -106,7 +107,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • AzureSQL-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-azuresql_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-azure-sql-guardium/AzureSQLOverJdbcPackage/AzureSQL/logstash-filter-azuresql_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 • Download the mssql-jdbc-7.4.1.jre8 from [here](https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/7.4.1.jre8/mssql-jdbc-7.4.1.jre8.jar)
 
@@ -114,7 +115,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
 2. Enable the universal connector if it is disabled.
-3. Click ```Upload File``` and select the offline [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-azuresql_guardium_plugin_filter.zip) This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+3. Click ```Upload File``` and select the offline [Azure-SQL-Offline-Package.zip](https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-azure-sql-guardium/AzureSQLOverJdbcPackage/AzureSQL/logstash-filter-azuresql_guardium_filter.zip) This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
    a. Again click ```Upload File``` and select the offline mssql-jdbc-7.4.1.jre8 file. After it is uploaded, click ```OK```.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the ```Connector name``` field.

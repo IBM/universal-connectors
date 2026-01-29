@@ -91,7 +91,7 @@ public class Parser {
 
     /**
      * Method to get queryStatement from JsonObject
-     * 
+     *
      * @param properties
      * @return
      */
@@ -164,6 +164,24 @@ public class Parser {
             }
         }
         return subId;
+    }
+
+    /**
+     * Method to get InstanceName from the JsonObject
+     *
+     * @param records
+     * @return
+     */
+    private static String getInstanceName(JsonObject records) {
+        String instanceName = Constants.UNKNOWN_STRING;
+        if (records.has(Constants.RESOURCEID)) {
+            instanceName = records.get(Constants.RESOURCEID).getAsString();
+            if (instanceName.contains("/")) {
+                String[] stringArr =instanceName.split("/");
+                instanceName = stringArr[stringArr.length-1];
+            }
+        }
+        return instanceName;
     }
 
     /**
@@ -261,7 +279,7 @@ public class Parser {
 
     /**
      * Method to get queryStatement from JsonObject
-     * 
+     *
      * @param commandText
      * @return
      */
@@ -347,11 +365,10 @@ public class Parser {
             clientHostName = properties.get(Constants.SOURCE_IP).getAsString();
         }
         accessor.setClientHostName(clientHostName);
-
         accessor.setServerHostName(
                 !subId.isEmpty() && !accountId.isEmpty()
-                        ? subId.concat("-").concat(accountId).concat("azuredatabricks.net")
-                        : "databricks.net");
+                        ? subId+":"+getInstanceName(record)
+                        : Constants.UNKNOWN_STRING);
 
         // Set database user
 
@@ -369,7 +386,7 @@ public class Parser {
 
         // Set source program (user agent)
         accessor.setSourceProgram(properties.has(Constants.USER_AGENT)
-                ? properties.get(Constants.USER_AGENT).toString()
+                ? (properties.get(Constants.USER_AGENT).toString().isEmpty()||properties.get(Constants.USER_AGENT).toString().contains("\"")?Constants.UNKNOWN_STRING:properties.get(Constants.USER_AGENT).toString())
                 : Constants.UNKNOWN_STRING);
 
         // Set server description
