@@ -8,7 +8,7 @@ package com.ibm.guardium.singlestore;
 public class Constants {
 
     public static final String UNKNOWN_STRING = "";
-    public static final String DB_PROTOCOL = "Singlestore Native Audit";
+    public static final String DB_PROTOCOL = "SinglestoreDB";
     public static final String NOT_AVAILABLE = "N.A.";
     public static final String SERVER_TYPE_STRING = "SINGLESTORE";
     public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_SingleStore_guardium_json_parse_error";
