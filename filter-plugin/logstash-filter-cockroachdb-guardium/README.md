@@ -108,7 +108,7 @@ versions of the Linux distributions.
 
    # Monitor CockroachDB schema logs
    input(type="imfile"
-         File="/var/lib/cockroach/logs/cockroach-sql-schema.log"
+         File="/path/to/logs/directory/cockroach-sql-schema.log"
          Tag="cockroach-schema"
          Ruleset="imfile_to_gdp")
    ```
@@ -138,7 +138,7 @@ versions of the Linux distributions.
 
    # Monitor CockroachDB schema logs
    input(type="imfile"
-         File="/var/lib/cockroach/logs/cockroach-sql-schema.log"
+         File="/path/to/logs/directory/cockroach-sql-schema.log"
          Tag="cockroach-schema"
          Ruleset="imfile_to_gdp")
    ```
