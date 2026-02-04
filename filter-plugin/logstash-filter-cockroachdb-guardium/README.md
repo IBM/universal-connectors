@@ -82,8 +82,8 @@ versions of the Linux distributions.
    ```
    global(
    DefaultNetstreamDriverCAFile="/path/to/certs/ca.pem"
-   DefaultNetstreamDriverCertFile="/path/to/certs/tls-client-cert.crt"
-   DefaultNetstreamDriverKeyFile="/path/to/certs/tls-client-key.key"
+   # DefaultNetstreamDriverCertFile="/path/to/certs/tls-client-cert.crt"
+   # DefaultNetstreamDriverKeyFile="/path/to/certs/tls-client-key.key"
    )
 
    module(load="imfile")
