@@ -13,7 +13,7 @@ Kafka-connect is a framework for streaming data between Apache Kafka and other s
 ## Before you begin
 
 Download
-the [Snowflake JDBC driver](https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.13.30/snowflake-jdbc-3.13.30.jar).
+the [Snowflake JDBC driver](https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.13.30/snowflake-jdbc-3.13.30.jar). Download the jdbc driver `jar` file from the maven repository 3.13.30 from [here](https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.13.30/snowflake-jdbc-3.13.30.jar), 3.16.0 from [here](https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.16.0/snowflake-jdbc-3.16.0.jar) .
 
 ## Configuring the Snowflake database
 
@@ -91,7 +91,7 @@ You can create a new datasource profile from the **Datasource Profile Management
 ## Configuring the key pair authentication.
 
 You can authenticate to the database by using key pair authentication instead of password authentication. For more
-information about setting up key pair authentication, see [KeyPairAuth_README](KeyPairAuth_README.md).
+information about setting up key pair authentication, see [KeyPairAuth_README](../../filter-plugin/logstash-filter-snowflake-guardium/KeyPairAuth_README.md).
 
 ## (Optional) Configuring the proxy
 
