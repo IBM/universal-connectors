@@ -78,9 +78,13 @@ versions of the Linux distributions.
 5. This configuration reads the logs from the CockroachDB log directory path and sends
    the syslog messages to the provided host `TARGET_HOST` at the provided port `TARGET_PORT`. Add the following configuration:
 
-   **For TLS connection (recommended):**
+   **For TLS connection:**
    ```
-   global(DefaultNetstreamDriverCAFile="/path/to/ca_file/ca.pem")
+   global(
+   DefaultNetstreamDriverCAFile="/path/to/certs/ca.pem"
+   # DefaultNetstreamDriverCertFile="/path/to/certs/tls-client-cert.crt"
+   # DefaultNetstreamDriverKeyFile="/path/to/certs/tls-client-key.key"
+   )
 
    module(load="imfile")
    ruleset(name="imfile_to_gdp") {

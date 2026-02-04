@@ -36,8 +36,6 @@ Use the following command to retrieve the log files that are stored in the audit
    SHOW GLOBAL VARIABLES LIKE 'audit%';
    ```
 
-**Note:** If you are using docker deployment, the logs directory (i.e. /var/lib/memsql) must be present outside the container.
-
 ## 3. Configuring Filebeat to push logs to Guardium  
 1.	To install Filebeat on your system, refer to the [Filebeat quick start: installation and configuration](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#installation) topic.
 
