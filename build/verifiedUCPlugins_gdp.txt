@@ -41,6 +41,7 @@ filter-plugin/logstash-filter-pubsub-postgresql-guardium/PubSubPostgreSQLPackage
 filter-plugin/logstash-filter-pubsub-bigtable-guardium/gdp-pubsub-bigtable-package
 filter-plugin/logstash-filter-alloydb-guardium/AlloyDBoverPubSubPackage
 #Syslog plug-ins
+filter-plugin/logstash-filter-cockroachdb-guardium/CockroachDBOverSyslogPackage
 filter-plugin/logstash-filter-mongodb-guardium/MongoDBOverSyslogPackage
 filter-plugin/logstash-filter-mysql-guardium/MySQLOverSyslogPackage
 #Other
