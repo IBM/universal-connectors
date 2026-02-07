@@ -50,6 +50,7 @@ filter-plugin/logstash-filter-pubsub-bigquery-guardium/gi-pubsub-bigquery-packag
 filter-plugin/logstash-filter-pubsub-apachesolr-guardium/gi-pubsub-apachsolr-package;logstash-filter-apache_solr_gcp_connector.zip
 filter-plugin/logstash-filter-pubsub-bigtable-guardium/gi-pubsub-bigtable-package;logstash-filter-big_table_guardium_filter.zip
 #Syslog plug-ins
+filter-plugin/logstash-filter-cockroachdb-guardium/CockroachDBOverSyslogPackage;logstash-filter-cockroachdb_guardium_filter.zip
 filter-plugin/logstash-filter-onPremPostgres-guardium/PostgresOverSyslogPackage;
 filter-plugin/logstash-filter-yugabyte-guardium/YugabyteOverSyslogPackage;
 #Other
