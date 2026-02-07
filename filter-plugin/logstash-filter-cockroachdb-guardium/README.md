@@ -89,7 +89,7 @@ versions of the Linux distributions.
            StreamDriver="gtls"
            StreamDriverMode="1"
            StreamDriverAuthMode="x509/certvalid"
-           template="UcMessageFormat"
+           template="RSYSLOG_SyslogProtocol23Format"
            target="<TARGET_HOST>"
            port="<TARGET_PORT>")
    }
@@ -188,18 +188,12 @@ versions of the Linux distributions.
     - `pg_catalog.*`
     - `information_schema.*`
     - System tables: `system.jobs`, `system.lease`, `system.sql_instances`, `system.job_info`, `system.statement_statistics`, `system.transaction_statistics`, `system.job_progress_history`, `system.reports_meta`
-- The following fields are not found in CockroachDB audit logs: 
-  - Database Name
-  - Service Name
-  - Client Host Name
-  - Server Port and Server IP - it is set to default value `0.0.0.0`
-  - Source Program (might be missing in some audit logs)
-- The following fields are not available for failed logins: 
-  - Server Port and Server IP
-  - Service Name
-  - Source Program
-  - Database Name
-  - Client Host Name
+- The following fields are not found in CockroachDB audit logs (applies to queries and failed logins):
+    - Database Name
+    - Service Name
+    - Client Host Name
+    - Server Port and Server IP - it is set to default value `0.0.0.0`
+    - Source Program (might be missing in some audit logs)
 - For failed login attempts, CockroachDB returns different errors depending on the failure type:
   - When the username does not exist: `USER_NOT_FOUND` error
   - When the username exists but the password is incorrect: `PRE_HOOK_ERROR` error
