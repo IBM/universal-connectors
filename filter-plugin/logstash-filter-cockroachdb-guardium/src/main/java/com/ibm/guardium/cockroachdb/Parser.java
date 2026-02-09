@@ -194,7 +194,7 @@ public class Parser {
 
         exception.setExceptionTypeId(EXCEPTION_TYPE_SQL_ERROR_STRING);
         exception.setDescription(cleanExtraChars(description));
-        exception.setSqlString(UNKNOWN_STRING.equals(sqlString) ? NOT_AVAILABLE : sqlString);
+        exception.setSqlString(UNKNOWN_STRING.equals(sqlString) ? NOT_AVAILABLE : cleanExtraChars(sqlString));
 
         return exception;
     }
