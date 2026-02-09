@@ -34,8 +34,9 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 ## 2. Viewing the audit logs
 The audit logs are stored in files with the following naming patterns:
-- SQL query execution logs - `cockroachdb-sql-exec.cockroachdb.*.log`
-- Authentication logs (i.e., failed and successful logins) - `cockroachdb-sql-auth.cockroachdb.*.log`
+- SQL query execution logs - `cockroach-sql-exec.log`
+- Authentication logs (i.e., failed and successful logins) - `cockroach-sql-auth.log`
+- Schema logs - `cockroach-sql-schema.log`
 
 ## 3. Configuring Syslog to push logs to Guardium
 
@@ -82,8 +83,8 @@ versions of the Linux distributions.
    ```
    global(
    DefaultNetstreamDriverCAFile="/path/to/certs/ca.pem"
-   # DefaultNetstreamDriverCertFile="/path/to/certs/tls-client-cert.crt"
-   # DefaultNetstreamDriverKeyFile="/path/to/certs/tls-client-key.key"
+   # DefaultNetstreamDriverCertFile="/path/to/certs/tls.crt"
+   # DefaultNetstreamDriverKeyFile="/path/to/certs/tls.key"
    )
 
    module(load="imfile")
@@ -146,28 +147,6 @@ versions of the Linux distributions.
          Tag="cockroach-schema"
          Ruleset="imfile_to_gdp")
    ```
-
-    **For multiple managed units (Guardium collectors):**
-    ```
-    # Ruleset to forward to multiple managed units
-    ruleset(name="imfile_to_gdp") {
-        # Forward to first managed unit
-        action(type="omfwd"
-               TARGET="<TARGET_HOST_1>"
-               Port="<TARGET_PORT>"
-               Protocol="tcp"
-               Template="RSYSLOG_SyslogProtocol23Format")
-	    
-        # Forward to second managed unit
-        action(type="omfwd"
-               TARGET="<TARGET_HOST_2>"
-               Port="<TARGET_PORT>"
-               Protocol="tcp"
-               Template="RSYSLOG_SyslogProtocol23Format")
-	    
-        # Add more action blocks for additional managed units as needed
-    }
-    ```
 
 5. Restart Rsyslog service:
 	```bash
