@@ -160,6 +160,7 @@ versions of the Linux distributions.
 
 ## 4. Limitations
 - CockroachDB wraps query values in Unicode characters `‹` (U+2039) and `›` (U+203A) in audit logs (e.g., `UPDATE table SET id = ‹2› WHERE id > ‹1›`). The plugin automatically removes these characters to restore the original query format.
+- CockroachDB automatically logs `SHOW database` queries and are sent to Guardium.
 - The plugin automatically filters out the following system-generated queries and are not sent to Guardium:
   - Internal execution queries (`intExec=`)
   - Automatic job queries (`job=AUTO`)
