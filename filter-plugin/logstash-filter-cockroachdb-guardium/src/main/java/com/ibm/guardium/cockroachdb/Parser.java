@@ -108,9 +108,20 @@ public class Parser {
 
         accessor.setServerOs(UNKNOWN_STRING);
         accessor.setServerDescription(UNKNOWN_STRING);
-        accessor.setServerHostName(data.has(SERVER_HOSTNAME) && !data.get(SERVER_HOSTNAME).isJsonNull()
-                ? data.get(SERVER_HOSTNAME).getAsString()
-                : UNKNOWN_STRING);
+
+        // Set server hostname - only if ServerHost is NOT an IP address
+        // If it's an IP, set to N.A. since we don't have the actual hostname
+        String serverHostName = NOT_AVAILABLE;
+        if (data.has(SERVER_HOST) && !data.get(SERVER_HOST).isJsonNull()) {
+            String serverHost = data.get(SERVER_HOST).getAsString();
+            // Only set as hostname if it's NOT a valid IP address
+            if (!inetAddressValidator.isValid(serverHost)) {
+                serverHostName = serverHost;
+            }
+            // else: it's an IP, keep serverHostName as NOT_AVAILABLE
+        }
+
+        accessor.setServerHostName(serverHostName);
         accessor.setClientHostName(UNKNOWN_STRING);
         accessor.setClient_mac(UNKNOWN_STRING);
         accessor.setClientOs(UNKNOWN_STRING);
@@ -138,7 +149,18 @@ public class Parser {
         sessionLocator.setClientPort(data.has(CLIENT_PORT) && !data.get(CLIENT_PORT).isJsonNull()
                 ? Integer.parseInt(data.get(CLIENT_PORT).getAsString())
                 : DEFAULT_PORT);
-        sessionLocator.setServerIp(DEFAULT_IP);
+
+        // Set server IP only if ServerHost field contains a valid IP address
+        String serverIp = DEFAULT_IP;
+        if (data.has(SERVER_HOST) && !data.get(SERVER_HOST).isJsonNull()) {
+            String serverHost = data.get(SERVER_HOST).getAsString();
+            // Only set as IP if it's a valid IP address
+            if (inetAddressValidator.isValid(serverHost)) {
+                serverIp = serverHost;
+            }
+        }
+        sessionLocator.setServerIp(serverIp);
+
         sessionLocator.setServerPort(DEFAULT_PORT);
         sessionLocator.setClientIpv6(DEFAULT_IPV6);
         sessionLocator.setServerIpv6(DEFAULT_IPV6);
@@ -194,7 +216,7 @@ public class Parser {
 
         exception.setExceptionTypeId(EXCEPTION_TYPE_SQL_ERROR_STRING);
         exception.setDescription(cleanExtraChars(description));
-        exception.setSqlString(UNKNOWN_STRING.equals(sqlString) ? NOT_AVAILABLE : sqlString);
+        exception.setSqlString(UNKNOWN_STRING.equals(sqlString) ? NOT_AVAILABLE : cleanExtraChars(sqlString));
 
         return exception;
     }
@@ -237,21 +259,21 @@ public class Parser {
         // Check if TableName exists at the top level
         if (data.has(TABLE_NAME) && !data.get(TABLE_NAME).isJsonNull()) {
             String tableName = data.get(TABLE_NAME).getAsString();
-            
+
             if (tableName == null || tableName.isEmpty()) {
                 return NOT_AVAILABLE;
             }
-            
+
             // Clean any special characters first
             tableName = cleanExtraChars(tableName);
-            
+
             // Split by dot and take the first part as database name
             String[] parts = tableName.split("\\.");
             if (parts.length > 0 && !parts[0].isEmpty()) {
                 return parts[0];
             }
         }
-        
+
         return NOT_AVAILABLE;
     }
 
