@@ -33,7 +33,7 @@ public class Constants {
     static final String DATABASE_NAME = "DatabaseName";
     static final String CLIENT_IP = "ClientIP";
     static final String CLIENT_PORT = "ClientPort";
-    static final String SERVER_HOSTNAME = "ServerHostname";
+    static final String SERVER_HOST = "ServerHost";
     static final String EVENT_TYPE = "EventType";
     static final String REASON = "Reason";
     static final String TABLE_NAME = "TableName";
