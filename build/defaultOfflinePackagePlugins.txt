@@ -13,6 +13,7 @@ filter-plugin/logstash-filter-cassandra-guardium/logstash-filter-cassandra_guard
 filter-plugin/logstash-filter-aurora-mysql-guardium/logstash-filter-auroramysqlguardiumpluginfilter
 filter-plugin/logstash-filter-dynamodb-guardium/logstash-filter-dynamodb_guardium_plugin_filter
 filter-plugin/logstash-filter-neptune-aws-guardium/logstash-filter-neptune_guardium_filter
+filter-plugin/logstash-filter-cockroachdb-guardium/logstash-filter-cockroachdb_guardium_filter
 filter-plugin/logstash-filter-couchbasedb-guardium/logstash-filter-couchbasedb_guardium_plugin_filter
 filter-plugin/logstash-filter-couchdb-guardium/logstash-filter-couchdb_guardium_filter
 filter-plugin/logstash-filter-mariadb-guardium/logstash-filter-mariadb_guardium_filter
