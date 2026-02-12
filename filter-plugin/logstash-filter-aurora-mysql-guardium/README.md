@@ -68,6 +68,7 @@ By default, each database instance has an associated log group with a name in th
 	• The aurora-mysql plug-in does not support IPV6.
 	• The aurora-mysql auditing does not audit Procedure, Function, and Show tables operations.
 	• The source program will be seen as blank in the report.
+	• Syntactically incorrect queries are not captured in audit logs.
 
 ## 4. Configuring the aurora-mysql filters in Guardium
 
