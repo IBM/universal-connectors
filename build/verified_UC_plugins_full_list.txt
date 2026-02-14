@@ -7,6 +7,7 @@ filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBOverCloudWatchPackage;
 filter-plugin/logstash-filter-mysql-aws-guardium/MysqlOverCloudwatchLogsPackage;
 filter-plugin/logstash-filter-neptune-aws-guardium/NeptuneOverCloudWatchPackage;logstash-filter-neptune_guardium_filter.zip
 filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage;
+filter-plugin/logstash-filter-postgres-guardium/PostgresOverS3SQSPackage;logstash-filter-s3sqs_postgresql_guardium_plugin_filter.zip
 filter-plugin/logstash-filter-s3-guardium/S3OverCloudwatchLogsPackage;logstash-filter-logstash_filter_s3_guardium.zip
 filter-plugin/logstash-filter-s3-guardium/S3OverSQSPackage;logstash-filter-logstash_filter_s3_guardium.zip
 #Filebeat plug-ins
