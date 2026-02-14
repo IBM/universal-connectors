@@ -169,7 +169,7 @@ By default, each database instance has an associated log group with a name in th
 You can export PostgreSQL or Aurora PostgreSQL audit logs to an S3 bucket using the following methods:
 
 1. **Using Extensions (`log_fdw`, `aws_s3`, and `pg_cron`)**  
-   Refer to the [PostgresExtLogsExport](../PostgresOverS3SQS/PostgresExtLogsExport.md) guide for detailed instructions.
+   Refer to the [PostgresExtLogsExport](../ogstash-filter-postgres-guardium/PostgresOverS3SQSPackage/PostgresExtLogsExport.md) guide for detailed instructions.
 
 ### Limitations:
 
