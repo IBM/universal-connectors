@@ -26,6 +26,7 @@ filter-plugin/logstash-filter-neo4j-guardium/logstash-filter-neodb_guardium_filt
 filter-plugin/logstash-filter-snowflake-guardium/logstash-filter-guardium_snowflake_filter
 filter-plugin/logstash-filter-yugabyte-guardium/logstash-filter-yugabytedb_guardium_filter
 filter-plugin/logstash-filter-teradatadb-guardium/logstash-filter-teradatadb_guardium_plugin_filter
+filter-plugin/logstash-filter-postgres-guardium/logstash-filter-postgres_guardium_filter
 filter-plugin/logstash-filter-pubsub-apachesolr-guardium/logstash-filter-apache_solr_gcp_connector
 filter-plugin/logstash-filter-pubsub-bigquery-guardium/logstash-filter-big_query_guardium_filter
 filter-plugin/logstash-filter-pubsub-bigtable-guardium/logstash-filter-big_table_guardium_filter
