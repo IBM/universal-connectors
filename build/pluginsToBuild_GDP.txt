@@ -34,6 +34,7 @@ filter-plugin/logstash-filter-pubsub-firebase-realtime-guardium
 filter-plugin/logstash-filter-pubsub-firestore-guardium
 filter-plugin/logstash-filter-pubsub-spanner-guardium
 filter-plugin/logstash-filter-intersystems-iris-guardium
+filter-plugin/logstash-filter-postgres-guardium
 filter-plugin/logstash-filter-postgres-ibmcloud-guardium
 filter-plugin/logstash-filter-mysql-azure-guardium
 filter-plugin/logstash-filter-scylldb-guardium
