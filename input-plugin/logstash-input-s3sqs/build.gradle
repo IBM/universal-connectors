@@ -20,8 +20,10 @@ pluginInfo.pluginClass     = "S3SQS"
 pluginInfo.pluginName      = "s3_sqs" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
-sourceCompatibility = 1.11
-targetCompatibility = 1.11
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
 
 buildscript {
     repositories {
