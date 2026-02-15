@@ -20,8 +20,10 @@ pluginInfo.pluginClass     = "S3SQS"
 pluginInfo.pluginName      = "s3_sqs" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
-sourceCompatibility = 1.11
-targetCompatibility = 1.11
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
 
 buildscript {
     repositories {
@@ -63,8 +65,6 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.2'
 
     implementation("org.apache.commons:commons-csv:1.14.0")
-    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
-
 
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "**/logstash-core*.jar")
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
