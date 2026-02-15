@@ -1,2 +1,2 @@
-input-plugin/logstash-input-s3sqs/logstash-input-s3_sqs_input
+input-plugin/logstash-input-s3sqs/logstash-input-s3_sqs
 
