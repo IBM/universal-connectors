@@ -2,7 +2,7 @@
 ### Meet Teradata
 
 * Tested versions: 16.2, 17.2 and 20.0
-* Environment: On-premises, VCE on Azure, VCL on AWS, VCL on Azure
+* Environment: On-premises, VCL on AWS and Azure, VCE on Azure, AWS and GCP.
 * Supported inputs: JDBC (pull)
 * Supported Guardium versions:
 	* Guardium Data Protection: 11.4 and later
