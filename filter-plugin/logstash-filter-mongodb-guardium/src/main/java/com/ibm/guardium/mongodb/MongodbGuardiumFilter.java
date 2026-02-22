@@ -80,10 +80,12 @@ public class MongodbGuardiumFilter implements Filter {
                 String messageString = e.getField("message").toString();
 
                 //Skip the event
-                if (messageString.contains("__system") || messageString.contains("\"c\":\"CONTROL\"")){
-                    e.tag(LOGSTASH_TAG_SKIP);
-                    skippedEvents.add(e);
-                    continue;
+                if (e.getField("uc_input_source_type")!=null && e.getField("uc_input_source_type") instanceof String && e.getField("uc_input_source_type").toString().equalsIgnoreCase("icd")) {
+                    if (messageString.contains("__system") || messageString.contains("\"c\":\"CONTROL\"")) {
+                        e.tag(LOGSTASH_TAG_SKIP);
+                        skippedEvents.add(e);
+                        continue;
+                    }
                 }
 
                 // finding "mongod:" to be general (syslog, filebeat); it's not [client] source program
