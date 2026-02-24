@@ -1,2 +1,2 @@
-input-plugin/logstash-input-s3sqs/logstash-input-s3_sqs
-
+filter-plugin/logstash-filter-mysql-aws-guardium/logstash-filter-mysql_guardium_plugin_filter
+filter-plugin/logstash-filter-postgres-guardium/logstash-filter-s3sqs_postgresql_guardium_plugin_filter
