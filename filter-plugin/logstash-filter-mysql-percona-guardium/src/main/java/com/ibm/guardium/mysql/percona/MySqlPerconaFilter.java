@@ -43,7 +43,7 @@ public class MySqlPerconaFilter implements Filter {
     public static final String LOGSTASH_TAG_MYSQL_IGNORE = "_mysqlguardium_ignore";
 
     private static final String MYSQL_AUDIT_START_SIGNAL = "percona-audit: ";
-    public static final String DATA_PROTOCOL_STRING = "MySQL Percona audit";
+    public static final String DATA_PROTOCOL_STRING = "MySQL Percona";
     public static final String UNKNOWN_STRING = "";
     public static final String SERVER_TYPE_STRING = "MySql";
 
