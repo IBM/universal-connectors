@@ -4,6 +4,7 @@ filter-plugin/logstash-filter-documentdb-aws-guardium/DocumentDBOverCloudwatchPa
 filter-plugin/logstash-filter-aurora-mysql-guardium/AuroraMysqlOverCloudwatchPackage;logstash-filter-auroramysqlguardiumpluginfilter.zip
 filter-plugin/logstash-filter-dynamodb-guardium/DynamodbOverCloudwatch/DynamodbOverCloudwatchPackage;logstash-filter-dynamodb_guardium_plugin_filter.zip
 filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBOverCloudWatchPackage;logstash-filter-mariadb_guardium_filter.zip
+filter-plugin/logstash-filter-mysql-aws-guardium/MySQLOverS3SQS;logstash-filter-mysql_guardium_plugin_filter.zip
 filter-plugin/logstash-filter-mysql-aws-guardium/MysqlOverCloudwatchLogsPackage;
 filter-plugin/logstash-filter-neptune-aws-guardium/NeptuneOverCloudWatchPackage;logstash-filter-neptune_guardium_filter.zip
 filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage;
