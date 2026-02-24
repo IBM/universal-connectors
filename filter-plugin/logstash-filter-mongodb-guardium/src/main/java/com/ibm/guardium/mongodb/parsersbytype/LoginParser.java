@@ -97,7 +97,7 @@ public class LoginParser extends BaseParser {
         String dbUser = getInitialUser(data).get("user").getAsString();
         accesor.setDbUser(dbUser);
         accesor.setServerType("MongoDB");
-        accesor.setDbProtocol("MongoDB native audit");
+        accesor.setDbProtocol("MongoDB");
 
         String serviceName = getInitialUser(data).get("db").getAsString();
         accesor.setServiceName(serviceName);

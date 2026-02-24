@@ -28,7 +28,7 @@ public class Parser {
     public static final String BUCKETNAME_PROPERTY = "bucketName";
     public static final String BUCKET_PROPERTY = "Bucket";
     public static final String S3_TYPE = "S3";
-    public static final String S3_PROTOCOL = "S3 native audit";
+    public static final String S3_PROTOCOL = "S3";
     private static final Gson   gson = new Gson();
 
 
