@@ -1,0 +1,175 @@
+import java.nio.file.Files
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
+
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'jacoco'
+apply plugin: 'org.barfuin.gradle.jacocolog'
+
+// Load Ruby plugin support
+apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
+
+// Plugin Info
+group                      = 'com.ibm.guardium.mysql'
+version                    = file("VERSION").text.trim()
+description                = "mysql-Guardium filter plugin"
+pluginInfo.licenses        = ['Apache-2.0']
+pluginInfo.longDescription = "This gem is a Logstash mysql filter plugin required to be installed as part of IBM Security Guardium, Guardium Universal Connector configuration. This gem is not a stand-alone program."
+pluginInfo.authors         = ['IBM']
+pluginInfo.email           = ['']
+pluginInfo.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
+pluginInfo.pluginType      = "filter"
+pluginInfo.pluginClass     = "MySQLGuardiumPluginFilter"
+pluginInfo.pluginName      = "mysql_guardium_plugin_filter"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// Code coverage
+def jacocoVersion = '0.8.4'
+def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
+if (minimumCoverageStr.endsWith("%")) {
+    minimumCoverageStr = minimumCoverageStr.substring(0, minimumCoverageStr.length() - 1)
+}
+def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
+
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath 'org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Runtime dependencies
+    implementation 'commons-validator:commons-validator:1.7'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+    implementation 'org.apache.commons:commons-text:1.10.0'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
+    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core*.jar")
+    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
+
+    // Test dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testImplementation 'org.mockito:mockito-core:5.12.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.0'
+    testImplementation 'org.jruby:jruby-complete:9.2.7.0'
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+        showStandardStreams = true
+    }
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "${jacocoVersion}"
+    reportsDir = file("$buildDir/reports/jacoco")
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled true
+        xml.enabled true
+        csv.enabled true
+        html.destination file("${buildDir}/reports/jacoco")
+        csv.destination file("${buildDir}/reports/jacoco/all.csv")
+    }
+    executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: ['**/*.exec'])
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [])
+        }))
+    }
+    doLast {
+        println "Code coverage report -> file://${buildDir}/reports/jacoco/index.html"
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = minimumCoverage
+            }
+        }
+    }
+    executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: ['**/*.exec'])
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [])
+        }))
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification, jacocoTestReport
+
+shadowJar {
+    classifier = null
+}
+
+// Custom Tasks
+tasks.register("vendor") {
+    dependsOn shadowJar
+    doLast {
+        String vendorPathPrefix = "vendor/jar-dependencies"
+        String projectGroupPath = project.group.replaceAll('\\.', '/')
+        File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
+        projectJarFile.mkdirs()
+        Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
+        validatePluginJar(projectJarFile, project.group)
+    }
+}
+
+tasks.register("generateRubySupportFiles") {
+    doLast {
+        generateRubySupportFilesForPlugin(project.description, project.group, version)
+    }
+}
+
+tasks.register("removeObsoleteJars") {
+    doLast {
+        new FileNameFinder().getFileNames(
+                projectDir.toString(),
+                "vendor/**/" + pluginInfo.pluginFullName() + "*.jar",
+                "vendor/**/" + pluginInfo.pluginFullName() + "-" + version + ".jar").each { f ->
+            delete f
+        }
+    }
+}
+
+tasks.register("gem") {
+    dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
+    doLast {
+        buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
+    }
+}
+
+clean {
+    delete "${projectDir}/Gemfile"
+    delete "${projectDir}/${pluginInfo.pluginFullName()}.gemspec"
+    delete "${projectDir}/lib/"
+    delete "${projectDir}/vendor/"
+    new FileNameFinder().getFileNames(projectDir.toString(), pluginInfo.pluginFullName() + "-*.*.*.gem").each {
+        delete it
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
