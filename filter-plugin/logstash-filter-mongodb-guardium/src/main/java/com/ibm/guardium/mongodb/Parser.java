@@ -27,7 +27,7 @@ public class Parser {
 
     private static Logger log = LogManager.getLogger(Parser.class);
 
-    public static final String DATA_PROTOCOL_STRING = "MongoDB native audit";
+    public static final String DATA_PROTOCOL_STRING = "MongoDB";
     public static final String UNKOWN_STRING = "";
     public static final String SERVER_TYPE_STRING = "MongoDB";
     private static final String MASK_STRING = "?";
