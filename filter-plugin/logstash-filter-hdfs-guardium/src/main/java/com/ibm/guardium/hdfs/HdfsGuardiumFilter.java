@@ -47,7 +47,7 @@ public class HdfsGuardiumFilter implements Filter {
     private String id;
 
 	public static final String HDFS_AUDIT_MARK_STRING = "FSNamesystem.audit";
-    public static final String DATA_PROTOCOL_STRING = "HDFS native audit";
+    public static final String DATA_PROTOCOL_STRING = "HDFS";
     public static final String UNKNOWN_STRING = "";
     public static final String SERVER_TYPE_STRING = "HDFS";
 	public static final String APP_NAME_STRING = "HADOOP CLIENT PROGRAM";
