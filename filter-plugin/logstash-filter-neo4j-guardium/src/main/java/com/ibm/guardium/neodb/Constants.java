@@ -9,7 +9,7 @@ public class Constants {
 
 	public static final String UNKNOWN_STRING = "";
 	public static final String NOT_AVAILABLE = "NA";
-	public static final String DATA_PROTOCOL_STRING = "Bolt database protocol";
+	public static final String DATA_PROTOCOL_STRING = "BoltDB";
 	public static final String SERVER_TYPE_STRING = "NEO4J";
 	public static final String COMM_PROTOCOL = "Neo4JApiCall";
 	public static final String LOGSTASH_TAG_SKIP_NOT_NEO = "_neoguardium_skip_not_neo";

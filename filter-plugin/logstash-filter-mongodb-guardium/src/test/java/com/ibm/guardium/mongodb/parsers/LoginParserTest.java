@@ -64,7 +64,7 @@ public class LoginParserTest {
         Assert.assertEquals(accessor.getDbUser(), dbUser);
         Assert.assertEquals(accessor.getServiceName(), dbName);
         Assert.assertEquals(accessor.getServerType(), "MongoDB");
-        Assert.assertEquals(accessor.getDbProtocol(), "MongoDB native audit");
+        Assert.assertEquals(accessor.getDbProtocol(), "MongoDB");
         Assert.assertEquals(accessor.getLanguage(), "FREE_TEXT");
         Assert.assertEquals(accessor.getDataType(), "CONSTRUCT");
 
