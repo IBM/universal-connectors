@@ -10,6 +10,7 @@ filter-plugin/logstash-filter-mysql-percona-guardium/logstash-filter-mysql_perco
 filter-plugin/logstash-filter-generic-guardium/logstash-filter-generic_guardium_filter
 filter-plugin/logstash-filter-saphana-guardium/logstash-filter-saphana_guardium_plugin_filter
 filter-plugin/logstash-filter-cassandra-guardium/logstash-filter-cassandra_guardium_plugin_filter
+filter-plugin/logstash-filter-mysql-aws-guardium/logstash-filter-mysql_guardium_plugin_filter
 filter-plugin/logstash-filter-aurora-mysql-guardium/logstash-filter-auroramysqlguardiumpluginfilter
 filter-plugin/logstash-filter-dynamodb-guardium/logstash-filter-dynamodb_guardium_plugin_filter
 filter-plugin/logstash-filter-neptune-aws-guardium/logstash-filter-neptune_guardium_filter
