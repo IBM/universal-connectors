@@ -144,7 +144,7 @@ public class ParserTest {
 			Parser parser = new Parser();
 	        final Accessor accessor = parser.parseAccessor(inputData);
 
-	        Assert.assertEquals("Bolt database protocol", accessor.getDbProtocol().toString().trim());
+	        Assert.assertEquals("BoltDB", accessor.getDbProtocol().toString().trim());
 	        Assert.assertEquals("NEO4J", accessor.getServerType().toString().trim());
 	        Assert.assertEquals("neo4j", accessor.getDbUser().toString().trim());
 	        Assert.assertEquals("FREE_TEXT", accessor.getLanguage().toString().trim());
