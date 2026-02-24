@@ -54,7 +54,7 @@ public class MySqlFilterGuardium implements Filter {
     private static final String DATA_TYPE_CONNECTION = "connection_data";
 
     private static final String MYSQL_AUDIT_START_SIGNAL = "mysql_audit_log: ";
-    public static final String DATA_PROTOCOL_STRING = "MySQL native audit";
+    public static final String DATA_PROTOCOL_STRING = "MySQL";
     public static final String UNKNOWN_STRING = "";
     public static final String SERVER_TYPE_STRING = "MySql";
     private static final String MASK_STRING = "?";
