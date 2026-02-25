@@ -16,7 +16,7 @@ import com.ibm.guardium.universalconnector.commons.structures.Time;
 
 public class Parser {
 
-	public static Record parseRecord(final Map<String, String> data) throws ParseException {
+	public Record parseRecord(final Map<String, String> data) throws ParseException {
 
 		Record record = new Record();
 
@@ -29,9 +29,9 @@ public class Parser {
 
 		record.setTime(new Time(Long.parseLong(data.get(Constants.TIMESTAMP)), 0, 0));
 
-		record.setSessionLocator(Parser.parseSessionLocator(data));
+		record.setSessionLocator(parseSessionLocator(data));
 
-		record.setAccessor(Parser.parseAccessor(data));
+		record.setAccessor(parseAccessor(data));
 
 		setExceptionOrDataPart(record, data);
 
@@ -39,7 +39,7 @@ public class Parser {
 
 	}
 
-	public static void setDbName(Record record, Map<String, String> data) {
+	public void setDbName(Record record, Map<String, String> data) {
 		if (data.containsKey(Constants.KEYSPACE)) {
 			record.setDbName(data.get(Constants.KEYSPACE));
 		} else {
@@ -48,7 +48,7 @@ public class Parser {
 	}
 
 	// Form Session Locator
-	public static SessionLocator parseSessionLocator(Map<String, String> data) {
+	public SessionLocator parseSessionLocator(Map<String, String> data) {
 		SessionLocator sessionLocator = new SessionLocator();
 
 		int clientPort = Constants.CLIENT_PORT_VALUE;
@@ -95,7 +95,7 @@ public class Parser {
 		return sessionLocator;
 	}
 
-	public static Accessor parseAccessor(Map<String, String> data) {
+	public Accessor parseAccessor(Map<String, String> data) {
 		Accessor accessor = new Accessor();
 		accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
 		accessor.setDbUser(data.get(Constants.USER));
@@ -117,7 +117,7 @@ public class Parser {
 		return accessor;
 	}
 
-	public static void setExceptionOrDataPart(final Record record, Map<String, String> data) {
+	public void setExceptionOrDataPart(final Record record, Map<String, String> data) {
 		String operation = data.get(Constants.OPERATION);
 		if (data.get(Constants.CATEGORY).equals(Constants.AUTH)) {
 			if (data.get(Constants.TYPE).equals(Constants.LOGIN_SUCCESS)) {
@@ -142,7 +142,7 @@ public class Parser {
 		}
 	}
 
-	static void setException(Record record, String[] error, ExceptionRecord exceptionRecord) {
+	void setException(Record record, String[] error, ExceptionRecord exceptionRecord) {
 		if (error.length >= 2) {
 			exceptionRecord.setDescription(error[1]);
 			exceptionRecord.setSqlString(error[0]);
@@ -156,7 +156,7 @@ public class Parser {
 		record.setException(exceptionRecord);
 	}
 
-	static void setData(Map<String, String> data, Record record) {
+	void setData(Map<String, String> data, Record record) {
 		Data outputData = new Data();
 		outputData.setOriginalSqlCommand(data.get(Constants.OPERATION));
 		record.setData(outputData);
