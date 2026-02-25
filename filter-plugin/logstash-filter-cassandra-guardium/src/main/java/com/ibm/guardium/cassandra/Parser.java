@@ -15,7 +15,6 @@ import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 
 public class Parser {
-	static ExceptionRecord exceptionRecord;
 
 	public static Record parseRecord(final Map<String, String> data) throws ParseException {
 
@@ -68,7 +67,6 @@ public class Parser {
 			if (validator.isValidInet4Address(clientIp)) {
 				sessionLocator.setIpv6(false);
 				clientIpAdd = clientIp;
-				clientPort = Integer.parseInt(data.get(Constants.CLIENT_PORT));
 			} else if (validator.isValidInet6Address(clientIp)) {
 				sessionLocator.setIpv6(true);
 				clientIpv6Add = clientIp;
@@ -113,7 +111,8 @@ public class Parser {
 		accessor.setSourceProgram(Constants.UNKNOWN_STRING);
 		accessor.setClient_mac(Constants.UNKNOWN_STRING);
 		accessor.setServerDescription(Constants.UNKNOWN_STRING);
-		accessor.setServiceName(Constants.UNKNOWN_STRING);
+		accessor.setServiceName(
+				data.containsKey(Constants.KEYSPACE) ? data.get(Constants.KEYSPACE) : Constants.UNKNOWN_STRING);
 		accessor.setLanguage(Constants.CASS_LANGUAGE);
 		return accessor;
 	}
@@ -124,29 +123,36 @@ public class Parser {
 			if (data.get(Constants.TYPE).equals(Constants.LOGIN_SUCCESS)) {
 				setData(data, record);
 			} else {
-				exceptionRecord = new ExceptionRecord();
+				ExceptionRecord exceptionRecord = new ExceptionRecord();
 				String[] error = operation.split(Constants.OPERATION_SPLIT1);
 				exceptionRecord.setExceptionTypeId(Constants.LOGIN_FAILED);
-				setException(data, record, error);
+				setException(record, error, exceptionRecord);
 			}
 		} else if (data.get(Constants.CATEGORY).equals(Constants.ERROR)) {
-			exceptionRecord = new ExceptionRecord();
+			ExceptionRecord exceptionRecord = new ExceptionRecord();
 			String[] error = new String[2];
 			if(operation.contains(Constants.OPERATION_SPLIT2))
 				error = operation.split(Constants.OPERATION_SPLIT2);
 			else
 				error = operation.split(Constants.OPERATION_SPLIT1);
 			exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
-			setException(data, record, error);
+			setException(record, error, exceptionRecord);
 		} else {
 			setData(data, record);
 		}
 	}
 
-	static void setException(Map<String, String> data, Record record, String[] error) {
-
-		exceptionRecord.setDescription(error[1]);
-		exceptionRecord.setSqlString(error[0]);
+	static void setException(Record record, String[] error, ExceptionRecord exceptionRecord) {
+		if (error.length >= 2) {
+			exceptionRecord.setDescription(error[1]);
+			exceptionRecord.setSqlString(error[0]);
+		} else if (error.length == 1) {
+			exceptionRecord.setDescription(Constants.UNKNOWN_STRING);
+			exceptionRecord.setSqlString(error[0]);
+		} else {
+			exceptionRecord.setDescription(Constants.UNKNOWN_STRING);
+			exceptionRecord.setSqlString(Constants.UNKNOWN_STRING);
+		}
 		record.setException(exceptionRecord);
 	}
 
