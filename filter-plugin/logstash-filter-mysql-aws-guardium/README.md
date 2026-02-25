@@ -71,7 +71,7 @@ To add the MariaDB plug-in to a MySQL instance, follow the instructions describe
 * Currently, this plugin supports only audit logs and "Login Failed" error logs.
 * Guardium Data Protection requires installation of the [json_encode](https://www.elastic.co/guide/en/logstash-versioned-plugins/current/v3.0.3-plugins-filters-json_encode.html) filter plug-in.
 * The `use` statement does not display the account ID in the 'Database Name' column on the reports page.
-* The rds-mysql over CloudWatch plug-in does not classify SQL errors as error-level events in the database logs.
+* The RDS-MYSQL over CloudWatch plug-in does not classify SQL errors as error-level events in the database logs.
 ## Configuring the AWS MySQL Guardium Logstash filters in Guardium Data Security Center
 To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).
