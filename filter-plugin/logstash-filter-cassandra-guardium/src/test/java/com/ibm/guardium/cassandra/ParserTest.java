@@ -36,11 +36,13 @@ public class ParserTest {
 	@Test
 	public void testParseRecord() throws ParseException {
 
-		final Record record = Parser.parseRecord(intializeMap());
+		final Record record = parser.parseRecord(intializeMap());
 
 		Assert.assertEquals(Constants.TEXT, record.getAccessor().getDataType());
 		Assert.assertEquals(null, record.getException());
 		Assert.assertNotNull(record.getData());
+		Assert.assertEquals(record.getDbName(),record.getAccessor().getServiceName());
+		Assert.assertEquals(Constants.UNKNOWN_STRING, record.getSessionId());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -54,7 +56,7 @@ public class ParserTest {
 				"Select * from employee;; No keyspace has been specified. USE a keyspace, or explicitly specify keyspace.tablename");
 		intrimData.put("category", "ERROR");
 
-		final Record record = Parser.parseRecord(intrimData);
+		final Record record = parser.parseRecord(intrimData);
 
 		Assert.assertEquals(Constants.TEXT, record.getAccessor().getDataType());
 		Assert.assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
@@ -73,7 +75,7 @@ public class ParserTest {
 		intrimData.put("operation", "LOGIN SUCCESSFUL");
 		intrimData.put("category", "AUTH");
 
-		final Record record = Parser.parseRecord(intrimData);
+		final Record record = parser.parseRecord(intrimData);
 
 		Assert.assertEquals(Constants.TEXT, record.getAccessor().getDataType());
 		Assert.assertNull(record.getException());
@@ -93,7 +95,7 @@ public class ParserTest {
 				"CREATE USER test WITH PASSWORD *******; User test does not have sufficient privileges to perform the requested operation");
 		intrimData.put("category", "AUTH");
 
-		final Record record = Parser.parseRecord(intrimData);
+		final Record record = parser.parseRecord(intrimData);
 
 		Assert.assertEquals(Constants.TEXT, record.getAccessor().getDataType());
 		Assert.assertNotNull(record.getException());
