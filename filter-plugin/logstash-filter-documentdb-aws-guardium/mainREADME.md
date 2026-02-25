@@ -1,10 +1,10 @@
-# MariaDB Universal Connector
+# DocumentDB Universal Connector
 
-## Follow this link to set up and use MariaDB Universal Connector over CloudWatch Logstash Plugin
+## Follow this link to set up and use DocumentDB Universal Connector over CloudWatch Logstash Plugin
 
 [DocumentDBOverCloudwatch](./README.md)
 
-## Follow this link to set up and use MariaDB Universal Connector over CloudWatch Connect
+## Follow this link to set up and use DocumentDB Universal Connector over CloudWatch Connect
 
 [DocumentDBOverConnectCloudwatch](../../docs/KafkaBasedUCs/DocumentDBCloudwatchKafkaConnect.md)
 
