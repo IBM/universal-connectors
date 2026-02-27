@@ -150,6 +150,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
      - clientPort and serverPort : Not available with audit logs
  - For system generated LOGIN_FAILED logs, the Dbuser value not available,so we set it as "N.A.".
  - Large SQL statements are truncated by AWS by default which can cause a GuardUCInvalidRecordException as the event is no longer valid.
+ - Currently, S‑TAP registration is restricted to one primary MU, meaning the S‑TAP and its logs appear only on the initial primary MU even when multiple primary MUs are present.
  
 ## 7. Configuring the AWS MariaDB Guardium Logstash filters in Guardium Data Security Center
 
