@@ -32,6 +32,7 @@ public class Parser {
 		record.setSessionLocator(parseSessionLocator(data));
 
 		record.setAccessor(parseAccessor(data));
+		record.getAccessor().setServiceName(record.getDbName());
 
 		setExceptionOrDataPart(record, data);
 
