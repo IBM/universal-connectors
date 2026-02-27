@@ -15,9 +15,8 @@ import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 
 public class Parser {
-	static ExceptionRecord exceptionRecord;
 
-	public static Record parseRecord(final Map<String, String> data) throws ParseException {
+	public Record parseRecord(final Map<String, String> data) throws ParseException {
 
 		Record record = new Record();
 
@@ -30,9 +29,10 @@ public class Parser {
 
 		record.setTime(new Time(Long.parseLong(data.get(Constants.TIMESTAMP)), 0, 0));
 
-		record.setSessionLocator(Parser.parseSessionLocator(data));
+		record.setSessionLocator(parseSessionLocator(data));
 
-		record.setAccessor(Parser.parseAccessor(data));
+		record.setAccessor(parseAccessor(data));
+		record.getAccessor().setServiceName(record.getDbName());
 
 		setExceptionOrDataPart(record, data);
 
@@ -40,7 +40,7 @@ public class Parser {
 
 	}
 
-	public static void setDbName(Record record, Map<String, String> data) {
+	public void setDbName(Record record, Map<String, String> data) {
 		if (data.containsKey(Constants.KEYSPACE)) {
 			record.setDbName(data.get(Constants.KEYSPACE));
 		} else {
@@ -49,7 +49,7 @@ public class Parser {
 	}
 
 	// Form Session Locator
-	public static SessionLocator parseSessionLocator(Map<String, String> data) {
+	public SessionLocator parseSessionLocator(Map<String, String> data) {
 		SessionLocator sessionLocator = new SessionLocator();
 
 		int clientPort = Constants.CLIENT_PORT_VALUE;
@@ -68,7 +68,6 @@ public class Parser {
 			if (validator.isValidInet4Address(clientIp)) {
 				sessionLocator.setIpv6(false);
 				clientIpAdd = clientIp;
-				clientPort = Integer.parseInt(data.get(Constants.CLIENT_PORT));
 			} else if (validator.isValidInet6Address(clientIp)) {
 				sessionLocator.setIpv6(true);
 				clientIpv6Add = clientIp;
@@ -97,7 +96,7 @@ public class Parser {
 		return sessionLocator;
 	}
 
-	public static Accessor parseAccessor(Map<String, String> data) {
+	public Accessor parseAccessor(Map<String, String> data) {
 		Accessor accessor = new Accessor();
 		accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
 		accessor.setDbUser(data.get(Constants.USER));
@@ -113,44 +112,52 @@ public class Parser {
 		accessor.setSourceProgram(Constants.UNKNOWN_STRING);
 		accessor.setClient_mac(Constants.UNKNOWN_STRING);
 		accessor.setServerDescription(Constants.UNKNOWN_STRING);
-		accessor.setServiceName(Constants.UNKNOWN_STRING);
+		accessor.setServiceName(
+				data.containsKey(Constants.KEYSPACE) ? data.get(Constants.KEYSPACE) : Constants.UNKNOWN_STRING);
 		accessor.setLanguage(Constants.CASS_LANGUAGE);
 		return accessor;
 	}
 
-	public static void setExceptionOrDataPart(final Record record, Map<String, String> data) {
+	public void setExceptionOrDataPart(final Record record, Map<String, String> data) {
 		String operation = data.get(Constants.OPERATION);
 		if (data.get(Constants.CATEGORY).equals(Constants.AUTH)) {
 			if (data.get(Constants.TYPE).equals(Constants.LOGIN_SUCCESS)) {
 				setData(data, record);
 			} else {
-				exceptionRecord = new ExceptionRecord();
+				ExceptionRecord exceptionRecord = new ExceptionRecord();
 				String[] error = operation.split(Constants.OPERATION_SPLIT1);
 				exceptionRecord.setExceptionTypeId(Constants.LOGIN_FAILED);
-				setException(data, record, error);
+				setException(record, error, exceptionRecord);
 			}
 		} else if (data.get(Constants.CATEGORY).equals(Constants.ERROR)) {
-			exceptionRecord = new ExceptionRecord();
+			ExceptionRecord exceptionRecord = new ExceptionRecord();
 			String[] error = new String[2];
 			if(operation.contains(Constants.OPERATION_SPLIT2))
 				error = operation.split(Constants.OPERATION_SPLIT2);
 			else
 				error = operation.split(Constants.OPERATION_SPLIT1);
 			exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
-			setException(data, record, error);
+			setException(record, error, exceptionRecord);
 		} else {
 			setData(data, record);
 		}
 	}
 
-	static void setException(Map<String, String> data, Record record, String[] error) {
-
-		exceptionRecord.setDescription(error[1]);
-		exceptionRecord.setSqlString(error[0]);
+	void setException(Record record, String[] error, ExceptionRecord exceptionRecord) {
+		if (error.length >= 2) {
+			exceptionRecord.setDescription(error[1]);
+			exceptionRecord.setSqlString(error[0]);
+		} else if (error.length == 1) {
+			exceptionRecord.setDescription(Constants.UNKNOWN_STRING);
+			exceptionRecord.setSqlString(error[0]);
+		} else {
+			exceptionRecord.setDescription(Constants.UNKNOWN_STRING);
+			exceptionRecord.setSqlString(Constants.UNKNOWN_STRING);
+		}
 		record.setException(exceptionRecord);
 	}
 
-	static void setData(Map<String, String> data, Record record) {
+	void setData(Map<String, String> data, Record record) {
 		Data outputData = new Data();
 		outputData.setOriginalSqlCommand(data.get(Constants.OPERATION));
 		record.setData(outputData);
