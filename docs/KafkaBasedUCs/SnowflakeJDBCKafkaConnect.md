@@ -69,7 +69,7 @@ You can create a new datasource profile from the **Datasource Profile Management
 
    * To create a new profile manually, go to the **"Add Profile"** tab and provide values for the following fields.
       * **Name** and **Description**.
-      * Select a **Plug-in Type** from the dropdown. For example, **Spanner Over PubSub Kafka Connect 2.0**.
+      * Select a **Plug-in Type** from the dropdown. For example, **Snowflake Over JDBC Kafka Connect 2.0**.
 
    * To upload from CSV, go to the **Upload from CSV** tab and upload an exported or manually created CSV file
      containing one or more profiles. You can also choose from the following options:
