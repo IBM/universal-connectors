@@ -82,10 +82,10 @@ versions of the Linux distributions.
    **For TLS connection:**
    ```
    global(
-   DefaultNetstreamDriverCAFile="/path/to/certs/ca.pem"
-   # DefaultNetstreamDriverCertFile="/path/to/certs/tls.crt"
-   # DefaultNetstreamDriverKeyFile="/path/to/certs/tls.key"
-   )
+       DefaultNetstreamDriverCAFile="/path/to/certs/ca.pem"
+       # DefaultNetstreamDriverCertFile="/path/to/certs/tls.crt"
+       # DefaultNetstreamDriverKeyFile="/path/to/certs/tls.key"
+    )
 
    module(load="imfile")
    ruleset(name="imfile_to_gdp") {

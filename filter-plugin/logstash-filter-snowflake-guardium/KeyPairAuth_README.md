@@ -11,12 +11,12 @@ The following steps are required to enable Key Pair authentication.
 
 1. Generate a private key using the command,
     ```shell
-    openssl genrsa 2048 | openssl pkcs8 -topk8 -v2 des3 -inform PEM -out <file_name> -nocrypt 
+    openssl genrsa 2048 | openssl pkcs8 -topk8 -inform PEM -out <file_name> -nocrypt
     ```
    The key is created in PEM format.
 2. From the created private key, use the following command to generate a public key.
     ```shell
-    openssl rsa -in rsa_key.p8 -pubout -out <file_name> 
+    openssl rsa -in rsa_key.p8 -pubout -out <file_name>
     ```
    The public key is created in the PEM format.
 3. Now you need to assign the generated public key to the Snowflake user who is connecting to the database.
