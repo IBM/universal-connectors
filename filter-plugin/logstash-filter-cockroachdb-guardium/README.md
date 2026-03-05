@@ -1,4 +1,4 @@
-## CockroachDB-Guardium Logstash filter plug-in
+# CockroachDB-Guardium Logstash filter plug-in
 
 ### Meet CockroachDB
 * Tested versions: 25.4.1
