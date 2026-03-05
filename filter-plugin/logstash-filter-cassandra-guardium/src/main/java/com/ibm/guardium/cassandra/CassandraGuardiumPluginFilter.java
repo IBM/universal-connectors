@@ -45,12 +45,14 @@ public class CassandraGuardiumPluginFilter implements Filter {
 	}
 
 	private String id;
+	private Parser parser;
 	public static final PluginConfigSpec<String> SOURCE_CONFIG = PluginConfigSpec.stringSetting("source", "message");
 	private static Logger log = LogManager.getLogger(CassandraGuardiumPluginFilter.class);
 
 	public CassandraGuardiumPluginFilter(String id, Configuration config, Context context) {
 		// constructors should validate configuration options
 		this.id = id;
+		this.parser = new Parser();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -68,11 +70,11 @@ public class CassandraGuardiumPluginFilter implements Filter {
 					String[] secondary_input = intermediate_input[1].split(Constants.INPUT_SPLIT2);
 
 					for (String input_value : secondary_input) {
-						
+
 						String[] keyValue = input_value.split(Constants.INPUT_SPLIT3,Constants.limit);
 						dataMap.put(keyValue[0], keyValue[1]);
 					}
-					Record record = Parser.parseRecord(dataMap);
+					Record record = parser.parseRecord(dataMap);
 					final GsonBuilder builder = new GsonBuilder();
 					builder.serializeNulls();
 					final Gson gson = builder.create();
