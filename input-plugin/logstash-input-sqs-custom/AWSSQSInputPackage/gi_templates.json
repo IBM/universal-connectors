@@ -1,0 +1,11 @@
+{
+  "plugin_name": "AWS SQS custom input",
+  "help_link": "",
+  "input_name": "AWS SQS custom input",
+  "input_parameters": [
+  ],
+  "filter_name": "",
+  "filter_parameters": [],
+  "auth_parameters": [
+  ]
+}
