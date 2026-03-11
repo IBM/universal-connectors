@@ -50,4 +50,5 @@ input-plugin/logstash-input-couchbase-capella/logstash-input-couchbase_capella_i
 input-plugin/logstash-input-http/logstash-offline-input-http-plugins
 input-plugin/logstash-input-mongo-atlas/logstash-input-mongo_atlas_input
 input-plugin/logstash-input-s3sqs/logstash-input-s3_sqs
+input-plugin/logstash-input-sqs-custom/logstash-input-custom_sqs
 
