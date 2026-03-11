@@ -38,6 +38,7 @@ SQS is a simple, scalable queue system that is part of the Amazon Web Services s
 
 4. The "consumer" identity must have the following permissions on the queue:
 
+	```
 	sqs:ChangeMessageVisibility
 	
 	sqs:ChangeMessageVisibilityBatch
@@ -53,32 +54,32 @@ SQS is a simple, scalable queue system that is part of the Amazon Web Services s
 	sqs:ListQueues
 	
 	sqs:ReceiveMessage
+	```
 
 5. Create a user and apply the below IAM Policy  to the user.
 
-```
-	{
-      "Statement": [
-        {
-          "Action": [
-            "sqs:ChangeMessageVisibility",
-            "sqs:ChangeMessageVisibilityBatch",
-            "sqs:DeleteMessage",
-            "sqs:DeleteMessageBatch",
-            "sqs:GetQueueAttributes",
-            "sqs:GetQueueUrl",
-            "sqs:ListQueues",
-            "sqs:ReceiveMessage"
-          ],
-          "Effect": "Allow",
-          "Resource": [
-            "arn:aws:sqs:us-east-1:123456789012:Logstash"
-          ]
-        }
-      ]
-    }
-```
-
+   ```
+   {
+     "Statement": [
+       {
+         "Action": [
+           "sqs:ChangeMessageVisibility",
+           "sqs:ChangeMessageVisibilityBatch",
+           "sqs:DeleteMessage",
+           "sqs:DeleteMessageBatch",
+           "sqs:GetQueueAttributes",
+           "sqs:GetQueueUrl",
+           "sqs:ListQueues",
+           "sqs:ReceiveMessage"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+           "arn:aws:sqs:us-east-1:123456789012:Logstash"
+         ]
+       }
+     ]
+   }
+   ```
 
 ### b. Parameters:
 	
@@ -90,9 +91,6 @@ SQS is a simple, scalable queue system that is part of the Amazon Web Services s
 | queue | String | Yes |  |
 | region | String | No |  |
 | role_arn | string | No |  |
-
-
-
 
 #### `access_key_id`
 The `access_key_id` setting allows to set the access key ID for the user that has access to SQS. This plugin uses the AWS SDK and supports several ways to get credentials, which will be tried in this order:
@@ -161,4 +159,4 @@ store sync_timezone
 
    ``` systemctl restart guard-snif ```
    
-3. On the Guardium machine, go to **Setup > Tools and Views > Configure Universal Connector** page and restart the Universal Connector by disabling and then enabling it.
+3. On the Guardium machine, go to **Setup** > **Tools and Views** > **Configure Universal Connector** page and restart the Universal Connector by disabling and then enabling it.
