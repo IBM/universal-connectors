@@ -1,6 +1,6 @@
-# Configuring DocumentDB on AWS datasource profiles for Kafka Connect Plug-ins
+# Configuring DocumentDB on AWS datasource profiles for Kafka Connect plug-ins
 
-Create and configure datasource profiles through Central Manager for **DocumentDB over Cloudwatch Kafka Connect** plug-ins.
+Create and configure datasource profiles through Central Manager for DocumentDB over CloudWatch Kafka Connect plug-ins.
 
 ## Meet DocumentDB over Cloudwatch Kafka Connect
 
@@ -17,162 +17,160 @@ In the AWS web interface, configure the service for DocumentDB.
 
 ### Procedure
 
-1. Go to https://console.aws.amazon.com/.
-2. Click **Services** in the top left menu.
-3. Underneath **All services**, click on **Database**.
+1. Go to the [AWS Console](https://console.aws.amazon.com/).
+2. From the navigation menu, click **Services**.
+3. Click **All services** > **Database**.
 4. On the right panel, click **Amazon DocumentDB**.
-5. At the top right, click on the dropdown menu and select your region.
-6. Click the orange **Create** button.
-7. Enter a Cluster identifier.
-8. Scroll down and click **Create cluster**.
+5. From the dropdown menu, select your region.
+6. Click **Create**.
+7. Enter a cluster identifier. Then click **Create cluster**.
 
 ## Enabling Audit Logs
 
-There are different methods for auditing and logging. CloudTrail is used for this example as it supports all required parameters. The following events are supported for auditing in AWS.
+You can use different methods for auditing and logging. This example uses CloudTrail because it supports all required parameters. The following events are supported for auditing in AWS.
 
 ### Procedure
 
-1. From the AWS console, open the **Amazon DocumentDB** service
+1. From the AWS console, open the **Amazon DocumentDB** service.
 2. In the left navigation pane, click **Parameter groups**.
 3. Check which cluster parameter group is currently associated with the DocumentDB cluster.
-4. If the cluster is using the default parameter group, click Create (or Create parameter group) to create a custom cluster parameter group.
-5. For the new parameter group, choose the **family** version that matches the DocumentDB cluster (for example, docdb4.0 if the DocumentDB cluster is running 4.0.0).
+4. If the cluster uses the default parameter group, click **Create** (or **Create parameter group**) to create a custom cluster parameter group.
+5. For the new parameter group, select the family version that matches your DocumentDB cluster (for example, docdb4.0 for version 4.0.0)
 6. Enter a name and description for the parameter group, then click **Create**.
-7. Select the newly created parameter group and click Edit (or Edit parameters).
-8. In the search box, type **audit_logs** to locate the audit_logs parameter.
-9. Change the value of **audit_logs** from disabled to one of the following, depending on the requirements:
-10.    * **enabled** / **all**
-11.    * or other supported value to log only specific event types (for example, only DDL/DML).
-12. Save the changes to the parameter group.
-13. In the left navigation pane, click **Clusters**, then select the DocumentDB cluster.
-14. Click **Modify**.
-15. In the Cluster parameter group (or Additional configuration) section, choose the custom parameter group which just edited.
-16. Under Scheduling of modifications, select Apply immediately (or choose the appropriate maintenance window, if required).
-17. Review the changes and click **Modify** cluster to apply the new parameter group with audit logging enabled.
-18. After the cluster modification is complete, Amazon DocumentDB automatically creates a new CloudWatch Logs log group named:
-    * /aws/docdb/<cluster-identifier>/audit
+7. Select the newly created parameter group and click **Edit** (or **Edit parameters**).
+8. In the search box, enter `audit_logs` to locate the **audit_logs** parameter.
+9. Change the **audit_logs** field value from disabled to one of the following options.
+       * **enabled** / **all**: Logs all events
+       * Specific event type: Enter a supported value to log only certain events (for example, `DDL` or `DML`).
+10. Save the changes to the parameter group.
+11. In the left navigation pane, click **Clusters**, then select the DocumentDB cluster.
+12. Click **Modify**.
+13. In the Cluster parameter group or Additional configuration section, select the custom parameter group that you edited.
+14. Under the Scheduling of modifications section, select **Apply immediately** (or choose the appropriate maintenance window, if required).
+15. Review your changes. Then click **Modify cluster** to apply the new parameter group with audit logging enabled.
+16. After the cluster modification completes, Amazon DocumentDB automatically creates a CloudWatch Logs log group named: `/aws/docdb/<cluster-identifier>/audit`.
 
 ### Viewing DocumentDB log entries on CloudWatch
 
 By default, each CloudTrail trail has an associated log group with a name in the format specified during trail creation. You can use this log group, or you can create a new one and associate it with the trail.
 
 1. On the AWS Console page, open the **Services** menu.
-2. Enter `CloudWatch` in the search box.
-3. Click **CloudWatch** to redirect to the CloudWatch dashboard.
-4. In the left panel, select **Logs**.
+2. In the search box, enter `CloudWatch`.
+3. Click **CloudWatch** to open the CloudWatch dashboard.
+4. In the left panel, click **Logs**.
 5. Click **Log Groups**.
 
-## Exporting CloudWatch Logs to SQS Using Lambda Function (Optional)
+## Exporting CloudWatch Logs to SQS by using a Lambda function (Optional)
 
-To achieve load balancing of audit logs between different collectors, the audit logs can be exported from CloudWatch to SQS.
+To achieve load balancing of audit logs between different collectors, you can export the audit logs from CloudWatch to SQS.
 
-### Creating the SQS Queue
+### Creating the SQS queue
 
-1. Go to https://console.aws.amazon.com/.
+1. Go to the [AWS Console](https://console.aws.amazon.com/).
 2. Click **Services**.
-3. Search for SQS and click on **Simple Queue Services**.
+3. In the search box, enter `SQS` and click **Simple Queue Services**.
 4. Click **Create Queue**.
-5. Select the type as **Standard**.
-6. Enter the name for the queue.
-7. Keep the rest of the default settings.
+5. In the **Type** field, select **Standard**.
+6. Enter a name for the queue.
+7. Keep the default settings for the remaining fields.
 
-### Create Policy for the Relevant IAM User
+### Creating a policy for the IAM User
 
-1. For the IAM User using which the SQS logs are to be accessed in Guardium, complete the following steps.
-2. Go to https://console.aws.amazon.com/.
-3. Go to **IAM service** > **Policies** > **Create Policy**.
-4. Select **service as SQS**.
-5. Select the following checkboxes: **ListQueues**, **DeleteMessage**, **DeleteMessageBatch**, **GetQueueAttributes**, **GetQueueUrl**, **ReceiveMessage**, **ChangeMessageVisibility**, **ChangeMessageVisibilityBatch**.
-6. In the resources, specify the ARN of the queue created in the previous step.
-7. Click **Review policy** and specify the policy name.
-8. Click **Create policy**.
-9. Assign the policy to the user. </br>
-    a. Log in to the IAM console as IAM user (https://console.aws.amazon.com/iam/).  </br>
-    b. Go to **Users** on the console and select the relevant IAM user to whom you want to give permissions. </br>
-    c. In the **Permissions** tab, click **Add permissions**. </br>
-    d. Click **Attach existing policies directly**.</br> 
-    e. Search for the policy created and check the checkbox next to it.</br>
-    f. Click **Next: Review** > **Add permissions**.</br>
+Complete the following steps for the IAM user that will access the SQS logs in Guardium.
 
-## Creating the Lambda Function
+1. Go to [AWS Console](https://console.aws.amazon.com/).
+2. Go to **IAM service** > **Policies** > **Create Policy**.
+3. For the **Service** field, select **SQS**.
+4. Select the following checkboxes: **ListQueues**, **DeleteMessage**, **DeleteMessageBatch**, **GetQueueAttributes**, **GetQueueUrl**, **ReceiveMessage**, **ChangeMessageVisibility**, and **ChangeMessageVisibilityBatch**.
+5. In the **Resources** section, specify the ARN of the queue that you created in the previous step.
+6. Click **Review policy** and enter the policy name.
+7. Click **Create policy**.
+8. Assign the policy to the user. </br>
+    a. Log in to the [IAM console](https://console.aws.amazon.com/iam/).  </br>
+    b. Go to **Users** on the console, and select the IAM user that you want to grant permissions. </br>
+    c. In the **Permissions** tab, click **Add permissions** > **Attach existing policies directly**. </br>
+    d. Select the checkbox for the policy that you created.</br>
+    e. Click **Next: Review** > **Add permissions**.</br>
 
-### Create IAM Role
+### Creating an IAM Role
 
-Create the IAM role that will be used in the Lambda function setup. The AWS Lambda service requires permission to log events and write to the SQS created. Create the IAM Role **Export-DocumentDB-CloudWatch-to-SQS-Lambda** with **AmazonSQSFullAccess**, **CloudWatchLogsFullAccess**, and **CloudWatchEventsFullAccess** policies.
+Create an IAM role for the Lambda function. The AWS Lambda service requires permission to log events and write to the SQS queue. Create the IAM Role named **Export-DocumentDB-CloudWatch-to-SQS-Lambda** with the following policies: **AmazonSQSFullAccess**, **CloudWatchLogsFullAccess**, and **CloudWatchEventsFullAccess**.
 
-1. Go to https://console.aws.amazon.com/.
-2. Go to **IAM** > **Roles** > **Create Role**.
-4. Under **Use case**, select **Lambda** and click **Next**.
-5. Search for ``AmazonSQSFullAccess`` and select it.
-6. Search for ``CloudWatchLogsFullAccess`` and select it.
-7. Search for ``CloudWatchEventsFullAccess`` and select it.
-8. Set the **Role Name**. For example, **Export-DocumentDB-CloudWatch-to-SQS-Lambda**. Then click **Create role**.
+1. Go to the [AWS Console](https://console.aws.amazon.com/).
+2. Go to **IAM** > **Roles** > **Create role**.
+3. For **Use case**, select **Lambda** and click **Next**.
+4. Search for ``AmazonSQSFullAccess`` and select it.
+5. Search for ``CloudWatchLogsFullAccess`` and select it.
+6. Search for ``CloudWatchEventsFullAccess`` and select it.
+7. Enter a **Role Name**. For example, `Export-DocumentDB-CloudWatch-to-SQS-Lambda`. 
+8. Click **Create role**.
 
-### Create the Lambda Function
+### Creating the Lambda Function
 
-1. Go to https://console.aws.amazon.com/.
-2. Go to **Services**. Search for Lambda function.
+1. Go to the [AWS Console](https://console.aws.amazon.com/).
+2. Go to **Services** and search for `Lambda function`.
 3. Click **Functions** > **Create Function**
-5. Keep **Author from Scratch** selected.
-6. Set **Function name**. For example, **Export-DocumentDB-CloudWatch-Logs-To-SQS**.
-7. Under **Runtime**, select **Python 3.x**.
-8. Under **Permissions**, select **Use an existing role** and select the IAM role created in the previous step (Export-DocumentDB-CloudWatch-to-SQS-Lambda).
-9. Click **Create function** and navigate to **Code view**.
-10. Add the function code from the DocumentDB Lambda function file (available in the plugin package).
-11. Click **Configuration** > **Environment Variables**.
-12. Create the following two variables.
-    - Key = `GROUP_NAME`, value = `<Name of the log group in CloudWatch whose logs are to be exported>` e.g., `/aws/cloudtrail/DocumentDB-trail`
-    - Key = `QUEUE_NAME`, value = `<Queue URL where logs are to be sent>` e.g., `https://sqs.us-east-1.amazonaws.com/1111111111/DocumentDB`
-13. Save the function.
-14. Click **Deploy**.
+4. Keep **Author from Scratch** selected.
+5. For **Function name**, enter a name. For example, **Export-DocumentDB-CloudWatch-Logs-To-SQS**.
+6. For **Runtime**, select **Python 3.x**.
+7. For **Permissions**, select **Use an existing role** and select the IAM role that you created in the previous step (`Export-DocumentDB-CloudWatch-to-SQS-Lambda`).
+8. Click **Create function**.
+9. In the **Code view**, add the function code from the DocumentDB Lambda function file (available in the plugin package).
+10. Click **Configuration** > **Environment Variables**.
+11. Create the following variables.
+    - **Key** = `GROUP_NAME`, **Value** = The name of the CloudWatch log group whose logs you want to export (for example, `/aws/cloudtrail/DocumentDB-trail`)
+    - **Key** = `QUEUE_NAME`, **Value** = The queue URL where logs are sent (for example, `https://sqs.us-east-1.amazonaws.com/1111111111/DocumentDB`)
+12. Click **Save** > **Deploy**.
 
-### Automating the Lambda Function
+### Automating the Lambda function
 
 1. Go to the CloudWatch dashboard.
-2. Go to **Events** > **Rules** on the left pane.
+2. In the navigation panel, click **Events** > **Rules**.
 3. Click **Create Rule**.
-4. Enter the name for the rule. For example, **cloudwatchToSqs**.
-5. Under **Rule Type**, select **Schedule**.
-6. Define the schedule. In **schedule pattern**, select a schedule that runs at a regular rate, such as every 10 minutes.
-7. Enter the rate expression, meaning the rate at which the function should execute. This value must match the time specified in the lambda function code that calculates the time delta. For instance, if the function code is set to 2 minutes, set the rate to 2 minutes unless changed in the code. Then click **Next**.
-8. Select the **Target1**. Select the **Target Type** as **AWS Service**.
-9. Select **Target** as **Lambda Function**.
-10. Select the lambda function created in the previous step (Export-DocumentDB-CloudWatch-Logs-To-SQS).
-11. Add the tag if needed. Then click **Create Rule**.
+4. For **Rule name**, enter a name (for example, `cloudwatchToSqs`).
+5. For **Rule Type**, select **Schedule**.
+6. Define the schedule. For **Schedule pattern**, select a schedule that runs at a regular rate, such as every 10 minutes.
+7. Enter the rate expression (the rate at which the function is executed). This value must match the time that is specified in the lambda function code that calculates the time delta. For instance, if the function code is set to 2 minutes, set the rate to 2 minutes unless changed in the code.
+8. Click **Next**.H
+9. Select **Target1**. For **Target Type**, select **AWS Service**.
+10. For **Target**, select **Lambda Function**.
+11. Select the Lambda function that you created in the previous step (`Export-DocumentDB-CloudWatch-Logs-To-SQS`).
+12. Optional: Add tags. 
+13. Click **Create Rule**.
 
-**Note:** Before making any changes to the lambda function code, first disable the rule you created. Deploy the change and then re-enable the rule.
+**Note:** Before you make any changes to the Lambda function code, you must disable the rule that you created. Deploy the changes and then re-enable the rule.
 
 ## Limitations
 
-- DocumentDB Profiler logs capture any database operations that take longer than some period of time(e. g. 100 ms). If the threshold value is not configurable and set value is too high, then profiler logs may not get captured for every database operation.
-- The Following important fields couldn't be mapped with DocumentDB audit/profiler logs
-    - Source program : Only available in case of "aggregate" query
-    - OS User : Not available with Audit/Profier logs
-    - Client HostName : Not available with Audit/Profier logs
-- Server IPs are also not reported because they are not part of the audit stream. That said, the "add_field" clause in the configuration adds a user defined Server Host Name that can be used in reports and policies if desired.
-- Because Sniffer saves the DB name once when a new session is created, and not with every event, DB name will be updated and populated correctly in Guardium only when everytime a new database connection is established with database name. If Database connection is established without database name, then the database on which the first query for that session runs, will be retained in Guardium. Even if user switches between the databases for the same session.
-- Sql Errors are not supported.
-- For Documentdb over cloudwatch Kafka, where it take 15-20 min for the log to go in Guardium since it was generated by the db.
+- DocumentDB Profiler logs capture database operations that take longer than some period of time (for example, 100 ms). If the threshold value is not configurable and the set value is too high, profiler logs may not be captured for every database operation.
+- The following important fields cannot be mapped with DocumentDB audit or profiler logs:
+    - **Source program**: Available only for aggregate queries
+    - **OS User**: Not available with audit or profiler logs
+    - **Client HostName**: Not available with audit or profiler logs
+- Server IPs are not reported because they are not part of the audit stream. However, the `add_field` clause in the configuration adds a user-defined server host name that can be used in reports and policies.
+- The sniffer saves the database name when a new session is created, not with every event. The database name is updated and populated correctly in Guardium only when a new database connection is established with a database name. If a database connection is established without a database name, the database on which the first query for that session runs is retained in Guardium, even if the user switches between databases for the same session.
+- SQL errors are not supported.
+- For DocumentDB over CloudWatch Kafka, logs take 15-20 minutes to appear in Guardium after they are generated by the database.
 
 ## Creating datasource profiles
 
-You can create a new datasource profile from the **Datasource Profile Management** page.
+You can create a new datasource profile from the Datasource Profile Management page.
 
 ### Procedure
 
 1. Go to **Manage > Universal Connector > Datasource Profile Management**
 2. Click the **➕ (Add)** button.
-3. You can create a profile by using one of the following methods:
+3. Create a profile by using one of the following methods:
 
-    - To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
+    - To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields:
         - **Name** and **Description**.
-        - Select a **Plug-in Type** from the dropdown. For example, `DocumentDB over Cloudwatch Connect 2.0` 
+        - **Plug-in Type** — Select a plug-in type from the dropdown (for example, `DocumentDB over Cloudwatch Connect 2.0`).
 
     - To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file containing one or more profiles.  
       You can also choose from the following options:
         - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
         - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
-        - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the ELB process.
+        - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to use in the ELB process.
 
 **Note:** Configuration options vary based on the selected plug-in.
 
@@ -184,7 +182,7 @@ The following table describes the fields that are specific to DocumentDB over Cl
 |--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Name**                 | Unique name of the profile.                                                                                                                                                                                                                                         |
 | **Description**          | Description of the profile.                                                                                                                                                                                                                                         |
-| **Plug-in**              | Plug-in type for this profile. Select `DocumentDB Over Cloudwatch Connect 2.0`. A full list of available plug-ins are available on the **Package Management** page.                                                                                        |
+| **Plug-in**              | Plug-in type for this profile. Select `DocumentDB Over Cloudwatch Connect 2.0`. A full list of available plug-ins are available on the Package Management page.                                                                                        |
 | **Credential**           | Select AWS Credentials or AWS Role ARN. The credential to authenticate with AWS. Must be created in **Credential Management**, or click **➕** to create one. For more information, see [Creating Credentials](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_credential_management.html). |
 | **Kafka Cluster**        | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_kafka_cluster_management.html). |
 | **Label**                | Grouping label. For example, customer name or ID.                                                                                                                                                                                                                   |
@@ -204,37 +202,37 @@ The following table describes the fields that are specific to DocumentDB over Cl
 - Required credentials must be created before or during profile creation.
 - The AWS credentials must have appropriate permissions to read CloudWatch logs and CloudTrail events.
 
-## Testing a Connection
+## Testing a connection
 
-After creating a profile, you must test the connection to ensure the provided configuration is valid.
+After you create a profile, test the connection to ensure that the configuration is valid.
 
 ### Procedure
 
-1. Select the new profile.
+1. Select the profile.
 2. From the top menu, click **Test Connection**.
-3. If the test is successful, you can proceed to installing the profile.
+3. If the test is successful, you can install the profile.
 
 ---
 
-## Installing a Profile
+## Installing a profile
 
-Once the connection test is successful, you can install the profile on **Managed Units (MUs)** or **Edges**. The parsed audit logs are sent to the selected Managed Unit or Edge to be consumed by the **Sniffer**.
+After the connection test is successful, you can install the profile on Managed Units (MUs) or Edges. The parsed audit logs are sent to the selected Managed Unit or Edge to be consumed by the Sniffer.
 
 ### Procedure
 
 1. Select the profile.
 2. From the **Install** menu, click **Install**.
-3. From the list of available MUs and Edges that is displayed, select the ones that you want to deploy the profile to.
+3. From the list of available MUs and Edges, select the ones where you want to deploy the profile.
 
 ---
 
 ## Uninstalling or reinstalling profiles
 
-An installed profile can be uninstalled or reinstalled if needed.
+You can uninstall or reinstall an installed profile.
 
 ### Procedure
 
 1. Select the profile.
-2. From the list of available actions, select the desired option: **Uninstall** or **Reinstall**.
+2. Click **Uninstall** or **Reinstall**.
 
 ---
