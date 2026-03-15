@@ -15,7 +15,6 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
@@ -29,7 +28,7 @@ import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 
 public class Parser {
-	private static Logger log = LogManager.getLogger(Parser.class);
+	private Logger log = LogManager.getLogger(Parser.class);
 
 	public static final String DATA_PROTOCOL_STRING = "DocumentDB";
 	public static final String UNKOWN_STRING = "";
@@ -38,6 +37,8 @@ public class Parser {
 	public static final String EXCEPTION_TYPE_AUTHORIZATION_STRING = "SQL_ERROR";
 	public static final String EXCEPTION_TYPE_AUTHENTICATION_STRING = "LOGIN_FAILED";
 	public static final String NA_STRING = "N/A";
+	public static final String DEFAULT_IP = "0.0.0.0";
+
 	/**
 	 * These arguments will not be redacted, as they only contain collection/field
 	 * names rather than sensitive values.
@@ -46,12 +47,54 @@ public class Parser {
 			Arrays.asList("from", "localField", "foreignField", "as", "connectFromField", "connectToField"));
 
 	/**
+	 * Helper method to remove all whitespace from a string More efficient than regex replaceAll for
+	 * simple character removal
+	 */
+	private static String removeWhitespace(String str) {
+		if (str == null || str.isEmpty()) {
+			return str;
+		}
+		StringBuilder sb = new StringBuilder(str.length());
+		for (int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			if (!Character.isWhitespace(c)) {
+				sb.append(c);
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Helper method to extract database name from namespace string (e.g., "db.collection" -> "db")
+	 * Uses indexOf instead of regex split for better performance
+	 */
+	private static String extractDbNameFromNs(String ns) {
+		if (ns == null || ns.isEmpty()) {
+			return UNKOWN_STRING;
+		}
+		int dotIndex = ns.indexOf('.');
+		return dotIndex > 0 ? ns.substring(0, dotIndex) : ns;
+	}
+
+	/**
+	 * Helper method to extract collection name from namespace string (e.g., "db.collection" ->
+	 * "collection") Uses indexOf instead of regex split for better performance
+	 */
+	private static String extractCollectionFromNs(String ns) {
+		if (ns == null || ns.isEmpty()) {
+			return ns;
+		}
+		int dotIndex = ns.indexOf('.');
+		return dotIndex > 0 ? ns.substring(dotIndex + 1) : ns;
+	}
+
+	/**
 	 * Parses Audit logs and returns a Guard Record object
 	 * @param data
 	 * @return
 	 * @throws ParseException
 	 */
-	public static Record parseAuditRecord(final JsonObject data) throws ParseException {
+	public Record parseAuditRecord(final JsonObject data) throws ParseException {
 		Record record = new Record();
 		final JsonObject param = data.get("param").getAsJsonObject();
 		if (param.get("error") != null) {
@@ -62,34 +105,34 @@ public class Parser {
 		String dbName = Parser.UNKOWN_STRING;
 		if (param != null && param.has("ns")) {
 			final String ns = param.get("ns").getAsString();
-			dbName = ns.split("\\.")[0]; // sometimes contains "."; fallback OK.
+			dbName = extractDbNameFromNs(ns);
 		}
 		record.setDbName(dbName);
 
 		record.setAppUserName(Parser.UNKOWN_STRING);
 
 		// Setting sessionLocator object
-		record.setSessionLocator(Parser.parseSessionLocatorDocumentDb(data));
+		record.setSessionLocator(parseSessionLocatorDocumentDb(data));
 
 		// Setting accessor
-		record.setAccessor(Parser.parseAccessorDocumentDb(data));
-
+		record.setAccessor(parseAccessorDocumentDb(data));
 
 		if(data.get("atype").getAsString().equalsIgnoreCase("authenticate")) {
 			String result = param.get("error").getAsString();
 			if (result.equals("0")) {
-				record.setData(Parser.parseDataDocumentDb(data));
+				record.setData(parseDataDocumentDb(data));
 			} else {
-				record.setException(Parser.parseException(data, result));
+				record.setException(parseException(data, result));
 			}
 		}else {
-			record.setData(Parser.parseDataDocumentDb(data));
+			record.setData(parseDataDocumentDb(data));
 		}
 
+		record.setSessionId(UNKOWN_STRING);
 		// Setting timestamp
-		String dateString = Parser.getTimestampStringDocumentDb(data);
-		record.setSessionId(dateString);
-		Time time = Parser.parseTimeDocumentDb(dateString);
+		String dateString = getTimestampStringDocumentDb(data);
+
+		Time time = parseTimeDocumentDb(dateString);
 		record.setTime(time);
 
 		return record;
@@ -101,42 +144,32 @@ public class Parser {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static Record parseProfilerRecord(final JsonObject data) throws ParseException {
+	public Record parseProfilerRecord(final JsonObject data) throws ParseException {
 		Record record = new Record();
-		final JsonObject param = data.get("command").getAsJsonObject();
-
-		// Setting session ID
-		String sessionId = Parser.UNKOWN_STRING;
-		if (param != null && param.has("lsid")) {
-			final JsonObject lsid = param.getAsJsonObject("lsid");
-			sessionId = lsid.getAsJsonObject("id").get("$binary").getAsString();
-		}
 
 		// Setting db name
 		String dbName = Parser.UNKOWN_STRING;
 
 		if (data != null && data.has("ns")) {
 			final String ns = data.get("ns").getAsString();
-			dbName = ns.split("\\.")[0]; // sometimes contains "."; fallback OK.
+			dbName = extractDbNameFromNs(ns);
 		}
 		record.setDbName(dbName);
 
 		record.setAppUserName(Parser.UNKOWN_STRING);
 
 		// Setting sessionLocator object
-		record.setSessionLocator(Parser.parseSessionLocatorDocumentDb(data));
-		
+		record.setSessionLocator(parseSessionLocatorDocumentDb(data));
 
 		// Setting accessor
-		record.setAccessor(Parser.parseAccessorDocumentDb(data));
+		record.setAccessor(parseAccessorDocumentDb(data));
 
-
-		record.setData(Parser.parseDataDocumentDb(data));
+		record.setData(parseDataDocumentDb(data));
+		record.setSessionId(UNKOWN_STRING);
 
 		// Setting timestamp
-		String dateString = Parser.getTimestampStringDocumentDb(data);
-		record.setSessionId(dateString);
-		Time time = Parser.parseTimeDocumentDb(dateString);
+		String dateString = getTimestampStringDocumentDb(data);
+		Time time = parseTimeDocumentDb(dateString);
 		record.setTime(time);
 		return record;
 	}
@@ -146,7 +179,7 @@ public class Parser {
 	 * @param data
 	 * @return
 	 */
-	public static String getTimestampStringDocumentDb(final JsonObject data) {
+	public String getTimestampStringDocumentDb(final JsonObject data) {
 		String dateString = null;
 		if (data.has("ts")) {
 			dateString = data.get("ts").getAsString();
@@ -159,7 +192,7 @@ public class Parser {
 	 * @param dateString
 	 * @return
 	 */
-	public static Time parseTimeDocumentDb(String dateString) {
+	public Time parseTimeDocumentDb(String dateString) {
 		Date date = new java.util.Date(Long.parseLong(dateString));
 		return new Time(date.getTime(), date.getTimezoneOffset(), 0);
 	}
@@ -169,7 +202,7 @@ public class Parser {
 	 * @param data
 	 * @return
 	 */
-	protected static Sentence parseSentenceDocumentDb(final JsonObject data) {
+	protected Sentence parseSentenceDocumentDb(final JsonObject data) {
 
 		Sentence sentence = null;
 		// + main object
@@ -206,14 +239,14 @@ public class Parser {
 	 * @param command
 	 * @return
 	 */
-	protected static SentenceObject parseSentenceObjectDocumentDbAudit(JsonObject command, String aType) {
+	protected SentenceObject parseSentenceObjectDocumentDbAudit(JsonObject command, String aType) {
 		SentenceObject sentenceObject;
 		if(aType.equalsIgnoreCase("authenticate") && command.has("user")) {
 			sentenceObject = new SentenceObject(command.get("user").getAsString());
 		}else if(command.has("ns")) {
-			sentenceObject = new SentenceObject(command.get("ns").getAsString().contains(".")?command.get("ns").getAsString().split("\\.")[1]:command.get("ns").getAsString());
+			sentenceObject = new SentenceObject(extractCollectionFromNs(command.get("ns").getAsString()));
 		}else if(command.has("userName")){
-			sentenceObject = new SentenceObject(command.get("userName").getAsString());	
+			sentenceObject = new SentenceObject(command.get("userName").getAsString());
 		}else if(aType.equalsIgnoreCase("createRole") && command.has("role")) {
 			sentenceObject = new SentenceObject(command.get("role").getAsString());
 		}else if(aType.equalsIgnoreCase("dropRole") && command.has("roleName")) {
@@ -231,10 +264,10 @@ public class Parser {
 	 * @param command
 	 * @return
 	 */
-	protected static SentenceObject parseSentenceObjectDocumentDbProfiler(JsonObject command) {
+	protected SentenceObject parseSentenceObjectDocumentDbProfiler(JsonObject command) {
 		SentenceObject sentenceObject = new SentenceObject(UNKOWN_STRING);
 		if (command != null && command.has("ns")) {
-			sentenceObject = new SentenceObject(command.get("ns").getAsString().contains(".")?command.get("ns").getAsString().split("\\.")[1]:command.get("ns").getAsString());
+			sentenceObject = new SentenceObject(extractCollectionFromNs(command.get("ns").getAsString()));
 		}
 		else {
 			sentenceObject = new SentenceObject(command.toString());
@@ -244,9 +277,9 @@ public class Parser {
 		return sentenceObject;
 	}
 
-	public static Construct parseAsConstructDocumentDb(final JsonObject data) {
+	public Construct parseAsConstructDocumentDb(final JsonObject data) {
 		try {
-			final Sentence sentence = Parser.parseSentenceDocumentDb(data);
+			final Sentence sentence = parseSentenceDocumentDb(data);
 			final Construct construct = new Construct();
 			construct.sentences.add(sentence);
 			if(data.has("param")) {
@@ -270,7 +303,7 @@ public class Parser {
 	 * 
 	 * @see Data
 	 */
-	public static Data parseDataDocumentDb(JsonObject inputJSON) {
+	public Data parseDataDocumentDb(JsonObject inputJSON) {
 		Data data = new Data();
 		try {
 			Construct construct = parseAsConstructDocumentDb(inputJSON);
@@ -285,7 +318,7 @@ public class Parser {
 				}
 			}
 		} catch (Exception e) {
-			log.error("DocumentDB filter: Error parsing JSon " + inputJSON, e);
+			log.error("DocumentDB filter: Error parsing JSon {}", inputJSON, e);
 			throw e;
 		}
 		return data;
@@ -298,7 +331,7 @@ public class Parser {
 	 * @param resultCode
 	 * @return
 	 */
-	private static ExceptionRecord parseException(JsonObject data, String resultCode) {
+	private ExceptionRecord parseException(JsonObject data, String resultCode) {
 		ExceptionRecord exceptionRecord = new ExceptionRecord();
 		if (resultCode.equals("13")) {
 			exceptionRecord.setExceptionTypeId(Parser.EXCEPTION_TYPE_AUTHORIZATION_STRING);
@@ -321,7 +354,7 @@ public class Parser {
 	 * @param data
 	 * @return
 	 */
-	public static Accessor parseAccessorDocumentDb(JsonObject data) {
+	public Accessor parseAccessorDocumentDb(JsonObject data) {
 		Accessor accessor = new Accessor();
 
 
@@ -340,11 +373,11 @@ public class Parser {
 
 		String sourceProgram = Parser.UNKOWN_STRING;
 		if (data.has("appName")) {
-			sourceProgram = data.get("appName").getAsString().trim().replaceAll("\\s", "");
+			sourceProgram = removeWhitespace(data.get("appName").getAsString().trim());
 		}
 		accessor.setSourceProgram(sourceProgram);
 		accessor.setServerHostName("documentdb.amazonaws.com");
-		accessor.setLanguage(Parser.UNKOWN_STRING);
+		accessor.setLanguage(Accessor.LANGUAGE_FREE_TEXT_STRING);
 		accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL);
 		accessor.setClient_mac(Parser.UNKOWN_STRING);
 		accessor.setClientHostName(Parser.UNKOWN_STRING);
@@ -354,8 +387,14 @@ public class Parser {
 		accessor.setOsUser(Parser.UNKOWN_STRING);
 		accessor.setServerDescription(Parser.UNKOWN_STRING);
 		accessor.setServerOs(Parser.UNKOWN_STRING);
-	  
 
+		String dbName = Parser.UNKOWN_STRING;
+
+		if (data != null && data.has("ns")) {
+			final String ns = data.get("ns").getAsString();
+			dbName = ns.split("\\.")[0]; // sometimes contains "."; fallback OK.
+		}
+		accessor.setServiceName(dbName);
 
 		return accessor;
 	}
@@ -365,11 +404,11 @@ public class Parser {
 	 * @param data
 	 * @return
 	 */
-	private static SessionLocator parseSessionLocatorDocumentDb(JsonObject data) {
+	private SessionLocator parseSessionLocatorDocumentDb(JsonObject data) {
 		SessionLocator sessionLocator = new SessionLocator();
 		sessionLocator.setIpv6(false);
 
-		sessionLocator.setClientIp("0.0.0.0");//Default value for Client IP
+		sessionLocator.setClientIp(DEFAULT_IP); // Default value for Client IP
 		sessionLocator.setClientPort(SessionLocator.PORT_DEFAULT);
 		sessionLocator.setClientIpv6(Parser.UNKOWN_STRING);
 
@@ -382,11 +421,11 @@ public class Parser {
 				sessionLocator.setClientIp(remoteobjects[0]);
 				sessionLocator.setClientPort(Integer.parseInt(remoteobjects[1]));
 			}else {
-				sessionLocator.setClientIp("0.0.0.0");
+				sessionLocator.setClientIp(DEFAULT_IP);
 				sessionLocator.setClientPort(SessionLocator.PORT_DEFAULT);
 			}
 		}
-		sessionLocator.setServerIp("0.0.0.0");// In AWS databases setting this field to 0.0.0.0
+		sessionLocator.setServerIp(DEFAULT_IP); // In AWS databases setting this field to 0.0.0.0
 		sessionLocator.setServerPort(SessionLocator.PORT_DEFAULT);// In AWS databases setting this field to -1
 		return sessionLocator;
 	}
