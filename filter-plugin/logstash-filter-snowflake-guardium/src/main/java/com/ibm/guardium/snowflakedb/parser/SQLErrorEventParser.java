@@ -10,6 +10,7 @@ import com.ibm.guardium.snowflakedb.utils.Constants;
 import com.ibm.guardium.snowflakedb.utils.DefaultGuardRecordBuilder;
 import com.ibm.guardium.snowflakedb.exceptions.ParseException;
 import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class SQLErrorEventParser implements Parser{
 
     private static Logger log = LogManager.getLogger(SuccessEventParser.class);
+    private static final Gson GSON = new Gson();
     private Map<String, Object> eventMap;
     private Record guardRecord;
 
@@ -40,7 +42,7 @@ public class SQLErrorEventParser implements Parser{
         }
 
         if(log.isDebugEnabled()){
-            log.debug("Event Now: ",eventMap);
+            log.debug("Event Now: {} ",eventMap);
         }
 
         eventMap = event;
@@ -58,7 +60,15 @@ public class SQLErrorEventParser implements Parser{
         guardRecord.setException(exceptionRecord);
         guardRecord.setData(null);
 
-        guardRecord.setSessionId(this.getStringValueOf(Constants.SESSION_ID));
+
+        String sessionId = this.getStringValueOf(Constants.SESSION_ID);
+
+        if(!sessionId.equals(Constants.NOT_AVAILABLE)) {
+            guardRecord.setSessionId(sessionId);
+        } else {
+            guardRecord.setSessionId(Constants.UNKNOWN_STRING);
+        }
+
         guardRecord.setDbName(this.getStringValueOf(Constants.DATABASE_NAME));
 
         return guardRecord;
@@ -77,8 +87,7 @@ public class SQLErrorEventParser implements Parser{
             ).map(Object::toString);
 
             if(optClientEnv.isPresent() && !optClientEnv.get().isEmpty()){
-                Gson gson = new Gson();
-                Map<String, String> clientEnv = gson.fromJson(optClientEnv.get(), Map.class);
+                Map<String, String> clientEnv = GSON.fromJson(optClientEnv.get(), Map.class);
                 String clientOS = getClientOS(clientEnv);
                 accessor.setClientOs(clientOS);
 
@@ -94,7 +103,7 @@ public class SQLErrorEventParser implements Parser{
             accessor.setServerHostName(getStringValueOf(Constants.SERVER_HOST_NAME));
             accessor.setDbProtocol(Constants.DB_PROTOCOL);
         } catch (Exception e) {
-            log.error("Snowflake filter: Error occurred while parsing Accessor object: " + eventMap, e);
+            log.error("Snowflake filter: Error occurred while parsing Accessor object: {} {}",eventMap, e);
             throw e;
         }
 
@@ -110,7 +119,7 @@ public class SQLErrorEventParser implements Parser{
             exceptionRecord.setDescription(description);
             exceptionRecord.setSqlString(getStringValueOf(Constants.QUERY_TEXT));
         } catch (Exception e) {
-            log.error("Snowflake filter: Error occurred while parsing Exception object: " + eventMap, e);
+            log.error("Snowflake filter: Error occurred while parsing Exception object: {} {}", eventMap, e);
             throw e;
         }
         return exceptionRecord;
@@ -120,12 +129,15 @@ public class SQLErrorEventParser implements Parser{
         SessionLocator sessionLocator = guardRecord.getSessionLocator();
         try {
 
-            sessionLocator.setClientIp(getStringValueOf(Constants.CLIENT_IP));
-            sessionLocator.setServerIp(getStringValueOf(Constants.SERVER_IP));
+            String clientIp = getStringValueOf(Constants.CLIENT_IP);
+            String serverIp = getStringValueOf(Constants.SERVER_IP);
+
+            sessionLocator.setClientIp((clientIp == null || clientIp.isEmpty()) ? Constants.DEFAULT_IP : clientIp);
+            sessionLocator.setServerIp((serverIp == null || serverIp.isEmpty()) ? Constants.DEFAULT_IP : serverIp);
             sessionLocator.setServerPort(Constants.SERVER_PORT);
 
         } catch (Exception e) {
-            log.error("Snowflake filter: Error occurred while parsing session locator object: " + eventMap, e);
+            log.error("Snowflake filter: Error occurred while parsing session locator object: {} {}", eventMap, e);
             throw e;
         }
         return sessionLocator;
@@ -153,7 +165,7 @@ public class SQLErrorEventParser implements Parser{
             t.setMinOffsetFromGMT(0);
             t.setMinDst(0);
         } catch (Exception e){
-            log.error("Snowflake filter: Error occurred while parsing Time object: " + eventMap, e);
+            log.error("Snowflake filter: Error occurred while parsing Time object: {} {}", eventMap, e);
             throw e;
         }
 

@@ -93,6 +93,13 @@ dependencies {
     implementation 'com.google.guava:guava:' + versions.dependencies.guava
 }
 
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+}
 
 clean {
     delete "${projectDir}/Gemfile"
