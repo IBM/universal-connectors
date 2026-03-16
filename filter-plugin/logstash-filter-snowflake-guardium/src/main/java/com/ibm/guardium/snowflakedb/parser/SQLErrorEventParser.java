@@ -3,106 +3,173 @@
 // SPDX-License-Identifier: Apache2.0
 //
 
-package com.ibm.guardium.snowflakedb;
+package com.ibm.guardium.snowflakedb.parser;
 
 import com.google.gson.Gson;
-import com.ibm.guardium.snowflakedb.exceptions.ParseException;
-import com.ibm.guardium.snowflakedb.parser.Parser;
-import com.ibm.guardium.snowflakedb.parser.SQLErrorEventParser;
-import com.ibm.guardium.snowflakedb.parser.SuccessEventParser;
 import com.ibm.guardium.snowflakedb.utils.Constants;
+import com.ibm.guardium.snowflakedb.utils.DefaultGuardRecordBuilder;
+import com.ibm.guardium.snowflakedb.exceptions.ParseException;
+import com.ibm.guardium.universalconnector.commons.structures.*;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.logstash.Event;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-public class SQLErrorEventParserTest {
-    @Test
-    public void testSQLError(){
-        Event e = FakeEventFactory.getSQLErrorEvent();
-        Parser parser = new SQLErrorEventParser();
-        Map<String,Object> event = e.toMap();
+public class SQLErrorEventParser implements Parser{
+
+    private static Logger log = LogManager.getLogger(SuccessEventParser.class);
+    private static final Gson GSON = new Gson();
+    private Map<String, Object> eventMap;
+    private Record guardRecord;
+
+    public SQLErrorEventParser(){
+        DefaultGuardRecordBuilder builder = new DefaultGuardRecordBuilder();
+        guardRecord = builder.buildGuardRecordWithDefaultValues();
+        eventMap = new HashMap<>();
+    }
+
+    @Override
+    public Record parseRecord(Map<String, Object> event) throws ParseException {
+
+        if(event == null){
+            ParseException e = new ParseException("Snowflake filter: Event object is null.");
+            log.error(e);
+            throw e;
+        }
+
+        if(log.isDebugEnabled()){
+            log.debug("Event Now: {} ",eventMap);
+        }
+
+        eventMap = event;
+
+        Time time = getTime();
+        guardRecord.setTime(time);
+
+        SessionLocator sessionLocator = setSessionLocator();
+        guardRecord.setSessionLocator(sessionLocator);
+
+        Accessor accessor = setAccessor();
+        guardRecord.setAccessor(accessor);
+
+        ExceptionRecord exceptionRecord = setExceptionRecord();
+        guardRecord.setException(exceptionRecord);
+        guardRecord.setData(null);
+
+
+        String sessionId = this.getStringValueOf(Constants.SESSION_ID);
+
+        if(!sessionId.equals(Constants.NOT_AVAILABLE)) {
+            guardRecord.setSessionId(sessionId);
+        } else {
+            guardRecord.setSessionId(Constants.UNKNOWN_STRING);
+        }
+
+        guardRecord.setDbName(this.getStringValueOf(Constants.DATABASE_NAME));
+
+        return guardRecord;
+    }
+
+    private Accessor setAccessor() {
+        Accessor accessor = guardRecord.getAccessor();
+
+        try {
+
+            accessor.setDbUser(getStringValueOf(Constants.USER_NAME));
+            accessor.setSourceProgram(getStringValueOf(Constants.CLIENT_APPLICATION_ID));
+            accessor.setServiceName(getStringValueOf(Constants.DATABASE_NAME));
+            Optional<String> optClientEnv = Optional.ofNullable(
+                    eventMap.get(Constants.CLIENT_ENVIRONMENT)
+            ).map(Object::toString);
+
+            if(optClientEnv.isPresent() && !optClientEnv.get().isEmpty()){
+                Map<String, String> clientEnv = GSON.fromJson(optClientEnv.get(), Map.class);
+                String clientOS = getClientOS(clientEnv);
+                accessor.setClientOs(clientOS);
+
+                Optional<String> optOsUSer = Optional.ofNullable(
+                        clientEnv.get(Constants.CLIENT_OS_USER)
+                ).map(Object::toString);
+
+                if(optOsUSer.isPresent()){
+                    accessor.setOsUser(optOsUSer.get());
+                }
+            }
+
+            accessor.setServerHostName(getStringValueOf(Constants.SERVER_HOST_NAME));
+            accessor.setDbProtocol(Constants.DB_PROTOCOL);
+        } catch (Exception e) {
+            log.error("Snowflake filter: Error occurred while parsing Accessor object: {} {}",eventMap, e);
+            throw e;
+        }
+
+        return accessor;
+    }
+
+    private ExceptionRecord setExceptionRecord() {
+        ExceptionRecord exceptionRecord = guardRecord.getException();
 
         try{
-            Record record = parser.parseRecord(event);
-
-            Assert.assertEquals(record.getSessionId(), event.get(Constants.SESSION_ID).toString());
-            Assert.assertEquals(record.getDbName(), event.get(Constants.DATABASE_NAME).toString());
-            Assert.assertEquals(record.getAppUserName(), Constants.NOT_AVAILABLE);
-            Assert.assertEquals(record.getTime().getMinDst(), 0);
-            Assert.assertEquals(record.getTime().getMinOffsetFromGMT(), 0);
-
-            String qts = event.get(Constants.QUERY_TIMESTAMP).toString();
-            LocalDateTime date = Parser.parseTime(qts);
-            long ts = date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-
-            Assert.assertEquals(record.getTime().getTimstamp(), ts);
-
-            Assert.assertEquals(record.getAccessor().getDbUser(), event.get(Constants.USER_NAME).toString());
-            Assert.assertEquals(record.getAccessor().getServerType(), Constants.SERVER_TYPE);
-            Assert.assertEquals(record.getAccessor().getServerOs(), Constants.NOT_AVAILABLE);
-
-            String env = event.get(Constants.CLIENT_ENVIRONMENT).toString();
-            Gson gson = new Gson();
-            Map<String,String> clientEnv = gson.fromJson(env, Map.class);
-            String clientOs = clientEnv.get(Constants.CLIENT_OS) + ", "
-                    + clientEnv.get(Constants.CLIENT_OS_VERSION);
-            Assert.assertEquals(record.getAccessor().getClientOs(), clientOs);
-
-            Assert.assertEquals(record.getAccessor().getClientHostName(), Constants.UNKNOWN_STRING);
-            Assert.assertEquals(record.getAccessor().getServerHostName(),
-                    event.get(Constants.SERVER_HOST_NAME).toString());
-            Assert.assertEquals(record.getAccessor().getCommProtocol(), Constants.UNKNOWN_STRING);
-            Assert.assertEquals(record.getAccessor().getDbProtocol(), Constants.DB_PROTOCOL);
-            Assert.assertEquals(record.getAccessor().getDbProtocolVersion(), Constants.UNKNOWN_STRING);
-            Assert.assertEquals(record.getAccessor().getOsUser(),
-                    clientEnv.get(Constants.CLIENT_OS_USER));
-            Assert.assertEquals(record.getAccessor().getSourceProgram(),
-                    event.get(Constants.CLIENT_APPLICATION_ID).toString());
-            Assert.assertEquals(record.getAccessor().getClient_mac(), Constants.UNKNOWN_STRING);
-            Assert.assertEquals(record.getAccessor().getServerDescription(), Constants.UNKNOWN_STRING);
-            Assert.assertEquals(record.getAccessor().getServiceName(), event.get(Constants.DATABASE_NAME).toString());
-            Assert.assertEquals(record.getAccessor().getLanguage(), Constants.LANGUAGE_SNOWFLAKE);
-            Assert.assertEquals(record.getAccessor().getDataType(),Constants.TEXT);
-
-
-            Assert.assertEquals(record.getSessionLocator().getClientIp(),event.get(Constants.CLIENT_IP).toString());
-            Assert.assertEquals(record.getSessionLocator().getServerIp(),event.get(Constants.SERVER_IP).toString());
-            Assert.assertEquals(Long.valueOf(record.getSessionLocator().getServerPort()),
-                    Long.valueOf(Constants.SERVER_PORT));
-
-            Assert.assertEquals(null,record.getData());
-            Assert.assertEquals(record.getException().getSqlString(),event.get(Constants.QUERY_TEXT).toString());
-            Assert.assertEquals(event.get(Constants.QUERY_ERROR_CODE)
-                    + ": " + event.get(Constants.QUERY_ERROR_MESSAGE).toString(), record.getException().getDescription());
-            Assert.assertEquals(record.getException().getExceptionTypeId(),Constants.SQL_ERROR);
-            Assert.assertEquals(record.getDbName(), record.getAccessor().getServiceName());
-        } catch (ParseException ex){
-            Assert.fail(ex.getMessage());
-            ex.printStackTrace();
+            exceptionRecord.setExceptionTypeId(Constants.SQL_ERROR);
+            String description = getStringValueOf(Constants.QUERY_ERROR_CODE) + ": "+ getStringValueOf(Constants.QUERY_ERROR_MESSAGE);
+            exceptionRecord.setDescription(description);
+            exceptionRecord.setSqlString(getStringValueOf(Constants.QUERY_TEXT));
+        } catch (Exception e) {
+            log.error("Snowflake filter: Error occurred while parsing Exception object: {} {}", eventMap, e);
+            throw e;
         }
+        return exceptionRecord;
     }
 
-    @Test
-    public void testSessionIDWhenClientAndServerSessionNotPresent() throws ParseException {
-        Event e = FakeEventFactory.getSQLErrorEvent();
-        e.remove(Constants.SESSION_ID);
-        e.remove(Constants.CLIENT_IP);
-        e.remove(Constants.SERVER_IP);
+    private SessionLocator setSessionLocator() {
+        SessionLocator sessionLocator = guardRecord.getSessionLocator();
+        try {
 
-        Parser parser = new SQLErrorEventParser();
-        Record record = parser.parseRecord(e.toMap());
-        SessionLocator sessionLocator = record.getSessionLocator();
+            String clientIp = getStringValueOf(Constants.CLIENT_IP);
+            String serverIp = getStringValueOf(Constants.SERVER_IP);
 
-        Assert.assertEquals(StringUtils.EMPTY, record.getSessionId());
-        Assert.assertEquals(-1, sessionLocator.getClientPort());
-        Assert.assertEquals(443, sessionLocator.getServerPort());
+            sessionLocator.setClientIp((clientIp == null || clientIp.isEmpty()) ? Constants.DEFAULT_IP : clientIp);
+            sessionLocator.setServerIp((serverIp == null || serverIp.isEmpty()) ? Constants.DEFAULT_IP : serverIp);
+            sessionLocator.setServerPort(Constants.SERVER_PORT);
+
+        } catch (Exception e) {
+            log.error("Snowflake filter: Error occurred while parsing session locator object: {} {}", eventMap, e);
+            throw e;
+        }
+        return sessionLocator;
     }
 
+    private String getStringValueOf(String fieldName){
+        String value = Constants.NOT_AVAILABLE;
+        Optional<String> opt = Optional.ofNullable(
+                eventMap.get(fieldName)
+        ).map(Object::toString);
+
+        if(opt.isPresent()){
+            value = opt.get();
+        }
+        return  value;
+    }
+
+    private Time getTime(){
+        String ts = getStringValueOf(Constants.QUERY_TIMESTAMP);
+        Time t = guardRecord.getTime();
+        try {
+            LocalDateTime date = Parser.parseTime(ts);
+
+            t.setTimstamp(date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()); //Snowflake supplies the date in UTC
+            t.setMinOffsetFromGMT(0);
+            t.setMinDst(0);
+        } catch (Exception e){
+            log.error("Snowflake filter: Error occurred while parsing Time object: {} {}", eventMap, e);
+            throw e;
+        }
+
+        return t;
+    }
 }
