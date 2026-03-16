@@ -419,10 +419,10 @@ public class Parser {
 		
 			if(remoteobjects.length>1) {
 				sessionLocator.setClientIp(remoteobjects[0]);
-				sessionLocator.setClientPort(Integer.parseInt(remoteobjects[1]));
+				//sessionLocator.setClientPort(Integer.parseInt(remoteobjects[1]));
 			}else {
 				sessionLocator.setClientIp(DEFAULT_IP);
-				sessionLocator.setClientPort(SessionLocator.PORT_DEFAULT);
+				//sessionLocator.setClientPort(SessionLocator.PORT_DEFAULT);
 			}
 		}
 		sessionLocator.setServerIp(DEFAULT_IP); // In AWS databases setting this field to 0.0.0.0

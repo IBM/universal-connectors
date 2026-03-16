@@ -135,9 +135,6 @@ public class DocumentdbGuardiumFilter implements Filter {
 						record.getAccessor().setServiceName(record.getDbName());
 
 						this.correctIPs(e, record);
-						if(record.getSessionId().isEmpty()) {
-							record.getSessionLocator().setClientPort(SessionLocator.PORT_DEFAULT);
-						}
 						e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, GSON_SERIALIZER.toJson(record));
 						matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
 
@@ -183,17 +180,14 @@ public class DocumentdbGuardiumFilter implements Filter {
 							record.getAccessor().setServiceName(record.getDbName());
 
 							this.correctIPs(e, record);
-							if(record.getSessionId().isEmpty()) {
-								record.getSessionLocator().setClientPort(SessionLocator.PORT_DEFAULT);
-							}
+							e.setField(
+									GuardConstants.GUARDIUM_RECORD_FIELD_NAME,
+									GSON_SERIALIZER_NO_ESCAPE.toJson(record));
 							if (record.getDbName().equals(Parser.UNKOWN_STRING))  {
 	                            e.tag(LOGSTASH_TAG_SKIP);
 								skippedEvents.add(e);
 	                            continue;
 	                        }
-							e.setField(
-									GuardConstants.GUARDIUM_RECORD_FIELD_NAME,
-									GSON_SERIALIZER_NO_ESCAPE.toJson(record));
 							matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
 						}
 					} catch (StackOverflowError soe) {
