@@ -90,6 +90,7 @@ public class Parser {
 
 	/**
 	 * Parses Audit logs and returns a Guard Record object
+	 *
 	 * @param data
 	 * @return
 	 * @throws ParseException
@@ -140,6 +141,7 @@ public class Parser {
 
 	/**
 	 * Parses Profiler logs and returns a Guard Record object
+	 *
 	 * @param data
 	 * @return
 	 * @throws ParseException
@@ -176,6 +178,7 @@ public class Parser {
 
 	/**
 	 * Converts timestamp jsonObject and returns a string
+	 *
 	 * @param data
 	 * @return
 	 */
@@ -189,6 +192,7 @@ public class Parser {
 
 	/**
 	 * This method will parse timestamp String into Time object
+	 *
 	 * @param dateString
 	 * @return
 	 */
@@ -198,7 +202,8 @@ public class Parser {
 	}
 
 	/**
-	 * Parses audit/profiler log JsonObject and returns Sentence 
+	 * Parses audit/profiler log JsonObject and returns Sentence
+	 *
 	 * @param data
 	 * @return
 	 */
@@ -228,14 +233,15 @@ public class Parser {
 				}
 			}
 			sentence.getObjects().add(parseSentenceObjectDocumentDbProfiler(data));
-			
+
 		}
-		
+
 		return sentence;
 	}
 
 	/**
 	 * Parses JsonObject passed as argument and returns Sentence object
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -258,9 +264,10 @@ public class Parser {
 
 		return sentenceObject;
 	}
-	
+
 	/**
 	 * Parses JsonObject passed as argument and returns Sentence object
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -297,10 +304,9 @@ public class Parser {
 
 	/**
 	 * Parses the query and returns a Data instance.
-	 * 
+	 *
 	 * @param inputJSON
 	 * @return
-	 * 
 	 * @see Data
 	 */
 	public Data parseDataDocumentDb(JsonObject inputJSON) {
@@ -326,7 +332,7 @@ public class Parser {
 
 	/**
 	 * Creates an ExceptionRecord to be used in Record, instead of Data.
-	 * 
+	 *
 	 * @param data
 	 * @param resultCode
 	 * @return
@@ -351,6 +357,7 @@ public class Parser {
 
 	/**
 	 * Creates Accessor object to be used in Guard Record
+	 *
 	 * @param data
 	 * @return
 	 */
@@ -400,7 +407,8 @@ public class Parser {
 	}
 
 	/**
-	 * Parses JSON object and returns session locator 
+	 * Parses JSON object and returns session locator
+	 *
 	 * @param data
 	 * @return
 	 */
@@ -416,14 +424,17 @@ public class Parser {
 				: (data.has("remote_ip") ? data.get("remote_ip").getAsString() : null);
 		if (remote != null && remote.indexOf(':') > -1) {
 			String[] remoteobjects = remote.split(":");
-		
+
 			if(remoteobjects.length>1) {
 				sessionLocator.setClientIp(remoteobjects[0]);
-				sessionLocator.setClientPort(Integer.parseInt(remoteobjects[1]));
-			}else {
-				sessionLocator.setClientIp(DEFAULT_IP);
-				sessionLocator.setClientPort(SessionLocator.PORT_DEFAULT);
 			}
+			sessionLocator.setClientPort(SessionLocator.PORT_DEFAULT);
+
+
+//			else {
+//        sessionLocator.setClientIp(DEFAULT_IP);
+//				sessionLocator.setClientPort(SessionLocator.PORT_DEFAULT);
+//			}
 		}
 		sessionLocator.setServerIp(DEFAULT_IP); // In AWS databases setting this field to 0.0.0.0
 		sessionLocator.setServerPort(SessionLocator.PORT_DEFAULT);// In AWS databases setting this field to -1
