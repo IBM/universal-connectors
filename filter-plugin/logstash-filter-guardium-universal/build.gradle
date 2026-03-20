@@ -1,0 +1,190 @@
+import java.nio.file.Files
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
+
+apply plugin: 'java'
+apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
+
+// ===========================================================================
+// plugin info
+// ===========================================================================
+group                      'com.ibm.guardium.universal'
+version                    "${file("VERSION").text.trim()}"
+description                = "Universal Guardium filter — one plugin for all datasources"
+pluginInfo.licenses        = ['Apache-2.0']
+pluginInfo.longDescription = "Single Logstash filter plugin that replaces all individual " +
+        "logstash-filter-*-guardium plugins. Datasource is selected at runtime via the " +
+        "'datasource' configuration parameter."
+pluginInfo.authors         = ['IBM']
+pluginInfo.email           = ['']
+pluginInfo.homepage        = "https://github.com/IBM/universal-connectors"
+pluginInfo.pluginType      = "filter"
+pluginInfo.pluginClass     = "GuardiumUniversalFilter"
+pluginInfo.pluginName      = "guardium_universal_filter"
+// ===========================================================================
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def jacocoVersion = '0.8.4'
+def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
+if (minimumCoverageStr.endsWith("%")) {
+    minimumCoverageStr = minimumCoverageStr.substring(0, minimumCoverageStr.length() - 1)
+}
+def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
+
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
+}
+
+def universalConnectorsDir = project.projectDir.parentFile?.parentFile.toString()
+def versions = new org.yaml.snakeyaml.Yaml().load(
+        new File("${universalConnectorsDir}/versions.yml").newInputStream())
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+shadowJar { classifier = null }
+
+dependencies {
+    // ---- Guardium commons (Record structures, Util, GuardConstants) ----------
+    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH,
+            include: "common-*.*.*.jar")
+
+    // ---- Logstash core -------------------------------------------------------
+    implementation fileTree(dir: LOGSTASH_CORE_PATH,
+            include: "build/libs/logstash-core-*.*.*.jar")
+
+    // ---- Shared runtime libraries (superset of all migrated parsers) ---------
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core',
+            version: versions.dependencies.log4jCore
+    implementation 'com.google.code.gson:gson:' + versions.dependencies.gson
+    implementation group: 'commons-validator', name: 'commons-validator',
+            version: versions.dependencies.commonsValidator
+    implementation 'org.apache.commons:commons-lang3:' + versions.dependencies.commonsLang
+    implementation group: 'commons-beanutils', name: 'commons-beanutils',
+            version: versions.dependencies.commonsBeanutils
+
+    // ---- Phase-1 migration: depend on existing parser JARs until their -------
+    // ---- source is moved into this plugin. ------------------------------------
+    // TODO: remove these once each parser package is migrated here:
+    // implementation fileTree(dir: '../logstash-filter-mongodb-guardium/build/libs',  include: '*.jar')
+    // implementation fileTree(dir: '../logstash-filter-snowflake-guardium/build/libs', include: '*.jar')
+
+    // ---- Test ----------------------------------------------------------------
+    testImplementation 'junit:junit:' + versions.dependencies.junit
+    testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH,
+            include: "common-*.*.*.jar")
+}
+
+// ---- Standard Logstash plugin tasks (identical across all plugins) ----------
+
+clean {
+    delete "${projectDir}/Gemfile"
+    delete "${projectDir}/" + pluginInfo.pluginFullName() + ".gemspec"
+    delete "${projectDir}/lib/"
+    delete "${projectDir}/vendor/"
+    new FileNameFinder().getFileNames(projectDir.toString(),
+            pluginInfo.pluginFullName() + "-*.*.*.gem").each { delete it }
+}
+
+tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+
+tasks.register("vendor") {
+    dependsOn shadowJar
+    doLast {
+        String vendorPathPrefix = "vendor/jar-dependencies"
+        String projectGroupPath = project.group.replaceAll('\\.', '/')
+        File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/" +
+                "${pluginInfo.pluginFullName()}/${project.version}/" +
+                "${pluginInfo.pluginFullName()}-${project.version}.jar")
+        projectJarFile.mkdirs()
+        Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(),
+                projectJarFile.toPath(), REPLACE_EXISTING)
+        validatePluginJar(projectJarFile, project.group)
+    }
+}
+
+tasks.register("generateRubySupportFiles") {
+    doLast {
+        generateRubySupportFilesForPlugin(project.description, project.group, version)
+    }
+}
+
+tasks.register("removeObsoleteJars") {
+    doLast {
+        new FileNameFinder().getFileNames(
+                projectDir.toString(),
+                "vendor/**/" + pluginInfo.pluginFullName() + "*.jar",
+                "vendor/**/" + pluginInfo.pluginFullName() + "-" + version + ".jar"
+        ).each { f -> delete f }
+    }
+}
+
+tasks.register("gem") {
+    dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
+    doLast {
+        buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
+    }
+}
+
+tasks.register("copyDependencyLibs", Copy) {
+    into "dependenciesLib"
+    from configurations.compileClasspath
+    from configurations.runtimeClasspath
+    from configurations.testCompileClasspath
+    from configurations.testRuntimeClasspath
+}
+
+apply plugin: 'jacoco'
+apply plugin: "org.barfuin.gradle.jacocolog"
+
+jacoco {
+    toolVersion = "${jacocoVersion}"
+    reportsDir = file("$buildDir/reports/jacoco")
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled true
+        xml.enabled  true
+        csv.enabled  true
+        html.destination file("${buildDir}/reports/jacoco")
+        csv.destination  file("${buildDir}/reports/jacoco/all.csv")
+    }
+    executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: ['**/*.exec'])
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [])
+        }))
+    }
+    doLast { println "Report -> file://${buildDir}/reports/jacoco/index.html" }
+}
+
+test.finalizedBy jacocoTestReport
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit { minimum = minimumCoverage }
+        }
+    }
+    executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: ['**/*.exec'])
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [])
+        }))
+    }
+}
+project.tasks.check.dependsOn(jacocoTestCoverageVerification, jacocoTestReport)
