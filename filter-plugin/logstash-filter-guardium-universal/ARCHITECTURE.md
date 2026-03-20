@@ -1,142 +1,170 @@
-# Universal Guardium Filter — Architecture
+# Architectural Proposal: Universal Guardium Filter Plugin
 
-## Problem
-
-The repository contains **54 nearly-identical Logstash filter plugins**. Every plugin
-follows the same structure: register with `@LogstashPlugin`, implement `Filter`,
-iterate over events, delegate to a parser, serialize the result as JSON, and tag errors.
-This boilerplate is copy-pasted across every single plugin.
-
-The result is:
-- A security fix or common-utility improvement must be applied to 54 files
-- Onboarding a new datasource requires scaffolding a full Logstash plugin (build, gem, etc.)
-- 54 separate gem artifacts to build, test, and ship
+> **This is a suggestion to the project maintainers.**
+> The reference implementation here is meant to illustrate the idea concretely,
+> not to be merged as-is. Feedback and alternative approaches are very welcome.
 
 ---
 
-## Old Architecture (54 plugins)
+## The Problem
+
+Every filter plugin in this repository follows the same structure.
+Opening any two plugins side-by-side reveals that they are nearly identical — the only
+meaningful difference is the 50–150 lines of parsing logic specific to each datasource.
+
+Everything else is copy-pasted boilerplate:
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│ filter-plugin/                                                      │
-│                                                                     │
-│  logstash-filter-mysql-guardium/                                    │
-│  ├── build.gradle          ◄── 190 lines, mostly identical          │
-│  ├── MySqlFilterGuardium.java                                       │
-│  │   ├── @LogstashPlugin annotation          ┐                      │
-│  │   ├── implements Filter                   │                      │
-│  │   ├── static Log4j init block             │ ~200 lines of        │
-│  │   ├── filter() loop + try/catch           │ boilerplate          │
-│  │   ├── GSON serialization                  │ repeated in          │
-│  │   ├── correctIPs()                        │ every plugin         │
-│  │   ├── logEvent()                          │                      │
-│  │   ├── configSchema() / getId()            ┘                      │
-│  │   └── parseRecord() logic  ◄── only unique part                  │
-│  └── MySQLOverSyslogPackage/MySQL/filter.conf                       │
-│      └─  mysql_filter_guardium {}                                   │
-│                                                                     │
-│  logstash-filter-mongodb-guardium/   (same structure)               │
-│  logstash-filter-snowflake-guardium/ (same structure)               │
-│  logstash-filter-postgres-guardium/  (same structure)               │
-│  ... × 54                                                           │
-└─────────────────────────────────────────────────────────────────────┘
+@LogstashPlugin annotation          ┐
+implements Filter                   │
+static Log4j init block             │  ~200 lines repeated verbatim
+filter() event loop + try/catch     │  in every single plugin
+GSON serialization                  │
+correctIPs() utility                │
+logEvent() utility                  │
+configSchema() / getId()            ┘
+```
 
-Each datasource = 1 Logstash plugin gem
-Adding a datasource = copy-paste a full plugin scaffold
+This creates real maintenance costs:
+- A security fix or utility improvement must be applied to **54 files**
+- Adding a new datasource means scaffolding a full Logstash plugin (~500 lines, 8+ files, a new gem)
+- 54 separate gem artifacts to build, test, version, and ship
+
+---
+
+## The Suggestion
+
+> **Replace all 54 individual filter plugins with a single generic plugin,
+> where each datasource is just a thin parser class (or ideally just a config file).**
+
+The Logstash plugin layer should exist exactly once. The only thing that varies between
+datasources — the parsing logic — should be expressed in the simplest possible form.
+
+---
+
+## Proposed Architecture
+
+### Current state (54 plugins)
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│  logstash-filter-mysql-guardium/                              │
+│  ├── build.gradle          (190 lines, ~identical across all) │
+│  ├── MySqlFilterGuardium.java                                 │
+│  │   ├── @LogstashPlugin, implements Filter    ┐ boilerplate  │
+│  │   ├── Log4j init, GSON, correctIPs()        │ ~200 lines   │
+│  │   ├── filter() loop, error tagging          ┘              │
+│  │   └── parseRecord()  ← the only unique part               │
+│  └── filter.conf:  mysql_filter_guardium {}                   │
+│                                                               │
+│  logstash-filter-mongodb-guardium/  (same structure)          │
+│  logstash-filter-snowflake-guardium/ (same structure)         │
+│  logstash-filter-postgres-guardium/ (same structure)          │
+│  ... × 54                                                     │
+└───────────────────────────────────────────────────────────────┘
+
+54 gems  ·  54 build files  ·  54 copies of the same boilerplate
+```
+
+### Proposed state (1 plugin + thin parsers)
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│  logstash-filter-guardium-universal/   (ONE gem)              │
+│  │                                                            │
+│  ├── GuardiumUniversalFilter.java  ← all Logstash boilerplate │
+│  │   └── delegates to ──────────────────────────────────┐    │
+│  │                                                       │    │
+│  ├── IGuardiumParser (interface)                         │    │
+│  │   └── parseRecord(Event) → Record                     │    │
+│  │                                                       │    │
+│  ├── AbstractGuardiumParser                              │    │
+│  │   └── correctIPs(), shared utilities                  │    │
+│  │                                                       │    │
+│  ├── ParserRegistry  ←────────────────────────────────── ┘    │
+│  │   ├── "mysql"     → MySqlParser      (~150 lines)          │
+│  │   ├── "mongodb"   → MongoDbParser    (~ 60 lines)          │
+│  │   ├── "snowflake" → SnowflakeParser  (~ 40 lines)          │
+│  │   └── ...  (one line per datasource)                       │
+│  │                                                            │
+│  └── filter.conf:                                             │
+│      guardium_universal_filter { datasource => "mysql" }      │
+└───────────────────────────────────────────────────────────────┘
+
+1 gem  ·  1 build file  ·  boilerplate written once
 ```
 
 ---
 
-## New Architecture (1 plugin + thin parsers)
+## What Changes for Each Datasource
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│ filter-plugin/                                                      │
-│                                                                     │
-│  logstash-filter-guardium-universal/   ◄── ONE plugin gem           │
-│  ├── build.gradle                                                   │
-│  │                                                                  │
-│  ├── GuardiumUniversalFilter.java      ◄── all Logstash boilerplate │
-│  │   ├── @LogstashPlugin(name="guardium_universal_filter")          │
-│  │   ├── implements Filter                                          │
-│  │   ├── static Log4j init                                          │
-│  │   ├── filter() loop + try/catch + GSON serialization             │
-│  │   └── delegates to ──────────────────────────────────────┐       │
-│  │                                                          │       │
-│  ├── parser/                                                │       │
-│  │   ├── IGuardiumParser (interface)  ◄── parseRecord(Event)│       │
-│  │   ├── AbstractGuardiumParser       ◄── correctIPs, utils │       │
-│  │   └── ParserRegistry               ◄── "mysql" → parser ◄┘       │
-│  │                                                                  │
-│  └── datasources/                                                   │
-│      ├── mysql/MySqlParser.java        ◄── ~150 lines, pure logic   │
-│      ├── mongodb/MongoDbParser.java    ◄──  ~60 lines, pure logic   │
-│      ├── snowflake/SnowflakeParser.java◄──  ~40 lines, pure logic   │
-│      └── ... (one class per datasource)                             │
-│                                                                     │
-│  MySQLOverSyslogPackage/MySQL/filter.conf                           │
-│  └─  guardium_universal_filter { datasource => "mysql" }           │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
+### `filter.conf` — minimal change
 
-All datasources = 1 Logstash plugin gem
-Adding a datasource = write 1 parser class + 1 line in ParserRegistry
+```diff
+- mysql_filter_guardium {}
++ guardium_universal_filter { datasource => "mysql" }
 ```
 
----
+### Adding a new datasource — before vs. after
 
-## Component Responsibilities
-
-| Component | Responsibility |
-|---|---|
-| `GuardiumUniversalFilter` | Logstash lifecycle, event loop, GSON serialization, error tagging, Log4j init |
-| `IGuardiumParser` | Contract: `parseRecord(Event) → Record \| null` |
-| `AbstractGuardiumParser` | Shared utilities: `correctIPs()`, IP validation |
-| `ParserRegistry` | Case-insensitive map of `datasource-name → IGuardiumParser` |
-| `MySqlParser` (etc.) | Datasource-specific logic only — no Logstash dependency |
-
----
-
-## Adding a New Datasource
-
-**Before** — required:
-1. Copy an entire plugin directory (~8 files)
-2. Modify `build.gradle`, `VERSION`, `@LogstashPlugin` annotation, class name
-3. Re-implement the same `filter()`, `configSchema()`, `getId()`, `correctIPs()`, etc.
-4. Build and ship a new `.gem` artifact
-
-**After** — requires:
-1. Write one class implementing `IGuardiumParser` (parsing logic only)
-2. Add one line to `ParserRegistry`: `register("newdb", new NewDbParser());`
-3. Write a `filter.conf` with `guardium_universal_filter { datasource => "newdb" }`
-
-No new plugin registration. No new gem. No new build file.
-
----
-
-## Migration Path
-
-The migration is incremental and non-breaking:
-
-```
-Phase 1 (done):  Framework + MySQL fully migrated
-Phase 2:         Migrate remaining 51 parsers (mechanical extraction)
-Phase 3:         Move MongoDB/Snowflake inner parser hierarchies into this plugin
-Phase 4:         Deprecate individual filter plugin directories
-```
-
-Old plugins continue to work during migration — pipelines can be switched to
-`guardium_universal_filter` one datasource at a time by updating `filter.conf` and
-`manifest.json`.
-
----
-
-## File Size Comparison
-
-| | Old (per plugin) | New (per datasource) |
+| | Before | After |
 |---|---|---|
-| Logstash plugin class | ~300 lines | 0 lines |
-| Parser logic | mixed in | ~50–200 lines (pure Java) |
-| `build.gradle` | ~190 lines | 0 lines (shared) |
-| Gem artifact | 1 per datasource | 0 (shared gem) |
-| **Total new code for a datasource** | **~500 lines** | **~100 lines** |
+| Files to create | 8+ (plugin class, build.gradle, VERSION, gemspec, ...) | 1 (parser class) |
+| Lines of new code | ~500 | ~100 |
+| New gem required | Yes | No |
+| Boilerplate to copy | ~200 lines | 0 lines |
+
+---
+
+## Reference Implementation
+
+This PR includes a working reference implementation to make the idea concrete:
+
+```
+filter-plugin/logstash-filter-guardium-universal/
+├── GuardiumUniversalFilter.java      ← the single Logstash plugin
+├── parser/
+│   ├── IGuardiumParser.java          ← interface: parseRecord(Event) → Record
+│   ├── AbstractGuardiumParser.java   ← shared utilities
+│   └── ParserRegistry.java           ← datasource name → parser instance
+├── datasources/
+│   ├── mysql/MySqlParser.java        ← MySQL fully migrated (~150 lines)
+│   ├── mongodb/MongoDbParser.java    ← MongoDB thin connector
+│   └── snowflake/SnowflakeParser.java← Snowflake thin connector
+└── [MySQL|MongoDB|Snowflake]*Package/filter.conf
+```
+
+**MySQL is fully migrated** as a concrete example — its parsing logic is identical to the
+original, just extracted into a plain Java class with no Logstash dependency.
+MongoDB and Snowflake are included as thin connectors to show how complex, multi-class
+parser hierarchies integrate cleanly.
+
+---
+
+## Migration Strategy
+
+The migration can be done incrementally with zero disruption:
+
+```
+Phase 1  Framework + 3 reference parsers (this PR)
+Phase 2  Migrate remaining 51 parsers one by one (mechanical extraction)
+Phase 3  Move parser class hierarchies fully into the new plugin
+Phase 4  Deprecate individual filter plugin directories
+```
+
+Existing pipelines are unaffected until their `filter.conf` is updated.
+Both the old and new plugin can coexist during migration.
+
+---
+
+## Questions for the Team
+
+- Is this direction aligned with the project's goals?
+- Should `IGuardiumParser` live in the `common` module instead, to allow
+  parser JARs to be developed and deployed independently?
+- Should parsers eventually be driven by config files (YAML field mappings)
+  for simple datasources, with Java only needed for complex ones?
+
+---
+
+> Raised by [@haimofergmail](https://github.com/haimofergmail) — open to all feedback.
