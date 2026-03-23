@@ -20,14 +20,14 @@ Download the [Teradata JDBC Driver](https://downloads.teradata.com/download/conn
 
 ## Enabling auditing
 
-### Procedure 
+### Procedure
 1. Connect to the Teradata server by using SSH.
 
 2. Log in to the Teradata system by using BTEQ with the credentials of a user (such as DBC), that has the permissions to execute ``DBQLAccessMacro``. In the following command, enter the password for the DBC user. </br>
 
-	```
-	bteq .logon <server-name>/dbc,<password>
-	```
+   ```
+   bteq .logon <server-name>/dbc,<password>
+   ```
 
 3. Create a user to read logs from audit tables through the logstash JDBC input plug-in by using the following command.
 
@@ -37,15 +37,15 @@ Download the [Teradata JDBC Driver](https://downloads.teradata.com/download/conn
 
     	GRANT SELECT ON "dbc" TO "<username>";
 
-5. Enable Database Query Logging. 
+5. Enable Database Query Logging.
 
-	**Note:** Query logging involves a range of table/view combinations within the DBC database. Enable query logging for users, accounts, or applications only when necessary.
+   **Note:** Query logging involves a range of table/view combinations within the DBC database. Enable query logging for users, accounts, or applications only when necessary.
 
-	You can enable query logging for all users or for specific users. In the following example command, query logging is enabled for all users.
+   You can enable query logging for all users or for specific users. In the following example command, query logging is enabled for all users.
 
-		BEGIN QUERY LOGGING WITH SQL LIMIT SQLTEXT=0 ON ALL;
+   	BEGIN QUERY LOGGING WITH SQL LIMIT SQLTEXT=0 ON ALL;
 
-	For more information about Database Query Logging, see [DBQL](https://docs.teradata.com/r/qOek~PvFMDdCF0yyBN6zkA/f7yJJ4siIiBUpoQVvvAwpQ).
+   For more information about Database Query Logging, see [DBQL](https://docs.teradata.com/r/qOek~PvFMDdCF0yyBN6zkA/f7yJJ4siIiBUpoQVvvAwpQ).
 
 6. To exit the BTEQ terminal, type `exit;`.
 7. Set the database time zone by configuring the following ``dbscontrol`` fields.
@@ -103,29 +103,29 @@ Before you perform cleanup activities on DBQL logs, it is recommended to disable
 
    `DELETE FROM DBC.object_name WHERE (Date - LogDate) > number_of_days ;`
 
-	Examples for using the above query.
-	```
-	DELETE FROM DBC.DBQLOGTBL WHERE (DATE '2021-12-16' - cast(starttime as DATE)) > 30 ;
-	DELETE FROM DBC.DBQLSqlTbl WHERE (DATE '2021-12-16' - cast(collecttimestamp as DATE)) > 30 ;
-	```
+   Examples for using the above query.
+   ```
+   DELETE FROM DBC.DBQLOGTBL WHERE (DATE '2021-12-16' - cast(starttime as DATE)) > 30 ;
+   DELETE FROM DBC.DBQLSqlTbl WHERE (DATE '2021-12-16' - cast(collecttimestamp as DATE)) > 30 ;
+   ```
 
 ## Limitations
 
 1. The Teradata sniffer parser may not parse certain operations accurately. This plug-in does not support the following operations: <br>
-   	a. User Management <br>
-    	b. DBQL Queries <br>
-   	c. Timestamp configuration <br>
-   	d. Cast operations <br>
-   	e. Stored Procedure and User Defined Functions <br>
+   a. User Management <br>
+   b. DBQL Queries <br>
+   c. Timestamp configuration <br>
+   d. Cast operations <br>
+   e. Stored Procedure and User Defined Functions <br>
 2. The following fields are not found in TeradataDB audit logs: <br>
-   	a. ``Client HostName`` : Not Available with audit logs. <br>
-   	b. ``Database Name`` : Not Available with audit logs. <br>
+   a. ``Client HostName`` : Not Available with audit logs. <br>
+   b. ``Database Name`` : Not Available with audit logs. <br>
 3. The Teradata auditing does not audit authentication failure (Login Failed) operations.
 4. In case of the EC2 guardium instance, Teradata traffic takes longer (25-30 min) to populate data in the full SQL report.
 5. This plug-in supports queries that are approximately 32,000 characters long. When the count of characters in a query exceeds the given count, the remaining part of the query is stored in other rows and the **SQLTextInfo** column of the `DBC.DBQLSqlTbl` table has more than one row per ``QueryID``.
-6. Client IP and Server IP are retrieved from DBC.QryLogClientAttrV view using ClientIPAddrByClient and ServerIPAddrByServer fields respectively, as recommended by Teradata support. The deprecated logonsource field is no longer used for IP address retrieval. 
+6. Client IP and Server IP are retrieved from DBC.QryLogClientAttrV view using ClientIPAddrByClient and ServerIPAddrByServer fields respectively, as recommended by Teradata support. The deprecated logonsource field is no longer used for IP address retrieval.
 
-    For more information on DBC.QryLogClientAttrV, please refer to this [documentation](https://docs.teradata.com/r/Enterprise_IntelliFlex_VMware/Data-Dictionary/Views-Reference/QryLogClientAttrV).
+   For more information on DBC.QryLogClientAttrV, please refer to this [documentation](https://docs.teradata.com/r/Enterprise_IntelliFlex_VMware/Data-Dictionary/Views-Reference/QryLogClientAttrV).
 
 ## Creating datasource profiles
 You can create a new datasource profile from the **Datasource Profile Management** page.
@@ -168,8 +168,7 @@ The following table dercribes the fields that are specific to JDBC Kafka Connect
 | **Initial Time**         | Initial polling time for audit logs.                                                                                                                                                      |
 | **No Traffic Threshold** | Threshold setting for inactivity detection.                                                                                                                                               |
 | **Connection URL**       | Full JDBC connection string. Format varies by database type. <br/> For example, `jdbc:teradata://teradata-db.env.clearscape.teradata.com/DATABASE=audituser,DBS_PORT=1025`). |
-| **Enterprise Load Balancing** |                                                                                                                                                                                          |
-| **Use ELB**              | Enable this if ELB support is required.                                                                                                                                                   |
+| **Use Enterprise Load Balancing (ELB)** | Enable this if ELB support is required.                                                                                                                                                   |
 | **Managed Unit Count**   | Number of Managed Units (MUs) to allocate for ELB.                                                                                                                                        |
 
 
