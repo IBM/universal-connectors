@@ -4,7 +4,7 @@ Create and configure datasource profiles through central manager for **Azure MSS
 
 ## Meet Azure SQL Over JDBC Connect
 
-* Environments: On-prem
+* Environments: Azure
 * Supported inputs: Kafka Input (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: Appliance bundle 12.2.2 or later

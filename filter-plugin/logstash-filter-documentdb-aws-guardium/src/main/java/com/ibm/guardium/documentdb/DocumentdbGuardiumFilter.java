@@ -1,19 +1,15 @@
 /*
-© Copyright IBM Corp. 2021, 2022 All rights reserved.
+Copyright 2022-2023 IBM Inc. All rights reserved
 SPDX-License-Identifier: Apache-2.0
 */
 package com.ibm.guardium.documentdb;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.validator.routines.InetAddressValidator;
@@ -23,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import com.ibm.guardium.universalconnector.commons.Util;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
@@ -41,32 +37,53 @@ import co.elastic.logstash.api.PluginConfigSpec;
 public class DocumentdbGuardiumFilter implements Filter {
 
 	public static final PluginConfigSpec<String> SOURCE_CONFIG = PluginConfigSpec.stringSetting("source", "message");
-	private final static String DOCUMENTDB_AUDIT_SIGNAL = "\"atype\"";
-	private final static String DOCUMENTDB_PROFILER_SIGNAL = "command";
-	private final static String AGGR_KEY="aggregate";
-	private final static String COUNT_KEY="count";
-	private final static String DELETE_KEY="remove";
-	private final static String INSERT_KEY="insert";
-	private final static String UPDATE_KEY="update";
-	private final static String DISTINCT_KEY="distinct";
-	private final static String FIND_KEY="find";
-	private final static String FINDANDMODIFY_KEY="findAndModify";
 	public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_documentdbguardium_json_parse_error";
-	private final static Set<String> LOCAL_IP_LIST = new HashSet<>(Arrays.asList("127.0.0.1", "0:0:0:0:0:0:0:1"));
-	private final static String DOCUMENT_INTERNAL_API_IP = "(NONE)";
+	public static final String LOGSTASH_TAG_JSON_DEPTH_ERROR = "_documentdbguardium_json_depth_error";
 	/*
-     * skipping non-relevant log events like
-     * "successful authenticate", and other events 
-     * with blank db name
-     */
-    public static final String LOGSTASH_TAG_SKIP = "_documentdbguardium_skip";
+	 * skipping non-relevant log events like
+	 * "successful authenticate", and other events
+	 * with blank db name
+	 */
+	public static final String LOGSTASH_TAG_SKIP = "_documentdbguardium_skip";
+	// Reuse Gson instances to avoid creating new ones for every event (Performance Optimization)
+	private static final Gson GSON_PARSER = new Gson();
+	private static final Gson GSON_SERIALIZER = new GsonBuilder().serializeNulls().create();
+	private static final Gson GSON_SERIALIZER_NO_ESCAPE =
+			new GsonBuilder().serializeNulls().disableHtmlEscaping().create();
+	private static final String DOCUMENTDB_AUDIT_SIGNAL = "\"atype\"";
+	private static final String DOCUMENTDB_PROFILER_SIGNAL = "command";
+	private static final String AGGR_KEY = "aggregate";
+	private static final String COUNT_KEY = "count";
+	private static final String DELETE_KEY = "remove";
+	private static final String INSERT_KEY = "insert";
+	private static final String UPDATE_KEY = "update";
+	private static final String DISTINCT_KEY = "distinct";
+	private static final String FIND_KEY = "find";
+	private static final String FINDANDMODIFY_KEY = "findAndModify";
+	// Set for efficient profiler key checking (Performance Optimization)
+	private static final Set<String> PROFILER_KEYS =
+			new HashSet<>(
+					Arrays.asList(
+							AGGR_KEY,
+							COUNT_KEY,
+							DELETE_KEY,
+							INSERT_KEY,
+							UPDATE_KEY,
+							DISTINCT_KEY,
+							FIND_KEY,
+							FINDANDMODIFY_KEY));
+	private static final Set<String> LOCAL_IP_LIST =
+			new HashSet<>(Arrays.asList("127.0.0.1", "0:0:0:0:0:0:0:1"));
+	private static final String DOCUMENT_INTERNAL_API_IP = "(NONE)";
 	private static final InetAddressValidator inetAddressValidator = InetAddressValidator.getInstance();
-	private static Logger log ;
+	private static Logger log = LogManager.getLogger(DocumentdbGuardiumFilter.class);
+	Parser parser;
 	private String id;
 
 	public DocumentdbGuardiumFilter(String id, Configuration config, Context context) {
 		// constructors should validate configuration options
 		this.id = id;
+		this.parser = new Parser();
 	}
 
 	@Override
@@ -85,10 +102,6 @@ public class DocumentdbGuardiumFilter implements Filter {
 	 */
 	@Override
 	public Collection<Event> filter(Collection<Event> events, FilterMatchListener matchListener) {
-		if (log == null) {
-			// instantiate default logger, as other Context can not coexsit alongside Guardium Universal Connector Logger context.
-			log = LogManager.getLogger(DocumentdbGuardiumFilter.class);
-		}
 		String messageString=null;
 		ArrayList<Event> skippedEvents = new ArrayList<>();
 		for (Event e : events) {
@@ -96,65 +109,80 @@ public class DocumentdbGuardiumFilter implements Filter {
 				messageString = e.getField("message").toString();
 				
 
+				if (!isProperlyClosedJson(messageString)) {
+					log.error("DocumentDB filter: JSON validation failed (truncated or too large)");
+					e.tag(LOGSTASH_TAG_JSON_DEPTH_ERROR);
+					continue;
+				}
 				if (messageString.contains(DOCUMENTDB_AUDIT_SIGNAL)) {// This is an audit event
 					try {
-						JsonObject inputJSON = new Gson().fromJson(messageString, JsonObject.class);
+						JsonObject inputJSON = GSON_PARSER.fromJson(messageString, JsonObject.class);
 						final String atype = inputJSON.get("atype").getAsString();
 						final JsonObject param = inputJSON.get("param").getAsJsonObject();
-                       if ((atype.equals("authenticate") && param.get("error").getAsString().equals("0") ) ||
-				       	(param.has("ns") && param.get("ns").getAsString().isEmpty()))
+						if ((atype.equals("authenticate") && param.get("error").getAsString().equals("0") ) ||
+								(param.has("ns") && param.get("ns").getAsString().isEmpty()))
 						{
-                            e.tag(LOGSTASH_TAG_SKIP);
+							e.tag(LOGSTASH_TAG_SKIP);
 							skippedEvents.add(e);
-                            continue;
-                        }
-						Record record = Parser.parseAuditRecord(inputJSON);
+							continue;
+						}
+						Record record = parser.parseAuditRecord(inputJSON);
 						if(e.getField("serverHostnamePrefix") !=null && e.getField("serverHostnamePrefix") instanceof String) {
 							record.getAccessor().setServerHostName(e.getField("serverHostnamePrefix").toString()+".aws.com");
 							String dbName=record.getDbName();
 							record.setDbName(!dbName.isEmpty()?e.getField("serverHostnamePrefix").toString()+":"+dbName:e.getField("serverHostnamePrefix").toString());
 						}
 						record.getAccessor().setServiceName(record.getDbName());
-						if(e.getField("event_id") !=null && e.getField("event_id") instanceof String) {
-							record.setSessionId(record.getSessionId()+e.getField("event_id").toString());
-						}
+
 						this.correctIPs(e, record);
-						final GsonBuilder builder = new GsonBuilder();
-						builder.serializeNulls();
-						final Gson gson = builder.create();
-						e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
+						e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, GSON_SERIALIZER.toJson(record));
 						matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
+
+					} catch (StackOverflowError soe) {
+						log.error(
+								"DocumentDB filter: JSON nesting too deep (StackOverflow), skipping event {}",
+								logEvent(e));
+						e.tag(LOGSTASH_TAG_JSON_DEPTH_ERROR);
+					} catch (OutOfMemoryError oom) {
+						log.error(
+								"DocumentDB filter: Insufficient memory to process event, skipping {}",
+								logEvent(e));
+						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
+						System.gc(); // Suggest garbage collection
+					} catch (JsonSyntaxException jse) {
+						log.error(
+								"DocumentDB filter: Error parsing docDb audit event {} \n {} ",
+								logEvent(e),
+								formatJsonSyntaxException(jse));
+						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
 					} catch (Exception exception) {
 						// don't let event pass filter
 						// events.remove(e);
-						log.error("DocumentDB filter: Error parsing docDb audit event " + logEvent(e), exception);
+						log.error(
+								"DocumentDB filter: Error parsing docDb audit event {}", logEvent(e), exception);
 						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
 					}
 				} else if (messageString.contains(DOCUMENTDB_PROFILER_SIGNAL)) {// This is a profiler event
 					try {
-						if(messageString.contains(AGGR_KEY) || messageString.contains(COUNT_KEY) || messageString.contains(DELETE_KEY) || messageString.contains(DISTINCT_KEY)|| messageString.contains(FIND_KEY)|| messageString.contains(FINDANDMODIFY_KEY)||messageString.contains(INSERT_KEY)||messageString.contains(UPDATE_KEY))
-						{
-							JsonObject inputJSON = new Gson().fromJson(messageString, JsonObject.class);
+						if (containsAnyProfilerKey(messageString)) {
+							JsonObject inputJSON = GSON_PARSER.fromJson(messageString, JsonObject.class);
 							if ((!inputJSON.has("ns")) || (inputJSON.has("ns") && inputJSON.get("ns").getAsString().isEmpty()) )  {
-	                            e.tag(LOGSTASH_TAG_SKIP);
+								e.tag(LOGSTASH_TAG_SKIP);
 								skippedEvents.add(e);
-	                            continue;
-	                        }
-							Record record = Parser.parseProfilerRecord(inputJSON);
-							if(e.getField("serverHostnamePrefix") !=null && e.getField("serverHostnamePrefix") instanceof String) {
+								continue;
+							}
+							Record record = parser.parseProfilerRecord(inputJSON);
+							if (e.getField("serverHostnamePrefix") instanceof String) {
 								record.getAccessor().setServerHostName(e.getField("serverHostnamePrefix").toString()+".aws.com");
 								String dbName=record.getDbName();
-								record.setDbName(!dbName.isEmpty()?e.getField("serverHostnamePrefix").toString()+":"+dbName:e.getField("serverHostnamePrefix").toString());			
+								record.setDbName(!dbName.isEmpty()?e.getField("serverHostnamePrefix").toString()+":"+dbName:e.getField("serverHostnamePrefix").toString());
 							}
 							record.getAccessor().setServiceName(record.getDbName());
-							if(e.getField("event_id") !=null && e.getField("event_id") instanceof String) {
-								record.setSessionId(record.getSessionId()+e.getField("event_id").toString());
-							}
+
 							this.correctIPs(e, record);
-							final GsonBuilder builder = new GsonBuilder();
-							builder.serializeNulls();
-							final Gson gson = builder.disableHtmlEscaping().create();
-							e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
+							e.setField(
+									GuardConstants.GUARDIUM_RECORD_FIELD_NAME,
+									GSON_SERIALIZER_NO_ESCAPE.toJson(record));
 							if (record.getDbName().equals(Parser.UNKOWN_STRING))  {
 	                            e.tag(LOGSTASH_TAG_SKIP);
 								skippedEvents.add(e);
@@ -162,10 +190,30 @@ public class DocumentdbGuardiumFilter implements Filter {
 	                        }
 							matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
 						}
-					}catch (Exception exception) {
+					} catch (StackOverflowError soe) {
+						log.error(
+								"DocumentDB filter: JSON nesting too deep (StackOverflow), skipping event {} ",
+								logEvent(e));
+						e.tag(LOGSTASH_TAG_JSON_DEPTH_ERROR);
+					} catch (OutOfMemoryError oom) {
+						log.error(
+								"DocumentDB filter: Insufficient memory to process event, skipping {} ",
+								logEvent(e));
+						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
+						System.gc(); // Suggest garbage collection
+					} catch (JsonSyntaxException jse) {
+						log.error(
+								"DocumentDB filter: Error parsing docDb profiler event {} \n {} ",
+								logEvent(e),
+								formatJsonSyntaxException(jse));
+						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
+					} catch (Exception exception) {
 						// don't let event pass filter
 						// events.remove(e);
-						log.error("DocumentDB filter: Error parsing docDb profiler event " + logEvent(e), exception);
+						log.error(
+								"DocumentDB filter: Error parsing docDb profiler event {} ",
+								logEvent(e),
+								exception);
 						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
 					}
 				}
@@ -239,28 +287,91 @@ public class DocumentdbGuardiumFilter implements Filter {
 	}
 
 	/**
-	 * Creates log string to be printed
+	 * Helper method to check if message contains any profiler key More efficient than multiple
+	 * contains() calls
+	 */
+	private static boolean containsAnyProfilerKey(String message) {
+		for (String key : PROFILER_KEYS) {
+			if (message.contains(key)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Creates log string to be printed (optimized with StringBuilder)
+	 *
 	 * @param event
 	 * @return
 	 */
 	private static String logEvent(Event event) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder(256); // Pre-allocate reasonable size
 		try {
 			sb.append("{ ");
 			boolean first = true;
 			for (Map.Entry<String, Object> stringObjectEntry : event.getData().entrySet()) {
 				if (!first) {
-					sb.append(",");
+					sb.append(", ");
 				}
-				sb.append("\"" + stringObjectEntry.getKey() + "\" : \"" + stringObjectEntry.getValue() + "\"");
+				sb.append('"')
+						.append(stringObjectEntry.getKey())
+						.append("\": \"")
+						.append(stringObjectEntry.getValue())
+						.append('"');
 				first = false;
 			}
 			sb.append(" }");
 			return sb.toString();
 		} catch (Exception e) {
 			log.error("DocumentDB filter: Failed to create event log string", e);
-			return null;
+			return "{ error: failed to serialize event }";
 		}
 	}
 
+	private static boolean isProperlyClosedJson(String json) {
+		if (json == null || json.isEmpty()) {
+			return false;
+		}
+
+		// Trim whitespace
+		String trimmed = json.trim();
+		if (trimmed.isEmpty()) {
+			return false;
+		}
+
+		char first = trimmed.charAt(0);
+		char last = trimmed.charAt(trimmed.length() - 1);
+
+		// Check if starts with { or [ and ends with matching } or ]
+		if (first == '{' && last == '}') {
+			return true;
+		}
+		if (first == '[' && last == ']') {
+			return true;
+		}
+
+		// Not properly closed or not valid JSON structure
+		return false;
+	}
+
+	/**
+	 * Formats JsonSyntaxException message, truncating everything from the troubleshooting link
+	 * onwards
+	 *
+	 * @param jse The JsonSyntaxException to format
+	 * @return Formatted exception message (truncated before troubleshooting link if found, otherwise
+	 *     just the exception message without stack trace)
+	 */
+	private static String formatJsonSyntaxException(JsonSyntaxException jse) {
+		String message = jse.toString();
+		int linkIndex =
+				message.indexOf("See https://github.com/google/gson/blob/main/Troubleshooting.md");
+		if (linkIndex != -1) {
+			// Troubleshooting link found - truncate everything from this point onwards
+			return message.substring(0, linkIndex).trim();
+		}
+		// No troubleshooting link - just return the exception message without full stack trace
+		return message;
+	}
 }

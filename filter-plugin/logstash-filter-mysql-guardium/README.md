@@ -5,11 +5,8 @@
 * Supported Guardium versions:
    * Guardium Data Protection: 11.3 and above
       * Supported inputs:
-         * Syslog (push)
+         * Linux server only for Syslog (push)
          * Filebeat (push)
-   * Guardium Data Security Center SaaS: 1.0
-     *  Supported inputs:
-        * Filebeat (push)
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the MySQL audit into a Guardium record instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. [Guardium records](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The contstruct details the main action (verb) and collections (objects) involved.
 
@@ -35,6 +32,28 @@ Run the following two SQLs to install the default filter to get every log:
 ####
       SELECT audit_log_filter_set_filter('log_all', '{ "filter": { "log": true }}');
       SELECT audit_log_filter_set_user('%', 'log_all');
+      
+Syslogs configuration:
+
+1. Configure rsyslog to forward the logs to Logstash. For example, you can add the following line to /etc/rsyslog.conf file:
+####
+      # MySQL Audit Log Forwarding
+      $ModLoad imfile
+      $InputFileName /var/lib/mysql/audit.log
+      $InputFileTag mysql_audit_log:
+      $InputFileStateFile audit_log
+      $InputFileSeverity info
+      $InputFileFacility local6
+      $InputRunFileMonitor
+      
+      # Forward to Logstash on Guardium server (UDP)
+      local6.* @<GDP_IP>:5143
+####
+2. Restart the rsyslog service. For example, you can run the following command:
+systemctl restart rsyslog
+####
+    systemctl restart rsyslog
+####
 
 ###  Windows database-server
 1. Append below code to my.ini file, located in MySQL directory (for example: "C:\ProgramData\MySQL\MySQL Server 8.0"):

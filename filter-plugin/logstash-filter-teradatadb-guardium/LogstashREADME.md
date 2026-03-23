@@ -113,11 +113,7 @@ DELETE FROM DBC.DBQLSqlTbl WHERE (DATE '2021-12-16' - cast(collecttimestamp as D
 
 • The Teradata auditing does not audit authentication failure(Login Failed) operations.
 
-• Following important field couldn't mapped with TeradataDB audit logs.
-
-1] Client HostName : Not Available with audit logs.
-
-2] Database Name : Not Available with audit logs.
+• The **Client HostName** field cannot be mapped with TeradataDB audit logs.
 
 • In case of EC2 guardium instance, Teradata traffic took more time (25-30 min) to populate data in full sql Report.
 

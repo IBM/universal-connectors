@@ -28,6 +28,8 @@ public class Constants {
 
     public static final String SERVER_IP= "server_ip";
 
+    public static final String DEFAULT_IP= "0.0.0.0";
+
     public static final String USER_NAME= "user_name";
 
     public static final String CLIENT_ENVIRONMENT= "client_environment";

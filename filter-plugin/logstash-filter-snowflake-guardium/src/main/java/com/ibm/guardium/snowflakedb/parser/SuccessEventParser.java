@@ -16,14 +16,16 @@ import com.ibm.guardium.snowflakedb.utils.Constants;
 import com.ibm.guardium.snowflakedb.utils.DefaultGuardRecordBuilder;
 import com.ibm.guardium.snowflakedb.exceptions.ParseException;
 import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class SuccessEventParser implements Parser{
     private static Logger log = LogManager.getLogger(SuccessEventParser.class);
+    private static final Gson GSON = new Gson();
 
     private Map<String, Object> eventMap;
-    private Record guardRecord;
+    private com.ibm.guardium.universalconnector.commons.structures.Record guardRecord;
 
     public SuccessEventParser() {
         DefaultGuardRecordBuilder builder = new DefaultGuardRecordBuilder();
@@ -47,7 +49,7 @@ public class SuccessEventParser implements Parser{
         }
 
         if(log.isDebugEnabled()){
-            log.debug("Event Now: ",eventMap);
+            log.debug("Event Now: {}",eventMap);
         }
 
         eventMap = event;
@@ -66,7 +68,13 @@ public class SuccessEventParser implements Parser{
         guardRecord.setData(dataObj);
         guardRecord.setException(null);
 
-        guardRecord.setSessionId(this.getStringValueOf(Constants.SESSION_ID));
+        String sessionId = this.getStringValueOf(Constants.SESSION_ID);
+
+        if(!sessionId.equals(Constants.NOT_AVAILABLE)) {
+            guardRecord.setSessionId(sessionId);
+        } else {
+            guardRecord.setSessionId(Constants.UNKNOWN_STRING);
+        }
         guardRecord.setDbName(this.getStringValueOf(Constants.DATABASE_NAME));
 
         return this.guardRecord;
@@ -109,8 +117,7 @@ public class SuccessEventParser implements Parser{
             ).map(Object::toString);
 
             if(optClientEnv.isPresent() && !optClientEnv.get().isEmpty()){
-                Gson gson = new Gson();
-                Map<String, String> clientEnv = gson.fromJson(optClientEnv.get(), Map.class);
+                Map<String, String> clientEnv = GSON.fromJson(optClientEnv.get(), Map.class);
                 String clientOS = getClientOS(clientEnv);
                 accessor.setClientOs(clientOS);
 
@@ -140,8 +147,11 @@ public class SuccessEventParser implements Parser{
         SessionLocator sessionLocator = guardRecord.getSessionLocator();
         try {
 
-            sessionLocator.setClientIp(getStringValueOf(Constants.CLIENT_IP));
-            sessionLocator.setServerIp(getStringValueOf(Constants.SERVER_IP));
+            String clientIp = getStringValueOf(Constants.CLIENT_IP);
+            String serverIp = getStringValueOf(Constants.SERVER_IP);
+
+            sessionLocator.setClientIp((clientIp == null || clientIp.isEmpty()) ? Constants.DEFAULT_IP : clientIp);
+            sessionLocator.setServerIp((serverIp == null || serverIp.isEmpty()) ? Constants.DEFAULT_IP : serverIp);
             sessionLocator.setServerPort(Constants.SERVER_PORT);
 
         } catch (Exception e) {
