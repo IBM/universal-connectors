@@ -2,7 +2,7 @@
 ### Meet Cassandra
 * Tested versions:
   * Apache Cassandra: 4.0.1
-  * Datastax/DSE-Server: 6.8.x or similar
+  * DataStax Enterprise Server: 6.8.x
 * Environment: On-premise
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
