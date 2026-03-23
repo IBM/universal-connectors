@@ -278,23 +278,23 @@ You can create a new datasource profile from the **Datasource Profile Management
 
 The following table describes the fields that are specific to JDBC Kafka Connect 2.0 and similar plugins.
 
-| Field                         | Description                                                                                                                               |
-|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| **Name**                      | Unique name of the profile.                                                                                                                |
-| **Description**               | Description of the profile.                                                                                                                |
-| **Plug-in**                   | Plug-in type for this profile. A full list of available plug-ins are available on the **Package Management** page.                              |
-| **Credential**                | The credential to authenticate with the datasource. Must be created in **Credential Management**, or click **➕** to create one.       |
-| **Kafka Cluster**             | Kafka cluster to deploy the universal connector.                                                                                           |
-| **Label**                     | Grouping label. For example, customer name or ID.                                                                                                |
-| **JDBC Driver Library**       | JDBC driver for the database.                                                                                                              |
-| **Port**                      | Port that is used to connect to the database.                                                                                                      |
-| **Hostname**                  | Hostname of the database.                                                                                                                  |
-| **Query**                     | SQL query that is used to extract audit logs.                                                                                                      |
-| **Service Name / SID**        | The database **service name** or **SID**.                                                                                                  |
-| **Initial Time**              | Initial polling time for audit logs.                                                                                                       |
-| **No Traffic Threshold**      | Threshold setting for inactivity detection.                                                                                                |
-| **Use ELB**                   | Enable this if ELB support is required.                                                                                                    |
-| **Managed Unit Count**        | Number of Managed Units (MUs) to allocate for ELB.                                                                                         |
+| Field                         | Description                                                                                                                 |
+|-------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| **Name**                      | Unique name of the profile.                                                                                                 |
+| **Description**               | Description of the profile.                                                                                                 |
+| **Plug-in**                   | Plug-in type for this profile. A full list of available plug-ins are available on the **Package Management** page.          |
+| **Credential**                | The credential to authenticate with the datasource. Must be created in **Credential Management**, or click **➕** to create one. |
+| **Kafka Cluster**             | Kafka cluster to deploy the universal connector.                                                                            |
+| **Label**                     | Grouping label. For example, customer name or ID.                                                                           |
+| **JDBC Driver Library**       | JDBC driver for the database.                                                                                               |
+| **Port**                      | Port that is used to connect to the database.                                                                               |
+| **Hostname**                  | Hostname of the database.                                                                                                   |
+| **Query**                     | SQL query that is used to extract audit logs.                                                                               |
+| **Service Name / SID**        | The database **service name** or **SID**.                                                                                   |
+| **Initial Time**              | Initial polling time for audit logs.                                                                                        |
+| **No Traffic Threshold**      | Threshold setting for inactivity detection.                                                                                 |
+| **Use ELB**                   | Enable this if Enterprise Load Balancing (ELB) support is required.                                                         |
+| **Managed Unit Count**        | Number of Managed Units (MUs) to allocate for ELB.                                                                          |
 
 
 **Note:**
