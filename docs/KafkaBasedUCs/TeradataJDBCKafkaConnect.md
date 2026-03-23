@@ -167,7 +167,6 @@ The following table dercribes the fields that are specific to JDBC Kafka Connect
 | **Service Name / SID**   | The database **service name** or **SID**.                                                                                                                                                 |
 | **Initial Time**         | Initial polling time for audit logs.                                                                                                                                                      |
 | **No Traffic Threshold** | Threshold setting for inactivity detection.                                                                                                                                               |
-| **Connection URL**       | Full JDBC connection string. Format varies by database type. <br/> For example, `jdbc:teradata://teradata-db.env.clearscape.teradata.com/DATABASE=audituser,DBS_PORT=1025`). |
 | **Use ELB**              | Enable this if ELB support is required.                                                                                                                                                   |
 | **Managed Unit Count**   | Number of Managed Units (MUs) to allocate for ELB.                                                                                                                                        |
 
