@@ -293,8 +293,6 @@ The following table describes the fields that are specific to JDBC Kafka Connect
 | **Service Name / SID**        | The database **service name** or **SID**.                                                                                                  |
 | **Initial Time**              | Initial polling time for audit logs.                                                                                                       |
 | **No Traffic Threshold**      | Threshold setting for inactivity detection.                                                                                                |
-| **Connection URL**            | Full JDBC connection string. Format varies by database type. <br/> For example, `jdbc:jtds:sybase://sybase-db.dev.fyre.ibm.com:5000/sybsecurity`. |
-| **Enterprise Load Balancing** |                                                                                                                                           |
 | **Use ELB**                   | Enable this if ELB support is required.                                                                                                    |
 | **Managed Unit Count**        | Number of Managed Units (MUs) to allocate for ELB.                                                                                         |
 
