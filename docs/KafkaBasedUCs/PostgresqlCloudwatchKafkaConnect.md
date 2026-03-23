@@ -8,7 +8,7 @@ Postgres over CloudWatch Kafka Connect** plug-ins.
 * Environments: AWS
 * Supported inputs: Kafka Input (pull)
 * Supported Guardium versions:
-    * Guardium Data Protection: Appliance bundle 12.2.2 or later
+    * Guardium Data Protection: Appliance bundle 12.2.1 or later
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems. This connector enables
 monitoring of Postgres audit logs through CloudWatch.

@@ -120,17 +120,28 @@ public class S3SQS implements Input, AutoCloseable {
 
     @Override
     public void start(Consumer<Map<String, Object>> consumer) {
+        this.stopped = false;
         this.consumer = consumer;
         this.executorService = Executors.newFixedThreadPool(1);
-        while (!stopped) {
-            executorService.submit(this::processMessages);
+
+        executorService.submit(() -> {
             try {
-                Thread.sleep(this.pollingFrequency);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // Restore the interrupted status
-                context.getLogger(this).error("Thread interrupted: {}", e.getMessage());
+                while (!stopped) {
+                    processMessages();
+                    try {
+                        Thread.sleep(this.pollingFrequency);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        context.getLogger(this).error("Thread interrupted: {}", e.getMessage());
+                        break;
+                    }
+                }
+            } finally {
+                stopped = true;
+                context.getLogger(this).info("S3SQS input plugin stopped");
+                done.countDown();
             }
-        }
+        });
     }
 
 
@@ -153,6 +164,7 @@ public class S3SQS implements Input, AutoCloseable {
     }
 
     private void processSQSMessage(Message message) {
+        boolean processingSuccessful = false;
         try {
             JSONObject jsonMessage = new JSONObject(message.body());
             JSONArray records = jsonMessage.optJSONArray("Records");
@@ -166,10 +178,19 @@ public class S3SQS implements Input, AutoCloseable {
                     fetchAndProcessFile(bucketName, fileKey);
                 }
             }
+            // Mark as successful only if no exceptions occurred
+            processingSuccessful = true;
         } catch (Exception e) {
-            context.getLogger(this).error("Error processing SQS message", e);
+            context.getLogger(this).error("Error processing SQS message - message will be retried after visibility timeout", e);
+            // Don't delete message - let it become visible again for retry
         } finally {
-            deleteMessageFromQueue(message);
+            // Only delete message if processing was successful
+            if (processingSuccessful) {
+                deleteMessageFromQueue(message);
+                context.getLogger(this).debug("Successfully processed and deleted message from queue");
+            } else {
+                context.getLogger(this).warn("Message processing failed - message will remain in queue for retry");
+            }
         }
     }
 
@@ -319,6 +340,7 @@ public class S3SQS implements Input, AutoCloseable {
 
     @Override
     public void stop() {
+        context.getLogger(this).info("S3SQS stop() called - setting stopped flag to true");
         stopped = true;
         if (executorService != null) {
             executorService.shutdown();
@@ -331,7 +353,9 @@ public class S3SQS implements Input, AutoCloseable {
                 executorService.shutdownNow();
             }
         }
-        close();
+        // Don't close AWS clients here - they need to be reused if start() is called again
+        // close() will be called by Logstash when the plugin is truly being destroyed
+        context.getLogger(this).info("S3SQS stop() completed");
     }
 
     @Override
