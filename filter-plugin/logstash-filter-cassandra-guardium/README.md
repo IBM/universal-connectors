@@ -1,6 +1,8 @@
 # Cassandra-Guardium Logstash filter plug-in
 ### Meet Cassandra
-* Tested versions: 4.0.1
+* Tested versions:
+  * Apache Cassandra: 4.0.1
+  * Datastax/DSE-Server: 6.8.x or similar
 * Environment: On-premise
 * Supported inputs: Filebeat (push)
 * Supported Guardium versions:
