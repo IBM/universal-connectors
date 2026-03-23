@@ -1,2 +1,1 @@
-filter-plugin/logstash-filter-mysql-aws-guardium/MySQLOverS3SQS;logstash-filter-mysql_guardium_plugin_filter.zip
-filter-plugin/logstash-filter-postgres-guardium/PostgresOverS3SQSPackage;logstash-filter-s3sqs_postgresql_guardium_plugin_filter.zip
+input-plugin/logstash-input-beats/FilebeatInputPackage
