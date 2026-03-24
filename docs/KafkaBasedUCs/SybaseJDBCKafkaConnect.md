@@ -6,9 +6,10 @@ JDBC Kafka Connect** plug-ins.
 ## Meet Sybase Over JDBC Connect
 
 * Environments: On-prem
-* Supported inputs: Kafka Input (pull)
+* Supported inputs: JDBC Kafka Connect (pull)
 * Supported Guardium versions:
-    * Guardium Data Protection: Appliance bundle 12.2.1 or later.
+    * Guardium Data Protection 12.1 patch 5007
+    * Guardium Data Protection 12.2.1 and above
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems.
 
