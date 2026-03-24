@@ -6,7 +6,7 @@ MySQL over Event Hub Kafka Connect** plug-ins.
 ### Meet Azure MySQL over Event Hub Connect
 
 * Environment: Azure
-* Supported inputs: Kafka Input (pull)
+* Supported inputs: Kafka connect Azure EventHub 2.0 (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: Appliance bundle 12.2.2 or later
 

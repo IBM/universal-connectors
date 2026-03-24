@@ -6,7 +6,7 @@ over CloudWatch Kafka Connect** plug-ins.
 ### Meet Redshift over CloudWatch Connect
 
 * Environments: AWS
-* Supported inputs: Kafka Input (pull)
+* Supported inputs: Kafka connect Cloudwatch 2.0 (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: Appliance bundle 12.2.1 or later.
 
