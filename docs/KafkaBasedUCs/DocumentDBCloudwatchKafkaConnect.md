@@ -5,7 +5,7 @@ Create and configure datasource profiles through Central Manager for DocumentDB 
 ## Meet DocumentDB over Cloudwatch Kafka Connect
 
 * **Environment:** AWS
-* **Supported inputs:** Kafka Input (pull) 
+* **Supported inputs:** Kafka connect Cloudwatch 2.0 (pull)
 * **Supported Guardium versions:**
     * Guardium Data Protection: Appliance bundle 12.2.2 or later
 
