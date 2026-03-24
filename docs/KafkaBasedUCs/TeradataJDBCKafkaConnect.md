@@ -5,7 +5,7 @@ This guide provides instructions for creating and configuring datasource profile
 ### Meet Teradata over JDBC Connect
 
 * Environments: On-prem
-* Supported inputs: Kafka Input (pull)
+* Supported inputs: JDBC Kafka Connect (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: Appliance bundle 12.2.1 or later.
 
