@@ -4,7 +4,7 @@ Create and configure data source profiles through central manager for SAP HANA J
 
 ## Meet SAP HANA Over JDBC Connect
 * Environments: On-prem
-* Supported inputs: Kafka Input (pull)
+* Supported inputs: JDBC Kafka Connect (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: Appliance bundle 12.2.1 or later
 
