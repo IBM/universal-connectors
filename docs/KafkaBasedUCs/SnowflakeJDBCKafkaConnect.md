@@ -4,7 +4,7 @@ Create and configure data source profiles through central manager for Snowflake 
 
 ## Meet Snowflake Over JDBC Connect
 * Environments: On-prem
-* Supported inputs: Kafka Input (pull)
+* Supported inputs: Kafka connect JDBC 2.0 (pull)
 * Supported Guardium versions:
    * Guardium Data Protection: Appliance bundle 12.2.2 or later
 
