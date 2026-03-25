@@ -5,9 +5,10 @@ This guide provides instructions for creating and configuring datasource profile
 ### Meet Teradata over JDBC Connect
 
 * Environments: On-prem
-* Supported inputs: Kafka Input (pull)
+* Supported inputs: Kafka connect JDBC 2.0 (pull)
 * Supported Guardium versions:
-    * Guardium Data Protection: Appliance bundle 12.2.1 or later.
+    * Guardium Data Protection: 12.1 patch 5007
+    * Guardium Data Protection: Appliance bundle 12.2.1 and above
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems.
 
@@ -167,9 +168,7 @@ The following table dercribes the fields that are specific to JDBC Kafka Connect
 | **Service Name / SID**   | The database **service name** or **SID**.                                                                                                                                                 |
 | **Initial Time**         | Initial polling time for audit logs.                                                                                                                                                      |
 | **No Traffic Threshold** | Threshold setting for inactivity detection.                                                                                                                                               |
-| **Connection URL**       | Full JDBC connection string. Format varies by database type. <br/> For example, `jdbc:teradata://teradata-db.env.clearscape.teradata.com/DATABASE=audituser,DBS_PORT=1025`). |
-| **Enterprise Load Balancing** |                                                                                                                                                                                          |
-| **Use ELB**              | Enable this if ELB support is required.                                                                                                                                                   |
+| **Use ELB**              | Enable this if Enterprise Load Balancing (ELB) support is required.                                                                                                                                                   |
 | **Managed Unit Count**   | Number of Managed Units (MUs) to allocate for ELB.                                                                                                                                        |
 
 

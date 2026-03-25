@@ -46,6 +46,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [MySQL Percona](../filter-plugin/logstash-filter-mysql-percona-guardium/README.md)
 * [Neo4j](../filter-plugin/logstash-filter-neo4j-guardium/README.md)
 * [Neptune](../filter-plugin/logstash-filter-neptune-aws-guardium/README.md)
+* [Oracle RDS Over CloudWatch Kafka Connect](KafkaBasedUCs/OracleRDSOverCloudwatchKafkaConnect.md)
 * [Oracle](../filter-plugin/logstash-filter-oua-guardium/README.md)
 * [PostgreSQL](../filter-plugin/logstash-filter-onPremPostgres-guardium/README.md)
 * [ProgressDB](../filter-plugin/logstash-filter-progressdb-guardium/README.md)
