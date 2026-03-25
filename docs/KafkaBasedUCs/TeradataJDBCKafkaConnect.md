@@ -26,27 +26,31 @@ Download the [Teradata JDBC Driver](https://downloads.teradata.com/download/conn
 
 2. Log in to the Teradata system by using BTEQ with the credentials of a user (such as DBC), that has the permissions to execute ``DBQLAccessMacro``. In the following command, enter the password for the DBC user. </br>
 
-	```
-	bteq .logon <server-name>/dbc,<password>
-	```
+   ```
+   bteq .logon <server-name>/dbc,<password>
+   ```
 
 3. Create a user to read logs from audit tables by using the following command.
 
-   	```
-   	CREATE USER <username> AS  PERMANENT = 100000000 BYTES   PASSWORD = "<password>"
-   	```
+   ```
+   CREATE USER <username> AS  PERMANENT = 100000000 BYTES   PASSWORD = "<password>"
+   ```
 
 4. Grant read access of objects within the DBC user to newly created user by using the following command.
 
-    	GRANT SELECT ON "dbc" TO "<username>";
+   ```
+   GRANT SELECT ON "dbc" TO "<username>";
+   ```
 
-5. Enable Database Query Logging. 
+5. Enable Database Query Logging.
 
-	**Note:** Query logging involves a range of table/view combinations within the DBC database. Enable query logging for users, accounts, or applications only when necessary.
+   **Note:** Query logging involves a range of table/view combinations within the DBC database. Enable query logging for users, accounts, or applications only when necessary.
 
-	You can enable query logging for all users or for specific users. In the following example command, query logging is enabled for all users.
+   You can enable query logging for all users or for specific users. In the following example command, query logging is enabled for all users.
 
-		BEGIN QUERY LOGGING WITH SQL LIMIT SQLTEXT=0 ON ALL;
+   ```
+   BEGIN QUERY LOGGING WITH SQL LIMIT SQLTEXT=0 ON ALL;
+   ```
 
 	For more information about Database Query Logging, see [DBQL](https://docs.teradata.com/r/qOek~PvFMDdCF0yyBN6zkA/f7yJJ4siIiBUpoQVvvAwpQ).
 
