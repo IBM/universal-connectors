@@ -30,7 +30,7 @@ Download the [Teradata JDBC Driver](https://downloads.teradata.com/download/conn
 	bteq .logon <server-name>/dbc,<password>
 	```
 
-3. Create a user to read logs from audit tables through the Kafka connect JDBC 2.0 input plug-in by using the following command.
+3. Create a user to read logs from audit tables through the Kafka connect input plug-in by using the following command.
 
    	```
    	CREATE USER <username> AS  PERMANENT = 100000000 BYTES   PASSWORD = "<password>"
