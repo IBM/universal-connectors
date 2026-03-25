@@ -32,7 +32,9 @@ Download the [Teradata JDBC Driver](https://downloads.teradata.com/download/conn
 
 3. Create a user to read logs from audit tables by using the following command.
 
+   	```
    	CREATE USER <username> AS  PERMANENT = 100000000 BYTES   PASSWORD = "<password>"
+   	```
 
 4. Grant read access of objects within the DBC user to newly created user by using the following command.
 
