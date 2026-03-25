@@ -5,7 +5,7 @@ You can create and configure datasource profiles through central manager for **A
 ## Meet MSSQL over JDBC Connect
 
 * Environments: On-prem
-* Supported inputs: Kafka connect JDBC 2.0 (pull)
+* Supported inputs: Kafka connect JDBC 2.0 Customized (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: Appliance bundle 12.2.2 or later
 
@@ -183,7 +183,7 @@ You can create a new datasource profile from the **Datasource Profile Management
 
     * To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
         * **Name** and **Description**.
-        * Select a **Plug-in Type** from the dropdown. For example, `AWS MsSQL Over JDBC Kafka Connect 2.0`.
+        * Select a **Plug-in Type** from the dropdown. For example, `AWS MSSQL Over JDBC Connect 2.0`.
 
     * To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file
       containing one or more profiles. You can also choose from the following options:

@@ -7,7 +7,7 @@ This guide provides instructions for creating and configuring datasource profile
 * Environments: On-prem
 * Supported inputs: Kafka connect JDBC 2.0 (pull)
 * Supported Guardium versions:
-    * Guardium Data Protection: 12.1 patch 5007
+    * Guardium Data Protection: 12.1 patch 5007 and above
     * Guardium Data Protection: Appliance bundle 12.2.1 and above
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems.
@@ -120,7 +120,6 @@ Before you perform cleanup activities on DBQL logs, it is recommended to disable
    	e. Stored Procedure and User Defined Functions <br>
 2. The following fields are not found in TeradataDB audit logs: <br>
    	a. ``Client HostName`` : Not Available with audit logs. <br>
-   	b. ``Database Name`` : Not Available with audit logs. <br>
 3. The Teradata auditing does not audit authentication failure (Login Failed) operations.
 4. In case of the EC2 guardium instance, Teradata traffic takes longer (25-30 min) to populate data in the full SQL report.
 5. This plug-in supports queries that are approximately 32,000 characters long. When the count of characters in a query exceeds the given count, the remaining part of the query is stored in other rows and the **SQLTextInfo** column of the `DBC.DBQLSqlTbl` table has more than one row per ``QueryID``.
