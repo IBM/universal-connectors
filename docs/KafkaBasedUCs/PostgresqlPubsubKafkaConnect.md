@@ -5,7 +5,7 @@ This connector ingests PostgreSQL database audit logs from Google Cloud Pub/Sub 
 ## Meet PostgreSQL over Pub/Sub Connect
 
 * Environments: On-prem
-* Supported inputs: Kafka Input (pull)
+* Supported inputs: Kafka connect Pubsub 2.0 (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: Appliance bundle 12.2.2 or later
 
