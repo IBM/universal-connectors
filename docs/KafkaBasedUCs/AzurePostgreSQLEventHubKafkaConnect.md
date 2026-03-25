@@ -132,7 +132,7 @@ The following recommendations apply when configuring the plug-in to read from mu
 
 * When there is more than one connection string provided in the **event_hub_connections** parameter, define both
   **storage_connection** and **consumer_group** parameters. This helps to differentiate the files where timestamp offsets are
-  written. The **azure_event_hubs** input does not store the offset locally. For more information, see [Best practices](https://www.elastic.co/guide/en/logstash/current/plugins-inputs-azure_event_hubs.html#plugins-inputs-azure_event_hubs-best-practices).
+  written. The **azure_event_hubs** input does not store the offset locally.
 
 Not following this recommendation may result in data loss.
 
