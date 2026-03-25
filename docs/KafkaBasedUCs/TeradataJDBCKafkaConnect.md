@@ -30,7 +30,7 @@ Download the [Teradata JDBC Driver](https://downloads.teradata.com/download/conn
 	bteq .logon <server-name>/dbc,<password>
 	```
 
-3. Create a user to read logs from audit tables through the logstash JDBC input plug-in by using the following command.
+3. Create a user to read logs from audit tables through the Kafka connect JDBC 2.0 input plug-in by using the following command.
 
    	```
    	CREATE USER <username> AS  PERMANENT = 100000000 BYTES   PASSWORD = "<password>"
@@ -138,7 +138,7 @@ You can create a new datasource profile from the **Datasource Profile Management
 
     - To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
         - **Name** and **Description**.
-        - Select a **Plug-in Type** from the dropdown. For example, `Teradata Over JDBC Kafka Connect 2.0`.
+        - Select a **Plug-in Type** from the dropdown. For example, `Teradata Over JDBC Connect 2.0`.
 
     - To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file containing one or more profiles.  
       You can also choose from the following options:
@@ -150,7 +150,7 @@ You can create a new datasource profile from the **Datasource Profile Management
 
 ## Configuring JDBC Kafka Connect 2.0-based plugins
 
-The following table dercribes the fields that are specific to JDBC Kafka Connect 2.0 and similar plugins.
+The following table describes the fields that are specific to JDBC Kafka Connect 2.0 and similar plugins.
 
 | Field                    | Description                                                                                                                                                                              |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
