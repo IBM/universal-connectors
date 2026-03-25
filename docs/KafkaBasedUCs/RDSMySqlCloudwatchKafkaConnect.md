@@ -15,7 +15,7 @@ monitoring of RDS MySQL audit logs through CloudWatch.
 
 ***Note:***
 * The client source program is not available in messages sent by MySQL. This data is sent only in the first audit log message upon database connection and the filter plug-in doesn't aggregate data from different messages.
-* The **type** field should be the same in both the input and filter sections in the Logstash configuration file. This field should be unique for every individual connector added.
+* The **type** field should be the same in both the input and filter sections in the configuration file. This field should be unique for every individual connector added.
 * GDP requires installation of [json_encode](https://www.elastic.co/guide/en/logstash-versioned-plugins/current/v3.0.3-plugins-filters-json_encode.html) filter plug-in. If you are on Guardium Data Protection v12.0 and later, you can skip this step.
 * On the reports page, the `use` statement does not display the account ID in the **Database Name** column.
 
