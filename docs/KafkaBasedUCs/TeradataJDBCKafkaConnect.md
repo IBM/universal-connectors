@@ -34,6 +34,8 @@ Download the [Teradata JDBC Driver](https://downloads.teradata.com/download/conn
 
    	```
    	CREATE USER <username> AS  PERMANENT = 100000000 BYTES   PASSWORD = "<password>"
+   	```
+
 4. Grant read access of objects within the DBC user to newly created user by using the following command.
 
     	GRANT SELECT ON "dbc" TO "<username>";
@@ -95,7 +97,7 @@ Before you perform cleanup activities on DBQL logs, it is recommended to disable
 1. Back up log data. <br/>
    a. Create a duplicate log table in another database by using the ``Copy Table`` syntax for the `CREATE TABLE` statement. </br>
    ```
-   CT DBC.tablename AS databasename.tablename`
+   CT DBC.tablename AS databasename.tablename
    ```
    b. Back up the table to tape storage in accordance with your site backup policy.  <br>
    c. Drop the duplicate table using a ``DROP TABLE`` statement.
