@@ -57,77 +57,126 @@ After creating your Oracle RDS instance following the Amazon documentation, make
 
 ### Applying Audit Policies
 
-Depending on your requirements, rather than enabling auditing for all tables and operations, you can choose to audit only selected tables or operations. You can perform all operations from the master user which you created when you created the database.
+To allow the connector to parse and analyze your database queries, you must enable **Traditional Auditing** using the `AUDIT` command. Traditional Auditing records are exported to CloudWatch, making them accessible to this connector.
 
-For more information about configuring audit policies, see [official Oracle documentation](https://docs.oracle.com/en/database/oracle/oracle-database/19/dbseg/configuring-audit-policies.html).
+**Important:** Do **not** use `CREATE AUDIT POLICY` (Unified Auditing). Unified Auditing records are stored inside the database and cannot be exported to CloudWatch. You must use the Traditional Auditing commands shown below.
 
-#### To audit every action for all users:
+Connect to your Oracle RDS database using your master user (e.g., `ADMIN`) via a SQL client such as SQL*Plus, SQL Developer, or any JDBC-based tool. Depending on your security and compliance requirements, run the appropriate commands below.
+
+For more information about Traditional Auditing, see:
+- [AWS Blog: Security Auditing in Amazon RDS for Oracle](https://aws.amazon.com/blogs/database/part-1-security-auditing-in-amazon-rds-for-oracle/)
+- [Oracle Documentation: AUDIT (Traditional Auditing)](https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/AUDIT-Traditional-Auditing.html)
+
+#### Option 1: Audit all data modifications globally (All Users, All Tables)
+
+**Note:** This generates high log volume. It captures reads/writes on any table by any user.
 
 ```sql
-CREATE AUDIT POLICY MyPolicy1
-ACTIONS ALL;
-AUDIT POLICY MyPolicy1;
+-- Capture all reads
+AUDIT SELECT ANY TABLE BY ACCESS;
+
+-- Capture all writes
+AUDIT INSERT ANY TABLE BY ACCESS;
+AUDIT UPDATE ANY TABLE BY ACCESS;
+AUDIT DELETE ANY TABLE BY ACCESS;
+
+-- Capture stored procedure executions
+AUDIT EXECUTE ANY PROCEDURE BY ACCESS;
 ```
 
-#### To audit every action for admin users:
+#### Option 2: Audit specific schema operations
+
+To audit operations on a specific schema (e.g., `MYSCHEMA`):
 
 ```sql
-CREATE AUDIT POLICY MyPolicy2
-ACTIONS ALL
-WHEN q'~ sys_context('userenv', 'session_user') = 'ADMIN' ~'
-EVALUATE PER SESSION;
-AUDIT POLICY MyPolicy2;
+-- Audit all operations on tables in MYSCHEMA
+AUDIT SELECT TABLE, INSERT TABLE, UPDATE TABLE, DELETE TABLE BY MYSCHEMA BY ACCESS;
+
+-- Audit procedure executions in MYSCHEMA
+AUDIT EXECUTE PROCEDURE BY MYSCHEMA BY ACCESS;
 ```
 
-#### To audit policies with explicitly mentioned actions (users can add and delete according to requirements):
+#### Option 3: Audit specific tables
+
+To audit operations on specific tables:
 
 ```sql
-CREATE AUDIT POLICY MyPolicy3 ACTIONS UPDATE, INSERT, SELECT, DELETE;
-AUDIT POLICY MyPolicy3;
+-- Audit a specific table
+AUDIT SELECT, INSERT, UPDATE, DELETE ON MYSCHEMA.MYTABLE BY ACCESS;
+
+-- Audit multiple specific tables
+AUDIT SELECT, INSERT, UPDATE, DELETE ON MYSCHEMA.CUSTOMERS BY ACCESS;
+AUDIT SELECT, INSERT, UPDATE, DELETE ON MYSCHEMA.ORDERS BY ACCESS;
 ```
 
-#### To enable login failed events in the database:
+#### Option 4: Audit session events (Login/Logout)
+
+To capture login and logout events:
 
 ```sql
-CREATE AUDIT POLICY ORA_LOGIN_LOGOUT ACTIONS LOGON;
-AUDIT POLICY ORA_LOGIN_LOGOUT WHENEVER NOT SUCCESSFUL;
+-- Audit all session connections
+AUDIT SESSION BY ACCESS;
+
+-- Audit only failed login attempts
+AUDIT SESSION WHENEVER NOT SUCCESSFUL;
 ```
 
-#### To remove an existing policy:
+#### Option 5: Audit DDL statements
+
+To capture Data Definition Language (DDL) operations:
 
 ```sql
-NOAUDIT POLICY MyPolicy1;
-DROP AUDIT POLICY MyPolicy1;
+-- Audit all DDL statements
+AUDIT TABLE BY ACCESS;
+AUDIT VIEW BY ACCESS;
+AUDIT PROCEDURE BY ACCESS;
 ```
 
-#### To check audit logs (shows all audit operations performed on the database):
+#### To disable auditing
+
+To stop auditing specific operations:
 
 ```sql
-SELECT * FROM UNIFIED_AUDIT_TRAIL
-WHERE DBUSERNAME = 'ADMIN'
-AND OBJECT_SCHEMA = 'ADMIN'
-ORDER BY EVENT_TIMESTAMP DESC;
+-- Disable global auditing
+NOAUDIT SELECT ANY TABLE;
+NOAUDIT INSERT ANY TABLE;
+NOAUDIT UPDATE ANY TABLE;
+NOAUDIT DELETE ANY TABLE;
+
+-- Stop auditing procedure executions
+NOAUDIT EXECUTE ANY PROCEDURE;
+
+-- Disable auditing on specific tables
+NOAUDIT SELECT, INSERT, UPDATE, DELETE ON MYSCHEMA.MYTABLE;
+
+-- Disable session auditing
+NOAUDIT SESSION;
 ```
 
-#### To check login failed events captured in the database:
+#### To check current audit settings
+
+To view which audit options are currently enabled:
 
 ```sql
-SELECT * FROM UNIFIED_AUDIT_TRAIL
-WHERE ACTION_NAME = 'LOGON'
-AND RETURN_CODE != 0
-ORDER BY EVENT_TIMESTAMP DESC;
+-- View global statement audit options
+SELECT * FROM DBA_STMT_AUDIT_OPTS;
+
+-- View object-specific audit options
+SELECT * FROM DBA_OBJ_AUDIT_OPTS;
 ```
 
-#### To delete audit trail content:
+#### To view audit trail records
+
+To query the audit trail (note: these records are also exported to CloudWatch):
 
 ```sql
-BEGIN
-  DBMS_AUDIT_MGMT.CLEAN_AUDIT_TRAIL(
-    DBMS_AUDIT_MGMT.AUDIT_TRAIL_UNIFIED,
-    FALSE
-  );
-END;
-
+-- View recent audit records
+SELECT EXTENDED_TIMESTAMP, DB_USER, ACTION, OBJECT_NAME, SQL_TEXT
+FROM V$XML_AUDIT_TRAIL
+WHERE DB_USER NOT IN ('SYS', 'SYSTEM', 'RDSADMIN')
+  AND DB_USER != '/'  -- Exclude internal user
+  AND DB_USER IS NOT NULL
+ORDER BY EXTENDED_TIMESTAMP DESC
 ```
 
 ## Limitations
@@ -228,4 +277,3 @@ An installed profile can be uninstalled or reinstalled if needed.
 2. From the list of available actions, select the desired option: **Uninstall** or **Reinstall**.
 
 ---
-
