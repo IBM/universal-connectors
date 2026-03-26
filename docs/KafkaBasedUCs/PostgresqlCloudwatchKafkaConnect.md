@@ -102,12 +102,6 @@ instance.
 4. In the left panel, select **Logs**.
 5. Click **Log Groups**.
 
-
-**Notes:** Guardium Data Protection requires installation of
-  the [json_encode](https://www.elastic.co/guide/en/logstash-versioned-plugins/current/v3.0.3-plugins-filters-json_encode.html)
-  filter plug-in. 
-
-
 ## Exporting CloudWatch logs to SQS Using Lambda Function (Optional)
 
 To achieve load balancing of audit logs between different collectors, the audit logs can be exported from CloudWatch to SQS.
