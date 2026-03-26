@@ -58,6 +58,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 * [Trino](../filter-plugin/logstash-filter-trino-guardium/README.md)
 * [Yugabyte](../filter-plugin/logstash-filter-yugabyte-guardium/README.md)
 * [Sybase](../docs/KafkaBasedUCs/SybaseJDBCKafkaConnect.md)
+* [Sybase](../docs/KafkaBasedUCs/WatsonXKafkaConnect.md)
 
 ## Developing Plug-ins
 Users can develop their own universal connector plug-ins, if needed, and contribute them back to the open source project, if desired.
