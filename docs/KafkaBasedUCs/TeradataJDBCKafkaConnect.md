@@ -26,25 +26,31 @@ Download the [Teradata JDBC Driver](https://downloads.teradata.com/download/conn
 
 2. Log in to the Teradata system by using BTEQ with the credentials of a user (such as DBC), that has the permissions to execute ``DBQLAccessMacro``. In the following command, enter the password for the DBC user. </br>
 
-	```
-	bteq .logon <server-name>/dbc,<password>
-	```
+   ```
+   bteq .logon <server-name>/dbc,<password>
+   ```
 
-3. Create a user to read logs from audit tables through the logstash JDBC input plug-in by using the following command.
+3. Create a user to read logs from audit tables by using the following command.
 
-   	```
-   	CREATE USER <username> AS  PERMANENT = 100000000 BYTES   PASSWORD = "<password>"
+   ```
+   CREATE USER <username> AS  PERMANENT = 100000000 BYTES   PASSWORD = "<password>"
+   ```
+
 4. Grant read access of objects within the DBC user to newly created user by using the following command.
 
-    	GRANT SELECT ON "dbc" TO "<username>";
+   ```
+   GRANT SELECT ON "dbc" TO "<username>";
+   ```
 
-5. Enable Database Query Logging. 
+5. Enable Database Query Logging.
 
-	**Note:** Query logging involves a range of table/view combinations within the DBC database. Enable query logging for users, accounts, or applications only when necessary.
+   **Note:** Query logging involves a range of table/view combinations within the DBC database. Enable query logging for users, accounts, or applications only when necessary.
 
-	You can enable query logging for all users or for specific users. In the following example command, query logging is enabled for all users.
+   You can enable query logging for all users or for specific users. In the following example command, query logging is enabled for all users.
 
-		BEGIN QUERY LOGGING WITH SQL LIMIT SQLTEXT=0 ON ALL;
+   ```
+   BEGIN QUERY LOGGING WITH SQL LIMIT SQLTEXT=0 ON ALL;
+   ```
 
 	For more information about Database Query Logging, see [DBQL](https://docs.teradata.com/r/qOek~PvFMDdCF0yyBN6zkA/f7yJJ4siIiBUpoQVvvAwpQ).
 
@@ -95,7 +101,7 @@ Before you perform cleanup activities on DBQL logs, it is recommended to disable
 1. Back up log data. <br/>
    a. Create a duplicate log table in another database by using the ``Copy Table`` syntax for the `CREATE TABLE` statement. </br>
    ```
-   CT DBC.tablename AS databasename.tablename`
+   CT DBC.tablename AS databasename.tablename
    ```
    b. Back up the table to tape storage in accordance with your site backup policy.  <br>
    c. Drop the duplicate table using a ``DROP TABLE`` statement.
@@ -138,7 +144,7 @@ You can create a new datasource profile from the **Datasource Profile Management
 
     - To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
         - **Name** and **Description**.
-        - Select a **Plug-in Type** from the dropdown. For example, `Teradata Over JDBC Kafka Connect 2.0`.
+        - Select a **Plug-in Type** from the dropdown. For example, `Teradata Over JDBC Connect 2.0`.
 
     - To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file containing one or more profiles.  
       You can also choose from the following options:
@@ -150,7 +156,7 @@ You can create a new datasource profile from the **Datasource Profile Management
 
 ## Configuring JDBC Kafka Connect 2.0-based plugins
 
-The following table dercribes the fields that are specific to JDBC Kafka Connect 2.0 and similar plugins.
+The following table describes the fields that are specific to JDBC Kafka Connect 2.0 and similar plugins.
 
 | Field                    | Description                                                                                                                                                                              |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
