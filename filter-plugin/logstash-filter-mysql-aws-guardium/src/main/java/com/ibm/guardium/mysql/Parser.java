@@ -162,7 +162,7 @@ public class Parser {
                 && !data.get(Constants.MESSAGE).toString().isEmpty()
                 && isValidJson(data.get(Constants.MESSAGE).toString())){
 
-           JsonObject messageJSON = getJSON(data.get(Constants.MESSAGE).toString());
+            JsonObject messageJSON = getJSON(data.get(Constants.MESSAGE).toString());
 
             if(null != messageJSON && null != messageJSON.keySet()
                     && messageJSON.keySet().contains(Constants.LOG_GROUP)){
@@ -204,7 +204,7 @@ public class Parser {
 
     private static Time getTime(Map data) {
         if(null != data.get(Constants.TIMESTAMP) && !data.get(Constants.TIMESTAMP).toString().isEmpty()){
-           return getEpochTime(data.get(Constants.TIMESTAMP).toString());
+            return getEpochTime(data.get(Constants.TIMESTAMP).toString());
         }
         return null;
     }
