@@ -154,22 +154,6 @@ public class Parser {
     private static String getAccountIdDBName(Map data) {
 
         String dbNameAccountId = Constants.UNKNOWN_STRING;
-        String dbInstanceName = "";
-
-
-
-        if(null != data.get(Constants.MESSAGE)
-                && !data.get(Constants.MESSAGE).toString().isEmpty()
-                && isValidJson(data.get(Constants.MESSAGE).toString())){
-
-           JsonObject messageJSON = getJSON(data.get(Constants.MESSAGE).toString());
-
-            if(null != messageJSON && null != messageJSON.keySet()
-                    && messageJSON.keySet().contains(Constants.LOG_GROUP)){
-                String logGroup =  messageJSON.get(Constants.LOG_GROUP).toString();
-                dbInstanceName = getDBInstanceName(logGroup);
-            }
-        }
 
 
         if(null != data.get(Constants.ACCOUNT_ID)
@@ -191,20 +175,14 @@ public class Parser {
                     accountId = String.valueOf(arrayList.get(0));
                 }
             }
-            if (null != dbInstanceName && !dbInstanceName.isEmpty()){
-                dbNameAccountId =  accountId+":"+dbInstanceName+":"+database;
-            } else {
-                dbNameAccountId = accountId+":"+database;
-            }
-
-
+            dbNameAccountId = accountId+":"+database;
         }
         return dbNameAccountId;
     }
 
     private static Time getTime(Map data) {
         if(null != data.get(Constants.TIMESTAMP) && !data.get(Constants.TIMESTAMP).toString().isEmpty()){
-           return getEpochTime(data.get(Constants.TIMESTAMP).toString());
+            return getEpochTime(data.get(Constants.TIMESTAMP).toString());
         }
         return null;
     }
