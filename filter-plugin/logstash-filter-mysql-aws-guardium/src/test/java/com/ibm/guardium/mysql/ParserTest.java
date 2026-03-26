@@ -91,7 +91,7 @@ class ParserTest {
         assertTrue(record.getData().getOriginalSqlCommand().startsWith("/* ApplicationName=DBeaver"));
 
         // Validate db name format
-        assertTrue(record.getDbName().contains("123456789012:sample-mysql-instance:testdb"));
+        assertTrue(record.getDbName().contains("123456789012:testdb"));
     }
 
     @Test
@@ -168,7 +168,7 @@ class ParserTest {
         assertTrue(record.getData().getOriginalSqlCommand().startsWith("/* ApplicationName=DBeaver"));
 
         // Validate db name format
-        assertTrue(record.getDbName().contains("123456789012:sample-mysql-instance:testdb"));
+        assertTrue(record.getDbName().contains("123456789012:testdb"));
     }
 
 
@@ -244,7 +244,7 @@ class ParserTest {
         assertEquals("admin", record.getAccessor().getDbUser());
         assertNotNull(record.getException().getDescription());
 
-        assertTrue(record.getDbName().contains("123456789012:sample-mysql-instance:testdb"));
+        assertTrue(record.getDbName().contains("123456789012:testdb"));
     }
 
     @Test
@@ -316,7 +316,7 @@ class ParserTest {
 
         assertEquals("192.168.1.100", record.getSessionLocator().getClientIp());
 
-        assertTrue(record.getDbName().contains("123456789012:sample-mysql-instance:unknown"));
+        assertTrue(record.getDbName().contains("123456789012:unknown"));
         assertNotNull(record.getException());
         assertEquals("LOGIN_FAILED", record.getException().getExceptionTypeId());
     }
