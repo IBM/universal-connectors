@@ -5,6 +5,7 @@ JDBC Kafka Connect** plug-ins.
 
 ## Meet Sybase Over JDBC Connect
 
+* Tested versions: 16.1
 * Environments: On-prem
 * Supported inputs: Kafka connect JDBC 2.0 (pull)
 * Supported Guardium versions:
