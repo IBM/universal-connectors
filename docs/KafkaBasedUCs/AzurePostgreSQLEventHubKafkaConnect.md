@@ -1,12 +1,12 @@
 # Configuring Azure PostgreSQL datasource profiles for Kafka Connect Plug-ins
 
-reate and configure datasource profiles through central manager for **Azure
+Create and configure datasource profiles through central manager for **Azure
 PostgreSQL over Event Hub Kafka Connect** plug-ins.
 
 ### Meet Azure PostgreSQL over Event Hub Connect
 
 * Environment: Azure
-* Supported inputs: Azure EventHub connect JDBC 2.0
+* Supported inputs: Azure EventHub connect 2.0
 * Supported Guardium versions:
     * Guardium Data Protection: Appliance bundle 12.2.2 or later
 
