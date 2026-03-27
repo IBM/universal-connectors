@@ -5,6 +5,7 @@ MySQL over Event Hub Kafka Connect** plug-ins.
 
 ### Meet Azure MySQL over Event Hub Connect
 
+* Tested versions: 8.0.42 (Flexible Server)
 * Environment: Azure
 * Supported inputs: Azure EventHub connect 2.0
 * Supported Guardium versions:
