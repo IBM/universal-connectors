@@ -93,6 +93,7 @@ public class Parser extends CustomParser {
 
       construct.sentences.add(sentence);
       construct.setFullSql(sqlString);
+      construct.setRedactedSensitiveDataSql(sqlString);
       data.setConstruct(construct);
       data.setOriginalSqlCommand(sqlString);
     }
