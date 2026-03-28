@@ -4,7 +4,7 @@ You can create and configure datasource profiles through central manager for **A
 
 ## Meet MSSQL over JDBC Connect
 
-* Environments: On-prem
+* Environments: AWS
 * Supported inputs: Kafka connect JDBC 2.0 Customized (pull)
 * Supported Guardium versions:
     * Guardium Data Protection: Appliance bundle 12.2.2 or later
