@@ -230,6 +230,20 @@ public class Record {
         this.recordsAffected = recordsAffected;
     }
 
+    /**
+     * Execution time in microseconds for query execution
+     * Added for query duration tracking support
+     */
+    private Integer executionTime;
+
+    public Integer getExecutionTime() {
+        return executionTime;
+    }
+
+    public void setExecutionTime(Integer executionTime) {
+        this.executionTime = executionTime;
+    }
+
 
     @Override
     public String toString() {
@@ -245,6 +259,7 @@ public class Record {
                 ", data=" + data +
                 ", exception=" + exception +
                 ", recordsAffected=" + recordsAffected +
+                ", executionTime=" + executionTime +
                 '}';
     }
 }
