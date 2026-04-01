@@ -70,6 +70,23 @@ public class Parser {
                 }
                 record.setSessionId(Constants.UNKNOWN_STRING);
                 setOriginalSqlCommand(e, (Map<?, ?>) parsedMessageObj, record);
+                
+                // Extract and set execution time (duration) if available
+                // Duration is expected in the parsed_message as "duration" field in milliseconds
+                // Convert to microseconds and send as integer (to preserve decimal precision)
+                // Example: 1.176 ms → 1176 µs, 125.456 ms → 125456 µs
+                if (parsedMessage.get(Constants.DURATION) != null) {
+                    try {
+                        String durationStr = parsedMessage.get(Constants.DURATION).toString();
+                        // Parse the duration value in milliseconds
+                        double durationMs = Double.parseDouble(durationStr);
+                        // Convert milliseconds to microseconds by multiplying by 1000
+                        int executionTimeMicros = (int) Math.round(durationMs * 1000);
+                        record.setExecutionTime(executionTimeMicros);
+                    } catch (NumberFormatException nfe) {
+                        log.warn("Failed to parse duration value: {}", parsedMessage.get(Constants.DURATION), nfe);
+                    }
+                }
             }
         }
 

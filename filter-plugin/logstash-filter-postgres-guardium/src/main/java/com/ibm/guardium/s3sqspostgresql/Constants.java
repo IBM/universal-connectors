@@ -86,4 +86,6 @@ public interface Constants {
 
 	public static final String INSTANCE_NAME = "instance_name";
 
+	public static final String DURATION = "duration";
+
 }
