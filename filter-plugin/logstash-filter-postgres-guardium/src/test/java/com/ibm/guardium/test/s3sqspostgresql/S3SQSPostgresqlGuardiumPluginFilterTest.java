@@ -392,7 +392,7 @@ public class S3SQSPostgresqlGuardiumPluginFilterTest {
         Map<String, Object> parsedMsg = new HashMap<>();
         parsedMsg.put(Constants.DATABASE_NAME, "testdb");
         parsedMsg.put(Constants.USER_NAME, "user1");
-        parsedMsg.put(Constants.CONNECTION_FROM, "122.171.20.210:18514");
+        parsedMsg.put(Constants.CONNECTION_FROM, "10.171.20.210:18514");
         parsedMsg.put(Constants.SQL_STATE_CODE, Constants.SQL_STATE_CODE_SUCCESS);
         parsedMsg.put(Constants.DURATION, "0.919"); // Duration in milliseconds
 
@@ -409,7 +409,7 @@ public class S3SQSPostgresqlGuardiumPluginFilterTest {
         assertNotNull(record.getData());
         assertEquals("INSERT INTO users (name, email, age) VALUES ('Alice', 'alice@example.com', 25);", record.getData().getOriginalSqlCommand());
         assertEquals("user1", record.getAccessor().getDbUser());
-        assertEquals("122.171.20.210", record.getSessionLocator().getClientIp());
+        assertEquals("10.171.20.210", record.getSessionLocator().getClientIp());
         
         // Verify execution time is set correctly (0.919 ms → 919 µs)
         assertNotNull(record.getExecutionTime());
