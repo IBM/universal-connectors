@@ -384,4 +384,114 @@ public class S3SQSPostgresqlGuardiumPluginFilterTest {
             String result = Parser.getInstanceName(mockEvent);
             assertEquals("Postgres", result);
     }
+
+    @Test
+    public void testParseRecordWithDuration() throws ParseException {
+        Event mockEvent = mock(Event.class);
+
+        Map<String, Object> parsedMsg = new HashMap<>();
+        parsedMsg.put(Constants.DATABASE_NAME, "testdb");
+        parsedMsg.put(Constants.USER_NAME, "user1");
+        parsedMsg.put(Constants.CONNECTION_FROM, "122.171.20.210:18514");
+        parsedMsg.put(Constants.SQL_STATE_CODE, Constants.SQL_STATE_CODE_SUCCESS);
+        parsedMsg.put(Constants.DURATION, "0.919"); // Duration in milliseconds
+
+        when(mockEvent.getField(Constants.PARSED_MESSAGE)).thenReturn(parsedMsg);
+        when(mockEvent.getField(Constants.SESSION_ID)).thenReturn("28056");
+        when(mockEvent.getField(Constants.FULL_SQL_QUERY)).thenReturn("INSERT INTO users (name, email, age) VALUES ('Alice', 'alice@example.com', 25);");
+        when(mockEvent.getField(Constants.TIMESTAMP)).thenReturn("2025-11-17T16:21:08Z");
+        when(mockEvent.getField(Constants.ACCOUNT_ID)).thenReturn("123456");
+        when(mockEvent.getField(Constants.INSTANCE_NAME)).thenReturn("postgres");
+        when(mockEvent.getField(Constants.SERVER_HOST_NAME)).thenReturn("123456:postgres");
+
+        Record record = Parser.parseRecord(mockEvent);
+
+        assertNotNull(record.getData());
+        assertEquals("INSERT INTO users (name, email, age) VALUES ('Alice', 'alice@example.com', 25);", record.getData().getOriginalSqlCommand());
+        assertEquals("user1", record.getAccessor().getDbUser());
+        assertEquals("122.171.20.210", record.getSessionLocator().getClientIp());
+        
+        // Verify execution time is set correctly (0.919 ms → 919 µs)
+        assertNotNull(record.getExecutionTime());
+        assertEquals(Integer.valueOf(919), record.getExecutionTime());
+    }
+
+    @Test
+    public void testParseRecordWithLargerDuration() throws ParseException {
+        Event mockEvent = mock(Event.class);
+
+        Map<String, Object> parsedMsg = new HashMap<>();
+        parsedMsg.put(Constants.DATABASE_NAME, "testdb");
+        parsedMsg.put(Constants.USER_NAME, "user1");
+        parsedMsg.put(Constants.CONNECTION_FROM, "10.0.0.1:1234");
+        parsedMsg.put(Constants.SQL_STATE_CODE, Constants.SQL_STATE_CODE_SUCCESS);
+        parsedMsg.put(Constants.DURATION, "125.456"); // Duration in milliseconds
+
+        when(mockEvent.getField(Constants.PARSED_MESSAGE)).thenReturn(parsedMsg);
+        when(mockEvent.getField(Constants.SESSION_ID)).thenReturn("11");
+        when(mockEvent.getField(Constants.FULL_SQL_QUERY)).thenReturn("SELECT * FROM large_table WHERE id > 1000;");
+        when(mockEvent.getField(Constants.TIMESTAMP)).thenReturn("2023-11-10T10:15:30Z");
+        when(mockEvent.getField(Constants.ACCOUNT_ID)).thenReturn("123456");
+        when(mockEvent.getField(Constants.INSTANCE_NAME)).thenReturn("postgres");
+        when(mockEvent.getField(Constants.SERVER_HOST_NAME)).thenReturn("123456:postgres");
+
+        Record record = Parser.parseRecord(mockEvent);
+
+        assertNotNull(record.getData());
+        assertNotNull(record.getExecutionTime());
+        // 125.456 ms → 125456 µs
+        assertEquals(Integer.valueOf(125456), record.getExecutionTime());
+    }
+
+    @Test
+    public void testParseRecordWithoutDuration() throws ParseException {
+        Event mockEvent = mock(Event.class);
+
+        Map<String, Object> parsedMsg = new HashMap<>();
+        parsedMsg.put(Constants.DATABASE_NAME, "testdb");
+        parsedMsg.put(Constants.USER_NAME, "user1");
+        parsedMsg.put(Constants.CONNECTION_FROM, "10.0.0.1:1234");
+        parsedMsg.put(Constants.SQL_STATE_CODE, Constants.SQL_STATE_CODE_SUCCESS);
+        // No duration field
+
+        when(mockEvent.getField(Constants.PARSED_MESSAGE)).thenReturn(parsedMsg);
+        when(mockEvent.getField(Constants.SESSION_ID)).thenReturn("11");
+        when(mockEvent.getField(Constants.FULL_SQL_QUERY)).thenReturn("SELECT * FROM table;");
+        when(mockEvent.getField(Constants.TIMESTAMP)).thenReturn("2023-11-10T10:15:30Z");
+        when(mockEvent.getField(Constants.ACCOUNT_ID)).thenReturn("123456");
+        when(mockEvent.getField(Constants.INSTANCE_NAME)).thenReturn("postgres");
+        when(mockEvent.getField(Constants.SERVER_HOST_NAME)).thenReturn("123456:postgres");
+
+        Record record = Parser.parseRecord(mockEvent);
+
+        assertNotNull(record.getData());
+        // Execution time should be null when duration is not present
+        assertNull(record.getExecutionTime());
+    }
+
+    @Test
+    public void testParseRecordWithInvalidDuration() throws ParseException {
+        Event mockEvent = mock(Event.class);
+
+        Map<String, Object> parsedMsg = new HashMap<>();
+        parsedMsg.put(Constants.DATABASE_NAME, "testdb");
+        parsedMsg.put(Constants.USER_NAME, "user1");
+        parsedMsg.put(Constants.CONNECTION_FROM, "10.0.0.1:1234");
+        parsedMsg.put(Constants.SQL_STATE_CODE, Constants.SQL_STATE_CODE_SUCCESS);
+        parsedMsg.put(Constants.DURATION, "invalid_value"); // Invalid duration
+
+        when(mockEvent.getField(Constants.PARSED_MESSAGE)).thenReturn(parsedMsg);
+        when(mockEvent.getField(Constants.SESSION_ID)).thenReturn("11");
+        when(mockEvent.getField(Constants.FULL_SQL_QUERY)).thenReturn("SELECT * FROM table;");
+        when(mockEvent.getField(Constants.TIMESTAMP)).thenReturn("2023-11-10T10:15:30Z");
+        when(mockEvent.getField(Constants.ACCOUNT_ID)).thenReturn("123456");
+        when(mockEvent.getField(Constants.INSTANCE_NAME)).thenReturn("postgres");
+        when(mockEvent.getField(Constants.SERVER_HOST_NAME)).thenReturn("123456:postgres");
+
+        Record record = Parser.parseRecord(mockEvent);
+
+        assertNotNull(record.getData());
+        // Execution time should be null when duration parsing fails
+        assertNull(record.getExecutionTime());
+    }
 }
