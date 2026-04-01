@@ -101,6 +101,34 @@ Object auditing affects the performance less than session auditing, due to the f
 6. Select the database instance in its configuration section. The state of the DB Parameter Group is pending-reboot.
 7. Reboot the database instance for the changes to take effect.
 
+#### (Optional) Enabling Query Duration Logging
+
+Query duration logging allows you to track and log queries based on their execution time. This can be useful for performance monitoring and identifying slow queries.
+
+##### Steps to Enable Query Duration Logging
+
+1. **Modify the Parameter Group**
+   - Navigate to the RDS Console
+   - Go to Parameter Groups
+   - Select an existing parameter group
+   - Edit the following parameter:
+
+2. **Parameter Configuration**
+
+   Configure the following parameters in your parameter group:
+
+   Set these parameters: 
+   - `log_min_duration_statement` = `0` (to log all queries with duration)
+   - `pgaudit.log` = `none` (disable audit logs to avoid duplicate entries in CloudWatch)
+
+3. **Other Values and Behavior of `log_min_duration_statement`**
+   - `0` → Logs all queries with duration
+   - `-1` → Disables duration-based logging
+   - `5000` → Logs queries running longer than 5 seconds
+
+4. Save the changes
+
+**Note:** This is a dynamic parameter, so changes are typically applied without requiring a database reboot.
 
 ## Viewing the PGAudit logs
 
