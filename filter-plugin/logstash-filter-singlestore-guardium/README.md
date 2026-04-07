@@ -16,12 +16,21 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## 1. Enabling the audit logs
 
 ### Procedure
-1. Enable the audit logs.  
+1. Enable the audit logs.
+
+	To capture parameterized SQL statements, use:
+	```text
+	sdb-admin update-config --all --key "auditlog_level" --value "ALL-QUERIES"
+	```
+
+	To capture plaintext SQL statements, use:
 	```text
 	sdb-admin update-config --all --key "auditlog_level" --value "ALL-QUERIES-PLAINTEXT"
 	```
+
+	 For more information about audit logging levels, see [SingleStore audit logging levels](https://docs.singlestore.com/db/v9.0/security/audit-logging/audit-logging-levels/).
 	
-2. Restart the nodes.  
+2. Restart the nodes.
 	```text
 	sdb-admin restart-node --all
 	```
