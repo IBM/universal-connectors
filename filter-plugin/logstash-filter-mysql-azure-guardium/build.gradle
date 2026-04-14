@@ -40,7 +40,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
 }
