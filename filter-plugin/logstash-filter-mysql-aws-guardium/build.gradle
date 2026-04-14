@@ -124,7 +124,7 @@ jacocoTestCoverageVerification {
 check.dependsOn jacocoTestCoverageVerification, jacocoTestReport
 
 shadowJar {
-    classifier = null
+    archiveClassifier = null
 }
 
 // Custom Tasks

@@ -77,7 +77,7 @@ apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: 'jacoco'
 
 shadowJar {
-    classifier = null
+    archiveClassifier = null
 }
 
 dependencies {

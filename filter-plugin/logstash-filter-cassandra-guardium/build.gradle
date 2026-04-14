@@ -3,6 +3,9 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
 
+def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
@@ -47,9 +50,6 @@ buildscript {
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
         classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
-    }
-}
-
 def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
 def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
@@ -73,7 +73,7 @@ tasks.register("vendor"){
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-    classifier = null
+    archiveClassifier = null
 }
 
 dependencies {
