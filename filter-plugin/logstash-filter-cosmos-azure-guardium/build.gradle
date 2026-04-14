@@ -2,18 +2,27 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
+}
+
 def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
 def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
 
-def jacocoVersion = '0.8.11'
-
 apply plugin: 'jacoco'
-jacoco {
-    toolVersion = "${jacocoVersion}"
-}
-
-
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
 // ===========================================================================
@@ -34,21 +43,6 @@ pluginInfo.pluginName      = "azure_cosmos_guardium_filter" // must match the @L
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        mavenCentral()
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
-    }
-}
 
 
 repositories {
@@ -104,6 +98,17 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+test {
+    jvmArgs = [
+        '--add-opens=java.base/java.lang=ALL-UNNAMED',
+        '--add-opens=java.base/java.util=ALL-UNNAMED',
+        '--add-opens=java.base/java.text=ALL-UNNAMED',
+        '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
+        '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
+        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
+    ]
+}
+
 tasks.register("vendor"){
     dependsOn shadowJar
     doLast {
@@ -138,18 +143,6 @@ tasks.register("gem"){
     doLast {
         buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
     }
-
-test {
-    jvmArgs = [
-        '--add-opens=java.base/java.lang=ALL-UNNAMED',
-        '--add-opens=java.base/java.util=ALL-UNNAMED',
-        '--add-opens=java.base/java.text=ALL-UNNAMED',
-        '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
-        '--add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
-    ]
-}
 }
 jacocoTestReport {
     reports {

@@ -52,6 +52,7 @@ if (minimumCoverageStr.endsWith("%")) {
 }
 def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
 
+
 repositories {
     mavenCentral()
 }
@@ -116,7 +117,6 @@ test {
 
 
 
-
 tasks.register("generateRubySupportFiles") {
     doLast {
         generateRubySupportFilesForPlugin(project.description, project.group, version)
@@ -165,8 +165,8 @@ jacocoTestReport {
         html.required = true
         xml.required = true
         csv.required = true
-        html.destination file("${buildDir}/reports/jacoco")
-        csv.destination file("${buildDir}/reports/jacoco/all.csv")
+        html.outputLocation = file("${buildDir}/reports/jacoco")
+        csv.outputLocation = file("${buildDir}/reports/jacoco/all.csv")
     }
     executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: [
             '**/*.exec'

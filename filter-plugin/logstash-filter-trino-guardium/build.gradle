@@ -2,13 +2,28 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
-
-
 apply plugin: 'jacoco'
 
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0"
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
+
+}
+
+def universalConnectorsDir = project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load(new File("${universalConnectorsDir}/versions.yml").newInputStream())
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 apply plugin: "com.github.johnrengelman.shadow"
@@ -34,31 +49,13 @@ pluginInfo.pluginName = "trino_guardium_filter" // must match the @LogstashPlugi
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-def jacocoVersion = '0.8.9'
+def jacocoVersion = '0.8.11'
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
     minimumCoverageStr = minimumCoverageStr.substring(0, minimumCoverageStr.length() - 1)
 }
 def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
-
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        mavenCentral()
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0"
-        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
-    }
-
-}
-
 
 
 repositories {
@@ -118,14 +115,6 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 test {
-    jvmArgs = [
-        '--add-opens=java.base/java.lang=ALL-UNNAMED',
-        '--add-opens=java.base/java.util=ALL-UNNAMED',
-        '--add-opens=java.base/java.text=ALL-UNNAMED',
-        '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
-    ]
     useJUnitPlatform()
 }
 tasks.register("generateRubySupportFiles") {
@@ -176,8 +165,8 @@ jacocoTestReport {
         html.required = true
         xml.required = true
         csv.required = true
-        html.destination file("${buildDir}/reports/jacoco")
-        csv.destination file("${buildDir}/reports/jacoco/all.csv")
+        html.outputLocation = file("${buildDir}/reports/jacoco")
+        csv.outputLocation = file("${buildDir}/reports/jacoco/all.csv")
     }
     executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: [
             '**/*.exec'
