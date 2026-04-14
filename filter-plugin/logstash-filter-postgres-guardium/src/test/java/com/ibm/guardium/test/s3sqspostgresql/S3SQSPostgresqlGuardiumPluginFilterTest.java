@@ -3,7 +3,15 @@ package com.ibm.guardium.test.s3sqspostgresql;
 import co.elastic.logstash.api.Event;
 import com.ibm.guardium.s3sqspostgresql.Constants;
 import com.ibm.guardium.s3sqspostgresql.Parser;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Accessor;
+import com.ibm.guardium.universalconnector.commons.structures.Construct;
+import com.ibm.guardium.universalconnector.commons.structures.Data;
+import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.Sentence;
+import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
+import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
+import com.ibm.guardium.universalconnector.commons.structures.Time;
 import org.junit.Test;
 import sun.security.krb5.internal.PAEncTSEnc;
 
