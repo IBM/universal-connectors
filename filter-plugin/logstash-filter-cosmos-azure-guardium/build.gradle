@@ -8,6 +8,9 @@ gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE
 
 
 apply plugin: 'jacoco'
+jacoco {
+    toolVersion = "${jacocoVersion}"
+}
 
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
@@ -30,6 +33,8 @@ pluginInfo.pluginName      = "azure_cosmos_guardium_filter" // must match the @L
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+def jacocoVersion = \'0.8.11\'
 
 buildscript {
     repositories {
@@ -141,7 +146,9 @@ test {
         '--add-opens=java.base/java.util=ALL-UNNAMED',
         '--add-opens=java.base/java.text=ALL-UNNAMED',
         '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
-        '--add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED'
+        '--add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED',
+        '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
+        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
     ]
 }
 }

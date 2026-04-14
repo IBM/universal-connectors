@@ -8,6 +8,9 @@ gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE
 
 
 apply plugin: 'jacoco'
+jacoco {
+    toolVersion = "${jacocoVersion}"
+}
 
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
@@ -29,6 +32,8 @@ pluginInfo.pluginName      = "azure_mysql_guardium_filter" // must match the @Lo
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+def jacocoVersion = \'0.8.11\'
 
 buildscript {
     repositories {
