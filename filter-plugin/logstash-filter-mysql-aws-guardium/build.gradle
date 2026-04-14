@@ -83,7 +83,6 @@ test {
 
 jacoco {
     toolVersion = "${jacocoVersion}"
-    reportsDir = file("$buildDir/reports/jacoco")
 }
 
 jacocoTestReport {
