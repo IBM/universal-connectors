@@ -86,7 +86,6 @@ tasks.withType(JavaCompile) {
 /*spotbugs {
     ignoreFailures = true
     showStackTraces = false
-    reportsDir = file("$buildDir/spotbugs")
 }
 
 spotbugsMain {
