@@ -33,7 +33,7 @@ pluginInfo.pluginName      = "intersystems_iris_guardium_filter" // must match t
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-def jacocoVersion = \'0.8.11\'
+def jacocoVersion = '0.8.11'
 
 buildscript {
     repositories {
