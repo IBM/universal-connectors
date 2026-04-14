@@ -53,7 +53,7 @@ buildscript {
 
     dependencies {
         classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:4.0.1"
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0"
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
 
@@ -118,6 +118,14 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 test {
+    jvmArgs = [
+        '--add-opens=java.base/java.lang=ALL-UNNAMED',
+        '--add-opens=java.base/java.util=ALL-UNNAMED',
+        '--add-opens=java.base/java.text=ALL-UNNAMED',
+        '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
+        '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
+        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
+    ]
     useJUnitPlatform()
 }
 tasks.register("generateRubySupportFiles") {
