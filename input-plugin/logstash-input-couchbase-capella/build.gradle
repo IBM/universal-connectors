@@ -10,6 +10,10 @@ buildscript {
         gradlePluginPortal()
         jcenter()
     }
+    
+    dependencies {
+        classpath 'org.yaml:snakeyaml:2.2'
+    }
 }
 
 plugins {
