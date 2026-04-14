@@ -37,7 +37,7 @@ In order to support a few features one zip has to be added with the name "guardi
 2. Click ```Create API Key```.
 3. Enter the API Key Information.
    a.Enter a Description.
-   b.In the Organization Permissions menu, select the new role or roles for the API key.
+   b.In the Organization Permissions menu, select the new role or roles for the API key. Minimum permission: ```Project Data Access Read Only``` (For more information, https://www.mongodb.com/docs/atlas/reference/user-roles/#mongodb-authrole-Project-Data-Access-Read-Only).
 4. Click ```Next```.
 5. Copy and save the Public Key.
 6. Copy and save the Private Key.
