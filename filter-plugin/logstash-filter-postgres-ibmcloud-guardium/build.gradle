@@ -2,14 +2,16 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
-apply plugin: 'jacoco'
-jacoco {
-    toolVersion = "${jacocoVersion}"
-}
 def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
 def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
 
+def jacocoVersion = '0.8.11'
+
+apply plugin: 'jacoco'
+jacoco {
+    toolVersion = "${jacocoVersion}"
+}
 
 apply plugin: 'eclipse'
 
@@ -35,7 +37,6 @@ pluginInfo.pluginName      = "icd_postgresql_guardium_filter" // must match the 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-def jacocoVersion = '0.8.11'
 buildscript {
     repositories {
         mavenCentral()

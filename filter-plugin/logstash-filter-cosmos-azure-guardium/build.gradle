@@ -6,6 +6,7 @@ def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
 def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
 
+def jacocoVersion = '0.8.11'
 
 apply plugin: 'jacoco'
 jacoco {
@@ -33,8 +34,6 @@ pluginInfo.pluginName      = "azure_cosmos_guardium_filter" // must match the @L
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-def jacocoVersion = '0.8.11'
 
 buildscript {
     repositories {
