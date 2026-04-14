@@ -12,8 +12,8 @@ version "${file("VERSION").text.trim()}"
 // ===========================================================================
 
 
-sourceCompatibility = 21
-targetCompatibility = 21
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 buildscript {
     repositories {
