@@ -2,6 +2,11 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
+def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+
+
 apply plugin: 'jacoco'
 
 
@@ -40,9 +45,6 @@ buildscript {
     }
 }
 
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
 
 repositories {
     mavenCentral()
