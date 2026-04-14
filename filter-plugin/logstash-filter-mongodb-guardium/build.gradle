@@ -145,7 +145,6 @@ apply plugin: "org.barfuin.gradle.jacocolog"
 // ------------------------------------
 jacoco {
     toolVersion = "${jacocoVersion}"
-    reportsDir = file("$buildDir/reports/jacoco")
 }
 jacocoTestReport {
     // You will see "Report -> file://...." at the end of a JaCoCo build
