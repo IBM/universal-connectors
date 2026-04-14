@@ -1,13 +1,28 @@
 import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
+apply plugin: 'java'
+
+buildscript {
+    buildscript {
+        repositories {
+            maven {
+                url "https://plugins.gradle.org/m2/"
+            }
+            mavenCentral()
+            jcenter()
+        }
+
+        dependencies {
+            classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+            classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+        }
+    }
+}
+
 def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
 def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
-
-
-apply plugin: 'java'
-
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
@@ -29,23 +44,6 @@ pluginInfo.pluginName      = "mongo_atlas_input" // must match the @LogstashPlug
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-buildscript {
-    buildscript {
-        repositories {
-            maven {
-                url "https://plugins.gradle.org/m2/"
-            }
-            mavenCentral()
-            jcenter()
-        }
-
-        dependencies {
-            classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-            classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
-        }
-    }
-}
 
 
 repositories {
