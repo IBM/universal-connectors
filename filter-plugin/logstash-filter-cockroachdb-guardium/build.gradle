@@ -31,8 +31,8 @@ pluginInfo.pluginClass = "CockroachdbGuardiumFilter"
 pluginInfo.pluginName = "cockroachdb_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 def jacocoVersion = '0.8.9'
 // minimumCoverage can be set by Travis ENV

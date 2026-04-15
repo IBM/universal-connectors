@@ -43,8 +43,8 @@ pluginInfo.pluginType      = "filter"
 pluginInfo.pluginClass     = "S3SQSPostgresqlGuardiumPluginFilter"
 pluginInfo.pluginName      = "s3sqs_postgresql_guardium_plugin_filter"
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 def jacocoVersion = '0.8.4'
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
