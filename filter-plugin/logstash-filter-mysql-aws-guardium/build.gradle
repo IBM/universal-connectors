@@ -42,8 +42,8 @@ pluginInfo.pluginType      = "filter"
 pluginInfo.pluginClass     = "MySQLGuardiumPluginFilter"
 pluginInfo.pluginName      = "mysql_guardium_plugin_filter"
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 // Code coverage
 def jacocoVersion = '0.8.4'

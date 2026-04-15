@@ -42,8 +42,8 @@ pluginInfo.pluginType      = "filter"
 pluginInfo.pluginClass     = "ICDPostgresqlGuardiumFilter"
 pluginInfo.pluginName      = "icd_postgresql_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()

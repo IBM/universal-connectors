@@ -22,8 +22,8 @@ pluginInfo.pluginName      = "elasticsearch_guardium_filter" // must match the @
 // ===========================================================================
 
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 buildscript {
     repositories {
