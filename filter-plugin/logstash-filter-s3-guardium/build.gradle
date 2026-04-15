@@ -112,7 +112,7 @@ test {
         '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
         '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED',
         '--add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED',
-        '--add-exports=ALL-UNNAMED/com.ibm.guardium.universalconnector.commons.structures=ALL-UNNAMED'
+        '--illegal-access=permit'
     ]
 }
 
