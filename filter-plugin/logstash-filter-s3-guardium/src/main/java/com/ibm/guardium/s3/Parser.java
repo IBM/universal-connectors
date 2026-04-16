@@ -23,7 +23,8 @@ import com.ibm.guardium.universalconnector.commons.structures.Time;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sun.net.util.IPAddressUtil;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class Parser {
 
@@ -287,9 +288,11 @@ public class Parser {
     }
 
     public static String validateIP(String sourceIPAddress){
-        if (IPAddressUtil.isIPv4LiteralAddress(sourceIPAddress) || IPAddressUtil.isIPv6LiteralAddress(sourceIPAddress)){
+        try {
+            // InetAddress.getByName() validates both IPv4 and IPv6 addresses
+            InetAddress.getByName(sourceIPAddress);
             return sourceIPAddress;
-        } else {
+        } catch (UnknownHostException e) {
             return UNKNOWN_IP;
         }
     }
