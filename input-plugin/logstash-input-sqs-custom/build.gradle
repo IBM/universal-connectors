@@ -36,6 +36,7 @@ buildscript {
 
     dependencies {
         classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
     ext {
 
@@ -64,14 +65,14 @@ dependencies {
 
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.1'
 
-    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "**/logstash-core*.jar")
-    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
+    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core.jar")
+    implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 
 
-    testCompile 'junit:junit:4.13.1'
-    testCompile 'org.jruby:jruby-complete:9.3.2.0'
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'org.jruby:jruby-complete:9.3.2.0'
 
-    testCompile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.1")
 
 }
