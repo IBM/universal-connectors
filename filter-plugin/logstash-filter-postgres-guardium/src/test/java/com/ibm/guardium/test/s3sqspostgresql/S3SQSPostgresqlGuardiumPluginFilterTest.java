@@ -13,7 +13,6 @@ import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 import org.junit.Test;
-import sun.security.krb5.internal.PAEncTSEnc;
 
 import java.text.ParseException;
 import java.util.Arrays;
