@@ -2,12 +2,32 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:4.0.1"
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
+}
+
+def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+
+apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
+
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'jacoco'
 apply plugin: 'org.barfuin.gradle.jacocolog'
-
-// Load Ruby plugin support
-apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
 // Plugin Info
 group                      = 'com.ibm.guardium.mysql'
@@ -22,8 +42,8 @@ pluginInfo.pluginType      = "filter"
 pluginInfo.pluginClass     = "MySQLGuardiumPluginFilter"
 pluginInfo.pluginName      = "mysql_guardium_plugin_filter"
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 // Code coverage
 def jacocoVersion = '0.8.4'
@@ -40,8 +60,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
-        classpath 'org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2'
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+        classpath 'org.barfuin.gradle.jacocolog:gradle-jacoco-log:4.0.1'
     }
 }
 
@@ -78,14 +98,13 @@ test {
 
 jacoco {
     toolVersion = "${jacocoVersion}"
-    reportsDir = file("$buildDir/reports/jacoco")
 }
 
 jacocoTestReport {
     reports {
-        html.enabled true
-        xml.enabled true
-        csv.enabled true
+        html.required = true
+        xml.required = true
+        csv.required = true
         html.destination file("${buildDir}/reports/jacoco")
         csv.destination file("${buildDir}/reports/jacoco/all.csv")
     }
@@ -119,7 +138,7 @@ jacocoTestCoverageVerification {
 check.dependsOn jacocoTestCoverageVerification, jacocoTestReport
 
 shadowJar {
-    classifier = null
+    archiveClassifier = null
 }
 
 // Custom Tasks
