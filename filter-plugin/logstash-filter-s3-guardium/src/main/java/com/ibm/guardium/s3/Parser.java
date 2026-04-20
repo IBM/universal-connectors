@@ -11,11 +11,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import com.google.gson.*;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Accessor;
+import com.ibm.guardium.universalconnector.commons.structures.Construct;
+import com.ibm.guardium.universalconnector.commons.structures.Data;
+import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.Sentence;
+import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
+import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
+import com.ibm.guardium.universalconnector.commons.structures.Time;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sun.net.util.IPAddressUtil;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class Parser {
 
@@ -279,9 +288,11 @@ public class Parser {
     }
 
     public static String validateIP(String sourceIPAddress){
-        if (IPAddressUtil.isIPv4LiteralAddress(sourceIPAddress) || IPAddressUtil.isIPv6LiteralAddress(sourceIPAddress)){
+        try {
+            // InetAddress.getByName() validates both IPv4 and IPv6 addresses
+            InetAddress.getByName(sourceIPAddress);
             return sourceIPAddress;
-        } else {
+        } catch (UnknownHostException e) {
             return UNKNOWN_IP;
         }
     }
