@@ -2,7 +2,14 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
+def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+
+
 apply plugin: 'jacoco'
+
+
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
 // ===========================================================================
@@ -21,8 +28,8 @@ pluginInfo.pluginClass     = "[YourFilterClass]" // e.g., "MongoDbGuardiumFilter
 pluginInfo.pluginName      = "[your_filter_name]" // e.g., "mongodb_guardium_filter" - must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 buildscript {
     repositories {
@@ -34,13 +41,11 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
 }
 
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 
 repositories {
     mavenCentral()
@@ -58,7 +63,7 @@ task copyDependencyLibs(type: Copy) {
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-    classifier = null
+    archiveClassifier = null
     transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer)
 }
 
@@ -140,8 +145,8 @@ tasks.register("gem"){
 
 jacocoTestReport {
     reports {
-        xml.enabled true
-        html.enabled true
+        xml.required = true
+        html.required = true
     }
     
     afterEvaluate { // (optional) : to exclude classes / packages from coverage

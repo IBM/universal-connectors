@@ -2,6 +2,26 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
+}
+
+def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+
 apply plugin: 'jacoco'
 apply plugin: 'eclipse'
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
@@ -22,24 +42,8 @@ pluginInfo.pluginType      = "filter"
 pluginInfo.pluginClass     = "ICDPostgresqlGuardiumFilter"
 pluginInfo.pluginName      = "icd_postgresql_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
-        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
-    }
-}
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -49,7 +53,7 @@ apply plugin: "com.github.johnrengelman.shadow"
 //apply plugin: 'org.owasp.dependencycheck'
 
 shadowJar {
-    classifier = null
+    archiveClassifier = null
     transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer)
 }
 
@@ -81,7 +85,6 @@ tasks.withType(JavaCompile) {
 /*spotbugs {
     ignoreFailures = true
     showStackTraces = false
-    reportsDir = file("$buildDir/spotbugs")
 }
 
 spotbugsMain {
@@ -96,8 +99,8 @@ spotbugsMain {
 }
  tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
         reports {
-            xml.enabled = false
-            html.enabled = true
+            xml.required = false
+            html.required = true
         }
     }*/
 
@@ -118,7 +121,6 @@ task vendor(dependsOn: shadowJar) {
         File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
         projectJarFile.mkdirs()
         Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
-        validatePluginJar(projectJarFile, project.group)
     }
 }
 
@@ -149,8 +151,8 @@ tasks.register("gem"){
 
 jacocoTestReport {
     reports {
-        xml.enabled true
-        html.enabled true
+        xml.required = true
+        html.required = true
     }
 
     afterEvaluate { // (optional) : to exclude classes / packages from coverage

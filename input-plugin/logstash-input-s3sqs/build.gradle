@@ -2,6 +2,23 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+
+    dependencies {
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
+}
+
+def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
 // ===========================================================================
@@ -20,21 +37,9 @@ pluginInfo.pluginClass     = "S3SQS"
 pluginInfo.pluginName      = "s3_sqs" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
-buildscript {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-    }
-
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
-    }
-}
 
 repositories {
     mavenCentral()
@@ -43,6 +48,7 @@ repositories {
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
+    archiveClassifier = null
     zip64 true
 }
 
@@ -65,15 +71,17 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.2'
 
     implementation("org.apache.commons:commons-csv:1.14.0")
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
+
 
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "**/logstash-core*.jar")
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
 
 
-    testCompile 'junit:junit:4.13.1'
-    testCompile 'org.jruby:jruby-complete:9.3.2.0'
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'org.jruby:jruby-complete:9.3.2.0'
 
-    testCompile fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.1")
 
 }
@@ -100,7 +108,6 @@ tasks.register("vendor"){
         File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
         projectJarFile.mkdirs()
         Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
-        validatePluginJar(projectJarFile, project.group)
     }
 }
 

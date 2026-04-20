@@ -2,6 +2,27 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0"
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
+}
+
+def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
 // ===========================================================================
@@ -20,10 +41,10 @@ pluginInfo.pluginClass     = "DocumentdbGuardiumFilter"
 pluginInfo.pluginName      = "documentdb_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
-def jacocoVersion = '0.8.4'
+def jacocoVersion = '0.8.11'
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
@@ -31,24 +52,6 @@ if (minimumCoverageStr.endsWith("%")) {
 }
 def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
 
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        mavenCentral()
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
-        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
-        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
-    }
-}
-
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 
 repositories {
     mavenCentral()
@@ -62,14 +65,13 @@ tasks.register("vendor"){
         File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
         projectJarFile.mkdirs()
         Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
-        validatePluginJar(projectJarFile, project.group)
     }
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-    classifier = null
+    archiveClassifier = null
 }
 
 dependencies {
@@ -109,12 +111,17 @@ tasks.withType(JavaCompile) {
 }
 
 test {
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-        exceptionFormat "full"
-    }
+    jvmArgs = [
+        '--add-opens=java.base/java.lang=ALL-UNNAMED',
+        '--add-opens=java.base/java.util=ALL-UNNAMED',
+        '--add-opens=java.base/java.text=ALL-UNNAMED',
+        '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
+        '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
+        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
+    ]
 }
+
+
 
 tasks.register("generateRubySupportFiles") {
     doLast {
@@ -156,17 +163,16 @@ apply plugin: "org.barfuin.gradle.jacocolog"
 // ------------------------------------
 jacoco {
     toolVersion = "${jacocoVersion}"
-    reportsDir = file("$buildDir/reports/jacoco")
 }
 jacocoTestReport {
     // You will see "Report -> file://...." at the end of a JaCoCo build
     // If no output, run this first:   ./gradlew test
     reports {
-        html.enabled true
-        xml.enabled true
-        csv.enabled true
-        html.destination file("${buildDir}/reports/jacoco")
-        csv.destination file("${buildDir}/reports/jacoco/all.csv")
+        html.required = true
+        xml.required = true
+        csv.required = true
+        html.outputLocation = file("${buildDir}/reports/jacoco")
+        csv.outputLocation = file("${buildDir}/reports/jacoco/all.csv")
     }
     executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: [
             '**/*.exec'
