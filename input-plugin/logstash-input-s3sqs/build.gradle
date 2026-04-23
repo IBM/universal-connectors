@@ -73,6 +73,10 @@ dependencies {
     implementation("org.apache.commons:commons-csv:1.14.0")
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
 
+    // Netty dependency overrides to fix CVE-2025-55163, CVE-2025-58056, CVE-2025-58057, CVE-2026-33870, CVE-2026-33871
+    implementation group: 'io.netty', name: 'netty-codec-http2', version: '4.2.11.Final'
+    implementation group: 'io.netty', name: 'netty-codec-http', version: '4.2.10.Final'
+    implementation group: 'io.netty', name: 'netty-codec', version: '4.1.125.Final'
 
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "**/logstash-core*.jar")
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
