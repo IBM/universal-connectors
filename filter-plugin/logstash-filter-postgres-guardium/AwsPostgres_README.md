@@ -1,325 +1,305 @@
-# AWS postgres
+# {{Configuring PostgreSQL audit logging for AWS RDS with Guardium}}
 
 ## Meet AWS Postgres
 
 * Environment: AWS
 * Supported inputs: CloudWatch (pull), SQS (pull)
 * Supported Guardium versions: 
-    * Guardium Data Protection: 11.4 and above
-    * Guardium Data Security Center: 3.2 and above
+    * Guardium Data Protection: 11.4 and later
+    * Guardium Data Security Center: 3.2 and later
 
-## Configuring native logging
+## Configuring native logging (optional)
 
- If desired, enable encryption on the database instances. In **Additional configuration** > **Log exports**, select the Postgresql log type to publish to Amazon CloudWatch.
+You can enable encryption on the database instances by completing the following step. 
+
+Click **Additional configuration** > **Log exports**, select the **Postgresql** log type to publish to Amazon CloudWatch.
 
 ## Enabling the PGAudit extension
 
-There are different ways of auditing and logging in Postgres. For this exercise, we will use PGAudit, the open
-source audit logging extension for PostgreSQL 9.5+. This extension supports logging for Sessions or Objects.
-Configure either Session Auditing or Object Auditing. You cannot enable both at the same time.
+There are different ways of auditing and logging in PostgreSQL. This procedure uses PGAudit, the open
+source audit logging extension for PostgreSQL 9.5 and later. 
 
-### Procedure
+This extension supports logging for sessions or objects. You can configure either session auditing or object auditing, but not both at the same time.
 
-1. Creating the database parameter group
-2. Enabling Auditing using **either one** of the following:
+1. Create the database parameter group.
+2. Enable auditing by using one of the following methods:
 
-    a. Enabling PGAudit Session Auditing
+    a. Enable PGAudit session auditing.
 
-    b. Enabling PGAudit Object Auditing
+    b. Enable PGAudit object auditing.
 
-3. Associating the DB Parameter Group with the database Instance
+3. Associate the DB parameter group with the database instance.
 
-#### Creating the database parameter group
+### Creating the database parameter group
 
-When you create a database instance, it is associated with the default parameter group. Follow these
-steps to create a new parameter group:
+When you create a database instance, it is associated with the default parameter group. To create a new parameter group, complete the following steps.
 
-#### Procedure
-1. Go to **Services** > **Database** > **Parameter groups**.
+1. {{From the AWS console}}, go to **Services** > **Database** > **Parameter groups**.
 2. Click **Create Parameter Group**.
-3. Enter the parameter group details.
+3. Configure the following parameter group fields:
 
-	• Select the parameter group family. For example, postgres 12. This version should match the version of the database that is created and with which this parameter group is to be associated.
-
-	• Enter the DB parameter group name.
-
-	• Enter the DB parameter group description.
-4. Click **Save**. The new group appears in the **Parameter Groups** section.
+	a.  Select the parameter group family. </br>
+&ensp;&ensp;For example, **postgres 12**. This version must match the version of the database that is created and with which this parameter group is to be associated. </br>
+	b. Enter the database parameter group name. </br>
+	c. Enter the database parameter group description. </br>
+	
+5. Click **Save**. The new group appears in the **Parameter Groups** section.
 
 ### Enabling PGAudit session auditing
 
-Session auditing allows you to log activities that are selected in the pgaudit.log for logging. Be cautious when you select which activities will be logged, as logged activities can affect the performance of the database instance.
+Session auditing logs the activities that you specify in the pgaudit.log parameter.
 
+**Note:** When you select which activities to log, as extensive logging can affect database instance performance.
 
-#### Procedure
 1. In the Amazon RDS panel, select **Parameter Groups**.
 2. Select the parameter group that you created.
-3. Click **Edit parameters** and add these settings:
+3. Click **Edit parameters** and add the following settings:
 
-	• `pgaudit.log = all, -misc`
+	a. `pgaudit.log = all, -misc` </br>
 
-	(Select the options from the **Allowed values** list. You can specify multiple values and separate them with “,”. The values that are marked with “-” are excluded while logging.)
+	**Note:** Select the options from the **Allowed values** list. You can specify multiple values and separate them with commas `,`. The values that are marked with a hyphen `-` are excluded from logging. </br>
 
-	• `pgaudit.log_catalog = 0`
+	b. `pgaudit.log_catalog = 0` </br>
 
-	• `pgaudit.log_parameter = 0`
+	c. `pgaudit.log_parameter = 0` </br>
 
-	• `shared_preload_libraries = pgaudit`
+	d. `shared_preload_libraries = pgaudit` </br>
 
-	• `log_error_verbosity = default`
+	e. `log_error_verbosity = default` </br>
 
 
-### Enabling PGAudit Object Auditing
+### Enabling PGAudit object auditing
 
 Object auditing affects the performance less than session auditing, due to the fine-grained criteria of tables and columns that you can choose for auditing.
 
-#### Procedure
-1. Set these parameters:
+1. Configure the following parameters:
 
-	• `pgaudit.log = none` (since this is not needed for extensive SESSION logging)
+	a. `pgaudit.log = none` </br>
 
-	• `pgaudit.role = rds_pgaudit`
+	b. `pgaudit.role = rds_pgaudit` </br>
 
-	• `pgaudit.log_catalog = 0`
+	c. `pgaudit.log_catalog = 0` </br>
 
- 	• `pgaudit.log_parameter = 0`
+ 	d. `pgaudit.log_parameter = 0` </br>
 
- 	• `shared_preload_libraries = pgaudit`
+ 	e. `shared_preload_libraries = pgaudit` </br>
 
-	• `log_error_verbosity = default`
+	f. `log_error_verbosity = default` </br>
 	
-2. Provide the required permissions to the rds_pgaudit role while associating it with the table that is audited. For example, grant `ALL` on `<relation_name>` to `rds_pgaudit` (this grant enables full `SELECT`, `INSERT`, `UPDATE`, and `DELETE` logging on the `relation_name`).
+2. Provide the required permissions to the rds_pgaudit role while associating it with the table that is audited. </br>
+	For example, grant `ALL` on `<relation_name>` to `rds_pgaudit`. This grant enables full `SELECT`, `INSERT`, `UPDATE`, and `DELETE` logging on `relation_name`.
 
-### Associating the DB Parameter Group with the database instance
+### Associating the DB parameter group with the database instance
 
-#### Procedure
-1. Go to **Services** > **Database** > **RDS** > **Databases**.
-2. Click the Postgres database instance to be updated.
-3. Click **Modify**.
-4. Go to the **Additional Configuration** section > **database options** > **DB Parameter Group** menu and select the newly-created group.
-5. Click **Continue**.
-6. Select the database instance in its configuration section. The state of the DB Parameter Group is pending-reboot.
-7. Reboot the database instance for the changes to take effect.
+1. {{From the AWS console}}, go to **Services** > **Database** > **RDS** > **Databases**.
+2. Select the Postgres database instance that you want to update and click **Modify**.
+3. In **Additional Configuration** > **Database options**, select the newly created group from the **DB Parameter Group** menu.
+4. Click **Continue**. </br>
+	When you view the database instance in its configuration section, the state of the DB Parameter Group is `pending-reboot`.
+5. Reboot the database instance for the changes to take effect.
 
-#### (Optional) Enabling Query Duration Logging
+### Logging Enabling query duration logging (optional)
 
-Query duration logging allows you to track and log queries based on their execution time. This can be useful for performance monitoring and identifying slow queries.
+Query duration logging tracks and logs queries based on their execution time. Use this feature for performance monitoring and identifying slow queries.
 
-##### Steps to Enable Query Duration Logging
+1. From the RDS console, go to **Parameter Groups** and select your parameter group.
+2. Edit the following parameters: </br>
 
-1. **Modify the Parameter Group**
-   - Navigate to the RDS Console
-   - Go to Parameter Groups
-   - Select an existing parameter group
-   - Edit the following parameter:
-
-2. **Parameter Configuration**
-
-   Configure the following parameters in your parameter group:
-
-   Set these parameters: 
-   - `log_min_duration_statement` = `0` (to log all queries with duration)
-   - `pgaudit.log` = `none` (disable audit logs to avoid duplicate entries in CloudWatch)
-
-3. **Other Values and Behavior of `log_min_duration_statement`**
-   - `0` → Logs all queries with duration
-   - `-1` → Disables duration-based logging
-   - `5000` → Logs queries running longer than 5 seconds
-
-4. Save the changes
-
-**Note:** This is a dynamic parameter, so changes are typically applied without requiring a database reboot.
+   	a. To log all queries with duration, set `log_min_duration_statement` to `0`. </br>
+		&ensp;&ensp;&ensp;* `0` - logs all queries with duration </br>
+		&ensp;&ensp;&ensp;* `-1` - disables duration-based logging </br>
+		&ensp;&ensp;&ensp;* `5000` - logs queries that run longer than 5 seconds </br>
+	</br>
+	b. To avoid duplicate entries in CloudWatch, set `pgaudit.log` to `none`. </br>
+3. Save the changes. </br>
+   Changes apply immediately without requiring a database reboot.
 
 ## Viewing the PGAudit logs
 
-The PGAudit logs (both Session and Object logs) can be seen in log files in RDS, and also on CloudWatch:
+You can view PGAudit logs (both session and object logs) in RDS log files and in CloudWatch.
 
+### Viewing audit details in RDS log files
 
-### Viewing the auditing details in RDS log files
+You can view, watch, and download RDS log files. The `log_filename` parameter specifies the log file name, which you can modify.
 
-The RDS log files can be viewed, watched, and downloaded. The name of the RDS log file is modifiable and is controlled by parameter log_filename.
-
-#### Procedure
-1. Go to **Services** > **Database** > **RDS** > **Databases**.
+1. {{From the AWS console,}} go to **Services** > **Database** > **RDS** > **Databases**.
 2. Select the database instance.
-3. Select the **Logs & Events** section.
-4. The end of the Logs section lists the files that contain the auditing details. The newest file is the last page.
-
-### Viewing the logs entries on CloudWatch
-
-By default, each database instance has an associated log group with a name in this format: /aws/rds/instance/<instance_name>/postgresql. You can use this log group, or you can create a new one and associate it with the database instance.
-
-#### Procedure
-1. On the AWS Console page, open the **Services** menu.
-2. Enter the CloudWatch string in the search box.
-3. Click **CloudWatch** to redirect to the CloudWatch dashboard.
-4. Select **Logs**.
-5. Click **Log Groups**.
+3. Select the **Logs & Events** tab.
+4. In the **Logs** section, you can view the files that contain audit details. The newest file appears on the last page.
 
 
-#### Notes
-* Guardium Data Protection requires installation of the [json_encode](https://www.elastic.co/guide/en/logstash-versioned-plugins/current/v3.0.3-plugins-filters-json_encode.html) filter plug-in
+### Viewing log entries in CloudWatch
+
+By default, each database instance has an associated log group with the name `/aws/rds/instance/<instance_name>/postgresql`. You can use this log group or create a new one and associate it with the database instance.
+
+1. From the AWS console, open the **Services** menu.
+2. Search for and select **CloudWatch**.
+3. Click **Logs** > **Log Groups**.
+
+**Note:** Guardium Data Protection requires installation of the [json_encode](https://www.elastic.co/guide/en/logstash-versioned-plugins/current/v3.0.3-plugins-filters-json_encode.html) filter plug-in.
 
 
-## Exporting CloudWatch Logs to SQS using lambda function
+## Exporting CloudWatch logs to SQS by using a Lambda function
 
-In order to achieve load balancing of audit logs between different collectors, the audit logs must exported from CloudWatch to SQS
+To load balance audit logs between different collectors, export the audit logs from CloudWatch to SQS.
 
-### Creating the SQS
+### Creating the SQS queue
 
-#### Procedure
-1. Go to https://console.aws.amazon.com/
-2. Click **Services**
-3. Search for SQS and click on Simple Queue Services
-4. Click on **Create Queue**
-5. Select the type as **Standard**
-6. Enter the name for the queue
-7. Keep the rest of the default settings
+1. From the [AWS console](https://console.aws.amazon.com), click **Services**.
+2. Search for and select **Simple Queue Service**.
+3. Click **Create Queue**.
+4. Select **Standard** as the queue type.
+5. Enter the name for the queue.
+6. Keep the remaining settings at their default values and create the queue.
 
-#### Create Policy for the relevant IAM User
-1. For the IAM User using which the SQS logs are to be accessed in Guardium, perform the below steps
-2. Go to https://console.aws.amazon.com/
-3. Go to ```IAM service``` > ```Policies``` > ```Create Policy```
-4. Select ```service as SQS```
-5. Select the check boxes having actions as: ```ListQueues```, ```DeleteMessage```, ```DeleteMessageBatch```, ```GetQueueAttributes```, ```GetQueueUrl```, ```ReceiveMessage```, ```ChangeMessageVisibility```, ```ChangeMessageVisibilityBatch```
-6. In the resources, specify the ARN of the queue created in the above step
-7. Click ```Review policy``` and specify the policy name
-8. Click ```Create policy```
-9. Assign the policy to the user
+### Creating a policy for the IAM user
+
+Create a policy for the IAM user that accesses the SQS logs in Guardium.
+
+1. From the [AWS console](https://console.aws.amazon.com/), go to **IAM service** > **Policies** > **Create Policy**.
+2. Select **SQS** as the service.
+3. Select the following actions: **ListQueues**, **DeleteMessage**, **DeleteMessageBatch**, **GetQueueAttributes**, **GetQueueUrl**, **ReceiveMessage**, **ChangeMessageVisibility**, **ChangeMessageVisibilityBatch**.
+4. In **Resources**, specify the ARN of the queue that you created.
+5. Click **Review policy**, specify a policy name, and click **Create policy**.
+   
+### Assigning the policy to the user
 	
-	a.	Log in to the IAM console as IAM user (https://console.aws.amazon.com/iam/) 
+1. From the [IAM console](https://console.aws.amazon.com/iam/), go to **Users** and select the IAM user to whom you want to assign permissions.
+2. In the **Permissions** tab, click **Add permissions**.
+3. Click **Attach existing policies directly**.
+4. Search for and select the policy that you created.
+5. Click **Next: Review** and then click **Add permissions**.
 	
-	b.	Go to ```Users``` on the console and select the relevant IAM user to whom you want to give permissions. Click the user name link
-	
-	c.	In the ```Permissions``` tab, click ```Add permissions```
-	
-	d.	Click ```Attach existing policies directly```
-	
-	e.	Search for the policy created and check the checkbox next to it
-	
-	f.	Click ```Next: Review```
-	
-	g.	Click ```Add permissions```
-	
-### Creating the lambda function
+### Creating an IAM role
 
-#### Create IAM Role
+Create an IAM role for the Lambda function. The AWS Lambda service requires permission to log events and write to the SQS queue. Create the IAM role with the following policies: **AmazonSQSFullAccess**, **CloudWatchLogsFullAccess**, and **CloudWatchEventsFullAccess**.
 
-Create the IAM role that will be used in the Lambda function set up. The AWS lambda service will require permission to log events and write to the SQS created. Create the IAM Role “Export-RDS-CloudWatch-to-SQS-Lambda” with “AmazonSQSFullAccess”, “CloudWatchLogsFullAccess”, and “CloudWatchEventsFullAccess” policies.
+1. From the [AWS console](https://console.aws.amazon.com/), go to **IAM** > **Roles**.
+2. Click **Create Role**.
+3. Under **Use case**, select **Lambda** and click **Next**.
+4. Search for and select the following policies:
+	* **AmazonSQSFullAccess**
+ 	* **CloudWatchLogsFullAccess**
+    * **CloudWatchEventsFullAccess**
+5. Enter a **Role Name** (for example, `Export-RDS-CloudWatch-to-SQS-Lambda`) and click **Create role**.
 
-##### Procedure
-1. Go to https://console.aws.amazon.com/
-2. Go to ```IAM``` -> ```Roles```
-3. Click ```Create Role```
-4. Under ```use case``` select ```Lambda``` and click ```Next```
-5. Search for “AmazonSQSFullAccess” and select it
-6. Search for “CloudWatchLogsFullAccess” and select it
-7. Search for “CloudWatchEventsFullAccess” and select it
-8. Set the ```Role Name```: e.g., “Export-RDS-CloudWatch-to-SQS-Lambda” and click ```Create role```
+### Creating the Lambda function
 
-#### Create the lambda function
-
-#### Procedure
-1. Go to https://console.aws.amazon.com/.
-2. Go to **Services** and search for ``lambda function``.
-3. Click **Functions > Create Function**.
-4. Make sure **Author for Scratch** is selected.
-5. Enter a **Function name**. For example, ``Export-RDS-CloudWatch-Logs-To-SQS``.
-6. Under **Runtime**, select **Python 3.x**.
-7. Under **Permissions**, select **Use an existing role**. Then select the IAM role that you created in the previous step (Export-RDS-CloudWatch-to-SQS-Lambda).
-8. Click **Create function** and navigate to **Code view**.
-9. Add the function code from [lambdaFunction](./PostgresOverSQSPackage/postgresLambda.py).
-10. Click **Configuration > Environment Variables**.
-11. Create two variables: </br>
-	a. Key = GROUP_NAME value = Name of the log group in CloudWatch from where logs are to be exported. For example, /aws/rds/instance/database-1/postgresql. </br>
-	b. Key = QUEUE_NAME value = Queue URL where logs are to be sent. For example, https://sqs.ap-south-1.amazonaws.com/11111111/PostgresQueue. </br>
-	c. Key = PARAMETER_NAME value = Name of the parameter store in the System Manager Parameter Store. For example, "LastExecutionTimestamp". </br>
-	d. Key = ENABLE_DEBUG value = <True/False>. This setting controls the debugging statements. </br>
-12. Click **Save** to save the environment variables.
-13. From the **Code** tab, deploy the function by using one of the following methods:
+1. From the [AWS console](https://console.aws.amazon.com/), go to **Services** and search for `Lambda function`.
+2. Click **Functions > Create Function**.
+3. Ensure that **Author for Scratch** is selected.
+4. Enter a **Function name**. For example, ``Export-RDS-CloudWatch-Logs-To-SQS``.
+5. Under **Runtime**, select **Python 3.x**.
+6. Under **Permissions**, select **Use an existing role**. Then select the IAM role that you created (for example, `Export-RDS-CloudWatch-to-SQS-Lambda`).
+7. Click **Create function**.
+8. In the **Code** tab, add the function code from [lambdaFunction](./PostgresOverSQSPackage/postgresLambda.py).
+9. Click **Configuration > Environment Variables** and create the following variables. </br>
+	a. `GROUP_NAME` - Name of the log group in CloudWatch from where logs are exported. For example, `/aws/rds/instance/database-1/postgresql`. </br>
+	b. `QUEUE_NAME` - Queue URL where logs are sent. For example, `https://sqs.ap-south-1.amazonaws.com/11111111/PostgresQueue`. </br>
+	c. `PARAMETER_NAME` - Name of the parameter store in the System Manager Parameter Store. For example, `LastExecutionTimestamp`. </br>
+	d. `ENABLE_DEBUG` -  Set to `True` or `False` to control debugging statements. </br>
+10. Click **Save**.
+11. Deploy the function by using one of the following methods.
 	* **New Lambda Editor**: From the left sidebar, go to **EXPLORER > DEPLOY** and click **Deploy**.
-	* **Classic Lambda Editor**: Click **Deploy** in the top-right area of the code editor.
-14. Wait for the deployment to complete. A message is displayed when the deployment is successful.
+	* **Classic Lambda Editor**: Click **Deploy** in the top-right corner of the code editor.
+12. Wait for the deployment to complete. A message is displayed when the deployment is successful.
 
-#### Automating the lambda function
+### Automating the Lambda function
 
-**Note**: AWS has migrated CloudWatch Events to Amazon EventBridge. Use the EventBridge service to create scheduling rules for Lambda functions.
+AWS migrated CloudWatch Events to Amazon EventBridge. Use EventBridge to create scheduling rules for Lambda functions.
 
-1. Go to the AWS Console and search for ``EventBridge``.
-2. To open the EventBridge dashboard, click **Amazon EventBridge**.
-3. In the left navigation pane, click **Rules** under **Events**.
-4. Click **Create rule**, and enter the rule details. </br>
+1. From the AWS console, search for and select **Amazon EventBridge**.
+2. In the left navigation pane, click **Events** > **Rules**.
+3. Click **Create rule**, and configure the following fields. </br>
 	a. **Name**: Enter a name for the rule. For example, `cloudwatchToSqs`. </br>
 	b. **Description**: (Optional) Add a description. </br>
 	c. **Event bus**: Select **default**. </br>
-5. In the **Rule type** field, select **Schedule** and click **Next**.
-6. Define the schedule pattern. </br>
+4. In the **Rule type** field, select **Schedule** and click **Next**.
+5. Define the schedule pattern. </br>
 	a. Select **A schedule that runs at a regular rate, such as every 10 minutes**. </br>
-	b. Enter the rate expression (e.g., ``2`` minutes). This value must match the time specified in the lambda function code that calculates the time delta. If the function code is set to 2 minutes, set the rate to 2 minutes unless it is changed in the code. </br>
+	b. Enter the rate expression (for example, ``2`` minutes). This value must match the time delta in the Lambda function code. If the function code uses 2 minutes, set the rate to 2 minutes.</br>
 	c. Click **Next**.
-7. Select the target. </br>
-	a. In the **Target types** field, select **AWS service**. </br>
-	b. In the **Select a target** field, select **Lambda function**. </br>
-   	c. In the **Function** field, select the Lambda function that you created in the previous step. For example, **Export-RDS-CloudWatch-Logs-To-SQS**. </br>
+6. Select the target, and configure the following fields. </br>
+	a. **Target types**: Select **AWS service**. </br>
+	b. **Select a target**: Select **Lambda function**. </br>
+   	c. **Function**: Select the Lambda function that you created. For example, **Export-RDS-CloudWatch-Logs-To-SQS**. </br>
    	d. Click **Next**. </br>
-8. (Optional) Add tags if needed, then click **Next**.
-9. Review the rule configuration and click **Create rule**.
+7. (Optional) Add tags and click **Next**.
+8. Review the rule configuration and click **Create rule**.
 
-**Note:** Before making any changes to the Lambda function code, you must disable this rule. Once you deploy the change, you can re-enable the rule.
+**Note:** Before you modify the Lambda function code, disable this rule. After you deploy the changes, re-enable the rule.
 
 ## Configuring the Postgres filters in Guardium
 
-The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Postgres template.
+The Guardium universal connector identifies and parses native audit log events, and converts them to standard Guardium format. The output is forwarded to the Guardium sniffer on the collector for policy and auditing enforcement.
 
-### Authorizing outgoing traffic from AWS to Guardium
+To configure Guardium to read native audit logs, customize the Postgres template.
 
-#### Procedure
-1. Log in to the Guardium Collector's API.
-2. Issue these commands:
-   
-    • `grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com`
+## Authorizing outgoing traffic from AWS to Guardium
 
-    • `grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com`
+### Before you begin
 
-#### Before you begin
-• Configure the policies you require. See [policies](/docs/#policies) for more information.
+1. Configure the required policies. For more information, see [policies](/docs/#policies).
 
-• You must have permission for the S-Tap Management role. The admin user includes this role by default.
+2. You must have permission for the S-Tap Management role. The admin user includes this role by default.
+  
+3. {{Download the Postgres plug-in.}}
+   * This plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later, or 11.5 with appliance bundle 11.0p540 or later.
+   * For Guardium Data Protection versions 11.0p540, 11.0p6505, 12.0, and 12p15, download the [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip).
+   * For Guardium Data Protection versions 11.4 without appliance bundle 11.0p490 or earlier, or 11.5 without appliance bundle 11.0p540 or earlier, download the [postgres-offline-plugins-7.5.2.zip plug-in](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/Postgres/postgres-offline-plugins-7.5.2.zip). Do not unzip the offline package file.
 
-• This plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+### Procedure
+1. Log in to the Guardium collector's API.
+2. Run the following commands:
+   ```
+    grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
+    grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
+   ```
+3. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
+4. If the universal connector is disabled, enable it.
+5. Click **Upload File** and upload the required plug-in for your version:
 
-• For Guardium Data Protection versions 11.0p540, 11.0p6505, 12.0 and 12p15 download the [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip).
-
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [postgres-offline-plugins-7.5.2.zip plug-in](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/Postgres/postgres-offline-plugins-7.5.2.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
-
-#### Procedure
-
-1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
-2. Enable the universal connector if it is disabled.
-3. Click **Upload File** and 
 	*  Select the [offline postgres-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/Postgres/postgres-offline-plugins-7.5.2.zip) plug-in. After it uploads, click **OK**. This is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 	*  If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505, 12.0 and/or 12p15, select the offline [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click **OK**.
-4. Click the Plus sign to open the Connector Configuration dialog box.
-5. Type a name in the **Connector name** field.
-6. If the audit logs are to be fetched from CloudWatch directly, use the details from the [postgresCloudwatch.conf](./PostgresOverCloudWatchPackage/postgresCloudwatch.conf) file. But if the audit logs are to be fetched from SQS,  use the details from the [postgreSQS.conf](./PostgresOverSQSPackage/postgreSQS.conf) file. Update the input section to add the details from the corresponding file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. More details on how to configure the relevant input plugin, see [Cloudwatch_logs input plug-in](../../input-plugin/logstash-input-cloudwatch-logs/README.md). 
+6. Click the **plus sign (+)** to open the Connector Configuration dialog box.
+7. In the **Connector name** field, enter a name for the connector.
+8. Configure the input section by copying the content from the appropriate file, omitting `input{` at the beginning and the closing `}` at the end:
+    * To fetch audit logs from CloudWatch, use the input section from [postgresCloudwatch.conf](./PostgresOverCloudWatchPackage/postgresCloudwatch.conf)..
+    * To fetch audit logs from SQS, use the input section from [postgreSQS.conf](./PostgresOverSQSPackage/postgreSQS.conf).
 
-   **Note**:If you want to configure Cloudwatch with role_arn instead of access_key and secret_key then refer to the [Configuration for role_arn parameter in the cloudwatch_logs input plug-in](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-cloudwatch-logs/SettingsForRoleArn.md#configuration-for-role_arn-parameter-in-the-cloudwatch_logs-input-plug-in) topic.
+	For more information about configuring the input plug-in, see [Cloudwatch_logs input plug-in](../../input-plugin/logstash-input-cloudwatch-logs/README.md).
 
-7. If the audit logs are to be fetched from CloudWatch directly, use the details from the [postgresCloudwatch.conf](./PostgresOverCloudWatchPackage/postgresCloudwatch.conf) file. But if the audit logs are to be fetched from SQS,  use the details from the [postgreSQS.conf](./PostgresOverSQSPackage/postgreSQS.conf) file. Update the filter section to add the details from the corresponding file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end
-8. The "type" fields should match in the input and the filter configuration sections. This field should be unique for  every individual connector added.
-9. Click **Save**. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+	**Note**: To configure CloudWatch with `role_arn` instead of `access_key` and `secret_key`, see [Configuration for role_arn parameter in the cloudwatch_logs input plug-in](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-cloudwatch-logs/SettingsForRoleArn.md#configuration-for-role_arn-parameter-in-the-cloudwatch_logs-input-plug-in).
+
+9. Configure the filter section by copying the content from the appropriate file, omitting `filter{` at the beginning and the closing `}` at the end:
+    * To fetch audit logs from CloudWatch, use the filter section from [postgresCloudwatch.conf](./PostgresOverCloudWatchPackage/postgresCloudwatch.conf).
+    * To fetch audit logs from SQS, use the filter section from [postgreSQS.conf](./PostgresOverSQSPackage/postgreSQS.conf).
+10. Ensure that the `type` field values match in both the input and filter sections. This field must be unique for each connector.
+11. Click **Save**. Guardium validates the new connector and displays it on the Configure Universal Connector page.
 
 ## Configuring the Postgres AWS Guardium Logstash filters in Guardium Data Security Center
 
-To configure this plug-in for Guardium Data Security Center, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
-For the input configuration step, refer to the [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).
+To configure this plug-in for Guardium Data Security Center, see [Configuring universal connectors.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
-# Troubleshooting
+For more information on the input configuration step, see [CloudWatch_logs section](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md#configuring-a-CloudWatch-input-plug-in).
 
-## 1. Troubleshooting for Seahorse Networking errors
+## Configuring event filters (optional)
 
-If you encounter one of the following errors:
+To improve data processing efficiency and avoid delays, configure event filtering to collect specific event types from AWS. Use the `event_filter` parameter in the input filter configuration.
+
+For example, to filter DELETE and INSERT operations (case-insensitive) and reduce unnecessary event processing, run the following command:
+
+```
+event_filter => '?delete ?DELETE ?insert ?INSERT'
+```
+
+You can customize the filter based on the events that are relevant to your use case. To update the filter, modify the event types in the `event_filter` string.
+
+## Troubleshooting seahorse networking errors
+
+### Symptoms 
+If you encounter the following errors, the issue is typically related to AWS credentials or network configuration in your Docker container:
 
 ```
 Exception: Seahorse::Client::NetworkingError
@@ -331,45 +311,24 @@ or
 Exception: Seahorse::Client::NetworkingError: Socket closed
 ```
 
-These errors typically indicate an issue with the AWS credentials or network configuration inside your Docker container. Follow the steps below to verify the issue:
+### Resolving the problem
 
-### 1. Run `aws configure`
-Ensure that your AWS credentials are correctly configured inside the Docker container(Klaus) within Collector. Run the following command to set up your AWS CLI configuration:
+1. Verify your AWS credentials. </br>
+   a. In the Docker container (Klaus) within the collector, configure your AWS CLI credentials by running the following command: </br>
+   ```
+   aws configure
+   ```
+   b. Enter your AWS Access Key ID, Secret Access Key, default region, and output format. Ensure that you provide valid credentials with the necessary permissions. </br>
+   </br>
+   c. Verify your AWS setup by running the following command. This command returns the IAM user or role associated with your AWS credentials. If the command fails, the credentials might be misconfigured or missing required permissions. </br>
+	```
+   	aws sts get-caller-identity
+	```  
+2. Review the error type:
+	* `Seahorse::Client::NetworkingError` indicates a network or connectivity issue. The plug-in cannot establish a connection to AWS services. Ensure that the container has network access and can reach AWS endpoints.
+	* `Seahorse::Client::NetworkingError:` Socket closed indicates that the connection was unexpectedly closed or terminated. This error can be caused by network interruptions, firewall issues, or invalid credentials.
 
-```bash
-aws configure
-```
-
-This will prompt you to enter your AWS Access Key ID, Secret Access Key, default region, and output format. Make sure to provide valid credentials with the necessary permissions to access the required AWS services.
-
-### 2. Verify AWS Identity with `aws sts get-caller-identity`
-After configuring your AWS CLI credentials, verify that your AWS setup is correct by running the following command:
-
-```bash
-aws sts get-caller-identity
-```
-
-This command returns the IAM user or role associated with the AWS credentials being used. If the command fails, it may indicate that the credentials are misconfigured or missing required permissions.
-
-### Additional Notes
-
-* If you encounter the `Seahorse::Client::NetworkingError`, it suggests a network or connectivity issue, typically indicating that the AWS CLI (in our case Plugin) cannot establish a connection to AWS services. Ensure that the container has proper network access and can reach the AWS endpoints.
-* If the error is `Seahorse::Client::NetworkingError: Socket closed`, it might indicate that the AWS CLI (in our case Plugin) connection was unexpectedly closed or terminated. This could be caused by network interruptions, firewall issues, or invalid credentials.
-* If the network issue is resolved, you can re-establish the connection between UC and AWS using the following CLI command:
-```
-grdapi restart_universal_connector overwrite_old_instance="true"
-```
-## 2. Configuring event filters
-
-Note: This is an optional step
-
-To improve data processing efficiency and avoid delays, you can configure **event filtering** to collect specific types of events from AWS into Guardium. This is done using the `event_filter` parameter under the input filter configuration.
-
-For example
-
-```text
-event_filter => '?delete ?DELETE ?insert ?INSERT'
-```
-This query filters DELETE and INSERT operations (case-insensitive) and reduces unnecessary event processing.
-
-You can customize the filter based on specific events that are relevant to your use case. To update the filter, modify the event types such as delete and insert that are listed in the event_filter string.
+3. After you resolve the network issue, restart the connection between the universal connector and AWS by running the following command:
+	```
+	grdapi restart_universal_connector overwrite_old_instance="true"
+	```
