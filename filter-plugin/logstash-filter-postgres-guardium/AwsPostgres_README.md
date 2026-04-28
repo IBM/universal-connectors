@@ -12,7 +12,7 @@
 
 You can enable encryption on the database instances by completing the following step. 
 
-Click **Additional configuration** > **Log exports**, select the **Postgresql** log type to publish to Amazon CloudWatch.
+Click **Additional configuration** > **Log exports**. Then select the **Postgresql** log type to publish to Amazon CloudWatch.
 
 ## Enabling the PGAudit extension
 
@@ -186,7 +186,7 @@ Create an IAM role for the Lambda function. The AWS Lambda service requires perm
 ### Creating the Lambda function
 
 1. From the [AWS console](https://console.aws.amazon.com/), go to **Services** and search for `Lambda function`.
-2. Click **Functions > Create Function**.
+2. Click **Functions** > **Create Function**.
 3. Ensure that **Author for Scratch** is selected.
 4. Enter a **Function name**. For example, ``Export-RDS-CloudWatch-Logs-To-SQS``.
 5. Under **Runtime**, select **Python 3.x**.
