@@ -1,4 +1,4 @@
-# {{Configuring PostgreSQL audit logging for AWS RDS with Guardium}}
+# Configuring PostgreSQL audit logging for AWS RDS with Guardium
 
 ## Meet AWS Postgres
 
@@ -34,7 +34,7 @@ This extension supports logging for sessions or objects. You can configure eithe
 
 When you create a database instance, it is associated with the default parameter group. To create a new parameter group, complete the following steps.
 
-1. {{From the AWS console}}, go to **Services** > **Database** > **Parameter groups**.
+1. From the AWS console, go to **Services** > **Database** > **Parameter groups**.
 2. Click **Create Parameter Group**.
 3. Configure the following parameter group fields:
 
@@ -91,7 +91,7 @@ Object auditing affects the performance less than session auditing, due to the f
 
 ### Associating the DB parameter group with the database instance
 
-1. {{From the AWS console}}, go to **Services** > **Database** > **RDS** > **Databases**.
+1. From the AWS console, go to **Services** > **Database** > **RDS** > **Databases**.
 2. Select the Postgres database instance that you want to update and click **Modify**.
 3. In **Additional Configuration** > **Database options**, select the newly created group from the **DB Parameter Group** menu.
 4. Click **Continue**. </br>
@@ -122,7 +122,7 @@ You can view PGAudit logs (both session and object logs) in RDS log files and in
 
 You can view, watch, and download RDS log files. The `log_filename` parameter specifies the log file name, which you can modify.
 
-1. {{From the AWS console,}} go to **Services** > **Database** > **RDS** > **Databases**.
+1. From the AWS console, go to **Services** > **Database** > **RDS** > **Databases**.
 2. Select the database instance.
 3. Select the **Logs & Events** tab.
 4. In the **Logs** section, you can view the files that contain audit details. The newest file appears on the last page.
@@ -240,13 +240,8 @@ To configure Guardium to read native audit logs, customize the Postgres template
 ### Before you begin
 
 1. Configure the required policies. For more information, see [policies](/docs/#policies).
-
 2. You must have permission for the S-Tap Management role. The admin user includes this role by default.
   
-3. {{Download the Postgres plug-in.}}
-   * This plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later, or 11.5 with appliance bundle 11.0p540 or later.
-   * For Guardium Data Protection versions 11.0p540, 11.0p6505, 12.0, and 12p15, download the [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip).
-   * For Guardium Data Protection versions 11.4 without appliance bundle 11.0p490 or earlier, or 11.5 without appliance bundle 11.0p540 or earlier, download the [postgres-offline-plugins-7.5.2.zip plug-in](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/Postgres/postgres-offline-plugins-7.5.2.zip). Do not unzip the offline package file.
 
 ### Procedure
 1. Log in to the Guardium collector's API.
@@ -257,13 +252,9 @@ To configure Guardium to read native audit logs, customize the Postgres template
    ```
 3. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 4. If the universal connector is disabled, enable it.
-5. Click **Upload File** and upload the required plug-in for your version:
-
-	*  Select the [offline postgres-offline-plugins-7.5.2.zip](https://github.com/IBM/universal-connectors/raw/release-v1.2.0/filter-plugin/logstash-filter-postgres-guardium/PostgresOverCloudWatchPackage/Postgres/postgres-offline-plugins-7.5.2.zip) plug-in. After it uploads, click **OK**. This is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
-	*  If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505, 12.0 and/or 12p15, select the offline [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click **OK**.
-6. Click the **plus sign (+)** to open the Connector Configuration dialog box.
-7. In the **Connector name** field, enter a name for the connector.
-8. Configure the input section by copying the content from the appropriate file, omitting `input{` at the beginning and the closing `}` at the end:
+5. Click the **plus sign (+)** to open the Connector Configuration dialog box.
+6. In the **Connector name** field, enter a name for the connector.
+7. Configure the input section by copying the content from the appropriate file, omitting `input{` at the beginning and the closing `}` at the end:
     * To fetch audit logs from CloudWatch, use the input section from [postgresCloudwatch.conf](./PostgresOverCloudWatchPackage/postgresCloudwatch.conf)..
     * To fetch audit logs from SQS, use the input section from [postgreSQS.conf](./PostgresOverSQSPackage/postgreSQS.conf).
 
@@ -271,11 +262,11 @@ To configure Guardium to read native audit logs, customize the Postgres template
 
 	**Note**: To configure CloudWatch with `role_arn` instead of `access_key` and `secret_key`, see [Configuration for role_arn parameter in the cloudwatch_logs input plug-in](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-cloudwatch-logs/SettingsForRoleArn.md#configuration-for-role_arn-parameter-in-the-cloudwatch_logs-input-plug-in).
 
-9. Configure the filter section by copying the content from the appropriate file, omitting `filter{` at the beginning and the closing `}` at the end:
+8. Configure the filter section by copying the content from the appropriate file, omitting `filter{` at the beginning and the closing `}` at the end:
     * To fetch audit logs from CloudWatch, use the filter section from [postgresCloudwatch.conf](./PostgresOverCloudWatchPackage/postgresCloudwatch.conf).
     * To fetch audit logs from SQS, use the filter section from [postgreSQS.conf](./PostgresOverSQSPackage/postgreSQS.conf).
-10. Ensure that the `type` field values match in both the input and filter sections. This field must be unique for each connector.
-11. Click **Save**. Guardium validates the new connector and displays it on the Configure Universal Connector page.
+9. Ensure that the `type` field values match in both the input and filter sections. This field must be unique for each connector.
+10. Click **Save**. Guardium validates the new connector and displays it on the Configure Universal Connector page.
 
 ## Configuring the Postgres AWS Guardium Logstash filters in Guardium Data Security Center
 
