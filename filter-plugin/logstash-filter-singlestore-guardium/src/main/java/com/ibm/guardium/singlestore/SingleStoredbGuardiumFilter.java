@@ -39,7 +39,8 @@ public class SingleStoredbGuardiumFilter implements Filter {
                 context.setConfigLocation(file.toURI());
             }
         } catch (Exception e) {
-            System.out.println("====: " + e.getMessage());
+            System.err.println("Failed to load log4j configuration: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -112,8 +113,7 @@ public class SingleStoredbGuardiumFilter implements Filter {
                 if (record != null) {
                     e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
                     matchListener.filterMatched(e);
-                    log.info("==========>Final JSON to be send to Guardium: {}", gson.toJson(record));
-                    System.out.println("==========>Final JSON to be send to Guardium: " + gson.toJson(record));
+                    log.debug("==========>Final JSON to be send to Guardium: {}", gson.toJson(record));
                 } else {
                     log.error("Failed to create record from event");
                     e.tag(Constants.LOGSTASH_TAG_JSON_PARSE_ERROR);

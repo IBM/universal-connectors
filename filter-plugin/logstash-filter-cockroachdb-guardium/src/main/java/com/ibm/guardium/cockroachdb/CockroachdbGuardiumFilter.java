@@ -121,7 +121,7 @@ public class CockroachdbGuardiumFilter implements Filter {
                 e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
 
                 filterMatchListener.filterMatched(e);
-                log.info("==========>Final JSON to be send to Guardium: {}", gson.toJson(record));
+                log.debug("==========>Final JSON to be send to Guardium: {}", gson.toJson(record));
 
             } catch (Exception exception) {
                 log.error("CockroachDB Filter: Error parsing CockroachDB event: " + exception.getMessage(), exception);
