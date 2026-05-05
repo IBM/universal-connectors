@@ -1,1 +1,1 @@
-filter-plugin/logstash-filter-mysql-aws-guardium/MySQLOverS3SQS
+filter-plugin/logstash-filter-yugabyte-guardium/YugabytedbOverFilebeatPackage

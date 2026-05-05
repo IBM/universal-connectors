@@ -1,1 +1,1 @@
-filter-plugin/logstash-filter-mysql-aws-guardium/logstash-filter-mysql_guardium_plugin_filter
+filter-plugin/logstash-filter-yugabyte-guardium/logstash-filter-yugabytedb_guardium_filter
