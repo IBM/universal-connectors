@@ -17,13 +17,26 @@ targetCompatibility = JavaVersion.VERSION_17
 
 buildscript {
     repositories {
-        mavenCentral()
-        jcenter()
-    }    
+        mavenLocal()
+        maven {
+            url "https://na.artifactory.swg-devops.com/artifactory/sec-guardium-next-gen-maven-virtual/"
+            credentials {
+                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+            }
+        }
+    }
 }
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    maven {
+        url "https://na.artifactory.swg-devops.com/artifactory/sec-guardium-next-gen-maven-virtual/"
+        credentials {
+            username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+            password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+        }
+    }
 }
 
 
