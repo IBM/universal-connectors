@@ -50,9 +50,10 @@ public class Constants {
 
 	public static final String LANGUAGE_CASSANDRA = "CASS";
 
-	public static final String DB_PROTOCOL_PG = "POSTGRESQL";
+	public static final String DB_PROTOCOL_PG = "YUGABYTE";
 
-	public static final String DB_PROTOCOL_CASSANDRA = "CASSANDRA";
+	public static final String DB_PROTOCOL_CASSANDRA = "YUGABYTE_CASS";
+
 	public static final String MESSAGE = "message";
 
 	public static final String TYPE = "log_type";
