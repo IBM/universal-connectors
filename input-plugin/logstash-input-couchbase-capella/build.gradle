@@ -3,9 +3,15 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 buildscript {
     repositories {
+        mavenLocal()
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url "https://na.artifactory.swg-devops.com/artifactory/sec-guardium-next-gen-maven-virtual/"
+            credentials {
+                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+            }
         }
+    }
         mavenCentral()
         gradlePluginPortal()
         jcenter()
@@ -67,7 +73,14 @@ def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
 
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    maven {
+        url "https://na.artifactory.swg-devops.com/artifactory/sec-guardium-next-gen-maven-virtual/"
+        credentials {
+            username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+            password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+        }
+    }
 }
 
 shadowJar {

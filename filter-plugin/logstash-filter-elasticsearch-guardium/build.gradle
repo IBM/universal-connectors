@@ -27,11 +27,14 @@ targetCompatibility = JavaVersion.VERSION_17
 
 buildscript {
     repositories {
+        mavenLocal()
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url "https://na.artifactory.swg-devops.com/artifactory/sec-guardium-next-gen-maven-virtual/"
+            credentials {
+                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+            }
         }
-        mavenCentral()
-        jcenter()
     }
 
     dependencies {
@@ -40,7 +43,14 @@ buildscript {
 }
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    maven {
+        url "https://na.artifactory.swg-devops.com/artifactory/sec-guardium-next-gen-maven-virtual/"
+        credentials {
+            username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+            password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+        }
+    }
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
