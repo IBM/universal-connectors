@@ -4,7 +4,6 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 apply plugin: 'java'
 
 buildscript {
-    buildscript {
     repositories {
         mavenLocal()
         maven {
@@ -15,12 +14,10 @@ buildscript {
             }
         }
     }
-        }
 
-        dependencies {
-            classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-            classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
-        }
+    dependencies {
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
 }
 
