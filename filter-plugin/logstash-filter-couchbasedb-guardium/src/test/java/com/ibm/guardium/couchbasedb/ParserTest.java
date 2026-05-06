@@ -85,7 +85,7 @@ public class ParserTest {
         SessionLocator sessionLocator = Parser.parseSessionLocator(couchbaseJson);
 
         Assert.assertEquals(40389, sessionLocator.getClientPort());
-        Assert.assertEquals(8091, sessionLocator.getServerPort());
+        Assert.assertEquals(Constants.DEFAULT_SERVER_PORT, sessionLocator.getServerPort());
         Assert.assertEquals(false, sessionLocator.isIpv6());
 
     }
