@@ -1,0 +1,37 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logstash
+vendor/
+Gemfile
+Gemfile.lock
+*.gemspec
+*.gem
+lib/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Made with Bob
