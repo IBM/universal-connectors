@@ -29,7 +29,7 @@ buildscript {
     repositories {
         mavenLocal()
         maven {
-            url "https://na.artifactory.swg-devops.com/artifactory/sec-guardium-next-gen-maven-virtual/"
+            url System.getenv("ARTIFACTORY_URL")
             credentials {
                 username System.getenv("ARTIFACTORY_USERNAME") ?: ""
                 password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
@@ -45,7 +45,7 @@ buildscript {
 repositories {
     mavenLocal()
     maven {
-        url "https://na.artifactory.swg-devops.com/artifactory/sec-guardium-next-gen-maven-virtual/"
+        url System.getenv("ARTIFACTORY_URL")
         credentials {
             username System.getenv("ARTIFACTORY_USERNAME") ?: ""
             password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
