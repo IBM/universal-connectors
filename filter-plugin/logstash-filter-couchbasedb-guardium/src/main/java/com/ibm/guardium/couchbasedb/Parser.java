@@ -149,7 +149,6 @@ public class Parser {
 			if (!validator.isValid(serverIp)|| serverIp.equals(Constants.LOOPBACK_ADDRESS)) {
 				serverIp = data.get(Constants.SERVER_IP).getAsString();
 			}
-			serverPort = Integer.parseInt(nodeData[1]);
 
 		}else {
 			serverIp = data.get(Constants.SERVER_IP).getAsString();
