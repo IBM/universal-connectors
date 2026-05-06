@@ -15,8 +15,6 @@ buildscript {
             }
         }
     }
-            mavenCentral()
-            jcenter()
         }
 
         dependencies {
