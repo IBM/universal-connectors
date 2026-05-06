@@ -7,7 +7,7 @@ buildscript {
     repositories {
         mavenLocal()
         maven {
-            url System.getenv("ARTIFACTORY_URL")
+            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
             credentials {
                 username System.getenv("ARTIFACTORY_USERNAME") ?: ""
                 password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
@@ -50,7 +50,7 @@ targetCompatibility = JavaVersion.VERSION_17
 repositories {
     mavenLocal()
     maven {
-        url System.getenv("ARTIFACTORY_URL")
+        url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
         credentials {
             username System.getenv("ARTIFACTORY_USERNAME") ?: ""
             password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
