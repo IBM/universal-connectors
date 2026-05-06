@@ -37,8 +37,10 @@ import co.elastic.logstash.api.PluginConfigSpec;
 public class DocumentdbGuardiumFilter implements Filter {
 
 	public static final PluginConfigSpec<String> SOURCE_CONFIG = PluginConfigSpec.stringSetting("source", "message");
+	public static final PluginConfigSpec<Long> MAX_JSON_SIZE_CONFIG = PluginConfigSpec.numSetting("max_json_size_bytes", 1048576L); // 1MB default
 	public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_documentdbguardium_json_parse_error";
 	public static final String LOGSTASH_TAG_JSON_DEPTH_ERROR = "_documentdbguardium_json_depth_error";
+	public static final String LOGSTASH_TAG_JSON_TRUNCATED = "_documentdbguardium_json_truncated";
 	/*
 	 * skipping non-relevant log events like
 	 * "successful authenticate", and other events
@@ -79,17 +81,19 @@ public class DocumentdbGuardiumFilter implements Filter {
 	private static Logger log = LogManager.getLogger(DocumentdbGuardiumFilter.class);
 	Parser parser;
 	private String id;
+	private long maxJsonSizeBytes;
 
 	public DocumentdbGuardiumFilter(String id, Configuration config, Context context) {
 		// constructors should validate configuration options
 		this.id = id;
 		this.parser = new Parser();
+		this.maxJsonSizeBytes = config.get(MAX_JSON_SIZE_CONFIG);
 	}
 
 	@Override
 	public Collection<PluginConfigSpec<?>> configSchema() {
 		// should return a list of all configuration options for this plugin
-		return Collections.singletonList(SOURCE_CONFIG);
+		return Arrays.asList(SOURCE_CONFIG, MAX_JSON_SIZE_CONFIG);
 	}
 
 	@Override
@@ -108,10 +112,24 @@ public class DocumentdbGuardiumFilter implements Filter {
 			if (e.getField("message") instanceof String) {
 				messageString = e.getField("message").toString();
 				
+				// Check JSON size before processing
+				if (messageString.length() > maxJsonSizeBytes) {
+					log.warn("DocumentDB filter: JSON message exceeds max size ({} bytes), truncating may occur. Event: {}",
+							messageString.length(), getEventIdentifier(e));
+				}
 
-				if (!isProperlyClosedJson(messageString)) {
-					log.error("DocumentDB filter: JSON validation failed (truncated or too large)");
-					e.tag(LOGSTASH_TAG_JSON_DEPTH_ERROR);
+				// Validate JSON structure
+				JsonValidationResult validationResult = validateJson(messageString);
+				if (!validationResult.isValid) {
+					if (validationResult.isTruncated) {
+						log.error("DocumentDB filter: JSON appears truncated ({}). Event: {}",
+								validationResult.reason, getEventIdentifier(e));
+						e.tag(LOGSTASH_TAG_JSON_TRUNCATED);
+					} else {
+						log.error("DocumentDB filter: JSON validation failed ({}). Event: {}",
+								validationResult.reason, getEventIdentifier(e));
+						e.tag(LOGSTASH_TAG_JSON_DEPTH_ERROR);
+					}
 					continue;
 				}
 				if (messageString.contains(DOCUMENTDB_AUDIT_SIGNAL)) {// This is an audit event
@@ -150,11 +168,22 @@ public class DocumentdbGuardiumFilter implements Filter {
 						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
 						System.gc(); // Suggest garbage collection
 					} catch (JsonSyntaxException jse) {
-						log.error(
-								"DocumentDB filter: Error parsing docDb audit event {} \n {} ",
-								logEvent(e),
-								formatJsonSyntaxException(jse));
-						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
+						String errorMsg = formatJsonSyntaxException(jse);
+						if (isTruncationError(jse)) {
+							log.error(
+									"DocumentDB filter: JSON truncation detected in audit event. " +
+									"Message size: {} bytes. Error: {}. Event: {}",
+									messageString != null ? messageString.length() : 0,
+									errorMsg,
+									getEventIdentifier(e));
+							e.tag(LOGSTASH_TAG_JSON_TRUNCATED);
+						} else {
+							log.error(
+									"DocumentDB filter: Error parsing docDb audit event. Error: {}. Event: {}",
+									errorMsg,
+									getEventIdentifier(e));
+							e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
+						}
 					} catch (Exception exception) {
 						// don't let event pass filter
 						// events.remove(e);
@@ -202,11 +231,22 @@ public class DocumentdbGuardiumFilter implements Filter {
 						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
 						System.gc(); // Suggest garbage collection
 					} catch (JsonSyntaxException jse) {
-						log.error(
-								"DocumentDB filter: Error parsing docDb profiler event {} \n {} ",
-								logEvent(e),
-								formatJsonSyntaxException(jse));
-						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
+						String errorMsg = formatJsonSyntaxException(jse);
+						if (isTruncationError(jse)) {
+							log.error(
+									"DocumentDB filter: JSON truncation detected in profiler event. " +
+									"Message size: {} bytes. Error: {}. Event: {}",
+									messageString != null ? messageString.length() : 0,
+									errorMsg,
+									getEventIdentifier(e));
+							e.tag(LOGSTASH_TAG_JSON_TRUNCATED);
+						} else {
+							log.error(
+									"DocumentDB filter: Error parsing docDb profiler event. Error: {}. Event: {}",
+									errorMsg,
+									getEventIdentifier(e));
+							e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
+						}
 					} catch (Exception exception) {
 						// don't let event pass filter
 						// events.remove(e);
@@ -329,30 +369,123 @@ public class DocumentdbGuardiumFilter implements Filter {
 		}
 	}
 
-	private static boolean isProperlyClosedJson(String json) {
+	/**
+	 * Validation result class for JSON validation
+	 */
+	private static class JsonValidationResult {
+		boolean isValid;
+		boolean isTruncated;
+		String reason;
+
+		JsonValidationResult(boolean isValid, boolean isTruncated, String reason) {
+			this.isValid = isValid;
+			this.isTruncated = isTruncated;
+			this.reason = reason;
+		}
+	}
+
+	/**
+	 * Validates JSON structure and detects truncation
+	 */
+	private static JsonValidationResult validateJson(String json) {
 		if (json == null || json.isEmpty()) {
-			return false;
+			return new JsonValidationResult(false, false, "empty or null");
 		}
 
-		// Trim whitespace
 		String trimmed = json.trim();
 		if (trimmed.isEmpty()) {
-			return false;
+			return new JsonValidationResult(false, false, "empty after trim");
 		}
 
 		char first = trimmed.charAt(0);
 		char last = trimmed.charAt(trimmed.length() - 1);
 
-		// Check if starts with { or [ and ends with matching } or ]
+		// Check for proper JSON structure
 		if (first == '{' && last == '}') {
-			return true;
+			// Additional check for truncation patterns
+			if (isTruncatedPattern(trimmed)) {
+				return new JsonValidationResult(false, true, "truncation pattern detected");
+			}
+			return new JsonValidationResult(true, false, "valid");
 		}
 		if (first == '[' && last == ']') {
-			return true;
+			if (isTruncatedPattern(trimmed)) {
+				return new JsonValidationResult(false, true, "truncation pattern detected");
+			}
+			return new JsonValidationResult(true, false, "valid");
 		}
 
-		// Not properly closed or not valid JSON structure
+		// Check if it looks truncated
+		if (first == '{' || first == '[') {
+			return new JsonValidationResult(false, true, "missing closing bracket");
+		}
+
+		return new JsonValidationResult(false, false, "invalid JSON structure");
+	}
+
+	/**
+	 * Detects common truncation patterns in JSON strings
+	 */
+	private static boolean isTruncatedPattern(String json) {
+		// Check for common truncation patterns at the end
+		String end = json.substring(Math.max(0, json.length() - 20));
+		
+		// Patterns like: "...tru, "...fal, "...\"hel, etc.
+		if (end.matches(".*\"[^\"]*$") || // Unterminated string
+			end.matches(".*:tru$") ||      // Truncated "true"
+			end.matches(".*:fal$") ||      // Truncated "false"
+			end.matches(".*:nul$") ||      // Truncated "null"
+			end.matches(".*\\.\\.\\.$")) { // Ellipsis indicating truncation
+			return true;
+		}
+		
 		return false;
+	}
+
+	/**
+	 * Checks if JsonSyntaxException indicates truncation
+	 */
+	private static boolean isTruncationError(JsonSyntaxException jse) {
+		String message = jse.getMessage();
+		if (message == null) {
+			return false;
+		}
+		
+		// Common truncation error patterns
+		return message.contains("Unterminated") ||
+			   message.contains("Expected") && message.contains("but was END_DOCUMENT") ||
+			   message.contains("End of input") ||
+			   message.contains("Unexpected end of JSON");
+	}
+
+	/**
+	 * Gets a concise event identifier for logging
+	 */
+	private static String getEventIdentifier(Event event) {
+		StringBuilder sb = new StringBuilder(128);
+		sb.append("{");
+		
+		// Include key identifying fields
+		appendField(sb, event, "event_id", true);
+		appendField(sb, event, "log_group", false);
+		appendField(sb, event, "type", false);
+		appendField(sb, event, "cluster", false);
+		
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Helper to append field to identifier string
+	 */
+	private static void appendField(StringBuilder sb, Event event, String fieldName, boolean first) {
+		Object value = event.getField(fieldName);
+		if (value != null) {
+			if (!first) {
+				sb.append(", ");
+			}
+			sb.append(fieldName).append("=").append(value);
+		}
 	}
 
 	/**
