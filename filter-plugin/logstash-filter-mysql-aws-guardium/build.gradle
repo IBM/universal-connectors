@@ -5,11 +5,14 @@ apply plugin: 'java'
 
 buildscript {
     repositories {
+        mavenLocal()
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
+            credentials {
+                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+            }
         }
-        mavenCentral()
-        jcenter()
     }
 
     dependencies {
@@ -55,9 +58,14 @@ def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
 
 buildscript {
     repositories {
-        maven { url "https://plugins.gradle.org/m2/" }
-        mavenCentral()
-        jcenter()
+        mavenLocal()
+        maven {
+            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
+            credentials {
+                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+            }
+        }
     }
     dependencies {
         classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
@@ -66,7 +74,14 @@ buildscript {
 }
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    maven {
+        url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
+        credentials {
+            username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+            password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+        }
+    }
 }
 
 dependencies {
