@@ -5,11 +5,14 @@ apply plugin: 'java'
 
 buildscript {
     repositories {
+        mavenLocal()
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
+            credentials {
+                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+            }
         }
-        mavenCentral()
-        jcenter()
     }
 
     dependencies {
@@ -54,7 +57,14 @@ def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
 
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    maven {
+        url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
+        credentials {
+            username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+            password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+        }
+    }
 }
 
 tasks.register("vendor"){
@@ -80,7 +90,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:' + versions.dependencies.commonsLang
     implementation 'com.google.code.gson:gson:' + versions.dependencies.gson
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
-    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
+    implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core.jar")
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 
     testImplementation 'junit:junit:' + versions.dependencies.junit
