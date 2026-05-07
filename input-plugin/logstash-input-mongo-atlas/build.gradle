@@ -4,19 +4,20 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 apply plugin: 'java'
 
 buildscript {
-    buildscript {
-        repositories {
-            maven {
-                url "https://plugins.gradle.org/m2/"
+    repositories {
+        mavenLocal()
+        maven {
+            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
+            credentials {
+                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
             }
-            mavenCentral()
-            jcenter()
         }
+    }
 
-        dependencies {
-            classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-            classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
-        }
+    dependencies {
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
 }
 
@@ -47,7 +48,14 @@ targetCompatibility = JavaVersion.VERSION_17
 
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    maven {
+        url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
+        credentials {
+            username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+            password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+        }
+    }
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'

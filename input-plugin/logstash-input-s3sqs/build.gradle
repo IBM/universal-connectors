@@ -5,8 +5,14 @@ apply plugin: 'java'
 
 buildscript {
     repositories {
-        mavenCentral()
-        gradlePluginPortal()
+        mavenLocal()
+        maven {
+            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
+            credentials {
+                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+            }
+        }
     }
 
     dependencies {
@@ -42,7 +48,14 @@ targetCompatibility = JavaVersion.VERSION_17
 
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    maven {
+        url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
+        credentials {
+            username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+            password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+        }
+    }
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
