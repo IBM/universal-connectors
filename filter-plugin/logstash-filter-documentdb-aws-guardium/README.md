@@ -99,32 +99,7 @@ The Guardium universal connector is the Guardium entry point for native audit/pr
 9. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
 10. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the ```Disable/Enable``` button.
 
-## 6. Handling Large Events and JSON Truncation
-
-The DocumentDB filter includes enhanced handling for large JSON events that may be truncated during transmission. For detailed information about truncation detection, configuration, and troubleshooting, see [TRUNCATION_HANDLING.md](TRUNCATION_HANDLING.md).
-
-### Quick Configuration
-
-To handle large events, you can configure the maximum JSON size threshold:
-
-```ruby
-filter {
-  documentdb_guardium_filter {
-    max_json_size_bytes => 2097152  # 2MB (default is 1MB)
-  }
-}
-```
-
-### Error Tags
-
-Events that cannot be parsed are tagged for monitoring:
-- `_documentdbguardium_json_truncated` - JSON appears truncated
-- `_documentdbguardium_json_parse_error` - General parsing errors
-- `_documentdbguardium_json_depth_error` - JSON nesting or structure issues
-
-See [TRUNCATION_HANDLING.md](TRUNCATION_HANDLING.md) for comprehensive troubleshooting guidance.
-
-## 7. Limitations
+## 6. Limitations
 - DocumentDB Profiler logs capture any database operations that take longer than some period of time(e. g. 100 ms). If the threshold value is not configurable and set value is too high, then profiler logs may not get captured for every database operation.
 - The Following important fields couldn't be mapped with DocumentDB audit/profiler logs
     - Source program : Only available in case of "aggregate" query
