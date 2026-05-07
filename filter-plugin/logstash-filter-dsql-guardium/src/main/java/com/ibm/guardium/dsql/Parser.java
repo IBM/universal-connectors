@@ -56,15 +56,6 @@ public class Parser {
                 }
             }
 
-            // Validate that this is a PostgreSQL record
-            Object dbProtocolObj = processedEvent.getField(Constants.DB_PROTOCOL);
-            if (dbProtocolObj != null) {
-                String dbProtocol = dbProtocolObj.toString();
-                if (!dbProtocol.equalsIgnoreCase("POSTGRESQL") && !dbProtocol.equalsIgnoreCase("POSTGRES")) {
-                    throw new ParseException("Unsupported database protocol: " + dbProtocol + ". Only POSTGRESQL is supported.", 0);
-                }
-            }
-
             // Set basic record fields
             record.setAppUserName(Constants.APP_USER_NAME);
             record.setAccessor(parseAccessor(processedEvent));
@@ -80,15 +71,17 @@ public class Parser {
                 record.setSessionId(Constants.UNKNOWN_STRING);
             }
 
-            // Parse SQL statement or exception based on exit code
-            Object exitCodeObj = getFieldValue(processedEvent, Constants.EXIT_CODE);
-            String exitCode = exitCodeObj != null ? exitCodeObj.toString() : null;
+            // Parse SQL statement or exception based on error message presence
+            Object errorMessageObj = getFieldValue(processedEvent, Constants.ERROR_MESSAGE);
+            boolean hasError = errorMessageObj != null &&
+                              !errorMessageObj.toString().isEmpty() &&
+                              !errorMessageObj.toString().equalsIgnoreCase("null");
             
-            if (exitCode != null && !exitCode.equals(Constants.EXIT_CODE_SUCCESS)) {
-                // This is an error/exception
+            if (hasError) {
+                // This is an error/exception - error message is present
                 record.setException(parseException(processedEvent));
             } else {
-                // This is a successful SQL statement
+                // This is a successful SQL statement - no error message
                 Object statementText = getStatementText(processedEvent);
                 if (statementText != null && !statementText.toString().isEmpty()) {
                     record.setData(parseData(processedEvent));
