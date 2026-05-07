@@ -89,6 +89,7 @@ versions of the Linux distributions.
        DefaultNetstreamDriverCAFile="/path/to/certs/ca.pem"
        # DefaultNetstreamDriverCertFile="/path/to/certs/tls.crt"
        # DefaultNetstreamDriverKeyFile="/path/to/certs/tls.key"
+       # DefaultNetstreamDriverKeyPassphrase="${ssl_key_passphrase}"
     )
 
    module(load="imfile")
