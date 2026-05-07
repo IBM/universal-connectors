@@ -1,12 +1,11 @@
 ## DSQL-Guardium Logstash filter plug-in
 
 ### Meet DSQL
-* Tested versions: 1.x
+* Tested versions:
 * Environment: AWS
 * Supported inputs: SQS (pull)
 * Supported Guardium versions:
-    * Guardium Data Protection: 11.4 and above
-    * Guardium Insights SaaS: 1.0
+    * Guardium Data Protection: 
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the AWS DSQL Database Activity Streams into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
@@ -234,3 +233,77 @@ The plugin extracts and maps the following fields from DSQL audit logs:
 ## 9. License
 
 This plugin is licensed under the Apache License 2.0. See the [LICENSE](./LICENSE) file for details.
+## 4.4 Nested DatabaseActivityMonitoringRecord Format (PostgreSQL)
+
+The plugin also supports a nested format where events are wrapped in a `DatabaseActivityMonitoringRecord` structure with a `databaseActivityEventList` array. This format is commonly used by PostgreSQL audit logging systems.
+
+**Important:** The parser validates that `dbProtocol` is set to "POSTGRESQL" or "POSTGRES". Records with other database protocols (e.g., "SQLSERVER") will be rejected.
+
+### 4.4.1 Nested Format - Login Failure Event
+```json
+{
+  "type": "DatabaseActivityMonitoringRecord",
+  "clusterId": "",
+  "instanceId": "db-4JCWQLUZVFYP7DIWP6JVQ77O3Q",
+  "databaseActivityEventList": [
+    {
+      "class": "LOGIN",
+      "clientApplication": "psql",
+      "command": "LOGIN FAILED",
+      "commandText": "Login failed for user 'test'. Reason: Password did not match.",
+      "databaseName": "testdb",
+      "dbProtocol": "POSTGRESQL",
+      "dbUserName": "test",
+      "endTime": null,
+      "errorMessage": "password authentication failed for user \"test\"",
+      "exitCode": 1,
+      "logTime": "2022-10-06T21:34:42.711Z",
+      "remoteHost": "10.0.1.100",
+      "remotePort": 5432,
+      "serverHost": "172.31.30.159",
+      "serverType": "POSTGRESQL",
+      "sessionId": "session-123",
+      "type": "record"
+    }
+  ]
+}
+```
+
+### 4.4.2 Nested Format - Successful Query Event
+```json
+{
+  "type": "DatabaseActivityMonitoringRecord",
+  "clusterId": "",
+  "instanceId": "db-4JCWQLUZVFYP7DIWP6JVQ77O3Q",
+  "databaseActivityEventList": [
+    {
+      "class": "READ",
+      "clientApplication": "psql",
+      "command": "SELECT",
+      "commandText": "SELECT * FROM users WHERE id = 1;",
+      "databaseName": "mydb",
+      "dbProtocol": "POSTGRESQL",
+      "dbUserName": "postgres",
+      "exitCode": 0,
+      "logTime": "2022-10-06T21:34:42.711Z",
+      "remoteHost": "10.0.1.100",
+      "remotePort": 5432,
+      "serverHost": "172.31.30.159",
+      "serverType": "POSTGRESQL",
+      "sessionId": "session-456",
+      "type": "record"
+    }
+  ]
+}
+```
+
+### 4.4.3 Field Mapping for Nested Format
+
+The parser automatically detects the nested format and extracts events from the `databaseActivityEventList` array. Field mappings:
+
+| Nested Format Field | Flat Format Equivalent | Description |
+|---------------------|------------------------|-------------|
+| commandText | statementText | SQL statement text |
+| command | commandTag | SQL command type |
+| class | - | Event classification (LOGIN, READ, WRITE, etc.) |
+| All other fields | Same name | Direct mapping |
