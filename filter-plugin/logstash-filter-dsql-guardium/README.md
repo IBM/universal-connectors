@@ -1,7 +1,7 @@
 ## DSQL-Guardium Logstash filter plug-in
 
 ### Meet DSQL
-* Tested versions:
+* Tested versions: 
 * Environment: AWS
 * Supported inputs: SQS (pull)
 * Supported Guardium versions:
@@ -120,55 +120,160 @@ output {
 
 ## 4. DSQL Audit Log Format
 
-The DSQL Database Activity Streams provide audit logs in JSON format with the following key fields:
+The DSQL Database Activity Streams provide audit logs in JSON format. The plugin supports two formats: flat format and nested DatabaseActivityMonitoringRecord format.
 
-### 4.1 Successful Query Event
+### 4.1 Flat Format
+
+#### 4.1.1 Successful Query Event
 ```json
 {
   "type": "record",
   "databaseName": "mydb",
   "dbUserName": "postgres",
   "remoteHost": "10.0.1.100",
-  "remotePort": "54321",
+  "remotePort": 54321,
   "sessionId": "session-12345",
   "statementText": "SELECT * FROM users WHERE id = 1;",
   "commandTag": "SELECT",
-  "exitCode": "0",
+  "exitCode": 0,
   "logTime": "2023-11-10T10:15:30.123Z",
   "clientApplication": "psql",
   "statementId": "stmt-001"
 }
 ```
 
-### 4.2 Error Event
+#### 4.1.2 Error Event
 ```json
 {
   "type": "record",
   "databaseName": "mydb",
   "dbUserName": "postgres",
   "remoteHost": "10.0.1.100",
-  "remotePort": "54321",
+  "remotePort": 54321,
   "sessionId": "session-12345",
   "statementText": "SELECT * FROM nonexistent_table;",
-  "exitCode": "1",
+  "exitCode": 1,
   "errorMessage": "relation \"nonexistent_table\" does not exist",
   "logTime": "2023-11-10T10:15:30.123Z"
 }
 ```
 
-### 4.3 Authentication Failure Event
+#### 4.1.3 Authentication Failure Event
 ```json
 {
   "type": "record",
   "databaseName": "mydb",
   "dbUserName": "baduser",
   "remoteHost": "10.0.1.100",
-  "remotePort": "54321",
-  "exitCode": "1",
+  "remotePort": 54321,
+  "exitCode": 1,
   "errorMessage": "password authentication failed for user \"baduser\"",
   "logTime": "2023-11-10T10:15:30.123Z"
 }
 ```
+
+### 4.2 Nested DatabaseActivityMonitoringRecord Format
+
+The plugin also supports a nested format where events are wrapped in a `DatabaseActivityMonitoringRecord` structure with a `databaseActivityEventList` array.
+
+#### 4.2.1 Nested Format - Successful Query Event
+```json
+{
+  "type": "DatabaseActivityMonitoringRecord",
+  "clusterId": "cluster-abc123",
+  "instanceId": "db-INSTANCE123",
+  "databaseActivityEventList": [
+    {
+      "type": "record",
+      "class": "READ",
+      "command": "SELECT",
+      "commandText": "SELECT * FROM users WHERE id = 1;",
+      "databaseName": "mydb",
+      "dbProtocol": "POSTGRESQL",
+      "dbUserName": "postgres",
+      "exitCode": 0,
+      "logTime": "2023-11-10T10:15:30.123Z",
+      "remoteHost": "10.0.1.100",
+      "remotePort": 5432,
+      "serverHost": "172.31.30.159",
+      "serverType": "POSTGRESQL",
+      "sessionId": "session-456",
+      "clientApplication": "psql"
+    }
+  ]
+}
+```
+
+#### 4.2.2 Nested Format - Login Failure Event
+```json
+{
+  "type": "DatabaseActivityMonitoringRecord",
+  "clusterId": "cluster-abc123",
+  "instanceId": "db-INSTANCE123",
+  "databaseActivityEventList": [
+    {
+      "type": "record",
+      "class": "LOGIN",
+      "command": "LOGIN FAILED",
+      "commandText": "Login attempt failed",
+      "databaseName": "postgres",
+      "dbProtocol": "POSTGRESQL",
+      "dbUserName": "baduser",
+      "errorMessage": "password authentication failed for user \"baduser\"",
+      "exitCode": 1,
+      "logTime": "2023-11-10T10:15:30.123Z",
+      "remoteHost": "10.0.1.100",
+      "remotePort": 5432,
+      "serverHost": "172.31.30.159",
+      "serverType": "POSTGRESQL",
+      "sessionId": "session-123",
+      "clientApplication": "psql"
+    }
+  ]
+}
+```
+
+#### 4.2.3 Nested Format - DDL Statement
+```json
+{
+  "type": "DatabaseActivityMonitoringRecord",
+  "clusterId": "cluster-abc123",
+  "instanceId": "db-INSTANCE123",
+  "databaseActivityEventList": [
+    {
+      "type": "record",
+      "class": "SCHEMA",
+      "command": "CREATE",
+      "commandText": "CREATE TABLE users (id serial PRIMARY KEY, name varchar(100));",
+      "databaseName": "mydb",
+      "dbProtocol": "POSTGRESQL",
+      "dbUserName": "postgres",
+      "exitCode": 0,
+      "logTime": "2023-11-10T10:15:30.123Z",
+      "remoteHost": "10.0.1.100",
+      "remotePort": 5432,
+      "serverHost": "172.31.30.159",
+      "serverType": "POSTGRESQL",
+      "sessionId": "session-789",
+      "objectName": "users",
+      "objectType": "TABLE",
+      "clientApplication": "psql"
+    }
+  ]
+}
+```
+
+### 4.3 Field Mapping
+
+The parser automatically detects the format (flat or nested) and extracts events accordingly. For nested format, the parser processes the first event in the `databaseActivityEventList` array.
+
+**Key differences between formats:**
+- **Flat format**: Uses `statementText` for SQL commands
+- **Nested format**: Uses `commandText` for SQL commands (parser handles both)
+- **Nested format**: Includes additional fields like `class`, `command`, `objectName`, `objectType`
+- **Nested format**: Parent-level fields (`instanceId`, `clusterId`) are preserved
+
+**Error detection:** The parser determines if an event is an error based on the presence of a non-empty `errorMessage` field, not the `exitCode` value.
 
 ## 5. Supported Fields
 
@@ -233,77 +338,3 @@ The plugin extracts and maps the following fields from DSQL audit logs:
 ## 9. License
 
 This plugin is licensed under the Apache License 2.0. See the [LICENSE](./LICENSE) file for details.
-## 4.4 Nested DatabaseActivityMonitoringRecord Format (PostgreSQL)
-
-The plugin also supports a nested format where events are wrapped in a `DatabaseActivityMonitoringRecord` structure with a `databaseActivityEventList` array. This format is commonly used by PostgreSQL audit logging systems.
-
-**Important:** The parser validates that `dbProtocol` is set to "POSTGRESQL" or "POSTGRES". Records with other database protocols (e.g., "SQLSERVER") will be rejected.
-
-### 4.4.1 Nested Format - Login Failure Event
-```json
-{
-  "type": "DatabaseActivityMonitoringRecord",
-  "clusterId": "",
-  "instanceId": "db-4JCWQLUZVFYP7DIWP6JVQ77O3Q",
-  "databaseActivityEventList": [
-    {
-      "class": "LOGIN",
-      "clientApplication": "psql",
-      "command": "LOGIN FAILED",
-      "commandText": "Login failed for user 'test'. Reason: Password did not match.",
-      "databaseName": "testdb",
-      "dbProtocol": "POSTGRESQL",
-      "dbUserName": "test",
-      "endTime": null,
-      "errorMessage": "password authentication failed for user \"test\"",
-      "exitCode": 1,
-      "logTime": "2022-10-06T21:34:42.711Z",
-      "remoteHost": "10.0.1.100",
-      "remotePort": 5432,
-      "serverHost": "172.31.30.159",
-      "serverType": "POSTGRESQL",
-      "sessionId": "session-123",
-      "type": "record"
-    }
-  ]
-}
-```
-
-### 4.4.2 Nested Format - Successful Query Event
-```json
-{
-  "type": "DatabaseActivityMonitoringRecord",
-  "clusterId": "",
-  "instanceId": "db-4JCWQLUZVFYP7DIWP6JVQ77O3Q",
-  "databaseActivityEventList": [
-    {
-      "class": "READ",
-      "clientApplication": "psql",
-      "command": "SELECT",
-      "commandText": "SELECT * FROM users WHERE id = 1;",
-      "databaseName": "mydb",
-      "dbProtocol": "POSTGRESQL",
-      "dbUserName": "postgres",
-      "exitCode": 0,
-      "logTime": "2022-10-06T21:34:42.711Z",
-      "remoteHost": "10.0.1.100",
-      "remotePort": 5432,
-      "serverHost": "172.31.30.159",
-      "serverType": "POSTGRESQL",
-      "sessionId": "session-456",
-      "type": "record"
-    }
-  ]
-}
-```
-
-### 4.4.3 Field Mapping for Nested Format
-
-The parser automatically detects the nested format and extracts events from the `databaseActivityEventList` array. Field mappings:
-
-| Nested Format Field | Flat Format Equivalent | Description |
-|---------------------|------------------------|-------------|
-| commandText | statementText | SQL statement text |
-| command | commandTag | SQL command type |
-| class | - | Event classification (LOGIN, READ, WRITE, etc.) |
-| All other fields | Same name | Direct mapping |

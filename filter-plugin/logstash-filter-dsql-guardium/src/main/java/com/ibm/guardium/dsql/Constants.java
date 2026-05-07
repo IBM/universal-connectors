@@ -120,5 +120,3 @@ public interface Constants {
 	public static final String TRANSACTION_ID = "transactionId";
 
 }
-
-// Made with Bob

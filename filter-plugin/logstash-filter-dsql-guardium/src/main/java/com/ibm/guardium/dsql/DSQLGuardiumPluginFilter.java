@@ -109,5 +109,3 @@ public class DSQLGuardiumPluginFilter implements Filter {
 		return this.id;
 	}
 }
-
-// Made with Bob

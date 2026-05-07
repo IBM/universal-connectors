@@ -476,6 +476,53 @@ public class ParserTest {
         assertTrue(record.getData().getOriginalSqlCommand().contains("\r\n"));
         assertTrue(record.getData().getOriginalSqlCommand().contains("textA varchar(6000)"));
     }
-}
 
-// Made with Bob
+    @Test
+    public void testParseSQLServerLoginFailureWithNullErrorMessage() throws ParseException {
+        // Test SQL Server login failure where errorMessage is null but command indicates failure
+        Event event = new org.logstash.Event();
+        
+        event.setField(Constants.TYPE, "DatabaseActivityMonitoringRecord");
+        event.setField(Constants.CLUSTER_ID, "");
+        event.setField(Constants.INSTANCE_ID, "db-4JCWQLUZVFYP7DIWP6JVQ77O3Q");
+        event.setField(Constants.ACCOUNT_ID, "123456789012");
+        event.setField(Constants.INSTANCE_NAME, "sqlserver-cluster-1");
+        
+        List<Map<String, Object>> eventList = new ArrayList<>();
+        Map<String, Object> nestedEvent = new HashMap<>();
+        
+        nestedEvent.put(Constants.CLASS, "LOGIN");
+        nestedEvent.put(Constants.CLIENT_APPLICATION, "Microsoft SQL Server Management Studio");
+        nestedEvent.put(Constants.COMMAND, "LOGIN FAILED");
+        nestedEvent.put(Constants.COMMAND_TEXT, "Login failed for user 'test'. Reason: Password did not match that for the login provided. [CLIENT: local-machine]");
+        nestedEvent.put(Constants.DATABASE_NAME, "");
+        nestedEvent.put(Constants.DB_PROTOCOL, "SQLSERVER");
+        nestedEvent.put(Constants.DB_USER_NAME, "test");
+        nestedEvent.put(Constants.ERROR_MESSAGE, null);  // null error message
+        nestedEvent.put(Constants.EXIT_CODE, 0);
+        nestedEvent.put(Constants.LOG_TIME, "2022-10-06 21:34:42.7113072+00");
+        nestedEvent.put(Constants.OBJECT_TYPE, "LOGIN");
+        nestedEvent.put(Constants.REMOTE_HOST, "local machine");
+        nestedEvent.put(Constants.REMOTE_PORT, null);
+        nestedEvent.put(Constants.SERVER_HOST, "172.31.30.159");
+        nestedEvent.put(Constants.SERVER_TYPE, "SQLSERVER");
+        nestedEvent.put(Constants.SESSION_ID, 0);
+        nestedEvent.put(Constants.TYPE, "record");
+        
+        eventList.add(nestedEvent);
+        event.setField(Constants.DATABASE_ACTIVITY_EVENT_LIST, eventList);
+        
+        Record record = Parser.parseRecord(event);
+        
+        // Verify this is treated as an exception (login failure)
+        assertNotNull(record);
+        assertNotNull(record.getException());
+        assertEquals(Constants.LOGIN_FAILED, record.getException().getExceptionTypeId());
+        assertTrue(record.getException().getDescription().contains("Login failed for user 'test'"));
+        assertEquals("test", record.getAccessor().getDbUser());
+        assertEquals("local machine", record.getSessionLocator().getClientIp());
+        assertEquals(Constants.DEFAULT_PORT, record.getSessionLocator().getClientPort());
+        assertEquals("0", record.getSessionId());
+        assertEquals(Constants.NA, record.getDbName());  // Empty database name
+    }
+}

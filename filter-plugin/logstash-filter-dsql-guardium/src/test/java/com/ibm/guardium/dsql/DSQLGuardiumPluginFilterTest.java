@@ -217,5 +217,3 @@ public class DSQLGuardiumPluginFilterTest {
         assertFalse(record.getSessionLocator().isIpv6());
     }
 }
-
-// Made with Bob

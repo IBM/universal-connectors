@@ -71,17 +71,33 @@ public class Parser {
                 record.setSessionId(Constants.UNKNOWN_STRING);
             }
 
-            // Parse SQL statement or exception based on error message presence
+            // Parse SQL statement or exception based on error indicators
             Object errorMessageObj = getFieldValue(processedEvent, Constants.ERROR_MESSAGE);
-            boolean hasError = errorMessageObj != null &&
-                              !errorMessageObj.toString().isEmpty() &&
-                              !errorMessageObj.toString().equalsIgnoreCase("null");
+            boolean hasErrorMessage = errorMessageObj != null &&
+                                     !errorMessageObj.toString().isEmpty() &&
+                                     !errorMessageObj.toString().equalsIgnoreCase("null");
             
-            if (hasError) {
-                // This is an error/exception - error message is present
+            // Check for login failure indicators
+            Object commandObj = getFieldValue(processedEvent, Constants.COMMAND);
+            Object classObj = getFieldValue(processedEvent, Constants.CLASS);
+            String command = commandObj != null ? commandObj.toString() : "";
+            String eventClass = classObj != null ? classObj.toString() : "";
+            
+            boolean isLoginFailure = command.toUpperCase().contains("LOGIN FAILED") ||
+                                    (eventClass.equalsIgnoreCase("LOGIN") &&
+                                     command.toUpperCase().contains("FAILED"));
+            
+            // Check commandText for login failure indicators if errorMessage is null
+            Object commandTextObj = getFieldValue(processedEvent, Constants.COMMAND_TEXT);
+            String commandText = commandTextObj != null ? commandTextObj.toString() : "";
+            boolean hasLoginFailureInText = commandText.toLowerCase().contains("login failed") ||
+                                           commandText.toLowerCase().contains("authentication failed");
+            
+            if (hasErrorMessage || isLoginFailure || hasLoginFailureInText) {
+                // This is an error/exception
                 record.setException(parseException(processedEvent));
             } else {
-                // This is a successful SQL statement - no error message
+                // This is a successful SQL statement
                 Object statementText = getStatementText(processedEvent);
                 if (statementText != null && !statementText.toString().isEmpty()) {
                     record.setData(parseData(processedEvent));
@@ -420,20 +436,37 @@ public class Parser {
     private static ExceptionRecord parseException(Event event) {
         ExceptionRecord exception = new ExceptionRecord();
 
-        // Get error message
+        // Get error message - if null, try to get from commandText
         Object errorMessageObj = event.getField(Constants.ERROR_MESSAGE);
-        String errorMessage = errorMessageObj != null ?
-            errorMessageObj.toString() : Constants.UNKNOWN_STRING;
+        String errorMessage = null;
+        
+        if (errorMessageObj != null && !errorMessageObj.toString().isEmpty() &&
+            !errorMessageObj.toString().equalsIgnoreCase("null")) {
+            errorMessage = errorMessageObj.toString();
+        } else {
+            // If errorMessage is null, use commandText as error description
+            Object commandTextObj = getStatementText(event);
+            if (commandTextObj != null && !commandTextObj.toString().isEmpty()) {
+                errorMessage = commandTextObj.toString();
+            } else {
+                errorMessage = Constants.UNKNOWN_STRING;
+            }
+        }
 
         // Check class field for LOGIN events (nested format)
         Object classObj = event.getField(Constants.CLASS);
         String eventClass = classObj != null ? classObj.toString() : "";
+        
+        // Check command field for LOGIN FAILED
+        Object commandObj = event.getField(Constants.COMMAND);
+        String command = commandObj != null ? commandObj.toString() : "";
 
-        // Determine exception type based on error message or class
+        // Determine exception type based on error message, class, or command
         if (errorMessage.toLowerCase().contains("authentication") ||
             errorMessage.toLowerCase().contains("login") ||
             errorMessage.toLowerCase().contains("password") ||
-            eventClass.equalsIgnoreCase("LOGIN")) {
+            eventClass.equalsIgnoreCase("LOGIN") ||
+            command.toUpperCase().contains("LOGIN FAILED")) {
             exception.setExceptionTypeId(Constants.LOGIN_FAILED);
         } else {
             exception.setExceptionTypeId(Constants.SQL_ERROR);
@@ -494,5 +527,3 @@ public class Parser {
         return instanceName;
     }
 }
-
-// Made with Bob
