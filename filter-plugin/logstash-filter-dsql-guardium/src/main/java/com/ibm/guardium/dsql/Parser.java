@@ -28,7 +28,8 @@ public class Parser {
     /**
      * Parse the DSQL Database Activity Stream event into a Guardium Record
      * The event is expected to have already been parsed by Logstash's json filter
-     * 
+     * Supports both flat format and nested DatabaseActivityMonitoringRecord format
+     *
      * @param event The Logstash event containing parsed DSQL audit log data
      * @return Record object containing parsed audit information
      * @throws ParseException if parsing fails
@@ -45,15 +46,34 @@ public class Parser {
                 throw new ParseException("Event data is null or empty", 0);
             }
 
+            // Check if this is a nested DatabaseActivityMonitoringRecord format
+            Event processedEvent = event;
+            if (isNestedFormat(event)) {
+                log.debug("Detected nested DatabaseActivityMonitoringRecord format");
+                processedEvent = extractNestedEvent(event);
+                if (processedEvent == null) {
+                    throw new ParseException("Failed to extract nested event from DatabaseActivityMonitoringRecord", 0);
+                }
+            }
+
+            // Validate that this is a PostgreSQL record
+            Object dbProtocolObj = processedEvent.getField(Constants.DB_PROTOCOL);
+            if (dbProtocolObj != null) {
+                String dbProtocol = dbProtocolObj.toString();
+                if (!dbProtocol.equalsIgnoreCase("POSTGRESQL") && !dbProtocol.equalsIgnoreCase("POSTGRES")) {
+                    throw new ParseException("Unsupported database protocol: " + dbProtocol + ". Only POSTGRESQL is supported.", 0);
+                }
+            }
+
             // Set basic record fields
             record.setAppUserName(Constants.APP_USER_NAME);
-            record.setAccessor(parseAccessor(event));
-            record.setSessionLocator(parseSessionLocator(event));
-            record.setDbName(parseDbName(event));
-            record.setTime(parseTimestamp(event));
+            record.setAccessor(parseAccessor(processedEvent));
+            record.setSessionLocator(parseSessionLocator(processedEvent));
+            record.setDbName(parseDbName(processedEvent));
+            record.setTime(parseTimestamp(processedEvent));
             
             // Set session ID
-            Object sessionIdObj = event.getField(Constants.SESSION_ID);
+            Object sessionIdObj = getFieldValue(processedEvent, Constants.SESSION_ID);
             if (sessionIdObj != null) {
                 record.setSessionId(sessionIdObj.toString());
             } else {
@@ -61,17 +81,17 @@ public class Parser {
             }
 
             // Parse SQL statement or exception based on exit code
-            Object exitCodeObj = event.getField(Constants.EXIT_CODE);
+            Object exitCodeObj = getFieldValue(processedEvent, Constants.EXIT_CODE);
             String exitCode = exitCodeObj != null ? exitCodeObj.toString() : null;
             
             if (exitCode != null && !exitCode.equals(Constants.EXIT_CODE_SUCCESS)) {
                 // This is an error/exception
-                record.setException(parseException(event));
+                record.setException(parseException(processedEvent));
             } else {
                 // This is a successful SQL statement
-                Object statementText = event.getField(Constants.STATEMENT_TEXT);
+                Object statementText = getStatementText(processedEvent);
                 if (statementText != null && !statementText.toString().isEmpty()) {
-                    record.setData(parseData(event));
+                    record.setData(parseData(processedEvent));
                 }
             }
 
@@ -81,6 +101,91 @@ public class Parser {
         }
 
         return record;
+    }
+
+    /**
+     * Check if the event is in nested DatabaseActivityMonitoringRecord format
+     */
+    private static boolean isNestedFormat(Event event) {
+        Object typeObj = event.getField(Constants.TYPE);
+        Object eventListObj = event.getField(Constants.DATABASE_ACTIVITY_EVENT_LIST);
+        
+        return typeObj != null &&
+               typeObj.toString().equals(Constants.DB_ACTIVITY_MONITORING_RECORD) &&
+               eventListObj != null;
+    }
+
+    /**
+     * Extract the first event from the nested databaseActivityEventList array
+     * Creates a new Event object with flattened fields for easier processing
+     */
+    private static Event extractNestedEvent(Event parentEvent) {
+        try {
+            Object eventListObj = parentEvent.getField(Constants.DATABASE_ACTIVITY_EVENT_LIST);
+            
+            if (eventListObj instanceof List<?>) {
+                List<?> eventList = (List<?>) eventListObj;
+                
+                if (!eventList.isEmpty() && eventList.get(0) instanceof Map) {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> nestedEventData = (Map<String, Object>) eventList.get(0);
+                    
+                    // Create a new event with the nested data
+                    Event flatEvent = new org.logstash.Event();
+                    
+                    // Copy all fields from nested event
+                    for (Map.Entry<String, Object> entry : nestedEventData.entrySet()) {
+                        flatEvent.setField(entry.getKey(), entry.getValue());
+                    }
+                    
+                    // Also preserve parent-level fields that might be needed
+                    Object instanceId = parentEvent.getField(Constants.INSTANCE_ID);
+                    if (instanceId != null) {
+                        flatEvent.setField(Constants.INSTANCE_ID, instanceId);
+                    }
+                    
+                    Object clusterId = parentEvent.getField(Constants.CLUSTER_ID);
+                    if (clusterId != null) {
+                        flatEvent.setField(Constants.CLUSTER_ID, clusterId);
+                    }
+                    
+                    // Preserve account_id and instance_name if they exist at parent level
+                    Object accountId = parentEvent.getField(Constants.ACCOUNT_ID);
+                    if (accountId != null) {
+                        flatEvent.setField(Constants.ACCOUNT_ID, accountId);
+                    }
+                    
+                    Object instanceName = parentEvent.getField(Constants.INSTANCE_NAME);
+                    if (instanceName != null) {
+                        flatEvent.setField(Constants.INSTANCE_NAME, instanceName);
+                    }
+                    
+                    return flatEvent;
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error extracting nested event: {}", e.getMessage(), e);
+        }
+        
+        return null;
+    }
+
+    /**
+     * Get field value, checking both statementText and commandText fields
+     */
+    private static Object getStatementText(Event event) {
+        Object statementText = event.getField(Constants.STATEMENT_TEXT);
+        if (statementText == null || statementText.toString().isEmpty()) {
+            statementText = event.getField(Constants.COMMAND_TEXT);
+        }
+        return statementText;
+    }
+
+    /**
+     * Get field value with fallback support for nested format field names
+     */
+    private static Object getFieldValue(Event event, String fieldName) {
+        return event.getField(fieldName);
     }
 
     /**
@@ -127,7 +232,7 @@ public class Parser {
         accessor.setClientHostName(Constants.UNKNOWN_STRING);
         accessor.setDbProtocolVersion(Constants.UNKNOWN_STRING);
         accessor.setOsUser(Constants.UNKNOWN_STRING);
-        accessor.setClientMac(Constants.UNKNOWN_STRING);
+        accessor.setClient_mac(Constants.UNKNOWN_STRING);
         accessor.setServerDescription(Constants.UNKNOWN_STRING);
         accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
 
@@ -202,6 +307,7 @@ public class Parser {
 
     /**
      * Parse timestamp from the audit event
+     * Supports multiple timestamp formats including ISO 8601 and SQL Server format
      */
     private static Time parseTimestamp(Event event) {
         long millis = 0;
@@ -217,9 +323,8 @@ public class Parser {
             if (timeField != null) {
                 String dateString = timeField.toString();
                 
-                // Parse ISO 8601 format timestamp
-                ZonedDateTime parsedTime = ZonedDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME);
-                millis = parsedTime.toInstant().toEpochMilli();
+                // Try multiple timestamp formats
+                millis = parseTimestampString(dateString);
             }
         } catch (Exception e) {
             log.error("Failed to parse timestamp: {}", e.getMessage(), e);
@@ -229,12 +334,82 @@ public class Parser {
     }
 
     /**
+     * Parse timestamp string with support for multiple formats
+     * Supports:
+     * - ISO 8601: 2022-10-06T21:34:42.711Z
+     * - SQL Server format: 2022-10-06 21:44:38.4120677+00
+     * - Other common formats
+     */
+    private static long parseTimestampString(String dateString) {
+        if (dateString == null || dateString.isEmpty()) {
+            return 0;
+        }
+
+        try {
+            // First, try ISO 8601 format (most common)
+            try {
+                ZonedDateTime parsedTime = ZonedDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME);
+                return parsedTime.toInstant().toEpochMilli();
+            } catch (Exception e) {
+                // Not ISO 8601, try other formats
+            }
+
+            // Try SQL Server format: "2022-10-06 21:44:38.4120677+00"
+            // Replace space with 'T' and normalize timezone
+            String normalizedDate = dateString;
+            
+            // If it has a space instead of 'T', replace it
+            if (normalizedDate.contains(" ") && !normalizedDate.contains("T")) {
+                normalizedDate = normalizedDate.replace(" ", "T");
+            }
+            
+            // Handle timezone format: +00 -> +00:00
+            if (normalizedDate.matches(".*[+-]\\d{2}$")) {
+                normalizedDate = normalizedDate + ":00";
+            }
+            
+            // Try parsing the normalized format
+            try {
+                ZonedDateTime parsedTime = ZonedDateTime.parse(normalizedDate, DateTimeFormatter.ISO_DATE_TIME);
+                return parsedTime.toInstant().toEpochMilli();
+            } catch (Exception e) {
+                // Still failed, try with offset format
+            }
+
+            // Try with explicit offset format
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSXXX");
+                ZonedDateTime parsedTime = ZonedDateTime.parse(normalizedDate, formatter);
+                return parsedTime.toInstant().toEpochMilli();
+            } catch (Exception e) {
+                // Try without microseconds
+            }
+
+            // Try simpler format without microseconds
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                ZonedDateTime parsedTime = ZonedDateTime.parse(normalizedDate, formatter);
+                return parsedTime.toInstant().toEpochMilli();
+            } catch (Exception e) {
+                log.warn("Could not parse timestamp with any known format: {}", dateString);
+            }
+
+        } catch (Exception e) {
+            log.error("Unexpected error parsing timestamp: {}", e.getMessage(), e);
+        }
+
+        return 0;
+    }
+
+    /**
      * Parse SQL data from successful statements
+     * Supports both statementText and commandText fields
      */
     private static Data parseData(Event event) {
         Data data = new Data();
 
-        Object statementTextObj = event.getField(Constants.STATEMENT_TEXT);
+        // Try statementText first, then commandText (for nested format)
+        Object statementTextObj = getStatementText(event);
         if (statementTextObj != null && !statementTextObj.toString().isEmpty()) {
             String sqlText = statementTextObj.toString();
             data.setOriginalSqlCommand(sqlText);
@@ -247,19 +422,25 @@ public class Parser {
 
     /**
      * Parse exception information from failed statements
+     * Supports both statementText and commandText fields
      */
     private static ExceptionRecord parseException(Event event) {
         ExceptionRecord exception = new ExceptionRecord();
 
         // Get error message
         Object errorMessageObj = event.getField(Constants.ERROR_MESSAGE);
-        String errorMessage = errorMessageObj != null ? 
+        String errorMessage = errorMessageObj != null ?
             errorMessageObj.toString() : Constants.UNKNOWN_STRING;
 
-        // Determine exception type based on error
-        if (errorMessage.toLowerCase().contains("authentication") || 
+        // Check class field for LOGIN events (nested format)
+        Object classObj = event.getField(Constants.CLASS);
+        String eventClass = classObj != null ? classObj.toString() : "";
+
+        // Determine exception type based on error message or class
+        if (errorMessage.toLowerCase().contains("authentication") ||
             errorMessage.toLowerCase().contains("login") ||
-            errorMessage.toLowerCase().contains("password")) {
+            errorMessage.toLowerCase().contains("password") ||
+            eventClass.equalsIgnoreCase("LOGIN")) {
             exception.setExceptionTypeId(Constants.LOGIN_FAILED);
         } else {
             exception.setExceptionTypeId(Constants.SQL_ERROR);
@@ -267,8 +448,8 @@ public class Parser {
 
         exception.setDescription(errorMessage);
 
-        // Set SQL string if available
-        Object statementTextObj = event.getField(Constants.STATEMENT_TEXT);
+        // Set SQL string if available - try both field names
+        Object statementTextObj = getStatementText(event);
         if (statementTextObj != null && !statementTextObj.toString().isEmpty()) {
             exception.setSqlString(statementTextObj.toString());
         } else {

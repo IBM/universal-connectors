@@ -92,6 +92,33 @@ public interface Constants {
 
 	public static final String EXIT_CODE_SUCCESS = "0";
 
+	// Constants for nested DatabaseActivityMonitoringRecord format
+	public static final String DATABASE_ACTIVITY_EVENT_LIST = "databaseActivityEventList";
+
+	public static final String COMMAND_TEXT = "commandText";
+
+	public static final String COMMAND = "command";
+
+	public static final String CLUSTER_ID = "clusterId";
+
+	public static final String INSTANCE_ID = "instanceId";
+
+	public static final String DB_ACTIVITY_MONITORING_RECORD = "DatabaseActivityMonitoringRecord";
+
+	public static final String END_TIME = "endTime";
+
+	public static final String NET_PROTOCOL = "netProtocol";
+
+	public static final String PARAM_LIST = "paramList";
+
+	public static final String ROW_COUNT = "rowCount";
+
+	public static final String SERVER_TYPE = "serverType";
+
+	public static final String SERVICE_NAME = "serviceName";
+
+	public static final String TRANSACTION_ID = "transactionId";
+
 }
 
 // Made with Bob
