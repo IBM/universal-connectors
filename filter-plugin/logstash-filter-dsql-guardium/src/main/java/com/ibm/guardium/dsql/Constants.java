@@ -22,29 +22,17 @@ public interface Constants {
 
 	public static final String EXIT_CODE = "exitCode";
 
-	public static final String OBJECT_TYPE = "objectType";
-
-	public static final String OBJECT_NAME = "objectName";
-
-	public static final String PID = "pid";
-
 	public static final String REMOTE_HOST = "remoteHost";
 
 	public static final String REMOTE_PORT = "remotePort";
 
 	public static final String SERVER_HOST = "serverHost";
 
-	public static final String SERVER_VERSION = "serverVersion";
-
 	public static final String SESSION_ID = "sessionId";
 
 	public static final String START_TIME = "startTime";
 
-	public static final String STATEMENT_ID = "statementId";
-
 	public static final String STATEMENT_TEXT = "statementText";
-
-	public static final String SUBSTATEMENT_ID = "substatementId";
 
 	public static final String COMMAND_TAG = "commandTag";
 
@@ -104,19 +92,5 @@ public interface Constants {
 	public static final String INSTANCE_ID = "instanceId";
 
 	public static final String DB_ACTIVITY_MONITORING_RECORD = "DatabaseActivityMonitoringRecord";
-
-	public static final String END_TIME = "endTime";
-
-	public static final String NET_PROTOCOL = "netProtocol";
-
-	public static final String PARAM_LIST = "paramList";
-
-	public static final String ROW_COUNT = "rowCount";
-
-	public static final String SERVER_TYPE = "serverType";
-
-	public static final String SERVICE_NAME = "serviceName";
-
-	public static final String TRANSACTION_ID = "transactionId";
 
 }

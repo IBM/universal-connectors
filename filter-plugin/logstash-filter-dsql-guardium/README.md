@@ -279,6 +279,8 @@ The parser automatically detects the format (flat or nested) and extracts events
 
 The plugin extracts and maps the following fields from DSQL audit logs:
 
+### 5.1 Common Fields (Both Formats)
+
 | DSQL Field | Guardium Field | Description |
 |------------|----------------|-------------|
 | databaseName | dbName | Database name |
@@ -286,11 +288,22 @@ The plugin extracts and maps the following fields from DSQL audit logs:
 | remoteHost | sessionLocator.clientIp | Client IP address |
 | remotePort | sessionLocator.clientPort | Client port |
 | sessionId | sessionId | Session identifier |
-| statementText | data.originalSqlCommand | SQL statement |
+| statementText / commandText | data.originalSqlCommand | SQL statement (flat format uses `statementText`, nested format uses `commandText`) |
 | exitCode | - | Exit code (0=success, non-zero=error) |
 | errorMessage | exception.description | Error description |
 | logTime | time.timestamp | Event timestamp |
 | clientApplication | accessor.sourceProgram | Client application name |
+
+### 5.2 Nested Format Additional Fields
+
+These fields are only present in the nested `DatabaseActivityMonitoringRecord` format and are used by the parser for processing:
+
+| DSQL Field | Guardium Field | Description | Usage |
+|------------|----------------|-------------|-------|
+| class | - | Event class (e.g., LOGIN, READ, WRITE, SCHEMA, TABLE) | Used to detect LOGIN failure events |
+| command | - | Command type (e.g., SELECT, INSERT, CREATE, ALTER, LOGIN FAILED) | Used to detect LOGIN failure events and error conditions |
+| clusterId | - | Cluster identifier (parent-level field) | Preserved from parent level for context |
+| instanceId | - | Instance identifier (parent-level field) | Preserved from parent level for context |
 
 ## 6. Limitations
 

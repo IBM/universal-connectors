@@ -36,27 +36,14 @@ public class ParserTest {
         nestedEvent.put(Constants.DATABASE_NAME, "testdb");
         nestedEvent.put(Constants.DB_PROTOCOL, "POSTGRESQL");
         nestedEvent.put(Constants.DB_USER_NAME, "test");
-        nestedEvent.put(Constants.END_TIME, null);
         nestedEvent.put(Constants.ERROR_MESSAGE, "password authentication failed for user \"test\"");
         nestedEvent.put(Constants.EXIT_CODE, 1);
         nestedEvent.put(Constants.LOG_TIME, "2022-10-06T21:34:42.711Z");
-        nestedEvent.put(Constants.NET_PROTOCOL, null);
-        nestedEvent.put(Constants.OBJECT_NAME, "");
-        nestedEvent.put(Constants.OBJECT_TYPE, "LOGIN");
-        nestedEvent.put(Constants.PARAM_LIST, null);
-        nestedEvent.put(Constants.PID, null);
         nestedEvent.put(Constants.REMOTE_HOST, "10.0.1.100");
         nestedEvent.put(Constants.REMOTE_PORT, 5432);
-        nestedEvent.put(Constants.ROW_COUNT, 0);
         nestedEvent.put(Constants.SERVER_HOST, "172.31.30.159");
-        nestedEvent.put(Constants.SERVER_TYPE, "POSTGRESQL");
-        nestedEvent.put(Constants.SERVER_VERSION, "15.00.4073.23.v1.R1");
-        nestedEvent.put(Constants.SERVICE_NAME, "postgresql");
         nestedEvent.put(Constants.SESSION_ID, "session-123");
         nestedEvent.put(Constants.START_TIME, null);
-        nestedEvent.put(Constants.STATEMENT_ID, "0x1eb0d1808d34a94b9d3dcf5432750f02");
-        nestedEvent.put(Constants.SUBSTATEMENT_ID, 1);
-        nestedEvent.put(Constants.TRANSACTION_ID, "0");
         nestedEvent.put(Constants.TYPE, "record");
         
         eventList.add(nestedEvent);
@@ -105,7 +92,6 @@ public class ParserTest {
         nestedEvent.put(Constants.REMOTE_HOST, "10.0.1.100");
         nestedEvent.put(Constants.REMOTE_PORT, 5432);
         nestedEvent.put(Constants.SERVER_HOST, "172.31.30.159");
-        nestedEvent.put(Constants.SERVER_TYPE, "POSTGRESQL");
         nestedEvent.put(Constants.SESSION_ID, "session-456");
         nestedEvent.put(Constants.TYPE, "record");
         
@@ -252,12 +238,9 @@ public class ParserTest {
         nestedEvent.put(Constants.ERROR_MESSAGE, "permission denied for schema public");
         nestedEvent.put(Constants.EXIT_CODE, 1);
         nestedEvent.put(Constants.LOG_TIME, "2022-10-06 21:44:38.4120677+00");
-        nestedEvent.put(Constants.OBJECT_NAME, "public");
-        nestedEvent.put(Constants.OBJECT_TYPE, "SCHEMA");
         nestedEvent.put(Constants.REMOTE_HOST, "10.0.1.100");
         nestedEvent.put(Constants.REMOTE_PORT, 5432);
         nestedEvent.put(Constants.SERVER_HOST, "172.31.30.159");
-        nestedEvent.put(Constants.SERVER_TYPE, "POSTGRESQL");
         nestedEvent.put(Constants.SESSION_ID, 84);
         nestedEvent.put(Constants.TYPE, "record");
         
@@ -299,17 +282,12 @@ public class ParserTest {
         nestedEvent.put(Constants.DATABASE_NAME, "testDB");
         nestedEvent.put(Constants.DB_PROTOCOL, "POSTGRESQL");
         nestedEvent.put(Constants.DB_USER_NAME, "test");
-        nestedEvent.put(Constants.END_TIME, null);
         nestedEvent.put(Constants.ERROR_MESSAGE, null);  // No error message
         nestedEvent.put(Constants.EXIT_CODE, 1);  // exitCode 1 but no error
         nestedEvent.put(Constants.LOG_TIME, "2022-10-06 21:24:59.9422268+00");
-        nestedEvent.put(Constants.OBJECT_NAME, "TestTable");
-        nestedEvent.put(Constants.OBJECT_TYPE, "TABLE");
         nestedEvent.put(Constants.REMOTE_HOST, "10.0.1.100");
         nestedEvent.put(Constants.REMOTE_PORT, 5432);
-        nestedEvent.put(Constants.ROW_COUNT, 0);
         nestedEvent.put(Constants.SERVER_HOST, "172.31.30.159");
-        nestedEvent.put(Constants.SERVER_TYPE, "POSTGRESQL");
         nestedEvent.put(Constants.SESSION_ID, 62);
         nestedEvent.put(Constants.TYPE, "record");
         
@@ -501,11 +479,9 @@ public class ParserTest {
         nestedEvent.put(Constants.ERROR_MESSAGE, null);  // null error message
         nestedEvent.put(Constants.EXIT_CODE, 0);
         nestedEvent.put(Constants.LOG_TIME, "2022-10-06 21:34:42.7113072+00");
-        nestedEvent.put(Constants.OBJECT_TYPE, "LOGIN");
         nestedEvent.put(Constants.REMOTE_HOST, "local machine");
         nestedEvent.put(Constants.REMOTE_PORT, null);
         nestedEvent.put(Constants.SERVER_HOST, "172.31.30.159");
-        nestedEvent.put(Constants.SERVER_TYPE, "SQLSERVER");
         nestedEvent.put(Constants.SESSION_ID, 0);
         nestedEvent.put(Constants.TYPE, "record");
         
