@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class Constants {
 
-	public static final String NOT_AVAILABLE= "NA";
+	public static final String NOT_AVAILABLE= "N.A.";
 	public static final String UNKNOWN_STRING = StringUtils.EMPTY;
 	public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_yugabyteguardium_json_parse_error";
 
@@ -50,9 +50,9 @@ public class Constants {
 
 	public static final String LANGUAGE_CASSANDRA = "CASS";
 
-	public static final String DB_PROTOCOL_PG = "POSTGRESQL";
+	public static final String DB_PROTOCOL_PG = "YUGABYTE";
 
-	public static final String DB_PROTOCOL_CASSANDRA = "CASSANDRA";
+	public static final String DB_PROTOCOL_CASSANDRA = "YUGABYTE_CASS";
 	public static final String MESSAGE = "message";
 
 	public static final String TYPE = "log_type";
