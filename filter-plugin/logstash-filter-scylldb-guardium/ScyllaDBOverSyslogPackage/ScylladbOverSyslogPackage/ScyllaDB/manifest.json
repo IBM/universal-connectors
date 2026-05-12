@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_Scylladb_Syslog_filter",
+	"alias": "Scylladb Syslog",
+	"type": "filter",
+	"pipeline_type":"push",
+	"plugin_version": "0.0.7",
+	"datasourceTypes": [{"type":"Scylladb","supportedVersions": ["2023.1"]}],
+	"supported_input_plugins": ["syslog_input"],
+	"developer": "IBM",
+	"license": "Apache2.0",
+	"description": "Parses Scylladb database events into Guardium via Syslog connection.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.ibm.com/Activity-Insights/universal-connectors/tree/master/filter-plugin/logstash-filter-scylldb-guardium/README.md"
+}
