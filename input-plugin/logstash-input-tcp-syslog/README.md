@@ -25,8 +25,8 @@ Specify a port, and this plug-in will listen to the port on the Logstash host fo
 | Parameter | Input Type | Required | Default |
 |-----------|------------|----------|---------|
 | port  | number | Yes | |
-| ssl_enable  | boolean | no | False |
-| ssl_cert  | string | no | |
+| ssl_enabled  | boolean | no | False |
+| ssl_certificate  | string | no | |
 | ssl_key  | string | no | |
 | ssl_key_passphrase  | string | no | |
 | ssl_client_authentication  | string | no | "optional" |
@@ -35,11 +35,11 @@ Specify a port, and this plug-in will listen to the port on the Logstash host fo
 
 The `port` setting allows specifying a port on which the Logstash host listens to the TCP connection.
 
-#### `ssl_enable`
+#### `ssl_enabled`
 
 Enable SSL.
 
-#### `ssl_cert`
+#### `ssl_certificate`
 
 Path to certificate in PEM format. This certificate will be presented to the connecting clients.
 
@@ -92,8 +92,8 @@ input {
 input {
   tcp {
     port => 6514
-    ssl_enable => false
-    # ssl_cert => "${SSL_DIR}/tls.crt"
+    ssl_enabled => false
+    # ssl_certificate => "${SSL_DIR}/tls.crt"
     # ssl_key => "${SSL_DIR}/tls.key"
     # ssl_key_passphrase => "${ssl_key_passphrase}"
     # ssl_client_authentication => "none"
