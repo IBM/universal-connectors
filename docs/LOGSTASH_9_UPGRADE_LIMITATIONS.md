@@ -2,9 +2,13 @@
 
 ## Overview
 
-This document outlines the limitations and breaking changes that customers need to be aware of when upgrading from Logstash 8.3.3 to Logstash version 9.3.4 with IBM Security Guardium Universal Connectors.
+This document outlines the limitations and breaking changes that customers need to be aware of when upgrading to **Guardium Data Protection (GDP) version 12.2.3**.
 
-**IMPORTANT:** Customers upgrading to **Guardium Data Protection (GDP) version 12.2.3** will be automatically upgraded from Logstash 8.3.3 to Logstash 9.3.4.
+**IMPORTANT:** GDP 12.2.3 includes an upgrade from Logstash 8.3.3 to Logstash 9.3.4. This Logstash upgrade introduces breaking changes in SSL/TLS configuration parameters that will impact Universal Connector configurations.
+
+**Who is Impacted:**
+- **Legacy Flow Customers:** Must manually update their Logstash configuration files with the new parameter names
+- **Central Manager Flow Customers (Syslog):** The SSL verification UI option will be removed in GDP 12.2.3. SSL connections will default to `ssl_client_authentication => "none"` (no client authentication required)
 
 ## Breaking Changes in TCP Input Plugin
 
@@ -30,7 +34,17 @@ Logstash 9.3.4 has deprecated certain SSL/TLS configuration parameters in the TC
 
 **Note:** The values `"optional"` and `"required"` for `ssl_client_authentication` are not currently supported by Guardium Universal Connectors.
 
-**Central Manager Limitation:** The Central Manager flow for Syslog-based connectors does not provide an option to configure SSL verification. SSL connections will use `ssl_client_authentication => "none"` by default.
+**Deployment-Specific Impact:**
+
+**Legacy Flow:**
+- Customers must manually update their configuration files with the new parameter names
+- This document provides the complete migration guide for these updates
+
+**Central Manager Flow (Syslog):**
+- **Breaking Change:** The SSL verification option in the Central Manager UI will be **removed** in GDP 12.2.3
+- Previously, Central Manager provided a UI option to configure SSL verification for Syslog connectors
+- After upgrade, SSL connections will automatically use `ssl_client_authentication => "none"` (no client authentication)
+- This change is due to Guardium Universal Connectors currently only supporting `ssl_client_authentication => "none"` (the `"optional"` and `"required"` values are not supported)
 
 ## Affected Connectors
 
@@ -67,9 +81,10 @@ The following Universal Connectors are affected by these changes:
 
 ## Migration Guide
 
-### For Customers Upgrading to GDP 12.2.3 (Logstash 8.3.3 → 9.3.4)
+### For Legacy Flow Customers Upgrading to GDP 12.2.3 (Logstash 8.3.3 → 9.3.4)
 
-The Logstash version will be automatically upgraded as part of the GDP upgrade process.
+The Logstash version will be automatically upgraded as part of the GDP upgrade process. **You must manually update your configuration files** with the new parameter names.
+
 
 #### Step 1: Identify Affected Configurations
 
@@ -111,10 +126,7 @@ input {
 
 Before deploying to production:
 
-1. Validate the Logstash configuration:
-   ```bash
-   /opt/logstash/bin/logstash -f /path/to/config.conf --config.test_and_exit
-   ```
+1. Validate your installed UC configuration:
 
 2. Test with sample data in a non-production environment
 
@@ -175,7 +187,8 @@ Before completing your upgrade to GDP 12.2.3, verify:
 - Check file permissions on certificate files
 - Ensure `ssl_enabled => true` (not `false`)
 - Verify `ssl_client_authentication => "none"` is set (this is the only supported value)
-- **Note:** For Central Manager deployments, SSL verification options are not configurable through the UI
+- **Note:** This applies to legacy flow deployments. 
+-  For Central Manager deployments, SSL verification options are now not configurable through the UI
 
 #### Issue 3: No Data Flowing After Upgrade
 **Symptom:** Logstash starts but no events are received
