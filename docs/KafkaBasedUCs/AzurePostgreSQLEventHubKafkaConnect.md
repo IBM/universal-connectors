@@ -7,7 +7,7 @@ PostgreSQL over Event Hub Kafka Connect** plug-ins.
 
 * Tested versions: 17.9 (Flexible Server)
 * Environment: Azure
-* Supported inputs: Azure EventHub connect 2.0
+* Supported inputs: Kafka connect Azure EventHub 2.0
 * Supported Guardium versions:
     * Guardium Data Protection: Appliance bundle 12.2.2 or later
 
