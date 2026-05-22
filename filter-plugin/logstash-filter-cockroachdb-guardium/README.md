@@ -122,36 +122,6 @@ versions of the Linux distributions.
          Ruleset="imfile_to_gdp")
    ```
 
-   **For non-TLS connection:**
-   ```
-   module(load="imfile")
-   ruleset(name="imfile_to_gdp") {
-           action(type="omfwd"
-           TARGET="<TARGET_HOST>"
-           Port="<TARGET_PORT>"
-           Protocol="tcp"
-           template="RSYSLOG_SyslogProtocol23Format")
-   }
-
-   # Monitor CockroachDB SQL query execution logs
-   input(type="imfile"
-         File="/path/to/logs/directory/cockroach-sql-exec.log"
-         Tag="cockroachdb-sql-exec"
-         Ruleset="imfile_to_gdp")
-
-   # Monitor CockroachDB authentication logs
-   input(type="imfile"
-         File="/path/to/logs/directory/cockroach-sql-auth.log"
-         Tag="cockroachdb-auth"
-         Ruleset="imfile_to_gdp")
-
-   # Monitor CockroachDB schema logs
-   input(type="imfile"
-         File="/path/to/logs/directory/cockroach-sql-schema.log"
-         Tag="cockroach-schema"
-         Ruleset="imfile_to_gdp")
-   ```
-
 5. Restart Rsyslog service:
 	```bash
 	systemctl restart rsyslog
