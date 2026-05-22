@@ -5,7 +5,7 @@ You can create and configure datasource profiles through Central Manager for **W
 ## About WatsonX Kafka Connect
 
 * **Environment:** IBM Cloud
-* **Supported inputs:** Kafka connect WatsonX 2.0
+* **Supported inputs:** Kafka connect WatsonX 2.0 (pull)
 * **Supported Guardium versions:**
     * Guardium Data Protection: Appliance bundle 12.2.2 or later
 
