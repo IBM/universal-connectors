@@ -5,7 +5,7 @@ Create and configure datasource profiles through Central Manager for **Azure Dat
 ## Meet Azure Databricks Over JDBC Connect
 
 * Environments: Azure
-* Supported inputs: Azure EventHub connect 2.0
+* Supported inputs: Kafka connect Azure EventHub 2.0
 * Supported Guardium versions:
     * Guardium Data Protection: Appliance bundle 12.2.2 or later.
 
