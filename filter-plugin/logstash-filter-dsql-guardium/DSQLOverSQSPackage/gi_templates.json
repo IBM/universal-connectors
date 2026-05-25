@@ -1,0 +1,12 @@
+{
+  "templates": [
+    {
+      "name": "DSQL over SQS",
+      "description": "Template for AWS DSQL Database Activity Streams over SQS",
+      "type": "filter",
+      "datasource_type": "DSQL",
+      "input_type": "SQS",
+      "version": "1.0.0"
+    }
+  ]
+}
