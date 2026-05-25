@@ -60,8 +60,9 @@ input {
 	port => 5045 
 	# For SSL over Filebeat, uncomment the following lines after generating an SSL key and a certificate authority (CA) using GuardAPI (see documentation), copy the public certificate authority (CA) to your data source and adjust Filebeat configuration:
 	ssl => true
-	ssl_certificate => "${SSL_DIR}/cert.pem"
-	ssl_key => "${SSL_DIR}/key.pem"
+	ssl_certificate => "${SSL_DIR}/tls.crt"
+	ssl_key => "${SSL_DIR}/tls.key"
+	ssl_key_passphrase => "${ssl_key_passphrase}"
 	type => "<datasource-type>" 
 	}
 }

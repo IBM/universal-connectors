@@ -25,20 +25,21 @@ Specify a port, and this plug-in will listen to the port on the Logstash host fo
 | Parameter | Input Type | Required | Default |
 |-----------|------------|----------|---------|
 | port  | number | Yes | |
-| ssl_enable  | boolean | no | False |
-| ssl_cert  | string | no | |
+| ssl_enabled  | boolean | no | False |
+| ssl_certificate  | string | no | |
 | ssl_key  | string | no | |
-| ssl_verify  | boolean | no | True |
+| ssl_key_passphrase  | string | no | |
+| ssl_client_authentication  | string | no | "optional" |
 
 #### `port`
 
 The `port` setting allows specifying a port on which the Logstash host listens to the TCP connection.
 
-#### `ssl_enable`
+#### `ssl_enabled`
 
 Enable SSL.
 
-#### `ssl_cert`
+#### `ssl_certificate`
 
 Path to certificate in PEM format. This certificate will be presented to the connecting clients.
 
@@ -46,9 +47,18 @@ Path to certificate in PEM format. This certificate will be presented to the con
 
 The path to the private key corresponding to the specified certificate (PEM format).
 
-#### `ssl_verify`
+#### `ssl_key_passphrase`
+
+The passphrase for the encrypted private key. Only required if the private key is encrypted.
+
+#### `ssl_client_authentication`
 
 Verify the identity of the other end of the SSL connection against the CA.
+
+Valid options are:
+* `none` - No SSL client authentication
+* `optional` - SSL client authentication is optional
+* `required` - SSL client authentication is required
 
 #### Logstash default configuration parameters
 
@@ -82,11 +92,11 @@ input {
 input {
   tcp {
     port => 6514
-    ssl_enable => true
-    ssl_cert => "${SSL_DIR}/cert.pem"
-    ssl_key => "${SSL_DIR}/key.pem"
-    ssl_verify => false
-    type => "<datasource-type>"
+    ssl_enabled => false
+    # ssl_certificate => "${SSL_DIR}/tls.crt"
+    # ssl_key => "${SSL_DIR}/tls.key"
+    # ssl_key_passphrase => "${ssl_key_passphrase}"
+    # ssl_client_authentication => "none"
   }
 }
 ```
@@ -133,4 +143,3 @@ Run:
 
 ```bash
 sudo service rsyslog restart
-```
