@@ -1,6 +1,14 @@
 # Changelog
 Notable changes will be documented in this file.
 
+## [0.1.24]
+- GRD-126808: Add a support for MongoStyle audit logs
+
+## [0.1.23]
+- Code improvement
+- Remove session id
+- Client port to -1
+
 ## [0.1.22]
 - SQL query will not appear in Object and Verb column.
 - Service name and Database name should be identical.
