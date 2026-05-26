@@ -5,14 +5,10 @@ SPDX-License-Identifier: Apache-2.0
 package com.ibm.guardium.documentdb;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 
-import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,345 +29,341 @@ import co.elastic.logstash.api.FilterMatchListener;
 import co.elastic.logstash.api.LogstashPlugin;
 import co.elastic.logstash.api.PluginConfigSpec;
 
+/**
+ * DocumentDB Guardium Filter plugin for Logstash. Processes DocumentDB audit and profiler logs and
+ * converts them to Guardium Record format.
+ *
+ * <p>This refactored version uses utility classes and constants for better maintainability.
+ */
 @LogstashPlugin(name = "documentdb_guardium_filter")
 public class DocumentdbGuardiumFilter implements Filter {
 
-	public static final PluginConfigSpec<String> SOURCE_CONFIG = PluginConfigSpec.stringSetting("source", "message");
-	public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_documentdbguardium_json_parse_error";
-	public static final String LOGSTASH_TAG_JSON_DEPTH_ERROR = "_documentdbguardium_json_depth_error";
-	/*
-	 * skipping non-relevant log events like
-	 * "successful authenticate", and other events
-	 * with blank db name
-	 */
-	public static final String LOGSTASH_TAG_SKIP = "_documentdbguardium_skip";
-	// Reuse Gson instances to avoid creating new ones for every event (Performance Optimization)
-	private static final Gson GSON_PARSER = new Gson();
-	private static final Gson GSON_SERIALIZER = new GsonBuilder().serializeNulls().create();
-	private static final Gson GSON_SERIALIZER_NO_ESCAPE =
-			new GsonBuilder().serializeNulls().disableHtmlEscaping().create();
-	private static final String DOCUMENTDB_AUDIT_SIGNAL = "\"atype\"";
-	private static final String DOCUMENTDB_PROFILER_SIGNAL = "command";
-	private static final String AGGR_KEY = "aggregate";
-	private static final String COUNT_KEY = "count";
-	private static final String DELETE_KEY = "remove";
-	private static final String INSERT_KEY = "insert";
-	private static final String UPDATE_KEY = "update";
-	private static final String DISTINCT_KEY = "distinct";
-	private static final String FIND_KEY = "find";
-	private static final String FINDANDMODIFY_KEY = "findAndModify";
-	// Set for efficient profiler key checking (Performance Optimization)
-	private static final Set<String> PROFILER_KEYS =
-			new HashSet<>(
-					Arrays.asList(
-							AGGR_KEY,
-							COUNT_KEY,
-							DELETE_KEY,
-							INSERT_KEY,
-							UPDATE_KEY,
-							DISTINCT_KEY,
-							FIND_KEY,
-							FINDANDMODIFY_KEY));
-	private static final Set<String> LOCAL_IP_LIST =
-			new HashSet<>(Arrays.asList("127.0.0.1", "0:0:0:0:0:0:0:1"));
-	private static final String DOCUMENT_INTERNAL_API_IP = "(NONE)";
-	private static final InetAddressValidator inetAddressValidator = InetAddressValidator.getInstance();
-	private static Logger log = LogManager.getLogger(DocumentdbGuardiumFilter.class);
-	Parser parser;
-	private String id;
+  public static final PluginConfigSpec<String> SOURCE_CONFIG =
+      PluginConfigSpec.stringSetting("source", "message");
 
-	public DocumentdbGuardiumFilter(String id, Configuration config, Context context) {
-		// constructors should validate configuration options
-		this.id = id;
-		this.parser = new Parser();
-	}
+  // Reuse Gson instances to avoid creating new ones for every event (Performance Optimization)
+  private static final Gson GSON_PARSER = new Gson();
+  private static final Gson GSON_SERIALIZER = new GsonBuilder().serializeNulls().create();
+  private static final Gson GSON_SERIALIZER_NO_ESCAPE =
+      new GsonBuilder().serializeNulls().disableHtmlEscaping().create();
 
-	@Override
-	public Collection<PluginConfigSpec<?>> configSchema() {
-		// should return a list of all configuration options for this plugin
-		return Collections.singletonList(SOURCE_CONFIG);
-	}
+  private static final Logger log = LogManager.getLogger(DocumentdbGuardiumFilter.class);
 
-	@Override
-	public String getId() {
-		return this.id;
-	}
+  private final Parser parser;
+  private final String id;
+  private final List<Event> skippedEvents = new ArrayList<>();
 
-	/**
-	 * Filter event to create Guard record object(s) for each Adit/Profiler event
-	 */
-	@Override
-	public Collection<Event> filter(Collection<Event> events, FilterMatchListener matchListener) {
-		String messageString=null;
-		ArrayList<Event> skippedEvents = new ArrayList<>();
-		for (Event e : events) {
-			if (e.getField("message") instanceof String) {
-				messageString = e.getField("message").toString();
-				
+  public DocumentdbGuardiumFilter(String id, Configuration config, Context context) {
+    this.id = id;
+    this.parser = new Parser();
+  }
 
-				if (!isProperlyClosedJson(messageString)) {
-					log.error("DocumentDB filter: JSON validation failed (truncated or too large)");
-					e.tag(LOGSTASH_TAG_JSON_DEPTH_ERROR);
-					continue;
-				}
-				if (messageString.contains(DOCUMENTDB_AUDIT_SIGNAL)) {// This is an audit event
-					try {
-						JsonObject inputJSON = GSON_PARSER.fromJson(messageString, JsonObject.class);
-						final String atype = inputJSON.get("atype").getAsString();
-						final JsonObject param = inputJSON.get("param").getAsJsonObject();
-						if ((atype.equals("authenticate") && param.get("error").getAsString().equals("0") ) ||
-								(param.has("ns") && param.get("ns").getAsString().isEmpty()))
-						{
-							e.tag(LOGSTASH_TAG_SKIP);
-							skippedEvents.add(e);
-							continue;
-						}
-						Record record = parser.parseAuditRecord(inputJSON);
-						if(e.getField("serverHostnamePrefix") !=null && e.getField("serverHostnamePrefix") instanceof String) {
-							record.getAccessor().setServerHostName(e.getField("serverHostnamePrefix").toString()+".aws.com");
-							String dbName=record.getDbName();
-							record.setDbName(!dbName.isEmpty()?e.getField("serverHostnamePrefix").toString()+":"+dbName:e.getField("serverHostnamePrefix").toString());
-						}
-						record.getAccessor().setServiceName(record.getDbName());
+  /**
+   * Formats JsonSyntaxException message, truncating everything from the troubleshooting link
+   * onwards.
+   *
+   * @param jse The JsonSyntaxException to format
+   * @return Formatted exception message
+   */
+  private static String formatJsonSyntaxException(JsonSyntaxException jse) {
+    String message = jse.toString();
+    int linkIndex = message.indexOf("See https://github.com/google/gson");
+    if (linkIndex != -1) {
+      return message.substring(0, linkIndex).trim();
+    }
+    return message;
+  }
 
-						this.correctIPs(e, record);
-						e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, GSON_SERIALIZER.toJson(record));
-						matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
+  @Override
+  public Collection<PluginConfigSpec<?>> configSchema() {
+    return Collections.singletonList(SOURCE_CONFIG);
+  }
 
-					} catch (StackOverflowError soe) {
-						log.error(
-								"DocumentDB filter: JSON nesting too deep (StackOverflow), skipping event {}",
-								logEvent(e));
-						e.tag(LOGSTASH_TAG_JSON_DEPTH_ERROR);
-					} catch (OutOfMemoryError oom) {
-						log.error(
-								"DocumentDB filter: Insufficient memory to process event, skipping {}",
-								logEvent(e));
-						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
-						System.gc(); // Suggest garbage collection
-					} catch (JsonSyntaxException jse) {
-						log.error(
-								"DocumentDB filter: Error parsing docDb audit event {} \n {} ",
-								logEvent(e),
-								formatJsonSyntaxException(jse));
-						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
-					} catch (Exception exception) {
-						// don't let event pass filter
-						// events.remove(e);
-						log.error(
-								"DocumentDB filter: Error parsing docDb audit event {}", logEvent(e), exception);
-						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
-					}
-				} else if (messageString.contains(DOCUMENTDB_PROFILER_SIGNAL)) {// This is a profiler event
-					try {
-						if (containsAnyProfilerKey(messageString)) {
-							JsonObject inputJSON = GSON_PARSER.fromJson(messageString, JsonObject.class);
-							if ((!inputJSON.has("ns")) || (inputJSON.has("ns") && inputJSON.get("ns").getAsString().isEmpty()) )  {
-								e.tag(LOGSTASH_TAG_SKIP);
-								skippedEvents.add(e);
-								continue;
-							}
-							Record record = parser.parseProfilerRecord(inputJSON);
-							if (e.getField("serverHostnamePrefix") instanceof String) {
-								record.getAccessor().setServerHostName(e.getField("serverHostnamePrefix").toString()+".aws.com");
-								String dbName=record.getDbName();
-								record.setDbName(!dbName.isEmpty()?e.getField("serverHostnamePrefix").toString()+":"+dbName:e.getField("serverHostnamePrefix").toString());
-							}
-							record.getAccessor().setServiceName(record.getDbName());
+  @Override
+  public String getId() {
+    return this.id;
+  }
 
-							this.correctIPs(e, record);
-							e.setField(
-									GuardConstants.GUARDIUM_RECORD_FIELD_NAME,
-									GSON_SERIALIZER_NO_ESCAPE.toJson(record));
-							if (record.getDbName().equals(Parser.UNKOWN_STRING))  {
-	                            e.tag(LOGSTASH_TAG_SKIP);
-								skippedEvents.add(e);
-	                            continue;
-	                        }
-							matchListener.filterMatched(e); // Flag OK for filter input/parsing/out
-						}
-					} catch (StackOverflowError soe) {
-						log.error(
-								"DocumentDB filter: JSON nesting too deep (StackOverflow), skipping event {} ",
-								logEvent(e));
-						e.tag(LOGSTASH_TAG_JSON_DEPTH_ERROR);
-					} catch (OutOfMemoryError oom) {
-						log.error(
-								"DocumentDB filter: Insufficient memory to process event, skipping {} ",
-								logEvent(e));
-						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
-						System.gc(); // Suggest garbage collection
-					} catch (JsonSyntaxException jse) {
-						log.error(
-								"DocumentDB filter: Error parsing docDb profiler event {} \n {} ",
-								logEvent(e),
-								formatJsonSyntaxException(jse));
-						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
-					} catch (Exception exception) {
-						// don't let event pass filter
-						// events.remove(e);
-						log.error(
-								"DocumentDB filter: Error parsing docDb profiler event {} ",
-								logEvent(e),
-								exception);
-						e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
-					}
-				}
-			}
-		}
-		events.removeAll(skippedEvents);
-		return events;
-	}
+  /** Filter event to create Guard record object(s) for each Audit/Profiler event. */
+  @Override
+  public Collection<Event> filter(Collection<Event> events, FilterMatchListener matchListener) {
+    skippedEvents.clear(); // Clear from previous invocation
+    for (Event e : events) {
+      processEvent(e, matchListener);
+    }
+    events.removeAll(skippedEvents);
+    return events;
+  }
 
-	/**
-	 * Overrides DocumentDB local/remote IP 127.0.0.1, if Logstash Event contains
-	 * "server_ip".
-	 * Override "(NONE)" IP, if not filterd, as it's internal command by DocumentDB.
-	 * Note: IP needs to be in ipv4/ipv6 format
-	 * 
-	 * @param e      - Logstash Event
-	 * @param record - Record after parsing.
-	 */
-	private void correctIPs(Event e, Record record) {
-		// Override "(NONE)" IP, if not filterd, as it's internal command by DocumentDB.
-		// Note: IP needs to be in ipv4/ipv6 format
-		SessionLocator sessionLocator = record.getSessionLocator();
-		String sessionServerIp = sessionLocator.getServerIp();
+  /**
+   * Processes a single event and converts it to a Guardium record.
+   *
+   * @param e The event to process
+   * @param matchListener The filter match listener
+   */
+  private void processEvent(Event e, FilterMatchListener matchListener) {
+    String messageString = EventUtils.getMessageField(e);
+    if (messageString == null) {
+      return;
+    }
 
-		if (isDocumentInternalCommandIp(sessionServerIp)) {
-			String ip = getValidatedEventServerIp(e);
-			if (ip != null) {
-				if (Util.isIPv6(ip)) {
-					sessionLocator.setServerIpv6(ip);
-					sessionLocator.setIpv6(true);
-				} else {
-					sessionLocator.setServerIp(ip);
-					sessionLocator.setIpv6(false);
-				}
-			} else if (sessionServerIp.equalsIgnoreCase(DOCUMENT_INTERNAL_API_IP)) {
-				sessionLocator.setServerIp("0.0.0.0");
-			}
-		}
+    if (!ValidationUtils.isProperlyClosedJson(messageString)) {
+      handleInvalidJson(e, messageString, matchListener);
+      return;
+    }
 
-		if (isDocumentInternalCommandIp(sessionLocator.getClientIp())) {
-			if (sessionLocator.isIpv6()) {
-				sessionLocator.setClientIpv6(sessionLocator.getServerIpv6());
-			} else {
-				sessionLocator.setClientIp(sessionLocator.getServerIp());
-			}
-		}
-	}
+    if (messageString.contains(Constants.DOCUMENTDB_AUDIT_SIGNAL)) {
+      processAuditEvent(e, messageString, matchListener);
+    } else if (messageString.contains(Constants.DOCUMENTDB_PROFILER_SIGNAL)) {
+      processProfilerEvent(e, messageString, matchListener);
+    } else {
+    }
+  }
 
-	/**
-	 * Validates server IP
-	 * @param e
-	 * @return
-	 */
-	private String getValidatedEventServerIp(Event e) {
-		if (e.getField("server_ip") instanceof String) {
-			String ip = e.getField("server_ip").toString();
-			if (ip != null && inetAddressValidator.isValid(ip)) {
-				return ip;
-			}
-		}
-		return null;
-	}
+  /** Handles invalid JSON by creating an exception record. */
+  private void handleInvalidJson(Event e, String messageString, FilterMatchListener matchListener) {
+    String errorMsg = Constants.ERROR_JSON_VALIDATION_FAILED;
+    Record record = parser.parseRecordException(null, errorMsg, messageString);
+    updateEventWithException(
+        record, errorMsg, messageString, e, Constants.LOGSTASH_TAG_JSON_DEPTH_ERROR, matchListener);
+  }
 
-	/**
-	 * Checks if the IP address is local or remote, returns true/false in case of local address
-	 * @param ip
-	 * @return
-	 */
-	private boolean isDocumentInternalCommandIp(String ip) {
-		return ip != null && (LOCAL_IP_LIST.contains(ip) || ip.trim().equalsIgnoreCase(DOCUMENT_INTERNAL_API_IP));
-	}
+  /** Processes an audit event. */
+  private void processAuditEvent(Event e, String messageString, FilterMatchListener matchListener) {
+    try {
+      JsonObject inputJSON = GSON_PARSER.fromJson(messageString, JsonObject.class);
+      if (shouldSkipAuditEvent(inputJSON)) {
+        handleSkippedEvent(e, messageString, matchListener);
+        return;
+      }
+      Record record = parser.parseAuditRecord(inputJSON);
+      enrichRecordWithServerInfo(e, record);
+      correctIPs(e, record);
+      String recordJson = GSON_SERIALIZER.toJson(record);
+      e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, recordJson);
+      matchListener.filterMatched(e);
+    } catch (StackOverflowError soe) {
+      handleStackOverflowError(e, messageString, matchListener);
+    } catch (OutOfMemoryError oom) {
+      handleOutOfMemoryError(e, messageString, matchListener);
+    } catch (JsonSyntaxException jse) {
+      handleJsonSyntaxError(e, messageString, jse, matchListener, true);
+    } catch (Exception exception) {
+      handleGenericError(e, messageString, exception, matchListener, true);
+    }
+  }
 
-	/**
-	 * Helper method to check if message contains any profiler key More efficient than multiple
-	 * contains() calls
-	 */
-	private static boolean containsAnyProfilerKey(String message) {
-		for (String key : PROFILER_KEYS) {
-			if (message.contains(key)) {
-				return true;
-			}
-		}
-		return false;
-	}
+  /** Processes a profiler event. */
+  private void processProfilerEvent(
+      Event e, String messageString, FilterMatchListener matchListener) {
+    try {
+      if (!StringUtils.containsAnyProfilerKey(messageString)) {
+        return;
+      }
 
-	/**
-	 * Creates log string to be printed (optimized with StringBuilder)
-	 *
-	 * @param event
-	 * @return
-	 */
-	private static String logEvent(Event event) {
-		StringBuilder sb = new StringBuilder(256); // Pre-allocate reasonable size
-		try {
-			sb.append("{ ");
-			boolean first = true;
-			for (Map.Entry<String, Object> stringObjectEntry : event.getData().entrySet()) {
-				if (!first) {
-					sb.append(", ");
-				}
-				sb.append('"')
-						.append(stringObjectEntry.getKey())
-						.append("\": \"")
-						.append(stringObjectEntry.getValue())
-						.append('"');
-				first = false;
-			}
-			sb.append(" }");
-			return sb.toString();
-		} catch (Exception e) {
-			log.error("DocumentDB filter: Failed to create event log string", e);
-			return "{ error: failed to serialize event }";
-		}
-	}
+      JsonObject inputJSON = GSON_PARSER.fromJson(messageString, JsonObject.class);
 
-	private static boolean isProperlyClosedJson(String json) {
-		if (json == null || json.isEmpty()) {
-			return false;
-		}
+      if (shouldSkipProfilerEvent(inputJSON)) {
+        handleSkippedEvent(e, messageString, matchListener);
+        return;
+      }
 
-		// Trim whitespace
-		String trimmed = json.trim();
-		if (trimmed.isEmpty()) {
-			return false;
-		}
+      Record record = parser.parseProfilerRecord(inputJSON);
+      enrichRecordWithServerInfo(e, record);
+      correctIPs(e, record);
 
-		char first = trimmed.charAt(0);
-		char last = trimmed.charAt(trimmed.length() - 1);
+      e.setField(
+          GuardConstants.GUARDIUM_RECORD_FIELD_NAME, GSON_SERIALIZER_NO_ESCAPE.toJson(record));
 
-		// Check if starts with { or [ and ends with matching } or ]
-		if (first == '{' && last == '}') {
-			return true;
-		}
-		if (first == '[' && last == ']') {
-			return true;
-		}
+      if (record.getDbName().equals(Constants.UNKNOWN_STRING)) {
+        handleMissingDbName(e, messageString, record, matchListener);
+        return;
+      }
 
-		// Not properly closed or not valid JSON structure
-		return false;
-	}
+      matchListener.filterMatched(e);
 
-	/**
-	 * Formats JsonSyntaxException message, truncating everything from the troubleshooting link
-	 * onwards
-	 *
-	 * @param jse The JsonSyntaxException to format
-	 * @return Formatted exception message (truncated before troubleshooting link if found, otherwise
-	 *     just the exception message without stack trace)
-	 */
-	private static String formatJsonSyntaxException(JsonSyntaxException jse) {
-		String message = jse.toString();
-		int linkIndex =
-				message.indexOf("See https://github.com/google/gson/blob/main/Troubleshooting.md");
-		if (linkIndex != -1) {
-			// Troubleshooting link found - truncate everything from this point onwards
-			return message.substring(0, linkIndex).trim();
-		}
-		// No troubleshooting link - just return the exception message without full stack trace
-		return message;
-	}
+    } catch (StackOverflowError soe) {
+      handleStackOverflowError(e, messageString, matchListener);
+    } catch (OutOfMemoryError oom) {
+      handleOutOfMemoryError(e, messageString, matchListener);
+    } catch (JsonSyntaxException jse) {
+      handleJsonSyntaxError(e, messageString, jse, matchListener, false);
+    } catch (Exception exception) {
+      handleGenericError(e, messageString, exception, matchListener, false);
+    }
+  }
+
+  /** Checks if an audit event should be skipped. */
+  private boolean shouldSkipAuditEvent(JsonObject inputJSON) {
+    final String atype = inputJSON.get(Constants.FIELD_ATYPE).getAsString();
+    // Never skip authCheck events
+    if (atype.equals(Constants.AUTH_TYPE_AUTHCHECK)) {
+      return false;
+    }
+    
+    final JsonObject param = inputJSON.get(Constants.FIELD_PARAM).getAsJsonObject();
+
+    boolean shouldSkip = (atype.equals(Constants.AUTH_TYPE_AUTHENTICATE)
+            && param.get(Constants.FIELD_ERROR).getAsString().equals(Constants.ERROR_CODE_SUCCESS))
+        || (param.has(Constants.FIELD_NS) && param.get(Constants.FIELD_NS).getAsString().isEmpty());
+    return shouldSkip;
+  }
+
+  /** Checks if a profiler event should be skipped. */
+  private boolean shouldSkipProfilerEvent(JsonObject inputJSON) {
+    return (!inputJSON.has(Constants.FIELD_NS))
+        || (inputJSON.has(Constants.FIELD_NS)
+            && inputJSON.get(Constants.FIELD_NS).getAsString().isEmpty());
+  }
+
+  /** Enriches a record with server hostname information from the event. */
+  private void enrichRecordWithServerInfo(Event e, Record record) {
+    String serverHostnamePrefix = EventUtils.getServerHostnamePrefix(e);
+    if (serverHostnamePrefix != null) {
+      record
+          .getAccessor()
+          .setServerHostName(serverHostnamePrefix + Constants.SERVER_HOSTNAME_SUFFIX);
+      String dbName = record.getDbName();
+      record.setDbName(
+          !dbName.isEmpty() ? serverHostnamePrefix + ":" + dbName : serverHostnamePrefix);
+    }
+    record.getAccessor().setServiceName(record.getDbName());
+  }
+
+  /** Corrects IP addresses in the record based on event data. */
+  private void correctIPs(Event e, Record record) {
+    SessionLocator sessionLocator = record.getSessionLocator();
+    String sessionServerIp = sessionLocator.getServerIp();
+
+
+    if (ValidationUtils.isDocumentInternalCommandIp(sessionServerIp)) {
+      String ip = EventUtils.getValidatedEventServerIp(e);
+      if (ip != null) {
+        if (Util.isIPv6(ip)) {
+          sessionLocator.setServerIpv6(ip);
+          sessionLocator.setIpv6(true);
+        } else {
+          sessionLocator.setServerIp(ip);
+          sessionLocator.setIpv6(false);
+        }
+      } else if (sessionServerIp.equalsIgnoreCase(Constants.DOCUMENT_INTERNAL_API_IP)) {
+        sessionLocator.setServerIp(Constants.DEFAULT_IP);
+      }
+    }
+
+    if (ValidationUtils.isDocumentInternalCommandIp(sessionLocator.getClientIp())) {
+      // Store the original client port before updating IP
+      int originalClientPort = sessionLocator.getClientPort();
+      if (sessionLocator.isIpv6()) {
+        sessionLocator.setClientIpv6(sessionLocator.getServerIpv6());
+      } else {
+        sessionLocator.setClientIp(sessionLocator.getServerIp());
+
+      }
+      
+      // Restore the client port (important for authCheck events where port is parsed from remote_ip)
+      sessionLocator.setClientPort(originalClientPort);
+    }
+
+  }
+
+  /** Handles a skipped event. */
+  private void handleSkippedEvent(
+      Event e, String messageString, FilterMatchListener matchListener) {
+    e.tag(Constants.LOGSTASH_TAG_SKIP);
+    skippedEvents.add(e);
+    String errorMsg = Constants.ERROR_INVALID_AUTHENTICATE_LOG;
+    Record record = parser.parseRecordException(null, errorMsg, messageString);
+    updateEventWithException(
+        record, errorMsg, messageString, e, Constants.LOGSTASH_TAG_SKIP, matchListener);
+  }
+
+  /** Handles missing database name in profiler event. */
+  private void handleMissingDbName(
+      Event e, String messageString, Record record, FilterMatchListener matchListener) {
+    e.tag(Constants.LOGSTASH_TAG_SKIP);
+    String errorMsg = Constants.ERROR_MISSING_DB_NAME;
+    record = parser.parseRecordException(record, errorMsg, messageString);
+    updateEventWithException(
+        record, errorMsg, messageString, e, Constants.LOGSTASH_TAG_SKIP, matchListener);
+  }
+
+  /** Handles StackOverflowError. */
+  private void handleStackOverflowError(
+      Event e, String messageString, FilterMatchListener matchListener) {
+    log.error(
+        "DocumentDB filter: JSON nesting too deep (StackOverflow), skipping event {} ",
+        EventUtils.logEvent(e));
+    String errorMsg = Constants.ERROR_JSON_NESTING_TOO_DEEP;
+    Record record = parser.parseRecordException(null, errorMsg, messageString);
+    updateEventWithException(
+        record, errorMsg, messageString, e, Constants.LOGSTASH_TAG_JSON_DEPTH_ERROR, matchListener);
+  }
+
+  /** Handles OutOfMemoryError. */
+  private void handleOutOfMemoryError(
+      Event e, String messageString, FilterMatchListener matchListener) {
+    log.error(
+        "DocumentDB filter: Insufficient memory to process event, skipping {} ",
+        EventUtils.logEvent(e));
+    String errorMsg = Constants.ERROR_INSUFFICIENT_MEMORY;
+    Record record = parser.parseRecordException(null, errorMsg, messageString);
+    updateEventWithException(
+        record, errorMsg, messageString, e, Constants.LOGSTASH_TAG_JSON_PARSE_ERROR, matchListener);
+    System.gc(); // Suggest garbage collection
+  }
+
+  /** Handles JsonSyntaxException. */
+  private void handleJsonSyntaxError(
+      Event e,
+      String messageString,
+      JsonSyntaxException jse,
+      FilterMatchListener matchListener,
+      boolean isAudit) {
+    String eventType = isAudit ? "audit" : "profiler";
+    log.error(
+        "DocumentDB filter: Error parsing docDb {} event {} \n {} ",
+        eventType,
+        EventUtils.logEvent(e),
+        formatJsonSyntaxException(jse));
+    String errorMsg =
+        isAudit ? Constants.ERROR_PARSING_AUDIT_EVENT : Constants.ERROR_PARSING_PROFILER_EVENT;
+    Record record = parser.parseRecordException(null, errorMsg, messageString);
+    updateEventWithException(
+        record, errorMsg, messageString, e, Constants.LOGSTASH_TAG_JSON_PARSE_ERROR, matchListener);
+  }
+
+  /** Handles generic exceptions. */
+  private void handleGenericError(
+      Event e,
+      String messageString,
+      Exception exception,
+      FilterMatchListener matchListener,
+      boolean isAudit) {
+    String eventType = isAudit ? "audit" : "profiler";
+    log.error(
+        "DocumentDB filter: Error parsing docDb {} event {} ",
+        eventType,
+        EventUtils.logEvent(e),
+        exception);
+    String errorMsg =
+        isAudit ? Constants.ERROR_PARSING_AUDIT_EVENT : Constants.ERROR_PARSING_PROFILER_EVENT;
+    Record record = parser.parseRecordException(null, errorMsg, messageString);
+    updateEventWithException(
+        record, errorMsg, messageString, e, Constants.LOGSTASH_TAG_JSON_PARSE_ERROR, matchListener);
+  }
+
+  /** Updates an event with exception information. */
+  private void updateEventWithException(
+      Record record,
+      String errorMsg,
+      String eventLog,
+      Event e,
+      String tag,
+      FilterMatchListener matchListener) {
+    record = parser.parseRecordException(record, errorMsg, eventLog);
+    e.tag(tag);
+    e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, GSON_SERIALIZER.toJson(record));
+    matchListener.filterMatched(e);
+  }
 }
