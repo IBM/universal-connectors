@@ -127,9 +127,10 @@ tags : ["Yugabyte"]
 The Guardium universal connector is the Guardium entry point for native audit logs. The universal connector identifies and parses received events, and then converts them to a standard Guardium format. The output of the universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Yugabyte template.
 
 ### Limitations
-* When the universal collector starts to collect data, it may show two S-TAP statuses in the pattern "postgres_<server-host-name>" and "cassandra_<server-host-name>" based on the types of logs it collects..
+* When the universal collector starts to collect data, it may show two S-TAP statuses in the pattern "postgres_<server-host-name>" and "cassandra_<server-host-name>" based on the types of logs it collects.
 * The ClientHostName is not available in the YugabyteDB audit logs.
-
+* When Yugabyte logs SQL errors and SQL statements as separate audit records, Guardium may display the SQL statement separately in Full SQL report, instead of embedding it in the SQL Error record.
+* 
 ### Before you begin
 
 - Configure the policies you require. See [policies](/docs/#policies) for more information.
