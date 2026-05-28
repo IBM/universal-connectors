@@ -96,8 +96,8 @@ Upload the Wallet files to Guardium system by using GRDAPI endpoint.
         pipe {
             type => "oua-wallet"
             command =>"${OUA_BINARY_PATH} -c ${THIRD_PARTY_PATH} -a
-            ${THIRD_PARTY_PATH}/wallet/<your_wallet_zip_name> -s ${THIRD_PARTY_PATH} -r 1 -t
-            1000 -p 10 -j username/password@SERVICE_NAME"
+            ${THIRD_PARTY_PATH}/wallet/<your_wallet_zip_name> -s ${THIRD_PARTY_PATH} -r 100 -t
+            1000 -p 20 -j username/password@SERVICE_NAME"
             # Server configuration
             add_field => {"SERVER_ADDRESS" =>
             "<Enter_Server_Address>"}
