@@ -65,6 +65,8 @@ public class Constants {
     public static final String SUCCESS = "SUCCESS";
     public static final String SQL_ERROR = "SQL_ERROR";
     public static final String  LOGIN_FAILED = "LOGIN_FAILED";
+    public static final String UC_PARSER_ERROR = "UC_PARSER_ERROR";
+    public static final String UC_AUDIT_ERROR = "UC_AUDIT_ERROR";
 
     public static final String TEXT = "TEXT";
 
