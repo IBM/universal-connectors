@@ -9,15 +9,7 @@ import com.google.gson.Gson;
 import com.ibm.guardium.snowflakedb.utils.Constants;
 import com.ibm.guardium.snowflakedb.utils.DefaultGuardRecordBuilder;
 import com.ibm.guardium.snowflakedb.exceptions.ParseException;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Construct;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
-import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
+import com.ibm.guardium.universalconnector.commons.structures.*;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,6 +32,7 @@ public class SQLErrorEventParser implements Parser{
         guardRecord = builder.buildGuardRecordWithDefaultValues();
         eventMap = new HashMap<>();
     }
+
     @Override
     public Record parseRecord(Map<String, Object> event) throws ParseException {
 
@@ -163,7 +156,7 @@ public class SQLErrorEventParser implements Parser{
         return  value;
     }
 
-    private Time getTime(){
+    private Time getTime() throws ParseException {
         String ts = getStringValueOf(Constants.QUERY_TIMESTAMP);
         Time t = guardRecord.getTime();
         try {
@@ -172,7 +165,7 @@ public class SQLErrorEventParser implements Parser{
             t.setTimstamp(date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()); //Snowflake supplies the date in UTC
             t.setMinOffsetFromGMT(0);
             t.setMinDst(0);
-        } catch (Exception e){
+        } catch (ParseException e){
             log.error("Snowflake filter: Error occurred while parsing Time object: {} {}", eventMap, e);
             throw e;
         }
