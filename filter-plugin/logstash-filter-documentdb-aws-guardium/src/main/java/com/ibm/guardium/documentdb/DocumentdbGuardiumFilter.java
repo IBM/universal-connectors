@@ -372,6 +372,7 @@ public class DocumentdbGuardiumFilter implements Filter {
       String tag,
       FilterMatchListener matchListener) {
     record = parser.parseRecordException(record, errorMsg, eventLog);
+    enrichRecordWithServerInfo(e, record);
     e.tag(tag);
     e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, GSON_SERIALIZER.toJson(record));
     matchListener.filterMatched(e);
