@@ -132,10 +132,6 @@ public class ErrorRecordBuilder extends DefaultGuardRecordBuilder {
             accessor = partialRecord.getAccessor();
         } else {
             accessor = builder.buildDefaultAccessor();
-            String serverHostName = getFieldAsString(event, Constants.SERVER_HOST_NAME, null);
-            if (serverHostName != null) {
-                accessor.setServerHostName(serverHostName);
-            }
             String dbUser = getFieldAsString(event, Constants.USER_NAME, null);
             if (dbUser != null) {
                 accessor.setDbUser(dbUser);
@@ -148,6 +144,13 @@ public class ErrorRecordBuilder extends DefaultGuardRecordBuilder {
             if (serviceName != null) {
                 accessor.setServiceName(serviceName);
             }
+        }
+        
+        // Always update serverHostName from event to ensure consistency
+        String serverHostName = getFieldAsString(event, Constants.SERVER_HOST_NAME, null);
+        if (serverHostName != null) {
+            accessor.setServerHostName(serverHostName);
+        }
         }
         errorRecord.setAccessor(accessor);
         
