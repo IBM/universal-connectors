@@ -64,9 +64,9 @@ public class AuthFailedEventParser implements Parser{
         guardRecord.setData(null);
 
         String sessionId = this.getStringValueOf(Constants.SESSION_ID);
-
+    
         SessionLocator sessionLocator = setSessionLocator();
-
+        
         if(!sessionId.equals(Constants.NOT_AVAILABLE)) {
             guardRecord.setSessionId(sessionId);
         } else {
