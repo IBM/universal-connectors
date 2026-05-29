@@ -7,7 +7,7 @@ package com.ibm.guardium.snowflakedb.exceptions;
 
 public class ParseException extends Exception{
     private String message;
-
+    
     public ParseException(String msg){
         super(msg);  // Pass message to parent Exception class
         this.message = msg;
