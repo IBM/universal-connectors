@@ -14,6 +14,7 @@ import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 
 public class DefaultGuardRecordBuilder {
     public Record buildGuardRecordWithDefaultValues(){
@@ -31,7 +32,7 @@ public class DefaultGuardRecordBuilder {
         return record;
     }
 
-    private SessionLocator buildDefaultSessionLocator(){
+    protected SessionLocator buildDefaultSessionLocator(){
         SessionLocator sessionLocator = new SessionLocator();
         sessionLocator.setIpv6(false);
 
@@ -46,7 +47,7 @@ public class DefaultGuardRecordBuilder {
         return sessionLocator;
     }
 
-    private Accessor buildDefaultAccessor(){
+    protected Accessor buildDefaultAccessor(){
         Accessor accessor = new Accessor();
 
         accessor.setDbProtocol(Constants.DB_PROTOCOL);
@@ -71,20 +72,20 @@ public class DefaultGuardRecordBuilder {
         return accessor;
     }
 
-    private Data buildDefaultData() {
+    protected Data buildDefaultData() {
         Data data = new Data();
         data.setOriginalSqlCommand(Constants.NOT_AVAILABLE);
         return data;
     }
 
-    private ExceptionRecord buildDefaultExceptionRecord(){
+    protected ExceptionRecord buildDefaultExceptionRecord(){
         ExceptionRecord exceptionRecord = new ExceptionRecord();
         exceptionRecord.setDescription(Constants.NOT_AVAILABLE);
         exceptionRecord.setSqlString(Constants.NOT_AVAILABLE);
         return exceptionRecord;
     }
 
-    private Time buildTime(){
+    protected Time buildTime(){
         Time t = new Time();
         t.setTimstamp(0);
         t.setMinOffsetFromGMT(0);
