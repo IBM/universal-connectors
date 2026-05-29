@@ -686,12 +686,73 @@ public class Parser {
   sessionLocator.setServerPort(SessionLocator.PORT_DEFAULT);// In AWS databases setting this field to -1
   return sessionLocator;
  }
+  /**
+   * Attempts to extract partial information from a malformed audit log JSON string.
+   * This method uses lenient parsing to extract whatever fields are available,
+   * even if the JSON is not fully valid. This helps provide better error context
+   * in exception records.
+   *
+   * @param record The record to populate with extracted information
+   * @param auditLogJsonString The potentially malformed JSON string
+   */
+  private void extractPartialInformation(Record record, String auditLogJsonString) {
+    if (auditLogJsonString == null || auditLogJsonString.trim().isEmpty()) {
+      return;
+    }
+
+    try {
+      // Try lenient parsing - may succeed even with some malformed fields like invalid timestamp
+      JsonObject partialJson = com.google.gson.JsonParser.parseString(auditLogJsonString).getAsJsonObject();
+      
+      // Check event type and use appropriate existing parsing method
+      String atype = partialJson.has(Constants.FIELD_ATYPE)
+          ? partialJson.get(Constants.FIELD_ATYPE).getAsString() : null;
+      
+      if (Constants.AUTH_TYPE_AUTHCHECK.equals(atype)) {
+        // Use existing authCheck parsing methods
+        record.setSessionLocator(parseSessionLocatorAuthCheck(partialJson));
+        record.setAccessor(parseAccessorAuthCheck(partialJson));
+        record.setAppUserName(extractAppUserName(partialJson));
+        // Extract db name
+        JsonObject param = extractParamObject(partialJson);
+        if (param != null && param.has(Constants.FIELD_NS)) {
+          record.setDbName(StringUtils.extractDbNameFromNs(param.get(Constants.FIELD_NS).getAsString()));
+        }
+      } else if (atype != null) {
+        // Use existing audit parsing methods
+        record.setSessionLocator(parseSessionLocatorDocumentDb(partialJson));
+        record.setAccessor(parseAccessorDocumentDb(partialJson));
+        // Extract db name from param.ns
+        if (partialJson.has(Constants.FIELD_PARAM)) {
+          JsonObject param = partialJson.getAsJsonObject(Constants.FIELD_PARAM);
+          if (param.has(Constants.FIELD_NS)) {
+            record.setDbName(StringUtils.extractDbNameFromNs(param.get(Constants.FIELD_NS).getAsString()));
+          }
+        }
+      } else if (partialJson.has(Constants.FIELD_COMMAND)) {
+        // Use existing profiler parsing methods
+        record.setSessionLocator(parseSessionLocatorDocumentDb(partialJson));
+        record.setAccessor(parseAccessorDocumentDb(partialJson));
+        // Extract db name from ns
+        if (partialJson.has(Constants.FIELD_NS)) {
+          record.setDbName(StringUtils.extractDbNameFromNs(partialJson.get(Constants.FIELD_NS).getAsString()));
+        }
+      }
+    } catch (Exception e) {
+      // Silently fail - defaults will be used by buildExceptionRecord
+      log.debug("Could not extract partial information from malformed log", e);
+    }
+  }
+
 
   private Record buildExceptionRecord(
       Record record, String error, String auditLogJsonString, String exceptionType) {
     if (record == null) {
       record = new Record();
     }
+    // Always try to extract partial information from the JSON string
+    // This ensures fields like dbName are populated even when record has existing data
+    extractPartialInformation(record, auditLogJsonString);
 
     Data data = record.getData();
     ExceptionRecord exceptionRecord = new ExceptionRecord();
@@ -784,8 +845,20 @@ public class Parser {
     accessor.setServerType(Constants.SERVER_TYPE);
     accessor.setServerHostName(ValidationUtils.getValueOrDefault(accessor.getServerHostName(), Constants.NOT_AVAILABLE));
     accessor.setLanguage(Accessor.LANGUAGE_FREE_TEXT_STRING);
-    accessor.setDataType(Constants.UNKNOWN_STRING);
+    accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL);
     accessor.setServiceName(ValidationUtils.getValueOrDefault(accessor.getServiceName(), Constants.NOT_AVAILABLE));
+    
+    // Set all remaining null fields to UNKNOWN_STRING to avoid null values in JSON output
+    accessor.setServerOs(ValidationUtils.getValueOrDefault(accessor.getServerOs(), Constants.UNKNOWN_STRING));
+    accessor.setClientOs(ValidationUtils.getValueOrDefault(accessor.getClientOs(), Constants.UNKNOWN_STRING));
+    accessor.setClientHostName(ValidationUtils.getValueOrDefault(accessor.getClientHostName(), Constants.UNKNOWN_STRING));
+    accessor.setCommProtocol(ValidationUtils.getValueOrDefault(accessor.getCommProtocol(), Constants.UNKNOWN_STRING));
+    accessor.setDbProtocolVersion(ValidationUtils.getValueOrDefault(accessor.getDbProtocolVersion(), Constants.UNKNOWN_STRING));
+    accessor.setOsUser(ValidationUtils.getValueOrDefault(accessor.getOsUser(), Constants.UNKNOWN_STRING));
+    accessor.setSourceProgram(ValidationUtils.getValueOrDefault(accessor.getSourceProgram(), Constants.UNKNOWN_STRING));
+    accessor.setClient_mac(ValidationUtils.getValueOrDefault(accessor.getClient_mac(), Constants.UNKNOWN_STRING));
+    accessor.setServerDescription(ValidationUtils.getValueOrDefault(accessor.getServerDescription(), Constants.UNKNOWN_STRING));
+    
     return accessor;
   }
 }
