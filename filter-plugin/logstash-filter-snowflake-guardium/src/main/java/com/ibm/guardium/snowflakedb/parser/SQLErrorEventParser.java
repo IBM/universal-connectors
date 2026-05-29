@@ -23,7 +23,7 @@ import java.util.Optional;
 public class SQLErrorEventParser implements Parser{
 
     private static Logger log = LogManager.getLogger(SuccessEventParser.class);
-    private static final Gson GSON = new Gson();
+  private static final Gson GSON = new Gson();
     private Map<String, Object> eventMap;
     private Record guardRecord;
 
@@ -63,7 +63,7 @@ public class SQLErrorEventParser implements Parser{
 
 
         String sessionId = this.getStringValueOf(Constants.SESSION_ID);
-
+        
         if(!sessionId.equals(Constants.NOT_AVAILABLE)) {
             guardRecord.setSessionId(sessionId);
         } else {
@@ -88,7 +88,7 @@ public class SQLErrorEventParser implements Parser{
             ).map(Object::toString);
 
             if(optClientEnv.isPresent() && !optClientEnv.get().isEmpty()){
-                Map<String, String> clientEnv = GSON.fromJson(optClientEnv.get(), Map.class);
+        Map<String, String> clientEnv = GSON.fromJson(optClientEnv.get(), Map.class);
                 String clientOS = getClientOS(clientEnv);
                 accessor.setClientOs(clientOS);
 

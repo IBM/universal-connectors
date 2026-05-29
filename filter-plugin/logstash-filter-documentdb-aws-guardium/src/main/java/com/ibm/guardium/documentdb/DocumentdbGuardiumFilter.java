@@ -329,7 +329,7 @@ public class DocumentdbGuardiumFilter implements Filter {
     String errorMsg =
         isAudit ? Constants.ERROR_PARSING_AUDIT_EVENT : Constants.ERROR_PARSING_PROFILER_EVENT;
     // Append exception message to error description
-    String exceptionMsg = jse.getMessage();
+    String exceptionMsg = formatJsonSyntaxException(jse);
     if (exceptionMsg != null && !exceptionMsg.isEmpty()) {
       errorMsg = errorMsg + " - " + exceptionMsg;
     }
