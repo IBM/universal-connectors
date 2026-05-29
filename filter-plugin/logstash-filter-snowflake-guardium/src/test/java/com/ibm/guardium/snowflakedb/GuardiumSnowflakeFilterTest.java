@@ -27,7 +27,7 @@ public class GuardiumSnowflakeFilterTest {
     public void testUnknownEventTypeCreatesAuditError() {
         // Test that unknown event_type creates UC_AUDIT_ERROR
         GuardiumSnowflakeFilter filter = new GuardiumSnowflakeFilter("test-id", config, context);
-
+        
         Event event = new org.logstash.Event();
         event.setField(Constants.EVENT_TYPE, "UNKNOWN_TYPE");
         event.setField(Constants.USER_NAME, "test_user");
@@ -37,22 +37,22 @@ public class GuardiumSnowflakeFilterTest {
         event.setField(Constants.SERVER_HOST_NAME, "test.snowflakecomputing.com");
         event.setField(Constants.DATABASE_NAME, "test_db");
         event.setField(Constants.QUERY_TEXT, "SELECT 1");
-
+        
         Collection<Event> results = filter.filter(Collections.singletonList(event), null);
-
+        
         Assert.assertEquals("Should return 1 event", 1, results.size());
         Event resultEvent = results.iterator().next();
-
+        
         Object guardRecordObj = resultEvent.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME);
         Assert.assertNotNull("GuardRecord should be present", guardRecordObj);
-
+        
         Gson gson = new Gson();
         JsonObject guardRecord = gson.fromJson(guardRecordObj.toString(), JsonObject.class);
         JsonObject exception = guardRecord.getAsJsonObject("exception");
-
+        
         Assert.assertNotNull("Exception should be present", exception);
-        Assert.assertEquals("Should be UC_AUDIT_ERROR",
-                Constants.UC_AUDIT_ERROR,
+        Assert.assertEquals("Should be UC_AUDIT_ERROR", 
+                Constants.UC_AUDIT_ERROR, 
                 exception.get("exceptionTypeId").getAsString());
         Assert.assertTrue("Description should mention unknown event_type",
                 exception.get("description").getAsString().toLowerCase().contains("unknown"));
@@ -64,7 +64,7 @@ public class GuardiumSnowflakeFilterTest {
         // timestamp parsing fails early, before SQL extraction,
         // so no partial record with Data exists -> UC_AUDIT_ERROR
         GuardiumSnowflakeFilter filter = new GuardiumSnowflakeFilter("test-id", config, context);
-
+        
         Event event = new org.logstash.Event();
         event.setField(Constants.EVENT_TYPE, Constants.SUCCESS);
         event.setField(Constants.USER_NAME, "test_user");
@@ -76,19 +76,19 @@ public class GuardiumSnowflakeFilterTest {
         event.setField(Constants.QUERY_TEXT, "SELECT 1");
         event.setField(Constants.SESSION_ID, "session123");
         event.setField(Constants.QUERY_ID, "query123");
-
+        
         Collection<Event> results = filter.filter(Collections.singletonList(event), null);
-
+        
         Assert.assertEquals("Should return 1 event", 1, results.size());
         Event resultEvent = results.iterator().next();
-
+        
         Object guardRecordObj = resultEvent.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME);
         Assert.assertNotNull("GuardRecord should be present", guardRecordObj);
-
+        
         Gson gson = new Gson();
         JsonObject guardRecord = gson.fromJson(guardRecordObj.toString(), JsonObject.class);
         JsonObject exception = guardRecord.getAsJsonObject("exception");
-
+        
         Assert.assertNotNull("Exception should be present", exception);
         Assert.assertEquals("Should be UC_AUDIT_ERROR (parsing failed before SQL extraction)",
                 Constants.UC_AUDIT_ERROR,
@@ -99,21 +99,21 @@ public class GuardiumSnowflakeFilterTest {
     public void testValidSuccessEventProcessedCorrectly() {
         // Test that valid SUCCESS event is processed without errors
         GuardiumSnowflakeFilter filter = new GuardiumSnowflakeFilter("test-id", config, context);
-
+        
         Event event = FakeEventFactory.getSuccessEvent();
         event.setField(Constants.EVENT_TYPE, Constants.SUCCESS);
-
+        
         Collection<Event> results = filter.filter(Collections.singletonList(event), null);
-
+        
         Assert.assertEquals("Should return 1 event", 1, results.size());
         Event resultEvent = results.iterator().next();
-
+        
         Object guardRecordObj = resultEvent.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME);
         Assert.assertNotNull("GuardRecord should be present", guardRecordObj);
-
+        
         Gson gson = new Gson();
         JsonObject guardRecord = gson.fromJson(guardRecordObj.toString(), JsonObject.class);
-
+        
         // Should not have UC error exception for valid event
         if (guardRecord.has("exception") && !guardRecord.get("exception").isJsonNull()) {
             JsonObject exception = guardRecord.getAsJsonObject("exception");
@@ -131,28 +131,28 @@ public class GuardiumSnowflakeFilterTest {
     public void testValidSQLErrorEventProcessedCorrectly() {
         // Test that valid SQL_ERROR event is processed without UC errors
         GuardiumSnowflakeFilter filter = new GuardiumSnowflakeFilter("test-id", config, context);
-
+        
         Event event = FakeEventFactory.getSQLErrorEvent();
         event.setField(Constants.EVENT_TYPE, Constants.SQL_ERROR);
-
+        
         Collection<Event> results = filter.filter(Collections.singletonList(event), null);
-
+        
         Assert.assertEquals("Should return 1 event", 1, results.size());
         Event resultEvent = results.iterator().next();
-
+        
         Object guardRecordObj = resultEvent.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME);
         Assert.assertNotNull("GuardRecord should be present", guardRecordObj);
-
+        
         Gson gson = new Gson();
         JsonObject guardRecord = gson.fromJson(guardRecordObj.toString(), JsonObject.class);
         JsonObject exception = guardRecord.getAsJsonObject("exception");
-
+        
         Assert.assertNotNull("Exception should be present for SQL error", exception);
         // Should have SQL_ERROR, not UC_PARSER_ERROR or UC_AUDIT_ERROR
         String exceptionType = exception.get("exceptionTypeId").getAsString();
-        Assert.assertNotEquals("Should not be UC_PARSER_ERROR",
+        Assert.assertNotEquals("Should not be UC_PARSER_ERROR", 
                 Constants.UC_PARSER_ERROR, exceptionType);
-        Assert.assertNotEquals("Should not be UC_AUDIT_ERROR",
+        Assert.assertNotEquals("Should not be UC_AUDIT_ERROR", 
                 Constants.UC_AUDIT_ERROR, exceptionType);
     }
 
@@ -160,28 +160,28 @@ public class GuardiumSnowflakeFilterTest {
     public void testValidLoginFailedEventProcessedCorrectly() {
         // Test that valid LOGIN_FAILED event is processed without UC errors
         GuardiumSnowflakeFilter filter = new GuardiumSnowflakeFilter("test-id", config, context);
-
+        
         Event event = FakeEventFactory.getAuthErrorEvent();
         event.setField(Constants.EVENT_TYPE, Constants.LOGIN_FAILED);
-
+        
         Collection<Event> results = filter.filter(Collections.singletonList(event), null);
-
+        
         Assert.assertEquals("Should return 1 event", 1, results.size());
         Event resultEvent = results.iterator().next();
-
+        
         Object guardRecordObj = resultEvent.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME);
         Assert.assertNotNull("GuardRecord should be present", guardRecordObj);
-
+        
         Gson gson = new Gson();
         JsonObject guardRecord = gson.fromJson(guardRecordObj.toString(), JsonObject.class);
         JsonObject exception = guardRecord.getAsJsonObject("exception");
-
+        
         Assert.assertNotNull("Exception should be present for login failure", exception);
         // Should have LOGIN_FAILED, not UC_PARSER_ERROR or UC_AUDIT_ERROR
         String exceptionType = exception.get("exceptionTypeId").getAsString();
-        Assert.assertNotEquals("Should not be UC_PARSER_ERROR",
+        Assert.assertNotEquals("Should not be UC_PARSER_ERROR", 
                 Constants.UC_PARSER_ERROR, exceptionType);
-        Assert.assertNotEquals("Should not be UC_AUDIT_ERROR",
+        Assert.assertNotEquals("Should not be UC_AUDIT_ERROR", 
                 Constants.UC_AUDIT_ERROR, exceptionType);
     }
 
@@ -189,26 +189,26 @@ public class GuardiumSnowflakeFilterTest {
     public void testEmptyEventTypeCreatesAuditError() {
         // Test that empty event_type creates UC_AUDIT_ERROR
         GuardiumSnowflakeFilter filter = new GuardiumSnowflakeFilter("test-id", config, context);
-
+        
         Event event = new org.logstash.Event();
         event.setField(Constants.EVENT_TYPE, "");
         event.setField(Constants.USER_NAME, "test_user");
-
+        
         Collection<Event> results = filter.filter(Collections.singletonList(event), null);
-
+        
         Assert.assertEquals("Should return 1 event", 1, results.size());
         Event resultEvent = results.iterator().next();
-
+        
         Object guardRecordObj = resultEvent.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME);
         Assert.assertNotNull("GuardRecord should be present", guardRecordObj);
-
+        
         Gson gson = new Gson();
         JsonObject guardRecord = gson.fromJson(guardRecordObj.toString(), JsonObject.class);
         JsonObject exception = guardRecord.getAsJsonObject("exception");
-
+        
         Assert.assertNotNull("Exception should be present", exception);
-        Assert.assertEquals("Should be UC_AUDIT_ERROR",
-                Constants.UC_AUDIT_ERROR,
+        Assert.assertEquals("Should be UC_AUDIT_ERROR", 
+                Constants.UC_AUDIT_ERROR, 
                 exception.get("exceptionTypeId").getAsString());
     }
 
@@ -216,21 +216,21 @@ public class GuardiumSnowflakeFilterTest {
     public void testCaseInsensitiveEventType() {
         // Test that event_type is case-insensitive (SUCCESS, success, SuCcEsS should all work)
         GuardiumSnowflakeFilter filter = new GuardiumSnowflakeFilter("test-id", config, context);
-
+        
         Event event = FakeEventFactory.getSuccessEvent();
         event.setField(Constants.EVENT_TYPE, "success"); // lowercase
-
+        
         Collection<Event> results = filter.filter(Collections.singletonList(event), null);
-
+        
         Assert.assertEquals("Should return 1 event", 1, results.size());
         Event resultEvent = results.iterator().next();
-
+        
         Object guardRecordObj = resultEvent.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME);
         Assert.assertNotNull("GuardRecord should be present", guardRecordObj);
-
+        
         Gson gson = new Gson();
         JsonObject guardRecord = gson.fromJson(guardRecordObj.toString(), JsonObject.class);
-
+        
         // Should process successfully without UC errors
         if (guardRecord.has("exception") && !guardRecord.get("exception").isJsonNull()) {
             JsonObject exception = guardRecord.getAsJsonObject("exception");
