@@ -57,8 +57,8 @@ public class ErrorRecordBuilder extends DefaultGuardRecordBuilder {
         // Determine error type based on whether we successfully parsed Data with SQL
         String exceptionType;
         if (partialRecord != null && partialRecord.getData() != null
-                && partialRecord.getData().getOriginalSqlCommand() != null
-                && !partialRecord.getData().getOriginalSqlCommand().isEmpty()) {
+            && partialRecord.getData().getOriginalSqlCommand() != null
+            && !partialRecord.getData().getOriginalSqlCommand().isEmpty()) {
             // We successfully parsed the event and extracted SQL - this is a data validation issue
             exceptionType = Constants.UC_PARSER_ERROR;
         } else {
@@ -80,33 +80,33 @@ public class ErrorRecordBuilder extends DefaultGuardRecordBuilder {
     private static Record createErrorRecord(Event event, Record partialRecord, String errorMessage, String exceptionTypeId) {
         ErrorRecordBuilder builder = new ErrorRecordBuilder();
         Record errorRecord = new Record();
-
+        
         // Set exception details
         ExceptionRecord exceptionRecord = builder.buildDefaultExceptionRecord();
         exceptionRecord.setExceptionTypeId(exceptionTypeId);
-
+        
         // Add appropriate prefix based on error type
         String prefix = exceptionTypeId.equals(Constants.UC_PARSER_ERROR) ? "Parser Error: " : "Audit Error: ";
         String description = prefix + (errorMessage != null ? errorMessage : "");
         exceptionRecord.setDescription(description);
-
+        
         // Set SQL string - prefer from partialRecord if available, otherwise use full event
         if (partialRecord != null && partialRecord.getData() != null
-                && partialRecord.getData().getOriginalSqlCommand() != null
-                && !partialRecord.getData().getOriginalSqlCommand().isEmpty()) {
+            && partialRecord.getData().getOriginalSqlCommand() != null
+            && !partialRecord.getData().getOriginalSqlCommand().isEmpty()) {
             exceptionRecord.setSqlString(partialRecord.getData().getOriginalSqlCommand());
         } else {
             exceptionRecord.setSqlString(getEventAsString(event));
         }
         errorRecord.setException(exceptionRecord);
-
+        
         // Set time - use from partialRecord if available, otherwise current time
         if (partialRecord != null && partialRecord.getTime() != null) {
             errorRecord.setTime(partialRecord.getTime());
         } else {
             errorRecord.setTime(new Time(System.currentTimeMillis(), 0, 0));
         }
-
+        
         // Build session locator - use from partialRecord if available, otherwise build from event
         SessionLocator sessionLocator;
         if (partialRecord != null && partialRecord.getSessionLocator() != null) {
@@ -125,7 +125,7 @@ public class ErrorRecordBuilder extends DefaultGuardRecordBuilder {
             sessionLocator.setClientPort(-1);
         }
         errorRecord.setSessionLocator(sessionLocator);
-
+        
         // Build accessor - use from partialRecord if available, otherwise build from event
         Accessor accessor;
         if (partialRecord != null && partialRecord.getAccessor() != null) {
@@ -150,22 +150,22 @@ public class ErrorRecordBuilder extends DefaultGuardRecordBuilder {
             }
         }
         errorRecord.setAccessor(accessor);
-
+        
         // Set session ID and database name - use from partialRecord if available
         if (partialRecord != null && partialRecord.getSessionId() != null) {
             errorRecord.setSessionId(partialRecord.getSessionId());
         } else {
             errorRecord.setSessionId(getFieldAsString(event, Constants.SESSION_ID, Constants.UNKNOWN_STRING));
         }
-
+        
         if (partialRecord != null && partialRecord.getDbName() != null) {
             errorRecord.setDbName(partialRecord.getDbName());
         } else {
             errorRecord.setDbName(getFieldAsString(event, Constants.DATABASE_NAME, Constants.NOT_AVAILABLE));
         }
-
+        
         errorRecord.setAppUserName(Constants.NOT_AVAILABLE);
-
+        
         return errorRecord;
     }
 

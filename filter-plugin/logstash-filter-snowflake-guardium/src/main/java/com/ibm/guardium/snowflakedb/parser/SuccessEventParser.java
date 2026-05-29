@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 public class SuccessEventParser implements Parser{
     private static Logger log = LogManager.getLogger(SuccessEventParser.class);
-    private static final Gson GSON = new Gson();
+  private static final Gson GSON = new Gson();
 
     private Map<String, Object> eventMap;
     private com.ibm.guardium.universalconnector.commons.structures.Record guardRecord;
@@ -31,12 +31,12 @@ public class SuccessEventParser implements Parser{
         DefaultGuardRecordBuilder builder = new DefaultGuardRecordBuilder();
         guardRecord = builder.buildGuardRecordWithDefaultValues();
         eventMap = new HashMap<>();
-    }
+	}
 
 
-    /**
+	/**
      * Parses a Snowflake event sent via JDBC input plugin query.
-     *
+     * 
      * @param event A logstash event containing Snowflake key/value pairs
      * @return
      */
@@ -69,7 +69,7 @@ public class SuccessEventParser implements Parser{
         guardRecord.setException(null);
 
         String sessionId = this.getStringValueOf(Constants.SESSION_ID);
-
+        
         if(!sessionId.equals(Constants.NOT_AVAILABLE)) {
             guardRecord.setSessionId(sessionId);
         } else {
@@ -117,7 +117,7 @@ public class SuccessEventParser implements Parser{
             ).map(Object::toString);
 
             if(optClientEnv.isPresent() && !optClientEnv.get().isEmpty()){
-                Map<String, String> clientEnv = GSON.fromJson(optClientEnv.get(), Map.class);
+        Map<String, String> clientEnv = GSON.fromJson(optClientEnv.get(), Map.class);
                 String clientOS = getClientOS(clientEnv);
                 accessor.setClientOs(clientOS);
 

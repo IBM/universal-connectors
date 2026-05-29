@@ -749,9 +749,10 @@ public class Parser {
       Record record, String error, String auditLogJsonString, String exceptionType) {
     if (record == null) {
       record = new Record();
-      // Try to extract partial information from the malformed JSON
-      extractPartialInformation(record, auditLogJsonString);
     }
+    // Always try to extract partial information from the JSON string
+    // This ensures fields like dbName are populated even when record has existing data
+    extractPartialInformation(record, auditLogJsonString);
 
     Data data = record.getData();
     ExceptionRecord exceptionRecord = new ExceptionRecord();
