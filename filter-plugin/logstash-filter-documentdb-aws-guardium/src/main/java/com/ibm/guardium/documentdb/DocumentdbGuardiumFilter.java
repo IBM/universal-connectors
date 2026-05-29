@@ -328,6 +328,11 @@ public class DocumentdbGuardiumFilter implements Filter {
         formatJsonSyntaxException(jse));
     String errorMsg =
         isAudit ? Constants.ERROR_PARSING_AUDIT_EVENT : Constants.ERROR_PARSING_PROFILER_EVENT;
+    // Append exception message to error description
+    String exceptionMsg = formatJsonSyntaxException(jse);
+    if (exceptionMsg != null && !exceptionMsg.isEmpty()) {
+      errorMsg = errorMsg + " - " + exceptionMsg;
+    }
     Record record = parser.parseRecordException(null, errorMsg, messageString);
     updateEventWithException(
         record, errorMsg, messageString, e, Constants.LOGSTASH_TAG_JSON_PARSE_ERROR, matchListener);
@@ -348,6 +353,11 @@ public class DocumentdbGuardiumFilter implements Filter {
         exception);
     String errorMsg =
         isAudit ? Constants.ERROR_PARSING_AUDIT_EVENT : Constants.ERROR_PARSING_PROFILER_EVENT;
+    // Append exception message to error description
+    String exceptionMsg = exception.getMessage();
+    if (exceptionMsg != null && !exceptionMsg.isEmpty()) {
+      errorMsg = errorMsg + " - " + exceptionMsg;
+    }
     Record record = parser.parseRecordException(null, errorMsg, messageString);
     updateEventWithException(
         record, errorMsg, messageString, e, Constants.LOGSTASH_TAG_JSON_PARSE_ERROR, matchListener);
@@ -362,6 +372,7 @@ public class DocumentdbGuardiumFilter implements Filter {
       String tag,
       FilterMatchListener matchListener) {
     record = parser.parseRecordException(record, errorMsg, eventLog);
+    enrichRecordWithServerInfo(e, record);
     e.tag(tag);
     e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, GSON_SERIALIZER.toJson(record));
     matchListener.filterMatched(e);
