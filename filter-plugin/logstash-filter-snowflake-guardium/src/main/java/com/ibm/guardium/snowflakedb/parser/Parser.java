@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -48,7 +50,7 @@ public interface Parser {
         return Constants.UNKNOWN_STRING;
     }
 
-    static LocalDateTime parseTime(String ts){
+    static LocalDateTime parseTime(String ts) throws ParseException {
         DateTimeFormatterBuilder dateTimeFormatterBuilder = new DateTimeFormatterBuilder()
                 .append(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS[[XXX][X]]"));
 
@@ -57,11 +59,14 @@ public interface Parser {
         try {
             return LocalDateTime.parse(ts,formatter);
         } catch (DateTimeParseException e) {
-            DateTimeFormatterBuilder dateTimeFormatterBuilderUTC = new DateTimeFormatterBuilder()
-                    .append(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ"));
-            formatter = dateTimeFormatterBuilderUTC.toFormatter();
-
-            return LocalDateTime.parse(ts, formatter);
+            try {
+                DateTimeFormatterBuilder dateTimeFormatterBuilderUTC = new DateTimeFormatterBuilder()
+                        .append(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ"));
+                formatter = dateTimeFormatterBuilderUTC.toFormatter();
+                return LocalDateTime.parse(ts, formatter);
+            } catch (DateTimeParseException e2) {
+                throw new ParseException("Failed to parse timestamp: " + ts + ". Error: " + e2.getMessage());
+            }
         }
     }
 }
