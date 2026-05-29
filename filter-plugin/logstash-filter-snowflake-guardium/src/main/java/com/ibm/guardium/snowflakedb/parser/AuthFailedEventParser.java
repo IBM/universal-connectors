@@ -31,6 +31,7 @@ public class AuthFailedEventParser implements Parser{
         guardRecord = builder.buildGuardRecordWithDefaultValues();
         eventMap = new HashMap<>();
     }
+
     @Override
     public Record parseRecord(Map<String, Object> event) throws ParseException {
 
@@ -41,7 +42,7 @@ public class AuthFailedEventParser implements Parser{
         }
 
         if(log.isDebugEnabled()){
-            log.debug("Event Now: ",eventMap);
+            log.debug("Event Now: {} ",eventMap);
         }
 
         eventMap = event;
@@ -49,7 +50,6 @@ public class AuthFailedEventParser implements Parser{
         Time time = getTime();
         guardRecord.setTime(time);
 
-        SessionLocator sessionLocator = setSessionLocator();
 
         String dbUser = getStringValueOf(Constants.USER_NAME);
         guardRecord.getAccessor().setDbUser(dbUser);
@@ -63,9 +63,20 @@ public class AuthFailedEventParser implements Parser{
         guardRecord.setException(exceptionRecord);
         guardRecord.setData(null);
 
-        Integer hashCode = (sessionLocator.getClientIp() + sessionLocator.getClientPort()
-                + sessionLocator.getServerIp() + sessionLocator.getServerPort()).hashCode();
-        guardRecord.setSessionId(hashCode.toString());
+        String sessionId = this.getStringValueOf(Constants.SESSION_ID);
+    
+        SessionLocator sessionLocator = setSessionLocator();
+        
+        if(!sessionId.equals(Constants.NOT_AVAILABLE)) {
+            guardRecord.setSessionId(sessionId);
+        } else {
+            guardRecord.setSessionId(Constants.UNKNOWN_STRING);
+            sessionLocator.setServerPort(-1);
+            sessionLocator.setClientPort(-1);
+        }
+
+        guardRecord.setSessionLocator(sessionLocator);
+
         guardRecord.setDbName(Constants.NOT_AVAILABLE);
         guardRecord.setAppUserName(dbUser);
 
@@ -80,7 +91,7 @@ public class AuthFailedEventParser implements Parser{
             String description = getStringValueOf(Constants.LOGIN_ERROR_CODE) + ": " +getStringValueOf(Constants.LOGIN_ERROR_MESSAGE);
             exceptionRecord.setDescription(description);
         } catch (Exception e) {
-            log.error("Snowflake filter: Error occurred while parsing Exception object: " + eventMap, e);
+            log.error("Snowflake filter: Error occurred while parsing Exception object: {} {}", eventMap, e);
             throw e;
         }
         return exceptionRecord;
@@ -95,7 +106,7 @@ public class AuthFailedEventParser implements Parser{
             sessionLocator.setServerPort(Constants.SERVER_PORT);
 
         } catch (Exception e) {
-            log.error("Snowflake filter: Error occurred while parsing session locator object: " + eventMap, e);
+            log.error("Snowflake filter: Error occurred while parsing session locator object: {} {}", eventMap, e);
             throw e;
         }
         return sessionLocator;
@@ -113,7 +124,7 @@ public class AuthFailedEventParser implements Parser{
         return  value;
     }
 
-    private Time getTime(){
+    private Time getTime() throws ParseException {
         String ts = getStringValueOf(Constants.LOGIN_TIMESTAMP);
         Time t = guardRecord.getTime();
         try {
@@ -122,8 +133,8 @@ public class AuthFailedEventParser implements Parser{
             t.setTimstamp(date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()); //Snowflake supplies the date in UTC
             t.setMinOffsetFromGMT(0);
             t.setMinDst(0);
-        } catch (Exception e){
-            log.error("Snowflake filter: Error occurred while parsing Time object: " + eventMap, e);
+        } catch (ParseException e){
+            log.error("Snowflake filter: Error occurred while parsing Time object: {} {}", eventMap, e);
             throw e;
         }
 
