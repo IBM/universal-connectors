@@ -164,10 +164,13 @@ Upload the Wallet files to Guardium system by using GRDAPI endpoint.
      **Note:** This field is only required for Wallet authentication method. If you are using other authentication methods, leave this field blank.
    - **Command**: Use the same command as in the legacy flow. Replace the wallet path and service name variables with your specific values.
      ```
-     ${OUA_BINARY_PATH} -c ${THIRD_PARTY_PATH} -a ${THIRD_PARTY_PATH}/wallet/<your_wallet_zip_name> -s ${THIRD_PARTY_PATH} -r 1 -t 1000 -p 10 -j username/password@SERVICE_NAME
+     ${OUA_BINARY_PATH} -c ${THIRD_PARTY_PATH} -a ${THIRD_PARTY_PATH}/wallet/<your_wallet_zip_name> -s ${THIRD_PARTY_PATH} -r 1 -t 1000 -p 10 -j username/${password}@SERVICE_NAME
      ```
 6. Click **OK** to save the datasource profile.
 7. Select the new datasource profile in the Oracle over Pipe configuration. Then, deploy it to the collectors.
+8. A secret containing the user’s password for OUA universal connector must be created - Example: grdapi universal_connector_keystore_add key=OUA_USER_PASS password=<PASSWORD> where <PASSWORD> is the OUA universal connector user’s password for the database. OUA_USER_PASS will be used in the plug-in configuration as a variable for password secret.
+
+ Note: For CM flow, the password secret also need to add in MU by using the grdapi command.
 
 ## Connection string format
 
