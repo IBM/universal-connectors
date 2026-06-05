@@ -11,7 +11,7 @@ This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
-## 1. Enabling structured audit logs
+## 1. Enabling the audit logs
 
 ### Procedure
 
@@ -129,7 +129,7 @@ The audit logs are stored in the directory specified in your YAML configuration 
   - EventType: DDL operations
   - Examples: CREATE TABLE, DROP TABLE, ALTER TABLE, CREATE INDEX, DROP INDEX
 
-**Note:** All log files use structured JSON format when configured with the YAML file. Each log entry includes a `"channel"` field indicating its source (e.g., `"channel":"SQL_EXEC"`, `"channel":"SQL_SCHEMA"`), and an `"event"` object containing the audit data. For more information about logging channels, see [CockroachDB Logging Channels](https://www.cockroachlabs.com/docs/v25.4/logging-overview#logging-channels).
+**Note:** All log files use structured JSON format when configured with the YAML file. Each log entry includes a `"channel"` field indicating its source (e.g., `"channel":"SQL_EXEC"`, `"channel":"SQL_SCHEMA"`), and an `"event"` object containing the audit data. For more information about logging channels and files depending on your cockroachDB version, see [CockroachDB Logging Channels](https://www.cockroachlabs.com/docs/v25.4/logging-overview#logging-channels).
 
 ## 3. Configuring Syslog to push logs to Guardium
 
