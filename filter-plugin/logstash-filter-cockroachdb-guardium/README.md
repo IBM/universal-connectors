@@ -88,13 +88,13 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 7. Reload systemd and restart CockroachDB:
 	```bash
-	sudo systemctl daemon-reload
-	sudo systemctl restart cockroachdb
+	systemctl daemon-reload
+	systemctl restart cockroachdb
 	```
 
 8. Verify the service started successfully:
 	```bash
-	sudo systemctl status cockroachdb
+	systemctl status cockroachdb
 	```
 
 9. Verify the structured JSON logs are being created:
