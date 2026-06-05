@@ -53,8 +53,8 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 	sinks:
 	  file-groups:
-      # In v23: cockroach-sensitive-access.log
-      # In v25: cockroach-sql-audit.log
+	    # In v23: cockroach-sensitive-access.log
+	    # In v25: cockroach-sql-audit.log
 	    sensitive-access:
 	      channels: [SENSITIVE_ACCESS]
 	      dir: /path/to/logs/directory/
@@ -67,8 +67,8 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 	      channels: [SQL_SCHEMA]
 	      dir: /path/to/logs/directory/
 
-      # In v23: cockroach-sessions.log
-      # In v25: cockroach-sql-auth.log
+	    # In v23: cockroach-sessions.log
+	    # In v25: cockroach-sql-auth.log
 	    sessions: 
 	      channels: [SESSIONS]
 	      dir: /path/to/logs/directory/
