@@ -122,7 +122,7 @@ The audit logs are stored in the directory specified in your YAML configuration 
   
 - **cockroach-sessions.log** (v23) or **cockroach-sql-auth.log** (v25) - Authentication and session events
   - EventTypes: `client_authentication_failed`
-  - Examples: Login attempts (success/failure), session terminations
+  - Examples: Login attempts (failure)
 
 - **cockroach-sql-schema.log** - Schema change operations (DDL statements)
   - EventType: DDL operations
