@@ -35,14 +35,14 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 3. Create a logging configuration file on your CockroachDB server:
 	```bash
-	sudo mkdir -p /var/lib/cockroach/scripts
-	sudo vi /var/lib/cockroach/scripts/log-config.yaml
+	mkdir -p /path/to/logs/directory/scripts
+	vi /path/to/logs/directory/scripts/log-config.yaml
 	```
 
 4. Add the following YAML configuration to enable structured JSON logging for audit events:
 
 	```bash
-	vi /path/to/logs/directory/log-config.yaml
+	vi /path/to/logs/directory/scripts/log-config.yaml
 	```
 
 	```yaml
