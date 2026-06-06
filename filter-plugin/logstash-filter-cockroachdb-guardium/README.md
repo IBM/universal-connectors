@@ -33,13 +33,13 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 	SHOW CLUSTER SETTING sql.log.admin_audit.enabled;
 	```
 
-3. Create a logging configuration file on your CockroachDB server:
+4. Create a logging configuration file on your CockroachDB server:
 	```bash
 	mkdir -p /path/to/logs/directory/scripts
 	vi /path/to/logs/directory/scripts/log-config.yaml
 	```
 
-4. Add the following YAML configuration to enable structured JSON logging for audit events:
+5. Add the following YAML configuration to enable structured JSON logging for audit events:
 
 	```bash
 	vi /path/to/logs/directory/scripts/log-config.yaml
@@ -74,30 +74,30 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 	      dir: /path/to/logs/directory/
 	```
  
-5. Update your CockroachDB systemd service file to use the logging configuration:
+6. Update your CockroachDB systemd service file to use the logging configuration:
 	```bash
 	sudo vi /etc/systemd/system/cockroachdb.service
 	```
 
-6. Add the `--log-config-file` flag to the ExecStart line and **remove** any `--log-dir` flag if present (these flags are incompatible):
+7. Add the `--log-config-file` flag to the ExecStart line and **remove** any `--log-dir` flag if present (these flags are incompatible):
 	```
 	ExecStart=/usr/local/bin/cockroach start \
          ...
 	  --log-config-file=/path/to/logs/directory/log-config.yaml
 	```
 
-7. Reload systemd and restart CockroachDB:
+8. Reload systemd and restart CockroachDB:
 	```bash
 	systemctl daemon-reload
 	systemctl restart cockroachdb
 	```
 
-8. Verify the service started successfully:
+9. Verify the service started successfully:
 	```bash
 	systemctl status cockroachdb
 	```
 
-9. Verify the structured JSON logs are being created:
+10. Verify the structured JSON logs are being created:
 	```bash
 	ls -la /path/to/logs/directory/
 	```
