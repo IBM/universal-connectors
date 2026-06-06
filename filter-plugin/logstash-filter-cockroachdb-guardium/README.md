@@ -260,7 +260,6 @@ versions of the Linux distributions.
 - When using `cockroach sql` CLI with password authentication, a `client_authentication_failed` event is logged before successful login. The failed event is reported to Guardium as a LOGIN_FAILED exception.
 - The audit logs captures sql errors for syntactically correct queries (appears in both Full SQL report and Exception report) and does not capture syntactically incorrect queries.
 - Some operations may appear in multiple log files. For example, DDL operations (CREATE, ALTER, DROP, etc.) may appear in `cockroach-sql-exec.log`, `cockroach-sensitive-access.log`, and/or `cockroach-sql-schema.log`.
-- The universal connector can be installed on multiple Managed Units (MUs) for high availability, but all traffic will be displayed to a single MU.
 
 ## 5. Configuring the CockroachDB filter in Guardium
 
