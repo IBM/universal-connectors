@@ -105,8 +105,8 @@ datasource profile.
     readTimeout="2"
     reopenOnTruncate="on"
     escapeLF="on"
-    escapeLF.replacement=" ")
-
+    escapeLF.replacement=" "
+   )
    ```
    Example for YCQL audit logs:
 
