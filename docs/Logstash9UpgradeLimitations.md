@@ -1,11 +1,11 @@
-# Logstash 9.3.4 Upgrade Guide
+# Logstash 9.3.3 Upgrade Guide
 
 ## Overview
 
-This document provides guidance for applying patch 5008, which upgrades the Universal Connector from Logstash 8.3.3 to Logstash 9.3.4.
+This document provides guidance for applying patch 5008, which upgrades the Universal Connector from Logstash 8.3.3 to Logstash 9.3.3.
 
 **Important Considerations:**
-- Logstash 9.3.4 introduces changes to SSL/TLS configuration parameters
+- Logstash 9.3.3 introduces changes to SSL/TLS configuration parameters
 - Configuration updates are required for Universal Connector deployments
 - Both Legacy Flow and Central Manager Flow are affected
 
@@ -15,11 +15,11 @@ This document provides guidance for applying patch 5008, which upgrades the Univ
 
 ## Configuration Parameter Changes
 
-Logstash 9.3.4 has updated SSL/TLS configuration parameters in the TCP input plugin. The following parameter names have changed:
+Logstash 9.3.3 has updated SSL/TLS configuration parameters in the TCP input plugin. The following parameter names have changed:
 
 ### Parameter Name Changes
 
-| Old Parameter (Logstash 8.3.3) | New Parameter (Logstash 9.3.4) | Description |
+| Old Parameter (Logstash 8.3.3) | New Parameter (Logstash 9.3.3) | Description |
 |---------------------------------|--------------------------------|-------------|
 | `ssl_enable` | `ssl_enabled` | Enable/disable SSL |
 | `ssl_cert` | `ssl_certificate` | Path to SSL certificate |
@@ -30,7 +30,7 @@ Logstash 9.3.4 has updated SSL/TLS configuration parameters in the TCP input plu
 - `ssl_key_passphrase`
 - `ssl_client_authentication`
 
-The `ssl_verify` parameter has been deprecated in Logstash 9.3.4 and replaced with `ssl_client_authentication`.
+The `ssl_verify` parameter has been deprecated in Logstash 9.3.3 and replaced with `ssl_client_authentication`.
 
 **Current Support:**
 - Guardium Universal Connectors support `ssl_client_authentication => "none"` (equivalent to `ssl_verify => false`)
@@ -85,7 +85,7 @@ The following Universal Connectors are affected by these changes:
 
 ### For Legacy Flow Deployments
 
-When applying **patch 5008** or performing a **fresh install of GDP 12.2.3**, the Universal Connector will use Logstash 9.3.4. Configuration files must be manually updated with the new parameter names after the upgrade.
+When applying **patch 5008** or performing a **fresh install of GDP 12.2.3**, the Universal Connector will use Logstash 9.3.3. Configuration files must be manually updated with the new parameter names after the upgrade.
 
 
 #### Step 1: Identify Affected Configurations
@@ -110,7 +110,7 @@ input {
 }
 ```
 
-**After (Logstash 9.3.4):**
+**After (Logstash 9.3.3):**
 ```conf
 input {
   tcp {
@@ -137,19 +137,23 @@ Before deploying to production:
 
 ### For Central Manager (CM Flow) Deployments
 
-After applying **patch 5008**, all datasource profiles must be reinstalled to ensure they are using the updated Logstash 9.3.4 configuration:
+After applying **patch 5008**, all datasource profiles must be reinstalled to ensure they are using the updated Logstash 9.3.3 configuration:
 
 1. Navigate to **Manage > Universal Connector > Datasource Profile Management**
 2. Select all the profiles
 3. Follow the profile reinstallation process through the Central Manager UI
 
-**Note:** Profile reinstallation is necessary to ensure Universal Connector configurations are properly updated to work with Logstash 9.3.4 after applying patch 5008.
+
+**Important Note for Syslog Profiles:**
+For syslog-based profiles, you **must** edit and save the profile before reinstalling it. This ensures that the profile configuration is properly updated with the new Logstash 9.3.3 parameter names. Simply reinstalling without editing and saving first may not apply the necessary configuration updates.
+
+**Note:** Profile reinstallation is necessary to ensure Universal Connector configurations are properly updated to work with Logstash 9.3.3 after applying patch 5008.
 
 ## Compatibility Notes
 
-Configuration changes introduced in Logstash 9.3.4 are not backward compatible:
+Configuration changes introduced in Logstash 9.3.3 are not backward compatible:
 
-- Old parameter names (`ssl_enable`, `ssl_cert`, `ssl_verify`) are not supported in Logstash 9.3.4
+- Old parameter names (`ssl_enable`, `ssl_cert`, `ssl_verify`) are not supported in Logstash 9.3.3
 - Configurations must be updated appropriately for GDP version 12.2.3+ or Patch 5008
 
 ## Post-Upgrade Validation
@@ -192,8 +196,8 @@ After applying patch 5008, verify the following:
 - For Central Manager deployments, ensure all profiles have been reinstalled through the UI
 
 **Applies To:**
-- Guardium Data Protection 12.2.3 and above (includes Logstash 9.3.4)
-- Patch 5008 (Logstash 9.3.4)
-- Logstash 9.3.4 and above (standalone installations)
+- Guardium Data Protection 12.2.3 and above (includes Logstash 9.3.3)
+- Patch 5008 (Logstash 9.3.3)
+- Logstash 9.3.3 and above (standalone installations)
 **Previous Versions:**
 - GDP < 12.2.3 (Logstash 8.3.3)
