@@ -9,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public class Constants {
     public static final String NOT_AVAILABLE = "NA";
+
+    public static final String DEFAULT_IP = "0.0.0.0";
     public static final String UNKNOWN_STRING = StringUtils.EMPTY;
 
     public static final String LANGUAGE_SNOWFLAKE= "SNOWFLAKE";
@@ -27,8 +29,6 @@ public class Constants {
     public static final String CLIENT_IP= "client_ip";
 
     public static final String SERVER_IP= "server_ip";
-
-    public static final String DEFAULT_IP= "0.0.0.0";
 
     public static final String USER_NAME= "user_name";
 
@@ -65,6 +65,8 @@ public class Constants {
     public static final String SUCCESS = "SUCCESS";
     public static final String SQL_ERROR = "SQL_ERROR";
     public static final String  LOGIN_FAILED = "LOGIN_FAILED";
+    public static final String UC_PARSER_ERROR = "UC_PARSER_ERROR";
+    public static final String UC_AUDIT_ERROR = "UC_AUDIT_ERROR";
 
     public static final String TEXT = "TEXT";
 

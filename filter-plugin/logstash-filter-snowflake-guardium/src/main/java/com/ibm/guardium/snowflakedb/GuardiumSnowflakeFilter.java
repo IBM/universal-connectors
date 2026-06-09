@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import com.ibm.guardium.snowflakedb.exceptions.ParseException;
 import com.ibm.guardium.snowflakedb.parser.AuthFailedEventParser;
+import com.ibm.guardium.snowflakedb.parser.ErrorRecordBuilder;
 import com.ibm.guardium.snowflakedb.parser.Parser;
 import com.ibm.guardium.snowflakedb.parser.SQLErrorEventParser;
 import com.ibm.guardium.snowflakedb.parser.SuccessEventParser;
@@ -55,6 +56,7 @@ public class GuardiumSnowflakeFilter implements Filter {
 
         ArrayList<Event> skippedEvents = new ArrayList<>();
         for (Event event : events) {
+            Record partialRecord = null;
             try {
                 Optional<String> optEventType = Optional.ofNullable(
                         event.getField(Constants.EVENT_TYPE)
@@ -63,7 +65,7 @@ public class GuardiumSnowflakeFilter implements Filter {
                 if(optEventType.isPresent()){
                     String eventType = optEventType.get();
                     if(log.isDebugEnabled()){
-                        log.info("Snowflake Filter - Event Type", eventType);
+                        log.info("Snowflake Filter - Event Type: {}", eventType);
                     }
 
                     switch (eventType.toUpperCase()){
@@ -88,11 +90,23 @@ public class GuardiumSnowflakeFilter implements Filter {
                             event.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(rec));
                         }
                     } else {
-                        throw new ParseException("Snowflake filter: Parser not initialized.");
+                        // Unknown event_type - this is an audit/configuration error
+                        throw new Exception("Unknown event_type - parser not initialized.");
                     }
                 }
+            } catch (ParseException parseException) {
+                // Handle parser errors
+                // ParseException is thrown during parsing, so we may have partial data
+                log.error("Snowflake filter: Parser error - {}", parseException.getMessage());
+                Record errorRecord = ErrorRecordBuilder.parseRecordException(event, partialRecord, parseException.getMessage());
+                event.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(errorRecord));
+                event.tag(Constants.LOGSTASH_TAG_JSON_PARSE_ERROR);
             } catch (Exception exception) {
-                log.error("Snowflake filter: Error parsing event ", exception);
+                // Handle generic errors
+                // Generic exceptions may occur at any point, check if we have partial data
+                log.error("Snowflake filter: Error parsing event {}", exception);
+                Record errorRecord = ErrorRecordBuilder.parseRecordException(event, partialRecord, exception.getMessage());
+                event.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(errorRecord));
                 event.tag(Constants.LOGSTASH_TAG_JSON_PARSE_ERROR);
             }
         }
