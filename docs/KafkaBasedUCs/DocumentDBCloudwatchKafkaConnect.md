@@ -141,7 +141,9 @@ Create an IAM role for the Lambda function. The AWS Lambda service requires perm
 **Note:** Before you make any changes to the Lambda function code, you must disable the rule that you created. Deploy the changes and then re-enable the rule.
 
 ## Limitations
-
+- Due to native limitations in Amazon DocumentDB, audit logs may truncate query details (1 KB limit), and profiler logs only capture slow queries (based on a configurable threshold, around 50 ms). As a result, full query visibility cannot be guaranteed.
+    - https://docs.aws.amazon.com/documentdb/latest/developerguide/event-auditing.html
+    - https://docs.aws.amazon.com/documentdb/latest/developerguide/profiling.html
 - DocumentDB Profiler logs capture database operations that take longer than some period of time (for example, 100 ms). If the threshold value is not configurable and the set value is too high, profiler logs may not be captured for every database operation.
 - The following important fields cannot be mapped with DocumentDB audit or profiler logs:
     - **Source program**: Available only for aggregate queries

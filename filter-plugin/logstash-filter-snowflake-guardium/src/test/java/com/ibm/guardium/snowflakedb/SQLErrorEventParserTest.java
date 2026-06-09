@@ -9,8 +9,11 @@ import com.google.gson.Gson;
 import com.ibm.guardium.snowflakedb.exceptions.ParseException;
 import com.ibm.guardium.snowflakedb.parser.Parser;
 import com.ibm.guardium.snowflakedb.parser.SQLErrorEventParser;
+import com.ibm.guardium.snowflakedb.parser.SuccessEventParser;
 import com.ibm.guardium.snowflakedb.utils.Constants;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.Event;
@@ -85,4 +88,21 @@ public class SQLErrorEventParserTest {
             ex.printStackTrace();
         }
     }
+
+    @Test
+    public void testSessionIDWhenClientAndServerSessionNotPresent() throws ParseException {
+        Event e = FakeEventFactory.getSQLErrorEvent();
+        e.remove(Constants.SESSION_ID);
+        e.remove(Constants.CLIENT_IP);
+        e.remove(Constants.SERVER_IP);
+
+        Parser parser = new SQLErrorEventParser();
+        Record record = parser.parseRecord(e.toMap());
+        SessionLocator sessionLocator = record.getSessionLocator();
+
+        Assert.assertEquals(StringUtils.EMPTY, record.getSessionId());
+        Assert.assertEquals(-1, sessionLocator.getClientPort());
+    Assert.assertEquals(443, sessionLocator.getServerPort());
+    }
+
 }
