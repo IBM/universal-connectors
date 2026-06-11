@@ -146,7 +146,7 @@ public class Parser {
         accessor.setDbProtocol(Constants.DB_PROTOCOL);
         accessor.setDbProtocolVersion(Constants.UNKNOWN_STRING);
         accessor.setOsUser(Constants.UNKNOWN_STRING);
-        accessor.setSourceProgram(null);
+        accessor.setSourceProgram(Constants.UNKNOWN_STRING);
         accessor.setClient_mac(Constants.UNKNOWN_STRING);
 
         // accountId:dbName
