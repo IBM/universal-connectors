@@ -14,6 +14,10 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 [ONPREM MSSQL README](./ONPREMMSSQL_README.md)
 
+## Follow this link to set up and use ONPREM MSSQL Over JDBC Kafka Connect
+
+[ONPREM MSSQL Over JDBC 2.0 README](../../../docs/KafkaBasedUCs/MsSQLOnPremJDBCKafkaConnect.md)
+
 ## Follow this link to set up and use GCP MSSSQL
 
 [GCP MSSQL README](./GCPMSSQL_README.md)
