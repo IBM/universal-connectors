@@ -7,4 +7,3 @@
 ## Follow this link to set up and use Postgres Universal Connector over PubSub Connect
 
 [PostgresOverConnectPubSub](../../docs/KafkaBasedUCs/PostgresqlPubsubKafkaConnect.md)
-

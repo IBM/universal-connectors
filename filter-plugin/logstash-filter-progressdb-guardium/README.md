@@ -9,9 +9,9 @@
 - Supported inputs: JDBC (Pull)
 
 - Supported Guardium versions:
-   - Guardium Data Protection: 11.4 and above
+  - Guardium Data Protection: 11.4 and above
 
-**Note:** Licensed database users get access to openEdge jar directly from the Progress team.  
+**Note:** Licensed database users get access to openEdge jar directly from the Progress team.
 
 **Note:** To capture DML operations, you need to explicitly apply a policy on each and every table, in addition to the imported default policy.
 
@@ -19,17 +19,16 @@ This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
 
-
 ## 1. Installing Progress and configuring auditing
 
 For this example, we will assume that we already have a working Progress Database setup.
 
 ## 2. Enabling Auditing :
- 
-   1. Create a structure file that defines the database structure. It contains all of the information required by the PROSTRCT CREATE utility to create a database control area and the database extents.
-   [This](https://docs.progress.com/bundle/openedge-database-management-117/page/Creating-a-structure-description-file.html) link can be used to create struture file for database. 
-   
-   Below are the details of a sample structure file.
+
+1.  Create a structure file that defines the database structure. It contains all of the information required by the PROSTRCT CREATE utility to create a database control area and the database extents.
+    [This](https://docs.progress.com/bundle/openedge-database-management-117/page/Creating-a-structure-description-file.html) link can be used to create struture file for database.
+
+Below are the details of a sample structure file.
 
     d "AuditData":20,64;512 . f 2000000
 
@@ -41,13 +40,13 @@ For this example, we will assume that we already have a working Progress Databas
 
 Where:
 
--  ‘d’ indicates a type which is ‘Schema and application data areas.
+- ‘d’ indicates a type which is ‘Schema and application data areas.
 
--  'AuditData' indicates a name of storage area.
+- 'AuditData' indicates a name of storage area.
 
 - ‘20,64’ co-ordinates indicate number of storage area.
 
--  ‘512’ indicates recsPerBlock, which tells us the number of database records in each database block.
+- ‘512’ indicates recsPerBlock, which tells us the number of database records in each database block.
 
 - ‘.’ points to current working directory. We can mention an absolute or relative pathname of each extent.
 
@@ -55,59 +54,55 @@ Where:
 
 - ‘2000000’ is the size of an extent in kilobytes. This value must be a multiple of 16 times your database block size.
 
+2.  Once the database is installed, Proenv command line application will be added. Open the application and execute the below commands.
 
- 2. Once the database is installed, Proenv command line application will be added. Open the application and execute the below commands.
+    a. `proenv> prostrct add <Database_name> <"location of structure of file created in step1">`.
 
-       a. `proenv> prostrct add <Database_name> <"location of structure of file created in step1">`.
+    Example: `prostrct add guardium-db "C:\Users\Administrator\Downloads\ProgressDocs\audit.st.txt"`.
 
-       Example:    `prostrct add guardium-db "C:\Users\Administrator\Downloads\ProgressDocs\audit.st.txt"`.
+    b. `proenv> proutil <Database_name> -C enableauditing area  <"Areaname which we have mentioned in st file"> indexarea <"Indexname which we have mentioned in st file">`.
 
-       b.         `proenv> proutil <Database_name> -C enableauditing area  <"Areaname which we have mentioned in st file"> indexarea <"Indexname which we have mentioned in st file">`.
-
-       Example:   `proutil guardium-db -C enableauditing area "AuditData" indexarea "AuditIndex"`.
-
+    Example: `proutil guardium-db -C enableauditing area "AuditData" indexarea "AuditIndex"`.
 
 ## 3. Adding an audit policy for a specific database
- 
-   1. Connect to the database using multi-user mode and login with the audit admin user to enable audit policy.
 
-   2. To allow multiuser mode for the database, deploy it on a specific server with the below commands using Proenv application.
+1.  Connect to the database using multi-user mode and login with the audit admin user to enable audit policy.
 
-      `proenv> proserve -db <Database_name> -H <Host_name> -S <Port_Number>`
+2.  To allow multiuser mode for the database, deploy it on a specific server with the below commands using Proenv application.
 
-      Example: `proserve -db guardium-db -H DataBase1 -S 5555`
+    `proenv> proserve -db <Database_name> -H <Host_name> -S <Port_Number>`
 
-   3. Connect to the database using multi-user mode and login with the audit admin user to enable audit policy.
+    Example: `proserve -db guardium-db -H DataBase1 -S 5555`
 
-   4. Under the **Admin** tab, click **Security** and select **Disallow blank user id access**.(Optional)
+3.  Connect to the database using multi-user mode and login with the audit admin user to enable audit policy.
 
+4.  Under the **Admin** tab, click **Security** and select **Disallow blank user id access**.(Optional)
 
 ### Importing the audit policy using the APM tool
 
 Connect to the new audit-enabled database using the Data Administrator tool.
 
-  1. Under **Tools**, select **Audit Policy Maintaince** and click **Import Policy**.
+1. Under **Tools**, select **Audit Policy Maintaince** and click **Import Policy**.
 
-  2. Import the Policy File. A predefined audit policy [policies.xml](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/policies.xml.zip),which is provided by Progress, can be imported to any database which is enabled for auditing.
+2. Import the Policy File. A predefined audit policy [policies.xml](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/policies.xml.zip),which is provided by Progress, can be imported to any database which is enabled for auditing.
 
-  3. Extract the zip file. After extracting the downloaded zip, there will be a file named "policies.xml". Select the policies.xml.
+3. Extract the zip file. After extracting the downloaded zip, there will be a file named "policies.xml". Select the policies.xml.
 
-  4. Click **OK** to import the Policies from the .xml file.
+4. Click **OK** to import the Policies from the .xml file.
 
-  5. All audit events mentioned in file will be imported on UI in Audit Policy Maintaince.
+5. All audit events mentioned in file will be imported on UI in Audit Policy Maintaince.
 
-  6. Policies.xml capture all audit events. If you don't want to capture any type of event, then those can be deleted via the UI. 
+6. Policies.xml capture all audit events. If you don't want to capture any type of event, then those can be deleted via the UI.
 
-  7. To capture DML operations, you need to explicitly apply a policy for each and every table, in addition to the imported default policy.
+7. To capture DML operations, you need to explicitly apply a policy for each and every table, in addition to the imported default policy.
 
-  8. To delete a particular record, click the - icon.
+8. To delete a particular record, click the - icon.
 
-  9. Once all changes are done, activate the policy.
+9. Once all changes are done, activate the policy.
 
-  10. Commit the changes.
+10. Commit the changes.
 
 For more information, refer to, [How To Import Audit Policies using APMT](https://community.progress.com/s/article/P137619).
-
 
 ## 4. Viewing audit logs
 
@@ -115,59 +110,57 @@ For more information, refer to, [How To Import Audit Policies using APMT](https:
 
 #### Procedure
 
-   1. Open the **Database Administrator** component.
+1.  Open the **Database Administrator** component.
 
-   2. Connect to the database using **Audit Administrator** credentials.
+2.  Connect to the database using **Audit Administrator** credentials.
 
-   3. Click **Procedure Editor** from **Tools**.
+3.  Click **Procedure Editor** from **Tools**.
 
-   4. Run the below queries to check the audit table:
+4.  Run the below queries to check the audit table:
 
-	      FOR EACH _aud-audit-data: Display _aud-audit-data.
+        FOR EACH _aud-audit-data: Display _aud-audit-data.
 
-	      FOR EACH _aud-event: Display _aud-event.
+        FOR EACH _aud-event: Display _aud-event.
 
-	      FOR EACH _client-session: Display _client-session.
+        FOR EACH _client-session: Display _client-session.
 
-	      FOR EACH _aud-audit-data-value: Display _aud-audit-data-value.
+        FOR EACH _aud-audit-data-value: Display _aud-audit-data-value.
 
- 
 ### View the Progress audit tables from any third party tool using SQL.
 
 #### Procedure
-1. To view the audited Logs:-
+
+1.  To view the audited Logs:-
 
     a) Connect to the database with a user who has 'Audit Administrator' and 'DBA' rights.
 
-    2. The below shows information about audit logs:
+    2.  The below shows information about audit logs:
 
-			  select * from PUB."_aud-audit-data";
+              select * from PUB."_aud-audit-data";
 
-			  select * from PUB."_aud-audit-data-value";
+              select * from PUB."_aud-audit-data-value";
 
-			  select * from PUB."_aud-event";
+              select * from PUB."_aud-event";
 
-			  select * from PUB."_client-session";
+              select * from PUB."_client-session";
 
-			  select * from PUB."_db-detail";
+              select * from PUB."_db-detail";
 
-			  select * from PUB."_db";
-	  
+              select * from PUB."_db";
 
 ## 5. Archiving audit tables:
 
-1. Extracting Audit data to output file.
+1.  Extracting Audit data to output file.
 
-		OUTPUT TO "myFile.txt".
-		    FOR EACH _aud-audit-data:
-		    Display _aud-audit-data.
-		    OUTPUT CLOSE.
-     
-  2. Deleting audit data.
-       
-	       FOR EACH _aud-audit-data EXCLUSIVE-LOCK :
-		    DELETE _aud-audit-data.
-		    END.
+        OUTPUT TO "myFile.txt".
+            FOR EACH _aud-audit-data:
+            Display _aud-audit-data.
+            OUTPUT CLOSE.
+
+2.  Deleting audit data.
+    FOR EACH \_aud-audit-data EXCLUSIVE-LOCK :
+    DELETE \_aud-audit-data.
+    END.
 
 ## Limitations:
 
@@ -178,8 +171,6 @@ For more information, refer to, [How To Import Audit Policies using APMT](https:
 5. Object name has special characters due to a Progress audit table limitation.
 6. The source program will not be available in reports.
 7. The DQL command[Select] is not captured in audit logs.
-
-
 
 ## 6. Configuring the Progress filters in Guardium.
 
@@ -198,8 +189,7 @@ the native audit logs by customizing the Progress template.
 
 • This plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note:** For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
-
+**Note:** For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 ### Procedure
 
@@ -207,26 +197,22 @@ the native audit logs by customizing the Progress template.
 
 2. First, enable the universal connector, if it is currently disabled.
 
-3. Click **Upload File** and upload the `openedge.jar` file that is included in the enterprise version. 
+3. Click **Upload File** and upload the `openedge.jar` file that is included in the enterprise version.
 
 4. Click **Upload File** and select the offline [logstash-filter-progress_guardium_plugin_filter.zip](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/logstash-filter-progress_guardium_plugin_filter.zip) file. After it is uploaded, click **OK**. This step is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
 
 5. Click the Plus icon to open the Connector Configuration dialog box.
-    
 6. Type a name in the Connector name field.
-    
 7. Update the input section to add the details from the [Progress-JDBC.conf](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/Progress-JDBC.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide the required details for database server name, username, and password for JDBC connectivity.
 
 8. Update the filter section to add the details from the [Progress-JDBC.conf](https://github.ibm.com/Activity-Insights/universal-connectors/raw/master/filter-plugin/logstash-filter-progressdb-guardium/ProgressOverJdbcPackage/Progress-JDBC.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the same database server name as in the above step for the Server_Hostname attribute in the filter section.
 
 9. The "type" fields should match in the input and the filter configuration sections. This field should be unique for every individual connector added.
-    
 10. If using two JDBC plug-ins on same machine, the `last_run_metadata_path` file name should be different.
 
 **Note**: For moderate to large amounts of data, include pagination to facilitate the audit and to avoid out of memory errors. Use the parameters below in the input section when using a JDBC connector, and remove the concluding semicolon ';' from the jdbc statement: `jdbc_paging_enabled => true jdbc_page_size => 1000`.
 
 11. Click **Save**. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
-
 
 ## 7. JDBC load balancing configuration
 
@@ -234,9 +220,9 @@ In Progress JDBC input plug-ins, we distribute load between two machines based o
 
 ### Procedure
 
-1. On the first G Machine, in the input section for the JDBC Plug-in, update the **statement** field as follows:
+1.  On the first G Machine, in the input section for the JDBC Plug-in, update the **statement** field as follows:
 
-		SELECT
+        SELECT
                          PUB."_aud-audit-data"."_User-id",
                          PUB."_aud-audit-data"."_Audit-date-time",
                          TIMESTAMPDIFF(SQL_TSI_FRAC_SECOND, TO_TIMESTAMP(TO_CHAR(:epoch_start_from)), TO_TIMESTAMP(TO_CHAR(PUB."_aud-audit-data"."_Audit-date-time"))) as audit_timestamp,
@@ -252,9 +238,9 @@ In Progress JDBC input plug-ins, we distribute load between two machines based o
                  and TIMESTAMPDIFF(SQL_TSI_FRAC_SECOND, TO_TIMESTAMP(TO_CHAR(:epoch_start_from)), TO_TIMESTAMP(TO_CHAR(PUB."_aud-audit-data"."_Audit-date-time"))) > :sql_last_value
                  order by PUB."_aud-audit-data"."_Audit-date-time" asc
 
-2. On the second G machine, in the input section for the JDBC plug-in, update the **statement** field as follows:
+2.  On the second G machine, in the input section for the JDBC plug-in, update the **statement** field as follows:
 
-				SELECT
+        		SELECT
                          PUB."_aud-audit-data"."_User-id",
                          PUB."_aud-audit-data"."_Audit-date-time",
                          TIMESTAMPDIFF(SQL_TSI_FRAC_SECOND, TO_TIMESTAMP(TO_CHAR(:epoch_start_from)), TO_TIMESTAMP(TO_CHAR(PUB."_aud-audit-data"."_Audit-date-time"))) as audit_timestamp,

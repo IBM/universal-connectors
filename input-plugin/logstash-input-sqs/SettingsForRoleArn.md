@@ -1,6 +1,6 @@
 ## Configuration for role_arn parameter in the sqs input plug-in
 
-For input plug-ins like sqs, the AWS credentials are required to access the AWS endpoint either cloudwatch_logs log_group or sqs queue. However, instead of using the AWS access_key and secret_key, using the role_arn setting can be preferable. 
+For input plug-ins like sqs, the AWS credentials are required to access the AWS endpoint either cloudwatch_logs log_group or sqs queue. However, instead of using the AWS access_key and secret_key, using the role_arn setting can be preferable.
 
 ### Note:
 
@@ -17,20 +17,20 @@ These settings can be used only when the Guardium Data Protection is hosted on A
 5.  For **Use case**, select EC2
 6.  Click **Next**
 7.  Steps to set the Permissions Policies
-	1. When the input plug-in is SQS
-		1. Click the **Create Policy** button
-		2. In **Service**, choose a service as SQS
-		3. In **Actions**, select **Read and Write Action levels**
-		4. In **Resources**, Add the role ARN of the queue that is to be monitored
-		5. Click **Review policy** and specify the policy name
-		6. Click **Create policy**
-		7. Attach this new policy to the role
+    1.  When the input plug-in is SQS
+        1. Click the **Create Policy** button
+        2. In **Service**, choose a service as SQS
+        3. In **Actions**, select **Read and Write Action levels**
+        4. In **Resources**, Add the role ARN of the queue that is to be monitored
+        5. Click **Review policy** and specify the policy name
+        6. Click **Create policy**
+        7. Attach this new policy to the role
 8.  Click **Next**
 9.  Enter the role name
 10. Click **Create Role**
 11. Search for the created role and open it
-12.	In the **Permissions** tab, click the **Add Permissions** button and select **Create Inline Policy**
-13.	On the **Create Policy** page, select JSON editor and add the below policy
+12. In the **Permissions** tab, click the **Add Permissions** button and select **Create Inline Policy**
+13. On the **Create Policy** page, select JSON editor and add the below policy
 
 ```
 {
@@ -49,7 +49,7 @@ These settings can be used only when the Guardium Data Protection is hosted on A
 	}]
 }
 ```
-	
+
 14. Click **Review Policy**
 15. Enter the policy Name and click **Create Policy**
 16. Select the role created above
@@ -65,7 +65,7 @@ These settings can be used only when the Guardium Data Protection is hosted on A
         "Action": "sts:AssumeRole"
 }
 ```
-	
+
 19. Set the role to the EC2 machine hosting Guardium
 20. Go to the EC2 machine hosting Guardium
 21. Right click on the EC2 instance, select the Security Option, and modify the IAM role
@@ -87,16 +87,16 @@ These settings can be used only when the Guardium Data Protection is hosted on A
 4.  For **Trusted Entity Type**, select AWS Service
 5.  For **Use case**, select EC2
 6.  Click **Next**
-9.  Enter the role name e.g., role_on_111111
-10. Click **Create Role**
-11. Repeat steps fom 1 to 10 on second AWS Account i.e., with Account ID 222222 and create a role with name for e.g., role_on_222222
+7.  Enter the role name e.g., role_on_111111
+8.  Click **Create Role**
+9.  Repeat steps fom 1 to 10 on second AWS Account i.e., with Account ID 222222 and create a role with name for e.g., role_on_222222
 
 ### Steps to add Permissions and Policies to the Role created on the Account that has Guardium EC2:
 
 1.  Log in back to the first AWS Account.
 2.  Search for the created role i.e., role_on_111111 and open it
-3.	In the **Permissions** tab, click the **Add Permissions** button and select **Create Inline Policy**
-4.	On the **Create Policy** page, select JSON editor and add the below policy
+3.  In the **Permissions** tab, click the **Add Permissions** button and select **Create Inline Policy**
+4.  On the **Create Policy** page, select JSON editor and add the below policy
 
 ```
 	{
@@ -138,20 +138,21 @@ e.g.,
 1.  Log in to the Second AWS Account with account id 222222
 2.  Search for the created role i.e., role_on_222222 and open it
 3.  Steps to set the Permissions Policies, to allow read permissions to CloudWatchLogs and/or SQS queue.
-	1. When the input plug-in is SQS
-		1. Search CloudWatchLogsReadOnlyAccess and select it
-		2. Click the **Create Policy** button
-		3. In **Service**, choose a service as SQS
-		4. In **Actions**, select **Read and Write Action levels**
-		5. In **Resources**, Add the role ARN of the queue that is to be monitored
-		6. Click **Review policy** and specify the policy name
-		7. Click **Create policy**
-		8. Attach this new policy to the role
-4.	In the **Permissions** tab, click the **Add Permissions** button and select **Create Inline Policy**
+    1.  When the input plug-in is SQS
+        1. Search CloudWatchLogsReadOnlyAccess and select it
+        2. Click the **Create Policy** button
+        3. In **Service**, choose a service as SQS
+        4. In **Actions**, select **Read and Write Action levels**
+        5. In **Resources**, Add the role ARN of the queue that is to be monitored
+        6. Click **Review policy** and specify the policy name
+        7. Click **Create policy**
+        8. Attach this new policy to the role
+4.  In the **Permissions** tab, click the **Add Permissions** button and select **Create Inline Policy**
 5.  Here you can add policy to eliminate access except for the one log group e.g., test-log-group.
-5.	On the **Create Policy** page, select JSON editor and add the below policy
+6.  On the **Create Policy** page, select JSON editor and add the below policy
 
 Inline policy –
+
 ```
 {
 	"Version": "2012-10-17",
@@ -197,6 +198,7 @@ Inline policy –
 	}]
 }
 ```
+
 e.g.,
 
 ```
@@ -212,20 +214,19 @@ e.g.,
 	}]
 }
 ```
-	
+
 9. Set the role created on first AWS Account i.e., role_on_111111 to the EC2 machine hosting Guardium
 10. Go to the EC2 machine hosting Guardium
 11. Right click on the EC2 instance, select the Security Option, and modify the IAM role
 12. Set the role that was created above
 
-
 ## Configuring input plugin on Guardium:
 
 ### Procedure :
-    
-   Update the input section to add the details from the corresponding file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-   
-   The sample configuration looks like :-
+
+Update the input section to add the details from the corresponding file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
+
+The sample configuration looks like :-
 
 ```
 input{

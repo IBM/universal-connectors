@@ -62,7 +62,6 @@ Navigate to the common project inside the public universal-connectors repo and b
 2. Run assemble
 3. Run build
 
-
 ## Building Logstash from Source
 
 ### Step 1: Install Ruby Version Manager (RVM)
@@ -278,4 +277,4 @@ This setup enables you to develop, test, and deploy custom Logstash plugins for 
 
 ---
 
-*Last Updated: January 2026*
+_Last Updated: January 2026_

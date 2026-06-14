@@ -7,4 +7,3 @@
 ## Follow this link to set up and use Redshift Universal Connector over CloudWatch Connect
 
 [RedshiftOverConnectCloudwatch](../../docs/KafkaBasedUCs/RedshiftCloudwatchKafkaConnect.md)
-

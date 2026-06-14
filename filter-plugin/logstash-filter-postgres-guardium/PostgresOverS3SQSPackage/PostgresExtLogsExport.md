@@ -1,11 +1,13 @@
 ## [Export logs to S3 bucket](https://aws.amazon.com/blogs/database/automate-postgresql-log-exports-to-amazon-s3-using-extensions/)
 
 ### Note :
+
 This implementation leverages PostgreSQL extensions such as `log_fdw`, `aws_s3`, and `pg_cron`, and closely follows the approach outlined in the official AWS blog post: [Automate PostgreSQL log exports to Amazon S3 using extensions](https://aws.amazon.com/blogs/database/automate-postgresql-log-exports-to-amazon-s3-using-extensions/).
 Please note that this solution is based entirely on the methodology provided by AWS. IBM does not assume responsibility for any future updates, enhancements, or fixes that may be required due to changes in the AWS implementation or related extensions.
 
 ### Limitation :
-Client HostName is not available, will be seen as N.A. in Full SQL Report. 
+
+Client HostName is not available, will be seen as N.A. in Full SQL Report.
 
 ### Create an IAM Role and Policy and Attach the Role to Your RDS for PostgreSQL Instance
 
@@ -34,28 +36,28 @@ To allow Amazon RDS to export logs or data to Amazon S3, follow these steps:
 
 ```json
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject",
-                "s3:AbortMultipartUpload",
-                "s3:DeleteObject",
-                "s3:ListMultipartUploadParts",
-                "s3:PutObject",
-                "s3:ListBucket"
-            ],
-            "Resource": [
-                "arn:aws:s3:::<S3_Bucket_Name>",
-                "arn:aws:s3:::<S3_Bucket_Name>/*"
-            ]
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:AbortMultipartUpload",
+        "s3:DeleteObject",
+        "s3:ListMultipartUploadParts",
+        "s3:PutObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::<S3_Bucket_Name>",
+        "arn:aws:s3:::<S3_Bucket_Name>/*"
+      ]
+    }
+  ]
 }
 ```
 
->  Replace `<S3_Bucket_Name>` with your actual bucket name.
+> Replace `<S3_Bucket_Name>` with your actual bucket name.
 
 5. Click **[Next]**, give the policy a name (e.g., `RDSExportToS3Policy`), then click **[Create policy]**.
 
@@ -82,16 +84,16 @@ To allow Amazon RDS to export logs or data to Amazon S3, follow these steps:
 
 ```json
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": {
-                "Service": "rds.amazonaws.com"
-            },
-            "Action": "sts:AssumeRole"
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "rds.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
 }
 ```
 
@@ -140,15 +142,20 @@ aws rds describe-db-instances \
 ```
 
 ---
-For more information, follow **[Step 4 in the official AWS documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/postgresql-s3-export-access-bucket.html)**. 
+
+For more information, follow **[Step 4 in the official AWS documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/postgresql-s3-export-access-bucket.html)**.
 
 ### Import PostgreSQL logs into the table using extension log_fdw
+
 To use the `log_fdw` functions, we must first create the extension on the database instance. Connect to the database using psql and run the following command.
+
 ```bash
     postgres=> CREATE EXTENSION log_fdw;
     CREATE EXTENSION
 ```
+
 With the extension loaded, we can create a function that loads all the available PostgreSQL DB log files as a table within the database. The definition of the function is available on [GitHub](https://github.com/aws-samples/amazon-rds-and-amazon-aurora-logging-blog/blob/master/scripts/pg_log_fdw_management.sql).
+
 ```bash
 -- Yaser Raja
 -- AWS Professional Services
@@ -287,18 +294,25 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 ```
+
 With the function created, we can run the function to load the PostgreSQL logs into the database. Each time we run the following command, the logs.postgres_logs table is updated with the most recent engine logs.
+
 ```bash
 postgres=> SELECT public.load_postgres_log_files();
 ```
+
 ### Export PostgreSQL logs from table into Amazon S3 using aws_s3
+
 Now that we have a function to query for new log statements, we use aws_s3 to export the retrieved logs to Amazon S3. From the prerequisites, we should already have an S3 bucket created and we should have attached an IAM role to the DB instance that allows for writing to your S3 bucket.
 Create the aws_s3 extension with the following code:
+
 ```bash
 postgres=> CREATE EXTENSION aws_s3 CASCADE;
 CREATE EXTENSION
 ```
+
 ### Automate the log exports using extension pg_cron
+
 Now that we have the steps to perform log uploads to Amazon S3 using the log_fdw and aws_s3 extensions, we can automate these steps using pg_cron. With pg_cron, we can write database queries to be run on a schedule of our choosing.
 
 As part of the prerequisites, you should have pg_cron added to the shared_preload_libraries parameter in your database instance's parameter group. After pg_cron is loaded into shared_preload_libraries, you can simply run the following command to create the extension:
@@ -307,19 +321,22 @@ As part of the prerequisites, you should have pg_cron added to the shared_preloa
 postgres=> CREATE EXTENSION pg_cron;
 CREATE EXTENSION
 ```
+
 With pg_cron created, we can use the extension to perform the PostgreSQL log uploads on a cron defined schedule. To do this, we need to schedule a cron job, passing in a name, schedule, and the log export query we want to run. For example, to schedule log uploads every hour with the same query described earlier, we can run the following command:
 
 Create a table logs.postgres_logs_export_tracker to track last exported log timestamp with `last_exported_log_time`.
+
 ```bash
     CREATE TABLE IF NOT EXISTS logs.postgres_logs_export_tracker (
         id SERIAL PRIMARY KEY,
         last_exported_log_time TIMESTAMPTZ NOT NULL DEFAULT '1970-01-01 00:00:00+00'
     );
-    
+
     INSERT INTO logs.postgres_logs_export_tracker (last_exported_log_time) VALUES (NOW());
 ```
 
 Create function `export_postgres_logs_to_s3` to export log to S3 bucket. Please replace parameter `delay_in_minutes`, `S3_bucket_name` and `region` with actual value.
+
 ```bash
     CREATE OR REPLACE FUNCTION public.export_postgres_logs_to_s3()
     RETURNS void LANGUAGE plpgsql SECURITY DEFINER
@@ -339,22 +356,22 @@ Create function `export_postgres_logs_to_s3` to export log to S3 bucket. Please 
         FROM logs.postgres_logs_export_tracker
         ORDER BY id DESC
         LIMIT 1;
-    
+
         IF last_exported IS NULL THEN
             last_exported := '1970-01-01 00:00:00+00';
         END IF;
-    
+
         -- 2. Compute cutoff time
         cutoff_time := NOW() - delay_interval;
-    
+
         IF cutoff_time <= last_exported THEN
             RAISE NOTICE 'Cutoff time <= last exported time (%), skipping.', last_exported;
             RETURN;
         END IF;
-    
+
         -- 3. Load logs (your implementation)
         PERFORM public.load_postgres_log_files();
-    
+
         -- 4. Build export query
         export_query := format($f$
             SELECT * FROM logs.postgres_logs
@@ -363,9 +380,9 @@ Create function `export_postgres_logs_to_s3` to export log to S3 bucket. Please 
               AND log_time <= %L
             ORDER BY log_time, session_id, session_line_num
         $f$, last_exported::TEXT, cutoff_time::TEXT);
-    
+
         export_filename := to_char(NOW(), '"postgres-log-"YYYYMMDD_HH24MI".csv"');
-    
+
         -- 5. Export to S3
         PERFORM aws_s3.query_export_to_s3(
             export_query,
@@ -374,17 +391,19 @@ Create function `export_postgres_logs_to_s3` to export log to S3 bucket. Please 
             '<region>',
             options := 'format csv, header true'
         );
-    
+
         -- 6. Update tracker to cutoff time
         UPDATE logs.postgres_logs_export_tracker
         SET last_exported_log_time = cutoff_time
         WHERE id = latest_tracker_id;
-    
+
         RAISE NOTICE 'Logs exported. Tracker updated to %', cutoff_time;
     END;
     $$;
 ```
+
 Here we have used cron job which will run on every minute, you can customise it by updating the cron job schedule expression i.e. `* * * * *`
+
 ```bash
     SELECT cron.schedule(
         'postgres-s3-log-uploads-every-minute',
@@ -392,20 +411,24 @@ Here we have used cron job which will run on every minute, you can customise it 
         'SELECT public.export_postgres_logs_to_s3();'
     );
 ```
+
 If you decide at any time that you want to cancel these automated log uploads, you can unschedule the associated cron job by passing in the job name specified previously. In the following example, the job name is `postgres-s3-log-uploads-every-minute`:
+
 ```bash
-postgres=> SELECT cron.unschedule('postgres-s3-log-uploads-every-minute'); 
+postgres=> SELECT cron.unschedule('postgres-s3-log-uploads-every-minute');
 unschedule
 ------------
  t
 (1 row)
 ```
+
 ### Creating the SQS queue
+
 The SQS queue created in these steps will receive messages from the Event Notification (configured in the next section).
 These messages, generated by monitoring the S3 bucket, will contain details of the recently added S3 log files.
 
-
 #### Procedure
+
 1. Go to https://console.aws.amazon.com/
 2. Click **Services**
 3. Search for SQS and click on **Simple Queue Services**
@@ -415,42 +438,47 @@ These messages, generated by monitoring the S3 bucket, will contain details of t
 7. Keep the rest of the default settings
 
 ### Creating a policy for the relevant IAM User
+
 Perform the following steps for the IAM user who is accessing the SQS logs in Guardium:
 
 #### Procedure
+
 1. Go to https://console.aws.amazon.com/
 2. Go to **IAM service** > **Policies** > **Create Policy**.
 3. Select **service as SQS**.
 4. Check the following checkboxes:
-    * **ListQueues**
-    * **DeleteMessage**
-    * **DeleteMessageBatch**
-    * **GetQueueAttributes**
-    *  **GetQueueUrl**
-    * **ReceiveMessage**
-    * **ChangeMessageVisibility**
-    * **ChangeMessageVisibilityBatch**
+   - **ListQueues**
+   - **DeleteMessage**
+   - **DeleteMessageBatch**
+   - **GetQueueAttributes**
+   - **GetQueueUrl**
+   - **ReceiveMessage**
+   - **ChangeMessageVisibility**
+   - **ChangeMessageVisibilityBatch**
 5. In the resources, specify the ARN of the queue created in the above step.
 6. Click **Review policy** and specify the policy name.
 7. Click **Create policy**.
 8. Assign the policy to the user
-    1. Log in to the IAM console as an IAM user (https://console.aws.amazon.com/iam/).
-    2. Go to **Users** on the console and select the relevant IAM user to whom you want to give permissions.
-       Click the **username**.
-    3. In the **Permissions tab**, click **Add permissions**.
-    4. Click **Attach existing policies directly**.
-    5. Search for the policy created and check the checkbox next to it.
-    6. Click **Next: Review**
-    7. Click **Add permissions**
+   1. Log in to the IAM console as an IAM user (https://console.aws.amazon.com/iam/).
+   2. Go to **Users** on the console and select the relevant IAM user to whom you want to give permissions.
+      Click the **username**.
+   3. In the **Permissions tab**, click **Add permissions**.
+   4. Click **Attach existing policies directly**.
+   5. Search for the policy created and check the checkbox next to it.
+   6. Click **Next: Review**
+   7. Click **Add permissions**
 
 ### Creating the Event Notification
+
 The Event Notification will get triggered when a new Object is added to S3 bucket and will send the events to the SQS queue.
 Follow the steps below to configure the Event Notification
 
 #### Creating Access Policy to allow Notifications
+
 Update the Access Policy of the SQS queue to allow the Notification Service to send messages to the Queue
 
-__*Procedure*__
+**_Procedure_**
+
 1. Go to https://console.aws.amazon.com/
 2. Go to **SQS** -> **Queues**
 3. Click on the Queue that was created in the above step
@@ -478,12 +506,12 @@ __*Procedure*__
 }
 ```
 
-
 7. Click on **Save**
 
-
 #### Create the Event Notification
-__*Procedure*__
+
+**_Procedure_**
+
 1. Go to https://console.aws.amazon.com/
 2. Go to **Services**. Search for **S3**.
 3. Click on the S3 bucket that is associated with the CloudTrail.

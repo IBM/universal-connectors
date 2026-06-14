@@ -1,12 +1,12 @@
 <details closed="closed">
   <summary>Table of contents</summary>
 
-  - [Guardium universal connector](#guardium-universal-connector)
-  - [Product versions](#product-versions)
-  - [Supported data sources](#supported-data-sources)
-  - [Contributing](#contributing)
-  - [Contact us](#contact-us)
-  - [Licensing](#licensing)
+- [Guardium universal connector](#guardium-universal-connector)
+- [Product versions](#product-versions)
+- [Supported data sources](#supported-data-sources)
+- [Contributing](#contributing)
+- [Contact us](#contact-us)
+- [Licensing](#licensing)
 
 </details>
 
@@ -15,7 +15,8 @@
 The Guardium universal connector enables Guardium Data Protection and Guardium Insights to get data from potentially any data source's native activity logs without using software taps (S-TAPs- the software agent usually used in Guardium). The universal connector includes support for various plug-in packages, requiring minimal configuration. You can easily develop plug-ins for other data sources and install them in Guardium.
 
 ## Product versions
-The process for working with the universal connector differs for Guardium Data Protection, Guardium Insights, and Guardium Insights SaaS. We provide documentation for each, adapted to our latest product version. 
+
+The process for working with the universal connector differs for Guardium Data Protection, Guardium Insights, and Guardium Insights SaaS. We provide documentation for each, adapted to our latest product version.
 
 See documentation specific to [Guardium Data Protection](docs/Guardium%20Data%20Protection).
 
@@ -33,10 +34,9 @@ Guardium can collect events using a variety of input and filter plug-in combinat
 
 Please refer to [available plugins](docs/available_plugins.md) to see the full list.
 
-
 ## Contact Us
-If you find any problems or want to make suggestions for future features, please create [issues and suggestions on GitHub](https://github.com/IBM/universal-connectors/issues).
 
+If you find any problems or want to make suggestions for future features, please create [issues and suggestions on GitHub](https://github.com/IBM/universal-connectors/issues).
 
 ## Licensing
 
@@ -52,7 +52,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-In order to generate gdp_plugins_templates.zip 
-run: 
+In order to generate gdp_plugins_templates.zip
+run:
 ./gdp-packages/zipPackagesForGDP.sh
 the zip will be under gdp-packages

@@ -2,13 +2,13 @@
 
 ## Meet TCP
 
-* Tested versions: 8.8.2
-* Developed by Elastic
-* Supported Guardium versions:
-  * Guardium Data Protection: 11.3 and above
-  * Guardium Insights: 3.2 and above
+- Tested versions: 8.8.2
+- Developed by Elastic
+- Supported Guardium versions:
+  - Guardium Data Protection: 11.3 and above
+  - Guardium Insights: 3.2 and above
 
-This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the universal connector that is featured in IBM Security Guardium. It enables Logstash to receive connections from TCP. The events are then sent to a corresponding filter plug-in, which transforms these audit logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java)  instance, which is a standard structure made out of several parts. The information is then sent over to Guardium. Guardium records include an accessor (a person who tried to access the data), session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
+This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the universal connector that is featured in IBM Security Guardium. It enables Logstash to receive connections from TCP. The events are then sent to a corresponding filter plug-in, which transforms these audit logs into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance, which is a standard structure made out of several parts. The information is then sent over to Guardium. Guardium records include an accessor (a person who tried to access the data), session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
 To learn more about logstash input plugin, see logstash documentation
 
@@ -22,13 +22,13 @@ Specify a port, and this plug-in will listen to the port on the Logstash host fo
 
 ### Parameters
 
-| Parameter | Input Type | Required | Default |
-|-----------|------------|----------|---------|
-| port  | number | Yes | |
-| ssl_enable  | boolean | no | False |
-| ssl_cert  | string | no | |
-| ssl_key  | string | no | |
-| ssl_verify  | boolean | no | True |
+| Parameter  | Input Type | Required | Default |
+| ---------- | ---------- | -------- | ------- |
+| port       | number     | Yes      |         |
+| ssl_enable | boolean    | no       | False   |
+| ssl_cert   | string     | no       |         |
+| ssl_key    | string     | no       |         |
+| ssl_verify | boolean    | no       | True    |
 
 #### `port`
 
@@ -53,9 +53,10 @@ Verify the identity of the other end of the SSL connection against the CA.
 #### Logstash default configuration parameters
 
 Other standard Logstash parameters are available, such as:
-* `add_field`
-* `type`
-* `tags`
+
+- `add_field`
+- `type`
+- `tags`
 
 #### Example
 
@@ -68,16 +69,18 @@ input {
 ```
 
 ### Configure TCP connection with SSL on GDP
+
 1. Generate Certificate Authority (CA)
    1. On the Collector, run the following API to get the Certificate Authority content:
 
-       ```bash
-       grdapi generate_ssl_key_universal_connector
-       ```
+      ```bash
+      grdapi generate_ssl_key_universal_connector
+      ```
 
    2. This API will print the content of the public Certificate Authority. Copy this certificate authority to your database source and save it as a `ca.pem` file.
 
 2. Configure the TCP logstash input with the following:
+
 ```txt
 input {
   tcp {
@@ -90,9 +93,11 @@ input {
   }
 }
 ```
-Set the *datasource-type* value according to the specific filter plug-in configuration.
+
+Set the _datasource-type_ value according to the specific filter plug-in configuration.
 
 For detailed instructions on how to configure TCP connection on GI, follow the instructions [here](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/SaaS_1.0/UC_Configuration_GI.md#tcp-input-plug-in-configuration-for-connection-with-syslog).
+
 ## Configuring rsyslog to send logs to Guardium
 
 To learn more about rsyslog, see
@@ -120,6 +125,7 @@ $DefaultNetstreamDriverCAFile /path/to/tls/ca.pem
       StreamDriverMode="1" # run driver in TLS-only mode
       )
 ```
+
 Verify the configuration:
 
 ```bash

@@ -4,10 +4,10 @@ Create and configure datasource profiles through Central Manager for **MariaDB o
 
 ## Meet MariaDB over Cloudwatch Kafka Connect
 
-* **Environment:** AWS
-* **Supported inputs:** Kafka connect Cloudwatch 2.0 (pull)
-* **Supported Guardium versions:**
-    * Guardium Data Protection: Appliance bundle 12.2.2 or later
+- **Environment:** AWS
+- **Supported inputs:** Kafka connect Cloudwatch 2.0 (pull)
+- **Supported Guardium versions:**
+  - Guardium Data Protection: Appliance bundle 12.2.2 or later
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems. This connector enables monitoring of MariaDB audit logs through CloudWatch.
 
@@ -57,19 +57,19 @@ You must add **MARIADB_AUDIT_PLUGIN** to enable Server Audit Logs.
 
 1. In the RDS dashboard, select **Option groups** and then click **Create group**.
 2. In the **Create option group** window, complete the following steps.</br>
-    a. For **Name**, type a name for the option group.</br>
-    b. For **Description**, type a brief description of the option group.</br>
-    c. For **Engine**, choose the MariaDB DB engine.</br>
-    d. For **Major engine version**, choose the major version of the DB engine.</br>
-    e. Click **Create**.</br>
+   a. For **Name**, type a name for the option group.</br>
+   b. For **Description**, type a brief description of the option group.</br>
+   c. For **Engine**, choose the MariaDB DB engine.</br>
+   d. For **Major engine version**, choose the major version of the DB engine.</br>
+   e. Click **Create**.</br>
 3. To add MARIADB_AUDIT_PLUGIN, complete the following steps.</br>
-    a. Select the created Option group, then click **Add options**.</br>
-    b. Set **Option name** to `MARIADB_AUDIT_PLUGIN`.</br>
-    c. Keep option setting parameters with default values.</br>
-    d. Pass **SERVER_AUDIT_EXCL_USERS** value to `rdsadmin`.</br>
-    e. Set the value for `SERVER_AUDIT_EVENTS` to `QUERY, CONNECT` to see query and connection logs.</br>
-    f. To enable the option immediately, choose **Yes** for **Apply Immediately**.</br>
-    g. Click **Add option**.</br>
+   a. Select the created Option group, then click **Add options**.</br>
+   b. Set **Option name** to `MARIADB_AUDIT_PLUGIN`.</br>
+   c. Keep option setting parameters with default values.</br>
+   d. Pass **SERVER_AUDIT_EXCL_USERS** value to `rdsadmin`.</br>
+   e. Set the value for `SERVER_AUDIT_EVENTS` to `QUERY, CONNECT` to see query and connection logs.</br>
+   f. To enable the option immediately, choose **Yes** for **Apply Immediately**.</br>
+   g. Click **Add option**.</br>
 
 For more information about adding the MariaDB plug-in to a MySQL instance, see [AWS documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.AuditPlugin.html).
 
@@ -124,12 +124,12 @@ To achieve load balancing of audit logs between different collectors, the audit 
 7. Click **Review policy** and specify the policy name.
 8. Click **Create policy**.
 9. Assign the policy to the user. </br>
-    a. Log in to the IAM console as IAM user (https://console.aws.amazon.com/iam/).  </br>
-    b. Go to **Users** on the console and select the relevant IAM user to whom you want to give permissions. </br>
-    c. In the **Permissions** tab, click **Add permissions**. </br>
-    d. Click **Attach existing policies directly**.</br> 
-    e. Search for the policy created and check the checkbox next to it.</br>
-    f. Click **Next: Review** > **Add permissions**.</br>
+   a. Log in to the IAM console as IAM user (https://console.aws.amazon.com/iam/). </br>
+   b. Go to **Users** on the console and select the relevant IAM user to whom you want to give permissions. </br>
+   c. In the **Permissions** tab, click **Add permissions**. </br>
+   d. Click **Attach existing policies directly**.</br>
+   e. Search for the policy created and check the checkbox next to it.</br>
+   f. Click **Next: Review** > **Add permissions**.</br>
 
 ## Creating the Lambda Function
 
@@ -139,30 +139,29 @@ Create the IAM role that will be used in the Lambda function setup. The AWS Lamb
 
 1. Go to https://console.aws.amazon.com/.
 2. Go to **IAM** > **Roles** > **Create Role**.
-4. Under **Use case**, select **Lambda** and click **Next**.
-5. Search for ``AmazonSQSFullAccess`` and select it.
-6. Search for ``CloudWatchLogsFullAccess`` and select it.
-7. Search for ``CloudWatchEventsFullAccess`` and select it.
-8. Set the **Role Name**. For example, **Export-RDS-CloudWatch-to-SQS-Lambda**. Then click **Create role**.
+3. Under **Use case**, select **Lambda** and click **Next**.
+4. Search for `AmazonSQSFullAccess` and select it.
+5. Search for `CloudWatchLogsFullAccess` and select it.
+6. Search for `CloudWatchEventsFullAccess` and select it.
+7. Set the **Role Name**. For example, **Export-RDS-CloudWatch-to-SQS-Lambda**. Then click **Create role**.
 
 ### Creating the Lambda Function
 
 1. Go to https://console.aws.amazon.com/.
 2. Go to **Services**. Search for Lambda function.
 3. Click **Functions** > **Create Function**
-5. Keep **Author from Scratch** selected.
-6. Set **Function name**. For example, **Export-RDS-CloudWatch-Logs-To-SQS**.
-7. Under **Runtime**, select **Python 3.x**.
-8. Under **Permissions**, select **Use an existing role** and select the IAM role created in the previous step (Export-RDS-CloudWatch-Logs-To-SQS).
-9. Click **Create function** and navigate to **Code view**.
-10. Add the function code from the DynamoDB Lambda function file (available in the plugin package).
-11. Click **Configuration** > **Environment Variables**.
-12. Create the following two variables.
+4. Keep **Author from Scratch** selected.
+5. Set **Function name**. For example, **Export-RDS-CloudWatch-Logs-To-SQS**.
+6. Under **Runtime**, select **Python 3.x**.
+7. Under **Permissions**, select **Use an existing role** and select the IAM role created in the previous step (Export-RDS-CloudWatch-Logs-To-SQS).
+8. Click **Create function** and navigate to **Code view**.
+9. Add the function code from the DynamoDB Lambda function file (available in the plugin package).
+10. Click **Configuration** > **Environment Variables**.
+11. Create the following two variables.
     - Key = `GROUP_NAME`, value = `<Name of the log group in CloudWatch whose logs are to be exported>` e.g., `/aws/rds/instance/mariadbsqs/audit`
     - Key = `QUEUE_NAME`, value = `<Queue URL where logs are to be sent>` e.g., `https://sqs.us-east-1.amazonaws.com/1111111111/mariadb`
-13. Save the function.
-14. Click **Deploy**.
-
+12. Save the function.
+13. Click **Deploy**.
 
 ### Automating the Lambda Function
 
@@ -178,7 +177,6 @@ Create the IAM role that will be used in the Lambda function setup. The AWS Lamb
 10. Select the lambda function created in the previous step (Export-RDS-CloudWatch-Logs-To-SQS).
 11. Add the tag if needed. Then click **Create Rule**.
 
-
 ##### Important Note
 
 Before making any changes to the lambda function code, first disable the rule you created. Deploy the change and then re-enable the rule.
@@ -186,11 +184,11 @@ Before making any changes to the lambda function code, first disable the rule yo
 ## Limitations
 
 - The following important fields could not be mapped with MariaDB audit logs:
-    - **Source program**: This field is left blank since this information is not embedded in the messages pulled from AWS CloudWatch
-    - **OS User**: Not available with audit logs
-    - **Client HostName**: Not available with audit logs when connecting to MariaDB instance through SQL standard and third-party tools
-    - **serverIP**: This field is populated with 0.0.0.0, as this information is not embedded in the messages pulled from AWS CloudWatch
-    - **clientPort and serverPort**: Not available with audit logs
+  - **Source program**: This field is left blank since this information is not embedded in the messages pulled from AWS CloudWatch
+  - **OS User**: Not available with audit logs
+  - **Client HostName**: Not available with audit logs when connecting to MariaDB instance through SQL standard and third-party tools
+  - **serverIP**: This field is populated with 0.0.0.0, as this information is not embedded in the messages pulled from AWS CloudWatch
+  - **clientPort and serverPort**: Not available with audit logs
 - For system-generated LOGIN_FAILED logs, the Dbuser value is not available, so it is set to `N.A`.
 - Large SQL statements are truncated by AWS by default, which can cause a GuardUCInvalidRecordException as the event is no longer valid.
 - Currently while using ELB, S-TAP registration is restricted to one primary MU, meaning the S-TAP and its logs appear only on the initial primary MU even when multiple primary MUs are present.
@@ -205,15 +203,15 @@ You can create a new datasource profile from the **Datasource Profile Management
 2. Click the **➕ (Add)** button.
 3. You can create a profile by using one of the following methods:
 
-    - To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
-        - **Name** and **Description**.
-        - Select a **Plug-in Type** from the dropdown. For example, `MariaDB over Cloudwatch Kafka Connect 2.0` 
+   - To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
+     - **Name** and **Description**.
+     - Select a **Plug-in Type** from the dropdown. For example, `MariaDB over Cloudwatch Kafka Connect 2.0`
 
-    - To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file containing one or more profiles.  
-      You can also choose from the following options:
-        - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
-        - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
-        - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the ELB process.
+   - To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file containing one or more profiles.  
+     You can also choose from the following options:
+     - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
+     - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
+     - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the ELB process.
 
 **Note:** Configuration options vary based on the selected plug-in.
 
@@ -221,26 +219,27 @@ You can create a new datasource profile from the **Datasource Profile Management
 
 The following table describes the fields that are specific to MariaDB over CloudWatch Kafka Connect 2.0 plugin.
 
-| Field                    | Description                                                                                                                                                                                                                                                         |
-|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Name**                 | Unique name of the profile.                                                                                                                                                                                                                                         |
-| **Description**          | Description of the profile.                                                                                                                                                                                                                                         |
-| **Plug-in**              | Plug-in type for this profile. Select `AWS MariaDB Over Cloudwatch Connect 2.0`. A full list of available plug-ins are available on the **Package Management** page.                                                                                        |
-| **Credential**           | Select AWS Credentials or AWS Role ARN. The credential to authenticate with AWS. Must be created in **Credential Management**, or click **➕** to create one. For more information, see [Creating Credentials](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_credential_management.html). |
-| **Kafka Cluster**        | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_kafka_cluster_management.html). |
-| **Label**                | Grouping label. For example, customer name or ID.                                                                                                                                                                                                                   |
-| **AWS account region**   | Specifies the AWS region where your RDS MariaDB instance is located (e.g., us-east-1, eu-west-1).                                                                                                                                                                  |
-| **Log groups**           | List of CloudWatch log groups to monitor. These are the log groups where MariaDB audit logs are exported. Format: `/aws/rds/instance/<Instance_name>/audit`                                                                                                        |
-| **Filter pattern**       | CloudWatch Logs filter pattern to apply. Use "None" to retrieve all logs, or specify a pattern to filter specific log events.                                                                                                                                      |
-| **Account ID**           | Your AWS account ID (12-digit number). This identifies your AWS account.                                                                                                                                                                                           |
-| **Cluster name**         | The name of your RDS MariaDB cluster or instance identifier.                                                                                                                                                                                                        |
-| **Ingestion delay (seconds)** | Default value is 900 seconds (15 minutes). This delay accounts for the time it takes for logs to be available in CloudWatch after being generated.                                                                                                            |
-| **No-traffic threshold (minutes)** | Default value is 60. If there is no incoming traffic for an hour, S-TAP displays a red status. Once incoming traffic resumes, the status returns to green.                                                                                                    |
-| **Unmask sensitive value** | Optional boolean flag. When enabled, sensitive values in the audit logs will not be masked.                                                                                                                                                                       |
-| **Use Enterprise Load Balancing (ELB)** | Enable this if ELB support is required.                                                                                                                                                                                                                             |
-| **Managed Unit Count**   | Number of Managed Units (MUs) to allocate for ELB.                                                                                                                                                                                                                  |
+| Field                                   | Description                                                                                                                                                                                                                                                                                                           |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Name**                                | Unique name of the profile.                                                                                                                                                                                                                                                                                           |
+| **Description**                         | Description of the profile.                                                                                                                                                                                                                                                                                           |
+| **Plug-in**                             | Plug-in type for this profile. Select `AWS MariaDB Over Cloudwatch Connect 2.0`. A full list of available plug-ins are available on the **Package Management** page.                                                                                                                                                  |
+| **Credential**                          | Select AWS Credentials or AWS Role ARN. The credential to authenticate with AWS. Must be created in **Credential Management**, or click **➕** to create one. For more information, see [Creating Credentials](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_credential_management.html). |
+| **Kafka Cluster**                       | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_kafka_cluster_management.html).                                               |
+| **Label**                               | Grouping label. For example, customer name or ID.                                                                                                                                                                                                                                                                     |
+| **AWS account region**                  | Specifies the AWS region where your RDS MariaDB instance is located (e.g., us-east-1, eu-west-1).                                                                                                                                                                                                                     |
+| **Log groups**                          | List of CloudWatch log groups to monitor. These are the log groups where MariaDB audit logs are exported. Format: `/aws/rds/instance/<Instance_name>/audit`                                                                                                                                                           |
+| **Filter pattern**                      | CloudWatch Logs filter pattern to apply. Use "None" to retrieve all logs, or specify a pattern to filter specific log events.                                                                                                                                                                                         |
+| **Account ID**                          | Your AWS account ID (12-digit number). This identifies your AWS account.                                                                                                                                                                                                                                              |
+| **Cluster name**                        | The name of your RDS MariaDB cluster or instance identifier.                                                                                                                                                                                                                                                          |
+| **Ingestion delay (seconds)**           | Default value is 900 seconds (15 minutes). This delay accounts for the time it takes for logs to be available in CloudWatch after being generated.                                                                                                                                                                    |
+| **No-traffic threshold (minutes)**      | Default value is 60. If there is no incoming traffic for an hour, S-TAP displays a red status. Once incoming traffic resumes, the status returns to green.                                                                                                                                                            |
+| **Unmask sensitive value**              | Optional boolean flag. When enabled, sensitive values in the audit logs will not be masked.                                                                                                                                                                                                                           |
+| **Use Enterprise Load Balancing (ELB)** | Enable this if ELB support is required.                                                                                                                                                                                                                                                                               |
+| **Managed Unit Count**                  | Number of Managed Units (MUs) to allocate for ELB.                                                                                                                                                                                                                                                                    |
 
 **Note:**
+
 - Ensure that the **profile name** is unique.
 - Required credentials must be created before or during profile creation.
 - The AWS credentials must have appropriate permissions to read CloudWatch logs.
@@ -279,4 +278,3 @@ An installed profile can be uninstalled or reinstalled if needed.
 2. From the list of available actions, select the desired option: **Uninstall** or **Reinstall**.
 
 ---
-

@@ -5,46 +5,49 @@ JDBC Kafka Connect** plug-ins.
 
 ## Meet Sybase Over JDBC Connect
 
-* Tested versions: 16.1
-* Environments: On-prem
-* Supported inputs: Kafka connect JDBC 2.0 (pull)
-* Supported Guardium versions:
-    * Guardium Data Protection: 12.1 patch 5007 and above
-    * Guardium Data Protection: Appliance bundle 12.2.1 and above
+- Tested versions: 16.1
+- Environments: On-prem
+- Supported inputs: Kafka connect JDBC 2.0 (pull)
+- Supported Guardium versions:
+  - Guardium Data Protection: 12.1 patch 5007 and above
+  - Guardium Data Protection: Appliance bundle 12.2.1 and above
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems.
 
 ## Configuring the Sybase Adaptive Server Enterprise (ASE) server
 
 ### Procedure
+
 1. Install Sybase ASE version 16.0 on your system based on your operating system.
 2. Set up your system administrator (SA) credentials.
-3. Install the `isql` utility. This command-line SQL interface is required to connect to and interact with Sybase ASE. 
+3. Install the `isql` utility. This command-line SQL interface is required to connect to and interact with Sybase ASE.
 4. Download the `JTDS` JDBC driver by completing the following steps. </br>
-    a. Go to the official jTDS website [https://jtds.sourceforge.net/](https://jtds.sourceforge.net/). </br>
-    b. From the navigation menu, click on the **Download** link. </br>
-    c. Click on the `jtds` folder, and select the desired version from the available releases (e.g., `1.3.1`). </br>
-    d. Download the distribution package (e.g., `jtds-1.3.1-dist.zip`). </br>
-    e. Extract the archive and locate the driver file `jtds-1.3.1.jar` in the extracted folder. </br>
+   a. Go to the official jTDS website [https://jtds.sourceforge.net/](https://jtds.sourceforge.net/). </br>
+   b. From the navigation menu, click on the **Download** link. </br>
+   c. Click on the `jtds` folder, and select the desired version from the available releases (e.g., `1.3.1`). </br>
+   d. Download the distribution package (e.g., `jtds-1.3.1-dist.zip`). </br>
+   e. Extract the archive and locate the driver file `jtds-1.3.1.jar` in the extracted folder. </br>
 
 ## Connecting to the Sybase server
 
 ### Procedure
+
 1. Connect to your Sybase ASE instance by using the `isql` command-line utility with your system administrator credentials.
 
-    ```isql -U sa -P <password> -S <server_name>```
-   
-    Parameters:
-* `-U sa`: Connect as the system administrator (SA). <br/>
-* `-P <your_sa_password>`: Your system administrator account password, <br/>
-* `-S <your_server_name>`: The name of your Sybase server instance.
+   `isql -U sa -P <password> -S <server_name>`
+
+   Parameters:
+
+- `-U sa`: Connect as the system administrator (SA). <br/>
+- `-P <your_sa_password>`: Your system administrator account password, <br/>
+- `-S <your_server_name>`: The name of your Sybase server instance.
 
 ## Setting server timezone to UTC
 
-### Procedure 
+### Procedure
 
 1. To check the current time and date settings on your Sybase database server, run the `timedatectl` command.
-      
+
    ```
    [sybase16@sybase16-sysqa ~]$ timedatectl
                   Local time: Thu 2025-10-23 14:21:13 EDT
@@ -66,7 +69,7 @@ Kafka-connect is a framework for streaming data between Apache Kafka and other s
     LocalTime                       UTCTime
     ------------------------------- -------------------------------
                 Oct 23 2025  6:22PM             Oct 23 2025  6:22PM
-   
+
    (1 row affected)
    ```
 
@@ -74,11 +77,11 @@ Kafka-connect is a framework for streaming data between Apache Kafka and other s
 
 ### Before you begin
 
-A directory is required to store the database devices that you create. If this directory doesn't exist already, create it by using the following command. 
+A directory is required to store the database devices that you create. If this directory doesn't exist already, create it by using the following command.
 
 ```
 sudo mkdir -p $SYBASE/$SYBASE_ASE/data
-``` 
+```
 
 ### Procedure
 
@@ -104,10 +107,9 @@ sudo mkdir -p $SYBASE/$SYBASE_ASE/data
 
 Parameters:
 
-* `name`: Logical name for the device. <br/>
-* `physname`: Physical file path on disk where the device is created. <br/>
-* `size`: Megabytes allocated for this device (change the size based on your needs).
-
+- `name`: Logical name for the device. <br/>
+- `physname`: Physical file path on disk where the device is created. <br/>
+- `size`: Megabytes allocated for this device (change the size based on your needs).
 
 ## Creating `sybsecurity` databases
 
@@ -176,11 +178,11 @@ Parameters:
 6. Customize the audit settings.
 
    The `sp_audit` command accepts the following four parameters:
-   * the option type ('insert'),
-   * the user scope ('all' for all users),
-   * the object to monitor ('sybasetable'),
-   * the setting ('on' to enable).
-  
+   - the option type ('insert'),
+   - the user scope ('all' for all users),
+   - the object to monitor ('sybasetable'),
+   - the setting ('on' to enable).
+
    For example, the following commands enable auditing for `sybasetable` insert operations.
 
    ```
@@ -216,35 +218,35 @@ Parameters:
 
 Sybase ASE generates multiple audit log entries for failed login attempts, depending on the failure type.
 
-   * **Invalid Username**: When a login attempt fails due to an invalid username, Sybase ASE generates four audit log entries.
+- **Invalid Username**: When a login attempt fails due to an invalid username, Sybase ASE generates four audit log entries.
 
-      For example, the `extrainfo` values in the following Sybase audit table:
+  For example, the `extrainfo` values in the following Sybase audit table:
 
-      | ExtraInfo Column                                                  |
-      |------------------------------------------------------------------------------------------------|
-      | `; ; ; ; sybase16-hostname, 9.00.100.100, network password encryption not set, 16106.14.1; ; ;` |
-      | `; ; ; ; 4002.14.1; ; ;`                                                                       |
-      | `; ; ; ; sybase16-hostname, 9.00.100.100, network password encryption not set, 16106.14.1; ; ;` |
-      | `; ; ; ; 4002.14.1; ; ;`                                                                       |
+  | ExtraInfo Column                                                                                |
+  | ----------------------------------------------------------------------------------------------- |
+  | `; ; ; ; sybase16-hostname, 9.00.100.100, network password encryption not set, 16106.14.1; ; ;` |
+  | `; ; ; ; 4002.14.1; ; ;`                                                                        |
+  | `; ; ; ; sybase16-hostname, 9.00.100.100, network password encryption not set, 16106.14.1; ; ;` |
+  | `; ; ; ; 4002.14.1; ; ;`                                                                        |
 
-   * **Invalid Password**: When a valid username is provided with an incorrect password, Sybase ASE generates two audit log entries.
+- **Invalid Password**: When a valid username is provided with an incorrect password, Sybase ASE generates two audit log entries.
 
-      For example, the `extrainfo` values (for username `sa`) in the following Sybase audit table:
+  For example, the `extrainfo` values (for username `sa`) in the following Sybase audit table:
 
-      | ExtraInfo Column                                                                                                                                              |
-      |---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-      | `sa_role sso_role oper_role sybase_ts_role mon_role; ; ; ; sybase16-hostname, 9.00.100.100, network password rsa encryption with nonce, 4067.14.1; ; sa/ase;` |
-      | `sa_role sso_role oper_role sybase_ts_role mon_role; ; ; ; 4002.14.1; ; sa/ase;`                                                                              |
+  | ExtraInfo Column                                                                                                                                              |
+  | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `sa_role sso_role oper_role sybase_ts_role mon_role; ; ; ; sybase16-hostname, 9.00.100.100, network password rsa encryption with nonce, 4067.14.1; ; sa/ase;` |
+  | `sa_role sso_role oper_role sybase_ts_role mon_role; ; ; ; 4002.14.1; ; sa/ase;`                                                                              |
 
-      **Note:** Failed login attempts are tracked and reported in the **SQL Errors** and **Failed Login** reports.
+  **Note:** Failed login attempts are tracked and reported in the **SQL Errors** and **Failed Login** reports.
 
 #### 2. Missing Audit Record Fields
 
 The following fields are not available in the Sybase ASE audit records and are populated with default values:
 
-   * **Server IP**: Default value `"0.0.0.0"`
-   * **Server Hostname**: Default value `"N.A."`
-   * **Server Port**: Derived from the JDBC connection string
+- **Server IP**: Default value `"0.0.0.0"`
+- **Server Hostname**: Default value `"N.A."`
+- **Server Port**: Derived from the JDBC connection string
 
 #### 3. Field Truncation
 
@@ -252,7 +254,7 @@ The following fields are not available in the Sybase ASE audit records and are p
 
 #### 4. Query Length Limitations
 
-Sybase ASE splits long queries across multiple audit records in audit table. When processing these records, queries may appear incomplete and may be dropped if they exceed length limits. 
+Sybase ASE splits long queries across multiple audit records in audit table. When processing these records, queries may appear incomplete and may be dropped if they exceed length limits.
 This affects long queries or complex statements.
 
 ## Creating datasource profiles
@@ -265,14 +267,14 @@ You can create a new datasource profile from the **Datasource Profile Management
 2. Click the **➕ (Add)** button.
 3. You can create a profile by using one of the following methods:
 
-   * To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
-     * **Name** and **Description**.
-     * Select a **Plug-in Type** from the dropdown. For example, `Sybase Over JDBC Kafka Connect 2.0`.
+   - To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
+     - **Name** and **Description**.
+     - Select a **Plug-in Type** from the dropdown. For example, `Sybase Over JDBC Kafka Connect 2.0`.
 
-   * To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file containing one or more profiles. You can also choose from the following options:
-     * **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
-     * **Test connection for imported profiles** — Automatically tests connections after profiles are created.
-     * **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the ELB process.
+   - To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file containing one or more profiles. You can also choose from the following options:
+     - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
+     - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
+     - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the ELB process.
 
 **Note:** Configuration options vary based on the selected plug-in.
 
@@ -280,29 +282,29 @@ You can create a new datasource profile from the **Datasource Profile Management
 
 The following table describes the fields that are specific to JDBC Kafka Connect 2.0 and similar plugins.
 
-| Field                         | Description                                                                                                                 |
-|-------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| **Name**                      | Unique name of the profile.                                                                                                 |
-| **Description**               | Description of the profile.                                                                                                 |
-| **Plug-in**                   | Plug-in type for this profile. A full list of available plug-ins are available on the **Package Management** page.          |
-| **Credential**                | The credential to authenticate with the datasource. Must be created in **Credential Management**, or click **➕** to create one. |
-| **Kafka Cluster**             | Kafka cluster to deploy the universal connector.                                                                            |
-| **Label**                     | Grouping label. For example, customer name or ID.                                                                           |
-| **JDBC Driver Library**       | JDBC driver for the database.                                                                                               |
-| **Port**                      | Port that is used to connect to the database.                                                                               |
-| **Hostname**                  | Hostname of the database.                                                                                                   |
-| **Query**                     | SQL query that is used to extract audit logs.                                                                               |
-| **Service Name / SID**        | The database **service name** or **SID**.                                                                                   |
-| **Initial Time**              | Initial polling time for audit logs.                                                                                        |
-| **No Traffic Threshold**      | Threshold setting for inactivity detection.                                                                                 |
-| **Use ELB**                   | Enable this if Enterprise Load Balancing (ELB) support is required.                                                         |
-| **Managed Unit Count**        | Number of Managed Units (MUs) to allocate for ELB.                                                                          |
-
+| Field                    | Description                                                                                                                      |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Name**                 | Unique name of the profile.                                                                                                      |
+| **Description**          | Description of the profile.                                                                                                      |
+| **Plug-in**              | Plug-in type for this profile. A full list of available plug-ins are available on the **Package Management** page.               |
+| **Credential**           | The credential to authenticate with the datasource. Must be created in **Credential Management**, or click **➕** to create one. |
+| **Kafka Cluster**        | Kafka cluster to deploy the universal connector.                                                                                 |
+| **Label**                | Grouping label. For example, customer name or ID.                                                                                |
+| **JDBC Driver Library**  | JDBC driver for the database.                                                                                                    |
+| **Port**                 | Port that is used to connect to the database.                                                                                    |
+| **Hostname**             | Hostname of the database.                                                                                                        |
+| **Query**                | SQL query that is used to extract audit logs.                                                                                    |
+| **Service Name / SID**   | The database **service name** or **SID**.                                                                                        |
+| **Initial Time**         | Initial polling time for audit logs.                                                                                             |
+| **No Traffic Threshold** | Threshold setting for inactivity detection.                                                                                      |
+| **Use ELB**              | Enable this if Enterprise Load Balancing (ELB) support is required.                                                              |
+| **Managed Unit Count**   | Number of Managed Units (MUs) to allocate for ELB.                                                                               |
 
 **Note:**
+
 - Depending on the plugin type, the configuration may require either:
-    - A **Connection URL**, or
-    - Separate fields for **Hostname**, **Port**, and **Service Name / SID**
+  - A **Connection URL**, or
+  - Separate fields for **Hostname**, **Port**, and **Service Name / SID**
 - Ensure that the **profile name** is unique.
 - Required credentials must be created before or during profile creation.
 
