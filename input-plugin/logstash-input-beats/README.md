@@ -1,4 +1,4 @@
-## beats input plug-in
+# beats input plug-in
 
 ### Meet Beats
 

@@ -1,4 +1,4 @@
-## azure_event_hubs input plug-in
+# azure_event_hubs input plug-in
 
 ### Meet Azure event hubs
 
