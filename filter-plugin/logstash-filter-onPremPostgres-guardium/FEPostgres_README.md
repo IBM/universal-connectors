@@ -1,4 +1,4 @@
-## 1. Configuring the Fujitsu Enterprise Postgres
+# Configuring the Fujitsu Enterprise Postgres
 
 For this example, we will assume that we already have a working Fujitsu Enterprise Postgres setup.
 
