@@ -1,21 +1,24 @@
 # [DATASOURCE_NAME]-Guardium Logstash Filter Plugin Template
 
 > **Important Note**: This template is located in the `docs/` directory for reference. To use this template and build your plugin, you must copy it to the `filter-plugin/` directory:
+>
 > ```bash
 > cp -r docs/template-logstash-filter-guardium filter-plugin/logstash-filter-YOURDATASOURCE-guardium
 > cd filter-plugin/logstash-filter-YOURDATASOURCE-guardium
 > ```
+>
 > The build system requires the plugin to be under `filter-plugin/` to access shared resources and dependencies.
 
 # [DATASOURCE_NAME]-Guardium Logstash Filter Plugin Template
 
 ### Meet [DATASOURCE_NAME]
-* Tested versions: [VERSION_NUMBER]
-* Environment: [ENVIRONMENT] (e.g., On-Premise, AWS, Azure, GCP)
-* Supported inputs: [INPUT_TYPE] (e.g., Filebeat, Kafka, HTTP, Pub/Sub)
-* Supported Guardium versions:
-    * Guardium Data Protection: [MIN_VERSION] and above
-    * Guardium Insights: [SUPPORTED_VERSION] (if applicable)
+
+- Tested versions: [VERSION_NUMBER]
+- Environment: [ENVIRONMENT] (e.g., On-Premise, AWS, Azure, GCP)
+- Supported inputs: [INPUT_TYPE] (e.g., Filebeat, Kafka, HTTP, Pub/Sub)
+- Supported Guardium versions:
+  - Guardium Data Protection: [MIN_VERSION] and above
+  - Guardium Insights: [SUPPORTED_VERSION] (if applicable)
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the [DATASOURCE_NAME] audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
@@ -24,9 +27,11 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## 1. Configuring the [DATASOURCE_NAME] Service
 
 ### Prerequisites
+
 [List any prerequisites needed before configuration]
 
 ### Procedure:
+
 1. [Step-by-step instructions for setting up your data source]
 2. [Include screenshots or code examples where helpful]
 3. [Be specific about versions, settings, and configurations]
@@ -34,6 +39,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## 2. Enabling Audit Logging
 
 ### Enable Audit Logs
+
 1. [Detailed steps to enable audit logging in your data source]
 2. [Specify what types of operations are logged]
 3. [Include any performance considerations]
@@ -41,11 +47,14 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 **Note:** [Any important notes about audit logging behavior]
 
 ### Audit Log Configuration
+
 [Describe the audit log configuration options]
+
 - **Option 1**: [Description]
 - **Option 2**: [Description]
 
 Example configuration:
+
 ```
 [Configuration example in appropriate format - JSON, YAML, SQL, etc.]
 ```
@@ -53,6 +62,7 @@ Example configuration:
 ## 3. Viewing the Audit Logs
 
 ### Accessing Logs
+
 [Describe how to access and view the audit logs]
 
 1. [Step 1]
@@ -60,7 +70,9 @@ Example configuration:
 3. [Step 3]
 
 ### Log Format
+
 The audit logs are in [FORMAT] format. Example:
+
 ```json
 {
   "timestamp": "2024-01-01T12:00:00Z",
@@ -74,18 +86,19 @@ The audit logs are in [FORMAT] format. Example:
 ```
 
 ### Supported Audit Log Types
-* [LOG_TYPE_1] - [Description]
-* [LOG_TYPE_2] - [Description]
-* [LOG_TYPE_3] - [Description]
+
+- [LOG_TYPE_1] - [Description]
+- [LOG_TYPE_2] - [Description]
+- [LOG_TYPE_3] - [Description]
 
 ## 6. Limitations
 
 1. The following important fields couldn't be mapped with [DATASOURCE_NAME] audit logs:
-    - **Source Program**: [Explanation - e.g., "Not available in audit logs, left blank"]
-    - **Server IP**: [Explanation - e.g., "Not provided, defaults to 0.0.0.0"]
-    - **Client HostName**: [Explanation]
-    - **OS User**: [Explanation]
-    - [Add other unmapped fields]
+   - **Source Program**: [Explanation - e.g., "Not available in audit logs, left blank"]
+   - **Server IP**: [Explanation - e.g., "Not provided, defaults to 0.0.0.0"]
+   - **Client HostName**: [Explanation]
+   - **OS User**: [Explanation]
+   - [Add other unmapped fields]
 
 2. [Specific limitation related to your data source]
 3. [Another limitation]
@@ -97,42 +110,42 @@ Parsing query statements is one of the most complicated parts of parsing which c
 ### Available Sniffer Parser Languages:
 
 | Language Mark | Database/Technology |
-|---------------|---------------------|
-| -tg | TigerGraph |
-| -mi | Milvus |
-| -b | BigQuery |
-| -B | BigQuery SQL |
-| -ca | Cassandra |
-| -C | Couchbase |
-| -c | Cypher |
-| -d | DB2 |
-| -e | ElsSql |
-| -hi | Hive |
-| -ha | Hana |
-| -i | Informix |
-| -im | Impala |
-| -m | MySql |
-| -x | MySql X |
-| -M | MemSql |
-| -mo | MongoDB |
-| -N | N1ql |
-| -n | Neo4j |
-| -o | Oracle |
-| -os | OpenSearch |
-| -p | Postgres |
-| -r | Redis |
-| -s | Sybase |
-| -S | Snowflake |
-| -t | TSql/MsSql |
-| -td | Teradata |
-| -ad | AWS DynamoDB |
-| -ae | AWS Elastic Search |
-| -as | AWS S3 |
-| -ck | Cockroach |
-| -nz | Netezza |
-| -xq | Xquery |
-| -cd | CouchDB |
-| -ns | NoSQL |
+| ------------- | ------------------- |
+| -tg           | TigerGraph          |
+| -mi           | Milvus              |
+| -b            | BigQuery            |
+| -B            | BigQuery SQL        |
+| -ca           | Cassandra           |
+| -C            | Couchbase           |
+| -c            | Cypher              |
+| -d            | DB2                 |
+| -e            | ElsSql              |
+| -hi           | Hive                |
+| -ha           | Hana                |
+| -i            | Informix            |
+| -im           | Impala              |
+| -m            | MySql               |
+| -x            | MySql X             |
+| -M            | MemSql              |
+| -mo           | MongoDB             |
+| -N            | N1ql                |
+| -n            | Neo4j               |
+| -o            | Oracle              |
+| -os           | OpenSearch          |
+| -p            | Postgres            |
+| -r            | Redis               |
+| -s            | Sybase              |
+| -S            | Snowflake           |
+| -t            | TSql/MsSql          |
+| -td           | Teradata            |
+| -ad           | AWS DynamoDB        |
+| -ae           | AWS Elastic Search  |
+| -as           | AWS S3              |
+| -ck           | Cockroach           |
+| -nz           | Netezza             |
+| -xq           | Xquery              |
+| -cd           | CouchDB             |
+| -ns           | NoSQL               |
 
 ### Using Sniffer Parsers
 
@@ -141,13 +154,16 @@ If the queries in your database are compatible with any of the above parsers, yo
 #### With Sniffer Parser:
 
 In the **Accessor** field:
+
 - Set `language` to the database mark (e.g., `-m` for MySQL, `-p` for Postgres)
 - Set `dataType` to `"TEXT"`
 
 In the **Data** field:
+
 - Populate `originalSqlCommand` with the query text
 
 Example:
+
 ```java
 accessor.setLanguage("-p");  // For PostgreSQL
 accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
@@ -157,16 +173,19 @@ data.setOriginalSqlCommand(queryText);
 #### Without Sniffer Parser:
 
 In the **Accessor** field:
+
 - Set `language` to `FREE_TEXT`
 - Set `dataType` to `"CONSTRUCT"`
 - Set `serverType` to the database type
 
 In the **Data** field:
+
 - Populate the `construct` object:
   - **Verb**: The action (for non-SQL DBs) or SQL operation (SELECT, INSERT, DELETE, UPDATE, etc.)
   - **Object**: May have more than one object (DB, table, index, etc.). Set the type for each one.
 
 Example:
+
 ```java
 accessor.setLanguage(Accessor.LANGUAGE_FREE_TEXT_STRING);
 accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL);
@@ -189,9 +208,10 @@ data.setConstruct(construct);
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the [DATASOURCE_NAME] template.
 
 ### Before you begin
-* Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
-* You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the [guardium_logstash-offline-plugin-[DATASOURCE_PLACEHOLDER].zip](./package/guardium_logstash-offline-plugin-[DATASOURCE_PLACEHOLDER].zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+
+- Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
+- You must have permission for the S-Tap Management role. The admin user includes this role by default.
+- Download the [guardium_logstash-offline-plugin-[DATASOURCE_PLACEHOLDER].zip](./package/guardium_logstash-offline-plugin-[DATASOURCE_PLACEHOLDER].zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 ## 5. Important Implementation Notes
 
@@ -214,11 +234,9 @@ The Guardium universal connector is the Guardium entry point for native audit lo
    - If you have Data and you **DO NOT** use sniffer for parsing SQL statements:
      - Construct **CANNOT** be NULL (will cause NullPointerException)
      - You must create the construct object with verb and objects
-   
    - If sniffer parses the SQL statement (language is database mark and dataType is TEXT):
      - You only need to set `originalSqlCommand` on the Data field
      - Sniffer will handle construct creation
-   
    - Otherwise, it is your responsibility to create the construct object (verb and objects)
 
 5. **S-TAP Identification**
@@ -251,9 +269,9 @@ Before submitting your plugin, verify:
 ```java
 public static Record parseRecord(JsonObject input) {
     Record record = new Record();
-    
+
     // ... set other fields ...
-    
+
     // Check for errors
     if (isError(input)) {
         // Set exception for error cases
@@ -265,7 +283,7 @@ public static Record parseRecord(JsonObject input) {
     } else {
         // Set data for success cases
         Data data = new Data();
-        
+
         if (useSnifferParser()) {
             // Using sniffer - only set originalSqlCommand
             data.setOriginalSqlCommand(getQuery(input));
@@ -279,17 +297,18 @@ public static Record parseRecord(JsonObject input) {
             construct.setFullSql(getQuery(input));
             data.setConstruct(construct);  // MUST NOT be null
         }
-        
+
         record.setData(data);
     }
-    
+
     return record;  // NEVER return null
 }
 ```
 
-* Download the plug-in filter configuration file [[DATASOURCE_PLACEHOLDER].conf](.//[DATASOURCE_PLACEHOLDER].conf).
+- Download the plug-in filter configuration file [[DATASOURCE_PLACEHOLDER].conf](.//[DATASOURCE_PLACEHOLDER].conf).
 
 ### Procedure
+
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. Enable the universal connector if it is disabled.
 3. Click **Upload File** and select the offline [guardium_logstash-offline-plugin-[DATASOURCE_PLACEHOLDER].zip](./package/guardium_logstash-offline-plugin-[DATASOURCE_PLACEHOLDER].zip) plug-in. After it is uploaded, click **OK**.
@@ -306,18 +325,21 @@ public static Record parseRecord(JsonObject input) {
 The following operations are supported by this filter plugin:
 
 ### Data Manipulation
+
 - **SELECT/READ**: Query operations
 - **INSERT/CREATE**: Insert operations
 - **UPDATE/MODIFY**: Update operations
 - **DELETE/DROP**: Delete operations
 
 ### Data Definition
+
 - **CREATE DATABASE**: Database creation
 - **CREATE TABLE**: Table/Collection creation
 - **ALTER TABLE**: Schema modifications
 - **DROP TABLE**: Table/Collection deletion
 
 ### Access Control
+
 - **GRANT**: Permission grants
 - **REVOKE**: Permission revocations
 - **CREATE USER**: User creation
@@ -332,6 +354,7 @@ The input plugin determines how audit logs are collected and sent to Logstash. C
 ### Common Input Plugin Options
 
 #### Option 1: File Input (Reading from Log Files)
+
 Use when audit logs are written to files on disk.
 
 ```ruby
@@ -348,12 +371,14 @@ input {
 ```
 
 **Key Parameters:**
+
 - `path`: Location of audit log files (supports wildcards)
 - `start_position`: "beginning" or "end" (where to start reading)
 - `sincedb_path`: Tracks file reading position (for resuming after restart)
 - `codec`: "json" for JSON logs, "plain" for text logs
 
 #### Option 2: Kafka Input (Message Queue)
+
 Use when audit logs are published to Kafka topics.
 
 ```ruby
@@ -371,12 +396,14 @@ input {
 ```
 
 **Key Parameters:**
+
 - `bootstrap_servers`: Kafka broker addresses
 - `topics`: Kafka topics to consume from
 - `group_id`: Consumer group identifier
 - `consumer_threads`: Number of parallel consumers
 
 #### Option 3: HTTP Input (Webhook/API)
+
 Use when audit logs are pushed via HTTP/HTTPS.
 
 ```ruby
@@ -394,11 +421,13 @@ input {
 ```
 
 **Key Parameters:**
+
 - `port`: Port to listen on
 - `ssl`: Enable HTTPS
 - `ssl_certificate` / `ssl_key`: SSL/TLS certificates
 
 #### Option 4: Beats Input (Filebeat/Metricbeat)
+
 Use when using Elastic Beats to ship logs.
 
 ```ruby
@@ -414,12 +443,14 @@ input {
 ```
 
 **Key Parameters:**
+
 - `port`: Port for Beats to connect to (default: 5044)
 - `ssl`: Enable encrypted communication
 
 #### Option 5: Cloud-Specific Inputs
 
 **AWS CloudWatch Logs:**
+
 ```ruby
 input {
   cloudwatch_logs {
@@ -433,6 +464,7 @@ input {
 ```
 
 **Azure Event Hub:**
+
 ```ruby
 input {
   azure_event_hubs {
@@ -447,6 +479,7 @@ input {
 ```
 
 **GCP Pub/Sub:**
+
 ```ruby
 input {
   google_pubsub {
@@ -465,6 +498,7 @@ input {
 The filter plugin processes the audit logs and converts them to Guardium format.
 
 **Basic Configuration:**
+
 ```ruby
 filter {
   if [type] == "[DATASOURCE_PLACEHOLDER]" {
@@ -476,6 +510,7 @@ filter {
 ```
 
 **With Pre-processing:**
+
 ```ruby
 filter {
   if [type] == "[DATASOURCE_PLACEHOLDER]" {
@@ -484,7 +519,7 @@ filter {
       match => ["timestamp", "ISO8601", "yyyy-MM-dd HH:mm:ss"]
       target => "@timestamp"
     }
-    
+
     # Optional: Add custom fields
     mutate {
       add_field => {
@@ -492,7 +527,7 @@ filter {
         "data_center" => "dc1"
       }
     }
-    
+
     # Main filter plugin
     [DATASOURCE_PLACEHOLDER]_guardium_filter {
       source => "message"
@@ -504,6 +539,7 @@ filter {
 ### Complete Configuration Example
 
 See [datasource_sample.conf](datasource_sample.conf) for a complete configuration file with:
+
 - Multiple input plugin options (commented)
 - Filter configuration with pre/post-processing
 - Output configuration for Guardium
@@ -546,28 +582,36 @@ See [datasource_sample.conf](datasource_sample.conf) for a complete configuratio
 ### Common Issues
 
 #### Issue 1: Events not being processed
+
 **Symptoms**: No Guardium records are generated
-**Solution**: 
+**Solution**:
+
 - Check that the `type` field matches in input and filter sections
 - Verify audit logs are in the expected format
 - Check Logstash logs for parsing errors
 
 #### Issue 2: Missing fields in Guardium
+
 **Symptoms**: Some fields appear as "UNKNOWN" or empty
 **Solution**:
+
 - Verify audit logging is configured correctly
 - Check if the data source provides the missing information
 - Review the limitations section
 
 #### Issue 3: Performance issues
+
 **Symptoms**: High CPU or memory usage
 **Solution**:
+
 - Adjust Logstash heap size
 - Consider filtering logs before processing
 - Review batch size settings
 
 ### Debug Mode
+
 To enable debug logging, add this to your Logstash configuration:
+
 ```
 filter {
   if [type] == "[DATASOURCE_PLACEHOLDER]" {
@@ -582,6 +626,7 @@ filter {
 ## 11. Development and Testing
 
 ### Building from Source
+
 ```bash
 # Clone the repository
 git clone https://github.com/IBM/universal-connectors.git
@@ -594,6 +639,7 @@ cd universal-connectors/filter-plugin/logstash-filter-[DATASOURCE_PLACEHOLDER]-g
 ```
 
 ### Running Tests
+
 ```bash
 # Run all tests
 ./gradlew test
@@ -606,6 +652,7 @@ open build/reports/jacoco/index.html
 ```
 
 ### Local Testing
+
 ```bash
 # Install the plugin locally
 /path/to/logstash/bin/logstash-plugin install /path/to/logstash-filter-[DATASOURCE_PLACEHOLDER]_guardium_filter-X.X.X.gem
@@ -617,6 +664,7 @@ open build/reports/jacoco/index.html
 ## 12. Contributing
 
 Contributions are welcome! Please:
+
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
@@ -631,6 +679,7 @@ This plugin is licensed under the Apache 2.0 License. See [LICENSE](LICENSE) for
 ## 14. Support
 
 For issues, questions, or contributions:
+
 - GitHub Issues: [Link to issues page]
 - Documentation: [Link to additional documentation]
 - Universal Connectors: https://github.com/IBM/universal-connectors

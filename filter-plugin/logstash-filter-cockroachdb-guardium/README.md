@@ -1,11 +1,12 @@
 # CockroachDB-Guardium Logstash filter plug-in
 
 ### Meet CockroachDB
-* Tested versions: 25.4.1
-* Environment: On-premise, IaaS
-* Supported inputs: Syslog (push)
-* Supported Guardium versions:
-	* Guardium Data Protection: 12.0 and above
+
+- Tested versions: 25.4.1
+- Environment: On-premise, IaaS
+- Supported inputs: Syslog (push)
+- Supported Guardium versions:
+  - Guardium Data Protection: 12.0 and above
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the CockroachDB audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
@@ -14,26 +15,30 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 ## 1. Enabling the audit logs
 
 ### Procedure
+
 1. Connect to your CockroachDB cluster using the SQL client.
 
 2. Enable audit logging by running the following commands:
-	```sql
-	SET CLUSTER SETTING server.auth_log.sql_connections.enabled = true;
-	SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
-	SET CLUSTER SETTING sql.log.all_statements.enabled = true;
-	SET CLUSTER SETTING sql.log.admin_audit.enabled = true;
-	```
+
+   ```sql
+   SET CLUSTER SETTING server.auth_log.sql_connections.enabled = true;
+   SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
+   SET CLUSTER SETTING sql.log.all_statements.enabled = true;
+   SET CLUSTER SETTING sql.log.admin_audit.enabled = true;
+   ```
 
 3. Verify the configuration:
-	```sql
-	SHOW CLUSTER SETTING server.auth_log.sql_connections.enabled;
-	SHOW CLUSTER SETTING server.auth_log.sql_sessions.enabled;
-	SHOW CLUSTER SETTING sql.log.all_statements.enabled;
-	SHOW CLUSTER SETTING sql.log.admin_audit.enabled;
-	```
+   ```sql
+   SHOW CLUSTER SETTING server.auth_log.sql_connections.enabled;
+   SHOW CLUSTER SETTING server.auth_log.sql_sessions.enabled;
+   SHOW CLUSTER SETTING sql.log.all_statements.enabled;
+   SHOW CLUSTER SETTING sql.log.admin_audit.enabled;
+   ```
 
 ## 2. Viewing the audit logs
+
 The audit logs are stored in files with the following naming patterns:
+
 - SQL query execution logs - `cockroach-sql-exec.log`
 - Authentication logs (i.e., failed and successful logins) - `cockroach-sql-auth.log`
 - Schema logs - `cockroach-sql-schema.log`
@@ -41,49 +46,55 @@ The audit logs are stored in files with the following naming patterns:
 ## 3. Configuring Syslog to push logs to Guardium
 
 ### Procedure
+
 To make Logstash able to process the data collected by syslog, configure available
 syslog utility. The example is based on rsyslog utility available in many
 versions of the Linux distributions.
 
 #### Rsyslog installation guide:
-* [Ubuntu](https://www.rsyslog.com/ubuntu-repository)
-* [RHEL](https://www.rsyslog.com/rhelcentos-rpms)
+
+- [Ubuntu](https://www.rsyslog.com/ubuntu-repository)
+- [RHEL](https://www.rsyslog.com/rhelcentos-rpms)
 
 1. Install Rsyslog on the CockroachDB server if not already installed:
-	```bash
-	# For Ubuntu/Debian
-	sudo apt-get install rsyslog
-	
-	# For RHEL/CentOS
-	sudo yum install rsyslog
-	```
+
+   ```bash
+   # For Ubuntu/Debian
+   sudo apt-get install rsyslog
+
+   # For RHEL/CentOS
+   sudo yum install rsyslog
+   ```
 
 2. To check the service is active and running, execute the below command:
-    ```bash
-    systemctl status rsyslog
-    ```
+
+   ```bash
+   systemctl status rsyslog
+   ```
 
 3. Generate Certificate Authority (CA):
-   * **Guardium Data Protection** <br/>
-   To obtain the Certificate Authority content on the Collector, run the following API command:
+   - **Guardium Data Protection** <br/>
+     To obtain the Certificate Authority content on the Collector, run the following API command:
      ```text
      grdapi generate_ssl_key_universal_connector
      ```
      This API command will display the content of the public Certificate Authority. Copy this certificate authority content to your database source and save it as a file named 'ca.pem' .
 
 4. Create the Rsyslog configuration file `cockroachdb.conf` for CockroachDB in the following directory:
-	```bash
-	vi /etc/rsyslog.d/cockroachdb.conf
-	```
+
+   ```bash
+   vi /etc/rsyslog.d/cockroachdb.conf
+   ```
 
 5. This configuration reads the logs from the CockroachDB log directory path and sends
-   the syslog messages to the provided host `TARGET_HOST` at the provided port `TARGET_PORT`. 
+   the syslog messages to the provided host `TARGET_HOST` at the provided port `TARGET_PORT`.
 
-    **Note:** You can set any port number except 5000 when using Guardium Data Protection version 12.0 or 12.1.
+   **Note:** You can set any port number except 5000 when using Guardium Data Protection version 12.0 or 12.1.
 
-    Add the following configuration:
+   Add the following configuration:
 
    **For TLS connection:**
+
    ```
    global(
        DefaultNetstreamDriverCAFile="/path/to/certs/ca.pem"
@@ -123,6 +134,7 @@ versions of the Linux distributions.
    ```
 
    **For non-TLS connection:**
+
    ```
    module(load="imfile")
    ruleset(name="imfile_to_gdp") {
@@ -152,17 +164,19 @@ versions of the Linux distributions.
          Ruleset="imfile_to_gdp")
    ```
 
-5. Restart Rsyslog service:
-	```bash
-	systemctl restart rsyslog
-	```
+6. Restart Rsyslog service:
 
-6. Verify Rsyslog is running:
-	```bash
-	systemctl status rsyslog
-	```
+   ```bash
+   systemctl restart rsyslog
+   ```
+
+7. Verify Rsyslog is running:
+   ```bash
+   systemctl status rsyslog
+   ```
 
 ## 4. Limitations
+
 - CockroachDB wraps query values in Unicode characters `‹` (U+2039) and `›` (U+203A) in audit logs (e.g., `UPDATE table SET id = ‹2› WHERE id > ‹1›`). The plugin automatically removes these characters to restore the original query format.
 - CockroachDB automatically logs `SHOW database` queries (along with query executions) and are sent to Guardium.
 - The plugin automatically filters out the following system-generated queries and are not sent to Guardium:
@@ -177,11 +191,11 @@ versions of the Linux distributions.
     - `information_schema.*`
     - System tables: `system.jobs`, `system.lease`, `system.sql_instances`, `system.job_info`, `system.statement_statistics`, `system.transaction_statistics`, `system.job_progress_history`, `system.reports_meta`
 - The following fields are not found in CockroachDB audit logs (applies to queries and failed logins):
-    - Database Name
-    - Service Name
-    - Client Host Name
-    - Server Port and Server IP - it is set to default value `0.0.0.0`
-    - Source Program (might be missing in some audit logs)
+  - Database Name
+  - Service Name
+  - Client Host Name
+  - Server Port and Server IP - it is set to default value `0.0.0.0`
+  - Source Program (might be missing in some audit logs)
 - For failed login attempts, CockroachDB returns different errors depending on the failure type:
   - When the username does not exist: `USER_NOT_FOUND` error
   - When the username exists but the password is incorrect: `PRE_HOOK_ERROR` error
@@ -205,7 +219,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. First enable the Universal Guardium connector, if it is disabled.
-3. Click **Upload File** and select the offline [logstash-filter-cockroachdb_guardium_filter.zip](CockroachDBOverSyslogPackage/logstash-filter-cockroachdb_guardium_filter.zip) plug-in. After it is uploaded, click **OK**. 
+3. Click **Upload File** and select the offline [logstash-filter-cockroachdb_guardium_filter.zip](CockroachDBOverSyslogPackage/logstash-filter-cockroachdb_guardium_filter.zip) plug-in. After it is uploaded, click **OK**.
 4. Click the **Plus sign** to open the Connector Configuration dialog box.
 5. Type a name in the **Connector name** field.
 6. Update the input section to add the details from the [CockroachDBOverSyslog.conf](CockroachDBOverSyslogPackage/CockroachDBOverSyslog.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.

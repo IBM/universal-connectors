@@ -7,4 +7,3 @@
 ## Follow this link to set up and use AlloyDB Universal Connector over PubSub Connect
 
 [AlloyDBOverConnectPubSub](../../docs/KafkaBasedUCs/AlloyDBPubsubKafkaConnect.md)
-

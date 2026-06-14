@@ -2,10 +2,10 @@
 
 ### Meet AlloyDB
 
-* Tested versions: V1
-* Environment: Google Cloud Platform (GCP)
-* Supported inputs: Google Pubsub input plugin
-* Supported Guardium versions: Guardium Data Protection: 12.1 and later
+- Tested versions: V1
+- Environment: Google Cloud Platform (GCP)
+- Supported inputs: Google Pubsub input plugin
+- Supported Guardium versions: Guardium Data Protection: 12.1 and later
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in
 IBM Security Guardium. It parses AlloyDB event logs into
@@ -19,38 +19,39 @@ and collections (objects) involved. The AlloyDB Logstash filter plug-in supports
 
 ## Configuring AlloyDB on GCP
 
-1. [Create a cluster and its
-  primary instance](https://cloud.google.com/alloydb/docs/quickstart/create-and-connect?hl=en#create-cluster).
-2. [Connect to your instance and create
-  a database](https://cloud.google.com/alloydb/docs/quickstart/create-and-connect?hl=en#run).
-3. [Connect to the database that you created](https://cloud.google.com/alloydb/docs/quickstart/create-and-connect?hl=en#connect-to-guestbook).
-4. [Verify your database
-  connection](https://cloud.google.com/alloydb/docs/quickstart/create-and-connect?hl=en#verify-connection).
-5. [Create a log sink in Pub/Sub](https://cloud.google.com/logging/docs/export/configure_export_v2#creating_sink).
-    * Use the following inclusion filter for ```Choose logs to include in sink``` during log sink creation to specify which logs to route. The following filter captures relevant logs based on data access and activity logs:
+1.  [Create a cluster and its
+    primary instance](https://cloud.google.com/alloydb/docs/quickstart/create-and-connect?hl=en#create-cluster).
+2.  [Connect to your instance and create
+    a database](https://cloud.google.com/alloydb/docs/quickstart/create-and-connect?hl=en#run).
+3.  [Connect to the database that you created](https://cloud.google.com/alloydb/docs/quickstart/create-and-connect?hl=en#connect-to-guestbook).
+4.  [Verify your database
+    connection](https://cloud.google.com/alloydb/docs/quickstart/create-and-connect?hl=en#verify-connection).
+5.  [Create a log sink in Pub/Sub](https://cloud.google.com/logging/docs/export/configure_export_v2#creating_sink).
+    - Use the following inclusion filter for `Choose logs to include in sink` during log sink creation to specify which logs to route. The following filter captures relevant logs based on data access and activity logs:
 
-              ((resource.type="alloydb.googleapis.com/Instance" logName="projects/<project-name>/logs/alloydb.googleapis.com%2Fpostgres.log" )) 
+              ((resource.type="alloydb.googleapis.com/Instance" logName="projects/<project-name>/logs/alloydb.googleapis.com%2Fpostgres.log" ))
 
 ## Configuring GCP for the input plug-in
+
 1. [Create a topic in Pub/Sub](https://cloud.google.com/pubsub/docs/create-topic#create_a_topic_2).
 2. [Create a subscription in Pub/Sub](https://cloud.google.com/pubsub/docs/create-subscription#create_a_pull_subscription)
 3. [Create service account credentials](https://developers.google.com/workspace/guides/create-credentials#create_a_service_account):
-    - To provide subscription access to the service account, select the **Pub/Sub Subscriber** role from the role selection list during the service account creation process.
-    - You do not need to grant users access to this service account.
+   - To provide subscription access to the service account, select the **Pub/Sub Subscriber** role from the role selection list during the service account creation process.
+   - You do not need to grant users access to this service account.
 4. [Create credentials for a service account](https://developers.google.com/workspace/guides/create-credentials#create_credentials_for_a_service_account). The key is used by the Logstash input plug-in configuration file.
 
 ## Enabling audit logs:
 
 1. To view the detailed audit logs, enable the following flags on your database instance:
 
-* `log_statement: all` - View executed SQL statements in audit logs.
+- `log_statement: all` - View executed SQL statements in audit logs.
 
 2. To reduce the volume of audit logs, you can turn off the following flags, as they do not contain any details about the run queries:
 
-* `autovacuum: off`
-* `log_checkpoints: off`
-* `log_connections: off`
-* `log_disconnections: off`
+- `autovacuum: off`
+- `log_checkpoints: off`
+- `log_connections: off`
+- `log_disconnections: off`
 
 ## Configuring the AlloyDB filter in Guardium
 
@@ -61,9 +62,9 @@ enforcements. Configure Guardium to read the native audit and data access logs b
 
 ### Before you begin
 
-* Configure the policies you need. For more information, see [Policies](/docs/#policies).
-* You must have permissions for the S-Tap Management role. By default, the admin user is assigned the S-Tap Management role.
-* Download
+- Configure the policies you need. For more information, see [Policies](/docs/#policies).
+- You must have permissions for the S-Tap Management role. By default, the admin user is assigned the S-Tap Management role.
+- Download
   the [logstash-filter-alloydb_guardium_filter](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-alloydb_guardium_filter.zip) plug-in.
 
 ### Procedure
@@ -72,19 +73,17 @@ enforcements. Configure Guardium to read the native audit and data access logs b
 2. Enable the universal connector if it is disabled.
 3. Click **Upload File** and select the offline [logstash-filter-alloydb_guardium_filter](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-alloydb_guardium_filter.zip) plug-in. After it is uploaded, click **OK**.
 4. Click **Upload File** and select the key.json file. After it is uploaded, click OK.
-4. Click the **Plus** sign to open the Connector Configuration dialog.
-5. In the **Connector name** field, enter a name.
-6. Update the input section to add the details from
-   the [alloydb.conf](AlloyDBoverPubSubPackage/alloydb.conf) file's ``input`` section, omitting the keyword ``input{`` at the beginning and its corresponding ``}`` at the end.
-7. Update the filter section to add the details from
-   the [alloydb.conf](AlloyDBoverPubSubPackage/alloydb.conf) file's ``filter`` section, omitting the keyword ``filter{`` at the beginning and its corresponding ``}`` at the end.
-8. Make sure that the ``type`` fields in the ``input`` and ``filter`` configuration sections align. This field must be unique for each connector added to the system.
-9. Click **Save**. Guardium validates the new connector and displays it in the Configure Universal Connector page.
-10. When the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the universal connector by using the **Disable/Enable** button.
+5. Click the **Plus** sign to open the Connector Configuration dialog.
+6. In the **Connector name** field, enter a name.
+7. Update the input section to add the details from
+   the [alloydb.conf](AlloyDBoverPubSubPackage/alloydb.conf) file's `input` section, omitting the keyword `input{` at the beginning and its corresponding `}` at the end.
+8. Update the filter section to add the details from
+   the [alloydb.conf](AlloyDBoverPubSubPackage/alloydb.conf) file's `filter` section, omitting the keyword `filter{` at the beginning and its corresponding `}` at the end.
+9. Make sure that the `type` fields in the `input` and `filter` configuration sections align. This field must be unique for each connector added to the system.
+10. Click **Save**. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+11. When the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the universal connector by using the **Disable/Enable** button.
 
 ## Limitations
 
 - Audit logs that contain SQL queries do not contain port and host information, so they are mapped to the default values.
 - When you use GCP, duplicate entries can appear in both the reports and audit logs.
-
-

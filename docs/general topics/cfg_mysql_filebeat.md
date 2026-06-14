@@ -4,8 +4,8 @@ Learn about a typical MySQL connector that uses Filebeat.
 
 **Note:**
 
--   MySQL plug-ins do not send the DB name to Guardium, if the DB commands are performed by using MySQL native client.
--   When connected with a MySQL plug-in, queries for non-existent tables are not logged to `GDM_CONSTRUCT`.
+- MySQL plug-ins do not send the DB name to Guardium, if the DB commands are performed by using MySQL native client.
+- When connected with a MySQL plug-in, queries for non-existent tables are not logged to `GDM_CONSTRUCT`.
 
 Input configuration:
 
@@ -18,7 +18,7 @@ beats { port => 5045 type => "filebeat" }
 Filter configuration:
 
 ```
-# For this to work, the Filebeat configuration on your data source should tag the events it is sending.  
+# For this to work, the Filebeat configuration on your data source should tag the events it is sending.
 if [type] == "filebeat" and "mysql" in [tags] {
     mutate { add_field => { "source_program" => "mysql_audit_log" } }
     mutate { add_field => { "client_hostname" => "%{[agent][hostname]}" } }
@@ -27,7 +27,7 @@ if [type] == "filebeat" and "mysql" in [tags] {
     mutate { replace => { "message" => "%{source_program}: %{message}" } }
 
 	mysql_filter_guardium {}
-	
+
 	# keep original event fields, for debugging
 	if "_mysqlguardium_parse_error" not in [tags] {
 			mutate { remove_field => [

@@ -3,12 +3,15 @@
 There are multiple ways to install a SAP HANA Cloud. For this example we are using SAP BTP Cockpit, we will assume that we already have a working SAP HANA Cloud setup.
 
 ## Enabling the audit logs:
+
 ### Procedure
+
 In the SAP HANA Cloud Central, expand the system for which you would like to enable auditing.
 Following this link to enable Audit logs: https://help.sap.com/docs/SAP_HANA_COCKPIT/afa922439b204e9caf22c78b6b69e4f2/db8cca116f1d45e085a68ffdc0dfb92b.html
 
 Here we will review CSTABLE base auditing.
-* CSTABLE base auditing - Audit-trail target is a table, requires JDBC input plug-in.
+
+- CSTABLE base auditing - Audit-trail target is a table, requires JDBC input plug-in.
 
 For SAP Hana Cloud, CSTABLE-based auditing (where the audit trail is stored in a table) is enabled by default, so no additional steps are required.
 
@@ -26,13 +29,14 @@ In SAP HANA Cloud, default audit policies already exist. If you want to create a
 2. On the Audit Policies tab of the Auditing page, click the Create Audit Policy button and follow the wizard steps.
 3. After reviewing the configuration of the new audit policy, choose Save.
 
-* Detailed steps can be found here: https://help.sap.com/docs/SAP_HANA_COCKPIT/afa922439b204e9caf22c78b6b69e4f2/c5f5344403cb40d3a2ed72912a46beb3.html
+- Detailed steps can be found here: https://help.sap.com/docs/SAP_HANA_COCKPIT/afa922439b204e9caf22c78b6b69e4f2/c5f5344403cb40d3a2ed72912a46beb3.html
 
 ## Viewing the audit logs
 
 ### View the SAP HANA audit logs for CSTABLE-based auditing.
 
 #### Procedure
+
 There are two ways to view audit logs
 
 1. Open Audit tab under Database Overview page in SAP HANA Cloud Central.
@@ -50,12 +54,12 @@ enforcements. Configure Guardium to read the native audit logs by customizing th
 
 ### Before you begin
 
-* You must have permissions for the S-Tap Management role. The admin user includes this role, by default.
-* Download the required (ngdbc)jars as per your database version from URL https://tools.hana.ondemand.com/#hanatools.
-* For CSTABLE based auditing, refer to this [package](SaphanaOverJdbcPackage) and download the [SAPHANA-offline-plugin.zip](SaphanaOverJdbcPackage/SAPHANA-offline-plugin.zip) plug-in.
-
+- You must have permissions for the S-Tap Management role. The admin user includes this role, by default.
+- Download the required (ngdbc)jars as per your database version from URL https://tools.hana.ondemand.com/#hanatools.
+- For CSTABLE based auditing, refer to this [package](SaphanaOverJdbcPackage) and download the [SAPHANA-offline-plugin.zip](SaphanaOverJdbcPackage/SAPHANA-offline-plugin.zip) plug-in.
 
 # Procedure
+
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. First enable the Universal Guardium connector, if it is disabled already.
 3. Click "Upload File" and select the offline [SAPHANA-offline-plugin.zip](SaphanaOverJdbcPackage/SAPHANA/SAPHANA-offline-plugin.zip) plug-in as per specific audit. After it is uploaded, click "OK".
@@ -70,14 +74,17 @@ enforcements. Configure Guardium to read the native audit logs by customizing th
 **Note: For moderate to large amounts of data, include pagination to facilitate the audit and to avoid out
 of memory errors. Use the parameters below in the input section when using a JDBC connector, and remove the
 concluding semicolon ';' from the jdbc statement:**
-  ```
-   jdbc_paging_enabled => true 
-   jdbc_page_size => 1000
-  ```
+
+```
+ jdbc_paging_enabled => true
+ jdbc_page_size => 1000
+```
+
 11. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled.
     Once validated, it appears in the Configure Universal Connector page.
 
 ## Configuring the SAP HANA Cloud filters in Guardium Data Security Center
+
 1. In the main menu, click **Configurations** > **Connections** > **Monitored Data Stores**.
 2. On the **Connections** page, click **Manage** > **Universal Connector Plugins**.
 3. Click **Add Plugin**, upload the zip package file as SAPHANA-offline-plugin.zip.
@@ -93,9 +100,10 @@ concluding semicolon ';' from the jdbc statement:**
 In SAP HANA JDBC input plug-ins, we distribute load between two machines based on even and odd "sessionIds"
 
 ### Procedure
+
 1. On the first G Machine, in the input section for JDBC Plug-in, update the "statement" field as follows:
    ```sql
-   select 
+   select
       audit_log.event_status,audit_log.client_ip,
       audit_log.connection_id,audit_log.client_port,
       SECONDS_BETWEEN('1970-01-01 00:00:00.00000',localtoutc(audit_log.timestamp)) as new_timestamp,
@@ -111,9 +119,9 @@ In SAP HANA JDBC input plug-ins, we distribute load between two machines based o
       M_DATABASE.HOST = audit_log.HOST and audit_policy_name not in ('MandatoryAuditPolicy')
       and SECONDS_BETWEEN ('1970-01-01 00:00:00.00000', localtoutc(audit_log.timestamp)) > :sql_last_value
       and mod(connection_id, 2) = 0;
-    ```
-2. On the second G machine, in the input section for the JDBC Plug-in, update the  "statement" field as follows:
-   ```sql
+   ```
+2. On the second G machine, in the input section for the JDBC Plug-in, update the "statement" field as follows:
+   ````sql
    select
      audit_log.event_status,audit_log.client_ip,
      audit_log.connection_id,audit_log.client_port,
@@ -131,3 +139,4 @@ In SAP HANA JDBC input plug-ins, we distribute load between two machines based o
      and SECONDS_BETWEEN ('1970-01-01 00:00:00.00000', localtoutc(audit_log.timestamp)) > :sql_last_value
      and mod(connection_id, 2) = 1;
    ```s
+   ````

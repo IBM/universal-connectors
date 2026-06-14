@@ -5,10 +5,10 @@ over CloudWatch Kafka Connect** plug-ins.
 
 ### Meet Redshift over CloudWatch Connect
 
-* Environments: AWS
-* Supported inputs: Kafka connect Cloudwatch 2.0 (pull)
-* Supported Guardium versions:
-    * Guardium Data Protection: Appliance bundle 12.2.1 or later.
+- Environments: AWS
+- Supported inputs: Kafka connect Cloudwatch 2.0 (pull)
+- Supported Guardium versions:
+  - Guardium Data Protection: Appliance bundle 12.2.1 or later.
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems. This connector enables
 monitoring of Redshift audit logs through CloudWatch.
@@ -24,13 +24,13 @@ Redshift cluster:
 
 - Click **Add rule** and provide the following details:
 
-    1. Type : Redshift
+  1. Type : Redshift
 
-    2. Protocol : TCP (default)
+  2. Protocol : TCP (default)
 
-    3. Port range: 5439 (default)
+  3. Port range: 5439 (default)
 
-    4. Source : Custom (0.0.0.0/0)
+  4. Source : Custom (0.0.0.0/0)
 
 - Click **Save rules**.
 
@@ -57,8 +57,8 @@ After creating a new parameter group, you can modify the parameters.
 
 1. Open the newly created parameter group and select the **Parameters** tab.
 2. Click **Edit Parameters**.
-2. In **enable_user_activity_logging**, change the value from **false** to **true**.
-3. Click **Save**.
+3. In **enable_user_activity_logging**, change the value from **false** to **true**.
+4. Click **Save**.
 
 ## Add a new Parameter Group to a cluster
 
@@ -69,7 +69,6 @@ After creating a new parameter group, you can modify the parameters.
 3. Select the parameter group you have created and modified.
 4. Click **Save changes**.
 
-
 ## Connecting to the database
 
 Once the cluster has been created, go to the **Properties** tab
@@ -77,7 +76,7 @@ Once the cluster has been created, go to the **Properties** tab
 In the **Database configurations** section, you can see that the default database name is `dev`, the default port AWS
 Redshift listens to is `5439`, and the default username is `awsuser`.
 
-1. Go to the **Editor** tab and click **Connect to database**. 
+1. Go to the **Editor** tab and click **Connect to database**.
 2. Choose the created cluster name.
 3. Add a database name and database user.
 4. Click **Connect**.
@@ -107,18 +106,18 @@ Go to Cloudwatch from the search box and find the details of the generated logs 
 1. The log files appear in the s3 bucket in hourly batches, and sometimes even later. A typical delay is 30-120 minutes.
 
 2. The following important fields can not be mapped with Redshift audit logs:
-    - Source program : Not available with User Activity/Connection logs
-    - Server IP : Not available with User Activity/Connection logs
-    - Client HostName : Not available with User Activity/Connection logs
-    - Client IP : Not available with User Activity logs (mentioned in AWS documentation) and in case of Connection logs,
-      it only appears in the Guardium quickSearch (QS) page.
+   - Source program : Not available with User Activity/Connection logs
+   - Server IP : Not available with User Activity/Connection logs
+   - Client HostName : Not available with User Activity/Connection logs
+   - Client IP : Not available with User Activity logs (mentioned in AWS documentation) and in case of Connection logs,
+     it only appears in the Guardium quickSearch (QS) page.
 3. Error Logs : UserActivity logs do not capture any error logs related with Syntax errors or Authentication errors. That's why we capture connection logs only for
    Authentication Failure Logs (It appears on Guardium the Guardium quicksearch screen as "LOGIN_FAILED" only if failed
    log-in is attempted).
 4. Due to parser limitations, the following are the details of the changes and limitations:
-    - Queries having `MINUS` operator appeara with `EXCEPT` operator in Guardium.
-    - The keyword `TOP<NUMBER>` is removed from the Select Queries.
-    - Select queries with `PIVOT/UNPIVOT` is not parsed by the Connector.
+   - Queries having `MINUS` operator appeara with `EXCEPT` operator in Guardium.
+   - The keyword `TOP<NUMBER>` is removed from the Select Queries.
+   - Select queries with `PIVOT/UNPIVOT` is not parsed by the Connector.
 5. CREATE MATERIALIZED VIEW commands appear multiple times on the S3 bucket, the Guardium full SQL report, and sniffer
    logs.
 6. Any query having key constraints (primary key, foreign key, unique key) may create duplication in logs because they
@@ -134,17 +133,17 @@ You can create a new datasource profile from the **Datasource Profile Management
 2. Click the **➕ (Add)** button.
 3. You can create a profile by using one of the following methods:
 
-    - To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
-        - **Name** and **Description**.
-        - Select a **Plug-in Type** from the dropdown. For example, `Redshift Over Cloudwatch Connect 2.0`.
+   - To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
+     - **Name** and **Description**.
+     - Select a **Plug-in Type** from the dropdown. For example, `Redshift Over Cloudwatch Connect 2.0`.
 
-    - To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file
-      containing one or more profiles.  
-      You can also choose from the following options:
-        - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
-        - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
-        - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the
-          ELB process.
+   - To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file
+     containing one or more profiles.  
+     You can also choose from the following options:
+     - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
+     - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
+     - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the
+       ELB process.
 
 **Note:** Configuration options vary based on the selected plug-in.
 
@@ -152,24 +151,24 @@ You can create a new datasource profile from the **Datasource Profile Management
 
 The following table describes the fields that are specific to Redshift over CloudWatch Kafka Connect 2.0 plugin.
 
-| Field                                   | Description                                                                                                                                                                                                                                                                                                          |
-|-----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Name**                                | Unique name of the profile.                                                                                                                                                                                                                                                                                          |
-| **Description**                         | Description of the profile.                                                                                                                                                                                                                                                                                          |
-| **Plug-in**                             | Plug-in type for this profile. Select `Redshift Over Cloudwatch Connect 2.0`. A full list of available plug-ins are available on the **Package Management** page.                                                                                                                                                    |
+| Field                                   | Description                                                                                                                                                                                                                                                                                                           |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Name**                                | Unique name of the profile.                                                                                                                                                                                                                                                                                           |
+| **Description**                         | Description of the profile.                                                                                                                                                                                                                                                                                           |
+| **Plug-in**                             | Plug-in type for this profile. Select `Redshift Over Cloudwatch Connect 2.0`. A full list of available plug-ins are available on the **Package Management** page.                                                                                                                                                     |
 | **Credential**                          | Select AWS Credentials or AWS Role ARN. The credential to authenticate with AWS. Must be created in **Credential Management**, or click **➕** to create one. For more information, see [Creating Credentials](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_credential_management.html). |
-| **Kafka Cluster**                       | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_kafka_cluster_management.html).                                              |
-| **Label**                               | Grouping label. For example, customer name or ID.                                                                                                                                                                                                                                                                    |
-| **AWS account region**                  | Specifies the AWS region where your Redshift instance is located (e.g., us-east-1, eu-west-1).                                                                                                                                                                                                                       |
-| **Log groups**                          | List of CloudWatch log groups to monitor. These are the log groups where Redshift audit logs are exported.                                                                                                                                                                                                           |
-| **Filter pattern**                      | CloudWatch Logs filter pattern to apply. Use "None" to retrieve all logs, or specify a pattern to filter specific log events.                                                                                                                                                                                        |
-| **Account ID**                          | Your AWS account ID (12-digit number). This identifies your AWS account.                                                                                                                                                                                                                                             |
-| **Cluster name**                        | The name of your Redshift cluster or instance identifier.                                                                                                                                                                                                                                                            |
-| **Ingestion delay (seconds)**           | Default value is 900 seconds (15 minutes). This delay accounts for the time it takes for logs to be available in CloudWatch after being generated.                                                                                                                                                                   |
-| **No-traffic threshold (minutes)**      | Default value is 60. If there is no incoming traffic for an hour, S-TAP displays a red status. Once incoming traffic resumes, the status returns to green.                                                                                                                                                           |
-| **Unmask sensitive value**              | Optional boolean flag. When enabled, sensitive values in the audit logs will not be masked.                                                                                                                                                                                                                          |
-| **Use Enterprise Load Balancing (ELB)** | Enable this if ELB support is required.                                                                                                                                                                                                                                                                              |
-| **Managed Unit Count**                  | Number of Managed Units (MUs) to allocate for ELB.                                                                                                                                                                                                                                                                   |
+| **Kafka Cluster**                       | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_kafka_cluster_management.html).                                               |
+| **Label**                               | Grouping label. For example, customer name or ID.                                                                                                                                                                                                                                                                     |
+| **AWS account region**                  | Specifies the AWS region where your Redshift instance is located (e.g., us-east-1, eu-west-1).                                                                                                                                                                                                                        |
+| **Log groups**                          | List of CloudWatch log groups to monitor. These are the log groups where Redshift audit logs are exported.                                                                                                                                                                                                            |
+| **Filter pattern**                      | CloudWatch Logs filter pattern to apply. Use "None" to retrieve all logs, or specify a pattern to filter specific log events.                                                                                                                                                                                         |
+| **Account ID**                          | Your AWS account ID (12-digit number). This identifies your AWS account.                                                                                                                                                                                                                                              |
+| **Cluster name**                        | The name of your Redshift cluster or instance identifier.                                                                                                                                                                                                                                                             |
+| **Ingestion delay (seconds)**           | Default value is 900 seconds (15 minutes). This delay accounts for the time it takes for logs to be available in CloudWatch after being generated.                                                                                                                                                                    |
+| **No-traffic threshold (minutes)**      | Default value is 60. If there is no incoming traffic for an hour, S-TAP displays a red status. Once incoming traffic resumes, the status returns to green.                                                                                                                                                            |
+| **Unmask sensitive value**              | Optional boolean flag. When enabled, sensitive values in the audit logs will not be masked.                                                                                                                                                                                                                           |
+| **Use Enterprise Load Balancing (ELB)** | Enable this if ELB support is required.                                                                                                                                                                                                                                                                               |
+| **Managed Unit Count**                  | Number of Managed Units (MUs) to allocate for ELB.                                                                                                                                                                                                                                                                    |
 
 **Note:**
 
@@ -214,4 +213,3 @@ An installed profile can be uninstalled or reinstalled if needed.
 2. From the list of available actions, select the desired option: **Uninstall** or **Reinstall**.
 
 ---
-
