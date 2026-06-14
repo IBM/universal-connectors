@@ -1,4 +1,4 @@
-## google_pubsub input plug-in
+# google_pubsub input plug-in
 
 ### Meet Google Pubsub
 

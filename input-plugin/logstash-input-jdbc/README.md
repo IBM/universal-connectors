@@ -1,4 +1,4 @@
-## jdbc input plug-in
+# jdbc input plug-in
 
 ### Meet JDBC
 

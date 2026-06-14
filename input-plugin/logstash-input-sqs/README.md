@@ -1,4 +1,4 @@
-## SQS input plug-in
+# SQS input plug-in
 
 ### Meet SQS
 
