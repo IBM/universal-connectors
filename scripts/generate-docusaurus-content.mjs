@@ -14,6 +14,7 @@ const markdownExtensions = new Set(['.md']);
 const excludedMarkdownBaseNames = new Set([
   'changelog',
   'contributing',
+  'license',
   'maintainers',
 ]);
 const staticAssetExtensions = new Set([
@@ -149,6 +150,10 @@ function isExcludedMarkdownRelPath(relPath) {
     return true;
   }
 
+  if (relPath.toLowerCase() === 'readme.md') {
+    return true;
+  }
+
   const baseName = path.basename(relPath, path.extname(relPath)).toLowerCase();
   return excludedMarkdownBaseNames.has(baseName);
 }
@@ -232,8 +237,9 @@ function shouldUnwrapExcludedMarkdownLink(rawDestination, markdownRelPath) {
   }
 
   const {pathname} = splitUrlPathAndSuffix(stripMarkdownAngles(destination));
-  const baseName = path.basename(pathname, path.extname(pathname)).toLowerCase();
-  return markdownExtensions.has(path.extname(pathname).toLowerCase()) && excludedMarkdownBaseNames.has(baseName);
+  const extension = path.extname(pathname).toLowerCase();
+  const baseName = path.basename(pathname, extension).toLowerCase();
+  return (markdownExtensions.has(extension) || extension === '') && excludedMarkdownBaseNames.has(baseName);
 }
 
 function resolveLinkedMarkdown(rawTarget, markdownRelPath) {
@@ -262,7 +268,9 @@ function resolveLinkedMarkdown(rawTarget, markdownRelPath) {
   }
 
   const normalized = path.posix.normalize(candidatePath).replace(/^\.\//, '');
-  if (!markdownExtensions.has(path.extname(normalized).toLowerCase())) {
+  const extension = path.extname(normalized).toLowerCase();
+  const baseName = path.basename(normalized, extension).toLowerCase();
+  if (!markdownExtensions.has(extension) && !(extension === '' && excludedMarkdownBaseNames.has(baseName))) {
     return null;
   }
 
