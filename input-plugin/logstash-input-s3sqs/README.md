@@ -1,4 +1,4 @@
-## s3sqs input plug-in
+# s3sqs input plug-in
 
 ### Meet s3sqs
 

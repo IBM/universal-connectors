@@ -1,4 +1,4 @@
-## Cloudwatch_logs input plug-in
+# Cloudwatch_logs input plug-in
 
 ### Meet Cloudwatch
 
