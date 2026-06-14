@@ -1,4 +1,4 @@
-## Postgres-Guardium Logstash filter plug-in
+# Postgres-Guardium Logstash filter plug-in
 
 ### Meet Postgres
 

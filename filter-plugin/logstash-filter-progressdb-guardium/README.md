@@ -1,4 +1,4 @@
-## Progress-Guardium Logstash filter plug-in
+# Progress-Guardium Logstash filter plug-in
 
 **Meet Progress**
 
