@@ -9,10 +9,10 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 ### Before you begin
 
-* Configure the policies you need. For more information, see [Policies](/docs/#policies).
-* You must have permissions for the S-Tap Management role. By default, the admin user is assigned the S-Tap Management role.
-* Download the [logstash-filter-mysql_guardium_plugin_filter](https://github.com/IBM/universal-connectors/releases) plug-in.
-* Download the [logstash-input-s3_sqs](https://github.com/IBM/universal-connectors/releases) plug-in.
+- Configure the policies you need. For more information, see [Policies](/docs/#policies).
+- You must have permissions for the S-Tap Management role. By default, the admin user is assigned the S-Tap Management role.
+- Download the [logstash-filter-mysql_guardium_plugin_filter](https://github.com/IBM/universal-connectors/releases) plug-in.
+- Download the [logstash-input-s3_sqs](https://github.com/IBM/universal-connectors/releases) plug-in.
 
 ### Procedure
 

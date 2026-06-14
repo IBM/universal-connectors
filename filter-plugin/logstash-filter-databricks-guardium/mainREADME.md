@@ -7,4 +7,3 @@
 ## Follow this link to set up and use Databricks Universal Connector over Azure Eventhub Connect
 
 [DatabricksOverConnectEventHub](../../docs/KafkaBasedUCs/AzureDatabricksEventHubKafkaConnect.md)
-
