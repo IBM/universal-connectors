@@ -122,7 +122,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 * Download the plug-in filter configuration file [MariaDBCloudWatch.conf](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-mariadb-aws-guardium/MariaDBCloudWatch.conf).
 * For Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12.0 and/or 12p15 download the [cloudwatch_logs plug-in](../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip)
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-awsmariadb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.7.2/logstash-filter-awsmariadb_guardium_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the **logstash-filter-awsmariadb_guardium_filter.zip** package from https://github.com/IBM/universal-connectors/releases under Assets. (Do not unzip the offline-package file throughout the procedure).
 
 #### Procedure
 
