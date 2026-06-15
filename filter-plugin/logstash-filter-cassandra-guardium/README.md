@@ -134,7 +134,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 • Cassandra-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-cassandra_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-cassandra_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-cassandra_guardium_plugin_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.7.2/logstash-filter-cassandra_guardium_plugin_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 #### Configuration
 1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
