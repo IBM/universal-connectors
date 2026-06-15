@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - add-github-pages
   workflow_dispatch:
 
 permissions:
