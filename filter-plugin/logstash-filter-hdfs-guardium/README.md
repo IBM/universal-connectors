@@ -106,7 +106,7 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 2. First enable the Universal Guardium connector, if it is disabled already.
 
-4. Click **Upload File** and select the offline [guardium-hdfs-uc.zip](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-hdfs_guardium_filter.zip) file. After it is uploaded, click OK.
+4. Click **Upload File** and select the offline [guardium-hdfs-uc.zip](https://github.com/IBM/universal-connectors/releases/download/v1.7.2/logstash-filter-hdfs_guardium_filter.zip) file. After it is uploaded, click OK.
 
 5. Click the Plus sign to open the Connector Configuration dialog box.
 
