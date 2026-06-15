@@ -1,6 +1,6 @@
 const {themes: prismThemes} = require('prism-react-renderer');
 
-const baseUrl = process.env.DOCUSAURUS_BASE_URL || '/universal-connectors/';
+const baseUrl = process.env.DOCUSAURUS_BASE_URL || '/';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
