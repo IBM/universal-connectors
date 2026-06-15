@@ -144,7 +144,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
 2. Enable the universal connector if it is disabled.
 3. Click ```Upload File``` and select the
-   offline [logstash-filter-yugabytedb_guardium_filter.zip](https://github.com/IBM/universal-connectors/releases/download/v1.7.2/logstash-filter-yugabytedb_guardium_filter.zip)
+   offline **logstash-filter-yugabytedb_guardium_filter.zip**
    plug-in. After it is uploaded, click ```OK```. This is not necessary for Guardium Data Protection v11.0p490 or later,
    v11.0p540 or later, v12.0 or later.
 4. Click the Plus sign to open the Connector Configuration dialog box.

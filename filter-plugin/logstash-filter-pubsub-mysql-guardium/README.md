@@ -230,7 +230,7 @@ pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 * Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies) for more information.
 
 * To install this plug-in, you need to download the relevant plugin based on the version of the Guardium.
-  1. For the Guardium 11.x, download the **logstash-filter-pubsub-mysql-guardium.zip** package from https://github.com/IBM/universal-connectors/releases under Assets
+  1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.4.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.4.zip)
   2. For the Guardium 12.x, download the **logstash-filter-pubsub-mysql-guardium.zip** package from https://github.com/IBM/universal-connectors/releases under Assets
 
 
@@ -238,7 +238,7 @@ pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Ensure that the universal connector is enabled. 
 3. Click Upload File and select the relevant plugin based on the version of the Guardium and after it is uploads, click OK.
-    * For Guardium 11.x, download the **logstash-filter-pubsub-mysql-guardium.zip** package from https://github.com/IBM/universal-connectors/releases under Assets
+    * For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.4.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.4.zip)
     * For Guardium 12.x, download the **logstash-filter-pubsub-mysql-guardium.zip** package from https://github.com/IBM/universal-connectors/releases under Assets
 4. Click Upload File and select the key.json file and click OK.
 5. Click the plus sign to open the Connector Configuration dialog box.
