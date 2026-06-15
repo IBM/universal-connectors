@@ -113,10 +113,10 @@ enforcements. Configure Guardium to read the native audit/data_access logs by cu
 * Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default
 * Verify that the Capella input plugin is available on the GDP system. If the plugin is missing, download and install
-  the  [logstash-input-couchbase_capella_input](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-input-couchbase_capella_input.zip)
+  the  [logstash-input-couchbase_capella_input](https://github.com/IBM/universal-connectors/releases/download/v1.7.2/logstash-input-couchbase_capella_input.zip)
   plug-in.
 * Download
-  the [logstash-filter-capella_guardium_filter](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-capella_guardium_filter.zip)
+  the [logstash-filter-capella_guardium_filter](https://github.com/IBM/universal-connectors/releases/download/v1.7.2/logstash-filter-capella_guardium_filter.zip)
   plug-in.
 * Capella-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4
   with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or
@@ -127,7 +127,7 @@ enforcements. Configure Guardium to read the native audit/data_access logs by cu
 1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
 2. Enable the universal connector if it is disabled.
 3. Click ```Upload File``` and select the
-   offline  [logstash-filter-capella_guardium_filter](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-capella_guardium_filter.zip)
+   offline  [logstash-filter-capella_guardium_filter](https://github.com/IBM/universal-connectors/releases/download/v1.7.2/logstash-filter-capella_guardium_filter.zip)
    plug-in. After it is uploaded, click ```OK```.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the Connector name field.
