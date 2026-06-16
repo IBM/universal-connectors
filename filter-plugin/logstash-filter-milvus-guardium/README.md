@@ -104,7 +104,7 @@ The Guardium universal connector is the Guardium entry point for native access l
 ### Before you begin
 * Configure the policies you need. For more information, see [Policies](/docs/#policies).
 * You must have permissions for the S-Tap Management role. By default, the admin user is assigned the S-Tap Management role.
-* Download the **logstash-filter-milvus_guardium_filter.zip** package from https://github.com/IBM/universal-connectors/releases under Assets.
+* Download the **logstash-filter-milvus_guardium_filter.zip** package from [Universal Connector release page](https://github.com/IBM/universal-connectors/releases) under Assets.
 
 ### Procedure
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.

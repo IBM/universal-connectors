@@ -115,7 +115,7 @@ enforcements. Configure Guardium to read the native audit/data_access logs by cu
 * Verify that the Capella input plugin is available on the GDP system. If the plugin is missing, download and install
   the  [logstash-input-couchbase_capella_input](https://github.com/IBM/universal-connectors/releases/download/v1.7.2/logstash-input-couchbase_capella_input.zip)
   plug-in.
-* Download the **logstash-filter-capella_guardium_filter.zip** package from https://github.com/IBM/universal-connectors/releases under Assets.
+* Download the **logstash-filter-capella_guardium_filter.zip** package from [Universal Connector release page](https://github.com/IBM/universal-connectors/releases) under Assets.
 * Capella-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4
   with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or
   later releases. After each patch, there is no need to download and deploy the packages.

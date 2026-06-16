@@ -190,7 +190,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 ### Before you begin
 * Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the **logstash-filter-azure_cosmos_guardium_filter.zip** package from https://github.com/IBM/universal-connectors/releases under Assets.
+* Download the **logstash-filter-azure_cosmos_guardium_filter.zip** package from [Universal Connector release page](https://github.com/IBM/universal-connectors/releases) under Assets.
 * Download the plug-in filter configuration file [azure_cosmos.conf](azure_cosmos.conf).
 
 ### Note
