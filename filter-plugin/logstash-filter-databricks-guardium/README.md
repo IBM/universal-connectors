@@ -128,7 +128,7 @@ Azure-Databricks-Guardium Logstash filter plug-in is automatically available wit
 
 * Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default.
-* Download the  plug-in. (Do not unzip the offline-package file throughout the procedure).
+* Download the **logstash-filter-databricks_guardium_filter.zip** package from [Universal Connector release page](https://github.com/IBM/universal-connectors/releases) under Assets. (Do not unzip the offline-package file throughout the procedure).
 * Download the plug-in filter configuration file .
 
 ### Configuration
