@@ -78,7 +78,7 @@ enforcements.
 
 * Configure the policies you require. See [policies](/docs/#policies) for more information.
 * You must have permission for the S-Tap Management role. The admin user includes this role by default
-* Download the **logstash-filter-trino_guardium_filter.zip** package from https://github.com/IBM/universal-connectors/releases under Assets.
+* Download the **logstash-filter-trino_guardium_filter.zip** package from [Universal Connector release page](https://github.com/IBM/universal-connectors/releases) under Assets.
 * Verify that the http input plugin is available on the GDP system. 
 
 ### Procedure
