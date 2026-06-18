@@ -166,20 +166,35 @@ public class S3SQS implements Input, AutoCloseable {
     private void processSQSMessage(Message message) {
         boolean processingSuccessful = false;
         try {
-            JSONObject jsonMessage = new JSONObject(message.body());
-            JSONArray records = jsonMessage.optJSONArray("Records");
+            String messageBody = message.body() == null ? "" : message.body().trim();
 
-            if (records != null) {
-                for (int i = 0; i < records.length(); i++) {
-                    JSONObject record = records.getJSONObject(i);
-                    JSONObject s3Info = record.getJSONObject("s3");
-                    String bucketName = s3Info.getJSONObject("bucket").getString("name");
-                    String fileKey = s3Info.getJSONObject("object").getString("key");
-                    fetchAndProcessFile(bucketName, fileKey);
-                }
+            if (!messageBody.isEmpty()) {
+                context.getLogger(this).debug("Received SQS message body: {}", messageBody);
             }
+
+            if (messageBody.isBlank() || !messageBody.startsWith("{")) {
+                throw new IllegalArgumentException("SQS message body is not a JSON S3 event");
+            }
+
+            JSONObject jsonMessage = new JSONObject(messageBody);
+            JSONArray records = jsonMessage.optJSONArray(RECORDS);
+
+            if (records == null || records.isEmpty()) {
+                throw new IllegalArgumentException("SQS message does not contain S3 event Records");
+            }
+
+            for (int i = 0; i < records.length(); i++) {
+                JSONObject record = records.getJSONObject(i);
+                JSONObject s3Info = record.getJSONObject("s3");
+                String bucketName = s3Info.getJSONObject("bucket").getString("name");
+                String fileKey = s3Info.getJSONObject("object").getString("key");
+                fetchAndProcessFile(bucketName, fileKey);
+            }
+
             // Mark as successful only if no exceptions occurred
             processingSuccessful = true;
+        } catch (IllegalArgumentException e) {
+            context.getLogger(this).debug("Skipping message: {}. message body: {}", e.getMessage(), message.body());
         } catch (Exception e) {
             context.getLogger(this).error("Error processing SQS message - message will be retried after visibility timeout", e);
             // Don't delete message - let it become visible again for retry
