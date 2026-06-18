@@ -191,12 +191,10 @@ public class S3SQS implements Input, AutoCloseable {
                 fetchAndProcessFile(bucketName, fileKey);
             }
 
+            // Mark as successful only if no exceptions occurred
             processingSuccessful = true;
         } catch (IllegalArgumentException e) {
             context.getLogger(this).debug("Skipping message: {}. message body: {}", e.getMessage(), message.body());
-
-            // Mark as successful only if no exceptions occurred
-            processingSuccessful = true;
         } catch (Exception e) {
             context.getLogger(this).error("Error processing SQS message - message will be retried after visibility timeout", e);
             // Don't delete message - let it become visible again for retry
