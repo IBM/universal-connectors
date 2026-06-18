@@ -15,22 +15,14 @@ import com.google.gson.*;
 import com.ibm.guardium.snowflakedb.utils.Constants;
 import com.ibm.guardium.snowflakedb.utils.DefaultGuardRecordBuilder;
 import com.ibm.guardium.snowflakedb.exceptions.ParseException;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Construct;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
-import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
+import com.ibm.guardium.universalconnector.commons.structures.*;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class SuccessEventParser implements Parser{
     private static Logger log = LogManager.getLogger(SuccessEventParser.class);
-    private static final Gson GSON = new Gson();
+  private static final Gson GSON = new Gson();
 
     private Map<String, Object> eventMap;
     private com.ibm.guardium.universalconnector.commons.structures.Record guardRecord;
@@ -77,7 +69,7 @@ public class SuccessEventParser implements Parser{
         guardRecord.setException(null);
 
         String sessionId = this.getStringValueOf(Constants.SESSION_ID);
-
+        
         if(!sessionId.equals(Constants.NOT_AVAILABLE)) {
             guardRecord.setSessionId(sessionId);
         } else {
@@ -125,7 +117,7 @@ public class SuccessEventParser implements Parser{
             ).map(Object::toString);
 
             if(optClientEnv.isPresent() && !optClientEnv.get().isEmpty()){
-                Map<String, String> clientEnv = GSON.fromJson(optClientEnv.get(), Map.class);
+        Map<String, String> clientEnv = GSON.fromJson(optClientEnv.get(), Map.class);
                 String clientOS = getClientOS(clientEnv);
                 accessor.setClientOs(clientOS);
 
@@ -169,7 +161,7 @@ public class SuccessEventParser implements Parser{
         return sessionLocator;
     }
 
-    private Time getTime(){
+    private Time getTime() throws ParseException {
         String ts = getStringValueOf(Constants.QUERY_TIMESTAMP);
         Time t = guardRecord.getTime();
         try {
@@ -178,7 +170,7 @@ public class SuccessEventParser implements Parser{
             t.setTimstamp(date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()); //Snowflake supplies the date in UTC
             t.setMinOffsetFromGMT(0);
             t.setMinDst(0);
-        } catch (Exception e){
+        } catch (ParseException e){
             log.error("Snowflake filter: Error occurred while parsing Time object: " + eventMap, e);
             throw e;
         }

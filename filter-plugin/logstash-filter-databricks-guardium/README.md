@@ -101,17 +101,16 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 Azure-Databricks-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-- Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
-- You must have permission for the S-Tap Management role. The admin user includes this role by default.
-- Download the plug-in. (Do not unzip the offline-package file throughout the procedure).
-- Download the plug-in filter configuration file .
+* Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
+* You must have permission for the S-Tap Management role. The admin user includes this role by default.
+* Download the **logstash-filter-databricks_guardium_filter.zip** package from [Universal Connector release page](https://github.com/IBM/universal-connectors/releases) under Assets. (Do not unzip the offline-package file throughout the procedure).
+* Download the plug-in filter configuration file .
 
 ### Configuration
 
 1. On the collector, go to `Setup` > `Tools and Views` > `Configure Universal Connector`.
 2. Enable the universal connector if it is disabled.
-3. Click `Upload File` and select the offline [logstash-filter-databricks_guardium_filter-1.0.1.zip](https://github.com/IBM/universal-connectors/releases/download/v1.7.0/logstash-filter-databricks_guardium_filter.zip)
-   plug-in. After it is uploaded, click `OK`.
+3. Click ```Upload File``` and select the offline **logstash-filter-databricks_guardium_filter.zip** plug-in. After it is uploaded, click ```OK```.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the `Connector name` field.
 6. Update the input section to add the details from the [databricks.conf](../../filter-plugin/logstash-filter-databricks-guardium/AzureDatabricksOverAzureEventHub/databricks.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.

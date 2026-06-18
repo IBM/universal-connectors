@@ -203,15 +203,13 @@ In this example, we used Azure Event Hub.
 The Guardium universal connector is the Guardium entry point for native audit logs. The Guardium universal connector identifies and parses the received events, and converts them to a standard Guardium format. The output of the Guardium universal connector is forwarded to the Guardium sniffer on the collector, for policy and auditing enforcements. Configure Guardium to read the native audit logs by customizing the Azure-Cosmos template.
 
 ### Before you begin
-
-- Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
-- You must have permission for the S-Tap Management role. The admin user includes this role by default.
-- Download the [guardium_logstash-offline-plugin-azure-cosmos.zip](AzureCosmosOverAzureEventHub/guardium_logstash-offline-plugin-azure-cosmos.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
-- Download the plug-in filter configuration file [azure_cosmos.conf](azure_cosmos.conf).
+* Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
+* You must have permission for the S-Tap Management role. The admin user includes this role by default.
+* Download the **logstash-filter-azure_cosmos_guardium_filter.zip** package from [Universal Connector release page](https://github.com/IBM/universal-connectors/releases) under Assets.
+* Download the plug-in filter configuration file [azure_cosmos.conf](azure_cosmos.conf).
 
 ### Note
-
-- While upgrading from v11.5 p535 or SP6505 to p540, upload [Azure Cosmos updated plugin](https://github.com/IBM/universal-connectors/releases/download/v1.5.6/logstash-filter-azure_cosmos_guardium_filter.zip).
+* While upgrading from v11.5 p535 or SP6505 to p540, upload **logstash-filter-azure_cosmos_guardium_filter.zip**.
 
 ### Configuration
 
