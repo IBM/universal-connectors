@@ -5,11 +5,11 @@ MySQL over Event Hub Kafka Connect** plug-ins.
 
 ### Meet Azure MySQL over Event Hub Connect
 
-- Tested versions: 8.0.42 (Flexible Server)
-- Environment: Azure
-- Supported inputs: Azure EventHub connect 2.0
-- Supported Guardium versions:
-  - Guardium Data Protection: Appliance bundle 12.2.2 or later
+* Tested versions: 8.0.42 (Flexible Server)
+* Environment: Azure
+* Supported inputs: Kafka connect Azure EventHub 2.0
+* Supported Guardium versions:
+    * Guardium Data Protection: Appliance bundle 12.2.2 or later
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems. This connector enables
 monitoring of Azure MySQL audit logs through Azure Event Hub.

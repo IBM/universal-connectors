@@ -1,3 +1,6 @@
+## 1.0.3
+- Add debug log messages if S3 JSON message is invalid.
+
 ## 1.0.2
 
 - Fixing a bug that caused the plugin to fail when reinstall the UC.
