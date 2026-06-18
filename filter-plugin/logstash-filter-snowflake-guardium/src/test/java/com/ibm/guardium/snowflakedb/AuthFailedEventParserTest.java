@@ -8,9 +8,11 @@ package com.ibm.guardium.snowflakedb;
 import com.ibm.guardium.snowflakedb.exceptions.ParseException;
 import com.ibm.guardium.snowflakedb.parser.AuthFailedEventParser;
 import com.ibm.guardium.snowflakedb.parser.Parser;
+import com.ibm.guardium.snowflakedb.parser.SQLErrorEventParser;
 import com.ibm.guardium.snowflakedb.utils.Constants;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.Event;
@@ -29,10 +31,7 @@ public class AuthFailedEventParserTest {
         try{
             Record record = parser.parseRecord(event);
 
-            Integer hashCode = (e.getField(Constants.CLIENT_IP).toString() + SessionLocator.PORT_DEFAULT
-                    + e.getField(Constants.SERVER_IP) + Constants.SERVER_PORT).hashCode();
-
-            Assert.assertEquals(hashCode.toString(), record.getSessionId());
+            Assert.assertEquals(Constants.UNKNOWN_STRING, record.getSessionId());
             Assert.assertEquals(record.getAppUserName(), event.get(Constants.USER_NAME).toString());
             Assert.assertEquals(record.getTime().getMinDst(), 0);
             Assert.assertEquals(record.getTime().getMinOffsetFromGMT(), 0);
@@ -65,8 +64,7 @@ public class AuthFailedEventParserTest {
 
             Assert.assertEquals(record.getSessionLocator().getClientIp(),event.get(Constants.CLIENT_IP).toString());
             Assert.assertEquals(record.getSessionLocator().getServerIp(),event.get(Constants.SERVER_IP).toString());
-            Assert.assertEquals(Long.valueOf(record.getSessionLocator().getServerPort()),
-                    Long.valueOf(Constants.SERVER_PORT));
+            Assert.assertEquals(Long.valueOf(record.getSessionLocator().getServerPort()), Long.valueOf(-1));
 
             Assert.assertEquals(null,record.getData());
             Assert.assertEquals(event.get(Constants.LOGIN_ERROR_CODE) + ": " +
@@ -78,5 +76,22 @@ public class AuthFailedEventParserTest {
             Assert.fail(ex.getMessage());
             ex.printStackTrace();
         }
+    }
+
+
+    @Test
+    public void testSessionIDWhenClientAndServerSessionNotPresent() throws ParseException {
+        Event e = FakeEventFactory.getAuthErrorEvent();
+        e.remove(Constants.SESSION_ID);
+        e.remove(Constants.CLIENT_IP);
+        e.remove(Constants.SERVER_IP);
+
+        Parser parser = new AuthFailedEventParser();
+        Record record = parser.parseRecord(e.toMap());
+        SessionLocator sessionLocator = record.getSessionLocator();
+
+        Assert.assertEquals(StringUtils.EMPTY, record.getSessionId());
+        Assert.assertEquals(-1, sessionLocator.getClientPort());
+        Assert.assertEquals(-1, sessionLocator.getServerPort());
     }
 }

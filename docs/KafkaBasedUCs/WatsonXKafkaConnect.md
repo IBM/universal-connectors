@@ -4,10 +4,10 @@ You can create and configure datasource profiles through Central Manager for **W
 
 ## About WatsonX Kafka Connect
 
-- **Environment:** IBM Cloud
-- **Supported inputs:** Kafka Input (pull)
-- **Supported Guardium versions:**
-  - Guardium Data Protection: Appliance bundle 12.2.2 or later
+* **Environment:** IBM Cloud
+* **Supported inputs:** Kafka connect WatsonX 2.0 (pull)
+* **Supported Guardium versions:**
+    * Guardium Data Protection: Appliance bundle 12.2.2 or later
 
 Kafka Connect is a framework for streaming data between Apache Kafka and other systems. You can use this connector to monitor WatsonX audit logs through Kafka.
 
