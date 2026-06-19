@@ -4,6 +4,10 @@ Notable changes will be documented in this file.
 
 ## [Unreleased]
 
+## [0.6.14]
+### Changed
+- GRD-119176: Add support for "atype":"clientMetadata"
+- 
 ## [0.6.13]
 
 ### Changed
