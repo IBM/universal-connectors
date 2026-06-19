@@ -7,4 +7,3 @@
 ## Follow this link to set up and use BigQuery Universal Connector over PubSub Connect
 
 [BigQueryOverConnectPubSub](../../docs/KafkaBasedUCs/BigqueryPubsubKafkaConnect.md)
-

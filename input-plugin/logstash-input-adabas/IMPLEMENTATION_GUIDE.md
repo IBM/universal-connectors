@@ -1,6 +1,7 @@
 # Adabas Universal Connector Implementation Guide for Guardium Data Protection
 
 ## Table of Contents
+
 1. [Overview](#overview)
 2. [Architecture](#architecture)
 3. [Prerequisites](#prerequisites)
@@ -34,6 +35,7 @@ The Guardium Universal Connector is a framework that allows Guardium to receive 
 The Adabas implementation uses a **custom input plugin** that connects directly to the Adabas Auditing Server via EntireX Broker, rather than using standard log forwarding methods like Syslog or Filebeat.
 
 **Key Components:**
+
 - **Adabas Auditing Server** - Generates audit events from Adabas database activity
 - **EntireX Broker** - Messaging middleware that facilitates communication
 - **Adabas Input Plugin** (`logstash-input-adabas_auditing_input`) - Connects to the broker and retrieves audit messages
@@ -109,12 +111,14 @@ The Adabas implementation uses a **custom input plugin** that connects directly 
 ### System Requirements
 
 #### Guardium System
+
 - **Guardium Data Protection Version:** 12.0 or later
 - **Deployment Type:** Standalone system or Collector
 - **User Permissions:** S-TAP Management Application role
 - **Network Access:** Connectivity to Adabas Auditing Server's EntireX Broker
 
 #### Adabas Environment
+
 - **Adabas Version:** Compatible version with Auditing Server support
 - **Adabas Auditing Server:** Installed and configured
 - **EntireX Broker:** Running and accessible
@@ -123,11 +127,13 @@ The Adabas implementation uses a **custom input plugin** that connects directly 
 ### Software Requirements
 
 #### For Using Pre-Built Plugins (Recommended)
+
 - Pre-built plugin files (`.gem` files) provided by IBM or Software AG:
   - `logstash-input-adabas_auditing_input-<version>-java.gem`
   - `logstash-filter-adabas_guardium_filter-<version>-java.gem`
 
 #### For Building Plugins from Source (Optional)
+
 - **Java Development Kit (JDK):** Version 11 or later
 - **Gradle:** Version 6.x or later (included via wrapper)
 - **Logstash:** Version 7.5.2 or compatible
@@ -141,16 +147,16 @@ The Adabas implementation uses a **custom input plugin** that connects directly 
 
 Before starting, gather the following information:
 
-| Information | Description | Example |
-|------------|-------------|---------|
-| **Broker Host** | Hostname or IP of EntireX Broker | `adabas-broker.company.com` |
-| **Broker Port** | Port number for broker connection | `3000` |
-| **Broker Class** | Broker class identifier | `ADABAS-AUDIT` |
-| **Broker Server** | Broker server name | `AUDIT-SERVER` |
-| **Broker Service** | Service name for audit data | `AUDIT-SERVICE` |
-| **User** | Authentication user for broker | `guardium_user` |
-| **Token** | Authentication token/password | `<secure_token>` |
-| **Guardium Collector IP** | IP address of Guardium system | `10.0.1.100` |
+| Information               | Description                       | Example                     |
+| ------------------------- | --------------------------------- | --------------------------- |
+| **Broker Host**           | Hostname or IP of EntireX Broker  | `adabas-broker.company.com` |
+| **Broker Port**           | Port number for broker connection | `3000`                      |
+| **Broker Class**          | Broker class identifier           | `ADABAS-AUDIT`              |
+| **Broker Server**         | Broker server name                | `AUDIT-SERVER`              |
+| **Broker Service**        | Service name for audit data       | `AUDIT-SERVICE`             |
+| **User**                  | Authentication user for broker    | `guardium_user`             |
+| **Token**                 | Authentication token/password     | `<secure_token>`            |
+| **Guardium Collector IP** | IP address of Guardium system     | `10.0.1.100`                |
 
 ### Network Requirements
 
@@ -190,6 +196,7 @@ The Adabas Auditing Server must be properly configured to generate and publish a
 The EntireX Broker acts as the messaging middleware between Adabas and Guardium.
 
 1. **Verify Broker is Running:**
+
    ```bash
    # Check broker status (command may vary by platform)
    etbinfo -b <broker_id>
@@ -229,6 +236,7 @@ If IBM or Software AG has provided pre-built plugin files:
    - `logstash-filter-adabas_guardium_filter-<version>-java.gem`
 
 2. **Transfer to Guardium System:**
+
    ```bash
    # Copy files to Guardium (from your local machine)
    scp logstash-input-adabas_auditing_input-*.gem guardium@<guardium_ip>:/tmp/
@@ -244,6 +252,7 @@ If you need to build the plugins yourself:
 ##### 2.1 Prepare Build Environment
 
 1. **Install Java 11:**
+
    ```bash
    # Verify Java installation
    java -version
@@ -251,6 +260,7 @@ If you need to build the plugins yourself:
    ```
 
 2. **Download Logstash:**
+
    ```bash
    # Download Logstash 7.5.2 or compatible version
    wget https://artifacts.elastic.co/downloads/logstash/logstash-7.5.2.tar.gz
@@ -267,27 +277,29 @@ If you need to build the plugins yourself:
    Edit `rubyUtils.gradle` and make these changes:
 
    **Issue 1 - Fix JRuby Version:**
+
    ```gradle
    // Find this line (around line 20):
    classpath "org.jruby:jruby-core:${gradle.ext.versions.jruby.version}"
-   
+
    // Replace with actual version from versions.yml:
    classpath "org.jruby:jruby-core:9.4.13.0"
    ```
 
    **Issue 2 - Add YAML Parsing:**
+
    ```gradle
    // Add this code after the Ruby variables section:
-   
+
    // Ruby variables
    def versionsPath = project.hasProperty("LOGSTASH_CORE_PATH") ? LOGSTASH_CORE_PATH + "/../versions.yml" : "${projectDir}/versions.yml"
-   
+
    // Add YAML parsing code below:
    def versionsFile = new File(versionsPath)
    if (!versionsFile.exists()) {
        throw new GradleException("versions.yml file not found at: ${versionsPath}")
    }
-   
+
    def versionsData = [:]
    def currentSection = null
    versionsFile.eachLine { line ->
@@ -304,7 +316,7 @@ If you need to build the plugins yourself:
            }
        }
    }
-   
+
    gradle.ext.versions = versionsData
    versionMap = gradle.ext.versions
    ```
@@ -312,6 +324,7 @@ If you need to build the plugins yourself:
 ##### 2.2 Build Guardium Commons Library
 
 1. **Clone the Commons Repository:**
+
    ```bash
    git clone https://github.com/IBM/guardium-universalconnector-commons.git
    cd guardium-universalconnector-commons
@@ -327,11 +340,13 @@ If you need to build the plugins yourself:
 ##### 2.3 Build Input Plugin
 
 1. **Clone or Navigate to Input Plugin:**
+
    ```bash
    cd /path/to/universal-connectors/input-plugin/logstash-input-adabas
    ```
 
 2. **Create gradle.properties:**
+
    ```bash
    cat > gradle.properties << EOF
    LOGSTASH_CORE_PATH=/path/to/logstash-7.5.2/logstash-core
@@ -339,6 +354,7 @@ If you need to build the plugins yourself:
    ```
 
 3. **Build the Plugin:**
+
    ```bash
    ./gradlew assemble gem
    ```
@@ -352,11 +368,13 @@ If you need to build the plugins yourself:
 ##### 2.4 Build Filter Plugin
 
 1. **Navigate to Filter Plugin:**
+
    ```bash
    cd /path/to/universal-connectors/filter-plugin/logstash-filter-adabas-guardium
    ```
 
 2. **Create gradle.properties:**
+
    ```bash
    cat > gradle.properties << EOF
    LOGSTASH_CORE_PATH=/path/to/logstash-7.5.2/logstash-core
@@ -365,6 +383,7 @@ If you need to build the plugins yourself:
    ```
 
 3. **Build the Plugin:**
+
    ```bash
    ./gradlew assemble gem
    ```
@@ -392,6 +411,7 @@ Now install the plugins on your Guardium system.
 #### 3.1 Access Guardium CLI
 
 1. **SSH to Guardium:**
+
    ```bash
    ssh guardium@<guardium_ip>
    ```
@@ -405,18 +425,21 @@ Now install the plugins on your Guardium system.
 #### 3.2 Install Input Plugin
 
 1. **Install the Input Plugin:**
+
    ```bash
    grdapi install_universal_connector_plugin \
      plugin_file=/tmp/logstash-input-adabas_auditing_input-<version>-java.gem
    ```
 
 2. **Verify Installation:**
+
    ```bash
    # List installed plugins
    grdapi list_universal_connector_plugins
    ```
 
    Expected output should include:
+
    ```
    adabas_auditing_input
    ```
@@ -424,18 +447,21 @@ Now install the plugins on your Guardium system.
 #### 3.3 Install Filter Plugin
 
 1. **Install the Filter Plugin:**
+
    ```bash
    grdapi install_universal_connector_plugin \
      plugin_file=/tmp/logstash-filter-adabas_guardium_filter-<version>-java.gem
    ```
 
 2. **Verify Installation:**
+
    ```bash
    # List installed plugins
    grdapi list_universal_connector_plugins
    ```
 
    Expected output should include:
+
    ```
    adabas_auditing_input
    adabas_guardium_filter
@@ -482,23 +508,23 @@ Configure the Universal Connector to use the Adabas plugins.
        # EntireX Broker connection details
        host => "adabas-broker.company.com"
        port => 3000
-       
+
        # Broker service identification
        brokerClass => "ADABAS-AUDIT"
        brokerServer => "AUDIT-SERVER"
        brokerService => "AUDIT-SERVICE"
-       
+
        # Authentication
        user => "guardium_user"
        token => "your_secure_token"
-       
+
        # Optional: Connection parameters
        retryInterval => 5
        retryCount => 10
        waitTime => 30
        receiveLength => 32767
        compression => 0
-       
+
        # Optional: Metadata REST server URL
        # restURL => "http://metadata-server:8080"
      }
@@ -507,21 +533,21 @@ Configure the Universal Connector to use the Adabas plugins.
 
    **Parameter Descriptions:**
 
-   | Parameter | Required | Description | Default |
-   |-----------|----------|-------------|---------|
-   | `host` | Yes | EntireX Broker hostname or IP | `localhost` |
-   | `port` | Yes | EntireX Broker port | `3000` |
-   | `brokerClass` | Yes | Broker class identifier | `class` |
-   | `brokerServer` | Yes | Broker server name | `server` |
-   | `brokerService` | Yes | Service name for audit data | `service` |
-   | `user` | Yes | Authentication username | `user` |
-   | `token` | Yes | Authentication token/password | `token` |
-   | `retryInterval` | No | Retry interval in seconds | `5` |
-   | `retryCount` | No | Number of retry attempts | `10` |
-   | `waitTime` | No | Wait time in seconds | `30` |
-   | `receiveLength` | No | Maximum message receive length | `32767` |
-   | `compression` | No | Compression level (0=none) | `0` |
-   | `restURL` | No | Metadata REST server URL | `""` |
+   | Parameter       | Required | Description                    | Default     |
+   | --------------- | -------- | ------------------------------ | ----------- |
+   | `host`          | Yes      | EntireX Broker hostname or IP  | `localhost` |
+   | `port`          | Yes      | EntireX Broker port            | `3000`      |
+   | `brokerClass`   | Yes      | Broker class identifier        | `class`     |
+   | `brokerServer`  | Yes      | Broker server name             | `server`    |
+   | `brokerService` | Yes      | Service name for audit data    | `service`   |
+   | `user`          | Yes      | Authentication username        | `user`      |
+   | `token`         | Yes      | Authentication token/password  | `token`     |
+   | `retryInterval` | No       | Retry interval in seconds      | `5`         |
+   | `retryCount`    | No       | Number of retry attempts       | `10`        |
+   | `waitTime`      | No       | Wait time in seconds           | `30`        |
+   | `receiveLength` | No       | Maximum message receive length | `32767`     |
+   | `compression`   | No       | Compression level (0=none)     | `0`         |
+   | `restURL`       | No       | Metadata REST server URL       | `""`        |
 
 4. **Configure Filter Section:**
 
@@ -552,26 +578,29 @@ Configure the Universal Connector to use the Adabas plugins.
 For production environments, use Guardium's keystore for sensitive information:
 
 1. **Create Secrets via CLI:**
+
    ```bash
    # SSH to Guardium
    ssh guardium@<guardium_ip>
-   
+
    # Add broker credentials to keystore
    grdapi universal_connector_keystore_add \
      key=ADABAS_BROKER_USER \
      password=guardium_user
-   
+
    grdapi universal_connector_keystore_add \
      key=ADABAS_BROKER_TOKEN \
      password=your_secure_token
    ```
 
 2. **Verify Secrets:**
+
    ```bash
    grdapi universal_connector_keystore_list
    ```
 
 3. **Update Input Configuration to Use Secrets:**
+
    ```ruby
    input {
      adabas_auditing_input {
@@ -580,11 +609,11 @@ For production environments, use Guardium's keystore for sensitive information:
        brokerClass => "ADABAS-AUDIT"
        brokerServer => "AUDIT-SERVER"
        brokerService => "AUDIT-SERVICE"
-       
+
        # Use environment variables from keystore
        user => "${ADABAS_BROKER_USER}"
        token => "${ADABAS_BROKER_TOKEN}"
-       
+
        retryInterval => 5
        retryCount => 10
        waitTime => 30
@@ -626,6 +655,7 @@ grdapi run_universal_connector debug_level=2
 ```
 
 **Debug Levels:**
+
 - `0` - Errors only (default)
 - `1` - Warnings and errors
 - `2` - Info, warnings, and errors
@@ -638,11 +668,13 @@ grdapi run_universal_connector debug_level=2
    - Status indicator should be green
 
 2. **Check Status via CLI:**
+
    ```bash
    grdapi get_universal_connector_status
    ```
 
    Expected output:
+
    ```
    Status: Running
    Connectors: 1
@@ -679,10 +711,11 @@ grdapi run_universal_connector debug_level=2
 #### 6.3 Check Guardium Logs
 
 1. **Access Universal Connector Logs:**
+
    ```bash
    # SSH to Guardium
    ssh guardium@<guardium_ip>
-   
+
    # View recent log entries
    grdapi tail_universal_connector_log lines=100
    ```
@@ -748,23 +781,23 @@ input {
     # Broker Connection
     host => "adabas-broker.company.com"
     port => 3000
-    
+
     # Service Identification
     brokerClass => "ADABAS-AUDIT"
     brokerServer => "AUDIT-SERVER"
     brokerService => "AUDIT-SERVICE"
-    
+
     # Authentication (using keystore)
     user => "${ADABAS_BROKER_USER}"
     token => "${ADABAS_BROKER_TOKEN}"
-    
+
     # Connection Tuning
     retryInterval => 5      # Retry every 5 seconds on failure
     retryCount => 10        # Retry up to 10 times
     waitTime => 30          # Wait 30 seconds for messages
     receiveLength => 32767  # Maximum message size
     compression => 0        # No compression
-    
+
     # Optional: Metadata Server
     # restURL => "http://metadata-server:8080"
   }
@@ -777,7 +810,7 @@ filter {
   adabas_guardium_filter {
     source => "adabas-auditing"
   }
-  
+
   # Optional: Add custom fields
   mutate {
     add_field => {
@@ -792,12 +825,12 @@ filter {
 
 When using the keystore, these environment variables are available:
 
-| Variable Name | Purpose | Example Value |
-|--------------|---------|---------------|
-| `ADABAS_BROKER_USER` | Broker authentication username | `guardium_user` |
-| `ADABAS_BROKER_TOKEN` | Broker authentication token | `<secure_token>` |
-| `ADABAS_BROKER_HOST` | Broker hostname (optional) | `adabas-broker.company.com` |
-| `ADABAS_METADATA_URL` | Metadata REST server URL (optional) | `http://metadata:8080` |
+| Variable Name         | Purpose                             | Example Value               |
+| --------------------- | ----------------------------------- | --------------------------- |
+| `ADABAS_BROKER_USER`  | Broker authentication username      | `guardium_user`             |
+| `ADABAS_BROKER_TOKEN` | Broker authentication token         | `<secure_token>`            |
+| `ADABAS_BROKER_HOST`  | Broker hostname (optional)          | `adabas-broker.company.com` |
+| `ADABAS_METADATA_URL` | Metadata REST server URL (optional) | `http://metadata:8080`      |
 
 ### Guardium Record Structure
 
@@ -849,15 +882,18 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
 #### Issue 1: Universal Connector Won't Start
 
 **Symptoms:**
+
 - Status remains "Disabled" after clicking Enable
 - Error in logs: "Failed to start Universal Connector"
 
 **Solutions:**
 
 1. **Check Plugin Installation:**
+
    ```bash
    grdapi list_universal_connector_plugins
    ```
+
    Verify both `adabas_auditing_input` and `adabas_guardium_filter` are listed.
 
 2. **Check Configuration Syntax:**
@@ -866,6 +902,7 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
    - Verify quotes and brackets are balanced
 
 3. **Check Logs for Details:**
+
    ```bash
    grdapi tail_universal_connector_log lines=200
    ```
@@ -878,6 +915,7 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
 #### Issue 2: Cannot Connect to EntireX Broker
 
 **Symptoms:**
+
 - Log message: "Failed to connect to broker"
 - Log message: "Connection refused"
 - No data flowing to Guardium
@@ -885,6 +923,7 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
 **Solutions:**
 
 1. **Verify Network Connectivity:**
+
    ```bash
    # From Guardium CLI
    telnet <broker_host> <broker_port>
@@ -895,6 +934,7 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
    - Check both outbound (Guardium) and inbound (broker) rules
 
 3. **Verify Broker is Running:**
+
    ```bash
    # On broker server
    etbinfo -b <broker_id>
@@ -911,6 +951,7 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
 #### Issue 3: Authentication Failures
 
 **Symptoms:**
+
 - Log message: "Authentication failed"
 - Log message: "Invalid credentials"
 - Connection established but no data received
@@ -922,9 +963,11 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
    - Ensure no extra spaces or special characters
 
 2. **Check Keystore Values:**
+
    ```bash
    grdapi universal_connector_keystore_list
    ```
+
    Verify keys exist and are spelled correctly.
 
 3. **Test Credentials Manually:**
@@ -932,15 +975,16 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
    - Verify user has permissions to access audit service
 
 4. **Update Credentials:**
+
    ```bash
    # Remove old key
    grdapi universal_connector_keystore_remove key=ADABAS_BROKER_TOKEN
-   
+
    # Add new key
    grdapi universal_connector_keystore_add \
      key=ADABAS_BROKER_TOKEN \
      password=new_token
-   
+
    # Restart UC
    grdapi run_universal_connector overwrite_old_instance="true"
    ```
@@ -948,6 +992,7 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
 #### Issue 4: No Audit Data Appearing
 
 **Symptoms:**
+
 - Universal Connector is running
 - Connection to broker successful
 - No records in Guardium reports
@@ -960,15 +1005,17 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
    - Verify audit events are published to broker
 
 2. **Check Filter Processing:**
+
    ```bash
    # Enable debug logging
    grdapi run_universal_connector debug_level=3
-   
+
    # Check logs for filter activity
    grdapi tail_universal_connector_log lines=500 | grep -i filter
    ```
 
 3. **Look for Skipped Events:**
+
    ```bash
    # Check for skip tags
    grdapi tail_universal_connector_log lines=500 | grep -i skip
@@ -987,6 +1034,7 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
 #### Issue 5: Incomplete or Missing Data Fields
 
 **Symptoms:**
+
 - Records appear in Guardium but missing information
 - User names showing as empty
 - Database names not populated
@@ -1012,6 +1060,7 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
 #### Issue 6: Performance Issues
 
 **Symptoms:**
+
 - High CPU usage on Guardium
 - Slow report generation
 - Delayed data processing
@@ -1019,12 +1068,13 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
 **Solutions:**
 
 1. **Adjust Connection Parameters:**
+
    ```ruby
    input {
      adabas_auditing_input {
        # Increase wait time to reduce polling frequency
        waitTime => 60
-       
+
        # Increase receive length for batch processing
        receiveLength => 65535
      }
@@ -1032,6 +1082,7 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
    ```
 
 2. **Enable Compression:**
+
    ```ruby
    input {
      adabas_auditing_input {
@@ -1051,6 +1102,7 @@ The filter plugin transforms Adabas audit data into this Guardium structure:
 #### Issue 7: Universal Connector Stops After Reboot
 
 **Symptoms:**
+
 - Universal Connector not running after Guardium restart
 - Must manually enable after reboot
 
@@ -1071,11 +1123,13 @@ grdapi run_universal_connector
 ### Diagnostic Commands
 
 #### Check Universal Connector Status
+
 ```bash
 grdapi get_universal_connector_status
 ```
 
 #### View Recent Logs
+
 ```bash
 # Last 100 lines
 grdapi tail_universal_connector_log lines=100
@@ -1085,21 +1139,25 @@ grdapi tail_universal_connector_log lines=500
 ```
 
 #### List Installed Plugins
+
 ```bash
 grdapi list_universal_connector_plugins
 ```
 
 #### List Connector Configurations
+
 ```bash
 # Via Web UI: Setup → Tools and Views → Configure Universal Connector
 ```
 
 #### Check Keystore Contents
+
 ```bash
 grdapi universal_connector_keystore_list
 ```
 
 #### Restart Universal Connector
+
 ```bash
 # Normal restart
 grdapi run_universal_connector
@@ -1112,6 +1170,7 @@ grdapi run_universal_connector debug_level=3
 ```
 
 #### Stop Universal Connector
+
 ```bash
 grdapi stop_universal_connector
 ```
@@ -1149,33 +1208,33 @@ If you continue to experience issues:
 
 ### A. Glossary
 
-| Term | Definition |
-|------|------------|
-| **Adabas** | A high-performance database management system by Software AG |
-| **Adabas Auditing Server** | Component that captures and publishes Adabas audit events |
-| **EntireX Broker** | Messaging middleware for communication between Adabas and Guardium |
-| **Universal Connector** | Guardium framework for ingesting data from various sources |
-| **Input Plugin** | Component that receives data from external sources |
-| **Filter Plugin** | Component that parses and transforms data |
-| **S-TAP** | Software Tap - traditional Guardium monitoring agent |
-| **Guardium Record** | Standardized data structure for audit events in Guardium |
-| **ACBX** | Adabas Control Block Extended - contains command details |
-| **CLNT** | Client information block in Adabas audit data |
+| Term                       | Definition                                                         |
+| -------------------------- | ------------------------------------------------------------------ |
+| **Adabas**                 | A high-performance database management system by Software AG       |
+| **Adabas Auditing Server** | Component that captures and publishes Adabas audit events          |
+| **EntireX Broker**         | Messaging middleware for communication between Adabas and Guardium |
+| **Universal Connector**    | Guardium framework for ingesting data from various sources         |
+| **Input Plugin**           | Component that receives data from external sources                 |
+| **Filter Plugin**          | Component that parses and transforms data                          |
+| **S-TAP**                  | Software Tap - traditional Guardium monitoring agent               |
+| **Guardium Record**        | Standardized data structure for audit events in Guardium           |
+| **ACBX**                   | Adabas Control Block Extended - contains command details           |
+| **CLNT**                   | Client information block in Adabas audit data                      |
 
 ### B. Port Reference
 
-| Port | Protocol | Purpose | Direction |
-|------|----------|---------|-----------|
-| 3000 | TCP | EntireX Broker (default) | Guardium → Broker |
-| 8443 | HTTPS | Guardium Web UI | Admin → Guardium |
-| 22 | SSH | Guardium CLI access | Admin → Guardium |
+| Port | Protocol | Purpose                  | Direction         |
+| ---- | -------- | ------------------------ | ----------------- |
+| 3000 | TCP      | EntireX Broker (default) | Guardium → Broker |
+| 8443 | HTTPS    | Guardium Web UI          | Admin → Guardium  |
+| 22   | SSH      | Guardium CLI access      | Admin → Guardium  |
 
 ### C. File Locations
 
-| File/Directory | Purpose |
-|----------------|---------|
-| `/tmp/` | Temporary location for plugin .gem files |
-| Guardium internal | Universal Connector logs (accessed via grdapi) |
+| File/Directory    | Purpose                                             |
+| ----------------- | --------------------------------------------------- |
+| `/tmp/`           | Temporary location for plugin .gem files            |
+| Guardium internal | Universal Connector logs (accessed via grdapi)      |
 | Guardium internal | Plugin installation directory (managed by Guardium) |
 
 ### D. Related Documentation
@@ -1235,9 +1294,9 @@ filter {
 
 ### F. Version History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-01 | Initial implementation guide |
+| Version | Date    | Changes                      |
+| ------- | ------- | ---------------------------- |
+| 1.0     | 2025-01 | Initial implementation guide |
 
 ---
 
@@ -1252,6 +1311,7 @@ For questions, issues, or feedback regarding this implementation guide:
 ---
 
 **Document Information:**
+
 - **Title:** Adabas Universal Connector Implementation Guide
 - **Audience:** Guardium administrators, Database administrators
 - **Prerequisites:** Basic knowledge of Guardium, Adabas, and networking
@@ -1259,4 +1319,4 @@ For questions, issues, or feedback regarding this implementation guide:
 
 ---
 
-*This guide is provided as-is and may be updated as new versions of Guardium or the Adabas plugins are released. Always refer to the latest official IBM and Software AG documentation for the most current information.*
+_This guide is provided as-is and may be updated as new versions of Guardium or the Adabas plugins are released. Always refer to the latest official IBM and Software AG documentation for the most current information._

@@ -14,7 +14,7 @@ Grant an EC2 instance the ability to:
 
 ---
 
-##  Prerequisites
+## Prerequisites
 
 - AWS account credentials with IAM privileges
 - An existing **SQS queue**
@@ -76,19 +76,12 @@ Click **Create policy** (in new tab), and create the following:
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "s3:GetObject"
-      ],
-      "Resource": [
-        "arn:aws:s3:::<BUCKET_NAME>",
-        "arn:aws:s3:::<BUCKET_NAME>/*"
-      ]
+      "Action": ["s3:GetObject"],
+      "Resource": ["arn:aws:s3:::<BUCKET_NAME>", "arn:aws:s3:::<BUCKET_NAME>/*"]
     },
     {
       "Effect": "Allow",
-      "Action": [
-        "s3:ListBucket"
-      ],
+      "Action": ["s3:ListBucket"],
       "Resource": "arn:aws:s3:::<BUCKET_NAME>"
     }
   ]
@@ -121,6 +114,7 @@ Click **Create policy** (in new tab), and create the following:
 ```
 
 > Replace:
+>
 > - `<REGION>` with your AWS region (e.g., us-east-1)
 > - `<ACCOUNT_ID>` with your current AWS account ID
 > - `<QUEUE_NAME>` with your SQS queue name in your current AWS account
@@ -151,6 +145,7 @@ Click **Create policy** (in new tab), and create the following:
 ```
 
 > Replace:
+>
 > - `<ACCOUNT_ID>` with your current AWS account ID
 > - `<ROLE_NAME>` with the name of the role you're creating in your current AWS account
 > - `<EC2_INSTANCE_ID>` with your EC2 instance ID in your current AWS account
@@ -164,6 +159,7 @@ Click **Create policy** (in new tab), and create the following:
 ### Step-by-Step Cross-Account Configuration
 
 For this setup, we'll use the following terminology:
+
 - **Account1**: The AWS account where your EC2 instance is hosted (e.g., Account ID: 111111)
 - **Account2**: The AWS account where your SQS queue and S3 bucket are located (e.g., Account ID: 222222)
 
@@ -192,6 +188,7 @@ For this setup, we'll use the following terminology:
 ```
 
 > Replace:
+>
 > - `<Account2_ID>` with the account ID where your SQS/S3 resources are located (e.g., 222222)
 > - `<Role_In_Account2>` with the name of the role you'll create in Account2 (e.g., role_on_222222)
 
@@ -271,18 +268,12 @@ For this setup, we'll use the following terminology:
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "s3:GetObject"
-      ],
-      "Resource": [
-        "arn:aws:s3:::<BUCKET_NAME>/AWSLogs/<Account2_ID>/*"
-      ]
+      "Action": ["s3:GetObject"],
+      "Resource": ["arn:aws:s3:::<BUCKET_NAME>/AWSLogs/<Account2_ID>/*"]
     },
     {
       "Effect": "Allow",
-      "Action": [
-        "s3:ListBucket"
-      ],
+      "Action": ["s3:ListBucket"],
       "Resource": "arn:aws:s3:::<BUCKET_NAME>",
       "Condition": {
         "StringLike": { "s3:prefix": ["AWSLogs/<Account2_ID>/*"] }
@@ -367,6 +358,7 @@ input {
 ```
 
 > Replace:
+>
 > - `<ACCOUNT_ID>` with your current AWS account ID
 > - `<ROLE_NAME>` with the name of the role you're creating in your current AWS account
 
@@ -377,7 +369,7 @@ input {
 1. Go to **EC2 > Instances**
 2. Select your instance > **Actions > Security > Modify IAM role**
 3. Choose the role `<ROLE_NAME>` and click **Update IAM role**
- 
+
 ---
 
 ## References

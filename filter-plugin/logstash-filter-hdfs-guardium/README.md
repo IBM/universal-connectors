@@ -1,11 +1,12 @@
-### Meet HDFS
-* Tested versions: Hadoop 3.1.x
-* HDFS Versions- Cloudera 7.1
-* Environment: On-premise, Iaas
-* Supported inputs: Filebeat (push)
-* Supported Guardium versions:
-  * Guardium Data Protection: 11.4 and above
-  * Guardium Data Security Center SaaS : 1.0
+# HDFS
+
+- Tested versions: Hadoop 3.1.x
+- HDFS Versions- Cloudera 7.1
+- Environment: On-premise, Iaas
+- Supported inputs: Filebeat (push)
+- Supported Guardium versions:
+  - Guardium Data Protection: 11.4 and above
+  - Guardium Data Security Center SaaS : 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses an HDFS audit event into a Guardium record instance, which standardizes the event into several parts before it is sent over to Guardium.
 
@@ -35,22 +36,22 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
    • Locate "filebeat.inputs" in the filebeat.yml file, then add the following parameters.
 
-    ```
-    filebeat.inputs:
+   ```
+   filebeat.inputs:
    - type: filestream
    - id: <ID>
-     enabled: true
-     paths:
-       - /var/log/hadoop-hdfs/hdfs-audit.log*
+    enabled: true
+    paths:
+      - /var/log/hadoop-hdfs/hdfs-audit.log*
 
-    filebeat.config.modules:
-    path: ${path.config}/modules.d/*.yml
-    reload.enabled: false
+   filebeat.config.modules:
+   path: ${path.config}/modules.d/*.yml
+   reload.enabled: false
 
-    setup.template.settings:
-    index.number_of_shards: 1
-  
-    ```
+   setup.template.settings:
+   index.number_of_shards: 1
+
+   ```
 
 2. Configuring the output section:
 
@@ -62,24 +63,23 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
    For example:
 
-    ```
-    output.logstash:
-    hosts: ["universal-connector-host:5046"]
+   ```
+   output.logstash:
+   hosts: ["universal-connector-host:5046"]
 
-    processors:
-     - add_host_metadata: ~
-     - add_locale: ~
-     - add_tags:
-    tags: [hdfs]
+   processors:
+    - add_host_metadata: ~
+    - add_locale: ~
+    - add_tags:
+   tags: [hdfs]
 
-    ```
+   ```
+
    In addition, events are configured with the add_locale, add_host_metadata, and add_tags processors (to add an "hdfs" tag).
-
 
 3. To learn more about Filebeat processors, click [here](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html#using-processors).
 
 #### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
-
 
 ## 4. Configuring the HDFS filters in Guardium Data Protection (GDP)
 
@@ -92,6 +92,7 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 1. Database name is seen as blank.
 
 ### Before you begin
+
 •Configure the policies you require. See [policies](/docs/#policies) for more information.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
@@ -108,20 +109,18 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 4. Click **Upload File** and select the offline **logstash-filter-hdfs_guardium_filter.zip** file. After it is uploaded, click OK.
 
-5. Click the Plus sign to open the Connector Configuration dialog box.
+4. Click the Plus sign to open the Connector Configuration dialog box.
 
-6. Type a name in the Connector name field.
+5. Type a name in the Connector name field.
 
-7. Update the input section to add the details from the [hdfsFilebeat.conf](./hdfsFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide required details for DB server name, username and password for making JDBC connectivity.
+6. Update the input section to add the details from the [hdfsFilebeat.conf](./hdfsFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide required details for DB server name, username and password for making JDBC connectivity.
 
-8. Update the filter section to add the details from the [hdfsFilebeat.conf](./hdfsFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the same DB server name as in above step against the Server_Hostname attribute in the filter section.
+7. Update the filter section to add the details from the [hdfsFilebeat.conf](./hdfsFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the same DB server name as in above step against the Server_Hostname attribute in the filter section.
 
-9. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
-
+8. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 ## Configuring the HDFS filters in Guardium Data Security Center
 
 To configure this plug-in for Guardium Data Security Center, follow [this guide.](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md)
 
 In the input configuration section, refer to the Filebeat section.
-

@@ -61,7 +61,7 @@ Configure CSTABLE-based auditing in SAP HANA to store audit trails in database t
    ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system')
    set ('auditing configuration', 'global_auditing_state') = 'true';
    ```
-3. Set the audit trail target to a table (``CSTABLE``).
+3. Set the audit trail target to a table (`CSTABLE`).
    ```
    ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system')
    set ('auditing configuration', 'default_audit_trail_type') = 'CSTABLE';
@@ -76,7 +76,8 @@ Configure CSTABLE-based auditing in SAP HANA to store audit trails in database t
 ## Creating an audit policy
 
 Here we will check about CSTABLE base auditing.
-* CSTABLE base auditing - Audit-trail target is a table, requires JDBC input plug-in.
+
+- CSTABLE base auditing - Audit-trail target is a table, requires JDBC input plug-in.
 
 ### Enabling CSTABLE base auditing logs:
 
@@ -84,25 +85,25 @@ An audit policy defines the actions to be audited. To create an audit policy, th
 privileges.
 You need to create an audit policy for both types of auditing.
 
-To perform the below steps, open SAP HANA studio (Eclipse) Select SYSTEMDB user, right-click,  select SQL Console,
+To perform the below steps, open SAP HANA studio (Eclipse) Select SYSTEMDB user, right-click, select SQL Console,
 and then run these Commands:
 
 1. For multiple container tenant database you can enable auditing for CSV File target by using the following command
-    1. SAP HANA Command For Enable Auditing:
-       ```
-       ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system')
-       set ('auditing configuration', 'global_auditing_state') = 'true';
-       ```
-    2. To select the target as a table, use the following command
-       ```
-       ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system')
-       set ('auditing configuration', 'default_audit_trail_type') = 'CSTABLE';
-       ```
-    3. To avoid unwanted system logs use below command to store all system logs in table.
-       ```
-       ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system')
-       set ('auditing configuration', 'critical_audit_trail_type') = 'CSVTEXTFILE';
-       ```
+   1. SAP HANA Command For Enable Auditing:
+      ```
+      ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system')
+      set ('auditing configuration', 'global_auditing_state') = 'true';
+      ```
+   2. To select the target as a table, use the following command
+      ```
+      ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system')
+      set ('auditing configuration', 'default_audit_trail_type') = 'CSTABLE';
+      ```
+   3. To avoid unwanted system logs use below command to store all system logs in table.
+      ```
+      ALTER SYSTEM ALTER CONFIGURATION ('global.ini', 'system')
+      set ('auditing configuration', 'critical_audit_trail_type') = 'CSVTEXTFILE';
+      ```
 
 2. After running the previous command, restart the container and refresh the added systems.
 
@@ -114,6 +115,7 @@ An audit policy defines the actions to be audited. In order to create an audit p
 AUDIT ADMIN system rights. Creating an audit policy is a common step for both types of auditing.
 
 You need to create an audit policy for both types of auditing.
+
 #### Procedure
 
 1. In the SAP HANA Studio, expand the database.
@@ -123,16 +125,16 @@ You need to create an audit policy for both types of auditing.
 5. Enter your policy name.
 6. In the **Audited actions** field, click **…** (ellipsis). Then select the actions to audit.
 7. In the **Audited actions status** column, select when to create an audit record.
-    - SUCCESSFUL - Logs successfully executed actions
-    - UNSUCCESSFUL - Logs unsuccessfully executed actions
-    - ALL - Logs both successful and unsuccessful actions
+   - SUCCESSFUL - Logs successfully executed actions
+   - UNSUCCESSFUL - Logs unsuccessfully executed actions
+   - ALL - Logs both successful and unsuccessful actions
 8. Select the audit level.
-    - EMERGENCY
-    - CRITICAL
-    - ALERT
-    - WARNING
-    - INFO (default)
-9. (Optional) Filter the users you would like to audit. From the **Users** column, click ***…*** (ellipsis) and add
+   - EMERGENCY
+   - CRITICAL
+   - ALERT
+   - WARNING
+   - INFO (default)
+9. (Optional) Filter the users you would like to audit. From the **Users** column, click **_…_** (ellipsis) and add
    users.
 10. (Optional) Specify the target object(s) to be audited. This option is available only when auditing `SELECT`,
     `INSERT`, `UPDATE`, or `DELETE` actions.
@@ -146,17 +148,17 @@ Configure audit policies in SAP HANA to monitor session activities, DML operatio
 1. For audit session-related logs (Connect, Disconnect, User Validation), complete the following steps. <br>
    a. Go to the tab **Audited action** tab. From the **Session Management** and **System Configuration** menus, select
    the **Connect** checkbox. <br>
-   b. Set **Audited Action Status** to ``Unsuccessful``. <br>
+   b. Set **Audited Action Status** to `Unsuccessful`. <br>
 
 2. For audit DML logs, complete the following steps. <br>
    a. From the tab **Audited action** tab, select the **Data Query** and **Manipulation** checkbox. <br>
-   b. Set **Audited Action Status** to ``Successful``.<br>
+   b. Set **Audited Action Status** to `Successful`.<br>
    c. Specify a **Target Object** for this policy.
 
 3. For audit DDL Logs, complete the following steps. <br>
    a. Go to the tab **Audited action** tab. From the **Data Definition** menu, select the **Create Table**, **Create
    Function**, **Create Procedure**, **Drop Function**, **Drop Procedure**, and **Drop Table** checkboxes. <br>
-   b. Set **Audited Action Status** to ``Successful``. <br>
+   b. Set **Audited Action Status** to `Successful`. <br>
 
 ## Viewing SAP HANA audit logs for CSTABLE-based auditing
 
@@ -178,16 +180,16 @@ You can create a new datasource profile from the **Datasource Profile Management
 2. Click the **➕ (Add)** button.
 3. You can create a profile by using one of the following methods:
 
-    * To create a new profile manually, go to the **"Add Profile"** tab and provide values for the following fields.
-        * **Name** and **Description**.
-        * Select a **Plug-in Type** from the dropdown. For example, **SAP HANA Over JDBC Kafka Connect 2.0**.
+   - To create a new profile manually, go to the **"Add Profile"** tab and provide values for the following fields.
+     - **Name** and **Description**.
+     - Select a **Plug-in Type** from the dropdown. For example, **SAP HANA Over JDBC Kafka Connect 2.0**.
 
-    * To upload from CSV, go to the **Upload from CSV** tab and upload an exported or manually created CSV file
-      containing one or more profiles. You can also choose from the following options:
-        * **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
-        * **Test connection for imported profiles** — Automatically tests connections after profiles are created.
-        * **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the
-          ELB process.
+   - To upload from CSV, go to the **Upload from CSV** tab and upload an exported or manually created CSV file
+     containing one or more profiles. You can also choose from the following options:
+     - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
+     - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
+     - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the
+       ELB process.
 
 **Note:** Configuration options vary based on the selected plug-in.
 
@@ -197,28 +199,29 @@ You can create a new datasource profile from the **Datasource Profile Management
 
 The following table describes the fields that are specific to JDBC Kafka Connect 2.0 and similar plugins.
 
-| Field                                   | Description                                                                                                                                 |
-|-----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| **Name**                                | Unique name of the profile.                                                                                                                 |
-| **Description**                         | Description of the profile.                                                                                                                 |
-| **Plug-in**                             | Plug-in type for this profile. A full list of available plug-ins are available on the **Package Management** page.                          |
+| Field                                   | Description                                                                                                                                  |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Name**                                | Unique name of the profile.                                                                                                                  |
+| **Description**                         | Description of the profile.                                                                                                                  |
+| **Plug-in**                             | Plug-in type for this profile. A full list of available plug-ins are available on the **Package Management** page.                           |
 | **Credential**                          | The credential to authenticate with the datasource. Create the credential in **Credential Management**, or click **➕** to create a new one. |
-| **Kafka Cluster**                       | Kafka cluster to deploy the universal connector.                                                                                            |
-| **Label**                               | Grouping label (e.g, customer name or ID).                                                                                                  |
-| **JDBC Driver Library**                 | JDBC driver for the database.                                                                                                               |
-| **Port**                                | Port that is used to connect to the database.                                                                                               |
-| **Hostname**                            | Hostname of the database.                                                                                                                   |
-| **Query**                               | SQL query that is used to extract audit logs.                                                                                               |
-| **Service Name / SID**                  | The database **service name** or **SID**.                                                                                                   |
-| **Initial Time**                        | Initial polling time for audit logs.                                                                                                        |
-| **No Traffic Threshold**                | Threshold setting for inactivity detection.                                                                                                 |
-| **Use Enterprise Load Balancing (ELB)** | Enable this if ELB support is required.                                                                                                     |
-| **Managed Unit Count**                  | Number of Managed Units (MUs) to allocate for ELB.                                                                                          |
+| **Kafka Cluster**                       | Kafka cluster to deploy the universal connector.                                                                                             |
+| **Label**                               | Grouping label (e.g, customer name or ID).                                                                                                   |
+| **JDBC Driver Library**                 | JDBC driver for the database.                                                                                                                |
+| **Port**                                | Port that is used to connect to the database.                                                                                                |
+| **Hostname**                            | Hostname of the database.                                                                                                                    |
+| **Query**                               | SQL query that is used to extract audit logs.                                                                                                |
+| **Service Name / SID**                  | The database **service name** or **SID**.                                                                                                    |
+| **Initial Time**                        | Initial polling time for audit logs.                                                                                                         |
+| **No Traffic Threshold**                | Threshold setting for inactivity detection.                                                                                                  |
+| **Use Enterprise Load Balancing (ELB)** | Enable this if ELB support is required.                                                                                                      |
+| **Managed Unit Count**                  | Number of Managed Units (MUs) to allocate for ELB.                                                                                           |
 
 **Note:**
+
 - Depending on the plugin type, the configuration may require either:
-    - A **Connection URL**, or
-    - Separate fields for **Hostname**, **Port**, and **Service Name / SID**
+  - A **Connection URL**, or
+  - Separate fields for **Hostname**, **Port**, and **Service Name / SID**
 - Make sure that the **Profile name** is unique.
 - Required credentials must be created before or during profile creation.
 
@@ -259,4 +262,3 @@ An installed profile can be **uninstalled** or **reinstalled** if needed.
 2. From the list of available actions, select the desired option: **Uninstall** or **Reinstall**.
 
 ---
-

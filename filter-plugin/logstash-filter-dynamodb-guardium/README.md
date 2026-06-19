@@ -1,21 +1,21 @@
 # Dynamodb-Guardium Logstash filter plug-in
 
 ### Meet DynamoDB
-* Environment: AWS
-* Supported Guardium versions:
-    * Guardium Data Protection: 11.4 and later
-        * Supported inputs:
-            * S3 (pull)
-            * CloudWatch (pull)
-            * SQS (Pull)
-    * Guardium Data Security Center SaaS: 1.0
-        * Supported inputs:
-            * CloudWatch (pull)
+
+- Environment: AWS
+- Supported Guardium versions:
+  - Guardium Data Protection: 11.4 and later
+    - Supported inputs:
+      - S3 (pull)
+      - CloudWatch (pull)
+      - SQS (Pull)
+  - Guardium Data Security Center SaaS: 1.0
+    - Supported inputs:
+      - CloudWatch (pull)
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium. It parses events and messages from the Amazon DynamoDB audit log into a [Guardium record](https://github.com/IBM/universal-connectors/blob/main/common/src/main/java/com/ibm/guardium/universalconnector/commons/structures/Record.java) instance (which is a standard structure made out of several parts). The information is then sent over to Guardium. Guardium records include the accessor (the person who tried to access the data), the session, data, and exceptions. If there are no errors, the data contains details about the query "construct". The construct details the main action (verb) and collections (objects) involved.
 
 The plug-in is free and open-source (Apache 2.0). It can be used as a starting point to develop additional filter plug-ins for Guardium universal connector.
-
 
 ## 1. Configuring Amazon DynamoDB
 
@@ -33,10 +33,9 @@ In the AWS web interface, configure the service for Dynamodb.
 8. Enter a partition key.
 9. Scroll down and click the orange **Create table** button.
 
-## 2. Enabling audit logs 
+## 2. Enabling audit logs
 
 There are different methods for auditing and logging. We will use CloudTrail for this example since it supports all required parameters. The following events are supported for auditing in AWS.
-
 
 ### Procedure
 
@@ -75,7 +74,7 @@ There are different methods for auditing and logging. We will use CloudTrail for
 ### Limitations
 
 1. The Dynamo DB plug-in does not support IPV6.
-2. You may need to disable management events in order to avoid heavy traffic and data loss in Guardium. Disabling management events disables logging of the following events: 
-CreateTable, DeleteTable, ListTable, UpdateTable, DescribeTable events.
+2. You may need to disable management events in order to avoid heavy traffic and data loss in Guardium. Disabling management events disables logging of the following events:
+   CreateTable, DeleteTable, ListTable, UpdateTable, DescribeTable events.
 3. The following fields couldn't be mapped with the Dynamo audit logs,
    1. Client HostName : Not available with audit logs so set as NA.

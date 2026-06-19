@@ -2,11 +2,11 @@
 
 ### Meet OpenSearch
 
-* Tested versions: v1
-* Environment: AWS
-* Supported inputs: CloudWatch (pull)
-* Supported Guardium versions:
-    * Guardium Data Protection 12.2 and later
+- Tested versions: v1
+- Environment: AWS
+- Supported inputs: CloudWatch (pull)
+- Supported Guardium versions:
+  - Guardium Data Protection 12.2 and later
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in
 IBM Security Guardium. It parses events and messages from the Amazon OpenSearch audit log into
@@ -21,7 +21,7 @@ plug-ins for Guardium universal connector.
 
 1. [Prerequisites](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/setting-up.html)
 2. Go to https://console.aws.amazon.com/.
-3. Search and navigate to ```Amazon OpenSearch Service```. 
+3. Search and navigate to `Amazon OpenSearch Service`.
 4. To create an OpenSearch domain, refer to the [Getting started with Amazon OpenSearch Service guide](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/gsg.html).
 
 ### Enabling Audit Logs
@@ -35,29 +35,27 @@ By default, each database instance has an associated log group with a name in th
 #### Procedure
 
 1. Open the CloudWatch console https://console.aws.amazon.com/cloudwatch/.
-2. In the navigation pane, choose ```Log groups```.
-3. Choose the ```log group``` that you specified while enabling audit logs. Within the log group, OpenSearch Service creates a log stream for each node in your domain. 
-4. In the ```Log streams```, select ```Search all```.
+2. In the navigation pane, choose `Log groups`.
+3. Choose the `log group` that you specified while enabling audit logs. Within the log group, OpenSearch Service creates a log stream for each node in your domain.
+4. In the `Log streams`, select `Search all`.
 5. For the read and write events, see the corresponding logs. This process may take several seconds.
 
 #### Supported Audit Log Types
 
 Cluster communication occurs over two separate layers: **REST layer** and **Transport layer**. The following is the list of Audit log Categories, with their availability determined by the communication layers.
 
-* FAILED_LOGIN 
-* MISSING_PRIVILEGES 
-* BAD_HEADERS
-* SSL_EXCEPTION
-* GRANTED_PRIVILEGES
-* OPENSEARCH_SECURITY_INDEX_ATTEMPT
-* AUTHENTICATED 
-* INDEX_EVENT
-* COMPLIANCE_DOC_READ 
-* COMPLIANCE_DOC_WRITE 
-* COMPLIANCE_INTERNAL_CONFIG_READ
-* COMPLIANCE_INTERNAL_CONFIG_WRITE
- 
-
+- FAILED_LOGIN
+- MISSING_PRIVILEGES
+- BAD_HEADERS
+- SSL_EXCEPTION
+- GRANTED_PRIVILEGES
+- OPENSEARCH_SECURITY_INDEX_ATTEMPT
+- AUTHENTICATED
+- INDEX_EVENT
+- COMPLIANCE_DOC_READ
+- COMPLIANCE_DOC_WRITE
+- COMPLIANCE_INTERNAL_CONFIG_READ
+- COMPLIANCE_INTERNAL_CONFIG_WRITE
 
 For more information about the audit logging category and layers, refer to the [Audit log layers and categories](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/audit-logs.html#audit-log-layers).
 
@@ -66,9 +64,10 @@ For more information about the audit logging fields, refer to the [Audit log fie
 **Note:** OpenSearch generates a large volume of background audit logs by default. We recommend configuring the audit settings appropriately to limit unnecessary entries in the audit logs.
 
 ### Limitations
+
 - Audit logging in OpenSearch can be accessed in two different ways – via the OpenSearch Dashboards or through CloudWatch Logs. However, this filter plugin only parses and processes audit logs that are streamed to CloudWatch. Audit logs stored directly in OpenSearch indices or viewed in the Dashboards are not supported for parsing.
 - FAILED_LOGIN REST messages will appear in 'Full SQL' and 'Failed Logins' report.
-- Certain reserved keywords (template, mappings, get, aliases, user) are automatically prefixed with an underscore (_) during sanitization to prevent OpenSearch URI parsing errors or endpoint conflicts.
+- Certain reserved keywords (template, mappings, get, aliases, user) are automatically prefixed with an underscore (\_) during sanitization to prevent OpenSearch URI parsing errors or endpoint conflicts.
 - ClientHostName is not available in the audit logs for OpenSearch.
 
 ## Guardium Data Protection
@@ -81,7 +80,8 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 * Download the **logstash-filter-opensearch_guardium_filter.zip** package from [Universal Connector release page](https://github.com/IBM/universal-connectors/releases) under Assets.
 
 ### Procedure
-1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
+
+1. On the collector, go to `Setup` > `Tools and Views` > `Configure Universal Connector`.
 2. Enable the universal connector if it is disabled.
 3. Click ```Upload File``` and select the offline **logstash-filter-opensearch_guardium_filter.zip** plug-in. After it is uploaded, click ```OK```.
 4. Click ```Upload File``` and select the key.json file. After it is uploaded, click ```OK```.
@@ -90,7 +90,5 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 7. Update the input section to add the details from the [opensearch.conf](OpenSearchOverCloudwatchPackage/opensearch.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 8. Update the filter section to add the details from the [opensearch.conf](OpenSearchOverCloudwatchPackage/opensearch.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 9. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every individual connector added.
-10. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
-11. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the ```Disable/Enable``` button.
-
-
+10. Click `Save`. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+11. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart the Universal Connector using the `Disable/Enable` button.

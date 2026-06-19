@@ -1,11 +1,13 @@
 # MySql-Percona-Guardium Logstash filter plug-in
+
 ### Meet MySql-Percona
-* Tested versions: 5.7.31-34
-* Environment: On-premise, Iaas
-* Supported inputs: Filebeat (push)
-* Supported Guardium versions:
-  * Guardium Data Protection: 11.4 and above
-  * Guardium Data Security Center SaaS: 1.0
+
+- Tested versions: 5.7.31-34
+- Environment: On-premise, Iaas
+- Supported inputs: Filebeat (push)
+- Supported Guardium versions:
+  - Guardium Data Protection: 11.4 and above
+  - Guardium Data Security Center SaaS: 1.0
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in IBM Security Guardium.
 
@@ -19,18 +21,18 @@ This plug-in is an extension of the MySql-Guardium Logstash filter plug-in. For 
 
 1. On the database, update the file: /etc/percona-server.conf.d/mysqld.cnf.
 
-    ```
-      symbolic-links=0
-      bind_address=0.0.0.0
-      log-error=/var/log/mysqld.log
-      pid-file=/var/run/mysqld/mysqld.pid
-      audit_log_format=JSON
-      audit_log_handler=FILE
-      audit_log_file=/var/lib/mysql/audit.log
-  
-    ```
-2. Restart the mysql service.
+   ```
+     symbolic-links=0
+     bind_address=0.0.0.0
+     log-error=/var/log/mysqld.log
+     pid-file=/var/run/mysqld/mysqld.pid
+     audit_log_format=JSON
+     audit_log_handler=FILE
+     audit_log_file=/var/lib/mysql/audit.log
 
+   ```
+
+2. Restart the mysql service.
 
 ## 3. Configuring Filebeat to push logs to Guardium
 
@@ -50,16 +52,16 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
    • Locate "filebeat.inputs" in the filebeat.yml file, and then add the following parameters.
 
-    ```
-    type: filestream
-    id: <ID>
-    #Change to true to enable this input configuration.
-    enabled: true 
-    paths:
-    - /var/lib/mysql/audit.log
-    tags: ["mysqlpercona"]
-  
-    ```
+   ```
+   type: filestream
+   id: <ID>
+   #Change to true to enable this input configuration.
+   enabled: true
+   paths:
+   - /var/lib/mysql/audit.log
+   tags: ["mysqlpercona"]
+
+   ```
 
 2. Configuring the output section:
 
@@ -71,19 +73,18 @@ https://www.elastic.co/guide/en/beats/filebeat/current/directory-layout.html
 
    For example:
 
-    ```
-    output.logstash:
-    #The Logstash hosts
-    hosts: ["<Guardium IP>:5045"] #just to ip/host name of the gmachine
+   ```
+   output.logstash:
+   #The Logstash hosts
+   hosts: ["<Guardium IP>:5045"] #just to ip/host name of the gmachine
 
-    ```
+   ```
+
    In addition, events are configured with the add_locale, add_host_metadata, and add_tags processors (to add an "hdfs" tag).
-
 
 3. To learn more about Filebeat processors, click [here](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html#using-processors).
 
 #### For details on configuring Filebeat connection over SSL, refer [Configuring Filebeat to push logs to Guardium](https://github.com/IBM/universal-connectors/blob/main/input-plugin/logstash-input-beats/README.md#configuring-filebeat-to-push-logs-to-guardium).
-
 
 ## Configuring the MySQL filters in Guardium Data Protection (GDP)
 
@@ -99,7 +100,7 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 • MySql-Percona-Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
-**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [mysql-percona-offline-plugin.zip](./MysqlPerconaOverFilebeatPackage/MysqlPercona/logstash-filter-mysql_percona_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure). 
+**Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [mysql-percona-offline-plugin.zip](./MysqlPerconaOverFilebeatPackage/MysqlPercona/logstash-filter-mysql_percona_filter.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
 ### Procedure
 
@@ -107,19 +108,19 @@ The output of the Guardium universal connector is forwarded to the Guardium snif
 
 2. First enable the Universal Guardium connector, if it is disabled already.
 
-4. Click **Upload File** and select the offline [mysql-percona-offline-plugin.zip](./MysqlPerconaOverFilebeatPackage/MysqlPercona/logstash-filter-mysql_percona_filter.zip) file. After it is uploaded, click OK.
+3. Click **Upload File** and select the offline [mysql-percona-offline-plugin.zip](./MysqlPerconaOverFilebeatPackage/MysqlPercona/logstash-filter-mysql_percona_filter.zip) file. After it is uploaded, click OK.
 
-5. Click the Plus sign to open the Connector Configuration dialog box.
+4. Click the Plus sign to open the Connector Configuration dialog box.
 
-6. Type a name in the Connector name field.
+5. Type a name in the Connector name field.
 
-7. Update the input section to add the details from the [perconaFilebeat.conf](./perconaFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide required details for DB server name, username and password for making JDBC connectivity.
+6. Update the input section to add the details from the [perconaFilebeat.conf](./perconaFilebeat.conf) file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end. Provide required details for DB server name, username and password for making JDBC connectivity.
 
-8. Update the filter section to add the details from the [perconaFilebeat.conf](./perconaFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the same DB server name as in above step against the Server_Hostname attribute in the filter section.
+7. Update the filter section to add the details from the [perconaFilebeat.conf](./perconaFilebeat.conf) file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end. Provide the same DB server name as in above step against the Server_Hostname attribute in the filter section.
 
-9. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
-
+8. Click Save. Guardium validates the new connector, and enables the universal connector if it was disabled. After it is validated, it appears in the Configure Universal Connector page.
 
 ## Configuring the MySQL filters in Guardium Insights
+
 To configure this plug-in for Guardium Insights, follow [this guide.](/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md).
 In the input configuration section, refer to the Filebeat section.

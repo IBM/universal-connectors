@@ -4,10 +4,10 @@ This connector ingests PostgreSQL database audit logs from Google Cloud Pub/Sub 
 
 ## Meet PostgreSQL over Pub/Sub Connect
 
-* Environments: On-prem
-* Supported inputs: Kafka connect Pubsub 2.0 (pull)
-* Supported Guardium versions:
-    * Guardium Data Protection: Appliance bundle 12.2.2 or later
+- Environments: On-prem
+- Supported inputs: Kafka connect Pubsub 2.0 (pull)
+- Supported Guardium versions:
+  - Guardium Data Protection: Appliance bundle 12.2.2 or later
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems.
 
@@ -28,13 +28,14 @@ Kafka-connect is a framework for streaming data between Apache Kafka and other s
    `CREATE EXTENSION pgaudit;`
 
 ### Configuring GCP for the input plug-in
-1. [Create a topic in Pub/Sub](https://cloud.google.com/pubsub/docs/create-topic#create_a_topic_2).
-2. [Create a subscription in Pub/Sub](https://cloud.google.com/pubsub/docs/create-subscription#create_a_pull_subscription)
-3. [Create a service account](https://developers.google.com/workspace/guides/create-credentials#create_a_service_account).
+
+1.  [Create a topic in Pub/Sub](https://cloud.google.com/pubsub/docs/create-topic#create_a_topic_2).
+2.  [Create a subscription in Pub/Sub](https://cloud.google.com/pubsub/docs/create-subscription#create_a_pull_subscription)
+3.  [Create a service account](https://developers.google.com/workspace/guides/create-credentials#create_a_service_account).
     - To provide subscription access to the service account, select the **Pub/Sub Subscriber** role from the role selection list when you are creating the service account.
     - You do not need to grant users access to this service account.
-4. [Create credentials for a service account](https://developers.google.com/workspace/guides/create-credentials#create_credentials_for_a_service_account). The key is used by the Logstash input plugin configuration file.
-5. [Create a log sink in Pub/Sub](https://cloud.google.com/logging/docs/export/configure_export_v2#creating_sink).
+4.  [Create credentials for a service account](https://developers.google.com/workspace/guides/create-credentials#create_credentials_for_a_service_account). The key is used by the Logstash input plugin configuration file.
+5.  [Create a log sink in Pub/Sub](https://cloud.google.com/logging/docs/export/configure_export_v2#creating_sink).
     - To specify which logs to route, use the following inclusion filter in the **Choose logs to include in sink** field during log sink creation. This filter captures relevant data access and activity logs.
 
           (resource.type="cloudsql_database" resource.labels.database_id="<PROJECT_ID>:<SQL_INSTANCE_ID>"
@@ -45,7 +46,6 @@ Kafka-connect is a framework for streaming data between Apache Kafka and other s
           logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fpostgres.log"
           severity=(EMERGENCY OR ALERT OR CRITICAL OR ERROR OR WARNING OR NOTICE OR DEBUG OR DEFAULT))
 
-
 ## Enabling audit logs
 
 The inclusion filter that is used during log sink creation makes sures that only relevant logs are routed.
@@ -55,34 +55,38 @@ The inclusion filter that is used during log sink creation makes sures that only
 To view or download the generated logs, make sure that the appropriate Identity and Access Management (IAM) roles are assigned.
 These roles control access to logs in GCP.
 
-* **View logs**:
-    - roles/logging.viewer (Logs Viewer)
-    - roles/logging.privateLogViewer (Private Logs Viewer)
-* **Download logs**:
-    - roles/logging.admin (Logging Admin)
-    - roles/logging.viewAccessor (Logs View Accessor)
+- **View logs**:
+  - roles/logging.viewer (Logs Viewer)
+  - roles/logging.privateLogViewer (Private Logs Viewer)
+- **Download logs**:
+  - roles/logging.admin (Logging Admin)
+  - roles/logging.viewAccessor (Logs View Accessor)
 
 For more information on IAM roles and access control, see [Access Control with IAM](https://cloud.google.com/logging/docs/access-control).
 
 ### Setting destination permissions
+
 To route audit logs to a specific destination, such as Pub/Sub topic and subscription, complete the following steps:
 
 1. [Get sink writer's identity](https://cloud.google.com/logging/docs/export/configure_export_v2#dest-auth).
 2. If you have owner access to the destination, [set access controls](https://cloud.google.com/pubsub/docs/access-control#console). Copy the sink writer's identity and enter it in the **New Principals** field when you configure access policies for topics and subscriptions. </br>
-    * For **topics**, assign the **Pub/Sub Publisher** and **Pub/Sub Subscriber** role. </br>
-    * For **subscriptions**, assign the **Pub/Sub Publisher** role.
+   - For **topics**, assign the **Pub/Sub Publisher** and **Pub/Sub Subscriber** role. </br>
+   - For **subscriptions**, assign the **Pub/Sub Publisher** role.
 
 ### Supported audit logs
+
 1. PgAudit - `INFO` logs
 2. postgres.log - `EMERGENCY`, `ALERT`, `CRITICAL`, `ERROR`, `WARNING`, `NOTICE`, `DEBUG`, `DEFAULT` logs
 
 **Note:**
+
 - The **serverHostName** field is populated with the name of the PostgreSQL instance connection.
 - The **serviceName** field is populated with Cloud SQL Service. For more information, see [Cloud SQL for PostgreSQL](https://cloud.google.com/sql/docs/postgres).
 
 ## Limitations
 
 The following fields are not displayed because the information is not included in the error messages from Google Cloud:
+
 - **SQL string that caused the exception** - This column in the report is blank.
 - **sourceProgram** - This field is blank. Queries can be run either from Cloud Shell using `gcloud` or from a locally installed PostgreSQL server.
 - **clientIP** and **serverIP** - These fields are populated with `0.0.0.0`.
@@ -97,16 +101,16 @@ You can create a new datasource profile from the **Datasource Profile Management
 2. Click the **➕ (Add)** button.
 3. You can create a profile by using one of the following methods:
 
-    * To create a new profile manually, go to the **"Add Profile"** tab and provide values for the following fields.
-        * **Name** and **Description**.
-        * Select a **Plug-in Type** from the dropdown. For example, **PostgreSQL Over PubSub Kafka Connect 2.0**.
+   - To create a new profile manually, go to the **"Add Profile"** tab and provide values for the following fields.
+     - **Name** and **Description**.
+     - Select a **Plug-in Type** from the dropdown. For example, **PostgreSQL Over PubSub Kafka Connect 2.0**.
 
-    * To upload from CSV, go to the **Upload from CSV** tab and upload an exported or manually created CSV file
-      containing one or more profiles. You can also choose from the following options:
-        * **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
-        * **Test connection for imported profiles** — Automatically tests connections after profiles are created.
-        * **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the
-          ELB process.
+   - To upload from CSV, go to the **Upload from CSV** tab and upload an exported or manually created CSV file
+     containing one or more profiles. You can also choose from the following options:
+     - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
+     - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
+     - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the
+       ELB process.
 
 **Note:** Configuration options vary based on the selected plug-in.
 
@@ -114,21 +118,21 @@ You can create a new datasource profile from the **Datasource Profile Management
 
 The following table describes the fields that are specific to Pub/Sub Kafka Connect 2.0 and similar plugins.
 
-| Field                                                  | Description                                                                                                                     |
-|--------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| **Name**                                               | Unique name of the profile.                                                                                                     |
-| **Description**                                        | Description of the profile.                                                                                                     |
-| **Plug-in**                                            | Plug-in type for this profile. A full list of available plug-ins is available on the **Package Management** page.              |
-| **Credential**                                         | The credential to authenticate with the datasource. Create the credential in **Credential Management**, or click **➕** to create a new one. |
-| **Kafka Cluster**                                      | Kafka cluster to deploy the universal connector.                                                                                |
-| **Label**                                              | Grouping label (e.g, **customer name** or **ID**).                                                                              |
-| **GCP project ID**                                     | Google Cloud project ID that contains the Pub/Sub subscription.                                                                  |
-| **Pub/Sub Subscription ID**                            | Pub/Sub subscription ID from which messages are consumed.                                                                      |
-| **GCP Topic**                                          | Pub/Sub topic name.                                                                                                              |
-| **Maximum poll records**                               | The maximum number of records returned in a single poll.                                                                   |
-| **Expected events per second**                         | Expected events per second. This value is used to automatically calculate the **parallel.pull.count** parameter when it is not set. Calculation formula: ceil(expected.eps / 1000). | 
-| **Number of parallel pull streams**                    | Number of parallel pull streams to use. If not specified, this value is automatically calculated based on **expected.eps** (1 subscriber per 1000 EPS).    |
-| **No traffic threshold (minutes)**                     | The time period after which the system detects inactivity.                                                                       |
+| Field                               | Description                                                                                                                                                                         |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Name**                            | Unique name of the profile.                                                                                                                                                         |
+| **Description**                     | Description of the profile.                                                                                                                                                         |
+| **Plug-in**                         | Plug-in type for this profile. A full list of available plug-ins is available on the **Package Management** page.                                                                   |
+| **Credential**                      | The credential to authenticate with the datasource. Create the credential in **Credential Management**, or click **➕** to create a new one.                                        |
+| **Kafka Cluster**                   | Kafka cluster to deploy the universal connector.                                                                                                                                    |
+| **Label**                           | Grouping label (e.g, **customer name** or **ID**).                                                                                                                                  |
+| **GCP project ID**                  | Google Cloud project ID that contains the Pub/Sub subscription.                                                                                                                     |
+| **Pub/Sub Subscription ID**         | Pub/Sub subscription ID from which messages are consumed.                                                                                                                           |
+| **GCP Topic**                       | Pub/Sub topic name.                                                                                                                                                                 |
+| **Maximum poll records**            | The maximum number of records returned in a single poll.                                                                                                                            |
+| **Expected events per second**      | Expected events per second. This value is used to automatically calculate the **parallel.pull.count** parameter when it is not set. Calculation formula: ceil(expected.eps / 1000). |
+| **Number of parallel pull streams** | Number of parallel pull streams to use. If not specified, this value is automatically calculated based on **expected.eps** (1 subscriber per 1000 EPS).                             |
+| **No traffic threshold (minutes)**  | The time period after which the system detects inactivity.                                                                                                                          |
 
 ## Testing a Connection
 
@@ -173,18 +177,18 @@ You must configure **exactly-once** delivery on your Pub/Sub subscription to pre
 ### Procedure
 
 1. To enable **exactly-once** delivery on your Pub/Sub subscription, use only one of the following commands based on your scenario.
-   * For an existing subscription:
+   - For an existing subscription:
      ```bash
       gcloud pubsub subscriptions update <subscription-name> \
      --enable-exactly-once-delivery
-     ```   
-   * For a new subscription:
-      ```bash
-      gcloud pubsub subscriptions create <subscription-name> \
-        --topic=<topic-name> \
-        --enable-exactly-once-delivery \
-        --ack-deadline=600
-      ```
+     ```
+   - For a new subscription:
+     ```bash
+     gcloud pubsub subscriptions create <subscription-name> \
+       --topic=<topic-name> \
+       --enable-exactly-once-delivery \
+       --ack-deadline=600
+     ```
 
 ### Troubleshooting
 

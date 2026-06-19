@@ -1,25 +1,30 @@
 # Integrate Code Coverage tool into Universal Connector Plug-ins
+
 ## Introduction
+
 As a universal connector plug-in developer, you should be familiar with code coverage tools targeted at monitoring the plug-in's unit tests folder for percentage coverage that corresponds to our conventions.
 
 <details open="open">
   <summary>Table of contents</summary>
 
-  - [Integrate code coverage into Java plug-ins](#integrate-code-coverage-into-java-plug-ins)
-    * [Prerequisites](#prerequisites)
-    * [Keep In Mind](#keep-in-mind)
-    * [Template build.gradle](#template-buildgradle)
-    * [Template Makefile](#template-makefile)
-  - [Integrate code coverage into Ruby plug-ins](#integrate-code-coverage-into-ruby-plug-ins)
+- [Integrate code coverage into Java plug-ins](#integrate-code-coverage-into-java-plug-ins)
+  - [Prerequisites](#prerequisites)
+  - [Keep In Mind](#keep-in-mind)
+  - [Template build.gradle](#template-buildgradle)
+  - [Template Makefile](#template-makefile)
+- [Integrate code coverage into Ruby plug-ins](#integrate-code-coverage-into-ruby-plug-ins)
 
 </details>
 
 ## Integrate code coverage into Java plug-ins
+
 ### Prerequisites
+
 - Familiarity with Jacoco code coverage tool for Java
 - A developed universal connector Java plug-in that includes unit tests in the path designated by Logstash for Java plug-ins (`<TYPE>-plugin/logstash-<TYPE>-<PLUGIN_NAME>/src/test`)
 
 ### Keep In Mind
+
 - Make sure you install all the necessary Jacoco plug-ins and set the minimum coverage as detailed in the template build.gradle below.
 
   - Plug-ins used: jacoco, org.barfuin.gradle.jacocolog
@@ -37,6 +42,7 @@ As a universal connector plug-in developer, you should be familiar with code cov
 - Note: this is a template, therefore any other Logstash plug-in specific dependencies or tasks need to be added
 
 ### Template build.gradle
+
 ```
 import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
@@ -233,6 +239,7 @@ project.tasks.check.dependsOn(jacocoTestCoverageVerification, jacocoTestReport)
 ```
 
 ### Template Makefile
+
 ```
 # **************************************************************
 #
@@ -260,4 +267,5 @@ report:  test
 ```
 
 ## Integrate code coverage into Ruby plug-ins
+
 **TBD**

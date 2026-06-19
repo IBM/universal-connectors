@@ -4,10 +4,10 @@ Create and configure datasource profiles through Central Manager for **Oracle RD
 
 ### Meet Oracle RDS over CloudWatch Connect
 
-* Environments: AWS
-* Supported inputs: Kafka Input (pull)
-* Supported Guardium versions:
-   * Guardium Data Protection: Appliance bundle 12.2.2 or later
+- Environments: AWS
+- Supported inputs: Kafka Input (pull)
+- Supported Guardium versions:
+  - Guardium Data Protection: Appliance bundle 12.2.2 or later
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems. This connector enables monitoring of Oracle RDS audit logs through CloudWatch.
 
@@ -50,10 +50,10 @@ After creating your Oracle RDS instance following the Amazon documentation, make
 
 1. Click **RDS** > **Databases** from the left panel.
 2. Select the **Oracle database** instance to be updated. Then click **Modify**.
-4. In the **Additional Configuration** section, under database options, select the newly created group from the **DB Parameter Group** drop-down.
-5. Click **Continue**.
-6. Select the database instance that, in its configuration section, shows the status for the DB Parameter Group as **pending-reboot**.
-7. Reboot the Database instance for the changes to take effect.
+3. In the **Additional Configuration** section, under database options, select the newly created group from the **DB Parameter Group** drop-down.
+4. Click **Continue**.
+5. Select the database instance that, in its configuration section, shows the status for the DB Parameter Group as **pending-reboot**.
+6. Reboot the Database instance for the changes to take effect.
 
 ### Applying Audit Policies
 
@@ -61,9 +61,10 @@ To allow the connector to parse and analyze your database queries, you must enab
 
 **Important:** Do **not** use `CREATE AUDIT POLICY` (Unified Auditing). Unified Auditing records are stored inside the database and cannot be exported to CloudWatch. You must use the Traditional Auditing commands shown below.
 
-Connect to your Oracle RDS database using your master user (e.g., `ADMIN`) via a SQL client such as SQL*Plus, SQL Developer, or any JDBC-based tool. Depending on your security and compliance requirements, run the appropriate commands below.
+Connect to your Oracle RDS database using your master user (e.g., `ADMIN`) via a SQL client such as SQL\*Plus, SQL Developer, or any JDBC-based tool. Depending on your security and compliance requirements, run the appropriate commands below.
 
 For more information about Traditional Auditing, see:
+
 - [AWS Blog: Security Auditing in Amazon RDS for Oracle](https://aws.amazon.com/blogs/database/part-1-security-auditing-in-amazon-rds-for-oracle/)
 - [Oracle Documentation: AUDIT (Traditional Auditing)](https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/AUDIT-Traditional-Auditing.html)
 
@@ -179,7 +180,6 @@ WHERE DB_USER NOT IN ('SYS', 'SYSTEM', 'RDSADMIN')
 ORDER BY EXTENDED_TIMESTAMP DESC
 ```
 
-
 ## Limitations
 
 1. **Data Ingestion Delay**: There will be a delay in data being observed for reports due to limitations of the Oracle RDS DB instance and CloudWatch log availability.
@@ -189,7 +189,7 @@ ORDER BY EXTENDED_TIMESTAMP DESC
    - **DBMS_OUTPUT Operations**: Any SQL statements containing `DBMS_OUTPUT` calls
    - **Empty or Invalid SQL**: Records with empty SQL text or containing only `/`
    - **Records without Content**: Records missing both `Comment_Text` and `Sql_Text`
-   
+
    These filters help focus on application-level database activities and reduce the volume of system-generated audit logs.
 
 ## Creating datasource profiles
@@ -202,15 +202,15 @@ You can create a new datasource profile from the **Datasource Profile Management
 2. Click the **➕ (Add)** button.
 3. You can create a profile by using one of the following methods:
 
-    - To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
-        - **Name** and **Description**.
-        - Select a **Plug-in Type** from the dropdown. For example, `Amazon RDS Oracle Over Cloudwatch Connect 2.0`.
+   - To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
+     - **Name** and **Description**.
+     - Select a **Plug-in Type** from the dropdown. For example, `Amazon RDS Oracle Over Cloudwatch Connect 2.0`.
 
-    - To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file containing one or more profiles.  
-      You can also choose from the following options:
-        - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
-        - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
-        - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the ELB process.
+   - To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file containing one or more profiles.  
+     You can also choose from the following options:
+     - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
+     - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
+     - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the ELB process.
 
 **Note:** Configuration options vary based on the selected plug-in.
 
@@ -218,26 +218,27 @@ You can create a new datasource profile from the **Datasource Profile Management
 
 The following table describes the fields that are specific to Oracle RDS over CloudWatch Kafka Connect 2.0 plugin.
 
-| Field                    | Description                                                                                                                                                                                                                                                         |
-|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Name**                 | Unique name of the profile.                                                                                                                                                                                                                                         |
-| **Description**          | Description of the profile.                                                                                                                                                                                                                                         |
-| **Plug-in**              | Plug-in type for this profile. Select `Amazon RDS Oracle Over Cloudwatch Connect 2.0`. A full list of available plug-ins are available on the **Package Management** page.                                                                                         |
-| **Credential**           | Select AWS Credentials or AWS Role ARN. The credential to authenticate with AWS. Must be created in **Credential Management**, or click **➕** to create one. For more information, see [Creating Credentials](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_credential_management.html). |
-| **Kafka Cluster**        | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_kafka_cluster_management.html). |
-| **Label**                | Grouping label. For example, customer name or ID.                                                                                                                                                                                                                   |
-| **AWS account region**   | Specifies the AWS region where your RDS Oracle instance is located (e.g., us-east-1, eu-west-1).                                                                                                                                                                   |
-| **Log groups**           | List of CloudWatch log groups to monitor. These are the log groups where Oracle audit logs are exported.                                                                                                                                                           |
-| **Filter pattern**       | CloudWatch Logs filter pattern to apply. Use "None" to retrieve all logs, or specify a pattern to filter specific log events.                                                                                                                                      |
-| **Account ID**           | Your AWS account ID (12-digit number). This identifies your AWS account.                                                                                                                                                                                           |
-| **Cluster name**         | The name of your RDS Oracle cluster or instance identifier.                                                                                                                                                                                                         |
-| **Ingestion delay (seconds)** | Default value is 900 seconds (15 minutes). This delay accounts for the time it takes for logs to be available in CloudWatch after being generated.                                                                                                            |
-| **No-traffic threshold (minutes)** | Default value is 60. If there is no incoming traffic for an hour, S-TAP displays a red status. Once incoming traffic resumes, the status returns to green.                                                                                                    |
-| **Unmask sensitive value** | Optional boolean flag. When enabled, sensitive values in the audit logs will not be masked.                                                                                                                                                                       |
-| **Use Enterprise Load Balancing (ELB)** | Enable this if ELB support is required.                                                                                                                                                                                                                             |
-| **Managed Unit Count**   | Number of Managed Units (MUs) to allocate for ELB.                                                                                                                                                                                                                  |
+| Field                                   | Description                                                                                                                                                                                                                                                                                                           |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Name**                                | Unique name of the profile.                                                                                                                                                                                                                                                                                           |
+| **Description**                         | Description of the profile.                                                                                                                                                                                                                                                                                           |
+| **Plug-in**                             | Plug-in type for this profile. Select `Amazon RDS Oracle Over Cloudwatch Connect 2.0`. A full list of available plug-ins are available on the **Package Management** page.                                                                                                                                            |
+| **Credential**                          | Select AWS Credentials or AWS Role ARN. The credential to authenticate with AWS. Must be created in **Credential Management**, or click **➕** to create one. For more information, see [Creating Credentials](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_credential_management.html). |
+| **Kafka Cluster**                       | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_kafka_cluster_management.html).                                               |
+| **Label**                               | Grouping label. For example, customer name or ID.                                                                                                                                                                                                                                                                     |
+| **AWS account region**                  | Specifies the AWS region where your RDS Oracle instance is located (e.g., us-east-1, eu-west-1).                                                                                                                                                                                                                      |
+| **Log groups**                          | List of CloudWatch log groups to monitor. These are the log groups where Oracle audit logs are exported.                                                                                                                                                                                                              |
+| **Filter pattern**                      | CloudWatch Logs filter pattern to apply. Use "None" to retrieve all logs, or specify a pattern to filter specific log events.                                                                                                                                                                                         |
+| **Account ID**                          | Your AWS account ID (12-digit number). This identifies your AWS account.                                                                                                                                                                                                                                              |
+| **Cluster name**                        | The name of your RDS Oracle cluster or instance identifier.                                                                                                                                                                                                                                                           |
+| **Ingestion delay (seconds)**           | Default value is 900 seconds (15 minutes). This delay accounts for the time it takes for logs to be available in CloudWatch after being generated.                                                                                                                                                                    |
+| **No-traffic threshold (minutes)**      | Default value is 60. If there is no incoming traffic for an hour, S-TAP displays a red status. Once incoming traffic resumes, the status returns to green.                                                                                                                                                            |
+| **Unmask sensitive value**              | Optional boolean flag. When enabled, sensitive values in the audit logs will not be masked.                                                                                                                                                                                                                           |
+| **Use Enterprise Load Balancing (ELB)** | Enable this if ELB support is required.                                                                                                                                                                                                                                                                               |
+| **Managed Unit Count**                  | Number of Managed Units (MUs) to allocate for ELB.                                                                                                                                                                                                                                                                    |
 
 **Note:**
+
 - Ensure that the **profile name** is unique.
 - Required credentials must be created before or during profile creation.
 - The AWS credentials must have appropriate permissions to read CloudWatch logs.
@@ -278,4 +279,3 @@ An installed profile can be uninstalled or reinstalled if needed.
 2. From the list of available actions, select the desired option: **Uninstall** or **Reinstall**.
 
 ---
-
