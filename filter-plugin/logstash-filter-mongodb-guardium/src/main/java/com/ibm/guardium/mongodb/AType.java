@@ -12,6 +12,7 @@ public enum AType {
     USER_CREATE("createUser"), USER_DROP("dropUser"), USER_UPDATE("updateUser"), USER_GRANT_ROLES("grantRolesToUser"), USER_REVOKE_ROLES("revokeRolesFromUser"),
     AUTHENTICATE("authenticate"),
     AUTHCHECK("authCheck"),
+    CLIENT_METADATA("clientMetadata"),
     LOGOUT("logout");
 
 
