@@ -9,7 +9,6 @@ import com.ibm.guardium.mongodb.TestMatchListener;
 import com.ibm.guardium.mongodb.parsersbytype.BaseParser;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
@@ -41,7 +40,7 @@ public class DatabaseParserTest {
     }
 
 
-    private void validateSessionDetails(JsonObject source, Record record) {
+    private void validateSessionDetails(JsonObject source, com.ibm.guardium.universalconnector.commons.structures.Record record) {
         Assert.assertEquals("serverIp", source.get("local").getAsJsonObject().get("ip").getAsString(), record.getSessionLocator().getServerIp());
         Assert.assertEquals("serverPort", source.get("local").getAsJsonObject().get("port").getAsInt(), record.getSessionLocator().getServerPort());
 
@@ -52,7 +51,7 @@ public class DatabaseParserTest {
     }
 
 
-    private void validateAccessor(JsonObject source, Record record) {
+    private void validateAccessor(JsonObject source, com.ibm.guardium.universalconnector.commons.structures.Record record) {
         Assert.assertEquals("user", source.get("users").getAsJsonArray().get(0).getAsJsonObject().get("user").getAsString(), record.getAccessor().getDbUser());
         String dbName = source.get("param").getAsJsonObject().get("ns") !=null ?
                             source.get("param").getAsJsonObject().get("ns").getAsString() :
@@ -80,7 +79,7 @@ public class DatabaseParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        com.ibm.guardium.universalconnector.commons.structures.Record record = (new Gson()).fromJson(recordString, com.ibm.guardium.universalconnector.commons.structures.Record.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -112,7 +111,7 @@ public class DatabaseParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        com.ibm.guardium.universalconnector.commons.structures.Record record = (new Gson()).fromJson(recordString, com.ibm.guardium.universalconnector.commons.structures.Record.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -144,7 +143,7 @@ public class DatabaseParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        Record record = (new Gson()).fromJson(recordString, Record.class);
+        com.ibm.guardium.universalconnector.commons.structures.Record record = (new Gson()).fromJson(recordString, com.ibm.guardium.universalconnector.commons.structures.Record.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
