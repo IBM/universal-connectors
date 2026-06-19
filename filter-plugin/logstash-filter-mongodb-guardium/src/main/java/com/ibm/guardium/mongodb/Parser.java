@@ -19,7 +19,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Accessor;
+import com.ibm.guardium.universalconnector.commons.structures.Construct;
+import com.ibm.guardium.universalconnector.commons.structures.Data;
+import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.Sentence;
+import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
+import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
+import com.ibm.guardium.universalconnector.commons.structures.Time;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +36,7 @@ public class Parser {
     private static Logger log = LogManager.getLogger(Parser.class);
 
     public static final String DATA_PROTOCOL_STRING = "MongoDB";
-    public static final String UNKOWN_STRING = "N.A.";
+    public static final String UNKOWN_STRING = "";
     public static final String SERVER_TYPE_STRING = "MongoDB";
     private static final String MASK_STRING = "?";
     public static final String EXCEPTION_TYPE_AUTHORIZATION_STRING = "SQL_ERROR";
@@ -292,7 +300,7 @@ public class Parser {
             }
         }
 
-        accessor.setDbUser(dbUsers.trim().isEmpty()||dbUsers==null?Parser.UNKOWN_STRING:dbUsers);
+        accessor.setDbUser(dbUsers);
 
         accessor.setServerHostName(Parser.UNKOWN_STRING); // populated from Event, later
         accessor.setSourceProgram(Parser.UNKOWN_STRING); // populated from Event, later
@@ -330,7 +338,7 @@ public class Parser {
                 sessionLocator.setClientIpv6(address);
                 sessionLocator.setClientPort(port);
                 sessionLocator.setClientIp(Parser.UNKOWN_STRING);
-            } else { // ipv4
+            } else { // ipv4 
                 sessionLocator.setClientIp(address);
                 sessionLocator.setClientPort(port);
                 sessionLocator.setClientIpv6(Parser.UNKOWN_STRING);
@@ -425,8 +433,8 @@ public class Parser {
 
     /**
      * Redact/Sanitize sensitive information. For example all field values.
-     * The result can be seen in reports like "Hourly access details" or "Long running queries".
-     * Note: data is transformed/changed, so use only after you don't need the data anymore,
+     * The result can be seen in reports like "Hourly access details" or "Long running queries". 
+     * Note: data is transformed/changed, so use only after you don't need the data anymore, 
      * for example, after populating as String in full_sql.
      * @param data
      * @return
