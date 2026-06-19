@@ -19,15 +19,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Construct;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
+import com.ibm.guardium.universalconnector.commons.structures.*;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
-import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +29,7 @@ public class Parser {
     private static Logger log = LogManager.getLogger(Parser.class);
 
     public static final String DATA_PROTOCOL_STRING = "MongoDB";
-    public static final String UNKOWN_STRING = "";
+    public static final String UNKOWN_STRING = "N.A.";
     public static final String SERVER_TYPE_STRING = "MongoDB";
     private static final String MASK_STRING = "?";
     public static final String EXCEPTION_TYPE_AUTHORIZATION_STRING = "SQL_ERROR";
@@ -137,11 +130,10 @@ public class Parser {
                 sentence = new Sentence(command);
                 if (args.has(command)) {
                     sentence.getObjects().add(parseSentenceObject(args, command));
-                } else if (args.has(command.toLowerCase())) { // 2 word commands are changed to lowercase in args, sometimes(?), like mapReduce, resetErrors
+                } else if (args.has(command.toLowerCase())) { // 2 word commands are changed to lowercase in args,
+                                                              // sometimes(?), like mapReduce, resetErrors
                     sentence.getObjects().add(parseSentenceObject(args, command.toLowerCase()));
                 }
-
-
 
                 switch (command) {
                     case "aggregate":
@@ -173,16 +165,18 @@ public class Parser {
                         break; // already done before switch
                 }
                 break;
-            /* case "createCollection":
-            case "dropCollection":
-                final String ns = param.get("ns").getAsString();
-                final String[] nsArray = ns.split("\\.");
-                final String db = nsArray[0];
-                final String collection = nsArray[1];
-                sentence = new Sentence(atype); // atype is command
-                final SentenceObject sentenceObject = new SentenceObject(collection, db);
-                    sentence.objects.add(sentenceObject);
-                break; */
+            /*
+             * case "createCollection":
+             * case "dropCollection":
+             * final String ns = param.get("ns").getAsString();
+             * final String[] nsArray = ns.split("\\.");
+             * final String db = nsArray[0];
+             * final String collection = nsArray[1];
+             * sentence = new Sentence(atype); // atype is command
+             * final SentenceObject sentenceObject = new SentenceObject(collection, db);
+             * sentence.objects.add(sentenceObject);
+             * break;
+             */
             default:
                 return null; // NOTE: not parsed
         }
@@ -194,13 +188,13 @@ public class Parser {
         SentenceObject sentenceObject = null;
         if (args.get(command).isJsonPrimitive()) {
             sentenceObject = new SentenceObject(args.get(command).getAsString());
-            sentenceObject.setType("collection"); // this used to be default value, but since sentence is defined in common package, "collection" as default value was removed
+            sentenceObject.setType("collection"); // this used to be default value, but since sentence is defined in
+                                                  // common package, "collection" as default value was removed
         } else {
             sentenceObject = new SentenceObject(COMPOUND_OBJECT_STRING);
         }
         return sentenceObject;
     }
-
 
     public static Record parseRecord(final JsonObject data) throws ParseException {
         Record record = new Record();
@@ -251,6 +245,7 @@ public class Parser {
 
     /**
      * Creates an ExceptionRecord to be used in Record, instead of Data.
+     * 
      * @param data
      * @param resultCode
      * @return
@@ -260,12 +255,12 @@ public class Parser {
         if (resultCode.equals("13")) {
             exceptionRecord.setExceptionTypeId(Parser.EXCEPTION_TYPE_AUTHORIZATION_STRING);
             exceptionRecord.setDescription("Unauthorized to perform the operation (13)");
-            //  exceptionRecord.setSqlString(); DEFER
+            // exceptionRecord.setSqlString(); DEFER
 
         } else if (resultCode.equals("18")) {
             exceptionRecord.setExceptionTypeId(Parser.EXCEPTION_TYPE_AUTHENTICATION_STRING);
             exceptionRecord.setDescription("Authentication Failed (18)");
-        } else if(resultCode.equals("11")) {
+        } else if (resultCode.equals("11")) {
             exceptionRecord.setExceptionTypeId(Parser.EXCEPTION_TYPE_AUTHENTICATION_STRING);
             exceptionRecord.setDescription("User Not Found (11)");
         } else { // prep for unknown error code
@@ -300,7 +295,7 @@ public class Parser {
             }
         }
 
-        accessor.setDbUser(dbUsers);
+        accessor.setDbUser(dbUsers.trim().isEmpty() || dbUsers == null ? Parser.UNKOWN_STRING : dbUsers);
 
         accessor.setServerHostName(Parser.UNKOWN_STRING); // populated from Event, later
         accessor.setSourceProgram(Parser.UNKOWN_STRING); // populated from Event, later
@@ -338,7 +333,7 @@ public class Parser {
                 sessionLocator.setClientIpv6(address);
                 sessionLocator.setClientPort(port);
                 sessionLocator.setClientIp(Parser.UNKOWN_STRING);
-            } else { // ipv4 
+            } else { // ipv4
                 sessionLocator.setClientIp(address);
                 sessionLocator.setClientPort(port);
                 sessionLocator.setClientIpv6(Parser.UNKOWN_STRING);
@@ -400,11 +395,12 @@ public class Parser {
         return dateString;
     }
 
-    public static Time getTime(String dateString){
+    public static Time getTime(String dateString) {
         ZonedDateTime date = ZonedDateTime.parse(dateString, DATE_TIME_FORMATTER);
         long millis = date.toInstant().toEpochMilli();
-        int  minOffset = date.getOffset().getTotalSeconds()/60;
-        //int  minDst = date.getOffset().getRules().isDaylightSavings(date.toInstant()) ? 60 : 0;
+        int minOffset = date.getOffset().getTotalSeconds() / 60;
+        // int minDst = date.getOffset().getRules().isDaylightSavings(date.toInstant())
+        // ? 60 : 0;
         return new Time(millis, minOffset, 0);
     }
 
@@ -433,9 +429,12 @@ public class Parser {
 
     /**
      * Redact/Sanitize sensitive information. For example all field values.
-     * The result can be seen in reports like "Hourly access details" or "Long running queries". 
-     * Note: data is transformed/changed, so use only after you don't need the data anymore, 
+     * The result can be seen in reports like "Hourly access details" or "Long
+     * running queries".
+     * Note: data is transformed/changed, so use only after you don't need the data
+     * anymore,
      * for example, after populating as String in full_sql.
+     * 
      * @param data
      * @return
      */
@@ -450,12 +449,11 @@ public class Parser {
 
         else if (data.isJsonArray()) {
             JsonArray array = data.getAsJsonArray();
-            for (int i=0; i<array.size(); i++) {
+            for (int i = 0; i < array.size(); i++) {
                 JsonElement redactedElement = Parser.Redact(array.get(i));
                 array.set(i, redactedElement);
             }
-        }
-        else if (data.isJsonObject()) {
+        } else if (data.isJsonObject()) {
             JsonObject object = data.getAsJsonObject();
             final Set<String> keys = object.keySet();
             final Set<String> keysCopy = new HashSet<>(); // make a copy, as keys changes on every remove/add, below
