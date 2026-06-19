@@ -13,6 +13,7 @@ import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
@@ -194,7 +195,7 @@ public class ParserTest {
     public void testParseRecord_createIndex() throws ParseException {
         final String mongoString = "{ \"atype\" : \"authCheck\", \"ts\" : { \"$date\" : \"2020-06-03T07:48:55.762-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 41112 }, \"users\" : [ { \"user\" : \"realAdmin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"readWriteAnyDatabase\", \"db\" : \"admin\" }, { \"role\" : \"userAdminAnyDatabase\", \"db\" : \"admin\" } ], \"param\" : { \"command\" : \"createIndexes\", \"ns\" : \"newDB01.newCollecti\", \"args\" : { \"createIndexes\" : \"newCollecti\", \"indexes\" : [ { \"key\" : { \"category\" : 1 }, \"name\" : \"testIDX1\" } ], \"lsid\" : { \"id\" : { \"$binary\" : \"T52tf2+yRbu31sZ5kq9R7Q==\", \"$type\" : \"04\" } }, \"$db\" : \"newDB01\" } }, \"result\" : 0 }";
         final JsonObject mongoJson = JsonParser.parseString(mongoString).getAsJsonObject();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = Parser.parseRecord(mongoJson);
+        Record record = Parser.parseRecord(mongoJson);
         final Construct construct = record.getData().getConstruct();
         final Sentence sentence = construct.sentences.get(0);
 
@@ -212,7 +213,7 @@ public class ParserTest {
         // \"test.collection3\" } , \"result\" : 0 }";
         final String mongoString = "{ \"atype\" : \"authCheck\", \"ts\" : { \"$date\" : \"2020-06-03T03:40:30.888-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 40426 }, \"users\" : [ { \"user\" : \"realAdmin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"readWriteAnyDatabase\", \"db\" : \"admin\" }, { \"role\" : \"userAdminAnyDatabase\", \"db\" : \"admin\" } ], \"param\" : { \"command\" : \"create\", \"ns\" : \"newDB01.newCollection01\", \"args\" : { \"create\" : \"newCollection01\", \"lsid\" : { \"id\" : { \"$binary\" : \"CsTWBZwaQnOweCDDbiJWng==\", \"$type\" : \"04\" } }, \"$db\" : \"newDB01\" } }, \"result\" : 0 }";
         final JsonObject mongoJson = JsonParser.parseString(mongoString).getAsJsonObject();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = Parser.parseRecord(mongoJson);
+        Record record = Parser.parseRecord(mongoJson);
         final Construct construct = record.getData().getConstruct();
         final Sentence sentence = construct.sentences.get(0);
 
@@ -230,7 +231,7 @@ public class ParserTest {
         // \"test.collection3\" } , \"result\" : 0 }";
         final String mongoString = "{ \"atype\" : \"authCheck\", \"ts\" : { \"$date\" : \"2020-08-30T07:22:46.361-04:00\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 49990 }, \"users\" : [ { \"user\" : \"admin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"root\", \"db\" : \"admin\" } ], \"param\" : { \"command\" : \"create\", \"ns\" : \"test.newCollection01tal\", \"args\" : { \"create\" : \"newCollection01tal\", \"lsid\" : { \"id\" : { \"$binary\" : \"nWP0p95qTgKYH2VwpukLcQ==\", \"$type\" : \"04\" } }, \"$db\" : \"test\" } }, \"result\" : 0 }";
         final JsonObject mongoJson = JsonParser.parseString(mongoString).getAsJsonObject();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = Parser.parseRecord(mongoJson);
+        Record record = Parser.parseRecord(mongoJson);
         final Construct construct = record.getData().getConstruct();
         final Sentence sentence = construct.sentences.get(0);
 
@@ -269,7 +270,7 @@ public class ParserTest {
         final String mongoString = "{ \"atype\" : \"authCheck\", \"ts\" : { \"$date\" : \"2020-05-17T11:29:02.773-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 29360 }, \"users\" : [ { \"user\" : \"readerUser\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"read\", \"db\" : \"admin\" } ], \"param\" : { \"command\" : \"insert\", \"ns\" : \"admin.USERS\", \"args\" : { \"insert\" : \"USERS\", \"ordered\" : true, \"lsid\" : { \"id\" : { \"$binary\" : \"EQSjmxPcSxyNN6Vw7Wy1pQ==\", \"$type\" : \"04\" } }, \"$db\" : \"admin\", \"documents\" : [ { \"_id\" : { \"$oid\" : \"5ec1583e3a55d1ed961be47e\" }, \"uid\" : 2, \"name\" : \"Tal\" } ] } }, \"result\" : 13 }";
         final JsonObject mongoJson = JsonParser.parseString(mongoString).getAsJsonObject();
 
-        final com.ibm.guardium.universalconnector.commons.structures.Record record = Parser.parseRecord(mongoJson);
+        final Record record = Parser.parseRecord(mongoJson);
 
         Assert.assertEquals(
                 Parser.EXCEPTION_TYPE_AUTHORIZATION_STRING,
@@ -285,7 +286,7 @@ public class ParserTest {
         final String mongoString = "{ \"atype\" : \"authenticate\", \"ts\" : { \"$date\" : \"2020-05-17T11:37:30.421-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 29398 }, \"users\" : [], \"roles\" : [], \"param\" : { \"user\" : \"readerUser\", \"db\" : \"admin\", \"mechanism\" : \"SCRAM-SHA-256\" }, \"result\" : 18 }";
         final JsonObject mongoJson = JsonParser.parseString(mongoString).getAsJsonObject();
         // final String actualResult = Parser.Parse(mongoJson);
-        final com.ibm.guardium.universalconnector.commons.structures.Record record = Parser.parseRecord(mongoJson);
+        final Record record = Parser.parseRecord(mongoJson);
 
         Assert.assertEquals("readerUser", record.getAccessor().getDbUser().trim());
 
@@ -357,7 +358,7 @@ public class ParserTest {
 
     @Test
     public void testParseRecord() throws ParseException {
-        com.ibm.guardium.universalconnector.commons.structures.Record record = Parser.parseRecord(mongoJson);
+        Record record = Parser.parseRecord(mongoJson);
         Assert.assertEquals("2WoIDPhSTcKHrdJW4azoow==", record.getSessionId());
         Assert.assertEquals("test", record.getDbName());
         Assert.assertEquals(Parser.UNKOWN_STRING, record.getAppUserName());
@@ -376,7 +377,7 @@ public class ParserTest {
 
     @Test
     public void testParseSessionLocator() throws ParseException {
-        com.ibm.guardium.universalconnector.commons.structures.Record record = Parser.parseRecord(mongoJson);
+        Record record = Parser.parseRecord(mongoJson);
         SessionLocator actual = record.getSessionLocator();
 
         Assert.assertEquals("127.0.0.1", actual.getServerIp());
@@ -391,7 +392,7 @@ public class ParserTest {
         final String mongoIPv6String = "{ \"atype\": \"authCheck\", \"ts\": { \"$date\": \"2020-01-26T09:58:44.547-0500\" }, \"local\": { \"ip\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\", \"port\": 27017 }, \"remote\": { \"ip\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\", \"port\": 56984 }, \"users\": [], \"roles\": [], \"param\": { \"command\": \"aggregate\", \"ns\": \"test.travelers\", \"args\": { \"aggregate\": \"travelers\", \"pipeline\": [ { \"$graphLookup\": { \"from\": \"airports\", \"startWith\": \"$nearestAirport\", \"connectFromField\": \"connects\", \"connectToField\": \"airport\", \"maxDepth\": 2, \"depthField\": \"numConnections\", \"as\": \"destinations\" } } ], \"cursor\": {}, \"lsid\": { \"id\": { \"$binary\": \"2WoIDPhSTcKHrdJW4azoow==\", \"$type\": \"04\" } }, \"$db\": \"test\" } }, \"result\": 0 }";
         final JsonObject mongoJson = JsonParser.parseString(mongoIPv6String).getAsJsonObject();
 
-        com.ibm.guardium.universalconnector.commons.structures.Record record = Parser.parseRecord(mongoJson);
+        Record record = Parser.parseRecord(mongoJson);
         SessionLocator actual = record.getSessionLocator();
 
         Assert.assertTrue("sessionLocator should mark that IPs are in IPv6", actual.isIpv6());
@@ -404,7 +405,7 @@ public class ParserTest {
 
     @Test
     public void testParseAccessor() throws ParseException {
-        com.ibm.guardium.universalconnector.commons.structures.Record record = Parser.parseRecord(mongoJson);
+        Record record = Parser.parseRecord(mongoJson);
         Accessor actual = record.getAccessor();
         Assert.assertEquals(Parser.DATA_PROTOCOL_STRING, actual.getDbProtocol());
         Assert.assertEquals(Parser.SERVER_TYPE_STRING, actual.getServerType());

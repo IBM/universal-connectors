@@ -8,6 +8,7 @@ import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
 import com.google.gson.Gson;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
@@ -67,8 +68,7 @@ public class MongoDbIpaTest {
             "    \"result\": 0\n" +
             "  }";
 
-
-    //---------------------test_local_ip_replacement_server_has_IPV6_address
+    // ---------------------test_local_ip_replacement_server_has_IPV6_address
     @Test
     public void testFieldGuardRecord_ip_local_filebeatIpV6() {
         String clientIp = "127.0.0.1";
@@ -86,7 +86,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = new Gson().fromJson(recordStr, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = new Gson().fromJson(recordStr, Record.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIpv6().equals(serverIpFromFilebeat));
         Assert.assertTrue(record.getSessionLocator().getServerIpv6().equals(serverIpFromFilebeat));
@@ -95,7 +95,7 @@ public class MongoDbIpaTest {
 
     }
 
-    //---------------------test_local_ip_replacement_server_has_IPV4_address
+    // ---------------------test_local_ip_replacement_server_has_IPV4_address
     @Test
     public void testFieldGuardRecord_ip_local_filebeatIpV4() {
         String clientIp = "127.0.0.1";
@@ -113,7 +113,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = new Gson().fromJson(recordStr, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = new Gson().fromJson(recordStr, Record.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals(serverIpFromFilebeat));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals(serverIpFromFilebeat));
@@ -122,7 +122,7 @@ public class MongoDbIpaTest {
 
     }
 
-    //---------------------test_local_ip_NONE_replacement_server_has_IPV4_address
+    // ---------------------test_local_ip_NONE_replacement_server_has_IPV4_address
     @Test
     public void testFieldGuardRecord_ip_NONE_filebeatIpV4() {
         String clientIp = "(NONE)";
@@ -140,7 +140,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = new Gson().fromJson(recordStr, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = new Gson().fromJson(recordStr, Record.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals(serverIpFromFilebeat));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals(serverIpFromFilebeat));
@@ -148,7 +148,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, matchListener.getMatchCount());
     }
 
-    //---------------------test_local_ip_NONE_replacement_server_has_IPV4_address
+    // ---------------------test_local_ip_NONE_replacement_server_has_IPV4_address
     @Test
     public void testFieldGuardRecord_ip_NONE_filebeatIpV6() {
         String clientIp = "(NONE)";
@@ -166,7 +166,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = new Gson().fromJson(recordStr, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = new Gson().fromJson(recordStr, Record.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals(serverIpFromFilebeat));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals(serverIpFromFilebeat));
@@ -175,7 +175,7 @@ public class MongoDbIpaTest {
 
     }
 
-    //---------------------test_local_ip_NONE_replacement_server_has_IPV4_address
+    // ---------------------test_local_ip_NONE_replacement_server_has_IPV4_address
     @Test
     public void testFieldGuardRecord_ip_NONE_filebeatInvalid() {
         String clientIp = "(NONE)";
@@ -188,13 +188,13 @@ public class MongoDbIpaTest {
         String messageUnderTest = String.format(messageStrForIPTests, serverIp, clientIp);
         e.setField("message", messageUnderTest);
         e.setField("server_ip", serverIpFromFilebeat);
-        ArrayList<Event> events = new ArrayList<>(Arrays.asList(new Event[]{e}));
+        ArrayList<Event> events = new ArrayList<>(Arrays.asList(new Event[] { e }));
         Collection<Event> results = filter.filter(events, matchListener);
 
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = new Gson().fromJson(recordStr, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = new Gson().fromJson(recordStr, Record.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals("0.0.0.0"));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals("0.0.0.0"));
@@ -203,7 +203,7 @@ public class MongoDbIpaTest {
 
     }
 
-    //---------------------test_local_ip_NONE_replacement_server_has_IPV4_address
+    // ---------------------test_local_ip_NONE_replacement_server_has_IPV4_address
     @Test
     public void testFieldGuardRecord_ip_local_filebeatInvalid() {
         String clientIp = "127.0.0.1";
@@ -221,7 +221,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = new Gson().fromJson(recordStr, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = new Gson().fromJson(recordStr, Record.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals("127.0.0.1"));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals("127.0.0.1"));
@@ -230,11 +230,35 @@ public class MongoDbIpaTest {
     }
 
     @Test
-    //---------------------test_local_ip_replacement_event_does_not_have_sessionIp
+    // ---------------------test_local_ip_replacement_event_does_not_have_sessionIp
     public void testFieldGuardRecord_ip_local_no_filebeat_ip() {
-        //{ "@timestamp" : "2020-10-13T09:35:06.173Z","message" : "mongod: { "atype" : "authCheck", "ts" : { "$date" : "2020-10-13T05:34:58.768-0400" }, "local" : { "ip" : "127.0.0.1", "port" : 27017 }, "remote" : { "ip" : "127.0.0.1", "port" : 59056 }, "users" : [ { "user" : "admin", "db" : "admin" } ], "roles" : [ { "role" : "read", "db" : "admin" }, { "role" : "readWrite", "db" : "admin" } ], "param" : { "command" : "create", "ns" : "admin.shefali123", "args" : { "create" : "shefali123", "lsid" : { "id" : { "$binary" : "gnlGNvRNRLaLBFH0cC6Y2Q==", "$type" : "04" } }, "$db" : "admin" } }, "result" : 0 }","host" : "{mac=ConvertedList{delegate=[00:50:56:b4:77:7f]}, id=f6da45a8-225a-46c9-958a-ea7bca345534, ip=ConvertedList{delegate=[2620:1f7:853:a000:a700::5, fe80::953b:3ae2:ab60:d65, 9.42.101.19]}, os={kernel=10.0.17763.1457 (WinBuild.160101.0800), family=windows, version=10.0, name=Windows Server 2019 Standard, build=17763.1457, platform=windows}, name=sys-win2019db03, hostname=sys-win2019db03, architecture=x86_64}","agent" : "{id=90467cc3-4af0-4311-a999-ce9fb9ef80a4, type=filebeat, name=sys-win2019db03, version=7.8.1, hostname=sys-win2019db03, ephemeral_id=84bca17c-1919-4793-a6e9-0ecb748967c6}","server_ip" : "2620:1f7:853:a000:a700::5","tags" : "ConvertedList{delegate=[beats_input_codec_plain_applied]}","server_hostname" : "sys-win2019db03","input" : "{type=log}","log" : "{file={path=C:\Deploy\auditLog.json}, offset=1647316}","ecs" : "{version=1.5.0}","type" : "filebeat-mongodb-preset","source_program" : "mongod","@version" : "1","client_hostname" : "sys-win2019db03" }
+        // { "@timestamp" : "2020-10-13T09:35:06.173Z","message" : "mongod: { "atype" :
+        // "authCheck", "ts" : { "$date" : "2020-10-13T05:34:58.768-0400" }, "local" : {
+        // "ip" : "127.0.0.1", "port" : 27017 }, "remote" : { "ip" : "127.0.0.1", "port"
+        // : 59056 }, "users" : [ { "user" : "admin", "db" : "admin" } ], "roles" : [ {
+        // "role" : "read", "db" : "admin" }, { "role" : "readWrite", "db" : "admin" }
+        // ], "param" : { "command" : "create", "ns" : "admin.shefali123", "args" : {
+        // "create" : "shefali123", "lsid" : { "id" : { "$binary" :
+        // "gnlGNvRNRLaLBFH0cC6Y2Q==", "$type" : "04" } }, "$db" : "admin" } }, "result"
+        // : 0 }","host" : "{mac=ConvertedList{delegate=[00:50:56:b4:77:7f]},
+        // id=f6da45a8-225a-46c9-958a-ea7bca345534,
+        // ip=ConvertedList{delegate=[2620:1f7:853:a000:a700::5,
+        // fe80::953b:3ae2:ab60:d65, 9.42.101.19]}, os={kernel=10.0.17763.1457
+        // (WinBuild.160101.0800), family=windows, version=10.0, name=Windows Server
+        // 2019 Standard, build=17763.1457, platform=windows}, name=sys-win2019db03,
+        // hostname=sys-win2019db03, architecture=x86_64}","agent" :
+        // "{id=90467cc3-4af0-4311-a999-ce9fb9ef80a4, type=filebeat,
+        // name=sys-win2019db03, version=7.8.1, hostname=sys-win2019db03,
+        // ephemeral_id=84bca17c-1919-4793-a6e9-0ecb748967c6}","server_ip" :
+        // "2620:1f7:853:a000:a700::5","tags" :
+        // "ConvertedList{delegate=[beats_input_codec_plain_applied]}","server_hostname"
+        // : "sys-win2019db03","input" : "{type=log}","log" :
+        // "{file={path=C:\Deploy\auditLog.json}, offset=1647316}","ecs" :
+        // "{version=1.5.0}","type" : "filebeat-mongodb-preset","source_program" :
+        // "mongod","@version" : "1","client_hostname" : "sys-win2019db03" }
 
-        // Configuration config = new ConfigurationImpl(Collections.singletonMap("source", sourceField));
+        // Configuration config = new
+        // ConfigurationImpl(Collections.singletonMap("source", sourceField));
         Context context = new ContextImpl(null, null);
         MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
 
@@ -251,7 +275,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = new Gson().fromJson(recordStr, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = new Gson().fromJson(recordStr, Record.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals("127.0.0.1"));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals("127.0.0.1"));
@@ -261,11 +285,35 @@ public class MongoDbIpaTest {
     }
 
     @Test
-    //---------------------test_local_ip_replacement_event_does_not_have_sessionIp
+    // ---------------------test_local_ip_replacement_event_does_not_have_sessionIp
     public void testFieldGuardRecord_ip_NONE_no_filebeat_ip() {
-        //{ "@timestamp" : "2020-10-13T09:35:06.173Z","message" : "mongod: { "atype" : "authCheck", "ts" : { "$date" : "2020-10-13T05:34:58.768-0400" }, "local" : { "ip" : "127.0.0.1", "port" : 27017 }, "remote" : { "ip" : "127.0.0.1", "port" : 59056 }, "users" : [ { "user" : "admin", "db" : "admin" } ], "roles" : [ { "role" : "read", "db" : "admin" }, { "role" : "readWrite", "db" : "admin" } ], "param" : { "command" : "create", "ns" : "admin.shefali123", "args" : { "create" : "shefali123", "lsid" : { "id" : { "$binary" : "gnlGNvRNRLaLBFH0cC6Y2Q==", "$type" : "04" } }, "$db" : "admin" } }, "result" : 0 }","host" : "{mac=ConvertedList{delegate=[00:50:56:b4:77:7f]}, id=f6da45a8-225a-46c9-958a-ea7bca345534, ip=ConvertedList{delegate=[2620:1f7:853:a000:a700::5, fe80::953b:3ae2:ab60:d65, 9.42.101.19]}, os={kernel=10.0.17763.1457 (WinBuild.160101.0800), family=windows, version=10.0, name=Windows Server 2019 Standard, build=17763.1457, platform=windows}, name=sys-win2019db03, hostname=sys-win2019db03, architecture=x86_64}","agent" : "{id=90467cc3-4af0-4311-a999-ce9fb9ef80a4, type=filebeat, name=sys-win2019db03, version=7.8.1, hostname=sys-win2019db03, ephemeral_id=84bca17c-1919-4793-a6e9-0ecb748967c6}","server_ip" : "2620:1f7:853:a000:a700::5","tags" : "ConvertedList{delegate=[beats_input_codec_plain_applied]}","server_hostname" : "sys-win2019db03","input" : "{type=log}","log" : "{file={path=C:\Deploy\auditLog.json}, offset=1647316}","ecs" : "{version=1.5.0}","type" : "filebeat-mongodb-preset","source_program" : "mongod","@version" : "1","client_hostname" : "sys-win2019db03" }
+        // { "@timestamp" : "2020-10-13T09:35:06.173Z","message" : "mongod: { "atype" :
+        // "authCheck", "ts" : { "$date" : "2020-10-13T05:34:58.768-0400" }, "local" : {
+        // "ip" : "127.0.0.1", "port" : 27017 }, "remote" : { "ip" : "127.0.0.1", "port"
+        // : 59056 }, "users" : [ { "user" : "admin", "db" : "admin" } ], "roles" : [ {
+        // "role" : "read", "db" : "admin" }, { "role" : "readWrite", "db" : "admin" }
+        // ], "param" : { "command" : "create", "ns" : "admin.shefali123", "args" : {
+        // "create" : "shefali123", "lsid" : { "id" : { "$binary" :
+        // "gnlGNvRNRLaLBFH0cC6Y2Q==", "$type" : "04" } }, "$db" : "admin" } }, "result"
+        // : 0 }","host" : "{mac=ConvertedList{delegate=[00:50:56:b4:77:7f]},
+        // id=f6da45a8-225a-46c9-958a-ea7bca345534,
+        // ip=ConvertedList{delegate=[2620:1f7:853:a000:a700::5,
+        // fe80::953b:3ae2:ab60:d65, 9.42.101.19]}, os={kernel=10.0.17763.1457
+        // (WinBuild.160101.0800), family=windows, version=10.0, name=Windows Server
+        // 2019 Standard, build=17763.1457, platform=windows}, name=sys-win2019db03,
+        // hostname=sys-win2019db03, architecture=x86_64}","agent" :
+        // "{id=90467cc3-4af0-4311-a999-ce9fb9ef80a4, type=filebeat,
+        // name=sys-win2019db03, version=7.8.1, hostname=sys-win2019db03,
+        // ephemeral_id=84bca17c-1919-4793-a6e9-0ecb748967c6}","server_ip" :
+        // "2620:1f7:853:a000:a700::5","tags" :
+        // "ConvertedList{delegate=[beats_input_codec_plain_applied]}","server_hostname"
+        // : "sys-win2019db03","input" : "{type=log}","log" :
+        // "{file={path=C:\Deploy\auditLog.json}, offset=1647316}","ecs" :
+        // "{version=1.5.0}","type" : "filebeat-mongodb-preset","source_program" :
+        // "mongod","@version" : "1","client_hostname" : "sys-win2019db03" }
 
-        // Configuration config = new ConfigurationImpl(Collections.singletonMap("source", sourceField));
+        // Configuration config = new
+        // ConfigurationImpl(Collections.singletonMap("source", sourceField));
         Context context = new ContextImpl(null, null);
         MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
 
@@ -282,7 +330,7 @@ public class MongoDbIpaTest {
         Assert.assertEquals(1, results.size());
         Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         String recordStr = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = new Gson().fromJson(recordStr, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = new Gson().fromJson(recordStr, Record.class);
 
         Assert.assertTrue(record.getSessionLocator().getClientIp().equals("0.0.0.0"));
         Assert.assertTrue(record.getSessionLocator().getServerIp().equals("0.0.0.0"));
