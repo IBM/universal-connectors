@@ -151,7 +151,7 @@ public class ErrorRecordBuilder extends DefaultGuardRecordBuilder {
         if (serverHostName != null) {
             accessor.setServerHostName(serverHostName);
         }
-        }
+        
         errorRecord.setAccessor(accessor);
         
         // Set session ID and database name - use from partialRecord if available
