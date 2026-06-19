@@ -5,24 +5,24 @@ over CloudWatch Kafka Connect** plug-ins.
 
 ### Meet RDS MySql over CloudWatch Connect
 
-* Environments: AWS
-* Supported inputs: Kafka connect Cloudwatch 2.0 (pull)
-* Supported Guardium versions:
-    * Guardium Data Protection: Appliance bundle 12.2.2 or later
+- Environments: AWS
+- Supported inputs: Kafka connect Cloudwatch 2.0 (pull)
+- Supported Guardium versions:
+  - Guardium Data Protection: Appliance bundle 12.2.2 or later
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems. This connector enables
 monitoring of RDS MySQL audit logs through CloudWatch.
 
-***Note:***
-* The client source program is not available in messages sent by MySQL. This data is sent only in the first audit log message upon database connection and the filter plug-in doesn't aggregate data from different messages.
-* On the reports page, the `use` statement does not display the account ID in the **Database Name** column.
+**_Note:_**
+
+- The client source program is not available in messages sent by MySQL. This data is sent only in the first audit log message upon database connection and the filter plug-in doesn't aggregate data from different messages.
+- On the reports page, the `use` statement does not display the account ID in the **Database Name** column.
 
 ## Creating and configuring a MySQL database instance
 
 ### Creating a MySQL database instance
 
 To create a new MySQL instance, see [Create and Connect to a MySQL Database with Amazon RDS](https://aws.amazon.com/getting-started/hands-on/create-mysql-db/). When setting the properties under **Additional Configuration**, in the Log exports section select **Audit log** and **Error log** as the log types to publish to Amazon.
-
 
 ### Creating a new parameter group
 
@@ -52,14 +52,14 @@ To create a new MySQL instance, see [Create and Connect to a MySQL Database with
 4. Select **DB Parameter** > **Parameter group actions** > **Edit**.
 5. Update the value of the parameters and add the following settings:
    • **server_audit_events** = `CONNECT,QUERY_DCL,QUERY_DDL,QUERY_DML`
-   • **server_audit_excl_users** =	`rdsadmin`
-   • **server_audit_logging**	= `1`
-   • **server_audit_logs_upload**	= `1`
+   • **server_audit_excl_users** = `rdsadmin`
+   • **server_audit_logging** = `1`
+   • **server_audit_logs_upload** = `1`
    • **log_output** = `FILE`
 6. Click **Save changes**.
 7. Go to **Database Clustor** > **Modify** > **Additional Configuration** > **Database options**.
 8. Change the DB clustor parameter group.
-8. Click **Continue** > **Apply immediately**.
+9. Click **Continue** > **Apply immediately**.
 10. Click **Modify Cluster**.
 11. Reboot the DB Cluster for the changes to take effect.
 
@@ -67,7 +67,7 @@ To create a new MySQL instance, see [Create and Connect to a MySQL Database with
 
 The audit logs can be seen in log files in RDS, and also on CloudWatch.
 
- ### Viewing the auditing details in RDS log files
+### Viewing the auditing details in RDS log files
 
 The RDS log files can be viewed, watched, and downloaded. The name of the RDS log file is modifiable and is controlled
 by the **log_filename** parameter.
@@ -87,7 +87,7 @@ instance.
 3. Click **CloudWatch** to redirect to the CloudWatch dashboard.
 4. In the left panel, select **Logs**.
 5. Click **Log Groups**.
- 
+
 ## Creating datasource profiles
 
 You can create a new datasource profile from the **Datasource Profile Management** page.
@@ -98,17 +98,17 @@ You can create a new datasource profile from the **Datasource Profile Management
 2. Click the **➕ (Add)** button.
 3. You can create a profile by using one of the following methods:
 
-    - To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
-        - **Name** and **Description**.
-        - Select a **Plug-in Type** from the dropdown. For example, `AWS RDS MySql Over Cloudwatch Connect 2.0`.
+   - To **Create a new profile manually**, go to the **"Add Profile"** tab and provide values for the following fields.
+     - **Name** and **Description**.
+     - Select a **Plug-in Type** from the dropdown. For example, `AWS RDS MySql Over Cloudwatch Connect 2.0`.
 
-    - To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file
-      containing one or more profiles.  
-      You can also choose from the following options:
-        - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
-        - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
-        - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the
-          ELB process.
+   - To **Upload from CSV**, go to the **"Upload from CSV"** tab and upload an exported or manually created CSV file
+     containing one or more profiles.  
+     You can also choose from the following options:
+     - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
+     - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
+     - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the
+       ELB process.
 
 **Note:** Configuration options vary based on the selected plug-in.
 
@@ -116,24 +116,24 @@ You can create a new datasource profile from the **Datasource Profile Management
 
 The following table describes the fields that are specific to RDS MySQL over CloudWatch Kafka Connect 2.0 plugin.
 
-| Field                                   | Description                                                                                                                                                                                                                                                                                                          |
-|-----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Name**                                | Unique name of the profile.                                                                                                                                                                                                                                                                                          |
-| **Description**                         | Description of the profile.                                                                                                                                                                                                                                                                                          |
-| **Plug-in**                             | Plug-in type for this profile. Select `AWS RDS MySql Over Cloudwatch Connect 2.0`. A full list of available plug-ins are available on the **Package Management** page.                                                                                                                                               |
+| Field                                   | Description                                                                                                                                                                                                                                                                                                           |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Name**                                | Unique name of the profile.                                                                                                                                                                                                                                                                                           |
+| **Description**                         | Description of the profile.                                                                                                                                                                                                                                                                                           |
+| **Plug-in**                             | Plug-in type for this profile. Select `AWS RDS MySql Over Cloudwatch Connect 2.0`. A full list of available plug-ins are available on the **Package Management** page.                                                                                                                                                |
 | **Credential**                          | Select AWS Credentials or AWS Role ARN. The credential to authenticate with AWS. Must be created in **Credential Management**, or click **➕** to create one. For more information, see [Creating Credentials](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_credential_management.html). |
-| **Kafka Cluster**                       | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_kafka_cluster_management.html).                                              |
-| **Label**                               | Grouping label. For example, customer name or ID.                                                                                                                                                                                                                                                                    |
+| **Kafka Cluster**                       | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_kafka_cluster_management.html).                                               |
+| **Label**                               | Grouping label. For example, customer name or ID.                                                                                                                                                                                                                                                                     |
 | **AWS account region**                  | Specifies the AWS region where your RDS MySQL instance is located (e.g., us-east-1, eu-west-1).                                                                                                                                                                                                                       |
 | **Log groups**                          | List of CloudWatch log groups to monitor. These are the log groups where RDS MySQL audit logs are exported.                                                                                                                                                                                                           |
-| **Filter pattern**                      | CloudWatch Logs filter pattern to apply. Use "None" to retrieve all logs, or specify a pattern to filter specific log events.                                                                                                                                                                                        |
-| **Account ID**                          | Your AWS account ID (12-digit number). This identifies your AWS account.                                                                                                                                                                                                                                             |
+| **Filter pattern**                      | CloudWatch Logs filter pattern to apply. Use "None" to retrieve all logs, or specify a pattern to filter specific log events.                                                                                                                                                                                         |
+| **Account ID**                          | Your AWS account ID (12-digit number). This identifies your AWS account.                                                                                                                                                                                                                                              |
 | **Cluster name**                        | The name of your RDS MySQL cluster or instance identifier.                                                                                                                                                                                                                                                            |
-| **Ingestion delay (seconds)**           | Default value is 900 seconds (15 minutes). This delay accounts for the time it takes for logs to be available in CloudWatch after being generated.                                                                                                                                                                   |
-| **No-traffic threshold (minutes)**      | Default value is 60. If there is no incoming traffic for an hour, S-TAP displays a red status. Once incoming traffic resumes, the status returns to green.                                                                                                                                                           |
-| **Unmask sensitive value**              | Optional boolean flag. When enabled, sensitive values in the audit logs will not be masked.                                                                                                                                                                                                                          |
-| **Use Enterprise Load Balancing (ELB)** | Enable this if ELB support is required.                                                                                                                                                                                                                                                                              |
-| **Managed Unit Count**                  | Number of Managed Units (MUs) to allocate for ELB.                                                                                                                                                                                                                                                                   |
+| **Ingestion delay (seconds)**           | Default value is 900 seconds (15 minutes). This delay accounts for the time it takes for logs to be available in CloudWatch after being generated.                                                                                                                                                                    |
+| **No-traffic threshold (minutes)**      | Default value is 60. If there is no incoming traffic for an hour, S-TAP displays a red status. Once incoming traffic resumes, the status returns to green.                                                                                                                                                            |
+| **Unmask sensitive value**              | Optional boolean flag. When enabled, sensitive values in the audit logs will not be masked.                                                                                                                                                                                                                           |
+| **Use Enterprise Load Balancing (ELB)** | Enable this if ELB support is required.                                                                                                                                                                                                                                                                               |
+| **Managed Unit Count**                  | Number of Managed Units (MUs) to allocate for ELB.                                                                                                                                                                                                                                                                    |
 
 **Note:**
 
@@ -178,4 +178,3 @@ An installed profile can be uninstalled or reinstalled if needed.
 2. From the list of available actions, select the desired option: **Uninstall** or **Reinstall**.
 
 ---
-

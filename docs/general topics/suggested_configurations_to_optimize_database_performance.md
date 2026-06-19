@@ -1,12 +1,11 @@
 # Suggested configurations to optimize database performance
 
-
 These configurations are not set automatically, and they are not supported via GIM. They optimize the database performance, though you might have other considerations in your database configuration.
 
 **Network:**
 
-  Minimum 2 NIC with 1 Gbit or10Gbit per second card.
-  
+Minimum 2 NIC with 1 Gbit or10Gbit per second card.
+
 **Filebeat General section parameters (configured in filebeat.yml file):**
 
         filebeat.spool_size: 20480
@@ -16,8 +15,8 @@ These configurations are not set automatically, and they are not supported via G
             flush.timeout: 50 ms
 
 **Logstash Output section parameters (configured in filebeat.yml file):**
-   
-   output.logstash:
+
+output.logstash:
 
     # The Logstash hostshosts:
     ["10.XX.XXX.XX:5044", "10.XX.XXX.XXX:5044"]

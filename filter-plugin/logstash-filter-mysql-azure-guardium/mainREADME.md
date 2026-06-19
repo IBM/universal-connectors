@@ -7,4 +7,3 @@
 ## Follow this link to set up and use Azure MySQL Universal Connector over Azure Eventhub Connect
 
 [MySqlOverConnectEventHub](../../docs/KafkaBasedUCs/AzureMySQLEventHubKafkaConnect.md)
-

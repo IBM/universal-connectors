@@ -1,16 +1,20 @@
 # Changelog
+
 Notable changes will be documented in this file.
 
 ## 0.0.12
-	- Add support for IBM Cloud Logs.
+
+    - Add support for IBM Cloud Logs.
 
 ## 0.0.11
-	- Multiline queries will not be parsed.
+
+    - Multiline queries will not be parsed.
     - Add support for filtering based on logsourceCRN
 
 ## 0.0.10
-	- Fixed the log format regex
+
+    - Fixed the log format regex
 
 ## 0.0.9
-	- Plugin created with the logstash plugin generator
 
+    - Plugin created with the logstash plugin generator

@@ -5,28 +5,29 @@ through Google Cloud Pub/Sub using Kafka Connect.
 
 ## Meet BigQuery over Pub/Sub Connect
 
-* Environments: On-prem
-* Supported inputs: Kafka connect Pubsub 2.0 (pull)
-* Supported Guardium versions:
-    * Guardium Data Protection: Appliance bundle 12.2.2 or later
+- Environments: On-prem
+- Supported inputs: Kafka connect Pubsub 2.0 (pull)
+- Supported Guardium versions:
+  - Guardium Data Protection: Appliance bundle 12.2.2 or later
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems.
 
 ## Configuring BigQuery on GCP
 
 ### BigQuery Setup
+
 1. Complete the BigQuery [Prerequisites](https://cloud.google.com/bigquery/docs/quickstarts/quickstart-cloud-console).
 
 2. Enable the BigQuery API. </br>
-BigQuery is automatically enabled in new projects. For existing projects, you must enable the BigQuery API. For more information, see [Enable the BigQuery API](https://cloud.google.com/bigquery-transfer/docs/enable-transfer-service#creating_a_project_and_enabling_the_api).
+   BigQuery is automatically enabled in new projects. For existing projects, you must enable the BigQuery API. For more information, see [Enable the BigQuery API](https://cloud.google.com/bigquery-transfer/docs/enable-transfer-service#creating_a_project_and_enabling_the_api).
 3. Create a BigQuery dataset to store your data. For more information, see [Create a Dataset](https://cloud.google.com/bigquery/docs/datasets).
 
 4. Create a table: </br>
-      a. Expand the **View actions** menu and click **Open**.</br>
-      b. In the details panel, click **Create table (+)**.</br>
-      c. On the Create table page, enter a **Table name** (for example, user).</br>
-      e. Optional: Add more fields by clicking **Add Field (+)**.</br>
-      f. Click **Create Table**. For more information, see [Create Table](https://cloud.google.com/bigquery/docs/tables).</br>
+   a. Expand the **View actions** menu and click **Open**.</br>
+   b. In the details panel, click **Create table (+)**.</br>
+   c. On the Create table page, enter a **Table name** (for example, user).</br>
+   e. Optional: Add more fields by clicking **Add Field (+)**.</br>
+   f. Click **Create Table**. For more information, see [Create Table](https://cloud.google.com/bigquery/docs/tables).</br>
 
 5. Query your table data. For more information, see [Query Table Data](https://cloud.google.com/bigquery/docs/quickstarts/quickstart-cloud-console#query_table_data).
 
@@ -35,18 +36,18 @@ BigQuery is automatically enabled in new projects. For existing projects, you mu
 To view or download the generated logs, make sure that the appropriate Identity and Access Management (IAM) roles are
 assigned.
 
-* To View logs:
-     - roles/logging.viewer (Logs Viewer)
-     - roles/logging.privateLogViewer (Private Logs Viewer)
-* To download logs:
-     - roles/logging.admin (Logging Admin)
-     - roles/logging.viewAccessor (Logs View Accessor)
+- To View logs:
+  - roles/logging.viewer (Logs Viewer)
+  - roles/logging.privateLogViewer (Private Logs Viewer)
+- To download logs:
+  - roles/logging.admin (Logging Admin)
+  - roles/logging.viewAccessor (Logs View Accessor)
 
 ### Create a topic in Pub/Sub
 
 1. Go to the Pub/Sub topics page in the Cloud Console.
 2. Click **Create a topic**.
-3. In the **Topic ID** field, provide a unique topic name. For example, ``MyTopic``.
+3. In the **Topic ID** field, provide a unique topic name. For example, `MyTopic`.
 4. Click **Create Topic**.
 
 ### Create a subscription in Pub/Sub
@@ -61,33 +62,23 @@ assigned.
 1. In the Cloud Console, go to the **Logging** > **Log Router page**.
 2. Click **Create sink**.
 3. In the **Sink details** panel, enter the following details:</br>
-      a. Sink name: Provide an identifier for the sink. Once you create the sink, you cannot rename it. However, you can delete a sink and create a new one.</br>
-      b. Sink description (optional): Describe the purpose or use case for the sink.</br>
+   a. Sink name: Provide an identifier for the sink. Once you create the sink, you cannot rename it. However, you can delete a sink and create a new one.</br>
+   b. Sink description (optional): Describe the purpose or use case for the sink.</br>
 4. In the **Sink destination** panel, select the Cloud Pub/Sub topic as sink service and select the topic that you created in the previous steps.
 5. Choose logs to include in the sink in the Build inclusion filter panel.
 6. You can filter the logs by log name, resource, and severity.
 7. In cases of multiple regions, you need to do the same set of configurations for each region.
-  Based on the region, different configuration files are used for the input plug-in.
+   Based on the region, different configuration files are used for the input plug-in.
 
 ### Set destination (TOPIC & SUBSCRIPTION) permissions
 
-1. Obtain the sink's writer identity from the new sink. For example, an email address.</br> 
-    a. Go to the Log Router page, and select **menu** > **View sink details**.</br>
-    b. The writer identity appears in the Sink details panel.</br>
+1. Obtain the sink's writer identity from the new sink. For example, an email address.</br>
+   a. Go to the Log Router page, and select **menu** > **View sink details**.</br>
+   b. The writer identity appears in the Sink details panel.</br>
 2. If you have owner access to the destination:</br>
-    a. Add the sink's writer identity to topic.</br>
-        - Navigate to the Topic you created.</br>
-        - Click on the **SHOW INFO** panel.</br>
-        - Click **ADD PRINCIPAL**.</br>
-        - Paste writer identity in the New Principals.</br>
-        - Give it the Pub/Sub Publisher role and subscriber role.</br>
+   a. Add the sink's writer identity to topic.</br> - Navigate to the Topic you created.</br> - Click on the **SHOW INFO** panel.</br> - Click **ADD PRINCIPAL**.</br> - Paste writer identity in the New Principals.</br> - Give it the Pub/Sub Publisher role and subscriber role.</br>
 
-    b. Add the sink's writer identity to subscription. </br>
-        - Navigate to the Subscription.</br>
-        - Click **SHOW INFO** panel.</br>
-        - Click **ADD PRINCIPAL**.</br>
-        - Paste writer identity in the New Principals<./br>
-        - Give it the subscriber role.</br>
+   b. Add the sink's writer identity to subscription. </br> - Navigate to the Subscription.</br> - Click **SHOW INFO** panel.</br> - Click **ADD PRINCIPAL**.</br> - Paste writer identity in the New Principals<./br> - Give it the subscriber role.</br>
 
 ### Creating service account credentials
 
@@ -106,7 +97,7 @@ To edit the Sink, go to **Logs Router** > **Sink Inclusion Filter**.
 
 This inclusion filter excludes unnecessary logs and includes required logs with resource types and metadata reason as **DELETE**, **TABLE_INSERT_REQUEST**, **TABLE_DELETE_REQUEST** or **CREATE** and **metadata jobStatus**.
 
-```    
+```
 (resource.type=("bigquery_project") AND protoPayload.authenticationInfo.principalEmail:* AND
 (protoPayload.metadata.jobChange.job.jobStatus.jobState = DONE AND -protoPayload.metadata.jobChange.job.jobConfig.queryConfig.statementType = "SCRIPT"))
 OR
@@ -118,10 +109,12 @@ OR
 The inclusion filter is used to view the Audit logs in the GCP Logs Explorer.
 
 ### Supported audit logs
+
 1. BigQueryAudit - `ACTIVITY`, `DATA_ACCESS` logs
 2. BigQuery Log - `EMERGENCY`, `ALERT`, `CRITICAL`, `ERROR`, `WARNING`, `NOTICE`, `DEBUG`, `DEFAULT`
 
 ## Limitations
+
 1. If no information regarding certain fields is available in the logs, those fields are not mapped.
 2. Exception object is prepared based on severity of the logs.
 3. The data model size is limited to 10 GB per table. If you have a 100 GB reservation per project per location, BigQuery BI Engine limits the reservation per table to 10 GB. The rest of the available reservation is used for other tables in the project.
@@ -135,9 +128,9 @@ The inclusion filter is used to view the Audit logs in the GCP Logs Explorer.
     - Source program
     - OS User
     - Client HostName
-11.  `serverHostName` pattern for BigQuery GCP: roject-id_bigquery.googleapis.com.
+11. `serverHostName` pattern for BigQuery GCP: roject-id_bigquery.googleapis.com.
 12. When you try to create or delete a data set or table using BigQuery UI options, fields like the FULL SQL & Objects and Verbs column appear blank, because these actions don't receive any query from GCP logs. You can ignore these actions, by updating the inclusion filter:
-    "(resource.type=("bigquery_project") AND protoPayload.authenticationInfo.principalEmail:* AND
+    "(resource.type=("bigquery_project") AND protoPayload.authenticationInfo.principalEmail:\* AND
     (protoPayload.metadata.jobChange.job.jobStatus.jobState = DONE AND -protoPayload.metadata.jobChange.job.jobConfig.queryConfig.statementType = "SCRIPT"))"
 13. The parser does not support queries in which a keyword is used as a table name or column name, or in scenarios of nested parameters inside functions.
 14. The BigQuery audit log doesn’t include login failed logs, so these do not appear in the guardium LOGIN_FAILED report.
@@ -153,16 +146,16 @@ You can create a new datasource profile from the **Datasource Profile Management
 2. Click the **➕ (Add)** button.
 3. You can create a profile by using one of the following methods:
 
-    * To create a new profile manually, go to the **"Add Profile"** tab and provide values for the following fields.
-        * **Name** and **Description**.
-      * Select a **Plug-in Type** from the dropdown. For example, **BigQuery Over PubSub Kafka Connect 2.0**.
+   - To create a new profile manually, go to the **"Add Profile"** tab and provide values for the following fields.
+     - **Name** and **Description**.
+     - Select a **Plug-in Type** from the dropdown. For example, **BigQuery Over PubSub Kafka Connect 2.0**.
 
-    * To upload from CSV, go to the **Upload from CSV** tab and upload an exported or manually created CSV file
-      containing one or more profiles. You can also choose from the following options:
-        * **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
-        * **Test connection for imported profiles** — Automatically tests connections after profiles are created.
-        * **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the
-          ELB process.
+   - To upload from CSV, go to the **Upload from CSV** tab and upload an exported or manually created CSV file
+     containing one or more profiles. You can also choose from the following options:
+     - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
+     - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
+     - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the
+       ELB process.
 
 **Note:** Configuration options vary based on the selected plug-in.
 
@@ -171,18 +164,18 @@ You can create a new datasource profile from the **Datasource Profile Management
 The following table describes the fields that are specific to Pub/Sub Kafka Connect 2.0 and similar plugins.
 
 | Field                               | Description                                                                                                                                                                      |
-|-------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
 | **Name**                            | Unique name of the profile.                                                                                                                                                      |
 | **Description**                     | Description of the profile.                                                                                                                                                      |
 | **Plug-in**                         | Plug-in type for this profile. A full list of available plug-ins are available on the **Package Management** page.                                                               |
-| **Credential**                      | The credential to authenticate with the datasource. Must be created in **Credential Management**, or click **➕** to create one.                                                  |
+| **Credential**                      | The credential to authenticate with the datasource. Must be created in **Credential Management**, or click **➕** to create one.                                                 |
 | **Kafka Cluster**                   | Kafka cluster to deploy the universal connector.                                                                                                                                 |
 | **Label**                           | Grouping label. For example, **customer name** or **ID**.                                                                                                                        |
 | **GCP project id**                  | Google Cloud project ID that contains the Pub/Sub subscription.                                                                                                                  |
 | **Pub/Sub Subscription ID**         | Pub/Sub subscription ID from which messages are consumed.                                                                                                                        |
 | **GCP Topic**                       | Pub/Sub topic name.                                                                                                                                                              |
 | **Maximum poll records**            | The maximum number of records returned in a single poll                                                                                                                          |
-| **Expected events per second**      | Expected events per second. This value is used to automatically calculate the **parallel.pull.count** parameter when it not set. Calculation formula: ceil(expected.eps / 1000). |                                                                                                                                 |
+| **Expected events per second**      | Expected events per second. This value is used to automatically calculate the **parallel.pull.count** parameter when it not set. Calculation formula: ceil(expected.eps / 1000). |     |
 | **Number of parallel pull streams** | Number of parallel pull streams to use. If not specified, this value is automatically calculated based on **expected.eps** (1 subscriber per 1000 EPS).                          |
 | **No traffic threshold (minutes)**  | The time period after which the system detects inactivity.                                                                                                                       |
 
@@ -233,18 +226,18 @@ Pub/Sub level before the messages reach the connector.
 
 1. To enable **exactly-once** delivery on your Pub/Sub subscription, use only one of the following commands based on
    your scenario.
-    * For an existing subscription:
-      ```bash
-       gcloud pubsub subscriptions update <subscription-name> \
-      --enable-exactly-once-delivery
-      ```   
-    * For a new subscription:
-       ```bash
-       gcloud pubsub subscriptions create <subscription-name> \
-         --topic=<topic-name> \
-         --enable-exactly-once-delivery \
-         --ack-deadline=600
-       ```
+   - For an existing subscription:
+     ```bash
+      gcloud pubsub subscriptions update <subscription-name> \
+     --enable-exactly-once-delivery
+     ```
+   - For a new subscription:
+     ```bash
+     gcloud pubsub subscriptions create <subscription-name> \
+       --topic=<topic-name> \
+       --enable-exactly-once-delivery \
+       --ack-deadline=600
+     ```
 
 ## Troubleshooting
 

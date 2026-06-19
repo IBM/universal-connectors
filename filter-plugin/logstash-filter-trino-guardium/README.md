@@ -2,13 +2,13 @@
 
 ### Meet TrinoDB
 
-* Tested versions: v1
-* Environment: Trino DB
-* Supported inputs: http (pull)
-* Supported Guardium versions:
-   * Guardium Data Protection 12.0 patch 5005 and above
-   * Guardium Data Protection 12.1 patch 5005 and above
-   * Guardium Data Protection 12.2 and above
+- Tested versions: v1
+- Environment: Trino DB
+- Supported inputs: http (pull)
+- Supported Guardium versions:
+  - Guardium Data Protection 12.0 patch 5005 and above
+  - Guardium Data Protection 12.1 patch 5005 and above
+  - Guardium Data Protection 12.2 and above
 
 This is a [Logstash](https://github.com/elastic/logstash) filter plug-in for the universal connector that is featured in
 IBM Security Guardium. It parses events and messages from the Trino audit log into a Guardium Record.
@@ -20,9 +20,9 @@ plug-ins for Guardium universal connector.
 
 ### Procedure
 
-	1. Create a database instance:
+    1. Create a database instance:
 
-		a.Here, We will consider that we have already installed TrinoDB ONPREM setup. 
+    	a.Here, We will consider that we have already installed TrinoDB ONPREM setup.
 
 See: [TrinoDB Install Offical Documentation](https://trino.io/docs/current/installation/deployment.html)
 
@@ -49,7 +49,7 @@ See: [TrinoDB Install Offical Documentation](https://trino.io/docs/current/insta
    io.trino.event.QueryMonitor=DEBUG
    io.trino.execution.SqlTask=DEBUG
 
-2. set `etc/http-event-listener.properties`
+3. set `etc/http-event-listener.properties`
    See: [http-event-listener](https://trino.io/docs/current/admin/event-listeners-http.html)
 
    etc/http-event-listener.properties
@@ -60,7 +60,7 @@ See: [TrinoDB Install Offical Documentation](https://trino.io/docs/current/insta
    http-event-listener.log-completed=true
    http-event-listener.log-split=false
 
-2. add `etc/http-event-listener.properties` to `event-listener.config-files` on config.properties file
+4. add `etc/http-event-listener.properties` to `event-listener.config-files` on config.properties file
    refer [Config properties](https://trino.io/docs/current/installation/deployment.html#config-properties)
 
    etc/config.properties
@@ -83,20 +83,21 @@ enforcements.
 
 ### Procedure
 
-1. On the collector, go to ```Setup``` > ```Tools and Views``` > ```Configure Universal Connector```.
+1. On the collector, go to `Setup` > `Tools and Views` > `Configure Universal Connector`.
 2. Enable the universal connector if it is disabled.
 3. Click ```Upload File``` and select the offline **logstash-filter-trino_guardium_filter.zip** plug-in. After it is uploaded, click ```OK```.
 5. Click the Plus sign to open the Connector Configuration dialog box.
 6. Type a name in the Connector name field.
 7. Update the input section to add the details from the [TrinoOverHttp.conf](./TrinoOverHttpPackage/TrinoOverHttp.conf)
    file's input part, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
-8. Update the filter section to add the details from the [TrinoOverHttp.conf](./TrinoOverHttpPackage/TrinoOverHttp.conf)
+7. Update the filter section to add the details from the [TrinoOverHttp.conf](./TrinoOverHttpPackage/TrinoOverHttp.conf)
    file's filter part, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
-9. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every
+8. The 'type' fields should match in the input and filter configuration sections. This field should be unique for every
    individual connector added.
-10. Click ```Save```. Guardium validates the new connector and displays it in the Configure Universal Connector page.
-11. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart
-    the Universal Connector using the ```Disable/Enable``` button.
+9. Click `Save`. Guardium validates the new connector and displays it in the Configure Universal Connector page.
+10. After the offline plug-in is installed and the configuration is uploaded and saved in the Guardium machine, restart
+    the Universal Connector using the `Disable/Enable` button.
 
 #### Limitations
-	• Client Hostname and Source Program will be seen as blank in report.
+
+    • Client Hostname and Source Program will be seen as blank in report.

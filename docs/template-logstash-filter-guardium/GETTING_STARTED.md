@@ -1,6 +1,7 @@
 # Getting Started - Creating Your Custom Logstash Filter Plugin for Guardium
 
 > **Important**: This template is stored in `docs/template-logstash-filter-guardium` for reference. Before you begin, copy it to the `filter-plugin/` directory where it can access the build system and shared resources:
+>
 > ```bash
 > # From the universal-connectors root directory
 > cp -r docs/template-logstash-filter-guardium filter-plugin/logstash-filter-YOURDATASOURCE-guardium
@@ -14,6 +15,7 @@ This template provides a starting point for creating your own custom Logstash fi
 ## Overview
 
 This template is based on successful implementations like:
+
 - Azure Cosmos DB filter plugin
 - Google Cloud BigTable filter plugin
 
@@ -22,6 +24,7 @@ It includes all the necessary structure, build configuration, and example code t
 ## Prerequisites
 
 Before you begin, ensure you have:
+
 - Java Development Kit (JDK) 8 or 11
 - Gradle (will be downloaded automatically via wrapper)
 - Understanding of your data source's audit log format
@@ -46,6 +49,7 @@ cp -r template-logstash-filter-guardium logstash-filter-YOURDATASOURCE-guardium
 Replace all placeholders throughout the project:
 
 **Placeholders to replace:**
+
 - `DATASOURCE_PLACEHOLDER` → Your data source name in lowercase (e.g., `mongodb`, `postgresql`)
 - `DATASOURCE_NAME` → Your data source display name (e.g., `MongoDB`, `PostgreSQL`)
 - `YOUR_PACKAGE_NAME` → Your Java package name (e.g., `mongodb`, `postgresql`)
@@ -53,6 +57,7 @@ Replace all placeholders throughout the project:
 - `your_filter_name` → Logstash plugin name (e.g., `mongodb_guardium_filter`)
 
 **Files to update:**
+
 1. `settings.gradle` - Update `rootProject.name`
 2. `build.gradle` - Update group, description, pluginInfo fields
 3. All Java source files - Update package names and class names
@@ -64,12 +69,14 @@ Replace all placeholders throughout the project:
 #### A. Main Filter Class (`YourDataSourceGuardiumFilter.java`)
 
 This is the entry point for your plugin. It:
+
 - Receives log events from Logstash
 - Validates and filters relevant events
 - Calls the Parser to convert events to Guardium records
 - Returns processed events
 
 **Key responsibilities:**
+
 ```java
 @LogstashPlugin(name = "your_datasource_guardium_filter")
 public class YourDataSourceGuardiumFilter implements Filter {
@@ -84,6 +91,7 @@ public class YourDataSourceGuardiumFilter implements Filter {
 #### B. Parser Class (`Parser.java`)
 
 Converts your data source's audit logs into Guardium Record format. It creates:
+
 - **Record**: Top-level Guardium object
 - **Accessor**: Who accessed the data (user, client info)
 - **SessionLocator**: Network information (IPs, ports)
@@ -94,16 +102,17 @@ Converts your data source's audit logs into Guardium Record format. It creates:
 #### C. ApplicationConstants Class
 
 Define all constants used in your plugin:
+
 ```java
 public class ApplicationConstants {
     // Field names from your audit logs
     public static final String TIMESTAMP = "timestamp";
     public static final String USER_NAME = "userName";
-    
+
     // Default values
     public static final String DEFAULT_IP = "0.0.0.0";
     public static final String UNKNOWN_STRING = "";
-    
+
     // Error tags
     public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "your_datasource_json_parse_error";
 }
@@ -114,6 +123,7 @@ public class ApplicationConstants {
 #### Step 4.1: Analyze Your Audit Logs
 
 Collect sample audit logs from your data source and identify:
+
 - Timestamp format
 - User/principal information
 - Client IP address
@@ -145,30 +155,30 @@ error_message        → ExceptionRecord.description
 ```java
 public static Record parseRecord(JsonObject input) {
     Record record = new Record();
-    
+
     // 1. Extract and set time
     record.setTime(parseTime(input));
-    
+
     // 2. Extract database information
     record.setDbName(extractDatabaseName(input));
-    
+
     // 3. Parse accessor (user info)
     record.setAccessor(parseAccessor(input));
-    
+
     // 4. Parse session locator (network info)
     record.setSessionLocator(parseSessionLocator(input));
-    
+
     // 5. Check for errors
     if (hasError(input)) {
         record.setException(parseException(input));
     } else {
         record.setData(parseData(input));
     }
-    
+
     // 6. Set session ID and app user
     record.setSessionId(extractSessionId(input));
     record.setAppUserName(extractAppUserName(input));
-    
+
     return record;
 }
 ```
@@ -176,6 +186,7 @@ public static Record parseRecord(JsonObject input) {
 ### 5. Write Unit Tests
 
 Create test cases for:
+
 - Successful operations
 - Failed operations
 - Different operation types (SELECT, INSERT, UPDATE, DELETE, etc.)
@@ -183,18 +194,19 @@ Create test cases for:
 - Different user types
 
 Example test structure:
+
 ```java
 @Test
 public void testSuccessfulQuery() {
     String auditLog = "{ /* your sample log */ }";
     Event event = new org.logstash.Event();
     event.setField("message", auditLog);
-    
+
     Collection<Event> results = filter.filter(
-        Collections.singletonList(event), 
+        Collections.singletonList(event),
         matchListener
     );
-    
+
     assertEquals(1, results.size());
     assertNotNull(event.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
 }
@@ -203,6 +215,7 @@ public void testSuccessfulQuery() {
 ### 6. Update Configuration Files
 
 #### build.gradle
+
 - Update `group` to match your package
 - Update `description`
 - Update `pluginInfo.pluginName`
@@ -210,9 +223,11 @@ public void testSuccessfulQuery() {
 - Add any specific dependencies your plugin needs
 
 #### settings.gradle
+
 - Update `rootProject.name`
 
 #### VERSION
+
 - Start with version `0.0.1`
 
 ### 7. Create Sample Configuration File
@@ -239,6 +254,7 @@ output {
 ### 8. Write Documentation (README.md)
 
 Your README should include:
+
 1. **Overview**: What data source and what it does
 2. **Prerequisites**: Versions tested, environment requirements
 3. **Data Source Configuration**: How to enable audit logging
@@ -260,6 +276,7 @@ Your README should include:
 ### 10. Test Your Plugin
 
 #### Local Testing
+
 ```bash
 # Install in local Logstash
 /path/to/logstash/bin/logstash-plugin install /path/to/your-plugin.gem
@@ -269,6 +286,7 @@ Your README should include:
 ```
 
 #### Unit Testing
+
 ```bash
 ./gradlew test
 ./gradlew jacocoTestReport  # Generate coverage report
@@ -277,6 +295,7 @@ Your README should include:
 ### 11. Package for Guardium
 
 Create the offline package structure:
+
 ```
 your-datasource-package/
 ├── logstash-filter-your_datasource_guardium_filter.zip
@@ -287,6 +306,7 @@ your-datasource-package/
 ## Common Patterns and Best Practices
 
 ### 1. Error Handling
+
 ```java
 try {
     JsonObject inputJSON = new Gson().fromJson(messageString, JsonObject.class);
@@ -299,6 +319,7 @@ try {
 ```
 
 ### 2. IP Address Handling
+
 ```java
 SessionLocator sessionLocator = new SessionLocator();
 if (Util.isIPv6(clientIp)) {
@@ -313,6 +334,7 @@ if (Util.isIPv6(clientIp)) {
 ```
 
 ### 3. Time Parsing
+
 ```java
 public static Time parseTime(String dateString) {
     ZonedDateTime date = ZonedDateTime.parse(dateString);
@@ -323,6 +345,7 @@ public static Time parseTime(String dateString) {
 ```
 
 ### 4. Null Safety
+
 ```java
 String value = jsonObject.has("field") && jsonObject.get("field") != null
     ? jsonObject.get("field").getAsString()
@@ -330,6 +353,7 @@ String value = jsonObject.has("field") && jsonObject.get("field") != null
 ```
 
 ### 5. Logging
+
 ```java
 private static Logger log = LogManager.getLogger(YourClass.class);
 
@@ -342,21 +366,25 @@ log.error("Error occurred", exception);
 ## Troubleshooting
 
 ### Plugin Not Loading
+
 - Check `@LogstashPlugin` annotation name matches `pluginInfo.pluginName` in build.gradle
 - Verify package structure matches `group` in build.gradle
 - Ensure all required dependencies are included
 
 ### Events Not Being Processed
+
 - Add debug logging to see what events are received
 - Check event tags for error indicators
 - Verify your filter condition in Logstash config
 
 ### Build Failures
+
 - Ensure `LOGSTASH_CORE_PATH` and `GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH` are set
 - Check Java version compatibility
 - Review dependency versions in `versions.yml`
 
 ### Test Failures
+
 - Verify test data matches your actual audit log format
 - Check for timezone issues in time parsing
 - Ensure all required fields are present in test data
@@ -370,6 +398,7 @@ log.error("Error occurred", exception);
 ## Support
 
 For questions or issues:
+
 1. Check existing filter plugins for similar implementations
 2. Review the universal-connectors repository documentation
 3. Contact the Guardium Universal Connector team

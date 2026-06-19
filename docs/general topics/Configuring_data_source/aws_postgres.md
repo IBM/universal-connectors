@@ -1,6 +1,5 @@
 # Configuring the AWS Postgres service
 
-
 1. Go to https://console.aws.amazon.com/.
 2. Click **Services**.
 3. In the Database section, click **RDS**.
@@ -17,34 +16,35 @@
 14. Select the type of Authentication for the database (choose from **Password Authentication**, **Password and IAM database authentication**, and **Password and Kerberos authentication**).
 15. Expand the Additional Configuration options:
 
-	a. Configure the **Database options**.
+    a. Configure the **Database options**.
 
-	b. Select options for **Backup**.
+    b. Select options for **Backup**.
 
-	c. If desired, enable encryption on the database instances.
+    c. If desired, enable encryption on the database instances.
 
-	d. In **Log exports**, select the Postgresql log type to publish to Amazon CloudWatch.
+    d. In **Log exports**, select the Postgresql log type to publish to Amazon CloudWatch.
 
-	e. Select the options for **Deletion protection**.
+    e. Select the options for **Deletion protection**.
+
 16. Click **Create Database**.
 17. To view the database, click **Databases** under Amazon RDS in the left panel.
 18. To authorize inbound traffic, edit the security group:
 
-	a. In the database summary page, select the Connectivity and Security tab. Under Security, click VPC security group.
+    a. In the database summary page, select the Connectivity and Security tab. Under Security, click VPC security group.
 
-	b. Click the group name that you selected while creating a database (each database has one active group).
+    b. Click the group name that you selected while creating a database (each database has one active group).
 
-	c. In the **Inbound rule** section, choose to edit the inbound rules.
+    c. In the **Inbound rule** section, choose to edit the inbound rules.
 
-	d. Set this rule:
+    d. Set this rule:
 
-	• Type: PostgreSQL
+    • Type: PostgreSQL
 
-	• Protocol: TCP
+    • Protocol: TCP
 
-	• Port Range: 5432
-	(depending on your requirements, the source can be set to a specific IP address or it can be opened to all hosts)
+    • Port Range: 5432
+    (depending on your requirements, the source can be set to a specific IP address or it can be opened to all hosts)
 
-	e. Click **Add Rule** and then click **Save changes**.
+    e. Click **Add Rule** and then click **Save changes**.
 
-	The database may need to be restarted.
+    The database may need to be restarted.

@@ -1,13 +1,13 @@
-## azure_event_hubs input plug-in
+# azure_event_hubs input plug-in
 
 ### Meet Azure event hubs
 
-* Tested versions: 1.4.3
-* Developed by Elastic
-* Configuration instructions can be found on every relevant filter plugin readme page. For
+- Tested versions: 1.4.3
+- Developed by Elastic
+- Configuration instructions can be found on every relevant filter plugin readme page. For
   example: [Azure PostgresSQL](../../filter-plugin/logstash-filter-azure-postgresql-guardium/README.md#procedure)
-* Supported Guardium versions:
-  * Guardium Data Protection: 11.4 and above
+- Supported Guardium versions:
+  - Guardium Data Protection: 11.4 and above
 
 This is a [Logstash](https://github.com/elastic/logstash) input plug-in for the universal connector that is featured in
 IBM Security Guardium. It pulls events from the Azure Event Hub. The events are then sent over to corresponding filter
@@ -28,14 +28,14 @@ Logstash.
 
 ### Parameters:
 
-| Parameter | Input Type | Required | Default |
-|-----------|------------|----------|---------|
-| config_mode | String (basic or advanced) |  | Basic |
-| event_hub_connections | Array | Yes, when config_mode => basic |  |
-| initial_position | String, (beginning, end, or look_back) | No | `beginning` |
-| threads | number | No | 16 |
-| decorate_events | Boolean | No | |
-| consumer_group | string | No | $Default |
+| Parameter             | Input Type                             | Required                       | Default     |
+| --------------------- | -------------------------------------- | ------------------------------ | ----------- |
+| config_mode           | String (basic or advanced)             |                                | Basic       |
+| event_hub_connections | Array                                  | Yes, when config_mode => basic |             |
+| initial_position      | String, (beginning, end, or look_back) | No                             | `beginning` |
+| threads               | number                                 | No                             | 16          |
+| decorate_events       | Boolean                                | No                             |             |
+| consumer_group        | string                                 | No                             | $Default    |
 
 #### `config_mode`
 
@@ -61,9 +61,9 @@ The `initial_position` setting allows specifying when first reading from an Even
 
 Valid options for `start_position` are:
 
-* `beginning` - reads all pre-existing events in the Event Hub (default)
-* `end` - does not read any pre-existing events in the Event Hub
-* look_back reads end minus a number of seconds worth of pre-existing events. You control the number of seconds using
+- `beginning` - reads all pre-existing events in the Event Hub (default)
+- `end` - does not read any pre-existing events in the Event Hub
+- look_back reads end minus a number of seconds worth of pre-existing events. You control the number of seconds using
   the initial_position_look_back option.
 
 #### `threads`
@@ -86,23 +86,22 @@ together properly.
 
 Other standard logstash parameters are available such as:
 
-* `add_field`
-* `type`
-* `tags`
+- `add_field`
+- `type`
+- `tags`
 
 ### Example
 
-	input {
-		azure_event_hubs 
-			{
-				config_mode => "basic"
-				event_hub_connections => ["Endpoint=<Endpoint>;SharedAccessKeyName=<SharedAccessKeyName>;SharedAccessKey=<SharedAccessKey>;EntityPath=<EntityPath>"]
-				initial_position => "end"
-				threads => 8
-				decorate_events => true
-				consumer_group => "$Default" 
-				type => "azure_event_hub"
-				add_field => {"enrollmentId" => <enrollmentId>}	
-			}
-	}
-
+    input {
+    	azure_event_hubs
+    		{
+    			config_mode => "basic"
+    			event_hub_connections => ["Endpoint=<Endpoint>;SharedAccessKeyName=<SharedAccessKeyName>;SharedAccessKey=<SharedAccessKey>;EntityPath=<EntityPath>"]
+    			initial_position => "end"
+    			threads => 8
+    			decorate_events => true
+    			consumer_group => "$Default"
+    			type => "azure_event_hub"
+    			add_field => {"enrollmentId" => <enrollmentId>}
+    		}
+    }

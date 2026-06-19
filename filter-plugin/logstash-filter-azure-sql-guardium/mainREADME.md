@@ -7,4 +7,3 @@
 ## Follow this link to set up and use Azure SQL Universal Connector over Azure Eventhub Connect
 
 [SqlOverConnectEventHub](../../docs/KafkaBasedUCs/AzureMsSQLJDBCKafkaConnect.md)
-

@@ -3,10 +3,11 @@
 Create and configure data source profiles through central manager for Snowflake JDBC Kafka Connect plug-ins.
 
 ## Meet Snowflake Over JDBC Connect
-* Environments: On-prem
-* Supported inputs: Kafka connect JDBC 2.0 (pull)
-* Supported Guardium versions:
-   * Guardium Data Protection: Appliance bundle 12.2.2 or later
+
+- Environments: On-prem
+- Supported inputs: Kafka connect JDBC 2.0 (pull)
+- Supported Guardium versions:
+  - Guardium Data Protection: Appliance bundle 12.2.2 or later
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems.
 
@@ -47,7 +48,7 @@ Run the following queries to provide access to a specific role.
   grant imported privileges on database snowflake to role <role-name>;
   GRANT USAGE ON WAREHOUSE COMPUTE_WH TO ROLE <role-name>;
   GRANT SELECT ON ALL TABLES IN SCHEMA snowflake.account_usage TO ROLE <role-name>;
-``` 
+```
 
 ## Viewing the audit logs
 
@@ -67,16 +68,16 @@ You can create a new datasource profile from the **Datasource Profile Management
 2. Click the **➕ (Add)** button.
 3. You can create a profile by using one of the following methods:
 
-   * To create a new profile manually, go to the **"Add Profile"** tab and provide values for the following fields.
-      * **Name** and **Description**.
-      * Select a **Plug-in Type** from the dropdown. For example, **Snowflake Over JDBC Kafka Connect 2.0**.
+   - To create a new profile manually, go to the **"Add Profile"** tab and provide values for the following fields.
+     - **Name** and **Description**.
+     - Select a **Plug-in Type** from the dropdown. For example, **Snowflake Over JDBC Kafka Connect 2.0**.
 
-   * To upload from CSV, go to the **Upload from CSV** tab and upload an exported or manually created CSV file
+   - To upload from CSV, go to the **Upload from CSV** tab and upload an exported or manually created CSV file
      containing one or more profiles. You can also choose from the following options:
-      * **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
-      * **Test connection for imported profiles** — Automatically tests connections after profiles are created.
-      * **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the
-        ELB process.
+     - **Update existing profiles on name match** — Updates profiles with the same name if they already exist.
+     - **Test connection for imported profiles** — Automatically tests connections after profiles are created.
+     - **Use ELB** — Enables ELB support for imported profiles. You must provide the number of MUs to be used in the
+       ELB process.
 
 **Note:** Configuration options vary based on the selected plug-in.
 
@@ -100,19 +101,20 @@ the following example.
 
 ```text
 jdbc_connection_string => "jdbc:snowflake://<id>.<region>.<provider>.snowflakecomputing.com/?warehouse=<warehouse>
-&db=<database>&useProxy=true&proxyHost=<proxy_hostname/proxy_ip_address>&proxyPort=<proxy_port>" 
+&db=<database>&useProxy=true&proxyHost=<proxy_hostname/proxy_ip_address>&proxyPort=<proxy_port>"
 ```
 
 ## Preventing authentication token expiration
 
 To prevent authentication token expiration, configure the [
-``CLIENT_SESSION_KEEP_ALIVE``](https://docs.snowflake.com/en/sql-reference/parameters#client-session-keep-alive) and [
-``CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY``](https://docs.snowflake.com/en/sql-reference/parameters#client-session-keep-alive-heartbeat-frequency)
+`CLIENT_SESSION_KEEP_ALIVE`](https://docs.snowflake.com/en/sql-reference/parameters#client-session-keep-alive) and [
+`CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY`](https://docs.snowflake.com/en/sql-reference/parameters#client-session-keep-alive-heartbeat-frequency)
 fields in the **jdbc_connection_string** parameter as shown in the following example.
-   ```text  
-   jdbc_connection_string => jdbc:snowflake://<id>.<region>.<provider>.snowflakecomputing.com/?warehouse=<warehouse>&db=<database>
-   &CLIENT_SESSION_KEEP_ALIVE=true&CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY=60
-   ```
+
+```text
+jdbc_connection_string => jdbc:snowflake://<id>.<region>.<provider>.snowflakecomputing.com/?warehouse=<warehouse>&db=<database>
+&CLIENT_SESSION_KEEP_ALIVE=true&CLIENT_SESSION_KEEP_ALIVE_HEARTBEAT_FREQUENCY=60
+```
 
 ## Configuring JDBC Kafka Connect 2.0-based plugins
 
@@ -167,10 +169,8 @@ audit logs are sent to the selected Managed Unit or Edge for to be consumed by t
 An installed profile can be uninstalled or reinstalled if needed.
 
 ### Procedure
+
 1. Select the profile.
 2. From the list of available actions, select the desired option **Uninstall** or **Reinstall**.
 
 ---
-
-
-
