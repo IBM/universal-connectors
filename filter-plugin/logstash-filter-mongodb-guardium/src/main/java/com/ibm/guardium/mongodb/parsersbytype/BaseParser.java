@@ -3,7 +3,15 @@ package com.ibm.guardium.mongodb.parsersbytype;
 import com.google.gson.*;
 import com.ibm.guardium.mongodb.Parser;
 import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Accessor;
+import com.ibm.guardium.universalconnector.commons.structures.Construct;
+import com.ibm.guardium.universalconnector.commons.structures.Data;
+import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.Sentence;
+import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
+import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
+import com.ibm.guardium.universalconnector.commons.structures.Time;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,15 +52,19 @@ public abstract class BaseParser {
         return atype;
     }
 
-    public boolean validate(JsonObject data){
-//        final String atype = getAType(data);
-//        final JsonArray users = data.getAsJsonArray("users");
-//
-//        if ( (!atype.equals("authCheck") && !atype.equals("authenticate")) // filter handles only authCheck message template & authentication error,
-//                || ( atype.equals("authenticate") && data.get("result").getAsString().equals("0")) // not auth success,
-//                || ( users.size() == 0 && !atype.equals("authenticate")) )  { // nor messages with empty users array, as it's an internal command (except authenticate, which states in param.user)
-//            return false;
-//        }
+    public boolean validate(JsonObject data) {
+        // final String atype = getAType(data);
+        // final JsonArray users = data.getAsJsonArray("users");
+        //
+        // if ( (!atype.equals("authCheck") && !atype.equals("authenticate")) // filter
+        // handles only authCheck message template & authentication error,
+        // || ( atype.equals("authenticate") &&
+        // data.get("result").getAsString().equals("0")) // not auth success,
+        // || ( users.size() == 0 && !atype.equals("authenticate")) ) { // nor messages
+        // with empty users array, as it's an internal command (except authenticate,
+        // which states in param.user)
+        // return false;
+        // }
         return true;
     }
 
