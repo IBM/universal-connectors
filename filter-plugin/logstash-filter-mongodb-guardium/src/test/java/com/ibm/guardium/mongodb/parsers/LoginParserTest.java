@@ -9,7 +9,6 @@ import com.ibm.guardium.universalconnector.commons.structures.Accessor;
 import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
@@ -41,7 +40,7 @@ public class LoginParserTest {
         JsonObject event = JsonParser.parseString(eventString).getAsJsonObject();
         LoginParser parser = new LoginParser();
 
-        Record record = parser.parseRecord(event);
+        com.ibm.guardium.universalconnector.commons.structures.Record record = parser.parseRecord(event);
         Time time = record.getTime();
         Accessor accessor = record.getAccessor();
         SessionLocator locator = record.getSessionLocator();
