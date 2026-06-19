@@ -15,15 +15,7 @@ import com.google.gson.*;
 import com.ibm.guardium.mongodb.parsersbytype.BaseParser;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Construct;
-import com.ibm.guardium.universalconnector.commons.structures.Data;
-import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
-import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
+import com.ibm.guardium.universalconnector.commons.structures.*;
 
 import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.logging.log4j.LogManager;
@@ -81,20 +73,24 @@ public class MongodbGuardiumFilter implements Filter {
         ArrayList<Event> skippedEvents = new ArrayList<>();
         for (Event e : events) {
             if (log.isDebugEnabled()) {
-                log.debug("MongoDB filter: Got Event: "+logEvent(e));
+                log.debug("MongoDB filter: Got Event: " + logEvent(e));
             }
             // from config, use Object f = e.getField(sourceField);
             if (e.getField("message") instanceof String) {
                 String messageString = e.getField("message").toString();
 
-                //Skip the event
-                if (messageString.contains("__system") || messageString.contains("\"c\":\"CONTROL\"")){
-                    e.tag(LOGSTASH_TAG_SKIP);
-                    skippedEvents.add(e);
-                    continue;
+                // Skip the event
+                if (e.getField("uc_input_source_type") != null && e.getField("uc_input_source_type") instanceof String
+                        && e.getField("uc_input_source_type").toString().equalsIgnoreCase("icd")) {
+                    if (messageString.contains("__system") || messageString.contains("\"c\":\"CONTROL\"")) {
+                        e.tag(LOGSTASH_TAG_SKIP);
+                        skippedEvents.add(e);
+                        continue;
+                    }
                 }
 
-                // finding "mongod:" to be general (syslog, filebeat); it's not [client] source program
+                // finding "mongod:" to be general (syslog, filebeat); it's not [client] source
+                // program
                 // alternatively, throw JSON audit part into a specific field
                 int mongodIndex = getAuditMsgStartIndex(messageString);
                 if (mongodIndex != -1) {
@@ -102,17 +98,26 @@ public class MongodbGuardiumFilter implements Filter {
                     try {
                         JsonObject inputJSON = (JsonObject) JsonParser.parseString(input);
 
-                        if (inputJSON==null){
+                        if (inputJSON == null) {
                             e.tag(LOGSTASH_TAG_SKIP);
                             skippedEvents.add(e);
                             continue;
                         }
 
                         // filter internal and not parsed events
-                        BaseParser parser = ParserFactory.getParser(inputJSON);
+                        BaseParser parser = null;
+                        try {
+                            parser = ParserFactory.getParser(inputJSON);
+                        } catch (IllegalArgumentException iae) {
+                            // Unsupported audit type - log at info level and skip
+                            log.info("MongoDB filter: Skipping unsupported audit type: {}", iae.getMessage());
+                            e.tag(LOGSTASH_TAG_SKIP);
+                            skippedEvents.add(e);
+                            continue;
+                        }
 
                         Record record = parser.parseRecord(inputJSON);
-                        if (record==null){
+                        if (record == null) {
                             e.tag(LOGSTASH_TAG_SKIP);
                             skippedEvents.add(e);
                             continue;
@@ -125,25 +130,25 @@ public class MongodbGuardiumFilter implements Filter {
                                 record.getAccessor().setServerHostName(serverHost);
                         }
 
-                        //Setting source Program if available
-                        Optional<Object> optSourceProgram =
-                                Optional.ofNullable(e.getField("source_program"));
+                        // Setting source Program if available
+                        Optional<Object> optSourceProgram = Optional.ofNullable(e.getField("source_program"));
 
-                        if(optSourceProgram.isPresent()){
+                        if (optSourceProgram.isPresent()) {
                             record.getAccessor().setSourceProgram(optSourceProgram.get().toString());
                         }
 
-                        //Server port is set to -1, according to GRD-98654
-                        if (e.getField("icd_default_serverport")!=null && e.getField("icd_default_serverport") instanceof String) {
+                        // Server port is set to -1, according to GRD-98654
+                        if (e.getField("icd_default_serverport") != null
+                                && e.getField("icd_default_serverport") instanceof String) {
                             int serverport = Integer.parseInt(e.getField("icd_default_serverport").toString());
                             record.getSessionLocator().setServerPort(serverport);
                         }
 
                         // DbName
-                        if (e.getField("dbname_prefix")!=null && !e.getField("dbname_prefix").toString().isEmpty()) {
+                        if (e.getField("dbname_prefix") != null && !e.getField("dbname_prefix").toString().isEmpty()) {
                             String dbPrefix = e.getField("dbname_prefix").toString();
                             String dbName = record.getDbName();
-                            record.setDbName(!dbName.isEmpty()?dbPrefix+":"+dbName:dbPrefix);
+                            record.setDbName(!dbName.isEmpty() ? dbPrefix + ":" + dbName : dbPrefix);
                             record.getAccessor().setServiceName(record.getDbName());
                         }
 
@@ -158,11 +163,11 @@ public class MongodbGuardiumFilter implements Filter {
 
                     } catch (Exception exception) {
                         // don't let event pass filter
-                        //events.remove(e);
-                        log.error("MongoDB filter: Error handling mongo message "+input);
-                        log.error("MongoDB filter: Error parsing mongo event "+logEvent(e), exception);
+                        // events.remove(e);
+                        log.error("MongoDB filter: Error handling mongo message " + input);
+                        log.error("MongoDB filter: Error parsing mongo event " + logEvent(e), exception);
                         e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
-                        //skippedEvents.add(e);
+                        // skippedEvents.add(e);
                     }
                 } else {
                     e.tag(LOGSTASH_TAG_SKIP_NOT_MONGODB);
@@ -175,14 +180,14 @@ public class MongodbGuardiumFilter implements Filter {
         return events;
     }
 
-    private int getAuditMsgStartIndex(String messageString){
+    private int getAuditMsgStartIndex(String messageString) {
         int mongodIndex = messageString.indexOf(MONGOD_AUDIT_START_SIGNAL);
-        if (mongodIndex>=0){
+        if (mongodIndex >= 0) {
             log.debug("This is mongoD message");
             return mongodIndex;
         }
         mongodIndex = messageString.indexOf(MONGOS_AUDIT_START_SIGNAL);
-        if (mongodIndex>=0){
+        if (mongodIndex >= 0) {
             log.debug("This is mongoS message");
             return mongodIndex;
         }
@@ -191,9 +196,10 @@ public class MongodbGuardiumFilter implements Filter {
     }
 
     /**
-     * Overrides MongoDB local/remote IP 127.0.0.1, if Logstash Event contains "server_ip".
+     * Overrides MongoDB local/remote IP 127.0.0.1, if Logstash Event contains
+     * "server_ip".
      *
-     * @param e - Logstash Event
+     * @param e      - Logstash Event
      * @param record - Record after parsing.
      */
     private void correctIPs(Event e, Record record) {
@@ -203,11 +209,11 @@ public class MongodbGuardiumFilter implements Filter {
         String sessionServerIp = sessionLocator.getServerIp();
 
         String serverIpResult = sessionServerIp;
-        if (isMongoInternalCommandIp(sessionServerIp)){
+        if (isMongoInternalCommandIp(sessionServerIp)) {
             String ip = getValidatedEventServerIp(e);
-            if (ip!=null) {
+            if (ip != null) {
                 serverIpResult = ip;
-                if (Util.isIPv6(ip)){
+                if (Util.isIPv6(ip)) {
                     sessionLocator.setServerIpv6(ip);
                     sessionLocator.setIpv6(true);
                 } else {
@@ -220,7 +226,7 @@ public class MongodbGuardiumFilter implements Filter {
             }
             // set value to accessor field
             String acccessorServerHost = record.getAccessor().getServerHostName();
-            if (acccessorServerHost==null || acccessorServerHost.trim().isEmpty()){
+            if (acccessorServerHost == null || acccessorServerHost.trim().isEmpty()) {
                 record.getAccessor().setServerHostName(serverIpResult);
             }
         }
@@ -229,7 +235,7 @@ public class MongodbGuardiumFilter implements Filter {
         if (isMongoInternalCommandIp(sessionClientIp)) {
             // as clientIP & serverIP were equal
             String clientIpResult = null;
-            if (sessionLocator.isIpv6()){
+            if (sessionLocator.isIpv6()) {
                 sessionLocator.setClientIpv6(sessionLocator.getServerIpv6());
                 clientIpResult = sessionLocator.getServerIpv6();
             } else {
@@ -238,7 +244,7 @@ public class MongodbGuardiumFilter implements Filter {
             }
             // set value to accessor field
             String acccessorClientHost = record.getAccessor().getClientHostName();
-            if (acccessorClientHost==null || acccessorClientHost.trim().isEmpty()){
+            if (acccessorClientHost == null || acccessorClientHost.trim().isEmpty()) {
                 record.getAccessor().setClientHostName(clientIpResult);
             }
         }
@@ -247,10 +253,11 @@ public class MongodbGuardiumFilter implements Filter {
     /**
      * Filebeat add "server_ip" field to send data
      * If the field is available and valid - we can use it.
+     *
      * @param e
      * @return - ip if available and can be used, null in any other case
      */
-    private String getValidatedEventServerIp(Event e){
+    private String getValidatedEventServerIp(Event e) {
         if (e.getField("server_ip") instanceof String) {
             String ip = e.getField("server_ip").toString();
             if (ip != null && inetAddressValidator.isValid(ip)) {
@@ -260,25 +267,25 @@ public class MongodbGuardiumFilter implements Filter {
         return null;
     }
 
-    private boolean isMongoInternalCommandIp(String ip){
-        return ip!=null && (LOCAL_IP_LIST.contains(ip) || ip.trim().equalsIgnoreCase(MONGO_INTERNAL_API_IP));
+    private boolean isMongoInternalCommandIp(String ip) {
+        return ip != null && (LOCAL_IP_LIST.contains(ip) || ip.trim().equalsIgnoreCase(MONGO_INTERNAL_API_IP));
     }
 
-    private static String logEvent(Event event){
+    private static String logEvent(Event event) {
         try {
             StringBuffer sb = new StringBuffer();
             sb.append("{ ");
             boolean first = true;
             for (Map.Entry<String, Object> stringObjectEntry : event.getData().entrySet()) {
-                if (!first){
+                if (!first) {
                     sb.append(",");
                 }
-                sb.append("\""+stringObjectEntry.getKey()+"\" : \""+stringObjectEntry.getValue()+"\"");
+                sb.append("\"" + stringObjectEntry.getKey() + "\" : \"" + stringObjectEntry.getValue() + "\"");
                 first = false;
             }
             sb.append(" }");
             return sb.toString();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("MongoDB filter: Failed to create event log string", e);
             return null;
         }
