@@ -11,6 +11,10 @@
 /test/version_tmp/
 /tmp/
 dist
+node_modules/
+.docusaurus/
+pages-build/
+site-content/
 
 # Ignore unnecessary folders
 common/.gradle

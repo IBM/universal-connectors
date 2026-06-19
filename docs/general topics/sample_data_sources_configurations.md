@@ -4,22 +4,23 @@ First, configure the MongoDB audit logs so that they can be parsed by Guardium. 
 
 ## Before you begin
 
--   Service rsyslog is installed. Preferred version: rsyslogd 8.24.0-52.el7.
--   Native audit configuration is performed by the database admin.
--   You can configure multiple collectors simultaneously using GIM \([Configuring the GIM to handle Filebeat and Syslog on MongoDB](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-configuring-gim-handle-filebeat-syslog-mongodb)\). If you configure collectors manually, you need to configure them individually.
+- Service rsyslog is installed. Preferred version: rsyslogd 8.24.0-52.el7.
+- Native audit configuration is performed by the database admin.
+- You can configure multiple collectors simultaneously using GIM \([Configuring the GIM to handle Filebeat and Syslog on MongoDB](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-configuring-gim-handle-filebeat-syslog-mongodb)\). If you configure collectors manually, you need to configure them individually.
 
 ## About this task
+
 You can filter out any native audit events that are irrelelvant before inputting the logs to Guardium. Filter them out at the datasource server, or with a filter plugin.
 
 ## Procedure
 
 1.  Configure the MongoDB audit logs in the mongod.conf file.
 
-     a. Configure the AuditLog section in the mongod.conf file.
+    a. Configure the AuditLog section in the mongod.conf file.
 
-      -   `destination`:syslog
-      -   `format`:delete or comment out
-      -   `path`:delete or comment out
+    - `destination`:syslog
+    - `format`:delete or comment out
+    - `path`:delete or comment out
 
     b. Add the following field to audit the `auditAuthorizationSuccess` messages:
 
@@ -35,14 +36,14 @@ You can filter out any native audit events that are irrelelvant before inputting
 
     d. Filter: For the Guardium universal connector MongoDB filter to handle events properly, a few conditions must exist:
 
-      -MongoDB access control must be set. \(Messages without users are removed.\)
+    -MongoDB access control must be set. \(Messages without users are removed.\)
 
-      -`authCheck` and `authenticate events` are not filtered out from the MongoDB audit log messages. Verify the filter section contains at least the following commands:
+    -`authCheck` and `authenticate events` are not filtered out from the MongoDB audit log messages. Verify the filter section contains at least the following commands:
 
-  ```
-            '{ atype: { $in: ["authCheck", "authenticate"] }
-            }'
-  ```
+```
+          '{ atype: { $in: ["authCheck", "authenticate"] }
+          }'
+```
 
       In order to narrow down the events, you can tweak the filter. For example, to audit only delete actions made in MongoDB, add the following suffix to the filter section:
 
@@ -71,26 +72,25 @@ You can filter out any native audit events that are irrelelvant before inputting
           authorization: enabled
         ```
 
-  **Important:** **The MongoDB needs to be restarted for the configuration changes to take effect.**
+**Important:** **The MongoDB needs to be restarted for the configuration changes to take effect.**
 
 2. The Guardium Universal Connector listens to port 5141 when using UDP, and 5000 when using TCP. Verify that the relevant port is open.
 
-3.  Configure the Syslog data shipper to forward the audit logs into Guardium Universal Connector. In the Modules section of the Syslog configuration file rsyslog.conf \(usually located in /etc/rsyslog.conf\), enter a rule that defines the target destination for the Syslog logs. The rule looks like:
+3. Configure the Syslog data shipper to forward the audit logs into Guardium Universal Connector. In the Modules section of the Syslog configuration file rsyslog.conf \(usually located in /etc/rsyslog.conf\), enter a rule that defines the target destination for the Syslog logs. The rule looks like:
 
-    ```
-    :programname, isequal, "mongod" @<Universal-Connector-IP>:<port>
-    ```
+   ```
+   :programname, isequal, "mongod" @<Universal-Connector-IP>:<port>
+   ```
 
-    Use `@@` for logs sent by TCP, and `@` for logs sent by UDP.
+   Use `@@` for logs sent by TCP, and `@` for logs sent by UDP.
 
-    **Note:** Syslog does not support load balancing. Do not define multiple hosts, since that would duplicate the events.
+   **Note:** Syslog does not support load balancing. Do not define multiple hosts, since that would duplicate the events.
 
-4.  Restart Syslog by entering the command:
+4. Restart Syslog by entering the command:
 
-    ```
-    sudo service rsyslog restart
-    ```
-
+   ```
+   sudo service rsyslog restart
+   ```
 
 # Configuring audit logs on MongoDB and forwarding to Guardium via Filebeat
 
@@ -98,80 +98,79 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
 
 ## Before you begin
 
--   Use Filebeat whenever possible. It is the natural solution for integration with Logstash. It supports load balancing, and it has fewer limitations than Syslog for integration with the Guardium universal connector.
--   Filebeat must be installed on your database server. For more information on installation, see [https://www.elastic.co/guide/en/beats/filebeat/current/setup-repositories.html\#\_yum](https://www.elastic.co/guide/en/beats/filebeat/current/setup-repositories.html#_yum). The recommended Filebeat version is 7.5.0 and higher.
--   Native audit configuration is performed by the database admin.
--   Filebeat cannot handle messages over approximately 1 GB. Make sure the MongoDB does not save files larger than this limit \(by using `logRotate`\). File messages that exceed the limit are dropped.
--   You can configure multiple collectors simultaneously by using GIM \([Configuring the GIM client to handle Filebeat and Syslog on MongoDB](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-configuring-gim-handle-filebeat-syslog-mongodb)\). If you configure collectors manually, you need to configure them individually.
--   For more information about MongoDB native audit, see [https://docs.mongodb.com/manual/core/auditing/](https://docs.mongodb.com/manual/core/auditing/).
+- Use Filebeat whenever possible. It is the natural solution for integration with Logstash. It supports load balancing, and it has fewer limitations than Syslog for integration with the Guardium universal connector.
+- Filebeat must be installed on your database server. For more information on installation, see [https://www.elastic.co/guide/en/beats/filebeat/current/setup-repositories.html\#\_yum](https://www.elastic.co/guide/en/beats/filebeat/current/setup-repositories.html#_yum). The recommended Filebeat version is 7.5.0 and higher.
+- Native audit configuration is performed by the database admin.
+- Filebeat cannot handle messages over approximately 1 GB. Make sure the MongoDB does not save files larger than this limit \(by using `logRotate`\). File messages that exceed the limit are dropped.
+- You can configure multiple collectors simultaneously by using GIM \([Configuring the GIM client to handle Filebeat and Syslog on MongoDB](https://www.ibm.com/docs/en/guardium/11.4?topic=connector-configuring-gim-handle-filebeat-syslog-mongodb)\). If you configure collectors manually, you need to configure them individually.
+- For more information about MongoDB native audit, see [https://docs.mongodb.com/manual/core/auditing/](https://docs.mongodb.com/manual/core/auditing/).
 
 ## Procedure
 
 1.  Configure the MongoDB audit logs in the file mongod.conf on a Linux server, or mongod.cfg on a Windows server.
 
- a.  Configure the AuditLog section in the mongod.conf file.
+a. Configure the AuditLog section in the mongod.conf file.
 
       -   `destination`: file
       -   `format`: JSON
       -   `path`: /var/log/mongodb/<filename\>.json, for example /var/log/mongodb/auditLog.json
 
-
-   b. Add the following field to audit the `auditAuthorizationSuccess` messages:
+b. Add the following field to audit the `auditAuthorizationSuccess` messages:
 
         ```
         setParameter: {auditAuthorizationSuccess: **true**}
          ```
 
-  c. Add or uncomment the security section and edit the following parameter:
+c. Add or uncomment the security section and edit the following parameter:
 
         ```authorization: **enabled**```
 
-  d.  `filter`: For the Guardium universal connector MongoDB filter to handle events properly, a few conditions must exist:  
-  -   MongoDB access control must be set. \(Messages without users are removed.\)
+d. `filter`: For the Guardium universal connector MongoDB filter to handle events properly, a few conditions must exist:
 
-  - `authCheck` and `authenticate events` are not filtered out from the MongoDB audit log messages. Verify that the filter section contains at least the following commands:
+- MongoDB access control must be set. \(Messages without users are removed.\)
 
+- `authCheck` and `authenticate events` are not filtered out from the MongoDB audit log messages. Verify that the filter section contains at least the following commands:
 
-            ```
-            '{ atype: { $in: ["authCheck", "authenticate"] }'
-            ```
+          ```
+          '{ atype: { $in: ["authCheck", "authenticate"] }'
+          ```
 
-  To narrow down the events, you can tweak the filter.
+To narrow down the events, you can tweak the filter.
 
-  - To audit only the delete actions made in MongoDB, for example, add the following suffix to the filter section:
+- To audit only the delete actions made in MongoDB, for example, add the following suffix to the filter section:
 
-            ```
-            '{ atype: { $in: ["authCheck", "authenticate"] } '
-            "param.command": { $in: ["
-            delete"] } }'
-            ```
+          ```
+          '{ atype: { $in: ["authCheck", "authenticate"] } '
+          "param.command": { $in: ["
+          delete"] } }'
+          ```
 
-  - Auditing all commands can lead to excessive records. To prevent performance issues, make sure you have `authCheck` and `authenticate` log types, and any other commands you want to see. The filter parameters are an allowed list. They define what you see in the logs, not what is filtered from the logs. For more information about the MongoDB filter, see [https://docs.mongodb.com/manual/tutorial/configure-audit-filters/](https://docs.mongodb.com/manual/tutorial/configure-audit-filters/) and [Configuring Filebeat](https://www.ibm.com/docs/en/guardium/11.4?topic=source-send-get-data-from-data).
+- Auditing all commands can lead to excessive records. To prevent performance issues, make sure you have `authCheck` and `authenticate` log types, and any other commands you want to see. The filter parameters are an allowed list. They define what you see in the logs, not what is filtered from the logs. For more information about the MongoDB filter, see [https://docs.mongodb.com/manual/tutorial/configure-audit-filters/](https://docs.mongodb.com/manual/tutorial/configure-audit-filters/) and [Configuring Filebeat](https://www.ibm.com/docs/en/guardium/11.4?topic=source-send-get-data-from-data).
 
-      **Note:** The spaces in the configuration file are important, and must be located in the file as presented here.
+  **Note:** The spaces in the configuration file are important, and must be located in the file as presented here.
 
-      After configuration, the file has these lines:
+  After configuration, the file has these lines:
 
-        ```
-        ...
-        auditLog:
-          destination: file
-          format: JSON
-          path: /var/lib/mongo/auditLog.json
-          filter: '{ atype: { $in: ["authCheck", "authenticate"] } , "param.command": { $in: ["delete"] } }'
-        setParameter: {auditAuthorizationSuccess: true}
-        ...
-        security:
-          authorization: enabled
-        ```
+      ```
+      ...
+      auditLog:
+        destination: file
+        format: JSON
+        path: /var/lib/mongo/auditLog.json
+        filter: '{ atype: { $in: ["authCheck", "authenticate"] } , "param.command": { $in: ["delete"] } }'
+      setParameter: {auditAuthorizationSuccess: true}
+      ...
+      security:
+        authorization: enabled
+      ```
 
-    **Important:** The MongoDB needs to be restarted for the configuration changes to take effect.
+  **Important:** The MongoDB needs to be restarted for the configuration changes to take effect.
 
 2.  Configure the Filebeat data shipper to forward the audit logs to the Guardium universal connector. In the file filebeat.yml, usually located in /etc/filebeat/filebeat.yml, modify the Filebeat inputs section.
 
-    a.  Select a template from the Universal Connector page and enter your desired port in the port line, beginning at port 5001. \(Use a new port for each new future connection.\) Save the configuration.
+    a. Select a template from the Universal Connector page and enter your desired port in the port line, beginning at port 5001. \(Use a new port for each new future connection.\) Save the configuration.
 
-    b.  Change the `enabled` field to `true`, and add the path of the audit logs. For example:
+    b. Change the `enabled` field to `true`, and add the path of the audit logs. For example:
 
         ```
         filebeat.inputs
@@ -184,7 +183,7 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
             tags: ["mongodb"]
         ```
 
-    c.  If you send multiple, different data sources from the same server on the same port:
+    c. If you send multiple, different data sources from the same server on the same port:
 
 - Attach a different tag to each input log. Then, use the tags when you configure the connector
 - Use the tags when you configure the connector \([MongoDB auditing by using Filebeat connector template](https://www.ibm.com/docs/en/guardium/11.4?topic=guardium-mongodb-auditing-by-using-filebeat-connector-template)\)
@@ -195,16 +194,16 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
             # Each -is an input. Most options can be set at the input level, so
             # you can use different inputs for various configurations.
             # Below are the input specific configurations.
-            -type: filestream  
+            -type: filestream
             -id: <ID>
             # Change to true to enable this input configuration.
-              enabled: true  
+              enabled: true
               # Paths that should be crawled and fetched. Glob based paths.
               paths:-/var/lib/mongo/auditLog.json
               tags: ["mongodb"]
             ```
 
-    d.  In the Outputs section:
+  d. In the Outputs section:
 
 - Make sure that Elasticsearch output is commented out.
   - Add or uncomment the Logstash output and edit the following parameters:
@@ -213,24 +212,26 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
                 ```
                 hosts: **hosts: \[“<ipaddress1\>:<port\>”,”<ipaddress2\>:<port\>,”<ipaddress3\>:<port\>”...\]**
                 ```
-  -  For Guardium Insights, add all universal connector hosts and ports.  Copy the hostname and port (443) from the Configuration Notes to configure the host in the filebeat.yml file on your datasource.
+
+  - For Guardium Insights, add all universal connector hosts and ports. Copy the hostname and port (443) from the Configuration Notes to configure the host in the filebeat.yml file on your datasource.
   - For Guardium Data Protection, use the same port you selected when configuring the Universal Connector. For Guardium Insights, the configured port should be 443. Guardium Insights will map this to an internal port and then copy the path to the certificate (see step 4 and 5 in the Procedure on [this page](universal-connectors/docs/UC_Configuration_GI.md)).
   - Enable load balancing:
 
                 ```
                 loadbalance: **true**
                 ```
-   - For more information on Elastic's Filebeat load-balancing, see: [https://www.elastic.co/guide/en/beats/filebeat/current/load-balancing.html](https://www.elastic.co/guide/en/beats/filebeat/current/load-balancing.html)
+
+  - For more information on Elastic's Filebeat load-balancing, see: [https://www.elastic.co/guide/en/beats/filebeat/current/load-balancing.html](https://www.elastic.co/guide/en/beats/filebeat/current/load-balancing.html)
 
   - More optional parameters are described in the Elastic official documentation: [https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html](https://www.elastic.co/guide/en/beats/filebeat/current/logstash-output.html)
 
-      A typical original log file looks like:
+    A typical original log file looks like:
 
         ```
         { "atype" : "authCheck", "ts" : { "$date" : "2020-02-16T03:21:58.185-0500" }, "local" : { "ip" : "127.0.30.1", "port" : 0 }, "remote" : { "ip" : "127.0.20.1", "port" : 0 }, "users" : [], "roles" : [], "param" : { "command" : "find", "ns" : "config.transactions", "args" : { "find" : "transactions", "filter" : { "lastWriteDate" : { "$lt" : { "$date" : "2020-02-16T02:51:58.185-0500" } } }, "projection" : { "_id" : 1 }, "sort" : { "_id" : 1 }, "$db" : "config" } }, "result" : 0 }
         ```
 
-      The Filebeat version of the same file looks like:
+    The Filebeat version of the same file looks like:
 
         ```
         {
@@ -271,14 +272,13 @@ First, configure the MongoDB native audit logs so that they can be parsed by Gua
 
 3.  Restart Filebeat to effect these changes.
 
--  Linux: Enter the command:
+- Linux: Enter the command:
 
-        ```
-        sudo service filebeat restart
-        ```
+       ```
+       sudo service filebeat restart
+       ```
 
 - Windows: Restart in the Services window
-
 
 # Configuring audit logs on MySQL and forwarding to Guardium via Syslog
 
@@ -299,7 +299,7 @@ This feature requires the Enterprise version of MySQL.
     audit_log_format=JSON
     ```
 
-    The log file is: /home/<os\_user\>/mysql/data/audit.log
+    The log file is: /home/<os_user\>/mysql/data/audit.log
 
 3.  Restart the mysql daemon.
 
@@ -326,14 +326,11 @@ This feature requires the Enterprise version of MySQL.
 
     where:
 
--   The rsyslog server IP must follow `local6`, for example: `local6.* @@<Guardium IP>:10514`. Do not use port 5141 since this conflicts with the MongoDB default configuration.
--   Use `@<Guardium IP>:port_num` for UDP. Use `@@<Guardium IP>:port_num` for TCP. For example:`local6.* @@<gmachine_ip>:5000 ### To send to logstash using tcp local6.* @<gmachine_ip>:5142 ### To send to logstash using UDP`
+- The rsyslog server IP must follow `local6`, for example: `local6.* @@<Guardium IP>:10514`. Do not use port 5141 since this conflicts with the MongoDB default configuration.
+- Use `@<Guardium IP>:port_num` for UDP. Use `@@<Guardium IP>:port_num` for TCP. For example:`local6.* @@<gmachine_ip>:5000 ### To send to logstash using tcp local6.* @<gmachine_ip>:5142 ### To send to logstash using UDP`
 
 6. Restart Syslog by entering the command:
-`sudo service rsyslog restart`
-
-
-
+   `sudo service rsyslog restart`
 
 # Configuring audit logs on MySQL and forwarding to Guardium via Filebeat
 
@@ -354,7 +351,7 @@ This feature requires the Enterprise version of MySQL.
     audit_log_format=JSON
     ```
 
-    The log file is: /home/<os\_user\>/mysql/data/audit.log
+    The log file is: /home/<os_user\>/mysql/data/audit.log
 
 3.  Restart the mysql daemon.
 
@@ -383,9 +380,8 @@ This feature requires the Enterprise version of MySQL.
 
     For IPv6, you can use either of these formats:
 
-    -   `hosts: ["[2620:1f7:807:a080:946:9600:0:d]:5045"]` \(the IPV6 address of this collector\)
-    -   `hosts: ["<IPV6 collector hostname>:5045"]`
-
+    - `hosts: ["[2620:1f7:807:a080:946:9600:0:d]:5045"]` \(the IPV6 address of this collector\)
+    - `hosts: ["<IPV6 collector hostname>:5045"]`
 
 # Using Filebeat as a non-root user
 
@@ -406,11 +402,11 @@ logging.files:
   permissions: 0640# At debug level, you can selectively enable logging only for some components.
 # To enable all selectors use ["*"]. Examples of other selectors are "beat",
 # "publisher", "service".
-logging.selectors: ["*"] 
+logging.selectors: ["*"]
 
- ```
- 
- ## Procedure
+```
+
+## Procedure
 
 1. Change the /usr/lib/systemd/system/filebeat.service file to add a non-root user and group to the file:
 
@@ -427,7 +423,7 @@ Environment="GODEBUG='madvdontneed=1'"
 ```
 /etc/filebeat/filebeat.yml
 /var/lib/filebeat (all files and directories under filebeat, include /var/lib/filebeat directory)
-/var/log/filebeat (all files and directories under filebeat, include /var/log/filebeat directory) 
+/var/log/filebeat (all files and directories under filebeat, include /var/log/filebeat directory)
 ```
 
 3. Restart the Filebeat service
@@ -452,12 +448,11 @@ If earlier permissions looked like this:
 -rw-rw---- 1 mariadb10 mariadb    942156 Feb  3 02:08 server_audit.log
 ```
 
-Then new permissions should look like this: 
+Then new permissions should look like this:
 
 ```
-[root@sys-uctest11 data]# chmod 777 server_audit.log 
-[root@sys-uctest11 data]# ls -lrt server_audit.log 
--rwxrwxrwx 1 mariadb10 mariadb 950180 Feb  3 02:18 server_audit.log 
+[root@sys-uctest11 data]# chmod 777 server_audit.log
+[root@sys-uctest11 data]# ls -lrt server_audit.log
+-rwxrwxrwx 1 mariadb10 mariadb 950180 Feb  3 02:18 server_audit.log
 [root@sys-uctest11 data]#
 ```
- 

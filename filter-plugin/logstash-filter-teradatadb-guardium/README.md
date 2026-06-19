@@ -7,4 +7,3 @@
 ## Follow this link to set up and use Teradata Universal Connector over JDBC Connect
 
 [TeradataOverConnectJdbc](../../docs/KafkaBasedUCs/TeradataJDBCKafkaConnect.md)
-

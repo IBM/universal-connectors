@@ -18,20 +18,21 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 1. Connect to your CockroachDB cluster using the SQL client.
 
 2. Enable audit logging by running the following commands:
-	```sql
-	SET CLUSTER SETTING server.auth_log.sql_connections.enabled = true;
-	SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
-	SET CLUSTER SETTING sql.log.all_statements.enabled = true;
-	SET CLUSTER SETTING sql.log.admin_audit.enabled = true;
-	```
+
+   ```sql
+   SET CLUSTER SETTING server.auth_log.sql_connections.enabled = true;
+   SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
+   SET CLUSTER SETTING sql.log.all_statements.enabled = true;
+   SET CLUSTER SETTING sql.log.admin_audit.enabled = true;
+   ```
 
 3. Verify the configuration:
-	```sql
-	SHOW CLUSTER SETTING server.auth_log.sql_connections.enabled;
-	SHOW CLUSTER SETTING server.auth_log.sql_sessions.enabled;
-	SHOW CLUSTER SETTING sql.log.all_statements.enabled;
-	SHOW CLUSTER SETTING sql.log.admin_audit.enabled;
-	```
+   ```sql
+   SHOW CLUSTER SETTING server.auth_log.sql_connections.enabled;
+   SHOW CLUSTER SETTING server.auth_log.sql_sessions.enabled;
+   SHOW CLUSTER SETTING sql.log.all_statements.enabled;
+   SHOW CLUSTER SETTING sql.log.admin_audit.enabled;
+   ```
 
 4. Create a logging configuration file on your CockroachDB server:
 	```bash
@@ -133,40 +134,45 @@ The audit logs are stored in the directory specified in your YAML configuration 
 ## 3. Configuring Syslog to push logs to Guardium
 
 ### Procedure
+
 To make Logstash able to process the data collected by syslog, configure available
 syslog utility. The example is based on rsyslog utility available in many
 versions of the Linux distributions.
 
 #### Rsyslog installation guide:
-* [Ubuntu](https://www.rsyslog.com/ubuntu-repository)
-* [RHEL](https://www.rsyslog.com/rhelcentos-rpms)
+
+- [Ubuntu](https://www.rsyslog.com/ubuntu-repository)
+- [RHEL](https://www.rsyslog.com/rhelcentos-rpms)
 
 1. Install Rsyslog on the CockroachDB server if not already installed:
-	```bash
-	# For Ubuntu/Debian
-	sudo apt-get install rsyslog
-	
-	# For RHEL/CentOS
-	sudo yum install rsyslog
-	```
+
+   ```bash
+   # For Ubuntu/Debian
+   sudo apt-get install rsyslog
+
+   # For RHEL/CentOS
+   sudo yum install rsyslog
+   ```
 
 2. To check the service is active and running, execute the below command:
-    ```bash
-    systemctl status rsyslog
-    ```
+
+   ```bash
+   systemctl status rsyslog
+   ```
 
 3. Generate Certificate Authority (CA):
-   * **Guardium Data Protection** <br/>
-   To obtain the Certificate Authority content on the Collector, run the following API command:
+   - **Guardium Data Protection** <br/>
+     To obtain the Certificate Authority content on the Collector, run the following API command:
      ```text
      grdapi generate_ssl_key_universal_connector
      ```
      This API command will display the content of the public Certificate Authority. Copy this certificate authority content to your database source and save it as a file named 'ca.pem' .
 
 4. Create the Rsyslog configuration file `cockroachdb.conf` for CockroachDB in the following directory:
-	```bash
-	vi /etc/rsyslog.d/cockroachdb.conf
-	```
+
+   ```bash
+   vi /etc/rsyslog.d/cockroachdb.conf
+   ```
 
 5. This configuration reads the logs from the CockroachDB log directory path and sends
    the syslog messages to the provided host `TARGET_HOST` at the provided port `TARGET_PORT`.
@@ -176,6 +182,7 @@ versions of the Linux distributions.
    Add the following configuration:
 
    **For TLS connection:**
+
    ```
     global(
        DefaultNetstreamDriverCAFile="/path/to/certs/ca.pem"
@@ -224,17 +231,19 @@ versions of the Linux distributions.
          Ruleset="imfile_to_gdp")
    ```
 
-5. Restart Rsyslog service:
-	```bash
-	systemctl restart rsyslog
-	```
+6. Restart Rsyslog service:
 
-6. Verify Rsyslog is running:
-	```bash
-	systemctl status rsyslog
-	```
+   ```bash
+   systemctl restart rsyslog
+   ```
+
+7. Verify Rsyslog is running:
+   ```bash
+   systemctl status rsyslog
+   ```
 
 ## 4. Limitations
+
 - CockroachDB wraps query values in Unicode characters `‹` (U+2039) and `›` (U+203A) in audit logs (e.g., `UPDATE table SET id = ‹2› WHERE id > ‹1›`). The plugin automatically removes these characters to restore the original query format.
 - CockroachDB automatically logs `SHOW database` queries (along with query executions) and are sent to Guardium.
 - The plugin automatically filters out the following system-generated queries and are not sent to Guardium:

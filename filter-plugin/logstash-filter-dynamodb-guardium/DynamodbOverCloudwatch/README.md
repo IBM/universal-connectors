@@ -10,7 +10,7 @@
 4. Click on **Log groups** under Logs.
 5. In the search box, enter the name of the log group that you created in the previous STEP 9.
 6. Click on the log group that appears in the search.
-7. All logs display under log streams in the format: <account_id>_CloudTrail_<region>
+7. All logs display under log streams in the format: <account*id>\_CloudTrail*<region>
 
 ## NOTE
 
@@ -20,11 +20,13 @@ Cloudwatch to SQS. Follow step #2 to publish logs to SQS else move to step #3.
 ## 2. Exporting Cloudwatch Logs to SQS using lambda function
 
 ### Creating the SQS queue
+
 The SQS created in these steps will contain the messages to be filled up by the
 lambda function (created in next section) in the queue by reading the CloudWatch logs.
 The messages inside the SQS will contain content from CloudWatch logs.
 
 #### Procedure
+
 1. Go to https://console.aws.amazon.com/
 2. Click **Services**
 3. Search for SQS and click on **Simple Queue Services**
@@ -34,43 +36,49 @@ The messages inside the SQS will contain content from CloudWatch logs.
 7. Keep the rest of the default settings
 
 ### Creating a policy for the relevant IAM User
+
 Perform the following steps for the IAM user who is accessing the SQS logs in Guardium:
+
 #### Procedure
+
 1. Go to https://console.aws.amazon.com/
 2. Go to **IAM service** > **Policies** > **Create Policy**.
 3. Select **service as SQS**.
-4. Check the following checkboxes: 
-   * **ListQueues**
-   * **DeleteMessage**
-   * **DeleteMessageBatch**
-   * **GetQueueAttributes**
-   *  **GetQueueUrl**
-   * **ReceiveMessage**
-   * **ChangeMessageVisibility**
-   * **ChangeMessageVisibilityBatch**
+4. Check the following checkboxes:
+   - **ListQueues**
+   - **DeleteMessage**
+   - **DeleteMessageBatch**
+   - **GetQueueAttributes**
+   - **GetQueueUrl**
+   - **ReceiveMessage**
+   - **ChangeMessageVisibility**
+   - **ChangeMessageVisibilityBatch**
 5. In the resources, specify the ARN of the queue created in the above step.
 6. Click **Review policy** and specify the policy name.
 7. Click **Create policy**.
 8. Assign the policy to the user
-    1. Log in to the IAM console as an IAM user (https://console.aws.amazon.com/iam/).
-    2. Go to **Users** on the console and select the relevant IAM user to whom you want to give permissions.
-       Click the **username**.
-    3. In the **Permissions tab**, click **Add permissions**.
-    4. Click **Attach existing policies directly**.
-    5. Search for the policy created and check the checkbox next to it.
-    6. Click **Next: Review**
-    7. Click **Add permissions**
+   1. Log in to the IAM console as an IAM user (https://console.aws.amazon.com/iam/).
+   2. Go to **Users** on the console and select the relevant IAM user to whom you want to give permissions.
+      Click the **username**.
+   3. In the **Permissions tab**, click **Add permissions**.
+   4. Click **Attach existing policies directly**.
+   5. Search for the policy created and check the checkbox next to it.
+   6. Click **Next: Review**
+   7. Click **Add permissions**
 
 ### Creating the Lambda function
+
 The Lambda function will read the CloudWatch Logs and send the events into the SQS queue.
 Follow the steps below to configure the Lambda function.
 
 #### Creating IAM Role
+
 Create the IAM role that will be used in the Lambda function setup. The AWS Lambda service will require permission to
 log events and write to the SQS created. Create the IAM Role **Export-Dynamo-CloudWatch-to-SQS-Lambda** with
 "AmazonSQSFullAccess", "CloudWatchLogsFullAccess", and "CloudWatchEventsFullAccess" policies.
 
-__*Procedure*__
+**_Procedure_**
+
 1. Go to https://console.aws.amazon.com/
 2. Go to **IAM** -> **Roles**
 3. Click **Create Role**
@@ -81,7 +89,9 @@ __*Procedure*__
 8. Set the Role Name: e.g., "Export-Dynamo-CloudWatch-to-SQS-Lambda" and click **Create role**.
 
 #### Create the lambda function
-__*Procedure*__
+
+**_Procedure_**
+
 1. Go to https://console.aws.amazon.com/
 2. Go to **Services**. Search for **lambda function**.
 3. Click **Functions**
@@ -101,9 +111,11 @@ __*Procedure*__
 14. Click **Deploy**.
 
 #### Automating the lambda function
+
 The Lambda will be called by a scheduler configured inside event rules in CloudWatch.
 
 **_Procedure_**
+
 1. Go to the CloudWatch dashboard.
 2. Go to **Events** > **Rules**.
 3. Click **Create Rule**.
@@ -121,17 +133,18 @@ The Lambda will be called by a scheduler configured inside event rules in CloudW
 12. Click **Create Rule**.
 
 #### Note
-* Before making any changes to the lambda function code, first disable the above rule.
-Deploy the change and then re-enable the rule.
-* If the **Management events** are enabled while configuring the **CloudTrail**, it is possible
-that the data being read by the Lambda Function would be large. In such cases the `timeout` parameter 
-and the `memory` parameters may have to be tuned properly.
-Below are the steps to take to configure those parameters,
-  * Go to the created Lambda Function.
-  * Go to **General Configurations**.
-  * Click **Edit**.
-  * Update the value of **Memory** as required.
-  * Update the value of **Timeout** as required.
+
+- Before making any changes to the lambda function code, first disable the above rule.
+  Deploy the change and then re-enable the rule.
+- If the **Management events** are enabled while configuring the **CloudTrail**, it is possible
+  that the data being read by the Lambda Function would be large. In such cases the `timeout` parameter
+  and the `memory` parameters may have to be tuned properly.
+  Below are the steps to take to configure those parameters,
+  - Go to the created Lambda Function.
+  - Go to **General Configurations**.
+  - Click **Edit**.
+  - Update the value of **Memory** as required.
+  - Update the value of **Timeout** as required.
 
 ## 3. Configuring the Dynamodb filters in Guardium
 
@@ -143,12 +156,14 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 1. Log in to the Guardium Collector's APIs.
 2. Issue the following commands:
+
 ```
 grdapi add_domain_to_universal_connector_allowed_domains domain=amazonaws.com
 grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 ```
 
 #### Before you begin
+
 • Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies) for more information.
 
 • You must have permission for the S-Tap Management role. The admin user includes this role by default.
@@ -160,11 +175,12 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 **Note:** For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior,download the [logstash-filter-dynamodb_guardium_plugin_filter.zip](../logstash-filter-dynamodb_guardium_plugin_filter.zip) plug-in.
 
 ### Procedure
+
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. Enable the connector if it is already disabled, before proceeding to upload the UC.
-3. Click **Upload File**, 
-	* Select [logstash-filter-dynamodb_guardium_plugin_filter.zip](../logstash-filter-dynamodb_guardium_plugin_filter.zip) plug-in. After it is uploaded, click **OK**. This is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
-   * If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12.0 and/or 12p15,  select the offline [cloudwatch_logs plug-in](../../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click **OK**.
+3. Click **Upload File**,
+   - Select [logstash-filter-dynamodb_guardium_plugin_filter.zip](../logstash-filter-dynamodb_guardium_plugin_filter.zip) plug-in. After it is uploaded, click **OK**. This is not necessary for Guardium Data Protection v11.0p490 or later, v11.0p540 or later, v12.0 or later.
+   - If you have installed Guardium Data Protection version 11.0p540 and/or 11.0p6505 and/or 12.0 and/or 12p15, select the offline [cloudwatch_logs plug-in](../../../input-plugin/logstash-input-cloudwatch-logs/CloudwatchLogsInputPackage/offline-logstash-input-cloudwatch_log_1_0_5.zip). After it is uploaded, click **OK**.
 4. Click the Plus sign to open the Connector Configuration dialog box.
 5. Type a name in the **Connector name** field.
 6. If the audit logs are to be fetched from CloudWatch, use the details from the [dynamodbCloudwatch.conf](../dynamodbCloudwatch.conf)
@@ -179,13 +195,12 @@ grdapi add_domain_to_universal_connector_allowed_domains domain=amazon.com
 9. Click **Save**. Guardium validates the new connector, and enables the universal connector if it was
    disabled. After it is validated, it appears in the Configure Universal Connector page.
 
-
 ## Configuring the dynamodb filters in Guardium Data Security Center
 
-Depending on your environment, see the instructions for configuring the DynamoDB filters in one of the following 
+Depending on your environment, see the instructions for configuring the DynamoDB filters in one of the following
 locations,
 
-* Guardium Data Security Center SaaS, follow [this guide](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/SaaS_1.0/UC_Configuration_GI.md).
-* Guardium Data Security Center on-premises, follow [this guide](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md).
+- Guardium Data Security Center SaaS, follow [this guide](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/SaaS_1.0/UC_Configuration_GI.md).
+- Guardium Data Security Center on-premises, follow [this guide](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/3.2.x/UC_Configuration_GI.md).
 
 In the input configuration section, refer to the CloudWatch_logs section.

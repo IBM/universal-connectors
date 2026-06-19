@@ -1,8 +1,11 @@
 # Changelog
+
 Notable changes will be documented in this file.
 
 ## [0.0.1] - YYYY-MM-DD
+
 ### Added
+
 - Initial template creation
 - Basic filter plugin structure
 - Parser implementation template
@@ -10,12 +13,15 @@ Notable changes will be documented in this file.
 - Documentation and getting started guide
 
 ### Changed
+
 - N/A
 
 ### Fixed
+
 - N/A
 
 ### Removed
+
 - N/A
 
 ---
@@ -30,6 +36,7 @@ When using this template, update this changelog with your actual changes:
 4. Keep the most recent version at the top
 
 Example entry:
+
 ```
 ## [1.0.0] - 2024-01-15
 ### Added
@@ -47,3 +54,4 @@ Example entry:
 
 ### Removed
 - Deprecated legacy configuration options
+```

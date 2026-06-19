@@ -11,4 +11,3 @@
 ## Follow this link to set up and use AWS Postgres Universal Connector over CloudWatch Connect
 
 [AWSPostgresOverConnectCloudwatch](../../docs/KafkaBasedUCs/PostgresqlCloudwatchKafkaConnect.md)
-
