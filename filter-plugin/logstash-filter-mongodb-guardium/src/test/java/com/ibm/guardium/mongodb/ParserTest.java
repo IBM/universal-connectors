@@ -410,7 +410,7 @@ public class ParserTest {
         Assert.assertEquals(Parser.DATA_PROTOCOL_STRING, actual.getDbProtocol());
         Assert.assertEquals(Parser.SERVER_TYPE_STRING, actual.getServerType());
 
-        Assert.assertEquals("", actual.getDbUser());
+        Assert.assertEquals("N.A.", actual.getDbUser());
 
     }
 
