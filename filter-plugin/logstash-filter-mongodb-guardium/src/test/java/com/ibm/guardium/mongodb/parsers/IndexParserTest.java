@@ -56,7 +56,7 @@ public class IndexParserTest {
         private void validateAccessor(JsonObject source, Record record) {
                 String user = source.get("users") != null && source.get("users").getAsJsonArray().size() > 0 ? source
                                 .get("users").getAsJsonArray().get(0).getAsJsonObject().get("user").getAsString()
-                                : "N/A";
+                                : "N.A.";
                 Assert.assertEquals("user", user, record.getAccessor().getDbUser());
                 String[] parts = CollectionParserTest.getDbAndCollectionFromParam(source);
                 String dbName = parts[0];

@@ -155,7 +155,9 @@ public class MongodbGuardiumFilter implements Filter {
                         if (e.getField("dbname_prefix") != null && !e.getField("dbname_prefix").toString().isEmpty()) {
                             String dbPrefix = e.getField("dbname_prefix").toString();
                             String dbName = record.getDbName();
-                            record.setDbName(!dbName.isEmpty() ? dbPrefix + ":" + dbName : dbPrefix);
+                            record.setDbName(
+                                    !dbName.isEmpty() && !dbName.equals(Parser.UNKOWN_STRING) ? dbPrefix + ":" + dbName
+                                            : dbPrefix);
                             record.getAccessor().setServiceName(record.getDbName());
                         }
 
