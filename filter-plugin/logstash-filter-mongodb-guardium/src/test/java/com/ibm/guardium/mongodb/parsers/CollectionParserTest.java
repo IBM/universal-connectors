@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.ibm.guardium.mongodb.MongodbGuardiumFilter;
 import com.ibm.guardium.mongodb.TestMatchListener;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
@@ -22,19 +23,16 @@ public class CollectionParserTest {
     final static Context context = new ContextImpl(null, null);
     final static MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
 
-
     public static String reatTestCaseInput(String fileName) throws Exception {
-        Path resourceDirectory = Paths.get("src","test","resources", "collection", fileName);
+        Path resourceDirectory = Paths.get("src", "test", "resources", "collection", fileName);
         return new String(Files.readAllBytes(resourceDirectory));
     }
 
-
-    public static String buildTestCaseMessage(String input){
+    public static String buildTestCaseMessage(String input) {
         StringBuffer sb = new StringBuffer();
         sb.append(MongodbGuardiumFilter.MONGOD_AUDIT_START_SIGNAL).append(" ").append(input);
         return sb.toString();
     }
-
 
     @Test
     public void test_createCollection() throws Exception {
@@ -50,7 +48,7 @@ public class CollectionParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = (new Gson()).fromJson(recordString, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = (new Gson()).fromJson(recordString, Record.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -61,11 +59,14 @@ public class CollectionParserTest {
         String sourceDb = parts[0];
 
         Assert.assertEquals("database name", sourceDb, record.getDbName());
-        Assert.assertEquals("sentence verb", "createCollection" /*source.get("atype").getAsString()*/, record.getData().getConstruct().getSentences().get(0).getVerb());
-        Assert.assertEquals("object type", "collection", record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
-        Assert.assertEquals("object name", sourceCollection, record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
-        Assert.assertEquals("schema name", sourceDb, record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
-
+        Assert.assertEquals("sentence verb", "createCollection" /* source.get("atype").getAsString() */,
+                record.getData().getConstruct().getSentences().get(0).getVerb());
+        Assert.assertEquals("object type", "collection",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
+        Assert.assertEquals("object name", sourceCollection,
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
+        Assert.assertEquals("schema name", sourceDb,
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
 
     }
 
@@ -83,7 +84,7 @@ public class CollectionParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = (new Gson()).fromJson(recordString, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = (new Gson()).fromJson(recordString, Record.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -94,10 +95,14 @@ public class CollectionParserTest {
         String sourceDb = parts[0];
 
         Assert.assertEquals("database name", sourceDb, record.getDbName());
-        Assert.assertEquals("sentence verb", "dropCollection" /*source.get("atype").getAsString()*/, record.getData().getConstruct().getSentences().get(0).getVerb());
-        Assert.assertEquals("object type", "collection", record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
-        Assert.assertEquals("object name", sourceCollection, record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
-        Assert.assertEquals("schema name", sourceDb, record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
+        Assert.assertEquals("sentence verb", "dropCollection" /* source.get("atype").getAsString() */,
+                record.getData().getConstruct().getSentences().get(0).getVerb());
+        Assert.assertEquals("object type", "collection",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
+        Assert.assertEquals("object name", sourceCollection,
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
+        Assert.assertEquals("schema name", sourceDb,
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
     }
 
     @Test
@@ -114,7 +119,7 @@ public class CollectionParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = (new Gson()).fromJson(recordString, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = (new Gson()).fromJson(recordString, Record.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -123,18 +128,25 @@ public class CollectionParserTest {
         String sourceDb = "dbgbdi1";
 
         Assert.assertEquals("database name", sourceDb, record.getDbName());
-        Assert.assertEquals("sentence verb", "renameCollection" /*source.get("atype").getAsString()*/, record.getData().getConstruct().getSentences().get(0).getVerb());
+        Assert.assertEquals("sentence verb", "renameCollection" /* source.get("atype").getAsString() */,
+                record.getData().getConstruct().getSentences().get(0).getVerb());
 
-        Assert.assertEquals("object type", "collection", record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
-        Assert.assertEquals("object name", "collgbdi1", record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
-        Assert.assertEquals("schema name", sourceDb, record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
+        Assert.assertEquals("object type", "collection",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
+        Assert.assertEquals("object name", "collgbdi1",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
+        Assert.assertEquals("schema name", sourceDb,
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
 
-        Assert.assertEquals("object type", "collection", record.getData().getConstruct().getSentences().get(0).getObjects().get(1).getType());
-        Assert.assertEquals("object name", "collgbdi2", record.getData().getConstruct().getSentences().get(0).getObjects().get(1).getName());
-        Assert.assertEquals("schema name", sourceDb, record.getData().getConstruct().getSentences().get(0).getObjects().get(1).getSchema());
+        Assert.assertEquals("object type", "collection",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(1).getType());
+        Assert.assertEquals("object name", "collgbdi2",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(1).getName());
+        Assert.assertEquals("schema name", sourceDb,
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(1).getSchema());
     }
 
-    public static String[] getDbAndCollectionFromParam(JsonObject source){
+    public static String[] getDbAndCollectionFromParam(JsonObject source) {
         return source.get("param").getAsJsonObject().get("ns").getAsString().split("\\.");
     }
 }
