@@ -9,6 +9,7 @@ import com.ibm.guardium.mongodb.TestMatchListener;
 import com.ibm.guardium.mongodb.parsersbytype.BaseParser;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
 import org.junit.Assert;
 import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
@@ -26,12 +27,10 @@ public class DatabaseParserTest {
     final static Context context = new ContextImpl(null, null);
     final static MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
 
-
     public static String reatTestCaseInput(String fileName) throws URISyntaxException, IOException {
-        Path resourceDirectory = Paths.get("src","test","resources", "database", fileName);
+        Path resourceDirectory = Paths.get("src", "test", "resources", "database", fileName);
         return new String(Files.readAllBytes(resourceDirectory));
     }
-
 
     public static String buildTestCaseMessage(String input) throws URISyntaxException, IOException {
         StringBuffer sb = new StringBuffer();
@@ -39,31 +38,34 @@ public class DatabaseParserTest {
         return sb.toString();
     }
 
+    private void validateSessionDetails(JsonObject source, Record record) {
+        Assert.assertEquals("serverIp", source.get("local").getAsJsonObject().get("ip").getAsString(),
+                record.getSessionLocator().getServerIp());
+        Assert.assertEquals("serverPort", source.get("local").getAsJsonObject().get("port").getAsInt(),
+                record.getSessionLocator().getServerPort());
 
-    private void validateSessionDetails(JsonObject source, com.ibm.guardium.universalconnector.commons.structures.Record record) {
-        Assert.assertEquals("serverIp", source.get("local").getAsJsonObject().get("ip").getAsString(), record.getSessionLocator().getServerIp());
-        Assert.assertEquals("serverPort", source.get("local").getAsJsonObject().get("port").getAsInt(), record.getSessionLocator().getServerPort());
-
-        Assert.assertEquals("clientIp", source.get("remote").getAsJsonObject().get("ip").getAsString(), record.getSessionLocator().getClientIp());
-        Assert.assertEquals("clientPort", source.get("remote").getAsJsonObject().get("port").getAsInt(), record.getSessionLocator().getClientPort());
+        Assert.assertEquals("clientIp", source.get("remote").getAsJsonObject().get("ip").getAsString(),
+                record.getSessionLocator().getClientIp());
+        Assert.assertEquals("clientPort", source.get("remote").getAsJsonObject().get("port").getAsInt(),
+                record.getSessionLocator().getClientPort());
 
         Assert.assertEquals("isIpv6", false, record.getSessionLocator().isIpv6());
     }
 
-
-    private void validateAccessor(JsonObject source, com.ibm.guardium.universalconnector.commons.structures.Record record) {
-        Assert.assertEquals("user", source.get("users").getAsJsonArray().get(0).getAsJsonObject().get("user").getAsString(), record.getAccessor().getDbUser());
-        String dbName = source.get("param").getAsJsonObject().get("ns") !=null ?
-                            source.get("param").getAsJsonObject().get("ns").getAsString() :
-                            source.get("param").getAsJsonObject().get("db").getAsString();
+    private void validateAccessor(JsonObject source, Record record) {
+        Assert.assertEquals("user",
+                source.get("users").getAsJsonArray().get(0).getAsJsonObject().get("user").getAsString(),
+                record.getAccessor().getDbUser());
+        String dbName = source.get("param").getAsJsonObject().get("ns") != null
+                ? source.get("param").getAsJsonObject().get("ns").getAsString()
+                : source.get("param").getAsJsonObject().get("db").getAsString();
 
         Assert.assertEquals("serviceName", dbName, record.getAccessor().getServiceName());
         Assert.assertEquals("serverType", BaseParser.SERVER_TYPE_STRING, record.getAccessor().getServerType());
         Assert.assertEquals("language", Accessor.LANGUAGE_FREE_TEXT_STRING, record.getAccessor().getLanguage());
-        Assert.assertEquals("dbProtocol", Accessor.DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL, record.getAccessor().getDataType());
+        Assert.assertEquals("dbProtocol", Accessor.DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL,
+                record.getAccessor().getDataType());
     }
-
-
 
     @Test
     public void test_createDatabase() throws Exception {
@@ -79,7 +81,7 @@ public class DatabaseParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = (new Gson()).fromJson(recordString, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = (new Gson()).fromJson(recordString, Record.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -88,12 +90,16 @@ public class DatabaseParserTest {
         // validate access
         validateAccessor(source, record);
         // validate object details
-        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("ns").getAsString(), record.getDbName());
-        Assert.assertEquals("sentence verb", "createDatabase" /*source.get("atype").getAsString()*/, record.getData().getConstruct().getSentences().get(0).getVerb());
-        Assert.assertEquals("object type", "database", record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
-        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("ns").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
-        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("ns").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
-
+        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("ns").getAsString(),
+                record.getDbName());
+        Assert.assertEquals("sentence verb", "createDatabase" /* source.get("atype").getAsString() */,
+                record.getData().getConstruct().getSentences().get(0).getVerb());
+        Assert.assertEquals("object type", "database",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
+        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("ns").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
+        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("ns").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
 
     }
 
@@ -111,7 +117,7 @@ public class DatabaseParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = (new Gson()).fromJson(recordString, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = (new Gson()).fromJson(recordString, Record.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -120,12 +126,16 @@ public class DatabaseParserTest {
         // validate access
         validateAccessor(source, record);
         // validate object details
-        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("ns").getAsString(), record.getDbName());
-        Assert.assertEquals("sentence verb", "dropDatabase" /*source.get("atype").getAsString()*/, record.getData().getConstruct().getSentences().get(0).getVerb());
-        Assert.assertEquals("object type", "database", record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
-        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("ns").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
-        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("ns").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
-
+        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("ns").getAsString(),
+                record.getDbName());
+        Assert.assertEquals("sentence verb", "dropDatabase" /* source.get("atype").getAsString() */,
+                record.getData().getConstruct().getSentences().get(0).getVerb());
+        Assert.assertEquals("object type", "database",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
+        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("ns").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
+        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("ns").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
 
     }
 
@@ -143,7 +153,7 @@ public class DatabaseParserTest {
 
         Assert.assertEquals(1, results.size());
         String recordString = e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString();
-        com.ibm.guardium.universalconnector.commons.structures.Record record = (new Gson()).fromJson(recordString, com.ibm.guardium.universalconnector.commons.structures.Record.class);
+        Record record = (new Gson()).fromJson(recordString, Record.class);
         JsonObject source = (new Gson()).fromJson(inputMsg, JsonObject.class);
 
         Assert.assertNotNull(record);
@@ -152,10 +162,15 @@ public class DatabaseParserTest {
         // validate access
         validateAccessor(source, record);
         // validate object details
-        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getDbName());
-        Assert.assertEquals("sentence verb", "dropAllRolesFromDatabase" /*source.get("atype").getAsString()*/, record.getData().getConstruct().getSentences().get(0).getVerb());
-        Assert.assertEquals("object type", "database", record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
-        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
-        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
+        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getDbName());
+        Assert.assertEquals("sentence verb", "dropAllRolesFromDatabase" /* source.get("atype").getAsString() */,
+                record.getData().getConstruct().getSentences().get(0).getVerb());
+        Assert.assertEquals("object type", "database",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
+        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
+        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
     }
 }
