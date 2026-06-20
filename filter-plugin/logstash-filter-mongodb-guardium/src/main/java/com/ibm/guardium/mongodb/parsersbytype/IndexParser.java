@@ -8,6 +8,8 @@ import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 
 public class IndexParser extends BaseParser {
 
+    public static final String USER_NOT_AVAILABLE = "N/A";
+
     public Sentence parseSentence(JsonObject data) {
         JsonObject param = data.get("param").getAsJsonObject();
         // String dbCollection = param.get("ns").getAsString();
