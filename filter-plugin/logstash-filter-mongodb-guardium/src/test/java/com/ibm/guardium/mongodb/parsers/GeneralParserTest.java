@@ -40,8 +40,7 @@ public class GeneralParserTest {
                 return sb.toString();
         }
 
-        private void validateSessionDetails(JsonObject source,
-                        Record record) {
+        private void validateSessionDetails(JsonObject source, Record record) {
                 Assert.assertEquals("serverIp", source.get("local").getAsJsonObject().get("ip").getAsString(),
                                 record.getSessionLocator().getServerIp());
                 Assert.assertEquals("serverPort", source.get("local").getAsJsonObject().get("port").getAsInt(),
@@ -55,12 +54,10 @@ public class GeneralParserTest {
                 Assert.assertEquals("isIpv6", false, record.getSessionLocator().isIpv6());
         }
 
-        private void validateAccessor(JsonObject source,
-                        Record record) {
-                String user = source.get("users") != null && source.get("users").getAsJsonArray().size() > 0
-                                ? source.get("users").getAsJsonArray().get(0).getAsJsonObject().get("user")
-                                                .getAsString()
-                                : IndexParser.USER_NOT_AVAILABLE;
+        private void validateAccessor(JsonObject source, Record record) {
+                String user = source.get("users") != null && source.get("users").getAsJsonArray().size() > 0 ? source
+                                .get("users").getAsJsonArray().get(0).getAsJsonObject().get("user").getAsString()
+                                : "N/A";
                 Assert.assertEquals("user", user, record.getAccessor().getDbUser());
 
                 Assert.assertEquals("serviceName", "", record.getAccessor().getServiceName());
