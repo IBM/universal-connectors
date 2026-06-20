@@ -26,7 +26,6 @@ import java.util.Set;
 
 public abstract class BaseParser {
 
-
     private static Logger log = LogManager.getLogger(BaseParser.class);
 
     public static final String DATA_PROTOCOL_STRING = "MongoDB";
@@ -53,33 +52,41 @@ public abstract class BaseParser {
         return atype;
     }
 
-    public boolean validate(JsonObject data){
-//        final String atype = getAType(data);
-//        final JsonArray users = data.getAsJsonArray("users");
-//
-//        if ( (!atype.equals("authCheck") && !atype.equals("authenticate")) // filter handles only authCheck message template & authentication error,
-//                || ( atype.equals("authenticate") && data.get("result").getAsString().equals("0")) // not auth success,
-//                || ( users.size() == 0 && !atype.equals("authenticate")) )  { // nor messages with empty users array, as it's an internal command (except authenticate, which states in param.user)
-//            return false;
-//        }
+    public boolean validate(JsonObject data) {
+        // final String atype = getAType(data);
+        // final JsonArray users = data.getAsJsonArray("users");
+        //
+        // if ( (!atype.equals("authCheck") && !atype.equals("authenticate")) // filter
+        // handles only authCheck message template & authentication error,
+        // || ( atype.equals("authenticate") &&
+        // data.get("result").getAsString().equals("0")) // not auth success,
+        // || ( users.size() == 0 && !atype.equals("authenticate")) ) { // nor messages
+        // with empty users array, as it's an internal command (except authenticate,
+        // which states in param.user)
+        // return false;
+        // }
         return true;
     }
 
-    public Record parseRecord(final JsonObject data){
+    public Record parseRecord(final JsonObject data) {
 
-        if (!validate(data)){
+        if (!validate(data)) {
             return null;
         }
 
         Record record = new Record();
 
         final JsonObject param = data.get("param").getAsJsonObject();
-        final JsonObject args = param==null ? null : param.getAsJsonObject("args");
+        final JsonObject args = param == null ? null : param.getAsJsonObject("args");
 
         String sessionId = parseSessionId(args);
         record.setSessionId(sessionId);
 
         String dbName = parseDatabaseName(param, args, data);
+        // Ensure dbName is never empty - set to "N.A." if empty
+        if (dbName == null || dbName.trim().isEmpty()) {
+            dbName = "N.A.";
+        }
         record.setDbName(dbName);
 
         String userName = parseApplicationUser(data);
@@ -103,10 +110,8 @@ public abstract class BaseParser {
         Time time = getTime(dateString);
         record.setTime(time);
 
-
         return record;
     }
-
 
     protected String sessionLocatorToString(SessionLocator sessionLocator) {
         StringBuffer sb = new StringBuffer();
@@ -119,7 +124,7 @@ public abstract class BaseParser {
         return sb.toString();
     }
 
-    protected String accessorToString(Accessor accessor){
+    protected String accessorToString(Accessor accessor) {
         StringBuffer sb = new StringBuffer();
         sb.append(accessor.getDbUser())
                 .append(accessor.getClientOs())
@@ -135,7 +140,7 @@ public abstract class BaseParser {
         return sb.toString();
     }
 
-    protected String parseSessionId(JsonObject args){
+    protected String parseSessionId(JsonObject args) {
         // Session Id is kept as empty string by default
         // If details of SessionId is available from the event, it will be used.
         // Else sniffer will generate the session Id.
@@ -163,13 +168,13 @@ public abstract class BaseParser {
         return dbName;
     }
 
-    protected String parseApplicationUser(JsonObject data){
+    protected String parseApplicationUser(JsonObject data) {
         String userStr = UNKOWN_STRING;
         JsonArray users = data.has("users") ? data.getAsJsonArray("users") : null;
-        if (users!=null && users.size()>0){
+        if (users != null && users.size() > 0) {
             StringBuffer sb = new StringBuffer();
             for (JsonElement user : users) {
-                if (sb.length()>0){
+                if (sb.length() > 0) {
                     sb.append(" ");
                 }
                 sb.append(user.getAsJsonObject().get("user").getAsString());
@@ -235,9 +240,9 @@ public abstract class BaseParser {
 
     protected abstract Sentence parseSentence(final JsonObject data);
 
-
     /**
      * Creates an ExceptionRecord to be used in Record, instead of Data.
+     *
      * @param data
      * @param resultCode
      * @return
@@ -247,12 +252,12 @@ public abstract class BaseParser {
         if (resultCode.equals("13")) {
             exceptionRecord.setExceptionTypeId(EXCEPTION_TYPE_AUTHORIZATION_STRING);
             exceptionRecord.setDescription("Unauthorized to perform the operation (13)");
-            //  exceptionRecord.setSqlString(); DEFER
+            // exceptionRecord.setSqlString(); DEFER
 
         } else if (resultCode.equals("18")) {
             exceptionRecord.setExceptionTypeId(EXCEPTION_TYPE_AUTHENTICATION_STRING);
             exceptionRecord.setDescription("Authentication Failed (18)");
-        } else if(resultCode.equals("11")) {
+        } else if (resultCode.equals("11")) {
             exceptionRecord.setExceptionTypeId(Parser.EXCEPTION_TYPE_AUTHENTICATION_STRING);
             exceptionRecord.setDescription("User Not Found (11)");
         } else { // prep for unknown error code
@@ -277,7 +282,7 @@ public abstract class BaseParser {
             StringBuffer dbUsersSb = new StringBuffer();
             if (users.size() > 0) {
                 for (JsonElement user : users) {
-                    if (dbUsersSb.length()>0){
+                    if (dbUsersSb.length() > 0) {
                         dbUsersSb.append(" ");
                     }
                     dbUsersSb.append(user.getAsJsonObject().get("user").getAsString());
@@ -285,11 +290,17 @@ public abstract class BaseParser {
                 dbUsers = dbUsersSb.toString();
             }
         }
-        if (dbUsers.trim().length()==0 && data.has("param")) { // users array is empty in "authenticate" exception; fetch from param.user:
+        if (dbUsers.trim().length() == 0 && data.has("param")) { // users array is empty in "authenticate" exception;
+            // fetch from param.user:
             final JsonObject param = data.get("param").getAsJsonObject();
             if (param.has("user")) { // in authenticate event
                 dbUsers = param.get("user").getAsString();
             }
+        }
+
+        // Ensure dbUser is never empty - set to "N.A." if empty
+        if (dbUsers == null || dbUsers.trim().isEmpty()) {
+            dbUsers = "N.A.";
         }
 
         accessor.setDbUser(dbUsers);
@@ -330,7 +341,7 @@ public abstract class BaseParser {
                 sessionLocator.setClientIpv6(address);
                 sessionLocator.setClientPort(port);
                 sessionLocator.setClientIp(UNKOWN_STRING);
-            } else { // ipv4 
+            } else { // ipv4
                 sessionLocator.setClientIp(address);
                 sessionLocator.setClientPort(port);
                 sessionLocator.setClientIpv6(UNKOWN_STRING);
@@ -392,11 +403,12 @@ public abstract class BaseParser {
         return dateString;
     }
 
-    public Time getTime(String dateString){
+    public Time getTime(String dateString) {
         ZonedDateTime date = ZonedDateTime.parse(dateString, DATE_TIME_FORMATTER);
         long millis = date.toInstant().toEpochMilli();
-        int  minOffset = date.getOffset().getTotalSeconds()/60;
-        //int  minDst = date.getOffset().getRules().isDaylightSavings(date.toInstant()) ? 60 : 0;
+        int minOffset = date.getOffset().getTotalSeconds() / 60;
+        // int minDst = date.getOffset().getRules().isDaylightSavings(date.toInstant())
+        // ? 60 : 0;
         return new Time(millis, minOffset, 0);
     }
 
@@ -409,16 +421,19 @@ public abstract class BaseParser {
 
     /**
      * Redact/Sanitize sensitive information. For example all field values.
-     * The result can be seen in reports like "Hourly access details" or "Long running queries". 
-     * Note: data is transformed/changed, so use only after you don't need the data anymore, 
+     * The result can be seen in reports like "Hourly access details" or "Long
+     * running queries".
+     * Note: data is transformed/changed, so use only after you don't need the data
+     * anymore,
      * for example, after populating as String in full_sql.
+     *
      * @param data
      * @return
      */
     public JsonElement redact(JsonElement data) {
         // if final-leaf value (string, number) return "?"
         // else {
-        // if reserved word: Redact valueRedact 
+        // if reserved word: Redact valueRedact
         // }
         if (data.isJsonPrimitive()) {
             return new JsonPrimitive(MASK_STRING);
@@ -426,15 +441,14 @@ public abstract class BaseParser {
 
         else if (data.isJsonArray()) {
             JsonArray array = data.getAsJsonArray();
-            for (int i=0; i<array.size(); i++) {
+            for (int i = 0; i < array.size(); i++) {
                 JsonElement redactedElement = redact(array.get(i));
                 array.set(i, redactedElement);
             }
-        }
-        else if (data.isJsonObject()) {
+        } else if (data.isJsonObject()) {
             JsonObject object = data.getAsJsonObject();
             final Set<String> keys = object.keySet();
-            final Set<String> keysCopy = new HashSet<>(); // make a copy, as keys changes on every remove/add, below  
+            final Set<String> keysCopy = new HashSet<>(); // make a copy, as keys changes on every remove/add, below
             for (String key : keys) {
                 keysCopy.add(key);
             }
