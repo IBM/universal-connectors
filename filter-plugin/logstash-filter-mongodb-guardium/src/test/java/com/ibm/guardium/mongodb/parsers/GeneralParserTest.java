@@ -57,10 +57,10 @@ public class GeneralParserTest {
         private void validateAccessor(JsonObject source, Record record) {
                 String user = source.get("users") != null && source.get("users").getAsJsonArray().size() > 0 ? source
                                 .get("users").getAsJsonArray().get(0).getAsJsonObject().get("user").getAsString()
-                                : "N/A";
+                                : "N.A.";
                 Assert.assertEquals("user", user, record.getAccessor().getDbUser());
 
-                Assert.assertEquals("serviceName", "", record.getAccessor().getServiceName());
+                Assert.assertEquals("serviceName", "N.A.", record.getAccessor().getServiceName());
                 Assert.assertEquals("serverType", BaseParser.SERVER_TYPE_STRING, record.getAccessor().getServerType());
                 Assert.assertEquals("language", Accessor.LANGUAGE_FREE_TEXT_STRING, record.getAccessor().getLanguage());
                 Assert.assertEquals("dbProtocol", Accessor.DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL,
@@ -90,7 +90,7 @@ public class GeneralParserTest {
                 // validate access
                 validateAccessor(source, record);
 
-                Assert.assertEquals("database name", "", record.getDbName());
+                Assert.assertEquals("database name", "N.A.", record.getDbName());
                 Assert.assertEquals("sentence verb", "applicationMessage" /* source.get("atype").getAsString() */,
                                 record.getData().getConstruct().getSentences().get(0).getVerb());
                 Assert.assertEquals("object type", "applicationMessage",
