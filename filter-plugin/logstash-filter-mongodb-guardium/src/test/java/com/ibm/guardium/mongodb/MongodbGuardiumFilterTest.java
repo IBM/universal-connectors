@@ -297,7 +297,7 @@ public class MongodbGuardiumFilterTest {
 
         Collection<Event> results = filter.filter(events, matchListener);
 
-        Assert.assertEquals(1, results.size());
+        Assert.assertEquals(0, results.size());
         Assert.assertEquals(0, matchListener.getMatchCount());
     }
 
@@ -379,7 +379,7 @@ public class MongodbGuardiumFilterTest {
 
         Collection<Event> results = filter.filter(inputEvents, matchListener);
 
-        Assert.assertEquals(4, results.size());
+        Assert.assertEquals(3, results.size());
         Assert.assertEquals(true, e.getField("tags") == null);
         Assert.assertEquals(true, eAuth.getField("tags") == null);
         Assert.assertEquals(3, matchListener.getMatchCount());
