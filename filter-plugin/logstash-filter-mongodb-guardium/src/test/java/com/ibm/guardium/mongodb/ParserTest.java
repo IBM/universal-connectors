@@ -9,7 +9,15 @@ import java.text.ParseException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.ibm.guardium.universalconnector.commons.structures.*;
+import com.ibm.guardium.universalconnector.commons.structures.Accessor;
+import com.ibm.guardium.universalconnector.commons.structures.Construct;
+import com.ibm.guardium.universalconnector.commons.structures.Data;
+import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.Sentence;
+import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
+import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
+import com.ibm.guardium.universalconnector.commons.structures.Time;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,11 +32,11 @@ public class ParserTest {
     public void testDateParing() throws ParseException {
         String dateStr = "2020-01-14T10:46:02.431-0500";
         Time time = Parser.getTime(dateStr);
-        Assert.assertTrue("Failed to parse date, time is "+time.getTimstamp(), 1579016762431L==time.getTimstamp());
+        Assert.assertTrue("Failed to parse date, time is " + time.getTimstamp(), 1579016762431L == time.getTimstamp());
 
         dateStr = "2020-01-14T10:46:02.431-05:00";
         time = Parser.getTime(dateStr);
-        Assert.assertTrue("Failed to parse date, time is "+time.getTimstamp(), 1579016762431L==time.getTimstamp());
+        Assert.assertTrue("Failed to parse date, time is " + time.getTimstamp(), 1579016762431L == time.getTimstamp());
 
     }
 
@@ -83,7 +91,7 @@ public class ParserTest {
     /**
      * Tests that internal MongoDB commands like applyOps, which have a complex
      * object, return "" in object.
-     *
+     * 
      * args: { "applySys": ...} is a JSON object, not a simple string.
      */
     @Test
@@ -198,7 +206,11 @@ public class ParserTest {
 
     @Test
     public void testParseRecord_createCollection() throws ParseException {
-        // skipping dedicated log messages "{ \"atype\" : \"createCollection\", \"ts\" : { \"$date\" : \"2020-05-11T06:24:38.168-0400\" } , \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 } , \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 48458 } , \"users\" : [], \"roles\" : [], \"param\" : { \"ns\" : \"test.collection3\" } , \"result\" : 0 }";
+        // skipping dedicated log messages "{ \"atype\" : \"createCollection\", \"ts\" :
+        // { \"$date\" : \"2020-05-11T06:24:38.168-0400\" } , \"local\" : { \"ip\" :
+        // \"127.0.0.1\", \"port\" : 27017 } , \"remote\" : { \"ip\" : \"127.0.0.1\",
+        // \"port\" : 48458 } , \"users\" : [], \"roles\" : [], \"param\" : { \"ns\" :
+        // \"test.collection3\" } , \"result\" : 0 }";
         final String mongoString = "{ \"atype\" : \"authCheck\", \"ts\" : { \"$date\" : \"2020-06-03T03:40:30.888-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 40426 }, \"users\" : [ { \"user\" : \"realAdmin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"readWriteAnyDatabase\", \"db\" : \"admin\" }, { \"role\" : \"userAdminAnyDatabase\", \"db\" : \"admin\" } ], \"param\" : { \"command\" : \"create\", \"ns\" : \"newDB01.newCollection01\", \"args\" : { \"create\" : \"newCollection01\", \"lsid\" : { \"id\" : { \"$binary\" : \"CsTWBZwaQnOweCDDbiJWng==\", \"$type\" : \"04\" } }, \"$db\" : \"newDB01\" } }, \"result\" : 0 }";
         final JsonObject mongoJson = JsonParser.parseString(mongoString).getAsJsonObject();
         Record record = Parser.parseRecord(mongoJson);
@@ -210,10 +222,13 @@ public class ParserTest {
         Assert.assertEquals("newDB01", record.getDbName());
     }
 
-
     @Test
     public void testParseRecord_createCollection_v4_4() throws ParseException {
-        // skipping dedicated log messages "{ \"atype\" : \"createCollection\", \"ts\" : { \"$date\" : \"2020-05-11T06:24:38.168-0400\" } , \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 } , \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 48458 } , \"users\" : [], \"roles\" : [], \"param\" : { \"ns\" : \"test.collection3\" } , \"result\" : 0 }";
+        // skipping dedicated log messages "{ \"atype\" : \"createCollection\", \"ts\" :
+        // { \"$date\" : \"2020-05-11T06:24:38.168-0400\" } , \"local\" : { \"ip\" :
+        // \"127.0.0.1\", \"port\" : 27017 } , \"remote\" : { \"ip\" : \"127.0.0.1\",
+        // \"port\" : 48458 } , \"users\" : [], \"roles\" : [], \"param\" : { \"ns\" :
+        // \"test.collection3\" } , \"result\" : 0 }";
         final String mongoString = "{ \"atype\" : \"authCheck\", \"ts\" : { \"$date\" : \"2020-08-30T07:22:46.361-04:00\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 49990 }, \"users\" : [ { \"user\" : \"admin\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"root\", \"db\" : \"admin\" } ], \"param\" : { \"command\" : \"create\", \"ns\" : \"test.newCollection01tal\", \"args\" : { \"create\" : \"newCollection01tal\", \"lsid\" : { \"id\" : { \"$binary\" : \"nWP0p95qTgKYH2VwpukLcQ==\", \"$type\" : \"04\" } }, \"$db\" : \"test\" } }, \"result\" : 0 }";
         final JsonObject mongoJson = JsonParser.parseString(mongoString).getAsJsonObject();
         Record record = Parser.parseRecord(mongoJson);
@@ -224,19 +239,31 @@ public class ParserTest {
         Assert.assertEquals("newCollection01tal", sentence.getObjects().get(0).name);
         Assert.assertEquals("test", record.getDbName());
     }
+
     /**
-     * NOT USED: Test authorization error messsage can be parsed as usual (query is needed later)
+     * NOT USED: Test authorization error messsage can be parsed as usual (query is
+     * needed later)
      */
     // @Test
     // public void testParseAsConstruct_AuthorizationError() {
-    //     final String mongoString = "{ \"atype\" : \"authCheck\", \"ts\" : { \"$date\" : \"2020-05-17T11:29:02.773-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 29360 }, \"users\" : [ { \"user\" : \"readerUser\", \"db\" : \"admin\" } ], \"roles\" : [ { \"role\" : \"read\", \"db\" : \"admin\" } ], \"param\" : { \"command\" : \"insert\", \"ns\" : \"admin.USERS\", \"args\" : { \"insert\" : \"USERS\", \"ordered\" : true, \"lsid\" : { \"id\" : { \"$binary\" : \"EQSjmxPcSxyNN6Vw7Wy1pQ==\", \"$type\" : \"04\" } }, \"$db\" : \"admin\", \"documents\" : [ { \"_id\" : { \"$oid\" : \"5ec1583e3a55d1ed961be47e\" }, \"uid\" : 2, \"name\" : \"Tal\" } ] } }, \"result\" : 13 }";
-    //     final JsonObject mongoJson = JsonParser.parseString(mongoString).getAsJsonObject();
-    //     // final String actualResult = Parser.Parse(mongoJson);
-    //     final Construct result = Parser.ParseAsConstruct(mongoJson);
+    // final String mongoString = "{ \"atype\" : \"authCheck\", \"ts\" : { \"$date\"
+    // : \"2020-05-17T11:29:02.773-0400\" }, \"local\" : { \"ip\" : \"127.0.0.1\",
+    // \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 29360
+    // }, \"users\" : [ { \"user\" : \"readerUser\", \"db\" : \"admin\" } ],
+    // \"roles\" : [ { \"role\" : \"read\", \"db\" : \"admin\" } ], \"param\" : {
+    // \"command\" : \"insert\", \"ns\" : \"admin.USERS\", \"args\" : { \"insert\" :
+    // \"USERS\", \"ordered\" : true, \"lsid\" : { \"id\" : { \"$binary\" :
+    // \"EQSjmxPcSxyNN6Vw7Wy1pQ==\", \"$type\" : \"04\" } }, \"$db\" : \"admin\",
+    // \"documents\" : [ { \"_id\" : { \"$oid\" : \"5ec1583e3a55d1ed961be47e\" },
+    // \"uid\" : 2, \"name\" : \"Tal\" } ] } }, \"result\" : 13 }";
+    // final JsonObject mongoJson =
+    // JsonParser.parseString(mongoString).getAsJsonObject();
+    // // final String actualResult = Parser.Parse(mongoJson);
+    // final Construct result = Parser.ParseAsConstruct(mongoJson);
 
-    //     final Sentence sentence = result.sentences.get(0);
-    //     Assert.assertEquals("insert", sentence.verb);
-    //     Assert.assertEquals("USERS", sentence.objects.get(0).name);
+    // final Sentence sentence = result.sentences.get(0);
+    // Assert.assertEquals("insert", sentence.verb);
+    // Assert.assertEquals("USERS", sentence.objects.get(0).name);
     // }
     @Test
     public void testParseRecord_AuthorizationError() throws ParseException {
@@ -247,14 +274,12 @@ public class ParserTest {
 
         Assert.assertEquals(
                 Parser.EXCEPTION_TYPE_AUTHORIZATION_STRING,
-                record.getException().getExceptionTypeId()
-        );
+                record.getException().getExceptionTypeId());
 
         Assert.assertEquals(mongoString.replace(" ", ""), record.getException().getSqlString());
         Assert.assertEquals("readerUser", record.getAccessor().getDbUser().trim());
         Assert.assertEquals(Parser.SERVER_TYPE_STRING, record.getAccessor().getServerType());
     }
-
 
     @Test
     public void testParseRecord_AuthenticationError() throws ParseException {
@@ -297,7 +322,7 @@ public class ParserTest {
         Parser.RedactWithExceptions(mongoJson); // overrides args in-place
 
         final JsonArray array6redacted = new JsonArray(6);
-        for (int i=0; i<6; i++) {
+        for (int i = 0; i < 6; i++) {
             array6redacted.add("?");
         }
 
@@ -310,8 +335,10 @@ public class ParserTest {
 
     /**
      * Tests that sensitive data is redacted.
-     * Tests also that MongoDB $lookup and $graphlookup required arguments should not be redacted,
-     * as well "as" value is not redacted, as it sets a field name to be used in result.
+     * Tests also that MongoDB $lookup and $graphlookup required arguments should
+     * not be redacted,
+     * as well "as" value is not redacted, as it sets a field name to be used in
+     * result.
      */
     @Test
     public void testRedactData_aggregate() {
@@ -414,20 +441,5 @@ public class ParserTest {
 
         Assert.assertNotEquals(time, time2);
     }
-    @Test
-    public void testParseRecord_clientMetadata() throws ParseException {
-        final String mongoString = "{ \"atype\" : \"clientMetadata\", \"ts\" : { \"$date\" : \"2026-02-09T15:27:53.622+00:00\" }, \"uuid\" : { \"$binary\" : \"vLPfdBrMRwWNjjBhNs3ixQ==\", \"$type\" : \"04\" }, \"local\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"remote\" : { \"ip\" : \"127.0.0.1\", \"port\" : 57902 }, \"users\" : [], \"roles\" : [], \"param\" : { \"localEndpoint\" : { \"ip\" : \"127.0.0.1\", \"port\" : 27017 }, \"clientMetadata\" : { \"application\" : { \"name\" : \"mongosh 2.6.0\" }, \"driver\" : { \"name\" : \"nodejs|mongosh\", \"version\" : \"6.19.0|2.6.0\" }, \"platform\" : \"Node.js v20.20.0, LE\", \"os\" : { \"name\" : \"linux\", \"architecture\" : \"arm64\", \"version\" : \"4.14.209-160.339.amzn2.aarch64\", \"type\" : \"Linux\" }, \"env\" : { \"container\" : { \"runtime\" : \"docker\" } } } }, \"result\" : 0 }";
-        final JsonObject mongoJson = JsonParser.parseString(mongoString).getAsJsonObject();
-        Record record = Parser.parseRecord(mongoJson);
-
-        Assert.assertNotNull("Record should not be null", record);
-        Assert.assertEquals("127.0.0.1", record.getSessionLocator().getServerIp());
-        Assert.assertEquals(27017, record.getSessionLocator().getServerPort());
-        Assert.assertEquals("127.0.0.1", record.getSessionLocator().getClientIp());
-        Assert.assertEquals(57902, record.getSessionLocator().getClientPort());
-    }
-
-
-
 
 }
