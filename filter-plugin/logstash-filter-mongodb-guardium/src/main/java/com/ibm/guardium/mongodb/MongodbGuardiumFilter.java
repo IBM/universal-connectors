@@ -15,16 +15,22 @@ import com.google.gson.*;
 import com.ibm.guardium.mongodb.parsersbytype.BaseParser;
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
 import com.ibm.guardium.universalconnector.commons.Util;
-import com.ibm.guardium.universalconnector.commons.structures.*;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
-
+import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 // class name must match plugin name
 @LogstashPlugin(name = "mongodb_guardium_filter")
