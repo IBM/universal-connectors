@@ -243,7 +243,7 @@ public class ParserTest {
         Record record = Parser.parseRecord(mongoJson);
         SessionLocator sessionLocator = record.getSessionLocator();
 
-        Assert.assertEquals("", sessionLocator.getClientIp());
+        Assert.assertEquals("N.A.", sessionLocator.getClientIp());
         Assert.assertEquals(-1, sessionLocator.getClientPort());
         Assert.assertEquals(null, sessionLocator.getServerIp());
         Assert.assertEquals(-1, sessionLocator.getServerPort());
@@ -453,7 +453,7 @@ public class ParserTest {
         Assert.assertEquals(Parser.DATA_PROTOCOL_STRING, actual.getDbProtocol());
         Assert.assertEquals(Parser.SERVER_TYPE_STRING, actual.getServerType());
 
-        Assert.assertEquals("", actual.getDbUser());
+        Assert.assertEquals("N.A.", actual.getDbUser());
 
     }
 
