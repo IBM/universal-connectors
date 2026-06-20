@@ -8,11 +8,9 @@ import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 
 public class IndexParser extends BaseParser {
 
-    public static final String USER_NOT_AVAILABLE = "N/A";
-
     public Sentence parseSentence(JsonObject data) {
         JsonObject param = data.get("param").getAsJsonObject();
-//        String dbCollection = param.get("ns").getAsString();
+        // String dbCollection = param.get("ns").getAsString();
         String ns = param.get("ns").getAsString();
         String[] nsArray = ns.split("\\.");
         String db = nsArray[0];
@@ -27,45 +25,37 @@ public class IndexParser extends BaseParser {
 
         return sentence;
     }
-
-    @Override
-    public Accessor parseAccessor(JsonObject data) {
-        Accessor accessor = super.parseAccessor(data);
-        if (accessor.getDbUser() == "") {
-            accessor.setDbUser(USER_NOT_AVAILABLE);
-        }
-        return accessor;
-    }
 }
-/*mongod: {
-	"atype": "dropIndex",
-	"ts": {
-		"$date": "2022-07-05T12:17:20.628-05:00"
-	},
-	"local": {
-		"ip": "db-server-ip-removed",
-		"port": 27017
-	},
-	"remote": {
-		"ip": "db-server-ip-removed",
-		"port": 34753
-	},
-	"users": [
-		{
-			"user": "admin",
-			"db": "admin"
-		}
-	],
-	"roles": [
-		{
-			"role": "root",
-			"db": "admin"
-		}
-	],
-	"param": {
-		"ns": "dbgbdi1.collgbdi1",
-		"indexName": "userid_1"
-	},
-	"result": 0
-}
-*/
+/*
+ * mongod: {
+ * "atype": "dropIndex",
+ * "ts": {
+ * "$date": "2022-07-05T12:17:20.628-05:00"
+ * },
+ * "local": {
+ * "ip": "db-server-ip-removed",
+ * "port": 27017
+ * },
+ * "remote": {
+ * "ip": "db-server-ip-removed",
+ * "port": 34753
+ * },
+ * "users": [
+ * {
+ * "user": "admin",
+ * "db": "admin"
+ * }
+ * ],
+ * "roles": [
+ * {
+ * "role": "root",
+ * "db": "admin"
+ * }
+ * ],
+ * "param": {
+ * "ns": "dbgbdi1.collgbdi1",
+ * "indexName": "userid_1"
+ * },
+ * "result": 0
+ * }
+ */
