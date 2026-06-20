@@ -27,19 +27,16 @@ public class UserParserTest {
     final static Context context = new ContextImpl(null, null);
     final static MongodbGuardiumFilter filter = new MongodbGuardiumFilter("test-id", null, context);
 
-
     public static String reatTestCaseInput(String fileName) throws Exception {
-        Path resourceDirectory = Paths.get("src","test","resources", "user", fileName);
+        Path resourceDirectory = Paths.get("src", "test", "resources", "user", fileName);
         return new String(Files.readAllBytes(resourceDirectory));
     }
 
-
-    public static String buildTestCaseMessage(String input){
+    public static String buildTestCaseMessage(String input) {
         StringBuffer sb = new StringBuffer();
         sb.append(MongodbGuardiumFilter.MONGOD_AUDIT_START_SIGNAL).append(" ").append(input);
         return sb.toString();
     }
-
 
     @Test
     public void test_createUser() throws Exception {
@@ -61,14 +58,19 @@ public class UserParserTest {
         Assert.assertNotNull(record);
 
         // validate object details
-        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getDbName());
-        Assert.assertEquals("sentence verb", "createUser", record.getData().getConstruct().getSentences().get(0).getVerb());
-        Assert.assertEquals("object type", "user", record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
-        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("user").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
-        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
+        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getDbName());
+        Assert.assertEquals("sentence verb", "createUser",
+                record.getData().getConstruct().getSentences().get(0).getVerb());
+        Assert.assertEquals("object type", "user",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
+        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("user").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
+        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
 
         // check roles given to the role
-        validateRoles( source,  record, true);
+        validateRoles(source, record, true);
     }
 
     @Test
@@ -91,11 +93,16 @@ public class UserParserTest {
         Assert.assertNotNull(record);
 
         // validate object details
-        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getDbName());
-        Assert.assertEquals("sentence verb", "dropUser", record.getData().getConstruct().getSentences().get(0).getVerb());
-        Assert.assertEquals("object type", "user", record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
-        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("user").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
-        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
+        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getDbName());
+        Assert.assertEquals("sentence verb", "dropUser",
+                record.getData().getConstruct().getSentences().get(0).getVerb());
+        Assert.assertEquals("object type", "user",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
+        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("user").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
+        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
 
     }
 
@@ -119,19 +126,24 @@ public class UserParserTest {
         Assert.assertNotNull(record);
 
         // validate object details
-        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getDbName());
-        Assert.assertEquals("sentence verb", "updateUser", record.getData().getConstruct().getSentences().get(0).getVerb());
-        Assert.assertEquals("object type", "user", record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
-        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("user").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
-        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
+        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getDbName());
+        Assert.assertEquals("sentence verb", "updateUser",
+                record.getData().getConstruct().getSentences().get(0).getVerb());
+        Assert.assertEquals("object type", "user",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
+        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("user").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
+        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
 
         ArrayList<String> fields = record.getData().getConstruct().getSentences().get(0).getFields();
-        HashSet<String>   fieldsSet = new HashSet<>();
+        HashSet<String> fieldsSet = new HashSet<>();
         fieldsSet.addAll(fields);
         Assert.assertFalse("passwordChanged", fieldsSet.contains("passwordChanged"));
 
         // check roles given to the role
-        validateRoles( source,  record, true);
+        validateRoles(source, record, true);
     }
 
     @Test
@@ -154,11 +166,16 @@ public class UserParserTest {
         Assert.assertNotNull(record);
 
         // validate object details
-        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getDbName());
-        Assert.assertEquals("sentence verb", "authenticate", record.getData().getConstruct().getSentences().get(0).getVerb());
-        Assert.assertEquals("object type", "user", record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
-        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("user").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
-        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
+        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getDbName());
+        Assert.assertEquals("sentence verb", "authenticate",
+                record.getData().getConstruct().getSentences().get(0).getVerb());
+        Assert.assertEquals("object type", "user",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
+        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("user").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
+        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
 
     }
 
@@ -182,14 +199,19 @@ public class UserParserTest {
         Assert.assertNotNull(record);
 
         // validate object details
-        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getDbName());
-        Assert.assertEquals("sentence verb", "revokeRolesFromUser", record.getData().getConstruct().getSentences().get(0).getVerb());
-        Assert.assertEquals("object type", "user", record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
-        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("user").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
-        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
+        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getDbName());
+        Assert.assertEquals("sentence verb", "revokeRolesFromUser",
+                record.getData().getConstruct().getSentences().get(0).getVerb());
+        Assert.assertEquals("object type", "user",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
+        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("user").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
+        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
 
         // check roles given to the role
-        validateRoles( source,  record, true);
+        validateRoles(source, record, true);
     }
 
     @Test
@@ -212,29 +234,34 @@ public class UserParserTest {
         Assert.assertNotNull(record);
 
         // validate object details
-        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getDbName());
-        Assert.assertEquals("sentence verb", "grantRolesToUser", record.getData().getConstruct().getSentences().get(0).getVerb());
-        Assert.assertEquals("object type", "user", record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
-        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("user").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
-        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(), record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
+        Assert.assertEquals("database name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getDbName());
+        Assert.assertEquals("sentence verb", "grantRolesToUser",
+                record.getData().getConstruct().getSentences().get(0).getVerb());
+        Assert.assertEquals("object type", "user",
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getType());
+        Assert.assertEquals("object name", source.get("param").getAsJsonObject().get("user").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getName());
+        Assert.assertEquals("schema name", source.get("param").getAsJsonObject().get("db").getAsString(),
+                record.getData().getConstruct().getSentences().get(0).getObjects().get(0).getSchema());
 
         // check roles given to the role
-        validateRoles( source,  record, true);
+        validateRoles(source, record, true);
     }
 
-    private void validateRoles(JsonObject source, Record record, boolean isRequired){
+    private void validateRoles(JsonObject source, Record record, boolean isRequired) {
         ArrayList<Sentence> allSentences = record.getData().getConstruct().getSentences().get(0).getDescendants();
         Sentence rolesSentence = null;
         for (Sentence sentence : allSentences) {
-            if (sentence.getVerb().equals(RoleParser.ROLES_COMMAND)){
+            if (sentence.getVerb().equals(RoleParser.ROLES_COMMAND)) {
                 rolesSentence = sentence;
                 break;
             }
         }
-        if (isRequired){
+        if (isRequired) {
             Assert.assertNotNull(rolesSentence);
         }
-        if (rolesSentence==null){
+        if (rolesSentence == null) {
             return;
         }
 
@@ -244,10 +271,10 @@ public class UserParserTest {
             allRecordRolesSet.add(recordRole.name);
         }
         JsonArray allRoles = source.get("param").getAsJsonObject().get("roles").getAsJsonArray();
-        for(int i=0; i<allRoles.size(); i++){
+        for (int i = 0; i < allRoles.size(); i++) {
             JsonObject role = allRoles.get(i).getAsJsonObject();
             String roleName = role.get("role").getAsString();
-            Assert.assertTrue("assigned role "+roleName, allRecordRolesSet.contains(roleName));
+            Assert.assertTrue("assigned role " + roleName, allRecordRolesSet.contains(roleName));
         }
     }
- }
+}
