@@ -1,4 +1,4 @@
-# logstash-filter-intersystems-iris-guardium
+# IntersystemsIRIS Guardium Logstash filter plug-in
 
 ### Meet IntersystemsIRIS
 
@@ -182,10 +182,10 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 - Configure the policies you require. See [policies](/docs/#policies) for more information.
 - You must have permission for the S-Tap Management role. The admin user includes this role by default
-- Download the relevant plugin based on the version of the Guardium.
+- Download the relevant plug-in based on the version of the Guardium.
 
   1. For Guardium Data Protection, Download [guardium_logstash-offline-plugin-intersystemsiris.zip](IntersystemsIrisoverJDBC/guardium_logstash-offline-plugin-intersystemsiris.zip) plug-in.
-  2. For Guardium Data Protection, Download the plugin filter configuration file [intersystems_iris.conf](intersystems_iris.conf).
+  2. For Guardium Data Protection, Download the plug-in filter configuration file [intersystems_iris.conf](intersystems_iris.conf).
   3. Download the intersystems-jdbc-3.7.1.jar from [here](IntersystemsIrisoverJDBC/intersystems-jdbc-3.7.1.jar) ([External Link](https://github.com/intersystems-community/iris-driver-distribution/blob/main/JDBC/JDK18/intersystems-jdbc-3.7.1.jar)).
   4. For Guardium Data Security Center, Download [gi-filter-intersystems-iris-package-1.0.zip](gi-filter-intersystems-iris-package-1.0.zip).
 
@@ -207,7 +207,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 1. Navigate to **Connections** > **Add connection**.
 2. Search for **InterSystems IRIS** and click **Configure**
 3. Provide Name and Description, click **Next**.
-4. In the **Build pipeline**, **Choose input plugin** > **JDBC** > **Choose filter plugin** > **InterSystems IRIS** click **Next**.
+4. In the **Build pipeline**, **Choose input plug-in** > **JDBC** > **Choose filter plug-in** > **InterSystems IRIS** click **Next**.
 5. Enter the Additional information,
 
    **Connection String:** Enter the JDBC connection string. For example: jdbc:IRIS://<InterSystems IRIS instance ip>:1972/%SYS
@@ -228,10 +228,10 @@ In Intersystems IRIS JDBC input plug-in, we distribute load between two machines
 
 ### Procedure
 
-    1. On First G Machine, in input section for JDBC Plugin update "statement" field like below:
+    1. On First G Machine, in input section for JDBC Plug-in update "statement" field like below:
 
     select UTCTimestamp as mytimestamp,Event,Username,ClientIPAddress,StartupClientIPAddress,SystemID,CSPSessionID,AuditIndex,Namespace,Description,OSUsername,EventData from %SYS.Audit where mod(AuditIndex,2) = 0 and UTCTimestamp > :sql_last_value order by UTCTimestamp asc
 
-    2. On Second G Machine, in input section for JDBC Plugin update "statement" field like below:
+    2. On Second G Machine, in input section for JDBC Plug-in update "statement" field like below:
 
     select UTCTimestamp as mytimestamp,Event,Username,ClientIPAddress,StartupClientIPAddress,SystemID,CSPSessionID,AuditIndex,Namespace,Description,OSUsername,EventData from %SYS.Audit where mod(AuditIndex,2) = 1 and UTCTimestamp > :sql_last_value order by UTCTimestamp asc

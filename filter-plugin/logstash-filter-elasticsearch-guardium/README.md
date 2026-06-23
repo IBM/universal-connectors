@@ -1,4 +1,4 @@
-# logstash-filter-elasticsearch-guardium
+# Elasticsearch Guardium Logstash filter plug-in
 
 ### Meet Elasticsearch
 
@@ -281,7 +281,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 - Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/#policies) for more information.
 - You must have permission for the S-Tap Management role. The admin user includes this role by default.
 - Download the [guardium_logstash-offline-plugins-elasticsearch.zip](ElasticsearchOverFilebeatPackage/guardium_logstash-offline-plugins-elasticsearch.zip) plug-in.
-- Download the plugin filter configuration file [elasticsearch.conf](elasticsearch.conf).
+- Download the plug-in filter configuration file [elasticsearch.conf](elasticsearch.conf).
 
 ### Procedure
 
