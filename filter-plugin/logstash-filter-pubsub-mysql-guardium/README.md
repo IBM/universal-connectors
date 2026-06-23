@@ -1,4 +1,4 @@
-# Logstash Filter PubSub MySQL Plugin
+# MySQL GCP Guardium Logstash filter plug-in
 
 ### Meet PubSub MySQL
 
@@ -30,7 +30,7 @@ This is a Logstash filter plug-in for the universal connector that is featured i
 - All of the above comply with Cloud SQL Proxy authentication, except for `gcloud`.
 - `.NET` wasn't tested, but is assumed to have the same event structure as `JDBC`.
 - This version is compliant with GDP v11.4 and above. Please refer to the
-  [input plugin's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
+  [input plug-in's repository](../../input-plugin/logstash-input-google-pubsub) for more information.
 
 ## Creating SQL instance and Configure Logging
 
@@ -210,7 +210,7 @@ logName="projects/<PROJECT_ID>/logs/cloudsql.googleapis.com%2Fmysql.err")
 
 ## Installation
 
-Logstash Filter PubSub MySQL Plugin is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
+MySQL GCP Guardium Logstash filter plug-in is automatically available with Guardium Data Protection versions 12.x, 11.4 with appliance bundle 11.0p490 or later or Guardium Data Protection version 11.5 with appliance bundle 11.0p540 or later releases.
 
 **Note**: For Guardium Data Protection version 11.4 without appliance bundle 11.0p490 or prior or Guardium Data Protection version 11.5 without appliance bundle 11.0p540 or prior, download the [logstash-filter-pubsub-mysql-guardium-7.16.4.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.4.zip) plug-in. (Do not unzip the offline-package file throughout the procedure).
 
@@ -222,8 +222,7 @@ To install on your local machine that is running Logstash, execute:
 
 ### Sample Configuration
 
-Below is a copy of the filter scope included `googlepubsub.conf` [file](PubSubMySQLPackage/googlepubsub.conf) that shows a basic
-configuration for this plugin.
+Below is a copy of the filter scope included `googlepubsub.conf` [file](PubSubMySQLPackage/googlepubsub.conf) that shows a basic configuration for this plug-in.
 
 #### Filter part:
 
@@ -261,7 +260,7 @@ pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 
 - Configure the policies you require. See [policies](https://github.com/IBM/universal-connectors/tree/main/docs#policies) for more information.
 
-- To install this plug-in, you need to download the relevant plugin based on the version of the Guardium.
+- To install this plug-in, you need to download the relevant plug-in based on the version of the Guardium.
   1. For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.4.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.4.zip)
   2. For the Guardium 12.x, download the **logstash-filter-pubsub-mysql-guardium.zip** package from [Universal Connector release page](https://github.com/IBM/universal-connectors/releases) under Assets
 
@@ -269,7 +268,7 @@ pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 
 1. On the collector, go to Setup > Tools and Views > Configure Universal Connector.
 2. Ensure that the universal connector is enabled.
-3. Click Upload File and select the relevant plugin based on the version of the Guardium and after it is uploads, click OK.
+3. Click Upload File and select the relevant plug-in based on the version of the Guardium and after it is uploads, click OK.
     * For the Guardium 11.x, download [logstash-filter-pubsub-mysql-guardium-7.16.4.zip](https://github.com/IBM/universal-connectors/raw/main/filter-plugin/logstash-filter-pubsub-mysql-guardium/PubSubMySQLPackage/logstash-filter-pubsub-mysql-guardium-7.16.4.zip)
     * For Guardium 12.x, download the **logstash-filter-pubsub-mysql-guardium.zip** package from [Universal Connector release page](https://github.com/IBM/universal-connectors/releases) under Assets
 4. Click Upload File and select the key.json file and click OK.
@@ -288,7 +287,7 @@ To install on your local machine that is running Logstash, execute: `bin/logstas
 ### Sample Configuration
 
 Below is a copy of the filter scope included `googlepubsub.conf` [file](PubSubMySQLPackage/googlepubsub.conf) that shows a basic
-configuration for this plugin.
+configuration for this plug-in.
 **Filter part**
 
 ```
@@ -306,7 +305,7 @@ pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 
 ## Troubleshooting
 
-Refer to the input plugin's [Troubleshooting](../../input-plugin/logstash-input-google-pubsub#troubleshooting) section.
+Refer to the input plug-in's [Troubleshooting](../../input-plugin/logstash-input-google-pubsub#troubleshooting) section.
 
 ## Contributing
 

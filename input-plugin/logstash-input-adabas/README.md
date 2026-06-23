@@ -1,10 +1,10 @@
-# Logstash Adabas Auditing Input Plugin
+# Adabas Auditing Logstash input plug-in
 
-This is a Java plugin for [Logstash](https://github.com/elastic/logstash).
+This is a Java plug-in for [Logstash](https://github.com/elastic/logstash).
 
 ## Build
 
-The build of this plugin requires the access to an installation of Logstash.
+The build of this plug-in requires the access to an installation of Logstash.
 
 1. Download Logstash from https://www.elastic.co/downloads/logstash
 2. Copy the files **rubyUtils.gradle** and **versions.yml** from Github repository https://github.com/elastic/logstash to directory where you installed Logstash
@@ -71,15 +71,15 @@ The build of this plugin requires the access to an installation of Logstash.
 
 3. Clone this repository
 4. Set the property variable **LOGSTASH_CORE_PATH**. This could be done in gradle.properties file
-5. Assemble plugin with the command `./gradlew assemble gem`
+5. Assemble plug-in with the command `./gradlew assemble gem`
 
 After that successful build a file **logstash-input-adabas_auditing_input-<version>-java.gem** is created in the root directory of the project.
 
 See also [How to write a Java input plugin](https://www.elastic.co/guide/en/logstash/current/java-input-plugin.html).
 
-## Install Plugin
+## Install Plug-in
 
-To install the plugin use the command
+To install the plug-in use the command
 
 ```
 logstash-plugin install --no-verify --local <full-path>/logstash-input-adabas_auditing_input-<version>-java.gem
@@ -89,7 +89,7 @@ logstash-plugin install --no-verify --local <full-path>/logstash-input-adabas_au
 
 Execute the command `logstash -f <file>` where `<file>`is your Logstash configuration file. An example is below.
 
-## Plugin Configuration Example
+## Plug-in Configuration Example
 
 This configuration reads the data from the Adabas Auditing Server and write the data to `elasticsearch` and `stdout`.
 
@@ -112,7 +112,7 @@ output {
 }
 ```
 
-## Plugin Parameter
+## Plug-in Parameter
 
 | Parameter     | Description                 | Type   | Default Value    |
 | ------------- | --------------------------- | ------ | ---------------- |
