@@ -1,4 +1,4 @@
-# Spanner over over Pub/Sub Source Connector
+# Spanner over Pub/Sub Source Connector
 
 This connector enables IBM Guardium Data Protection (GDP) to monitor and collect audit logs from Spanner databases
 through Google Cloud Pub/Sub using Kafka Connect.
@@ -130,9 +130,9 @@ You can create a new datasource profile from the **Datasource Profile Management
 
 **Note:** Configuration options vary based on the selected plug-in.
 
-## Configuration: Pub/Sub Kafka Connect 2.0-based Plugins
+## Configuration: Pub/Sub Kafka Connect 2.0-based Plug-ins
 
-The following table describes the fields that are specific to Pub/Sub Kafka Connect 2.0 and similar plugins.
+The following table describes the fields that are specific to Pub/Sub Kafka Connect 2.0 and similar plug-ins.
 
 | Field                               | Description                                                                                                                                                                      |
 | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |

@@ -1,4 +1,4 @@
-# Zilliz Milvus - Guardium Logstash filter plug-in
+# Milvus Guardium Logstash filter plug-in
 
 ### Meet Milvus
 
@@ -54,7 +54,7 @@ Install Milvus. For more information, see [Milvus](https://milvus.io/docs).
 
 ## Installing and configuring Filebeat
 
-Guardium uses the Filebeat input plugin to ingest access logs from Milvus. For more information, see [Filebeat](https://www.elastic.co/docs/reference/beats/filebeat).
+Guardium uses the Filebeat input plug-in to ingest access logs from Milvus. For more information, see [Filebeat](https://www.elastic.co/docs/reference/beats/filebeat).
 
 ### Procedure
 

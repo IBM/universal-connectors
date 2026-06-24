@@ -1,4 +1,4 @@
-# Logstash Filter Pub/Sub PostgreSQL Plugin
+# PostgreSQL GCP Guardium Logstash filter plug-in
 
 ### Overview
 
@@ -14,7 +14,7 @@ The PostgreSQL filter plug-in supports Guardium Data Protection and Guardium Dat
 ### Note
 
 - This plug-in contains a runtime dependency of Logstash Google PubSub input plug-in (version ~> 1.2.1, i.e. at least 1.2.1).
-- This version is compliant with GDP v11.4 or later and Guardium Data Security Center version 3.3.x or later. To create an input plugin, refer to the [input plug-in's repository](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub).
+- This version is compliant with GDP v11.4 or later and Guardium Data Security Center version 3.3.x or later. To create an input plug-in, refer to the [input plug-in's repository](https://github.com/IBM/universal-connectors/tree/main/input-plugin/logstash-input-google-pubsub).
 
 ## Configuration
 
@@ -130,7 +130,7 @@ Complete the following steps for 3.6.1 and prior:
 4. To connect to a new data source, click **Connections** > **Add connection**.
 5. Search for **PostgreSQL** and click **Configure**
 6. Enter Name and Description, click **Next**.
-7. In the **Build pipeline**, select the input plugin and filter plugin.
+7. In the **Build pipeline**, select the input plug-in and filter plug-in.
 8. Enter the Additional information from the Google Pub/Sub json file.
 9. Click **Configure** and then **Done**.
 
