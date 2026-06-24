@@ -1,10 +1,10 @@
-# Logstash Adabas Auditing Filter Plugin
+# Adabas Auditing Guardium Logstash filter plug-in
 
-This is a Java plugin for [Logstash](https://github.com/elastic/logstash).
+This is a Java plug-in for [Logstash](https://github.com/elastic/logstash).
 
 ## Build
 
-The build of this plugin requires the access to an installation of Logstash.
+The build of this plug-in requires the access to an installation of Logstash.
 
 1. Download Logstash from https://www.elastic.co/downloads/logstash
 2. Copy the files **rubyUtils.gradle** and **versions.yml** from Github repository https://github.com/elastic/logstash to directory where you installed Logstash
@@ -74,15 +74,15 @@ The build of this plugin requires the access to an installation of Logstash.
 5. Clone this repository
 6. Set the property variable **LOGSTASH_CORE_PATH**. This could be done in gradle.properties file
 7. Set the property variable **GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH** to the directory of jars from step 4. This could be done in gradle.properties file
-8. Assemble plugin with the command `./gradlew assemble gem`
+8. Assemble plug-in with the command `./gradlew assemble gem`
 
 After that successful build a file **logstash-input-adabas_guardium_filter-<version>-java.gem** is created in the root directory of the project.
 
 See also [Developing new plug-ins for Guardium Data Protection](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Data%20Protection/developing_plugins_gdp.md).
 
-## Install Plugin
+## Install Plug-in
 
-To install the plugin use the command
+To install the plug-in use the command
 
 ```
 logstash-plugin install --no-verify --local <full-path>/logstash-input-adabas_guardium_filter-<version>-java.gem
@@ -92,7 +92,7 @@ logstash-plugin install --no-verify --local <full-path>/logstash-input-adabas_gu
 
 Execute the command `logstash -f <file>` where `<file>`is your Logstash configuration file. An example is below.
 
-## Plugin Configuration Example
+## Plug-in Configuration Example
 
 This configuration reads the data from the Adabas Auditing Server and write the data to `elasticsearch` and `stdout`.
 
@@ -119,7 +119,7 @@ output {
 }
 ```
 
-## Plugin Parameter
+## Plug-in Parameter
 
 | Parameter     | Description                 | Type   | Default Value    |
 | ------------- | --------------------------- | ------ | ---------------- |

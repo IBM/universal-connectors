@@ -1,4 +1,4 @@
-# IBM Cloud PostgresSQL-Guardium Logstash filter plug-in
+# PostgreSQL IBM Cloud Guardium Logstash filter plug-in
 
 ### Meet IBM PostgreSQL
 
