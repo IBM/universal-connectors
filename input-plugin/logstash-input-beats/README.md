@@ -45,6 +45,8 @@ Other standard logstash parameters are available such as:
 
 ### Configure Filebeat connection with SSL on GDP
 
+**Important:** For backward compatibility information and SSL configuration requirements, see [Logstash 9 Upgrade Limitations](../../docs/LOGSTASH_9_UPGRADE_LIMITATIONS.md).
+
 1. Generate Certificate Authority (CA)
    1. On the Collector, run the following API to get the Certificate Authority content:
 
@@ -61,15 +63,19 @@ input {
   beats {
 	port => 5045
 	# For SSL over Filebeat, uncomment the following lines after generating an SSL key and a certificate authority (CA) using GuardAPI (see documentation), copy the public certificate authority (CA) to your data source and adjust Filebeat configuration:
-	ssl => true
-	ssl_certificate => "${SSL_DIR}/cert.pem"
-	ssl_key => "${SSL_DIR}/key.pem"
+	ssl_enabled => true
+	ssl_certificate => "${SSL_DIR}/tls.crt"
+	ssl_key => "${SSL_DIR}/tls.key"
+	# Uncomment the ssl_key_passphrase line for Guardium Data Protection v12.2.3 (or patch 5008) and above to use encrypted private keys
+	# ssl_key_passphrase => "${ssl_key_passphrase}"
 	type => "<datasource-type>"
 	}
 }
 ```
 
 Set the _datasource-type_ value according to the specific filter plug-in configuration.
+
+**Note:** The `ssl_key_passphrase` parameter is only supported in Guardium Data Protection v12.2.3 (with patch 5008) and above. For older versions, keep this line commented out and use unencrypted private keys.
 
 For detailed instructions on how to configure Filebeat connection on GI, follow the instructions [here](https://github.com/IBM/universal-connectors/blob/main/docs/Guardium%20Insights/SaaS_1.0/UC_Configuration_GI.md#filebeat-input-plug-in-configuration).
 
