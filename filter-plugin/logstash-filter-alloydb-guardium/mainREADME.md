@@ -7,3 +7,7 @@
 ## Follow this link to set up and use AlloyDB Universal Connector over PubSub Connect
 
 [AlloyDBOverConnectPubSub](../../docs/KafkaBasedUCs/AlloyDBPubsubKafkaConnect.md)
+
+## Follow this link to set up and use AlloyDB Omni Universal Connector over Syslog Kafka Connect
+
+[AlloyDBOmniOverConnectSyslog](../../docs/KafkaBasedUCs/AlloyDBOmniSyslogKafkaConnect.md)
