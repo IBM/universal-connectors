@@ -71,9 +71,12 @@ public class SpannerDBGuardiumFilter implements Filter {
 	public Collection<Event> filter(Collection<Event> events, FilterMatchListener filterMatchListener) {
 		ArrayList<Event> skippedEvents = new ArrayList<>();
 		for (Event e : events) {
-			if (e.getField(ApplicationConstants.MESSAGE) instanceof String && e.getField(ApplicationConstants.MESSAGE)
-					.toString().contains(ApplicationConstants.SPANNER_SERVICE)) {
-				String messageString = e.getField(ApplicationConstants.MESSAGE).toString();
+			if (logger.isDebugEnabled()) {
+				logger.debug("Event Now: {}", e.getData());
+			}
+			Object messageField = e.getField(ApplicationConstants.MESSAGE);
+			if (messageField instanceof String && messageField.toString().contains(ApplicationConstants.SPANNER_SERVICE)) {
+				String messageString = messageField.toString();
 				if (!CommonUtils.isJSONValid(messageString)) {
 					e.tag(LOGSTASH_TAG_SKIP_NOT_SPANNER);
 					skippedEvents.add(e);
@@ -88,7 +91,7 @@ public class SpannerDBGuardiumFilter implements Filter {
 					e.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
 					filterMatchListener.filterMatched(e);
 				} catch (Exception ex) {
-					logger.error("found exception in parsing json", ex);
+					logger.error("Found exception in parsing JSON and event that caused exception: {}", e.getData(), ex);
 					e.tag(LOGSTASH_TAG_JSON_PARSE_ERROR);
 				}
 			} else {
