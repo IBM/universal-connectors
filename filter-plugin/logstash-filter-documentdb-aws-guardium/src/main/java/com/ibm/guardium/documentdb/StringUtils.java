@@ -102,21 +102,17 @@ public final class StringUtils {
     }
 
     /**
-     * Replaces MongoDB/BSON regex literals (e.g. {@code /^AQA/i}) with a JSON-safe quoted
-     * representation (e.g. {@code "/^AQA/i"}) so that the resulting string can be parsed by a
+     * Replaces BSON regex literals (e.g. {@code /^foo/i}) with a JSON-safe quoted
+     * representation (e.g. {@code "/^foo/i"}) so that the resulting string can be parsed by a
      * strict JSON parser such as Gson.
      *
      * <p>DocumentDB audit logs may contain BSON Extended JSON v1 regex literals of the form
-     * {@code /pattern/flags} as values (e.g. {@code "MARSHA_CODE":{"$not":/^AQA/}}). These are
+     * {@code /pattern/flags} as values (e.g. {@code "field":{"$not":/^foo/}}). These are
      * valid in MongoDB shell syntax but not in strict JSON.
      *
      * <p>Uses a character-by-character state machine to track quoted-string boundaries so that a
      * {@code /} character inside a string value (e.g. inside a base64 {@code $binary} value) is
      * never mistaken for the start of a BSON regex literal.
-     *
-     * <p>Note: DocumentDB args-truncation ({@code "upsert":tru...}) is intentionally <em>not</em>
-     * handled here. That truncation means the query data is incomplete; leaving it to fail at
-     * parse time produces an honest exception record rather than a silently-partial audit record.
      *
      * @param json The raw DocumentDB message string
      * @return The string with BSON regex literals quoted, or the original if no {@code /} present
@@ -187,8 +183,8 @@ public final class StringUtils {
             // Only recognised immediately after ':', ',', or '[' (value-expected positions).
             // The closing '/' is found by scanning character-by-character, skipping over
             // escaped slashes (\/) inside the pattern. This handles:
-            //   /^AQA/                    simple pattern
-            //   /.*\QFOO BAR\E.*/i        \Q...\E quotemeta, spaces, flags
+            //   /^foo/                    simple pattern
+            //   /.*\Qsome text\E.*/i      \Q...\E quotemeta, spaces, flags
             //   /^https?:\/\//i           escaped slashes inside pattern
             //   /\bword\b/                backslash sequences
             if (c == '/' && afterValueSeparator) {
