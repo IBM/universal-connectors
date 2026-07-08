@@ -112,6 +112,9 @@ public class DocumentdbGuardiumFilter implements Filter {
       return;
     }
 
+    // Sanitize BSON regex literals (e.g. /^AQA/) that are not valid JSON values
+    messageString = StringUtils.sanitizeMongoBsonLiterals(messageString);
+
     if (messageString.contains(Constants.DOCUMENTDB_AUDIT_SIGNAL)) {
       processAuditEvent(e, messageString, matchListener);
     } else if (messageString.contains(Constants.DOCUMENTDB_PROFILER_SIGNAL)) {

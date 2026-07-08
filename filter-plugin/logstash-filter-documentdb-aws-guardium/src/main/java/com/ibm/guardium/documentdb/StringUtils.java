@@ -100,4 +100,157 @@ public final class StringUtils {
         }
         return false;
     }
+
+    /**
+     * Replaces MongoDB/BSON regex literals (e.g. {@code /^AQA/i}) with a JSON-safe quoted
+     * representation (e.g. {@code "/^AQA/i"}) so that the resulting string can be parsed by a
+     * strict JSON parser such as Gson.
+     *
+     * <p>DocumentDB audit logs may contain BSON Extended JSON v1 regex literals of the form
+     * {@code /pattern/flags} as values (e.g. {@code "MARSHA_CODE":{"$not":/^AQA/}}). These are
+     * valid in MongoDB shell syntax but not in strict JSON.
+     *
+     * <p>Uses a character-by-character state machine to track quoted-string boundaries so that a
+     * {@code /} character inside a string value (e.g. inside a base64 {@code $binary} value) is
+     * never mistaken for the start of a BSON regex literal.
+     *
+     * <p>Note: DocumentDB args-truncation ({@code "upsert":tru...}) is intentionally <em>not</em>
+     * handled here. That truncation means the query data is incomplete; leaving it to fail at
+     * parse time produces an honest exception record rather than a silently-partial audit record.
+     *
+     * @param json The raw DocumentDB message string
+     * @return The string with BSON regex literals quoted, or the original if no {@code /} present
+     */
+    public static String sanitizeMongoBsonLiterals(String json) {
+        if (json == null || json.isEmpty() || !json.contains("/")) {
+            return json;
+        }
+
+        StringBuilder out = new StringBuilder(json.length() + 16);
+        boolean inString = false;  // currently inside a JSON quoted string
+        boolean escaped  = false;  // previous char was an unescaped backslash
+        // True when the last non-whitespace token outside a string was ':', ',' or '[' —
+        // i.e. a position where a JSON value is expected next.
+        boolean afterValueSeparator = false;
+
+        int i = 0;
+        while (i < json.length()) {
+            char c = json.charAt(i);
+
+            // ── inside a quoted string ──────────────────────────────────────────
+            if (inString) {
+                out.append(c);
+                if (escaped) {
+                    escaped = false;
+                } else if (c == '\\') {
+                    escaped = true;
+                } else if (c == '"') {
+                    inString = false;
+                }
+                i++;
+                continue;
+            }
+
+            // ── outside a quoted string ─────────────────────────────────────────
+
+            if (c == '"') {
+                inString = true;
+                afterValueSeparator = false;
+                out.append(c);
+                i++;
+                continue;
+            }
+
+            if (c == ':' || c == ',' || c == '[') {
+                afterValueSeparator = true;
+                out.append(c);
+                i++;
+                continue;
+            }
+
+            // '{' opens an object — not a scalar-value position
+            if (c == '{' || c == '}' || c == ']') {
+                afterValueSeparator = false;
+                out.append(c);
+                i++;
+                continue;
+            }
+
+            // Whitespace between a separator and the next value: preserve the flag
+            if (Character.isWhitespace(c)) {
+                out.append(c);
+                i++;
+                continue;
+            }
+
+            // ── BSON regex literal: /pattern/flags ──────────────────────────────
+            // Only recognised immediately after ':', ',', or '[' (value-expected positions).
+            // The closing '/' is found by scanning character-by-character, skipping over
+            // escaped slashes (\/) inside the pattern. This handles:
+            //   /^AQA/                    simple pattern
+            //   /.*\QFOO BAR\E.*/i        \Q...\E quotemeta, spaces, flags
+            //   /^https?:\/\//i           escaped slashes inside pattern
+            //   /\bword\b/                backslash sequences
+            if (c == '/' && afterValueSeparator) {
+                int closingSlash = findRegexClosingSlash(json, i + 1);
+                int newline = json.indexOf('\n', i + 1);
+                // Reject if no closing slash found, or a newline appears before it
+                boolean validLiteral = closingSlash != -1
+                        && (newline == -1 || closingSlash < newline);
+                if (validLiteral) {
+                    // Consume optional flags (letters/digits) after the closing slash
+                    int flagsEnd = closingSlash + 1;
+                    while (flagsEnd < json.length()
+                            && Character.isLetterOrDigit(json.charAt(flagsEnd))) {
+                        flagsEnd++;
+                    }
+                    // Emit the literal wrapped in double quotes.
+                    // Escape characters that are invalid inside a JSON string:
+                    //   \  ->  \\   (backslash)
+                    //   "  ->  \"   (double quote inside pattern)
+                    out.append('"');
+                    for (int j = i; j < flagsEnd; j++) {
+                        char p = json.charAt(j);
+                        if (p == '\\' || p == '"') out.append('\\');
+                        out.append(p);
+                    }
+                    out.append('"');
+                    afterValueSeparator = false;
+                    i = flagsEnd;
+                    continue;
+                }
+            }
+
+            // Any other non-whitespace character outside a string resets the separator flag
+            afterValueSeparator = false;
+            out.append(c);
+            i++;
+        }
+
+        return out.toString();
+    }
+
+    /**
+     * Finds the closing {@code /} of a BSON regex literal, starting the search at {@code from}.
+     * Skips over backslash-escaped characters (e.g. {@code \/}) so that an escaped forward slash
+     * inside the pattern is not mistaken for the closing delimiter.
+     *
+     * @param json The source string
+     * @param from The index to start searching from (one past the opening {@code /})
+     * @return The index of the closing {@code /}, or {@code -1} if not found before end-of-line
+     */
+    private static int findRegexClosingSlash(String json, int from) {
+        int j = from;
+        while (j < json.length()) {
+            char c = json.charAt(j);
+            if (c == '\n') return -1;   // regex literals do not span lines
+            if (c == '\\') {
+                j += 2;                 // skip the escaped character
+                continue;
+            }
+            if (c == '/') return j;
+            j++;
+        }
+        return -1;
+    }
 }
