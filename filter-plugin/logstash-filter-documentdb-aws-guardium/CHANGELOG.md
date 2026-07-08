@@ -2,6 +2,9 @@
 
 Notable changes will be documented in this file.
 
+## [0.1.25]
+- GRD-122972: Add support for MongoDB shell regex
+
 ## [0.1.24]
 - GRD-126808: Add a support for MongoStyle audit logs
 
