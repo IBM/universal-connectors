@@ -3,7 +3,3 @@
 ## Follow this link to set up and use Couchbase Universal Connector over Logstash Plugin
 
 [CouchbaseOverLogstash](./README.md)
-
-## Follow this link to set up and use Couchbase Capella Universal Connector over Capella Kafka Connect
-
-[CouchbaseCapellaOverConnect](../../docs/KafkaBasedUCs/CouchbaseCapellaOverCapellaKafkaConnect.md)
