@@ -189,8 +189,11 @@ public class StringUtilsTest {
         assertEquals(input, StringUtils.sanitizeMongoBsonLiterals(input));
     }
 
+    // ── basic structural positions ─────────────────────────────────────────────
+
     @Test
     public void testSanitizeMongoBsonLiterals_SimpleRegex() {
+        // Regex directly after ':'
         String input = "{\"$not\":/^foo/}";
         assertEquals("{\"$not\":\"/^foo/\"}", StringUtils.sanitizeMongoBsonLiterals(input));
     }
@@ -208,14 +211,60 @@ public class StringUtilsTest {
         assertEquals("{\"$regex\":\"/^abc/i\"}", StringUtils.sanitizeMongoBsonLiterals(input));
     }
 
+    // ── $nin before $not (the real-world failing case) ─────────────────────────
+
     @Test
     public void testSanitizeMongoBsonLiterals_NinArrayThenNotRegex() {
+        // After ']' closes the $nin array, ',' arms the next position, then
+        // "$not": /…/ — must be quoted regardless of $nin being present.
         String input = "{\"field\":{\"$nin\":[\"val1\",\"val2\"],\"$not\":/^foo/},\"lang\":\"en_US\"}";
         com.google.gson.JsonObject obj = com.google.gson.JsonParser.parseString(
                 StringUtils.sanitizeMongoBsonLiterals(input)).getAsJsonObject();
         assertEquals("/^foo/", obj.getAsJsonObject("field").get("$not").getAsString());
         assertEquals("val1",   obj.getAsJsonObject("field").getAsJsonArray("$nin").get(0).getAsString());
     }
+
+    @Test
+    public void testSanitizeMongoBsonLiterals_MultipleOperatorsThenNotRegex() {
+        // $nin + $ne before $not — verify all three siblings survive
+        String input = "{\"MARSHA_CODE\":{\"$nin\":[\"A\",\"B\"],\"$ne\":\"Y\",\"$not\":/^AQA/}}";
+        com.google.gson.JsonObject obj = com.google.gson.JsonParser.parseString(
+                StringUtils.sanitizeMongoBsonLiterals(input)).getAsJsonObject();
+        com.google.gson.JsonObject mc = obj.getAsJsonObject("MARSHA_CODE");
+        assertEquals("/^AQA/", mc.get("$not").getAsString());
+        assertEquals("Y",      mc.get("$ne").getAsString());
+        assertEquals("A",      mc.getAsJsonArray("$nin").get(0).getAsString());
+    }
+
+    // ── aggregate pipeline with \Q…\E quotemeta regex ─────────────────────────
+
+    @Test
+    public void testSanitizeMongoBsonLiterals_PipelineMatchWithQuotemetaRegex() {
+        // Real pattern from data.log: /.*\QSANDER TRAVEL\E.*/i inside a nested pipeline
+        String input = "{\"pipeline\":[{\"$match\":{\"name\":/.*\\QSANDER TRAVEL\\E.*/i}}]}";
+        com.google.gson.JsonObject obj = com.google.gson.JsonParser.parseString(
+                StringUtils.sanitizeMongoBsonLiterals(input)).getAsJsonObject();
+        String name = obj.getAsJsonArray("pipeline").get(0).getAsJsonObject()
+                .getAsJsonObject("$match").get("name").getAsString();
+        assertTrue(name.contains("SANDER TRAVEL"));
+    }
+
+    @Test
+    public void testSanitizeMongoBsonLiterals_PipelineMatchMultipleRegexFields() {
+        // Two regex values in the same $match: name and city
+        String input = "{\"pipeline\":[{\"$match\":{"
+                + "\"name\":/.*\\Qengine\\E.*/i,"
+                + "\"city\":/.*\\Qdenver\\E.*/i,"
+                + "\"status\":{\"$in\":[\"A\",\"C\"]}}}]}";
+        com.google.gson.JsonObject obj = com.google.gson.JsonParser.parseString(
+                StringUtils.sanitizeMongoBsonLiterals(input)).getAsJsonObject();
+        com.google.gson.JsonObject match = obj.getAsJsonArray("pipeline").get(0)
+                .getAsJsonObject().getAsJsonObject("$match");
+        assertTrue(match.get("name").getAsString().contains("engine"));
+        assertTrue(match.get("city").getAsString().contains("denver"));
+    }
+
+    // ── strings containing slashes must not be touched ─────────────────────────
 
     @Test
     public void testSanitizeMongoBsonLiterals_Base64SlashInsideStringNotTouched() {
@@ -238,6 +287,8 @@ public class StringUtilsTest {
         assertEquals("abc/def==", obj.getAsJsonObject("lsid").get("$binary").getAsString());
     }
 
+    // ── patterns with backslash sequences and escaped slashes ─────────────────
+
     @Test
     public void testSanitizeMongoBsonLiterals_RegexWithBackslashSequences() {
         String input = "{\"name\":/.*\\\\Qsome value\\\\E.*/i}";
@@ -253,6 +304,8 @@ public class StringUtilsTest {
                 StringUtils.sanitizeMongoBsonLiterals(input)).getAsJsonObject();
         assertTrue(obj.get("url").getAsString().startsWith("/^https"));
     }
+
+    // ── full aggregate pipeline ────────────────────────────────────────────────
 
     @Test
     public void testSanitizeMongoBsonLiterals_RegexInsideAggregatePipeline() {
