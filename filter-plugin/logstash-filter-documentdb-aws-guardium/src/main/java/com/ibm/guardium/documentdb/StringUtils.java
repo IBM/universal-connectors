@@ -102,20 +102,19 @@ public final class StringUtils {
     }
 
     /**
-     * Replaces BSON regex literals (e.g. {@code /^foo/i}) with a JSON-safe quoted
-     * representation (e.g. {@code "/^foo/i"}) so that the resulting string can be parsed by a
-     * strict JSON parser such as Gson.
+     * Quotes any BSON regex literal ({@code /pattern/flags}) found outside a JSON string so
+     * the result can be parsed by a strict JSON parser such as Gson.
      *
-     * <p>DocumentDB audit logs may contain BSON Extended JSON v1 regex literals of the form
-     * {@code /pattern/flags} as values (e.g. {@code "field":{"$not":/^foo/}}). These are
-     * valid in MongoDB shell syntax but not in strict JSON.
+     * <p>DocumentDB audit logs serialise MongoDB query args in MongoDB shell syntax, where
+     * regex values are written as bare {@code /pattern/flags} instead of quoted strings.
+     * A bare {@code /} has no meaning in JSON outside a string, so every unquoted {@code /}
+     * that has a matching closing {@code /} on the same line is safely treated as a regex
+     * literal. Slashes inside JSON string values (e.g. base64, URLs) are never touched
+     * because the scanner tracks quoted-string boundaries.
      *
-     * <p>Uses a character-by-character state machine to track quoted-string boundaries so that a
-     * {@code /} character inside a string value (e.g. inside a base64 {@code $binary} value) is
-     * never mistaken for the start of a BSON regex literal.
-     *
-     * @param json The raw DocumentDB message string
-     * @return The string with BSON regex literals quoted, or the original if no {@code /} present
+     * @param json raw DocumentDB audit message
+     * @return input with all BSON regex literals wrapped in double quotes; original reference
+     *         returned unchanged if the input contains no {@code /}
      */
     public static String sanitizeMongoBsonLiterals(String json) {
         if (json == null || json.isEmpty() || !json.contains("/")) {
@@ -123,87 +122,41 @@ public final class StringUtils {
         }
 
         StringBuilder out = new StringBuilder(json.length() + 16);
-        boolean inString = false;  // currently inside a JSON quoted string
-        boolean escaped  = false;  // previous char was an unescaped backslash
-        // True when the last non-whitespace token outside a string was ':', ',' or '[' —
-        // i.e. a position where a JSON value is expected next.
-        boolean afterValueSeparator = false;
+        boolean inString = false;
+        boolean escaped  = false;
 
         int i = 0;
         while (i < json.length()) {
             char c = json.charAt(i);
 
-            // ── inside a quoted string ──────────────────────────────────────────
             if (inString) {
                 out.append(c);
-                if (escaped) {
-                    escaped = false;
-                } else if (c == '\\') {
-                    escaped = true;
-                } else if (c == '"') {
-                    inString = false;
-                }
+                if (escaped)       { escaped = false; }
+                else if (c == '\\') { escaped = true;  }
+                else if (c == '"')  { inString = false; }
                 i++;
                 continue;
             }
-
-            // ── outside a quoted string ─────────────────────────────────────────
 
             if (c == '"') {
                 inString = true;
-                afterValueSeparator = false;
                 out.append(c);
                 i++;
                 continue;
             }
 
-            if (c == ':' || c == ',' || c == '[') {
-                afterValueSeparator = true;
-                out.append(c);
-                i++;
-                continue;
-            }
-
-            // '{' opens an object — not a scalar-value position
-            if (c == '{' || c == '}' || c == ']') {
-                afterValueSeparator = false;
-                out.append(c);
-                i++;
-                continue;
-            }
-
-            // Whitespace between a separator and the next value: preserve the flag
-            if (Character.isWhitespace(c)) {
-                out.append(c);
-                i++;
-                continue;
-            }
-
-            // ── BSON regex literal: /pattern/flags ──────────────────────────────
-            // Only recognised immediately after ':', ',', or '[' (value-expected positions).
-            // The closing '/' is found by scanning character-by-character, skipping over
-            // escaped slashes (\/) inside the pattern. This handles:
-            //   /^foo/                    simple pattern
-            //   /.*\Qsome text\E.*/i      \Q...\E quotemeta, spaces, flags
-            //   /^https?:\/\//i           escaped slashes inside pattern
-            //   /\bword\b/                backslash sequences
-            if (c == '/' && afterValueSeparator) {
+            // Any unquoted '/' is a BSON regex literal — find its closing '/'
+            if (c == '/') {
                 int closingSlash = findRegexClosingSlash(json, i + 1);
                 int newline = json.indexOf('\n', i + 1);
-                // Reject if no closing slash found, or a newline appears before it
-                boolean validLiteral = closingSlash != -1
-                        && (newline == -1 || closingSlash < newline);
-                if (validLiteral) {
-                    // Consume optional flags (letters/digits) after the closing slash
+                if (closingSlash != -1 && (newline == -1 || closingSlash < newline)) {
+                    // Consume optional flags after the closing slash
                     int flagsEnd = closingSlash + 1;
                     while (flagsEnd < json.length()
                             && Character.isLetterOrDigit(json.charAt(flagsEnd))) {
                         flagsEnd++;
                     }
-                    // Emit the literal wrapped in double quotes.
-                    // Escape characters that are invalid inside a JSON string:
-                    //   \  ->  \\   (backslash)
-                    //   "  ->  \"   (double quote inside pattern)
+                    // Wrap in quotes, escaping '\' and '"' inside the pattern
                     out.append('"');
                     for (int j = i; j < flagsEnd; j++) {
                         char p = json.charAt(j);
@@ -211,14 +164,11 @@ public final class StringUtils {
                         out.append(p);
                     }
                     out.append('"');
-                    afterValueSeparator = false;
                     i = flagsEnd;
                     continue;
                 }
             }
 
-            // Any other non-whitespace character outside a string resets the separator flag
-            afterValueSeparator = false;
             out.append(c);
             i++;
         }
@@ -227,23 +177,17 @@ public final class StringUtils {
     }
 
     /**
-     * Finds the closing {@code /} of a BSON regex literal, starting the search at {@code from}.
-     * Skips over backslash-escaped characters (e.g. {@code \/}) so that an escaped forward slash
-     * inside the pattern is not mistaken for the closing delimiter.
-     *
-     * @param json The source string
-     * @param from The index to start searching from (one past the opening {@code /})
-     * @return The index of the closing {@code /}, or {@code -1} if not found before end-of-line
+     * Returns the index of the closing {@code /} of a BSON regex literal, starting at
+     * {@code from} (one past the opening {@code /}). Backslash-escaped characters are
+     * skipped so an escaped {@code \/} inside the pattern is not treated as the delimiter.
+     * Returns {@code -1} if the end of the line is reached before a closing {@code /}.
      */
     private static int findRegexClosingSlash(String json, int from) {
         int j = from;
         while (j < json.length()) {
             char c = json.charAt(j);
-            if (c == '\n') return -1;   // regex literals do not span lines
-            if (c == '\\') {
-                j += 2;                 // skip the escaped character
-                continue;
-            }
+            if (c == '\n') return -1;
+            if (c == '\\') { j += 2; continue; }
             if (c == '/') return j;
             j++;
         }

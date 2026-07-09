@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -242,7 +243,8 @@ public class Parser {
       final Sentence sentence = parseSentenceAuthCheck(data);
       final Construct construct = new Construct();
       construct.sentences.add(sentence);
-      String fullSql = "\"atype\": "+data.get(Constants.FIELD_ATYPE).toString()+","+data.get(Constants.FIELD_PARAM);
+      String fullSql = StringEscapeUtils.unescapeJava(
+          "\"atype\": " + data.get(Constants.FIELD_ATYPE).toString() + "," + data.get(Constants.FIELD_PARAM));
       construct.setFullSql(fullSql);
       construct.setRedactedSensitiveDataSql(fullSql);
 
@@ -545,11 +547,15 @@ public class Parser {
   	final Construct construct = new Construct();
   	construct.sentences.add(sentence);
   	if(data.has(Constants.FIELD_PARAM)) {
-  		construct.setFullSql("\"atype\": "+data.get(Constants.FIELD_ATYPE).toString()+","+data.get(Constants.FIELD_PARAM));
-  		construct.setRedactedSensitiveDataSql("\"atype\": "+data.get(Constants.FIELD_ATYPE).toString()+","+data.get(Constants.FIELD_PARAM));
+  		String fullSql = StringEscapeUtils.unescapeJava(
+  		    "\"atype\": " + data.get(Constants.FIELD_ATYPE).toString() + "," + data.get(Constants.FIELD_PARAM));
+  		construct.setFullSql(fullSql);
+  		construct.setRedactedSensitiveDataSql(fullSql);
   	}else if(data.has(Constants.FIELD_COMMAND)) {
-  		construct.setFullSql(data.get(Constants.FIELD_COMMAND).toString());
-  		construct.setRedactedSensitiveDataSql(data.get(Constants.FIELD_COMMAND).toString());
+  		String fullSql = StringEscapeUtils.unescapeJava(
+  		    data.get(Constants.FIELD_COMMAND).toString());
+  		construct.setFullSql(fullSql);
+  		construct.setRedactedSensitiveDataSql(fullSql);
   	}
   	return construct;
   } catch (final Exception e) {
