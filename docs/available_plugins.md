@@ -7,6 +7,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 
 - [Adabas](../filter-plugin/logstash-filter-adabas-guardium/README.md)
 - [Alloy_DB](../filter-plugin/logstash-filter-alloydb-guardium/mainREADME.md)
+- [AlloyDB Omni](../docs/KafkaBasedUCs/AlloyDBOmniSyslogKafkaConnect.md)
 - [Amazon Aurora MySQL](../filter-plugin/logstash-filter-aurora-mysql-guardium/mainREADME.md)
 - [Amazon DynamoDB](../filter-plugin/logstash-filter-dynamodb-guardium/mainREADME.md)
 - [Amazon OpenSearch](../filter-plugin/logstash-filter-opensearch-guardium/mainREADME.md)
