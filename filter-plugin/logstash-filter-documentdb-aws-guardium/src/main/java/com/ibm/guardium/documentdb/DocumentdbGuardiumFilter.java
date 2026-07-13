@@ -112,9 +112,6 @@ public class DocumentdbGuardiumFilter implements Filter {
       return;
     }
 
-    // Sanitize BSON regex literals (e.g. /^AQA/) that are not valid JSON values
-    messageString = StringUtils.sanitizeMongoBsonLiterals(messageString);
-
     if (messageString.contains(Constants.DOCUMENTDB_AUDIT_SIGNAL)) {
       processAuditEvent(e, messageString, matchListener);
     } else if (messageString.contains(Constants.DOCUMENTDB_PROFILER_SIGNAL)) {
@@ -150,6 +147,12 @@ public class DocumentdbGuardiumFilter implements Filter {
     } catch (OutOfMemoryError oom) {
       handleOutOfMemoryError(e, messageString, matchListener);
     } catch (JsonSyntaxException jse) {
+      // A bare BSON regex literal (e.g. /^foo/i) makes Gson fail. Sanitize and retry once.
+      String sanitized = StringUtils.sanitizeMongoBsonLiterals(messageString);
+      if (!sanitized.equals(messageString)) {
+        processAuditEvent(e, sanitized, matchListener);
+        return;
+      }
       handleJsonSyntaxError(e, messageString, jse, matchListener, true);
     } catch (Exception exception) {
       handleGenericError(e, messageString, exception, matchListener, true);
@@ -190,6 +193,12 @@ public class DocumentdbGuardiumFilter implements Filter {
     } catch (OutOfMemoryError oom) {
       handleOutOfMemoryError(e, messageString, matchListener);
     } catch (JsonSyntaxException jse) {
+      // A bare BSON regex literal (e.g. /^foo/i) makes Gson fail. Sanitize and retry once.
+      String sanitized = StringUtils.sanitizeMongoBsonLiterals(messageString);
+      if (!sanitized.equals(messageString)) {
+        processProfilerEvent(e, sanitized, matchListener);
+        return;
+      }
       handleJsonSyntaxError(e, messageString, jse, matchListener, false);
     } catch (Exception exception) {
       handleGenericError(e, messageString, exception, matchListener, false);
