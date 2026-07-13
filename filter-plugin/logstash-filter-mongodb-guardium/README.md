@@ -217,7 +217,7 @@ systemctl status rsyslog
    ```text
     global(DefaultNetstreamDriverCAFile="/path/to/ca_file/ca.pem")
     # The template for message formatting
-    $template UcMessageFormat,"%HOSTNAME%,<SERVER_IP>,%msg%"
+    $template UcMessageFormat,"%TIMESTAMP% %HOSTNAME% mongod: %msg%"
 
     module(load="imfile")
     ruleset(name="imfile_to_gdp") {
