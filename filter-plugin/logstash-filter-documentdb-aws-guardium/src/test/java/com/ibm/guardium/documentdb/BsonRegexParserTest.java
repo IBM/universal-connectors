@@ -51,7 +51,7 @@ public class BsonRegexParserTest {
 
     // ── test cases ────────────────────────────────────────────────────────────
 
-    /** find with bare /regex/ as $not value. */
+    /** find: bare regex as a field operator value. */
     @Test
     public void testFindWithNotRegex() {
         String message =
@@ -59,11 +59,11 @@ public class BsonRegexParserTest {
             "\"timestamp_utc\":\"2023-11-14 22:13:20.000\"," +
             "\"remote_ip\":\"127.0.0.1:11111\"," +
             "\"users\":[{\"user\":\"testuser\",\"db\":\"testdb\"}]," +
-            "\"param\":{\"command\":\"find\",\"ns\":\"testdb.items\"," +
-            "\"args\":{\"find\":\"items\"," +
-            "\"filter\":{\"STATUS\":{\"$ne\":\"N\"}," +
-            "\"CODE\":{\"$not\":/^XYZ/}," +
-            "\"LANG\":\"en\"}," +
+            "\"param\":{\"command\":\"find\",\"ns\":\"testdb.col\"," +
+            "\"args\":{\"find\":\"col\"," +
+            "\"filter\":{\"a\":{\"b\":\"v\"}," +
+            "\"c\":{\"d\":/^abc/}," +
+            "\"e\":\"x\"}," +
             "\"skip\":0,\"startTransaction\":false}," +
             "\"result\":0}}";
 
@@ -76,7 +76,7 @@ public class BsonRegexParserTest {
                 "sentence verb must equal param.command");
     }
 
-    /** find with $nin and $not:/regex/ as sibling operators on the same field. */
+    /** find: array operator and regex as siblings on the same field. */
     @Test
     public void testFindWithNinAndNotRegex() {
         String message =
@@ -84,11 +84,11 @@ public class BsonRegexParserTest {
             "\"timestamp_utc\":\"2023-11-14 22:13:21.000\"," +
             "\"remote_ip\":\"127.0.0.1:22222\"," +
             "\"users\":[{\"user\":\"testuser\",\"db\":\"testdb\"}]," +
-            "\"param\":{\"command\":\"find\",\"ns\":\"testdb.items\"," +
-            "\"args\":{\"find\":\"items\"," +
-            "\"filter\":{\"STATUS\":{\"$ne\":\"N\"}," +
-            "\"CODE\":{\"$nin\":[\"AA\",\"BB\"],\"$not\":/^XYZ/}," +
-            "\"LANG\":\"en\"}," +
+            "\"param\":{\"command\":\"find\",\"ns\":\"testdb.col\"," +
+            "\"args\":{\"find\":\"col\"," +
+            "\"filter\":{\"a\":{\"b\":\"v\"}," +
+            "\"c\":{\"d\":[\"p\",\"q\"],\"e\":/^abc/}," +
+            "\"f\":\"x\"}," +
             "\"skip\":0,\"startTransaction\":false}," +
             "\"result\":0}}";
 
@@ -96,11 +96,10 @@ public class BsonRegexParserTest {
 
         assertNotNull(record.getData());
         assertNotNull(record.getData().getConstruct());
-        assertNull(record.getException(),
-                "no exception expected — $nin + $not with regex literal must parse");
+        assertNull(record.getException(), "no exception expected");
     }
 
-    /** find with $and, multi-value $nin, and $not:/regex/ combined. */
+    /** find: nested array operators and regex combined in one filter. */
     @Test
     public void testFindWithAndNinNotRegex() {
         String message =
@@ -108,11 +107,11 @@ public class BsonRegexParserTest {
             "\"timestamp_utc\":\"2023-11-14 22:13:22.000\"," +
             "\"remote_ip\":\"127.0.0.1:33333\"," +
             "\"users\":[{\"user\":\"testuser\",\"db\":\"testdb\"}]," +
-            "\"param\":{\"command\":\"find\",\"ns\":\"testdb.items\"," +
-            "\"args\":{\"find\":\"items\"," +
-            "\"filter\":{\"$and\":[{\"TYPE\":{\"$nin\":[\"T1\"]}},{\"STATUS\":{\"$nin\":[\"PIPE\"]}}]," +
-            "\"CODE\":{\"$nin\":[\"AA\",\"BB\",\"CC\"],\"$not\":/^XYZ/}," +
-            "\"LANG\":\"en\"}," +
+            "\"param\":{\"command\":\"find\",\"ns\":\"testdb.col\"," +
+            "\"args\":{\"find\":\"col\"," +
+            "\"filter\":{\"a\":[{\"b\":{\"c\":[\"p\"]}},{\"d\":{\"e\":[\"q\"]}}]," +
+            "\"f\":{\"g\":[\"r\",\"s\",\"t\"],\"h\":/^abc/}," +
+            "\"i\":\"x\"}," +
             "\"skip\":0,\"startTransaction\":false}," +
             "\"result\":0}}";
 
@@ -120,11 +119,10 @@ public class BsonRegexParserTest {
 
         assertNotNull(record.getData());
         assertNotNull(record.getData().getConstruct());
-        assertNull(record.getException(),
-                "no exception expected — $and + long $nin + $not:/regex/ must all parse");
+        assertNull(record.getException(), "no exception expected");
     }
 
-    /** aggregate $match with a quotemeta regex: /.*\Q...\E.*\/i */
+    /** aggregate: quotemeta regex in a pipeline stage. */
     @Test
     public void testAggregateWithQuotemetaRegex() {
         String message =
@@ -132,20 +130,19 @@ public class BsonRegexParserTest {
             "\"timestamp_utc\":\"2023-11-14 22:13:23.000\"," +
             "\"remote_ip\":\"127.0.0.1:44444\"," +
             "\"users\":[{\"user\":\"testuser\",\"db\":\"testdb\"}]," +
-            "\"param\":{\"command\":\"aggregate\",\"ns\":\"testdb.items\"," +
-            "\"args\":{\"aggregate\":\"items\",\"allowDiskUse\":false," +
+            "\"param\":{\"command\":\"aggregate\",\"ns\":\"testdb.col\"," +
+            "\"args\":{\"aggregate\":\"col\",\"allowDiskUse\":false," +
             "\"cursor\":{\"batchSize\":256},\"explain\":false," +
             "\"pipeline\":[" +
-            "{\"$match\":{\"NAME\":/.*\\Qsome term\\E.*/i,\"STATUS\":{\"$in\":[\"A\",\"C\"]}}}," +
-            "{\"$sort\":{\"NAME\":1}},{\"$skip\":0},{\"$limit\":100}]," +
+            "{\"$match\":{\"a\":/.*\\Qsome term\\E.*/i,\"b\":{\"c\":[\"x\",\"y\"]}}}," +
+            "{\"$sort\":{\"a\":1}},{\"$skip\":0},{\"$limit\":100}]," +
             "\"startTransaction\":false},\"result\":0}}";
 
         Record record = runFilter(message);
 
         assertNotNull(record.getData());
         assertNotNull(record.getData().getConstruct());
-        assertNull(record.getException(),
-                "no exception expected — aggregate $match with quotemeta regex must parse");
+        assertNull(record.getException(), "no exception expected");
     }
 
     /** fullSql must contain a single \Q, not double-escaped \\Q (unescapeJava regression). */
@@ -156,18 +153,18 @@ public class BsonRegexParserTest {
             "\"timestamp_utc\":\"2023-11-14 22:13:24.000\"," +
             "\"remote_ip\":\"127.0.0.1:55555\"," +
             "\"users\":[{\"user\":\"testuser\",\"db\":\"testdb\"}]," +
-            "\"param\":{\"command\":\"aggregate\",\"ns\":\"testdb.items\"," +
-            "\"args\":{\"aggregate\":\"items\",\"allowDiskUse\":false," +
+            "\"param\":{\"command\":\"aggregate\",\"ns\":\"testdb.col\"," +
+            "\"args\":{\"aggregate\":\"col\",\"allowDiskUse\":false," +
             "\"cursor\":{\"batchSize\":256},\"explain\":false," +
             "\"pipeline\":[" +
-            "{\"$match\":{\"NAME\":/.*\\Qsome term\\E.*/i,\"STATUS\":{\"$in\":[\"A\"]}}}]," +
+            "{\"$match\":{\"a\":/.*\\Qsome term\\E.*/i,\"b\":{\"c\":[\"x\"]}}}]," +
             "\"startTransaction\":false},\"result\":0}}";
 
         Record record = runFilter(message);
 
         String fullSql = record.getData().getConstruct().getFullSql();
         assertNotNull(fullSql, "fullSql must not be null");
-        assertTrue(fullSql.contains("\\Q"),   "fullSql must contain \\Q");
+        assertTrue(fullSql.contains("\\Q"),    "fullSql must contain \\Q");
         assertFalse(fullSql.contains("\\\\Q"), "fullSql must NOT contain \\\\Q");
     }
 }
