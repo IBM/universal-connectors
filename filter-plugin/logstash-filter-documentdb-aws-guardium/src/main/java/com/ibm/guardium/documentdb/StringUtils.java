@@ -102,19 +102,8 @@ public final class StringUtils {
     }
 
     /**
-     * Quotes any BSON regex literal ({@code /pattern/flags}) found outside a JSON string so
-     * the result can be parsed by a strict JSON parser such as Gson.
-     *
-     * <p>DocumentDB audit logs serialise MongoDB query args in MongoDB shell syntax, where
-     * regex values are written as bare {@code /pattern/flags} instead of quoted strings.
-     * A bare {@code /} has no meaning in JSON outside a string, so every unquoted {@code /}
-     * that has a matching closing {@code /} on the same line is safely treated as a regex
-     * literal. Slashes inside JSON string values (e.g. base64, URLs) are never touched
-     * because the scanner tracks quoted-string boundaries.
-     *
-     * @param json raw DocumentDB audit message
-     * @return input with all BSON regex literals wrapped in double quotes; original reference
-     *         returned unchanged if the input contains no {@code /}
+     * Wraps bare BSON regex literals ({@code /pattern/flags}) in double quotes so the result
+     * is valid JSON. Slashes inside existing quoted strings are never touched.
      */
     public static String sanitizeMongoBsonLiterals(String json) {
         if (json == null || json.isEmpty() || !json.contains("/")) {

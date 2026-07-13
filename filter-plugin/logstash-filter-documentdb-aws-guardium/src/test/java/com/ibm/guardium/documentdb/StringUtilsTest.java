@@ -211,8 +211,6 @@ public class StringUtilsTest {
         assertEquals("{\"$regex\":\"/^abc/i\"}", StringUtils.sanitizeMongoBsonLiterals(input));
     }
 
-    // ── $nin before $not (the real-world failing case) ─────────────────────────
-
     @Test
     public void testSanitizeMongoBsonLiterals_NinArrayThenNotRegex() {
         // After ']' closes the $nin array, ',' arms the next position, then
@@ -227,11 +225,11 @@ public class StringUtilsTest {
     @Test
     public void testSanitizeMongoBsonLiterals_MultipleOperatorsThenNotRegex() {
         // $nin + $ne before $not — verify all three siblings survive
-        String input = "{\"MARSHA_CODE\":{\"$nin\":[\"A\",\"B\"],\"$ne\":\"Y\",\"$not\":/^AQA/}}";
+        String input = "{\"field\":{\"$nin\":[\"A\",\"B\"],\"$ne\":\"Y\",\"$not\":/^foo/}}";
         com.google.gson.JsonObject obj = com.google.gson.JsonParser.parseString(
                 StringUtils.sanitizeMongoBsonLiterals(input)).getAsJsonObject();
-        com.google.gson.JsonObject mc = obj.getAsJsonObject("MARSHA_CODE");
-        assertEquals("/^AQA/", mc.get("$not").getAsString());
+        com.google.gson.JsonObject mc = obj.getAsJsonObject("field");
+        assertEquals("/^foo/", mc.get("$not").getAsString());
         assertEquals("Y",      mc.get("$ne").getAsString());
         assertEquals("A",      mc.getAsJsonArray("$nin").get(0).getAsString());
     }
