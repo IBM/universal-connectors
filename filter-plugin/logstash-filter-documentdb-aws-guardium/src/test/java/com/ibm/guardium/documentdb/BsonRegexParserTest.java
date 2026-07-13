@@ -16,24 +16,7 @@ import co.elastic.logstash.api.Context;
 import co.elastic.logstash.api.Event;
 import co.elastic.logstash.api.FilterMatchListener;
 
-/**
- * End-to-end tests for DocumentDB audit logs that contain BSON regex literals.
- *
- * <p>All message strings are fully synthetic — no real hostnames, account IDs,
- * collection names, field values, or IP addresses from production logs are used.
- * The tests verify:
- * <ul>
- *   <li>A {@code find} filter with a bare {@code /pattern/} regex parses without
- *       exception.</li>
- *   <li>A {@code find} filter with {@code $nin} and {@code $not} as sibling operators
- *       parses without exception.</li>
- *   <li>An {@code aggregate} pipeline whose {@code $match} stage contains a quotemeta
- *       regex (backslash-Q...backslash-E form) parses without exception.</li>
- *   <li>{@code fullSql} in the resulting Guardium record stores a single backslash
- *       before Q (not double-escaped), confirming the
- *       {@code StringEscapeUtils.unescapeJava()} fix is in place.</li>
- * </ul>
- */
+/** End-to-end tests for audit logs containing BSON regex literals. All message strings are synthetic. */
 public class BsonRegexParserTest {
 
     private static final Context context = new ContextImpl(null, null);
@@ -41,7 +24,6 @@ public class BsonRegexParserTest {
 
     // ── helpers ───────────────────────────────────────────────────────────────
 
-    /** Shared filter instance — stateless, safe to reuse across tests. */
     private static final DocumentdbGuardiumFilter filter =
             new DocumentdbGuardiumFilter("test-id", null, context);
 
@@ -50,11 +32,6 @@ public class BsonRegexParserTest {
         @Override public void filterMatched(Event e) { count++; }
     }
 
-    /**
-     * Passes {@code message} through the filter and returns the deserialised
-     * {@link Record}. Asserts that the filter produced exactly one matched event
-     * and that the GuardRecord field is present.
-     */
     private Record runFilter(String message) {
         Event e = new org.logstash.Event();
         e.setField("message", message);
@@ -74,13 +51,9 @@ public class BsonRegexParserTest {
 
     // ── test cases ────────────────────────────────────────────────────────────
 
-    /**
-     * A {@code find} command whose filter contains a bare {@code /^XYZ/} regex
-     * as the value of {@code $not} — the simplest BSON regex literal form.
-     */
+    /** find with bare /regex/ as $not value. */
     @Test
     public void testFindWithNotRegex() {
-        // Synthetic audit log: find on testdb.items, filter CODE not matching /^XYZ/
         String message =
             "{\"atype\":\"authCheck\",\"ts\":1700000000000," +
             "\"timestamp_utc\":\"2023-11-14 22:13:20.000\"," +
@@ -103,11 +76,7 @@ public class BsonRegexParserTest {
                 "sentence verb must equal param.command");
     }
 
-    /**
-     * A {@code find} command whose filter contains {@code $nin} and {@code $not}
-     * as sibling operators on the same field. This is the exact structural form that
-     * previously caused a MalformedJsonException at the regex-opening slash.
-     */
+    /** find with $nin and $not:/regex/ as sibling operators on the same field. */
     @Test
     public void testFindWithNinAndNotRegex() {
         String message =
@@ -131,11 +100,7 @@ public class BsonRegexParserTest {
                 "no exception expected — $nin + $not with regex literal must parse");
     }
 
-    /**
-     * A {@code find} command combining {@code $and}, a multi-value {@code $nin} list,
-     * and a {@code $not} regex — exercising multiple structural positions of the
-     * sanitizer in a single pass.
-     */
+    /** find with $and, multi-value $nin, and $not:/regex/ combined. */
     @Test
     public void testFindWithAndNinNotRegex() {
         String message =
@@ -159,13 +124,9 @@ public class BsonRegexParserTest {
                 "no exception expected — $and + long $nin + $not:/regex/ must all parse");
     }
 
-    /**
-     * An {@code aggregate} command whose pipeline {@code $match} stage contains a
-     * quotemeta regex (backslash-Q...backslash-E) with the {@code i} flag.
-     */
+    /** aggregate $match with a quotemeta regex: /.*\Q...\E.*\/i */
     @Test
     public void testAggregateWithQuotemetaRegex() {
-        // backslash-Q and backslash-E are written as \\Q and \\E in Java string literals
         String message =
             "{\"atype\":\"authCheck\",\"ts\":1700000003000," +
             "\"timestamp_utc\":\"2023-11-14 22:13:23.000\"," +
@@ -187,14 +148,9 @@ public class BsonRegexParserTest {
                 "no exception expected — aggregate $match with quotemeta regex must parse");
     }
 
-    /**
-     * Verifies that {@code fullSql} stores the regex term with a single backslash
-     * before Q (i.e. the two-character sequence backslash-Q), not the double-escaped
-     * form that would result from omitting the StringEscapeUtils.unescapeJava() call.
-     */
+    /** fullSql must contain a single \Q, not double-escaped \\Q (unescapeJava regression). */
     @Test
     public void testFullSqlContainsSingleBackslashQ() {
-        // same aggregate message as above
         String message =
             "{\"atype\":\"authCheck\",\"ts\":1700000004000," +
             "\"timestamp_utc\":\"2023-11-14 22:13:24.000\"," +
@@ -211,12 +167,7 @@ public class BsonRegexParserTest {
 
         String fullSql = record.getData().getConstruct().getFullSql();
         assertNotNull(fullSql, "fullSql must not be null");
-
-        // "\\Q" in a Java assertion string literal is the two-char sequence backslash-Q.
-        assertTrue(fullSql.contains("\\Q"),
-                "fullSql must contain a single backslash before Q (regression check)");
-        // "\\\\Q" in a Java assertion string literal is the four-char sequence backslash-backslash-Q.
-        assertFalse(fullSql.contains("\\\\Q"),
-                "fullSql must NOT contain double backslash before Q (double-escape regression check)");
+        assertTrue(fullSql.contains("\\Q"),   "fullSql must contain \\Q");
+        assertFalse(fullSql.contains("\\\\Q"), "fullSql must NOT contain \\\\Q");
     }
 }

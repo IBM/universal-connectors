@@ -116,7 +116,7 @@ The Guardium universal connector is the Guardium entry point for native audit/pr
 
 ## 6. Limitations
 - Due to native limitations in Amazon DocumentDB, audit logs may truncate query details (1 KB limit), and profiler logs only capture slow queries (based on a configurable threshold, around 50 ms). As a result, full query visibility cannot be guaranteed.
-- Queries using regular expressions are handled correctly. DocumentDB writes regex arguments as bare `/pattern/flags` literals (MongoDB shell syntax), which are not valid JSON. The plugin automatically quotes these literals before parsing so that queries containing regular expressions are handled correctly.
+- DocumentDB writes regex arguments as bare `/pattern/flags` literals (MongoDB shell syntax), which are not valid JSON. The plugin automatically quotes these literals before parsing so that queries containing regular expressions are handled correctly.
   - https://docs.aws.amazon.com/documentdb/latest/developerguide/event-auditing.html
   - https://docs.aws.amazon.com/documentdb/latest/developerguide/profiling.html
 - DocumentDB Profiler logs capture any database operations that take longer than some period of time(e. g. 100 ms). If the threshold value is not configurable and set value is too high, then profiler logs may not get captured for every database operation.
