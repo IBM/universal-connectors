@@ -7,6 +7,7 @@
 - Supported Guardium versions:
   - Guardium Data Protection: 11.4 and later
   - Guardium Data Security Center: 3.2 and later
+* Supported database versions: 13, 14
 
 ## Configuring native logging (optional)
 
