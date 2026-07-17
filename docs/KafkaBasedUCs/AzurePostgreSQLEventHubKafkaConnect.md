@@ -40,16 +40,16 @@ There are multiple ways to install a Postgres server. For this example, we assum
 5. After installation of pgAudit, you can configure its parameters to start logging.
 6. After installation of pgAudit, you can configure its parameters to start logging.
    1. On the Database auditing page , go to **Settings** and select **server parameters** and set the server parameters as follows:
-      - log_checkpoints = off
-      - log_error_verbosity = VERBOSE
-      - log_line_prefix = specify as per requirement but should include
+      - **log_checkpoints** = `off`
+      - **log_error_verbosity** = `VERBOSE`
+      - **log_line_prefix** = specify as per requirement but should include
         timestamp, client ip, client port, database username, database name, process id, application name,sql state.
         For information regarding timestamp, client ip, client port, database username, database name, process id, application name,sql state parameters, see [Error Reporting and Logging](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-LINE-PREFIX).
         (eg:- %t:%r:%u@%d:[%p]:%a:%e)
-      - pgaudit.log = DDL,FUNCTION,READ,WRITE,ROLE
-      - pgaudit.log_catalog = off
-      - pgaudit.log_client = off
-      - pgaudit.log_parameter = off
+      - **pgaudit.log** = `DDL,FUNCTION,READ,WRITE,ROLE`
+      - **pgaudit.log_catalog** = `off`
+      - **pgaudit.log_client** = `off`
+      - **pgaudit.log_parameter** = `off`
 7. Click **save**.
 
 ## Configuring Azure Event Hub
