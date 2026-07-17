@@ -38,17 +38,19 @@ There are multiple ways to install a Postgres server. For this example, we assum
 3. Select **shared_preload_libraries** as PGAUDIT and save.
 4. Go to overview and restart the server to apply the changes.
 5. After installation of pgAudit, you can configure its parameters to start logging.
-6. On the Database auditing page, go to **Settings** > **server parameters** and set the following parameters.
-   a. **log_checkpoints** = `off`
-   b. **log_error_verbosity** = `VERBOSE`
-   c. **log_line_prefix** = Specify as based on your requirement but should include timestamp, client ip, client port, database
-   username, database name, process id, application name, sql state. For more information,
-   see [Error Reporting and Logging](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-LINE-PREFIX).
-   d. **pgaudit.log** = `DDL,FUNCTION,READ,WRITE,ROLE`
-   e. **pgaudit.log_catalog** = `off`
-   f. **pgaudit.log_client** = `off`
-   g. **pgaudit.log_parameter** = `off`
-7. Click **Save**.
+6. After installation of pgAudit, you can configure its parameters to start logging.
+   1. On the Database auditing page , go to **Settings** and select **server parameters** and set the server parameters as follows:
+      - log_checkpoints = off
+      - log_error_verbosity = VERBOSE
+      - log_line_prefix = specify as per requirement but should include
+        timestamp, client ip, client port, database username, database name, process id, application name,sql state.
+        For information regarding timestamp, client ip, client port, database username, database name, process id, application name,sql state parameters, see [Error Reporting and Logging](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-LINE-PREFIX).
+        (eg:- %t:%r:%u@%d:[%p]:%a:%e)
+      - pgaudit.log = DDL,FUNCTION,READ,WRITE,ROLE
+      - pgaudit.log_catalog = off
+      - pgaudit.log_client = off
+      - pgaudit.log_parameter = off
+7. Click **save**.
 
 ## Configuring Azure Event Hub
 
