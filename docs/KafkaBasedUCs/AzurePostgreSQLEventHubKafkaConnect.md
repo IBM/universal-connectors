@@ -38,7 +38,6 @@ There are multiple ways to install a Postgres server. For this example, we assum
 3. Select **shared_preload_libraries** as PGAUDIT and save.
 4. Go to overview and restart the server to apply the changes.
 5. After installation of pgAudit, you can configure its parameters to start logging.
-6. After installation of pgAudit, you can configure its parameters to start logging.
    1. On the Database auditing page , go to **Settings** and select **server parameters** and set the server parameters as follows:
       - **log_checkpoints** = `off`
       - **log_error_verbosity** = `VERBOSE`
@@ -50,7 +49,7 @@ There are multiple ways to install a Postgres server. For this example, we assum
       - **pgaudit.log_catalog** = `off`
       - **pgaudit.log_client** = `off`
       - **pgaudit.log_parameter** = `off`
-7. Click **save**.
+6. Click **save**.
 
 ## Configuring Azure Event Hub
 
