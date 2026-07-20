@@ -48,6 +48,60 @@ public class CassandraGuardiumPluginFilterTest {
 		Assert.assertEquals(1, matchListener.getMatchCount());
 	}
 
+	@Test
+	public void testStartupMessageSkipped() {
+		// A Cassandra startup/info message that has ' - ' but no key:value fields
+		final String startupLog = "INFO  [main] 2022-01-31 13:17:17,901 AuditLogManager.java:172 - Audit logging is enabled.";
+
+		CassandraGuardiumPluginFilter filter = new CassandraGuardiumPluginFilter("test-id", null, context);
+		Event e = new org.logstash.Event();
+		TestMatchListener matchListener = new TestMatchListener();
+		e.setField("message", startupLog);
+		e.setField(Constants.SERVER_IP, "1.1.1.1");
+		e.setField(Constants.SERVER_HOSTNAME, "mypc");
+		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+		Assert.assertEquals(1, results.size());
+		Assert.assertNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+		Assert.assertEquals(0, matchListener.getMatchCount());
+	}
+
+	@Test
+	public void testMissingSeparatorTagsError() {
+		// A log line with no " - " separator should be skipped gracefully, not throw
+		final String malformedLog = "INFO  [Native-Transport-Requests-1] 2022-01-31 no-separator-here";
+
+		CassandraGuardiumPluginFilter filter = new CassandraGuardiumPluginFilter("test-id", null, context);
+		Event e = new org.logstash.Event();
+		TestMatchListener matchListener = new TestMatchListener();
+		e.setField("message", malformedLog);
+		e.setField(Constants.SERVER_IP, "1.1.1.1");
+		e.setField(Constants.SERVER_HOSTNAME, "mypc");
+		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+		Assert.assertEquals(1, results.size());
+		Assert.assertNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+		Assert.assertEquals(0, matchListener.getMatchCount());
+	}
+
+	@Test
+	public void testMalformedKeyValueTokenSkipped() {
+		// A token without ":" in the key-value section should be skipped without crashing
+		final String logWithBadToken = "INFO  [Native-Transport-Requests-1] 2022-01-31 13:17:17,901 FileAuditLogger.java:51 - user:test|host:localhost/127.0.0.1:7000|source:/127.0.0.1|port:47844|timestamp:1643615237901|type:UNAUTHORIZED_ATTEMPT|category:AUTH|NOTAKEYVALUE|operation:SELECT 1";
+
+		CassandraGuardiumPluginFilter filter = new CassandraGuardiumPluginFilter("test-id", null, context);
+		Event e = new org.logstash.Event();
+		TestMatchListener matchListener = new TestMatchListener();
+		e.setField("message", logWithBadToken);
+		e.setField(Constants.SERVER_IP, "1.1.1.1");
+		e.setField(Constants.SERVER_HOSTNAME, "mypc");
+		Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+		Assert.assertEquals(1, results.size());
+		Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+		Assert.assertEquals(1, matchListener.getMatchCount());
+	}
+
 }
 
 class TestMatchListener implements FilterMatchListener {

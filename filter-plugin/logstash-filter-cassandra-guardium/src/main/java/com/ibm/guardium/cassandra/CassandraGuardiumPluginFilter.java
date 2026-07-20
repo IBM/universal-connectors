@@ -5,8 +5,10 @@
 package com.ibm.guardium.cassandra;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.map.HashedMap;
@@ -48,6 +50,8 @@ public class CassandraGuardiumPluginFilter implements Filter {
 	private Parser parser;
 	public static final PluginConfigSpec<String> SOURCE_CONFIG = PluginConfigSpec.stringSetting("source", "message");
 	private static Logger log = LogManager.getLogger(CassandraGuardiumPluginFilter.class);
+	private static final List<String> REQUIRED_FIELDS = Arrays.asList(
+			Constants.TIMESTAMP, Constants.USER, Constants.CATEGORY, Constants.OPERATION);
 
 	public CassandraGuardiumPluginFilter(String id, Configuration config, Context context) {
 		// constructors should validate configuration options
@@ -67,12 +71,26 @@ public class CassandraGuardiumPluginFilter implements Filter {
 					dataMap.put(Constants.SERVER_IP, e.getField(Constants.SERVER_IP).toString());
 					dataMap.put(Constants.SERVER_HOSTNAME, e.getField(Constants.SERVER_HOSTNAME).toString());
 					String[] intermediate_input = input.split(Constants.INPUT_SPLIT1);
+					if (intermediate_input.length < 2) {
+						log.debug("Cassandradb Filter: Skipping event - unexpected log format (no ' - ' separator): {}", input);
+						e.tag(Constants.LOGSTASH_TAG_JSON_PARSE_ERROR);
+						continue;
+					}
 					String[] secondary_input = intermediate_input[1].split(Constants.INPUT_SPLIT2);
-
+	
 					for (String input_value : secondary_input) {
-
-						String[] keyValue = input_value.split(Constants.INPUT_SPLIT3,Constants.limit);
+		
+						String[] keyValue = input_value.split(Constants.INPUT_SPLIT3, Constants.limit);
+						if (keyValue.length < 2) {
+							log.debug("Cassandradb Filter: Skipping malformed key-value token '{}', no ':' found", input_value);
+							continue;
+						}
 						dataMap.put(keyValue[0], keyValue[1]);
+					}
+					if (!dataMap.keySet().containsAll(REQUIRED_FIELDS)) {
+						log.debug("Cassandradb Filter: Skipping event - missing required fields (timestamp/user/category/operation): {}", input);
+						e.tag(Constants.LOGSTASH_TAG_JSON_PARSE_ERROR);
+						continue;
 					}
 					Record record = parser.parseRecord(dataMap);
 					final GsonBuilder builder = new GsonBuilder();
