@@ -103,11 +103,14 @@ public class CockroachdbGuardiumFilter implements Filter {
                 // Convert the cockroachdb field to JsonObject
                 JsonObject inputJSON = new Gson().toJsonTree(cockroachdbField).getAsJsonObject();
 
-                // Add server host from Event's host field (IP or hostname from TCP input)
-                if (e.getField("host") != null) {
-                    String hostValue = e.getField("host").toString();
-                    if (hostValue != null && !hostValue.isEmpty()) {
-                        inputJSON.addProperty("ServerHost", hostValue);
+                // Add server host from Event's host field only if not already set by the
+                // Logstash filter (e.g. from the rsyslog template suffix |ServerHostname=...)
+                if (!inputJSON.has("ServerHost") || inputJSON.get("ServerHost").isJsonNull()) {
+                    if (e.getField("host") != null) {
+                        String hostValue = e.getField("host").toString();
+                        if (hostValue != null && !hostValue.isEmpty()) {
+                            inputJSON.addProperty("ServerHost", hostValue);
+                        }
                     }
                 }
 

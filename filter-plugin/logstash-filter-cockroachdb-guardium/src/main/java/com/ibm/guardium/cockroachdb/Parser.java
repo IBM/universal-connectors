@@ -169,7 +169,14 @@ public class Parser {
         }
         sessionLocator.setServerIp(serverIp);
 
-        sessionLocator.setServerPort(DEFAULT_PORT);
+        int serverPort = DEFAULT_PORT;
+        if (data.has(SERVER_PORT) && !data.get(SERVER_PORT).isJsonNull()) {
+            try { serverPort = Integer.parseInt(data.get(SERVER_PORT).getAsString()); }
+            catch (NumberFormatException e) {
+                logger.warn("Invalid ServerPort value '{}', defaulting to {}", data.get(SERVER_PORT).getAsString(), DEFAULT_PORT);
+            }
+        }
+        sessionLocator.setServerPort(serverPort);
         sessionLocator.setClientIpv6(DEFAULT_IPV6);
         sessionLocator.setServerIpv6(DEFAULT_IPV6);
 

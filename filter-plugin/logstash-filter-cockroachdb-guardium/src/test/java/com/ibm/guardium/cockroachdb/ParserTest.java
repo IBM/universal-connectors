@@ -146,6 +146,88 @@ class ParserTest {
     }
 
     @Test
+    void testServerHostSetInAccessor() {
+        String payload = "{"
+                + "\"Timestamp\":1768332558964138753,"
+                + "\"EventType\":\"query_execute\","
+                + "\"Statement\":\"SELECT 1\","
+                + "\"User\":\"test_user\","
+                + "\"ServerHost\":\"crdb-node1.prod.example.com\""
+                + "}";
+
+        final JsonObject data = new Gson().fromJson(payload, JsonObject.class);
+        Record record = parser.parseRecord(data);
+
+        assertEquals("crdb-node1.prod.example.com", record.getAccessor().getServerHostName());
+        assertEquals(DEFAULT_IP, record.getSessionLocator().getServerIp());
+    }
+
+    @Test
+    void testServerHostAsIPSetInSessionLocator() {
+        String payload = "{"
+                + "\"Timestamp\":1768332558964138753,"
+                + "\"EventType\":\"query_execute\","
+                + "\"Statement\":\"SELECT 1\","
+                + "\"User\":\"test_user\","
+                + "\"ServerHost\":\"10.0.0.5\""
+                + "}";
+
+        final JsonObject data = new Gson().fromJson(payload, JsonObject.class);
+        Record record = parser.parseRecord(data);
+
+        assertEquals("10.0.0.5", record.getSessionLocator().getServerIp());
+        assertEquals(NOT_AVAILABLE, record.getAccessor().getServerHostName());
+    }
+
+    @Test
+    void testServerPortParsed() {
+        String payload = "{"
+                + "\"Timestamp\":1768332558964138753,"
+                + "\"EventType\":\"query_execute\","
+                + "\"Statement\":\"SELECT 1\","
+                + "\"User\":\"test_user\","
+                + "\"ServerHost\":\"crdb-node1.prod.example.com\","
+                + "\"ServerPort\":\"26257\""
+                + "}";
+
+        final JsonObject data = new Gson().fromJson(payload, JsonObject.class);
+        Record record = parser.parseRecord(data);
+
+        assertEquals(26257, record.getSessionLocator().getServerPort());
+    }
+
+    @Test
+    void testServerPortInvalidFallsBackToDefault() {
+        String payload = "{"
+                + "\"Timestamp\":1768332558964138753,"
+                + "\"EventType\":\"query_execute\","
+                + "\"Statement\":\"SELECT 1\","
+                + "\"User\":\"test_user\","
+                + "\"ServerPort\":\"not-a-number\""
+                + "}";
+
+        final JsonObject data = new Gson().fromJson(payload, JsonObject.class);
+        Record record = parser.parseRecord(data);
+
+        assertEquals(DEFAULT_PORT, record.getSessionLocator().getServerPort());
+    }
+
+    @Test
+    void testServerPortMissingFallsBackToDefault() {
+        String payload = "{"
+                + "\"Timestamp\":1768332558964138753,"
+                + "\"EventType\":\"query_execute\","
+                + "\"Statement\":\"SELECT 1\","
+                + "\"User\":\"test_user\""
+                + "}";
+
+        final JsonObject data = new Gson().fromJson(payload, JsonObject.class);
+        Record record = parser.parseRecord(data);
+
+        assertEquals(DEFAULT_PORT, record.getSessionLocator().getServerPort());
+    }
+
+    @Test
     void testAccessorWithMissingUser() {
         String payload = "{"
                 + "\"Timestamp\":1768332558964138753,"

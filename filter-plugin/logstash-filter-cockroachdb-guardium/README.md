@@ -178,6 +178,8 @@ versions of the Linux distributions.
    the syslog messages to the provided host `TARGET_HOST` at the provided port `TARGET_PORT`.
    
    **Note:** You can set any port number except 5000 when using Guardium Data Protection version 12.0 or 12.1.
+
+   The template injects the server hostname and port into each message so Guardium can identify the source server correctly. Replace `<SERVER_HOSTNAME>` with the stable hostname of your CockroachDB node and `<SERVER_PORT>` with its port (default: `26257`).
    
    Add the following configuration:
 
@@ -191,13 +193,18 @@ versions of the Linux distributions.
    module(load="imfile" PollingInterval="10")
    $MaxMessageSize 64k
 
+   template(name="imfile_cockroach_t" type="list") {
+     constant(value="serverHostname=<SERVER_HOSTNAME> serverPort=<SERVER_PORT>")
+     property(name="rawmsg")
+   }
+
    ruleset(name="imfile_to_gdp") {
            action(type="omfwd"
            protocol="tcp"
            StreamDriver="gtls"
            StreamDriverMode="1"
            StreamDriverAuthMode="x509/certvalid"
-           template="RSYSLOG_SyslogProtocol23Format"
+           template="imfile_cockroach_t"
            target="<TARGET_HOST>"
            port="<TARGET_PORT>")
    }
@@ -261,7 +268,8 @@ versions of the Linux distributions.
     - Database Name
     - Service Name
     - Client Host Name
-    - Server Port and Server IP - it is set to default value `0.0.0.0`
+    - Server IP - it is set to default value `0.0.0.0`
+    - Server Port - set via `serverPort=<SERVER_PORT>` in the rsyslog template (see section 3)
     - Source Program (might be missing in some audit logs)
 - For failed login attempts, CockroachDB returns different errors depending on the failure type (has duplicate events):
   - When the username does not exist: `USER_NOT_FOUND` error
