@@ -197,6 +197,22 @@ class ParserTest {
     }
 
     @Test
+    void testServerPortOutOfRangeFallsBackToDefault() {
+        String payload = "{"
+                + "\"Timestamp\":1768332558964138753,"
+                + "\"EventType\":\"query_execute\","
+                + "\"Statement\":\"SELECT 1\","
+                + "\"User\":\"test_user\","
+                + "\"ServerPort\":\"123134\""
+                + "}";
+
+        final JsonObject data = new Gson().fromJson(payload, JsonObject.class);
+        Record record = parser.parseRecord(data);
+
+        assertEquals(DEFAULT_PORT, record.getSessionLocator().getServerPort());
+    }
+
+    @Test
     void testServerPortInvalidFallsBackToDefault() {
         String payload = "{"
                 + "\"Timestamp\":1768332558964138753,"
