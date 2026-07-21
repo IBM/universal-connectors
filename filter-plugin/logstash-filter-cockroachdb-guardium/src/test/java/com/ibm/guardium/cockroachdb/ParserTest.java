@@ -152,13 +152,13 @@ class ParserTest {
                 + "\"EventType\":\"query_execute\","
                 + "\"Statement\":\"SELECT 1\","
                 + "\"User\":\"test_user\","
-                + "\"ServerHost\":\"crdb-node1.prod.example.com\""
+                + "\"ServerHost\":\"cockroach.example.com\""
                 + "}";
 
         final JsonObject data = new Gson().fromJson(payload, JsonObject.class);
         Record record = parser.parseRecord(data);
 
-        assertEquals("crdb-node1.prod.example.com", record.getAccessor().getServerHostName());
+        assertEquals("cockroach.example.com", record.getAccessor().getServerHostName());
         assertEquals(DEFAULT_IP, record.getSessionLocator().getServerIp());
     }
 
@@ -186,7 +186,7 @@ class ParserTest {
                 + "\"EventType\":\"query_execute\","
                 + "\"Statement\":\"SELECT 1\","
                 + "\"User\":\"test_user\","
-                + "\"ServerHost\":\"crdb-node1.prod.example.com\","
+                + "\"ServerHost\":\"cockroach.example.com\","
                 + "\"ServerPort\":\"26257\""
                 + "}";
 
