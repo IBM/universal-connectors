@@ -169,7 +169,20 @@ public class Parser {
         }
         sessionLocator.setServerIp(serverIp);
 
-        sessionLocator.setServerPort(DEFAULT_PORT);
+        int serverPort = DEFAULT_PORT;
+        if (data.has(SERVER_PORT) && !data.get(SERVER_PORT).isJsonNull()) {
+            try {
+                int parsedPort = Integer.parseInt(data.get(SERVER_PORT).getAsString());
+                if (parsedPort > 0 && parsedPort <= 65535) {
+                    serverPort = parsedPort;
+                } else {
+                    logger.warn("ServerPort value '{}' is out of valid range (1-65535), defaulting to {}", parsedPort, DEFAULT_PORT);
+                }
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid ServerPort value '{}', defaulting to {}", data.get(SERVER_PORT).getAsString(), DEFAULT_PORT);
+            }
+        }
+        sessionLocator.setServerPort(serverPort);
         sessionLocator.setClientIpv6(DEFAULT_IPV6);
         sessionLocator.setServerIpv6(DEFAULT_IPV6);
 
