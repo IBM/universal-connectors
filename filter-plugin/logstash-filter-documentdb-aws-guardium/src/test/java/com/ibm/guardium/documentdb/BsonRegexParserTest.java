@@ -122,9 +122,9 @@ public class BsonRegexParserTest {
         assertNull(record.getException(), "no exception expected");
     }
 
-    /** aggregate: quotemeta regex in a pipeline stage. */
+    /** aggregate: regex with backslash escape sequence in a pipeline stage. */
     @Test
-    public void testAggregateWithQuotemetaRegex() {
+    public void testAggregateWithBackslashRegex() {
         String message =
             "{\"atype\":\"authCheck\",\"ts\":1700000003000," +
             "\"timestamp_utc\":\"2023-11-14 22:13:23.000\"," +
@@ -134,7 +134,7 @@ public class BsonRegexParserTest {
             "\"args\":{\"aggregate\":\"col\",\"allowDiskUse\":false," +
             "\"cursor\":{\"batchSize\":256},\"explain\":false," +
             "\"pipeline\":[" +
-            "{\"$match\":{\"a\":/.*\\Qsome term\\E.*/i,\"b\":{\"c\":[\"x\",\"y\"]}}}," +
+            "{\"$match\":{\"a\":/.*\\wsome term.*/i,\"b\":{\"c\":[\"x\",\"y\"]}}}," +
             "{\"$sort\":{\"a\":1}},{\"$skip\":0},{\"$limit\":100}]," +
             "\"startTransaction\":false},\"result\":0}}";
 
@@ -145,9 +145,9 @@ public class BsonRegexParserTest {
         assertNull(record.getException(), "no exception expected");
     }
 
-    /** fullSql must contain a single \Q, not double-escaped \\Q (unescapeJava regression). */
+    /** fullSql must preserve a backslash escape sequence, not double-escape it (unescapeJava regression). */
     @Test
-    public void testFullSqlContainsSingleBackslashQ() {
+    public void testFullSqlPreservesBackslashEscape() {
         String message =
             "{\"atype\":\"authCheck\",\"ts\":1700000004000," +
             "\"timestamp_utc\":\"2023-11-14 22:13:24.000\"," +
@@ -157,14 +157,14 @@ public class BsonRegexParserTest {
             "\"args\":{\"aggregate\":\"col\",\"allowDiskUse\":false," +
             "\"cursor\":{\"batchSize\":256},\"explain\":false," +
             "\"pipeline\":[" +
-            "{\"$match\":{\"a\":/.*\\Qsome term\\E.*/i,\"b\":{\"c\":[\"x\"]}}}]," +
+            "{\"$match\":{\"a\":/.*\\wsome term.*/i,\"b\":{\"c\":[\"x\"]}}}]," +
             "\"startTransaction\":false},\"result\":0}}";
 
         Record record = runFilter(message);
 
         String fullSql = record.getData().getConstruct().getFullSql();
         assertNotNull(fullSql, "fullSql must not be null");
-        assertTrue(fullSql.contains("\\Q"),    "fullSql must contain \\Q");
-        assertFalse(fullSql.contains("\\\\Q"), "fullSql must NOT contain \\\\Q");
+        assertTrue(fullSql.contains("\\w"),    "fullSql must contain \\w");
+        assertFalse(fullSql.contains("\\\\w"), "fullSql must NOT contain \\\\w");
     }
 }

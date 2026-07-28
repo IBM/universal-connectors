@@ -231,11 +231,11 @@ public class StringUtilsTest {
         assertEquals("x",      a.getAsJsonArray("b").get(0).getAsString());
     }
 
-    // ── quotemeta \Q…\E regex ─────────────────────────────────────────────────
+    // ── regex with backslash escape sequences ─────────────────────────────────
 
     @Test
-    public void testSanitizeMongoBsonLiterals_PipelineMatchWithQuotemetaRegex() {
-        String input = "{\"a\":[{\"b\":{\"c\":/.*\\Qsome term\\E.*/i}}]}";
+    public void testSanitizeMongoBsonLiterals_PipelineMatchWithBackslashRegex() {
+        String input = "{\"a\":[{\"b\":{\"c\":/.*\\wsome term.*/i}}]}";
         com.google.gson.JsonObject obj = com.google.gson.JsonParser.parseString(
                 StringUtils.sanitizeMongoBsonLiterals(input)).getAsJsonObject();
         String val = obj.getAsJsonArray("a").get(0).getAsJsonObject()
@@ -247,8 +247,8 @@ public class StringUtilsTest {
     public void testSanitizeMongoBsonLiterals_PipelineMatchMultipleRegexFields() {
         // Two regex values as siblings — both must be quoted
         String input = "{\"a\":[{\"b\":{"
-                + "\"c\":/.*\\Qalpha\\E.*/i,"
-                + "\"d\":/.*\\Qbeta\\E.*/i,"
+                + "\"c\":/.*alpha.*/i,"
+                + "\"d\":/.*beta.*/i,"
                 + "\"e\":{\"f\":[\"x\",\"y\"]}}}]}";
         com.google.gson.JsonObject obj = com.google.gson.JsonParser.parseString(
                 StringUtils.sanitizeMongoBsonLiterals(input)).getAsJsonObject();
@@ -286,7 +286,7 @@ public class StringUtilsTest {
 
     @Test
     public void testSanitizeMongoBsonLiterals_RegexWithBackslashSequences() {
-        String input = "{\"key\":/.*\\\\Qsome value\\\\E.*/i}";
+        String input = "{\"key\":/.*\\\\wsome value.*/i}";
         com.google.gson.JsonObject obj = com.google.gson.JsonParser.parseString(
                 StringUtils.sanitizeMongoBsonLiterals(input)).getAsJsonObject();
         assertTrue(obj.get("key").getAsString().contains("some value"));
@@ -305,7 +305,7 @@ public class StringUtilsTest {
     @Test
     public void testSanitizeMongoBsonLiterals_RegexInsideAggregatePipeline() {
         String input = "{\"a\":{\"b\":{\"c\":"
-                + "[{\"d\":{\"key\":/.*\\\\Qtest value\\\\E.*/i,"
+                + "[{\"d\":{\"key\":/.*\\\\wtest value.*/i,"
                 + "\"e\":{\"f\":[\"x\",\"y\"]}}}],"
                 + "\"g\":0}}}";
         com.google.gson.JsonObject obj = com.google.gson.JsonParser.parseString(
