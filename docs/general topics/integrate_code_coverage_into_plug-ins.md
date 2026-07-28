@@ -2,7 +2,8 @@
 
 ## Introduction
 
-As a universal connector plug-in developer, you should be familiar with code coverage tools targeted at monitoring the plug-in's unit tests folder for percentage coverage that corresponds to our conventions.
+As a universal connector plug-in developer, you should be familiar with code coverage tools targeted at monitoring the
+plug-in's unit tests folder for percentage coverage that corresponds to our conventions.
 
 <details open="open">
   <summary>Table of contents</summary>
@@ -21,21 +22,26 @@ As a universal connector plug-in developer, you should be familiar with code cov
 ### Prerequisites
 
 - Familiarity with Jacoco code coverage tool for Java
-- A developed universal connector Java plug-in that includes unit tests in the path designated by Logstash for Java plug-ins (`<TYPE>-plugin/logstash-<TYPE>-<PLUGIN_NAME>/src/test`)
+- A developed universal connector Java plug-in that includes unit tests in the path designated by Logstash for Java
+  plug-ins (`<TYPE>-plugin/logstash-<TYPE>-<PLUGIN_NAME>/src/test`)
 
 ### Keep In Mind
 
-- Make sure you install all the necessary Jacoco plug-ins and set the minimum coverage as detailed in the template build.gradle below.
+- Make sure you install all the necessary Jacoco plug-ins and set the minimum coverage as detailed in the template
+  build.gradle below.
 
   - Plug-ins used: jacoco, org.barfuin.gradle.jacocolog
 
-  - Note that to be able to install the jacocolog plug-in, you must include this classpath in the dependencies of the buildscript: org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2
+  - Note that to be able to install the jacocolog plug-in, you must include this classpath in the dependencies of the
+    buildscript: org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2
 
-- Executing “./gradlew build” executes the Jacoco percentage coverage and the reports output path in your plug-in’s directory.
+- Executing “./gradlew build” executes the Jacoco percentage coverage and the reports output path in your plug-in’s
+  directory.
 
   - You can add a Makefile with a task that executes the commands as an alternative (see template Makefile below)
 
-- You can add files to the exclusion list in order to exclude them from the Jacoco reports task jacocoTestReport and the Jacoco percentage coverage task jacocoTestCoverageVerification
+- You can add files to the exclusion list in order to exclude them from the Jacoco reports task jacocoTestReport and the
+  Jacoco percentage coverage task jacocoTestCoverageVerification
 
 - minimumCoverage is adjustable. The recommended value is `80.0%`
 
@@ -120,7 +126,7 @@ shadowJar {
 dependencies
  {
     implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
     implementation 'org.apache.commons:commons-lang3:3.7'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core.jar")

@@ -2,9 +2,9 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+def universalConnectorsDir = project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load(new File("${universalConnectorsDir}/versions.yml").newInputStream())
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load(new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream())
 
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
@@ -12,17 +12,17 @@ apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 // ===========================================================================
 // plugin info
 // ===========================================================================
-group                      'org.logstashplugins' // must match the package of the main plugin class
-version                    "${file("VERSION").text.trim()}" // read from required VERSION file
-description                = "Custom SQS input plugin"
-pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
+group 'org.logstashplugins' // must match the package of the main plugin class
+version "${file("VERSION").text.trim()}" // read from required VERSION file
+description = "Custom SQS input plugin"
+pluginInfo.licenses = ['Apache-2.0'] // list of SPDX license IDs
 pluginInfo.longDescription = "This gem is a Logstash custom SQS input plugin with graceful error handling required to be installed as part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program."
-pluginInfo.authors         = ['IBM']
-pluginInfo.email           = ['']
-pluginInfo.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
-pluginInfo.pluginType      = "input"
-pluginInfo.pluginClass     = "CustomSQS"
-pluginInfo.pluginName      = "custom_sqs" // must match the @LogstashPlugin annotation in the main plugin class
+pluginInfo.authors = ['IBM']
+pluginInfo.email = ['']
+pluginInfo.homepage = "http://www.elastic.co/guide/en/logstash/current/index.html"
+pluginInfo.pluginType = "input"
+pluginInfo.pluginClass = "CustomSQS"
+pluginInfo.pluginName = "custom_sqs" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -75,7 +75,7 @@ dependencies {
 
     implementation group: 'software.amazon.awssdk', name: 'sts', version: '2.30.19'
 
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
 
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.1'
 
@@ -109,7 +109,7 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-tasks.register("vendor"){
+tasks.register("vendor") {
     dependsOn shadowJar
     doLast {
         String vendorPathPrefix = "vendor/jar-dependencies"
@@ -137,7 +137,7 @@ tasks.register("removeObsoleteJars") {
     }
 }
 
-tasks.register("gem"){
+tasks.register("gem") {
     dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
     doLast {
         buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")

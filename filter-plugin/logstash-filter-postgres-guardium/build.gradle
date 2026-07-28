@@ -22,9 +22,9 @@ buildscript {
     }
 }
 
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+def universalConnectorsDir = project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load(new File("${universalConnectorsDir}/versions.yml").newInputStream())
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load(new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream())
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
@@ -37,14 +37,14 @@ version = file("VERSION").text.trim()
 description = "S3SQS Postgresql-Guardium filter plugin"
 
 // ===========================================================================
-pluginInfo.licenses        = ['Apache-2.0']
+pluginInfo.licenses = ['Apache-2.0']
 pluginInfo.longDescription = "This gem is a Logstash S3SQS postgresql filter plugin required to be installed as part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program."
-pluginInfo.authors         = ['IBM']
-pluginInfo.email           = ['']
-pluginInfo.homepage        = "https://github.com/IBM/universal-connectors"
-pluginInfo.pluginType      = "filter"
-pluginInfo.pluginClass     = "S3SQSPostgresqlGuardiumPluginFilter"
-pluginInfo.pluginName      = "s3sqs_postgresql_guardium_plugin_filter"
+pluginInfo.authors = ['IBM']
+pluginInfo.email = ['']
+pluginInfo.homepage = "https://github.com/IBM/universal-connectors"
+pluginInfo.pluginType = "filter"
+pluginInfo.pluginClass = "S3SQSPostgresqlGuardiumPluginFilter"
+pluginInfo.pluginName = "s3sqs_postgresql_guardium_plugin_filter"
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
@@ -86,7 +86,7 @@ repositories {
 
 dependencies {
     implementation 'commons-validator:commons-validator:1.7'
-    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
     implementation 'org.apache.commons:commons-lang3:3.7'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'commons-beanutils:commons-beanutils:1.11.0'

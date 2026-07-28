@@ -22,9 +22,9 @@ buildscript {
     }
 }
 
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+def universalConnectorsDir = project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load(new File("${universalConnectorsDir}/versions.yml").newInputStream())
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load(new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream())
 
 apply plugin: 'jacoco'
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
@@ -34,17 +34,17 @@ apply plugin: "eclipse"
 // ===========================================================================
 //                             plugin info
 // ===========================================================================
-group                      "com.ibm.guardium.databricks" // must match the package of the main plugin class
-version                    "${file("VERSION").text.trim()}" // read from required VERSION file
-description                = "databricks-Guardium filter plugin"
-pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
+group "com.ibm.guardium.databricks" // must match the package of the main plugin class
+version "${file("VERSION").text.trim()}" // read from required VERSION file
+description = "databricks-Guardium filter plugin"
+pluginInfo.licenses = ['Apache-2.0'] // list of SPDX license IDs
 pluginInfo.longDescription = "This gem is a Logstash Databricks filter plugin required to be installed as part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program."
-pluginInfo.authors         = ['IBM', '', '']
-pluginInfo.email           = ['']
-pluginInfo.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
-pluginInfo.pluginType      = "filter"
-pluginInfo.pluginClass     = "DatabricksGuardiumFilter"
-pluginInfo.pluginName      = "databricks_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
+pluginInfo.authors = ['IBM', '', '']
+pluginInfo.email = ['']
+pluginInfo.homepage = "http://www.elastic.co/guide/en/logstash/current/index.html"
+pluginInfo.pluginType = "filter"
+pluginInfo.pluginClass = "DatabricksGuardiumFilter"
+pluginInfo.pluginName = "databricks_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -70,7 +70,7 @@ repositories {
     }
 }
 
-tasks.register("vendor"){
+tasks.register("vendor") {
     dependsOn shadowJar
     doLast {
         String vendorPathPrefix = "vendor/jar-dependencies"
@@ -93,7 +93,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:' + versions.dependencies.commonsLang
     implementation 'commons-validator:commons-validator:' + versions.dependencies.commonsValidator
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.17.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.22.1'
     implementation group: 'com.github.jsqlparser', name: 'jsqlparser', version: '5.2'
     testImplementation group: 'org.mockito', name: 'mockito-all', version: versions.dependencies.mockitoAll
     testImplementation 'org.junit.jupiter:junit-jupiter:' + versions.dependencies.junitJupiter
@@ -140,14 +140,14 @@ tasks.register("removeObsoleteJars") {
     }
 }
 
-tasks.register("gem"){
+tasks.register("gem") {
     dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
     doLast {
         buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
     }
 }
 
-tasks.register("copyDependencyLibs", Copy){
+tasks.register("copyDependencyLibs", Copy) {
     into "dependenciesLib"
     from configurations.compileClasspath
     from configurations.runtimeClasspath
