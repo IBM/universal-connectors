@@ -100,4 +100,86 @@ public final class StringUtils {
         }
         return false;
     }
+
+    /**
+     * Wraps bare BSON regex literals ({@code /pattern/flags}) in double quotes so the result
+     * is valid JSON. Slashes inside existing quoted strings are never touched.
+     */
+    public static String sanitizeMongoBsonLiterals(String json) {
+        if (json == null || json.isEmpty() || !json.contains("/")) {
+            return json;
+        }
+
+        StringBuilder out = new StringBuilder(json.length() + 16);
+        boolean inString = false;
+        boolean escaped  = false;
+
+        int i = 0;
+        while (i < json.length()) {
+            char c = json.charAt(i);
+
+            if (inString) {
+                out.append(c);
+                if (escaped)       { escaped = false; }
+                else if (c == '\\') { escaped = true;  }
+                else if (c == '"')  { inString = false; }
+                i++;
+                continue;
+            }
+
+            if (c == '"') {
+                inString = true;
+                out.append(c);
+                i++;
+                continue;
+            }
+
+            // Any unquoted '/' is a BSON regex literal — find its closing '/'
+            if (c == '/') {
+                int closingSlash = findRegexClosingSlash(json, i + 1);
+                int newline = json.indexOf('\n', i + 1);
+                if (closingSlash != -1 && (newline == -1 || closingSlash < newline)) {
+                    // Consume optional flags after the closing slash
+                    int flagsEnd = closingSlash + 1;
+                    while (flagsEnd < json.length()
+                            && Character.isLetterOrDigit(json.charAt(flagsEnd))) {
+                        flagsEnd++;
+                    }
+                    // Wrap in quotes, escaping '\' and '"' inside the pattern
+                    out.append('"');
+                    for (int j = i; j < flagsEnd; j++) {
+                        char p = json.charAt(j);
+                        if (p == '\\' || p == '"') out.append('\\');
+                        out.append(p);
+                    }
+                    out.append('"');
+                    i = flagsEnd;
+                    continue;
+                }
+            }
+
+            out.append(c);
+            i++;
+        }
+
+        return out.toString();
+    }
+
+    /**
+     * Returns the index of the closing {@code /} of a BSON regex literal, starting at
+     * {@code from} (one past the opening {@code /}). Backslash-escaped characters are
+     * skipped so an escaped {@code \/} inside the pattern is not treated as the delimiter.
+     * Returns {@code -1} if the end of the line is reached before a closing {@code /}.
+     */
+    private static int findRegexClosingSlash(String json, int from) {
+        int j = from;
+        while (j < json.length()) {
+            char c = json.charAt(j);
+            if (c == '\n') return -1;
+            if (c == '\\') { j += 2; continue; }
+            if (c == '/') return j;
+            j++;
+        }
+        return -1;
+    }
 }
