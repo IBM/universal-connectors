@@ -2,7 +2,7 @@
 dependencies:
   commonsValidator: 1.7
   log4jCore: 2.26.1
-  log4jApi: 2.17.2
+  log4jApi: 2.26.1
   commonsLang: 3.18.0
   gson: 2.8.9
   junit: 4.12
