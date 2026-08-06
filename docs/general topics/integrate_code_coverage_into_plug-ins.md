@@ -135,7 +135,7 @@ dependencies
 
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.jruby:jruby-complete:9.2.7.0'
+    testImplementation 'org.jruby:jruby-complete:10.0.6.0'
 
     testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-?.?.?.jar")
 }

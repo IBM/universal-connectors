@@ -69,7 +69,7 @@ dependencies {
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-master-*.*.*.jar")
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.jruby:jruby-complete:9.2.7.0'
+    testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
 
     testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-master-*.*.*.jar")
 }

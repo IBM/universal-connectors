@@ -75,7 +75,7 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore // provided by Logstash
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.jruby:jruby-complete:9.2.20.1'
+    testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
 }
 
 clean {

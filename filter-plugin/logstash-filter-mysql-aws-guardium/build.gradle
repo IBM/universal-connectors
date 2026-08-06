@@ -98,7 +98,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
     testImplementation 'org.mockito:mockito-core:5.12.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.0'
-    testImplementation 'org.jruby:jruby-complete:9.2.7.0'
+    testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
     testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
 }
 
