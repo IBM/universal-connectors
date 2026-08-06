@@ -2,6 +2,23 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 
+buildscript {
+    repositories {
+        maven {
+            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
+            credentials {
+                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+            }
+        }
+    }
+    dependencies {
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
+}
+
+def versions = new org.yaml.snakeyaml.Yaml().load(new File("${project.projectDir.parentFile}/versions.yml").newInputStream())
+
 apply plugin: 'java-library'
 
 group 'com.ibm.guardium.universalconnector.commons'
@@ -14,19 +31,6 @@ version "${file("VERSION").text.trim()}"
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
-
-buildscript {
-    repositories {
-        mavenLocal()
-        maven {
-            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
-            credentials {
-                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
-                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
-            }
-        }
-    }
-}
 
 repositories {
     mavenLocal()
