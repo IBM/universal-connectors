@@ -16,3 +16,4 @@ dependencies:
   commonsText: 1.10.0
   tinkergraphGremlin: 3.6.4
   rdf4jQueryparserSparql: 4.2.4
+  jacocoVersion: 0.8.12

@@ -59,7 +59,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-def jacocoVersion = '0.8.4'
+
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
@@ -165,7 +165,7 @@ tasks.register("copyDependencyLibs", Copy) {
 // JaCoCo is a code coverage tool
 // ------------------------------------
 jacoco {
-    toolVersion = "${jacocoVersion}"
+    toolVersion = "${versions.dependencies.jacocoVersion}"
 }
 
 jacocoTestReport {

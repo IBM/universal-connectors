@@ -56,7 +56,7 @@ pluginInfo.pluginName = "alloydb_guardium_filter" // must match the @LogstashPlu
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-def jacocoVersion = '0.8.11'
+
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
@@ -168,7 +168,7 @@ apply plugin: "org.barfuin.gradle.jacocolog"
 // JaCoCo is a code coverage tool
 // ------------------------------------
 jacoco {
-    toolVersion = "${jacocoVersion}"
+    toolVersion = "${versions.dependencies.jacocoVersion}"
 }
 jacocoTestReport {
     // You will see "Report -> file://...." at the end of a JaCoCo build

@@ -75,7 +75,7 @@ pluginInfo.pluginName      = "" // must match the @LogstashPlugin annotation in 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-def jacocoVersion = '0.8.4'
+
 
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
@@ -96,7 +96,7 @@ buildscript {
 
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
-        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0-RC2"
 
     }
 }
@@ -189,7 +189,7 @@ apply plugin: "org.barfuin.gradle.jacocolog"
 // ------------------------------------
 
 jacoco {
-    toolVersion = "${jacocoVersion}"
+    toolVersion = "${versions.dependencies.jacocoVersion}"
     reportsDir = file("$buildDir/reports/jacoco")
 }
 
@@ -273,4 +273,5 @@ report:  test
 ```
 
 ## Integrate code coverage into Ruby plug-ins
+
 **TBD**

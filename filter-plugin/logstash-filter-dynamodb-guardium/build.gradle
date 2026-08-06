@@ -22,9 +22,9 @@ buildscript {
     }
 }
 
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+def universalConnectorsDir = project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load(new File("${universalConnectorsDir}/versions.yml").newInputStream())
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load(new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream())
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
@@ -47,7 +47,6 @@ pluginInfo.pluginName = "dynamodb_guardium_plugin_filter" // must match the @Log
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-def jacocoVersion = '0.8.11'
 
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
@@ -55,8 +54,6 @@ if (minimumCoverageStr.endsWith("%")) {
     minimumCoverageStr = minimumCoverageStr.substring(0, minimumCoverageStr.length() - 1)
 }
 def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
-
-
 
 
 repositories {
@@ -118,12 +115,12 @@ tasks.withType(JavaCompile) {
 
 test {
     jvmArgs = [
-        '--add-opens=java.base/java.lang=ALL-UNNAMED',
-        '--add-opens=java.base/java.util=ALL-UNNAMED',
-        '--add-opens=java.base/java.text=ALL-UNNAMED',
-        '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
+            '--add-opens=java.base/java.lang=ALL-UNNAMED',
+            '--add-opens=java.base/java.util=ALL-UNNAMED',
+            '--add-opens=java.base/java.text=ALL-UNNAMED',
+            '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
+            '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
+            '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
     ]
 }
 
@@ -161,7 +158,7 @@ apply plugin: "org.barfuin.gradle.jacocolog"
 // ------------------------------------
 
 jacoco {
-    toolVersion = "${jacocoVersion}"
+    toolVersion = "${versions.dependencies.jacocoVersion}"
 }
 
 jacocoTestReport {

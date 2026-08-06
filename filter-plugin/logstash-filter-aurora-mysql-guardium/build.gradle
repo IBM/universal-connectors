@@ -22,32 +22,32 @@ buildscript {
     }
 }
 
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+def universalConnectorsDir = project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load(new File("${universalConnectorsDir}/versions.yml").newInputStream())
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load(new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream())
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
 // ===========================================================================
 // plugin info
 // ===========================================================================
-group                      'com.ibm.guardium.auroramysql' // must match the package of the main plugin class
-version                    "${file("VERSION").text.trim()}" // read from required VERSION file
-description                = "Aurora Mysql Guardium filter plugin"
-pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
+group 'com.ibm.guardium.auroramysql' // must match the package of the main plugin class
+version "${file("VERSION").text.trim()}" // read from required VERSION file
+description = "Aurora Mysql Guardium filter plugin"
+pluginInfo.licenses = ['Apache-2.0'] // list of SPDX license IDs
 pluginInfo.longDescription = "This gem is a Logstash saphana filter plugin required to be installed as part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program."
-pluginInfo.authors         = ['IBM', 'Laxmikant Mahale']
-pluginInfo.email           = ['Laxmikant.Mahale@ibm.com']
-pluginInfo.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
-pluginInfo.pluginType      = "filter"
-pluginInfo.pluginClass     = "AuroraMysqlGuardiumPluginFilter"
-pluginInfo.pluginName      = "auroramysqlguardiumpluginfilter" // must match the @LogstashPlugin annotation in the main plugin class
+pluginInfo.authors = ['IBM', 'Laxmikant Mahale']
+pluginInfo.email = ['Laxmikant.Mahale@ibm.com']
+pluginInfo.homepage = "http://www.elastic.co/guide/en/logstash/current/index.html"
+pluginInfo.pluginType = "filter"
+pluginInfo.pluginClass = "AuroraMysqlGuardiumPluginFilter"
+pluginInfo.pluginName = "auroramysqlguardiumpluginfilter" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-def jacocoVersion = '0.8.11'
+
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
@@ -67,7 +67,7 @@ repositories {
     }
 }
 
-tasks.register("vendor"){
+tasks.register("vendor") {
     dependsOn shadowJar
     doLast {
         String vendorPathPrefix = "vendor/jar-dependencies"
@@ -97,8 +97,8 @@ dependencies {
     testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
 
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
-   
-   
+
+
 }
 
 clean {
@@ -117,12 +117,12 @@ tasks.withType(JavaCompile) {
 
 test {
     jvmArgs = [
-        '--add-opens=java.base/java.lang=ALL-UNNAMED',
-        '--add-opens=java.base/java.util=ALL-UNNAMED',
-        '--add-opens=java.base/java.text=ALL-UNNAMED',
-        '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
+            '--add-opens=java.base/java.lang=ALL-UNNAMED',
+            '--add-opens=java.base/java.util=ALL-UNNAMED',
+            '--add-opens=java.base/java.text=ALL-UNNAMED',
+            '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
+            '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
+            '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
     ]
 }
 
@@ -143,7 +143,7 @@ tasks.register("removeObsoleteJars") {
     }
 }
 
-tasks.register("gem"){
+tasks.register("gem") {
     dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
     doLast {
         buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
@@ -151,12 +151,12 @@ tasks.register("gem"){
 }
 
 
-tasks.register("copyDependencyLibs", Copy){
-   into "dependenciesLib"
-   from configurations.compileClasspath
-   from configurations.runtimeClasspath
-   from configurations.testCompileClasspath
-   from configurations.testRuntimeClasspath
+tasks.register("copyDependencyLibs", Copy) {
+    into "dependenciesLib"
+    from configurations.compileClasspath
+    from configurations.runtimeClasspath
+    from configurations.testCompileClasspath
+    from configurations.testRuntimeClasspath
 }
 
 
@@ -167,7 +167,7 @@ apply plugin: "org.barfuin.gradle.jacocolog"
 // JaCoCo is a code coverage tool
 // ------------------------------------
 jacoco {
-    toolVersion = "${jacocoVersion}"
+    toolVersion = "${versions.dependencies.jacocoVersion}"
 }
 jacocoTestReport {
     // You will see "Report -> file://...." at the end of a JaCoCo build

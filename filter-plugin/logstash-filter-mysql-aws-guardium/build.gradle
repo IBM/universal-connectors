@@ -17,7 +17,7 @@ buildscript {
 
     dependencies {
         classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:4.0.1"
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0"
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
 }
@@ -49,7 +49,7 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 // Code coverage
-def jacocoVersion = '0.8.4'
+
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
     minimumCoverageStr = minimumCoverageStr.substring(0, minimumCoverageStr.length() - 1)
@@ -69,7 +69,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-        classpath 'org.barfuin.gradle.jacocolog:gradle-jacoco-log:4.0.1'
+        classpath 'org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0'
     }
 }
 
@@ -113,7 +113,7 @@ test {
 }
 
 jacoco {
-    toolVersion = "${jacocoVersion}"
+    toolVersion = "${versions.dependencies.jacocoVersion}"
 }
 
 jacocoTestReport {
