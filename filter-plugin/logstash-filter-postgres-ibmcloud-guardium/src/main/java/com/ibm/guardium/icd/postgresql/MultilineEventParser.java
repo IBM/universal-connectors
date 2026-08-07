@@ -29,13 +29,16 @@ public class MultilineEventParser {
 	 * There is a specific pattern in the first event which we are parsing using the
 	 * MAIN_EVENT_REGEX and MAIN_EVENT_REGEX_SINGLELINE_EVENT
 	 */
-	private static String MAIN_EVENT_REGEX = "(?<timestamp>\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2})\\s+(?<timezone>[A-Z]{3})\\s+\\[(?<sourceProgram>.*)\\]\\s+\\[(?<sqlstate>[0-9A-Za-z]+)\\]\\s+\\[(?<sessionid>[0-9A-Za-z]+)\\]:\\s+\\[[0-9A-Za-z\\-]*\\]\\s+(.*=(?<username>.*)),(.*=(?<dbname>.*)),(.*=(?<clientip>.*))\\s+LOG:\\s+AUDIT:\\s+(?<data1>[^,]*),(?<data2>[^,]*),(?<data3>[^,]*),(?<data4>[^,]*),(?<data5>[^,]*),(?<data6>[^,]*),(?<data7>[^,]*),(?<query>(.*))";
+	// GRD-128206: replaced (?<query>(.*)) with (?<query>[^\r\n]*) to eliminate
+	// catastrophic ReDoS — the nested (.*) with no line anchor caused exponential
+	// backtracking on crafted application_name values (PVR0777832 / H1-3764199).
+	private static String MAIN_EVENT_REGEX = "(?<timestamp>\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2})\\s+(?<timezone>[A-Z]{3})\\s+\\[(?<sourceProgram>[^\\]]+)\\]\\s+\\[(?<sqlstate>[0-9A-Za-z]+)\\]\\s+\\[(?<sessionid>[0-9A-Za-z]+)\\]:\\s+\\[[0-9A-Za-z\\-]*\\]\\s+([^=]+=(?<username>[^,]+)),([^=]+=(?<dbname>[^,]+)),([^=]+=(?<clientip>[^,]+))\\s+LOG:\\s+AUDIT:\\s+(?<data1>[^,]*),(?<data2>[^,]*),(?<data3>[^,]*),(?<data4>[^,]*),(?<data5>[^,]*),(?<data6>[^,]*),(?<data7>[^,]*),(?<query>[^\\r\\n]*)";
 
 	private static String MAIN_EVENT_REGEX_SINGLELINE_EVENT = "(?<timestamp>\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2})\\s+(?<timezone>[A-Z]{3})\\s+\\[(?<sourceProgram>[^\\]]+)\\]\\s+\\[(?<sqlstate>[0-9A-Za-z]+)\\]\\s+\\[(?<sessionid>[0-9A-Za-z]+)\\]:\\s+\\[[0-9A-Za-z\\-]*\\]\\s+(user=(?<username>[^,]+)),(db=(?<dbname>[^,]+)),(client=(?<clientip>[^,]+))\\s+LOG:\\s+AUDIT:\\s+(?<data1>[^,]*),(?<data2>[^,]*),(?<data3>[^,]*),(?<data4>[^,]*),(?<data5>[^,]*),(?<data6>[^,]*),(?<data7>[^,]*),(?<query>(.*)),<not logged>";
 
-	private static final String EVENT_STATEMENT_REGEX = "(?<timestamp>\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2})\\s+(?<timezone>[A-Z]{3})\\s+\\[(?<sourceProgram>.*)\\]\\s+\\[(?<sqlstate>[0-9A-Za-z]+)\\]\\s+\\[(?<sessionid>[0-9A-Za-z]+)\\]:\\s+\\[[0-9A-Za-z\\-]*\\]\\s+(.*=(?<username>.*)),(.*=(?<dbname>.*)),(.*=(?<clientip>.*))\\s+STATEMENT:\\s+(?<query>(.*))";
+	private static final String EVENT_STATEMENT_REGEX = "(?<timestamp>\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2})\\s+(?<timezone>[A-Z]{3})\\s+\\[(?<sourceProgram>[^\\]]+)\\]\\s+\\[(?<sqlstate>[0-9A-Za-z]+)\\]\\s+\\[(?<sessionid>[0-9A-Za-z]+)\\]:\\s+\\[[0-9A-Za-z\\-]*\\]\\s+([^=]+=(?<username>[^,]+)),([^=]+=(?<dbname>[^,]+)),([^=]+=(?<clientip>[^,]+))\\s+STATEMENT:\\s+(?<query>[^\\r\\n]*)";
 
-	private static final String FATAL_STATEMENT_REGEX = "(?<timestamp>\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2})\\s+(?<timezone>[A-Z]{3})\\s+\\[(?<sourceProgram>.*)\\]\\s+\\[(?<sqlstate>[0-9A-Za-z]+)\\]\\s+\\[(?<sessionid>[0-9A-Za-z]+)\\]:\\s+\\[(?<messageid>.*)\\]\\s+(.*=(?<username>.*)),(.*=(?<dbname>.*)),(.*=(?<clientip>.*))\\s+FATAL:\\s+(?<query>(.*))";
+	private static final String FATAL_STATEMENT_REGEX = "(?<timestamp>\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2})\\s+(?<timezone>[A-Z]{3})\\s+\\[(?<sourceProgram>[^\\]]+)\\]\\s+\\[(?<sqlstate>[0-9A-Za-z]+)\\]\\s+\\[(?<sessionid>[0-9A-Za-z]+)\\]:\\s+\\[(?<messageid>[^\\]]+)\\]\\s+([^=]+=(?<username>[^,]+)),([^=]+=(?<dbname>[^,]+)),([^=]+=(?<clientip>[^,]+))\\s+FATAL:\\s+(?<query>[^\\r\\n]*)";
 
 	/**
 	 * Method takes event object and array of event.
@@ -161,7 +164,8 @@ public class MultilineEventParser {
 		query = query.replaceAll("\\\\t", " ")
 				.replaceAll("    ", " ")
 				.replaceAll("   ", " ")
-				.replace(",<not logged>\"", "");
+				.replace(",<not logged>\"", "")
+				.replace("\\n", "");
 		query = query.replace("\\","");
 		if (query.startsWith("\"")){
 			query = query.substring(1);
