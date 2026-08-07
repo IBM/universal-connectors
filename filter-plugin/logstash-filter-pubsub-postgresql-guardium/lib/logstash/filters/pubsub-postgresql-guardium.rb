@@ -1,3 +1,4 @@
+
 # Copyright 2020-2022 IBM Inc. All rights reserved
 # SPDX-License-Identifier: Apache-2.0
 
@@ -28,14 +29,18 @@ class LogStash::Filters::PubsubPostgresqlGuardium < LogStash::Filters::Base
 
       a = event.get('textPayload')
       @logger.debug("Start parsing postgres log. payload: #{a}")
-      message = event.get('textPayload').match(/(?<ts>(\d*-){2}(\d*)\s(\d*:){2}(\d*.\d*))(\s)UTC(\s)\[(?<session_id>\d*)\].*db=(?<db_name>\S*),user=(?<uname>\S*)\s(?<severity>[A-Z]*):(?<msg>.*)/)
+      # GDP-g110: use a non-greedy .*?\b prefix so the regex binds to the
+      # first db=/user= occurrence (the trusted server-generated session tag)
+      # and cannot skip to an attacker-supplied db=..,user=.. SEVERITY: token
+      # embedded in the message body.
+      message = event.get('textPayload').match(/^(?<ts>\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?)\s+UTC\s+\[(?<session_id>\d*)\].*?\bdb=(?<db_name>.*?),user=(?<uname>.*?)\s+(?<severity>[A-Z][A-Z0-9_]*):\s?(?<msg>[^\r\n]*)$/)
 
-      msg = message['msg']
-      severity = message['severity']
-      db_name = message['db_name'].to_s.empty? ? "N.A." : message['db_name']
+      msg        = message['msg']
+      severity   = message['severity']
+      db_name    = message['db_name'].to_s.empty? ? "N.A." : message['db_name']
       session_id = message['session_id'].to_s.empty? ? "" : message['session_id']
-      uname = message['uname'].to_s.empty? ? "N.A." : message['uname']
-      timestamp = message['ts']
+      uname      = message['uname'].to_s.empty? ? "N.A." : message['uname']
+      timestamp  = message['ts']
 
       event.set('[GuardRecord][dbName]', db_name)
       event.set('[GuardRecord][accessor][serviceName]', db_name)
