@@ -155,6 +155,7 @@ check.dependsOn jacocoTestCoverageVerification, jacocoTestReport
 
 shadowJar {
     archiveClassifier = null
+    exclude 'log4j2.component.properties'
 }
 
 // Custom Tasks
