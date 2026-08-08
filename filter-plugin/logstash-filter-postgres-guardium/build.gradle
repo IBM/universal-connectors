@@ -121,6 +121,7 @@ tasks.register("vendor") {
 
 shadowJar {
     archiveClassifier = null
+    exclude 'log4j2.component.properties'
 }
 
 clean {
