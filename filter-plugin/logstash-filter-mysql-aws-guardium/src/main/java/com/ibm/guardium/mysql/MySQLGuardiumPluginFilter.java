@@ -29,16 +29,16 @@ public class MySQLGuardiumPluginFilter implements Filter {
 
     public static final String LOG42_CONF = "log4j2uc.properties";
 
-//    static {
-//        try {
-//            String uc_etc = System.getenv("UC_ETC");
-//            LoggerContext context = (LoggerContext) LogManager.getContext(false);
-//            File file = new File(uc_etc + File.separator + LOG42_CONF);
-//            context.setConfigLocation(file.toURI());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    static {
+        try {
+            String uc_etc = System.getenv("UC_ETC");
+            LoggerContext context = (LoggerContext) LogManager.getContext(false);
+            File file = new File(uc_etc + File.separator + LOG42_CONF);
+            context.setConfigLocation(file.toURI());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private String id;
     public static final PluginConfigSpec<String> SOURCE_CONFIG = PluginConfigSpec.stringSetting("source", "message");
