@@ -164,7 +164,7 @@ tasks.register("vendor") {
         String vendorPathPrefix = "vendor/jar-dependencies"
         String projectGroupPath = project.group.replaceAll('\\.', '/')
         File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
-        projectJarFile.mkdirs()
+        projectJarFile.parentFile.mkdirs()
         Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
         validatePluginJar(projectJarFile, project.group)
     }

@@ -162,7 +162,7 @@ tasks.register("gem") {
 
 // ✅ JaCoCo Setup
 jacoco {
-    toolVersion = jacocoVersion
+    toolVersion = "${versions.dependencies.jacocoVersion}"
 }
 
 jacocoTestReport {
