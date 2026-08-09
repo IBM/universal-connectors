@@ -1,12 +1,12 @@
 ---
 dependencies:
   commonsValidator: 1.7
-  log4jCore: 2.25.3
-  log4jApi: 2.17.2
+  log4jCore: 2.26.1
+  log4jApi: 2.26.1
   commonsLang: 3.18.0
   gson: 2.8.9
   junit: 4.12
-  jrubyComplete: 9.2.7.0
+  jrubyComplete: 10.0.6.0
   junitJupiter: 5.7.1
   mockitoAll: 2.0.2-beta
   json: 20231013
@@ -17,3 +17,4 @@ dependencies:
   tinkergraphGremlin: 3.6.8
   rdf4jQueryparserSparql: 5.0.3
   commonsBeanutils: 1.11.0
+  jacocoVersion: 0.8.12

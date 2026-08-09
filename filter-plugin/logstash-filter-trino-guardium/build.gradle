@@ -26,7 +26,7 @@ buildscript {
 
 def universalConnectorsDir = project.projectDir.parentFile?.parentFile.toString();
 def versions = new org.yaml.snakeyaml.Yaml().load(new File("${universalConnectorsDir}/versions.yml").newInputStream())
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load(new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream())
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 apply plugin: "com.github.johnrengelman.shadow"
@@ -52,7 +52,7 @@ pluginInfo.pluginName = "trino_guardium_filter" // must match the @LogstashPlugi
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-def jacocoVersion = '0.8.11'
+
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
@@ -95,7 +95,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:' + versions.dependencies.commonsLang
     implementation 'commons-validator:commons-validator:' + versions.dependencies.commonsValidator
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.17.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.22.1'
     implementation group: 'com.github.jsqlparser', name: 'jsqlparser', version: '5.2'
 
     testImplementation group: 'org.mockito', name: 'mockito-all', version: versions.dependencies.mockitoAll
@@ -165,7 +165,7 @@ apply plugin: "org.barfuin.gradle.jacocolog"
 // JaCoCo is a code coverage tool
 // ------------------------------------
 jacoco {
-    toolVersion = "${jacocoVersion}"
+    toolVersion = "${versions.dependencies.jacocoVersion}"
 }
 jacocoTestReport {
     // You will see "Report -> file://...." at the end of a JaCoCo build

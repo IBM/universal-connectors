@@ -22,39 +22,38 @@ buildscript {
     }
 }
 
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+def universalConnectorsDir = project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load(new File("${universalConnectorsDir}/versions.yml").newInputStream())
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load(new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream())
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
 // ===========================================================================
 // plugin info
 // ===========================================================================
-group                      'com.ibm.guardium.couchbasedb' // must match the package of the main plugin class
-version                    "${file("VERSION").text.trim()}" // read from required VERSION file
-description                = "CouchbaseDB-Guardium filter plugin"
-pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
+group 'com.ibm.guardium.couchbasedb' // must match the package of the main plugin class
+version "${file("VERSION").text.trim()}" // read from required VERSION file
+description = "CouchbaseDB-Guardium filter plugin"
+pluginInfo.licenses = ['Apache-2.0'] // list of SPDX license IDs
 pluginInfo.longDescription = "This gem is a Logstash Couchbasedb filter plugin required to be installed as part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program."
-pluginInfo.authors         = ['IBM']
-pluginInfo.email           = ['']
-pluginInfo.homepage        = "https://github.com/IBM/universal-connectors"
-pluginInfo.pluginType      = "filter"
-pluginInfo.pluginClass     = "CouchbasedbGuardiumPluginFilter"
-pluginInfo.pluginName      = "couchbasedb_guardium_plugin_filter" // must match the @LogstashPlugin annotation in the main plugin class
+pluginInfo.authors = ['IBM']
+pluginInfo.email = ['']
+pluginInfo.homepage = "https://github.com/IBM/universal-connectors"
+pluginInfo.pluginType = "filter"
+pluginInfo.pluginClass = "CouchbasedbGuardiumPluginFilter"
+pluginInfo.pluginName = "couchbasedb_guardium_plugin_filter" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-def jacocoVersion = '0.8.11'
+
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
     minimumCoverageStr = minimumCoverageStr.substring(0, minimumCoverageStr.length() - 1)
 }
 def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
-
 
 
 repositories {
@@ -68,7 +67,7 @@ repositories {
     }
 }
 
-tasks.register("vendor"){
+tasks.register("vendor") {
     dependsOn shadowJar
     doLast {
         String vendorPathPrefix = "vendor/jar-dependencies"
@@ -116,15 +115,14 @@ tasks.withType(JavaCompile) {
 
 test {
     jvmArgs = [
-        '--add-opens=java.base/java.lang=ALL-UNNAMED',
-        '--add-opens=java.base/java.util=ALL-UNNAMED',
-        '--add-opens=java.base/java.text=ALL-UNNAMED',
-        '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
+            '--add-opens=java.base/java.lang=ALL-UNNAMED',
+            '--add-opens=java.base/java.util=ALL-UNNAMED',
+            '--add-opens=java.base/java.text=ALL-UNNAMED',
+            '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
+            '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
+            '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
     ]
 }
-
 
 
 tasks.register("generateRubySupportFiles") {
@@ -144,14 +142,14 @@ tasks.register("removeObsoleteJars") {
     }
 }
 
-tasks.register("gem"){
+tasks.register("gem") {
     dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
     doLast {
         buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
     }
 }
 
-tasks.register("copyDependencyLibs", Copy){
+tasks.register("copyDependencyLibs", Copy) {
     into "dependenciesLib"
     from configurations.compileClasspath
     from configurations.runtimeClasspath
@@ -166,7 +164,7 @@ apply plugin: "org.barfuin.gradle.jacocolog"
 // JaCoCo is a code coverage tool
 // ------------------------------------
 jacoco {
-    toolVersion = "${jacocoVersion}"
+    toolVersion = "${versions.dependencies.jacocoVersion}"
 }
 jacocoTestReport {
     // You will see "Report -> file://...." at the end of a JaCoCo build

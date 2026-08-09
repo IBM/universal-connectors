@@ -13,7 +13,7 @@ buildscript {
         }
         gradlePluginPortal()
     }
-    
+
     dependencies {
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
@@ -31,42 +31,41 @@ ext {
     shadowGradlePluginVersion = '8.1.1'
 }
 
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+def universalConnectorsDir = project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load(new File("${universalConnectorsDir}/versions.yml").newInputStream())
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load(new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream())
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
 // ===========================================================================
 // plugin info
 // ===========================================================================
-group                      'org.logstashplugins' // must match the package of the main plugin class
-version                    "${file("VERSION").text.trim()}" // read from required VERSION file
-description                = "Couchbase-Capella-Guardium Java input implementation"
-pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
+group 'org.logstashplugins' // must match the package of the main plugin class
+version "${file("VERSION").text.trim()}" // read from required VERSION file
+description = "Couchbase-Capella-Guardium Java input implementation"
+pluginInfo.licenses = ['Apache-2.0'] // list of SPDX license IDs
 pluginInfo.longDescription = "This gem is a Logstash Couchbase Capella input plugin required to be installed on top of the Logstash core pipeline using \$LS_HOME/bin/logstash-plugin install gemname. " +
         "It is part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program"
-pluginInfo.authors         = ['IBM']
-pluginInfo.email           = ['']
-pluginInfo.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
-pluginInfo.pluginType      = "input"
-pluginInfo.pluginClass     = "CouchbaseCapellaInput"
-pluginInfo.pluginName      = "couchbase_capella_input" // must match the @LogstashPlugin annotation in the main plugin class
+pluginInfo.authors = ['IBM']
+pluginInfo.email = ['']
+pluginInfo.homepage = "http://www.elastic.co/guide/en/logstash/current/index.html"
+pluginInfo.pluginType = "input"
+pluginInfo.pluginClass = "CouchbaseCapellaInput"
+pluginInfo.pluginName = "couchbase_capella_input" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_17
-  targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
-def jacocoVersion = '0.8.4'
+
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
     minimumCoverageStr = minimumCoverageStr.substring(0, minimumCoverageStr.length() - 1)
 }
 def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
-
 
 
 repositories {
@@ -87,9 +86,10 @@ shadowJar {
 dependencies {
     implementation 'org.apache.commons:commons-lang3:3.7'
     compileOnly 'org.apache.logging.log4j:log4j-api:2.17.0' // provided by Logstash
-    implementation 'org.apache.logging.log4j:log4j-core:2.17.0' // provided by Logstash
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
+    // provided by Logstash
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
- 
+
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "**/logstash-core.jar")
     implementation 'org.apache.httpcomponents:httpclient:4.5.13'
     implementation 'com.google.code.gson:gson:2.8.9'
@@ -97,7 +97,7 @@ dependencies {
 
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.jruby:jruby-complete:9.4.7.0'
+    testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
     testImplementation 'org.mock-server:mockserver-netty:5.14.0'
     testImplementation 'org.slf4j:slf4j-simple:2.0.17'
 
@@ -117,7 +117,7 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-tasks.register("vendor"){
+tasks.register("vendor") {
     dependsOn shadowJar
     doLast {
         String vendorPathPrefix = "vendor/jar-dependencies"
@@ -145,14 +145,14 @@ tasks.register("removeObsoleteJars") {
     }
 }
 
-tasks.register("gem"){
+tasks.register("gem") {
     dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
     doLast {
         buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
     }
 }
 
-tasks.register("copyDependencyLibs", Copy){
+tasks.register("copyDependencyLibs", Copy) {
     into "dependenciesLib"
     from configurations.compileClasspath
     from configurations.runtimeClasspath
@@ -161,12 +161,11 @@ tasks.register("copyDependencyLibs", Copy){
 }
 
 
-
 // ------------------------------------
 // JaCoCo is a code coverage tool
 // ------------------------------------
 jacoco {
-    toolVersion = "${jacocoVersion}"
+    toolVersion = "${versions.dependencies.jacocoVersion}"
 }
 
 jacocoTestReport {

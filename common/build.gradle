@@ -2,22 +2,8 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 
-apply plugin: 'java-library'
-
-group 'com.ibm.guardium.universalconnector.commons'
-version "${file("VERSION").text.trim()}" 
-// ===========================================================================
-// plugin info
-// ===========================================================================
-// ===========================================================================
-
-
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
 buildscript {
     repositories {
-        mavenLocal()
         maven {
             url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
             credentials {
@@ -26,7 +12,25 @@ buildscript {
             }
         }
     }
+    dependencies {
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
 }
+
+def versions = new org.yaml.snakeyaml.Yaml().load(new File("${project.projectDir.parentFile}/versions.yml").newInputStream())
+
+apply plugin: 'java-library'
+
+group 'com.ibm.guardium.universalconnector.commons'
+version "${file("VERSION").text.trim()}"
+// ===========================================================================
+// plugin info
+// ===========================================================================
+// ===========================================================================
+
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenLocal()
@@ -40,12 +44,11 @@ repositories {
 }
 
 
-
 dependencies {
     implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.23.1'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.17.2'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.22.1'
     implementation group: 'com.google.guava', name: 'guava', version: '33.3.1-jre'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.11.0'
 
@@ -75,8 +78,8 @@ task sourcesJar(type: Jar) {
 }
 
 artifacts {
-     archives sourcesJar
-     archives javadocJar
+    archives sourcesJar
+    archives javadocJar
 }
 
 task copyDependencies(type: Copy) {

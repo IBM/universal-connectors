@@ -66,10 +66,10 @@ public class MySQLGuardiumPluginFilter implements Filter {
             log.info(Constants.EVENT_NOW_MYSQL, e.getData());
             try {
 
-                if(null != e.getData()
+                if (null != e.getData()
                         && null != e.getData().get(Constants.COMMAND) && e.getData().get(Constants.COMMAND).toString()
                         .equals(Constants.COMMAND_UNKNOWN) && null != e.getData().get(Constants.DATABASE_USER_NAME)
-                        && e.getData().get(Constants.DATABASE_USER_NAME).toString().equals(Constants.RDS_ADMIN)){
+                        && e.getData().get(Constants.DATABASE_USER_NAME).toString().equals(Constants.RDS_ADMIN)) {
                     continue;
                 }
 

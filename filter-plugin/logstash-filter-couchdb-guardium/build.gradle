@@ -22,32 +22,32 @@ buildscript {
     }
 }
 
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+def universalConnectorsDir = project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load(new File("${universalConnectorsDir}/versions.yml").newInputStream())
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load(new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream())
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
 // ===========================================================================
 // plugin info
 // ===========================================================================
-group                      'com.ibm.guardium.couchdb' // must match the package of the main plugin class
-version                    "${file("VERSION").text.trim()}" // read from required VERSION file
-description                = "CouchDB-Guardium filter plugin"
-pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
+group 'com.ibm.guardium.couchdb' // must match the package of the main plugin class
+version "${file("VERSION").text.trim()}" // read from required VERSION file
+description = "CouchDB-Guardium filter plugin"
+pluginInfo.licenses = ['Apache-2.0'] // list of SPDX license IDs
 pluginInfo.longDescription = "This gem is a Logstash CouchDB filter plugin required to be installed as part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program."
-pluginInfo.authors         = ['IBM']
-pluginInfo.email           = ['']
-pluginInfo.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
-pluginInfo.pluginType      = "filter"
-pluginInfo.pluginClass     = "CouchdbGuardiumFilter"
-pluginInfo.pluginName      = "couchdb_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
+pluginInfo.authors = ['IBM']
+pluginInfo.email = ['']
+pluginInfo.homepage = "http://www.elastic.co/guide/en/logstash/current/index.html"
+pluginInfo.pluginType = "filter"
+pluginInfo.pluginClass = "CouchdbGuardiumFilter"
+pluginInfo.pluginName = "couchdb_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-def jacocoVersion = '0.8.11'
+
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
@@ -67,7 +67,7 @@ repositories {
     }
 }
 
-tasks.register("vendor"){
+tasks.register("vendor") {
     dependsOn shadowJar
     doLast {
         String vendorPathPrefix = "vendor/jar-dependencies"
@@ -126,7 +126,6 @@ tasks.withType(JavaCompile) {
 }
 
 
-
 tasks.register("generateRubySupportFiles") {
     doLast {
         generateRubySupportFilesForPlugin(project.description, project.group, version)
@@ -144,14 +143,14 @@ tasks.register("removeObsoleteJars") {
     }
 }
 
-tasks.register("gem"){
+tasks.register("gem") {
     dependsOn = [downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles]
     doLast {
         buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
     }
 }
 
-tasks.register("copyDependencyLibs", Copy){
+tasks.register("copyDependencyLibs", Copy) {
     into "dependenciesLib"
     from configurations.compileClasspath
     from configurations.runtimeClasspath
@@ -166,7 +165,7 @@ apply plugin: "org.barfuin.gradle.jacocolog"
 // JaCoCo is a code coverage tool
 // ------------------------------------
 jacoco {
-    toolVersion = "${jacocoVersion}"
+    toolVersion = "${versions.dependencies.jacocoVersion}"
 }
 jacocoTestReport {
     // You will see "Report -> file://...." at the end of a JaCoCo build

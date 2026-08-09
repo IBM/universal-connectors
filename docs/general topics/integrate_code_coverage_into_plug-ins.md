@@ -1,42 +1,54 @@
 # Integrate Code Coverage tool into Universal Connector Plug-ins
+
 ## Introduction
-As a universal connector plug-in developer, you should be familiar with code coverage tools targeted at monitoring the plug-in's unit tests folder for percentage coverage that corresponds to our conventions.
+
+As a universal connector plug-in developer, you should be familiar with code coverage tools targeted at monitoring the
+plug-in's unit tests folder for percentage coverage that corresponds to our conventions.
 
 <details open="open">
   <summary>Table of contents</summary>
 
-  - [Integrate code coverage into Java plug-ins](#integrate-code-coverage-into-java-plug-ins)
+- [Integrate code coverage into Java plug-ins](#integrate-code-coverage-into-java-plug-ins)
     * [Prerequisites](#prerequisites)
     * [Keep In Mind](#keep-in-mind)
     * [Template build.gradle](#template-buildgradle)
     * [Template Makefile](#template-makefile)
-  - [Integrate code coverage into Ruby plug-ins](#integrate-code-coverage-into-ruby-plug-ins)
+- [Integrate code coverage into Ruby plug-ins](#integrate-code-coverage-into-ruby-plug-ins)
 
 </details>
 
 ## Integrate code coverage into Java plug-ins
+
 ### Prerequisites
+
 - Familiarity with Jacoco code coverage tool for Java
-- A developed universal connector Java plug-in that includes unit tests in the path designated by Logstash for Java plug-ins (`<TYPE>-plugin/logstash-<TYPE>-<PLUGIN_NAME>/src/test`)
+- A developed universal connector Java plug-in that includes unit tests in the path designated by Logstash for Java
+  plug-ins (`<TYPE>-plugin/logstash-<TYPE>-<PLUGIN_NAME>/src/test`)
 
 ### Keep In Mind
-- Make sure you install all the necessary Jacoco plug-ins and set the minimum coverage as detailed in the template build.gradle below.
 
-  - Plug-ins used: jacoco, org.barfuin.gradle.jacocolog
+- Make sure you install all the necessary Jacoco plug-ins and set the minimum coverage as detailed in the template
+  build.gradle below.
 
-  - Note that to be able to install the jacocolog plug-in, you must include this classpath in the dependencies of the buildscript: org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2
+    - Plug-ins used: jacoco, org.barfuin.gradle.jacocolog
 
-- Executing “./gradlew build” executes the Jacoco percentage coverage and the reports output path in your plug-in’s directory.
+    - Note that to be able to install the jacocolog plug-in, you must include this classpath in the dependencies of the
+      buildscript: org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2
 
-  - You can add a Makefile with a task that executes the commands as an alternative (see template Makefile below)
+- Executing “./gradlew build” executes the Jacoco percentage coverage and the reports output path in your plug-in’s
+  directory.
 
-- You can add files to the exclusion list in order to exclude them from the Jacoco reports task jacocoTestReport and the Jacoco percentage coverage task jacocoTestCoverageVerification
+    - You can add a Makefile with a task that executes the commands as an alternative (see template Makefile below)
+
+- You can add files to the exclusion list in order to exclude them from the Jacoco reports task jacocoTestReport and the
+  Jacoco percentage coverage task jacocoTestCoverageVerification
 
 - minimumCoverage is adjustable. The recommended value is `80.0%`
 
 - Note: this is a template, therefore any other Logstash plug-in specific dependencies or tasks need to be added
 
 ### Template build.gradle
+
 ```
 import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
@@ -63,7 +75,7 @@ pluginInfo.pluginName      = "" // must match the @LogstashPlugin annotation in 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-def jacocoVersion = '0.8.4'
+
 
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
@@ -84,7 +96,7 @@ buildscript {
 
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
-        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0-RC2"
 
     }
 }
@@ -114,7 +126,7 @@ shadowJar {
 dependencies
  {
     implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
     implementation 'org.apache.commons:commons-lang3:3.7'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core.jar")
@@ -123,7 +135,7 @@ dependencies
 
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.jruby:jruby-complete:9.2.7.0'
+    testImplementation 'org.jruby:jruby-complete:10.0.6.0'
 
     testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-?.?.?.jar")
 }
@@ -177,7 +189,7 @@ apply plugin: "org.barfuin.gradle.jacocolog"
 // ------------------------------------
 
 jacoco {
-    toolVersion = "${jacocoVersion}"
+    toolVersion = "${versions.dependencies.jacocoVersion}"
     reportsDir = file("$buildDir/reports/jacoco")
 }
 
@@ -233,6 +245,7 @@ project.tasks.check.dependsOn(jacocoTestCoverageVerification, jacocoTestReport)
 ```
 
 ### Template Makefile
+
 ```
 # **************************************************************
 #
@@ -260,4 +273,5 @@ report:  test
 ```
 
 ## Integrate code coverage into Ruby plug-ins
+
 **TBD**

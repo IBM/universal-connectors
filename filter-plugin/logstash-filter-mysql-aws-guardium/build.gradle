@@ -17,14 +17,14 @@ buildscript {
 
     dependencies {
         classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:4.0.1"
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0"
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
 }
 
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
+def universalConnectorsDir = project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load(new File("${universalConnectorsDir}/versions.yml").newInputStream())
+gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load(new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream())
 
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
@@ -33,23 +33,23 @@ apply plugin: 'jacoco'
 apply plugin: 'org.barfuin.gradle.jacocolog'
 
 // Plugin Info
-group                      = 'com.ibm.guardium.mysql'
-version                    = file("VERSION").text.trim()
-description                = "mysql-Guardium filter plugin"
-pluginInfo.licenses        = ['Apache-2.0']
+group = 'com.ibm.guardium.mysql'
+version = file("VERSION").text.trim()
+description = "mysql-Guardium filter plugin"
+pluginInfo.licenses = ['Apache-2.0']
 pluginInfo.longDescription = "This gem is a Logstash mysql filter plugin required to be installed as part of IBM Security Guardium, Guardium Universal Connector configuration. This gem is not a stand-alone program."
-pluginInfo.authors         = ['IBM']
-pluginInfo.email           = ['']
-pluginInfo.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
-pluginInfo.pluginType      = "filter"
-pluginInfo.pluginClass     = "MySQLGuardiumPluginFilter"
-pluginInfo.pluginName      = "mysql_guardium_plugin_filter"
+pluginInfo.authors = ['IBM']
+pluginInfo.email = ['']
+pluginInfo.homepage = "http://www.elastic.co/guide/en/logstash/current/index.html"
+pluginInfo.pluginType = "filter"
+pluginInfo.pluginClass = "MySQLGuardiumPluginFilter"
+pluginInfo.pluginName = "mysql_guardium_plugin_filter"
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 // Code coverage
-def jacocoVersion = '0.8.4'
+
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
     minimumCoverageStr = minimumCoverageStr.substring(0, minimumCoverageStr.length() - 1)
@@ -69,7 +69,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-        classpath 'org.barfuin.gradle.jacocolog:gradle-jacoco-log:4.0.1'
+        classpath 'org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0'
     }
 }
 
@@ -88,7 +88,7 @@ dependencies {
     // Runtime dependencies
     implementation 'commons-beanutils:commons-beanutils:1.11.0'
     implementation 'commons-validator:commons-validator:1.7'
-    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
     implementation 'org.apache.commons:commons-text:1.10.0'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core*.jar")
@@ -98,7 +98,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
     testImplementation 'org.mockito:mockito-core:5.12.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.0'
-    testImplementation 'org.jruby:jruby-complete:9.2.7.0'
+    testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
     testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
 }
 
@@ -113,7 +113,7 @@ test {
 }
 
 jacoco {
-    toolVersion = "${jacocoVersion}"
+    toolVersion = "${versions.dependencies.jacocoVersion}"
 }
 
 jacocoTestReport {
@@ -155,6 +155,7 @@ check.dependsOn jacocoTestCoverageVerification, jacocoTestReport
 
 shadowJar {
     archiveClassifier = null
+    exclude 'log4j2.component.properties'
 }
 
 // Custom Tasks
@@ -164,7 +165,7 @@ tasks.register("vendor") {
         String vendorPathPrefix = "vendor/jar-dependencies"
         String projectGroupPath = project.group.replaceAll('\\.', '/')
         File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
-        projectJarFile.mkdirs()
+        projectJarFile.parentFile.mkdirs()
         Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
         validatePluginJar(projectJarFile, project.group)
     }

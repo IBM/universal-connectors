@@ -8,17 +8,17 @@ apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 // ===========================================================================
 // plugin info
 // ===========================================================================
-group                      'com.ibm.guardium.elasticsearch' // must match the package of the main plugin class
-version                    "${file("VERSION").text.trim()}" // read from required VERSION file
-description                = "Elasticsearch-Guardium filter plugin"
-pluginInfo.licenses        = ['Apache-2.0'] // list of SPDX license IDs
+group 'com.ibm.guardium.elasticsearch' // must match the package of the main plugin class
+version "${file("VERSION").text.trim()}" // read from required VERSION file
+description = "Elasticsearch-Guardium filter plugin"
+pluginInfo.licenses = ['Apache-2.0'] // list of SPDX license IDs
 pluginInfo.longDescription = "This gem is a Logstash Elasticsearch filter plugin required to be installed as part of IBM Security Guardium, Guardium Universal connector configuration. This gem is not a stand-alone program."
-pluginInfo.authors         = ['IBM', '', '']
-pluginInfo.email           = ['']
-pluginInfo.homepage        = "http://www.elastic.co/guide/en/logstash/current/index.html"
-pluginInfo.pluginType      = "filter"
-pluginInfo.pluginClass     = "ElasticsearchGuardiumFilter"
-pluginInfo.pluginName      = "elasticsearch_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
+pluginInfo.authors = ['IBM', '', '']
+pluginInfo.email = ['']
+pluginInfo.homepage = "http://www.elastic.co/guide/en/logstash/current/index.html"
+pluginInfo.pluginType = "filter"
+pluginInfo.pluginClass = "ElasticsearchGuardiumFilter"
+pluginInfo.pluginName = "elasticsearch_guardium_filter" // must match the @LogstashPlugin annotation in the main plugin class
 // ===========================================================================
 
 
@@ -62,16 +62,16 @@ shadowJar {
 
 dependencies {
     implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
     implementation 'org.apache.commons:commons-lang3:3.7'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-master-*.*.*.jar")
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.jruby:jruby-complete:9.2.7.0'
-    
-   testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-master-*.*.*.jar")
+    testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
+
+    testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-master-*.*.*.jar")
 }
 
 clean {
@@ -91,16 +91,16 @@ tasks.withType(JavaCompile) {
 
 test {
     jvmArgs = [
-        '--add-opens=java.base/java.lang=ALL-UNNAMED',
-        '--add-opens=java.base/java.util=ALL-UNNAMED',
-        '--add-opens=java.base/java.text=ALL-UNNAMED',
-        '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
+            '--add-opens=java.base/java.lang=ALL-UNNAMED',
+            '--add-opens=java.base/java.util=ALL-UNNAMED',
+            '--add-opens=java.base/java.text=ALL-UNNAMED',
+            '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
+            '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
+            '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
     ]
 }
 
-tasks.register("vendor"){
+tasks.register("vendor") {
     dependsOn shadowJar
     doLast {
         String vendorPathPrefix = "vendor/jar-dependencies"
@@ -128,8 +128,8 @@ tasks.register("removeObsoleteJars") {
     }
 }
 
-tasks.register("gem"){
-    dependsOn ([downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles])
+tasks.register("gem") {
+    dependsOn([downloadAndInstallJRuby, removeObsoleteJars, vendor, generateRubySupportFiles])
     doLast {
         buildGem(projectDir, buildDir, pluginInfo.pluginFullName() + ".gemspec")
     }
@@ -139,12 +139,12 @@ jacocoTestReport {
         xml.required = true
         html.required = true
     }
-    
-     afterEvaluate { // (optional) : to exclude classes / packages from coverage
+
+    afterEvaluate { // (optional) : to exclude classes / packages from coverage
         classDirectories.from = files(classDirectories.files.collect {
             fileTree(
-                dir: it,
-                exclude: [''])
+                    dir: it,
+                    exclude: [''])
         })
     }
 }
