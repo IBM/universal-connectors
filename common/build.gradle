@@ -5,13 +5,24 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 buildscript {
     repositories {
         maven {
-            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
+            url "https://na.artifactory.swg-devops.com/artifactory/sec-guardium-next-gen-maven-virtual/"
             credentials {
-                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
-                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+                username "${gradle.ext.artifactory_username}"
+                password "${gradle.ext.artifactory_password}"
             }
         }
+        mavenCentral()
     }
+
+//    repositories {
+//        maven {
+//            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
+//            credentials {
+//                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+//                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+//            }
+//        }
+//    }
     dependencies {
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
