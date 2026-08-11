@@ -5,24 +5,13 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 buildscript {
     repositories {
         maven {
-            url "https://na.artifactory.swg-devops.com/artifactory/sec-guardium-next-gen-maven-virtual/"
+            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
             credentials {
-                username "${gradle.ext.artifactory_username}"
-                password "${gradle.ext.artifactory_password}"
+                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
             }
         }
-        mavenCentral()
     }
-
-//    repositories {
-//        maven {
-//            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
-//            credentials {
-//                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
-//                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
-//            }
-//        }
-//    }
     dependencies {
         classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     }
@@ -59,7 +48,7 @@ dependencies {
     implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.22.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.dependencies.jacksonDatabind
     implementation group: 'com.google.guava', name: 'guava', version: '33.3.1-jre'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.11.0'
 

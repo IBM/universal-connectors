@@ -69,11 +69,11 @@ dependencies {
 
     implementation group: 'commons-io', name: 'commons-io', version: '2.18.0'
 
-    implementation group: 'software.amazon.awssdk', name: 's3', version: '2.30.17'
+    implementation group: 'software.amazon.awssdk', name: 's3', version: versions.dependencies.awssdk
 
-    implementation group: 'software.amazon.awssdk', name: 'sqs', version: '2.30.17'
+    implementation group: 'software.amazon.awssdk', name: 'sqs', version: versions.dependencies.awssdk
 
-    implementation group: 'software.amazon.awssdk', name: 'sts', version: '2.30.19'
+    implementation group: 'software.amazon.awssdk', name: 'sts', version: versions.dependencies.awssdk
 
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.17.0'
 
@@ -81,14 +81,14 @@ dependencies {
 
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
 
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.dependencies.jacksonDatabind
 
     implementation("org.apache.commons:commons-csv:1.14.0")
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
 
-    implementation group: 'io.netty', name: 'netty-codec-http2', version: '4.2.11.Final'
-    implementation group: 'io.netty', name: 'netty-codec-http', version: '4.2.10.Final'
-    implementation group: 'io.netty', name: 'netty-codec', version: '4.1.125.Final'
+    implementation group: 'io.netty', name: 'netty-codec-http2', version: versions.dependencies.nettyVersion + '.Final'
+    implementation group: 'io.netty', name: 'netty-codec-http', version: versions.dependencies.nettyVersion + '.Final'
+    implementation group: 'io.netty', name: 'netty-codec', version: versions.dependencies.nettyVersion + '.Final'
 
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "**/logstash-core*.jar")
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons*.jar")
