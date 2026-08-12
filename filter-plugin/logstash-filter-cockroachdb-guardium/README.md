@@ -184,7 +184,7 @@ The rsyslog template **must** include `serverHostname=` and `serverPort=` values
    $MaxMessageSize 64k
 
    template(name="AuditFormat" type="string"
-     string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% - - - serverHostname=<SERVER_HOSTNAME> serverPort=<SERVER_PORT> %rawmsg%\n"
+     string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% - - - serverHostname=<SERVER_HOSTNAME> serverPort=<SERVER_PORT> %msg%\n"
    )
 
    ruleset(name="imfile_to_gdp") {
@@ -232,7 +232,7 @@ The rsyslog template **must** include `serverHostname=` and `serverPort=` values
    Replace the `template()` block with the following. Everything else remains the same.
    ```
    template(name="AuditFormat" type="string"
-     string="<%PRI%>%TIMESTAMP:::date-rfc3164% %HOSTNAME% %APP-NAME%: serverHostname=<SERVER_HOSTNAME> serverPort=<SERVER_PORT> %rawmsg%\n"
+     string="<%PRI%>%TIMESTAMP:::date-rfc3164% %HOSTNAME% %APP-NAME%: serverHostname=<SERVER_HOSTNAME> serverPort=<SERVER_PORT> %msg%\n"
    )
    ```
 
