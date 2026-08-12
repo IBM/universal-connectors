@@ -138,6 +138,14 @@ Configure a syslog utility to enable Kafka to process the data collected by sysl
 
 The plug-in uses the Confluent Syslog Source Connector to receive syslog messages from rsyslog.
 
+### Before you begin
+
+The rsyslog template **must** include `serverHostname=` and `serverPort=` values in the message. These values are used by the connector to:
+- Route each message to the correct per-source Kafka topic (`serverHostname=` must match the **Database hostname** field in the datasource profile)
+- Populate the server hostname and port fields in Guardium records
+
+If either value is missing, messages are dropped and do not appear in Guardium.
+
 ### Procedure
 
 1. Install rsyslog on the CockroachDB server if its not already installed:
@@ -166,20 +174,28 @@ The plug-in uses the Confluent Syslog Source Connector to receive syslog message
    **For a TLS connection, add the following configuration:**
     
    You may need to restart the Kafka cluster to create the required UC SSL certificates on Kafka nodes.
+
+   Replace `<DB_HOSTNAME>` with the hostname of your CockroachDB server (must match the **Database hostname** field in the datasource profile), `<DB_PORT>` with the CockroachDB SQL port (default `26257`), `<KAFKA_BROKER_N>` with your Kafka broker hostnames, and `/path/to/logs/directory/` with the actual path to your CockroachDB log files.
+
+   **RFC 5424 (recommended):**
    ```
-    module(load="imfile" PollingInterval="10")
-    $MaxMessageSize 64k
- 
+   module(load="imfile" PollingInterval="10")
+   $MaxMessageSize 64k
+
+   template(name="AuditFormat" type="string"
+     string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% - - - serverHostname=<DB_HOSTNAME> serverPort=<DB_PORT> %rawmsg%\n"
+   )
+
    ruleset(name="imfile_to_gdp") {
        action(type="omfwd"
            Protocol="tcp"
            StreamDriver="gtls"
            StreamDriverMode="1"
            StreamDriverAuthMode="anon"
-           Template="RSYSLOG_SyslogProtocol23Format"
+           template="AuditFormat"
            Target=["<KAFKA_BROKER_1>", "<KAFKA_BROKER_2>", "<KAFKA_BROKER_3>", ...]
            Port="<TARGET_PORT>"
-   
+
            # High traffic configuration (required for >11,400 eps per CockroachDB)
            # These settings prevent data drops at extremely high traffic volumes
            action.resumeRetryCount="-1"
@@ -190,7 +206,7 @@ The plug-in uses the Confluent Syslog Source Connector to receive syslog message
            queue.workerThreads="4"
            queue.timeoutEnqueue="0"
            queue.saveOnShutdown="on"
-   
+
            # Persistent queue configuration (optional)
            # Enables data persistence in case of Kafka Connect issues
            # Note: May result in slightly reduced throughput at high traffic (latency at high traffic)
@@ -234,9 +250,18 @@ The plug-in uses the Confluent Syslog Source Connector to receive syslog message
          Ruleset="imfile_to_gdp"
          reopenOnTruncate="on")
    ```
+
+   **RFC 3164 (alternative):**
+
+   Replace the `template()` block with the following. Everything else remains the same.
+   ```
+   template(name="AuditFormat" type="string"
+     string="<%PRI%>%TIMESTAMP:::date-rfc3164% %HOSTNAME% %APP-NAME%: serverHostname=<DB_HOSTNAME> serverPort=<DB_PORT> %rawmsg%\n"
+   )
+   ```
    
    **Note:**
-   - Replace `<KAFKA_BROKER>` with your Kafka broker hostname or IP address and `/path/to/logs/directory/` with the actual path to your CockroachDB log files.
+   - The `serverHostname=` value in the template must exactly match the **Database hostname** field configured in the datasource profile. If they differ, messages are dropped.
    - Use the high traffic configuration parameters for handling extremely high traffic (more than 11,400 events per second per CockroachDB).
    - The persistent queue configuration is optional. It provides data persistence if Kafka Connect issues occur, but it might reduce throughput at high traffic volumes.
    - When multiple Kafka brokers are configured, rsyslog connects to only one broker for the source connector. Connection errors may appear in the rsyslog service status for the other Kafka nodes, which is expected behavior.
