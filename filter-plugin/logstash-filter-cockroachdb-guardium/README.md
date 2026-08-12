@@ -18,21 +18,20 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 1. Connect to your CockroachDB cluster using the SQL client.
 
 2. Enable audit logging by running the following commands:
-
-   ```sql
-   SET CLUSTER SETTING server.auth_log.sql_connections.enabled = true;
-   SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
-   SET CLUSTER SETTING sql.log.all_statements.enabled = true;
-   SET CLUSTER SETTING sql.log.admin_audit.enabled = true;
-   ```
+	```sql
+	SET CLUSTER SETTING server.auth_log.sql_connections.enabled = true;
+	SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
+	SET CLUSTER SETTING sql.log.all_statements.enabled = true;
+	SET CLUSTER SETTING sql.log.admin_audit.enabled = true;
+	```
 
 3. Verify the configuration:
-   ```sql
-   SHOW CLUSTER SETTING server.auth_log.sql_connections.enabled;
-   SHOW CLUSTER SETTING server.auth_log.sql_sessions.enabled;
-   SHOW CLUSTER SETTING sql.log.all_statements.enabled;
-   SHOW CLUSTER SETTING sql.log.admin_audit.enabled;
-   ```
+	```sql
+	SHOW CLUSTER SETTING server.auth_log.sql_connections.enabled;
+	SHOW CLUSTER SETTING server.auth_log.sql_sessions.enabled;
+	SHOW CLUSTER SETTING sql.log.all_statements.enabled;
+	SHOW CLUSTER SETTING sql.log.admin_audit.enabled;
+	```
 
 4. Create a logging configuration file on your CockroachDB server:
 	```bash
@@ -89,13 +88,13 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 
 8. Reload systemd and restart CockroachDB:
 	```bash
-	systemctl daemon-reload
-	systemctl restart cockroachdb
+	sudo systemctl daemon-reload
+	sudo systemctl restart cockroachdb
 	```
 
 9. Verify the service started successfully:
 	```bash
-	systemctl status cockroachdb
+	sudo systemctl status cockroachdb
 	```
 
 10. Verify the structured JSON logs are being created:
@@ -133,78 +132,68 @@ The audit logs are stored in the directory specified in your YAML configuration 
 
 ## 3. Configuring Syslog to push logs to Guardium
 
+### Before you begin
+
+The rsyslog template **must** include `serverHostname=` and `serverPort=` values in the message. These values are used by the connector to populate the server hostname and port fields in Guardium records.
+
 ### Procedure
 
-To make Logstash able to process the data collected by syslog, configure available
-syslog utility. The example is based on rsyslog utility available in many
-versions of the Linux distributions.
+1. Install rsyslog on the CockroachDB server if not already installed:
+	```bash
+	# For Ubuntu/Debian
+	sudo apt-get install rsyslog
+	
+	# For RHEL/CentOS
+	sudo yum install rsyslog
+	```
+   For more information about installing rsyslog, see [Ubuntu](https://www.rsyslog.com/ubuntu-repository) or [RHEL](https://www.rsyslog.com/rhelcentos-rpms).
 
-#### Rsyslog installation guide:
-
-- [Ubuntu](https://www.rsyslog.com/ubuntu-repository)
-- [RHEL](https://www.rsyslog.com/rhelcentos-rpms)
-
-1. Install Rsyslog on the CockroachDB server if not already installed:
-
-   ```bash
-   # For Ubuntu/Debian
-   sudo apt-get install rsyslog
-
-   # For RHEL/CentOS
-   sudo yum install rsyslog
-   ```
-
-2. To check the service is active and running, execute the below command:
-
-   ```bash
-   systemctl status rsyslog
-   ```
+2. To verify that the service is active and running, run the following command:
+    ```bash
+    systemctl status rsyslog
+    ```
 
 3. Generate Certificate Authority (CA):
-   - **Guardium Data Protection** <br/>
-     To obtain the Certificate Authority content on the Collector, run the following API command:
+   * **Guardium Data Protection** <br/>
+   To obtain the Certificate Authority content on the Collector, run the following API command:
      ```text
      grdapi generate_ssl_key_universal_connector
      ```
-     This API command will display the content of the public Certificate Authority. Copy this certificate authority content to your database source and save it as a file named 'ca.pem' .
+     This API command will display the content of the public Certificate Authority. Copy this certificate authority content to your database source and save it as a file named `ca.pem`.
 
-4. Create the Rsyslog configuration file `cockroachdb.conf` for CockroachDB in the following directory:
+4. Create the rsyslog configuration file `cockroachdb.conf`:
+	```bash
+	vi /etc/rsyslog.d/cockroachdb.conf
+	```
 
-   ```bash
-   vi /etc/rsyslog.d/cockroachdb.conf
-   ```
+5. Add the configuration to read logs from the CockroachDB log directory and send syslog messages to Guardium.
 
-5. This configuration reads the logs from the CockroachDB log directory path and sends
-   the syslog messages to the provided host `TARGET_HOST` at the provided port `TARGET_PORT`.
-   
    **Note:** You can set any port number except 5000 when using Guardium Data Protection version 12.0 or 12.1.
 
-   The template injects the server hostname and port into each message so Guardium can identify the source server correctly. Replace `<SERVER_HOSTNAME>` with the stable hostname of your CockroachDB node and `<SERVER_PORT>` with its port (default: `26257`).
-   
-   Add the following configuration:
+   Replace `<SERVER_HOSTNAME>` with the hostname of your CockroachDB server, `<SERVER_PORT>` with the CockroachDB SQL port (default `26257`), `<TARGET_HOST>` with your Guardium collector hostname, and `/path/to/logs/directory/` with the actual path to your CockroachDB log files.
 
-   **For TLS connection:**
+   **For a TLS connection:**
 
+   **RFC 5424 (recommended):**
    ```
-    global(
-       DefaultNetstreamDriverCAFile="/path/to/certs/ca.pem"
-    )
+   global(
+      DefaultNetstreamDriverCAFile="/path/to/certs/ca.pem"
+   )
 
    module(load="imfile" PollingInterval="10")
    $MaxMessageSize 64k
 
-   template(name="imfile_cockroach_t" type="list") {
-     constant(value="serverHostname=<SERVER_HOSTNAME> serverPort=<SERVER_PORT>")
-     property(name="rawmsg")
-   }
+   template(name="AuditFormat" type="string"
+     string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% - - - serverHostname=<SERVER_HOSTNAME> serverPort=<SERVER_PORT> %rawmsg%\n"
+   )
 
    ruleset(name="imfile_to_gdp") {
-           action(type="omfwd"
+       action(type="omfwd"
            protocol="tcp"
            StreamDriver="gtls"
            StreamDriverMode="1"
            StreamDriverAuthMode="x509/certvalid"
-           template="imfile_cockroach_t"
+           template="AuditFormat"
            target="<TARGET_HOST>"
            port="<TARGET_PORT>")
    }
@@ -238,19 +227,29 @@ versions of the Linux distributions.
          Ruleset="imfile_to_gdp")
    ```
 
-6. Restart Rsyslog service:
+   **RFC 3164 (alternative):**
 
-   ```bash
-   systemctl restart rsyslog
+   Replace the `template()` block with the following. Everything else remains the same.
+   ```
+   template(name="AuditFormat" type="string"
+     string="<%PRI%>%TIMESTAMP:::date-rfc3164% %HOSTNAME% %APP-NAME%: serverHostname=<SERVER_HOSTNAME> serverPort=<SERVER_PORT> %rawmsg%\n"
+   )
    ```
 
-7. Verify Rsyslog is running:
-   ```bash
-   systemctl status rsyslog
-   ```
+   **Note:**
+   - The `serverHostname=` value in the template must exactly match the **Server hostname** field configured in the Guardium universal connector. If they differ, messages are dropped.
+
+6. Restart the rsyslog service:
+	```bash
+	systemctl restart rsyslog
+	```
+
+7. Verify rsyslog is running:
+	```bash
+	systemctl status rsyslog
+	```
 
 ## 4. Limitations
-
 - CockroachDB wraps query values in Unicode characters `‹` (U+2039) and `›` (U+203A) in audit logs (e.g., `UPDATE table SET id = ‹2› WHERE id > ‹1›`). The plugin automatically removes these characters to restore the original query format.
 - CockroachDB automatically logs `SHOW database` queries (along with query executions) and are sent to Guardium.
 - The plugin automatically filters out the following system-generated queries and are not sent to Guardium:
@@ -294,7 +293,7 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 1. On the collector, go to **Setup** > **Tools and Views** > **Configure Universal Connector**.
 2. First enable the Universal Guardium connector, if it is disabled.
-3. Click **Upload File** and select the offline **logstash-filter-cockroachdb_guardium_filter.zip** plug-in. After it is uploaded, click **OK**.
+3. Click **Upload File** and select the offline [logstash-filter-cockroachdb_guardium_filter.zip](CockroachDBOverSyslogPackage/logstash-filter-cockroachdb_guardium_filter.zip) plug-in. After it is uploaded, click **OK**. 
 4. Click the **Plus sign** to open the Connector Configuration dialog box.
 5. Type a name in the **Connector name** field.
 6. Update the input section to add the details from the [CockroachDBOverSyslog.conf](CockroachDBOverSyslogPackage/CockroachDBOverSyslog.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
