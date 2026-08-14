@@ -65,6 +65,13 @@ public class Parser {
 			}
 			record.setData(data);
 
+			// GRD-128012: support pgaudit.log_rows - populate rows affected/returned
+			if (e.includes(Constants.ROWS_AFFECTED) && e.getField(Constants.ROWS_AFFECTED) != null) {
+				double doubleValueRecords = Double.parseDouble(e.getField(Constants.ROWS_AFFECTED).toString());
+				int rowsReturned = (int) doubleValueRecords;
+				record.setRecordsAffected(rowsReturned);
+			}
+
 		} else {
 			if (e.getField(Constants.SUCCEEDED).toString().contains("FATAL")
 					&& (e.getField(Constants.PREFIX).toString().contains("28P01"))) {
