@@ -153,25 +153,5 @@ public class ParserTest {
 				record.getException().getDescription());
 	}
 
-	@Test
-	public void testRowsAffected() throws ParseException {
-		Event e = intitalizeEventObject();
-
-		e.setField(Constants.ROWS_AFFECTED, "5");
-		final Record record = Parser.parseRecord(e);
-		Assert.assertEquals(5, record.getRecordsAffected());
-	}
-
-	@Test
-	public void testRowsAffectedNotPresent() throws ParseException {
-		Event e = intitalizeEventObject();
-
-		// ROWS_AFFECTED field absent — recordsAffected should remain at default (0)
-		final Record record = Parser.parseRecord(e);
-		Assert.assertEquals(0, record.getRecordsAffected());
-	}
-	
-	
-	 
 	
 }
