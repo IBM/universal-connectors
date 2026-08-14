@@ -55,4 +55,6 @@ public interface Constants {
 	public static final String RECORDS = "records";
 	public static final String PREFIX = "pre_fix";
 
+	public static final String ROWS_AFFECTED = "rows_affected";
+
 }
