@@ -415,6 +415,9 @@ public class Parser {
 		if (!queryStatement.isEmpty()) {
 			return queryStatement;
 		}
+		if (!protoPayloadJsonObject.has(ApplicationConstants.REQUEST)) {
+			return queryStatement;
+		}
 		JsonObject requestJson = protoPayloadJsonObject.get(ApplicationConstants.REQUEST).getAsJsonObject();
 		if (requestJson.has(ApplicationConstants.STATEMENTS)) {
 			JsonArray jsonArray = requestJson.get(ApplicationConstants.STATEMENTS).getAsJsonArray();
@@ -500,6 +503,9 @@ public class Parser {
 		List<String> queryList = new ArrayList<>();
 		queryStatement = getQueryStatement(protoPayloadJsonObject);
 		if (!queryStatement.isEmpty()) {
+			return queryStatement;
+		}
+		if (!protoPayloadJsonObject.has(ApplicationConstants.REQUEST)) {
 			return queryStatement;
 		}
 		JsonObject requestJson = protoPayloadJsonObject.get(ApplicationConstants.REQUEST).getAsJsonObject();
