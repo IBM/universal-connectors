@@ -2,7 +2,7 @@
 
 ### Meet AWS MySQL
 
-- Tested versions: 5.7
+- Tested versions: 5.7, 8.0.40
 - Environment: AWS
 - Supported inputs: CloudWatch (pull)
 - Supported Guardium versions:

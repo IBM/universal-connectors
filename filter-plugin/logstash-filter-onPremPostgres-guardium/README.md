@@ -2,7 +2,7 @@
 
 ### Meet Postgres
 
-- Tested versions: EDB 12, 14 and FEP 14
+- Tested versions: EDB 12, 14 and FEP 14, EDB PG 15.7
 - Environment: On-premise
 - Supported inputs: Filebeat (push)
 - Supported Guardium versions:
