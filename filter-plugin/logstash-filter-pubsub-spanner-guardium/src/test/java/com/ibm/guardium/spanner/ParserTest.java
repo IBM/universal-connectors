@@ -78,4 +78,36 @@ public class ParserTest {
 		assertEquals("collection", sentence.getObjects().get(0).type);
 	}
 
+	@Test
+	public void testCreateTableIfNotExists() {
+		final String gcpString = "{\"protoPayload\":{\"@type\":\"type.googleapis.com\\/google.cloud.audit.AuditLog\",\"authenticationInfo\":{\"principalEmail\":\"user@test.com\"},\"requestMetadata\":{\"callerIp\":\"111.44.22.999\",\"callerSuppliedUserAgent\":\"Mozilla\\/5.0\",\"requestAttributes\":{\"time\":\"2026-07-01T23:39:20.032977933Z\",\"auth\":{}},\"destinationAttributes\":{}},\"serviceName\":\"spanner.googleapis.com\",\"methodName\":\"google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl\",\"authorizationInfo\":[{\"resource\":\"projects\\/project-sccd\\/instances\\/spanner-test\\/databases\\/test\",\"permission\":\"spanner.databases.updateDdl\",\"granted\":true,\"resourceAttributes\":{\"service\":\"spanner\",\"name\":\"projects\\/project-sccd\\/instances\\/spanner-test\\/databases\\/test\",\"type\":\"spanner.databases\"}}],\"resourceName\":\"projects\\/project-sccd\\/instances\\/spanner-test\\/databases\\/test\",\"request\":{\"statements\":[\"CREATE TABLE IF NOT EXISTS gcp_spanner_test10 (id INT64, name STRING(100), email STRING(100)) PRIMARY KEY (id)\"],\"@type\":\"type.googleapis.com\\/google.spanner.admin.database.v1.UpdateDatabaseDdlRequest\",\"database\":\"projects\\/project-sccd\\/instances\\/spanner-test\\/databases\\/test\"},\"response\":{\"@type\":\"type.googleapis.com\\/google.longrunning.Operation\"}},\"insertId\":\"d1qg9cd3f62\",\"resource\":{\"type\":\"spanner_instance\",\"labels\":{\"location\":\"us-central1\",\"project_id\":\"project-sccd\",\"instance_config\":\"\",\"instance_id\":\"spanner-test\"}},\"timestamp\":\"2026-07-01T23:39:20.008838633Z\",\"severity\":\"NOTICE\",\"logName\":\"projects\\/project-sccd\\/logs\\/cloudaudit.googleapis.com%2Factivity\",\"operation\":{\"id\":\"projects\\/project-sccd\\/instances\\/spanner-test\\/databases\\/test\\/operations\\/_auto_op_5b86fab74b1c2194\",\"producer\":\"spanner.googleapis.com\",\"first\":true},\"receiveTimestamp\":\"2026-07-01T23:39:27.313319716Z\"}";
+		final JsonObject spannerJson = JsonParser.parseString(gcpString).getAsJsonObject();
+		Record record = Parser.parseRecord(spannerJson);
+		Sentence sentence = record.getData().getConstruct().getSentences().get(0);
+		assertNotNull(sentence);
+		assertEquals("create table", sentence.getVerb());
+		assertEquals("gcp_spanner_test10", sentence.getObjects().get(0).name);
+		assertEquals("collection", sentence.getObjects().get(0).type);
+	}
+
+	@Test
+	public void testDropTableIfExists() {
+		final String gcpString = "{\"protoPayload\":{\"@type\":\"type.googleapis.com\\/google.cloud.audit.AuditLog\",\"authenticationInfo\":{\"principalEmail\":\"user@test.com\"},\"requestMetadata\":{\"callerIp\":\"111.44.22.999\",\"callerSuppliedUserAgent\":\"Mozilla\\/5.0\",\"requestAttributes\":{\"time\":\"2026-07-01T23:39:20.032977933Z\",\"auth\":{}},\"destinationAttributes\":{}},\"serviceName\":\"spanner.googleapis.com\",\"methodName\":\"google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl\",\"authorizationInfo\":[{\"resource\":\"projects\\/project-sccd\\/instances\\/spanner-test\\/databases\\/test\",\"permission\":\"spanner.databases.updateDdl\",\"granted\":true,\"resourceAttributes\":{\"service\":\"spanner\",\"name\":\"projects\\/project-sccd\\/instances\\/spanner-test\\/databases\\/test\",\"type\":\"spanner.databases\"}}],\"resourceName\":\"projects\\/project-sccd\\/instances\\/spanner-test\\/databases\\/test\",\"request\":{\"statements\":[\"DROP TABLE IF EXISTS gcp_spanner_test10\"],\"@type\":\"type.googleapis.com\\/google.spanner.admin.database.v1.UpdateDatabaseDdlRequest\",\"database\":\"projects\\/project-sccd\\/instances\\/spanner-test\\/databases\\/test\"},\"response\":{\"@type\":\"type.googleapis.com\\/google.longrunning.Operation\"}},\"insertId\":\"d1qg9cd3f63\",\"resource\":{\"type\":\"spanner_instance\",\"labels\":{\"location\":\"us-central1\",\"project_id\":\"project-sccd\",\"instance_config\":\"\",\"instance_id\":\"spanner-test\"}},\"timestamp\":\"2026-07-01T23:39:20.008838633Z\",\"severity\":\"NOTICE\",\"logName\":\"projects\\/project-sccd\\/logs\\/cloudaudit.googleapis.com%2Factivity\",\"operation\":{\"id\":\"projects\\/project-sccd\\/instances\\/spanner-test\\/databases\\/test\\/operations\\/_auto_op_5b86fab74b1c2195\",\"producer\":\"spanner.googleapis.com\",\"first\":true},\"receiveTimestamp\":\"2026-07-01T23:39:27.313319716Z\"}";
+		final JsonObject spannerJson = JsonParser.parseString(gcpString).getAsJsonObject();
+		Record record = Parser.parseRecord(spannerJson);
+		Sentence sentence = record.getData().getConstruct().getSentences().get(0);
+		assertNotNull(sentence);
+		assertEquals("drop table", sentence.getVerb());
+		assertEquals("gcp_spanner_test10", sentence.getObjects().get(0).name);
+		assertEquals("collection", sentence.getObjects().get(0).type);
+	}
+
+	@Test
+	public void testNoRequestFieldCausesNPE() {
+		final String gcpString = "{\"protoPayload\":{\"@type\":\"type.googleapis.com/google.cloud.audit.AuditLog\",\"authenticationInfo\":{\"principalEmail\":\"user@test.com\"},\"requestMetadata\":{\"callerIp\":\"111.44.22.999\",\"callerSuppliedUserAgent\":\"Mozilla/5.0\",\"requestAttributes\":{\"time\":\"2026-07-06T21:18:27.918751178Z\",\"auth\":{}},\"destinationAttributes\":{}},\"methodName\":\"google.spanner.admin.database.v1.DatabaseAdmin.GetDatabase\",\"resourceName\":\"projects/project-sccd/instances/spanner-test/databases/test\",\"serviceName\":\"spanner.googleapis.com\",\"status\":{}},\"insertId\":\"abc123\",\"resource\":{\"type\":\"spanner_instance\",\"labels\":{\"location\":\"us-central1\",\"project_id\":\"project-sccd\",\"instance_config\":\"\",\"instance_id\":\"spanner-test\"}},\"timestamp\":\"2026-07-06T21:18:27.900799319Z\",\"severity\":\"NOTICE\",\"logName\":\"projects/project-sccd/logs/cloudaudit.googleapis.com%2Factivity\",\"receiveTimestamp\":\"2026-07-06T21:18:32.258721158Z\"}";
+		final JsonObject spannerJson = JsonParser.parseString(gcpString).getAsJsonObject();
+		Record record = Parser.parseRecord(spannerJson);
+		assertNotNull(record);
+	}
+
 }
