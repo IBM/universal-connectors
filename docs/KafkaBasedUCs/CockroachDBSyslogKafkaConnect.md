@@ -316,7 +316,7 @@ If either value is missing, messages are dropped and do not appear in Guardium.
 
 9. The universal connector can be installed on multiple Managed Units (MUs) for high availability, but all traffic will be displayed to a single MU.
 
-10. See the [Testing a Connection](#testing-a-connection) section for test connection limitations and expected behaviour.
+10. See [Testing a Connection](#testing-a-connection) for full details.
 
 ## Creating datasource profiles
 
@@ -370,6 +370,7 @@ The following table describes the fields that are specific to CockroachDB Over S
 After you create a profile, test the connection to ensure that the configuration is valid.
 
 **Note:**
+- If you test a connection and then wait before deployment, another syslog profile might claim the port with a conflicting listener type and cause the deployment to fail. Always test connection immediately before deploying a profile.
 - Multiple profiles sharing the same port and listener type all pass the connection test, whether or not any of them are already deployed.
 - A test connection fails only if the port is in use by a **different listener type** (TCP vs TCPSSL) or by a **non-syslog process**.
 
