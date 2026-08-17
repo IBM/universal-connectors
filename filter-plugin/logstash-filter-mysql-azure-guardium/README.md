@@ -2,7 +2,7 @@
 
 ### Meet AzureMySQL
 
-- Tested versions: 8.0
+- Tested versions: 8.0, 8.0.40
 - Environment: Azure
 - Supported inputs: Azure Event Hub (pull)
 - Supported Guardium versions:
