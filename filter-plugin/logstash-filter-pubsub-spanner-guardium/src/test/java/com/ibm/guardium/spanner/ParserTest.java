@@ -102,4 +102,12 @@ public class ParserTest {
 		assertEquals("collection", sentence.getObjects().get(0).type);
 	}
 
+	@Test
+	public void testNoRequestFieldCausesNPE() {
+		final String gcpString = "{\"protoPayload\":{\"@type\":\"type.googleapis.com/google.cloud.audit.AuditLog\",\"authenticationInfo\":{\"principalEmail\":\"user@test.com\"},\"requestMetadata\":{\"callerIp\":\"111.44.22.999\",\"callerSuppliedUserAgent\":\"Mozilla/5.0\",\"requestAttributes\":{\"time\":\"2026-07-06T21:18:27.918751178Z\",\"auth\":{}},\"destinationAttributes\":{}},\"methodName\":\"google.spanner.admin.database.v1.DatabaseAdmin.GetDatabase\",\"resourceName\":\"projects/project-sccd/instances/spanner-test/databases/test\",\"serviceName\":\"spanner.googleapis.com\",\"status\":{}},\"insertId\":\"abc123\",\"resource\":{\"type\":\"spanner_instance\",\"labels\":{\"location\":\"us-central1\",\"project_id\":\"project-sccd\",\"instance_config\":\"\",\"instance_id\":\"spanner-test\"}},\"timestamp\":\"2026-07-06T21:18:27.900799319Z\",\"severity\":\"NOTICE\",\"logName\":\"projects/project-sccd/logs/cloudaudit.googleapis.com%2Factivity\",\"receiveTimestamp\":\"2026-07-06T21:18:32.258721158Z\"}";
+		final JsonObject spannerJson = JsonParser.parseString(gcpString).getAsJsonObject();
+		Record record = Parser.parseRecord(spannerJson);
+		assertNotNull(record);
+	}
+
 }
