@@ -162,7 +162,7 @@ public class Parser {
 		accessor.setCommProtocol(RedShiftTags.UNKNOWN_STRING);
 		lst.clear();
 		final Matcher matcher = pattern
-				.matcher(regexCustomReplace(event).replaceAll("(?i)if\\s+((?i)not)?(\\s+)?(?i)exists", ""));
+				.matcher(normalizeForClassification(event).replaceAll("(?i)if\\s+((?i)not)?(\\s+)?(?i)exists", ""));
 		if (matcher.find()) {
 			for (int i = 1; i <= matcher.groupCount(); i++) {
 				if (matcher.group(i) != null) {
@@ -170,13 +170,12 @@ public class Parser {
 				}
 			}
 		}
-		if(!lst.isEmpty()) {
+		if (!lst.isEmpty()) {
 			accessor.setLanguage(Accessor.LANGUAGE_FREE_TEXT_STRING);
 			accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_NOT_PARSE_SQL);
 		} else {
 			accessor.setLanguage(RedShiftTags.LANGUAGE);
 			accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
-
 		}
 		return accessor;
 	}
@@ -189,7 +188,7 @@ public class Parser {
 	 */
 	public Data parseData(final Event event) {
 		Data data = new Data();
-		data.setOriginalSqlCommand(regexCustomReplace(event));
+		data.setOriginalSqlCommand(getCleanedSql(event));
 		return data;
 	}
 
@@ -208,13 +207,11 @@ public class Parser {
 	private Construct parseAsConstruct(final Event event) {
 		final Construct construct = new Construct();
 		final Sentence sentence = parseSentence(event);
-		// String test=regexCustomReplace(event);
 		construct.sentences.add(sentence);
-		// construct.setFullSql(test);
-		construct.setFullSql(event.getField(RedShiftTags.SQLQUERY).toString());
-		construct.setRedactedSensitiveDataSql(RedShiftTags.SQLQUERY);
+		final String fullSql = getOriginalSql(event);
+		construct.setFullSql(fullSql);
+		construct.setRedactedSensitiveDataSql(fullSql);
 		return construct;
-
 	}
 
 	private Sentence parseSentence(final Event event) {
@@ -246,16 +243,45 @@ public class Parser {
 		return sentenceObject;
 	}
 
-	private String regexCustomReplace(final Event event) {
-		String query = RedShiftTags.UNKNOWN_STRING;
-		if (event.getField(RedShiftTags.SQLQUERY) != null) {
-			query = event.getField(RedShiftTags.SQLQUERY).toString();
-			query = query.replace("LOG:", "");
-			query = query.replaceAll("\\r|\\n", " ").replaceAll("(?i)select\\s+(?i)top\\s+[0-9]+", "select")
-					.replaceAll("((?i)MINUS)", "EXCEPT").trim();
+	/**
+	 * Returns the original SQL from the event with only the "LOG:" prefix removed
+	 * and leading/trailing whitespace trimmed. Used for fullSql in CONSTRUCT records
+	 * so the complete original query is preserved in reports.
+	 */
+	private String getOriginalSql(final Event event) {
+		if (event.getField(RedShiftTags.SQLQUERY) == null) {
+			return RedShiftTags.UNKNOWN_STRING;
 		}
-		event.setField(RedShiftTags.SQLQUERY, query);
+		return event.getField(RedShiftTags.SQLQUERY).toString().replace("LOG:", "").trim();
+	}
+
+	/**
+	 * Returns the SQL for use as originalSqlCommand.
+	 * Normalizes whitespace and converts MINUS to EXCEPT.
+	 * SELECT TOP N is preserved as-is so it appears correctly in reports.
+	 */
+	private String getCleanedSql(final Event event) {
+		if (event.getField(RedShiftTags.SQLQUERY) == null) {
+			return RedShiftTags.UNKNOWN_STRING;
+		}
+		String query = event.getField(RedShiftTags.SQLQUERY).toString();
+		query = query.replace("LOG:", "");
+		query = query.replaceAll("\\r|\\n", " ")
+				.replaceAll("((?i)MINUS)", "EXCEPT").trim();
 		return query;
+	}
+
+	/**
+	 * Returns a normalized SQL string used solely for regex-based classification
+	 * (determining whether a query is CONSTRUCT or TEXT). Does not mutate the event.
+	 */
+	private String normalizeForClassification(final Event event) {
+		if (event.getField(RedShiftTags.SQLQUERY) == null) {
+			return RedShiftTags.UNKNOWN_STRING;
+		}
+		String query = event.getField(RedShiftTags.SQLQUERY).toString();
+		query = query.replace("LOG:", "");
+		return query.replaceAll("\\r|\\n", " ").trim();
 	}
 
 	/**
