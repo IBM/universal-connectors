@@ -22,7 +22,11 @@ AlloyDB Omni is a downloadable edition of AlloyDB that you can run anywhere. It 
 1. AlloyDB Omni instance installed and running (based on PostgreSQL 17)
 2. Network connectivity between the database server and Kafka cluster
 3. rsyslog installed and configured on the database server (for Docker and Standard installations)
-4. For OpenShift: OpenShift cluster with appropriate permissions to create pods, configmaps, and secrets
+4. For OpenShift: OpenShift cluster with appropriate permissions to create pods, configmaps, and secrets. Enable the `anyuid` Security Context Constraint (SCC) on the namespace where AlloyDB Omni will run:
+
+   ```bash
+   oc adm policy add-scc-to-user anyuid -z default -n <your-namespace>
+   ```
 
 ## Configuring logging for PostgreSQL
 
@@ -372,7 +376,8 @@ For OpenShift, use a sidecar container approach with rsyslog running alongside t
      # Volumes
      volumes:
      - name: data-volume
-       emptyDir: {}
+       persistentVolumeClaim:
+         claimName: alloydb-omni-data-pvc
      - name: log-volume
        emptyDir: {}
      - name: postgres-config
@@ -390,14 +395,35 @@ For OpenShift, use a sidecar container approach with rsyslog running alongside t
    - `<kafka-connect-hostname-1>`, `<kafka-connect-hostname-2>`, and `<kafka-connect-hostname-3>` with your Kafka Connect server hostnames or IP addresses
    - If you have fewer Kafka nodes, remove the extra action blocks
 
-4. Apply the ConfigMap, Secret, and Pod:
+4. Create the Persistent Volume Claim (PVC) for durable database storage:
+
+   ```bash
+   cat > alloydb-omni-pvc.yaml <<'EOF'
+   apiVersion: v1
+   kind: PersistentVolumeClaim
+   metadata:
+     name: alloydb-omni-data-pvc
+     namespace: <your-namespace>
+   spec:
+     accessModes:
+       - ReadWriteOnce
+     resources:
+       requests:
+         storage: 10Gi
+   EOF
+   ```
+
+   Adjust `storage` to the size required for your workload.
+
+5. Apply the ConfigMap, Secret, PVC, and Pod:
 
    ```bash
    oc apply -f alloydb-postgresql-conf.yaml
+   oc apply -f alloydb-omni-pvc.yaml
    oc apply -f alloydb-omni-pod.yaml
    ```
 
-5. Monitor the pod until it's running:
+6. Monitor the pod until it's running:
 
    ```bash
    oc get pod alloydb-omni -w
@@ -405,7 +431,7 @@ For OpenShift, use a sidecar container approach with rsyslog running alongside t
 
    Wait until it shows `Running 2/2` (both containers running).
 
-6. Verify that rsyslog is running and forwarding logs:
+7. Verify that rsyslog is running and forwarding logs:
 
    ```bash
    oc logs alloydb-omni -c log-forwarder
