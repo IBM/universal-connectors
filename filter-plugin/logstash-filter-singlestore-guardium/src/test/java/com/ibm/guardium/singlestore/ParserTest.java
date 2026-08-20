@@ -17,6 +17,8 @@ import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
+import com.ibm.guardium.universalconnector.commons.structures.Time;
 
 import java.util.ArrayList;
 
@@ -131,7 +133,26 @@ public class ParserTest {
         Record result = parser.parseRecord(inputData);
 
         Assert.assertNotNull(result);
-        Assert.assertNull(result.getData()); // Login events should not have data
+        Assert.assertNotNull(result.getData());
+        Assert.assertEquals("SET @event = 'USER_LOGIN'", result.getData().getOriginalSqlCommand());
+        // No database context for login — service_name defaults to "N.A."
+        Assert.assertEquals(Constants.NOT_AVAILABLE, result.getDbName());
+        Assert.assertEquals(Constants.NOT_AVAILABLE, result.getAccessor().getServiceName());
+    }
+
+    @Test
+    public void testParseRecordWithLogoutEvent() {
+        String logoutString = "29428,2026-08-19 09:41:23.180,PDT,53b9ae806c1c:3306,agg,USER_LOGOUT,100000,root,localhost,root@%,plaintext,memsqlctl";
+        Event e = getParsedEvent(logoutString);
+        JsonObject inputData = inputData(e);
+        Record result = parser.parseRecord(inputData);
+
+        Assert.assertNotNull(result);
+        Assert.assertNotNull(result.getData());
+        Assert.assertEquals("SET @event = 'USER_LOGOUT'", result.getData().getOriginalSqlCommand());
+        // No database context for logout — service_name defaults to "N.A."
+        Assert.assertEquals(Constants.NOT_AVAILABLE, result.getDbName());
+        Assert.assertEquals(Constants.NOT_AVAILABLE, result.getAccessor().getServiceName());
     }
 
     @Test
@@ -266,7 +287,7 @@ public class ParserTest {
             e.setField(Constants.CLIENT_IP, "0.0.0.0");
             e.setField(Constants.DB_NAME, values[8]);
 
-            if (values[5].equals("USER_LOGIN")) {
+            if (values[5].equals("USER_LOGIN") || values[5].equals("USER_LOGOUT")) {
                 e.setField(Constants.CLIENT_IP, values[8]);
                 e.setField(Constants.DB_NAME, "");
             }

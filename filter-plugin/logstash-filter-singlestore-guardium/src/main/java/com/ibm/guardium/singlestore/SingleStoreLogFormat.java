@@ -29,6 +29,7 @@ public class SingleStoreLogFormat {
 
     // Known values
     public static final String USER_LOGIN = "USER_LOGIN";
+    public static final String USER_LOGOUT = "USER_LOGOUT";
     public static final String LOGIN_FAILURE = "FAILURE: Access denied";
 
     /**
@@ -60,9 +61,9 @@ public class SingleStoreLogFormat {
                 }
             }
 
-            // Basic validation
-            if (values.length < 12) {
-                log.warn("Log format error: Not enough fields in log event. Expected at least 12, got {}", values.length);
+            // Basic validation - USER_LOGOUT has 12 fields, USER_LOGIN has 13+, normal events have 12+
+            if (values.length < 11) {
+                log.warn("Log format error: Not enough fields in log event. Expected at least 11, got {}", values.length);
                 return logMap;
             }
 
@@ -94,7 +95,7 @@ public class SingleStoreLogFormat {
                 logMap.put(QUERY, "");
             }
 
-            // For login events, extract status
+            // For login events, extract status (index 11 = "SUCCESS" or "FAILURE: Access denied")
             if (USER_LOGIN.equals(logMap.get(EVENT_TYPE)) && values.length > 11 && values[11] != null) {
                 logMap.put(LOGIN_STATUS, values[11]);
             } else {
