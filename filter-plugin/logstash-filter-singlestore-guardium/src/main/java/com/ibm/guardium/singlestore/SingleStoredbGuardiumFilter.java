@@ -221,10 +221,9 @@ public class SingleStoredbGuardiumFilter implements Filter {
             event.setField(Constants.CLIENT_IP, Constants.CLIENT_IP_VALUE);
 
             String eventType = logMap.get(SingleStoreLogFormat.EVENT_TYPE);
-            if (eventType != null && SingleStoreLogFormat.USER_LOGIN.equals(eventType)) {
-                if (dbName != null) {
-                    event.setField(Constants.CLIENT_IP, dbName);
-                }
+            if (eventType != null && (SingleStoreLogFormat.USER_LOGIN.equals(eventType)
+                    || SingleStoreLogFormat.USER_LOGOUT.equals(eventType))) {
+                event.setField(Constants.CLIENT_IP, dbName != null ? dbName : Constants.CLIENT_IP_VALUE);
                 event.setField(Constants.DB_NAME, "");
             }
 

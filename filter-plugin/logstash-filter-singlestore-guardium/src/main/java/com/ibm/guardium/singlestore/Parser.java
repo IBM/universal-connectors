@@ -56,7 +56,13 @@ public class Parser {
 
                     // Check if EVENT_TYPE exists in the map
                     String eventType = logMap.get(SingleStoreLogFormat.EVENT_TYPE);
-                    if (eventType != null && !SingleStoreLogFormat.USER_LOGIN.equals(eventType)) {
+                    if (SingleStoreLogFormat.USER_LOGIN.equals(eventType)
+                            || SingleStoreLogFormat.USER_LOGOUT.equals(eventType)) {
+                        // "SET @event = '<TYPE>'" for login and logout
+                        Data sessionData = new Data();
+                        sessionData.setOriginalSqlCommand("SET @event = '" + eventType + "'");
+                        record.setData(sessionData);
+                    } else {
                         record.setData(parseData(data));
                     }
                 }
