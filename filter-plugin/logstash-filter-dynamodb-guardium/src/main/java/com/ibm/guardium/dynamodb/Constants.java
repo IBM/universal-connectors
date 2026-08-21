@@ -1,24 +1,23 @@
 //
-// Copyright 2021-2024 IBM Inc. All rights reserved
+// Copyright 2020-2026 IBM Inc. All rights reserved
 // SPDX-License-Identifier: Apache2.0
 //
 package com.ibm.guardium.dynamodb;
 
 public interface Constants {
-	
+
 	public static final String NOT_AVAILABLE = "N.A.";
 	public static final String DATA_PROTOCOL_STRING = "AMAZON DYNAMODB";
 	public static final String UNKNOWN_STRING = "";
 	public static final String SERVER_TYPE_STRING = "DYNAMODB";
-    public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_dynamoguardium_json_parse_error";
+	public static final String LOGSTASH_TAG_JSON_PARSE_ERROR = "_dynamoguardium_json_parse_error";
 
-	
 	public static final String REQUEST_ID = "requestID";
 	public static final String ERROR_MESSAGE = "errorMessage";
 	public static final String ERROR_CODE = "errorCode";
 	public static final String USER_IDENTITY = "userIdentity";
 	public static final String USERNAME = "userName";
-	public static final String SESSION_CONTEXT= "sessionContext";
+	public static final String SESSION_CONTEXT = "sessionContext";
 	public static final String SESSION_ISSUER = "sessionIssuer";
 	public static final String USER_AGENT = "userAgent";
 	public static final String SOURCE_IP_ADDRESS = "sourceIPAddress";
@@ -27,7 +26,7 @@ public interface Constants {
 	public static final String EVENT_NAME = "eventName";
 	public static final String EVENT_TIME = "eventTime";
 	public static final String REQUEST_PARAMETERS = "requestParameters";
-	public static final String OBJECT_TYPE = "table"; //for dynamodb
+	public static final String OBJECT_TYPE = "table"; // for dynamodb
 	public static final String PRINCIPAL_ID = "principalId";
 	public static final String ACCOUNT_ID = "accountId";
 	public static final String ACCESS_KEY_ID = "accessKeyId";
@@ -38,7 +37,7 @@ public interface Constants {
 	public static final String KEY = "key";
 	public static final String CONDITION_EXPRESSION = "conditionExpression";
 
-	//constants
+	// constants
 	public static final int CLIENT_PORT = -1;
 	public static final String SERVER_IP = "0.0.0.0";
 	public static final int SERVER_PORT = -1;
@@ -51,5 +50,8 @@ public interface Constants {
 
 	public static final String ERROR_CODE_ACCESS_DENIED = "AccessDenied";
 
-	
+	public static final String RESOURCE_ARN = "resourceArn";
+	public static final String BACKUP_ARN = "backupArn";
+	public static final String GUARD_RECORD_DID_NOT_EXIST = "GuardRecord_did_not_exist";
+
 }
