@@ -217,10 +217,12 @@ $ActionFileDefaultTemplate RFC3339Format
 
 5. Let's make a template that tells where you want to send your audit logs. Add the below template at the end of the rsyslog.conf file.
 
+ **Syslog transport — rsyslog configuration**: Use `@@` (TCP) instead of `@` (UDP) in the rsyslog configuration file when forwarding logs to Guardium. Starting with Guardium Data Protection 12.2.3, the appliance uses nftables, which silently drops UDP (single `@`) syslog traffic.
+
 ```
 #Send logs to client server
 $PreserveFQDN on
-*.* @<Client-ip>:5514;RFC3339Format
+*.* @@<Client-ip>:5514;RFC3339Format
 $ActionQueueFileName queue
 $ActionQueueMaxDiskSpace 1g
 $ActionQueueType LinkedList
