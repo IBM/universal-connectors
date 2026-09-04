@@ -176,3 +176,7 @@ An installed profile can be uninstalled or reinstalled if needed.
 2. From the list of available actions, select the desired option **Uninstall** or **Reinstall**.
 
 ---
+## Limitation
+1. Snowflake’s ACCOUNT_USAGE views have a built‑in ingestion delay of 45 minutes to 2 hours. Because  these views are not real‑time, newly generated query, session, and login events do not appear immediately after they occur.
+
+    To ensure complete and consistent data capture, the Universal Connector uses a default delay interval of 2 hours when polling Snowflake. As a result, the first full batch of Snowflake activity will only appear in the Full SQL reports approximately 2 hours after the connector is deployed.
