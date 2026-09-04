@@ -180,6 +180,7 @@ In the `Input configuration` section, refer to the Filebeat section.
 ## Notes
 
 - The filter supports events sent through Syslog or Filebeat. It relies on the "mysql_audit_log:" prefix in the event message for the JSON portion of the audit to be parsed.
+- **Syslog transport — rsyslog configuration**: Use `@@` (TCP) instead of `@` (UDP) in the rsyslog configuration file when forwarding logs to Guardium. Starting with Guardium Data Protection 12.2.3, the appliance uses nftables, which silently drops UDP (single `@`) syslog traffic.
 - Field _server_hostname_ (required) - Server hostname is expected (extracted from the second field of the syslog message).
 - Field _server_ip_ - States the IP address of the MySQL server, if it is available to the filter plug-in. The filter will use this IP address instead of localhost IP addresses that are reported by MySQL, if actions were performed directly on the database server.
 - The client "Source program" is not available in messages sent by MySQL. This is because this data is sent only in the first audit log message upon database connection - and the filter plug-in doesn't aggregate data from different messages.
