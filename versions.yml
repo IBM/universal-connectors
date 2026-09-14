@@ -17,3 +17,4 @@ dependencies:
   tinkergraphGremlin: 3.6.8
   rdf4jQueryparserSparql: 5.0.3
   commonsBeanutils: 1.11.0
+  jacksonDatabind: 2.18.10
