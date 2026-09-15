@@ -163,20 +163,21 @@ class ParserTest {
     }
 
     @Test
-    void testServerHostAsIPSetInSessionLocator() {
+    void testServerHostIsUsedAsHostname() {
+        // ServerHost is always a hostname from the rsyslog template; server IP is always DEFAULT_IP.
         String payload = "{"
                 + "\"Timestamp\":1768332558964138753,"
                 + "\"EventType\":\"query_execute\","
                 + "\"Statement\":\"SELECT 1\","
                 + "\"User\":\"test_user\","
-                + "\"ServerHost\":\"10.0.0.5\""
+                + "\"ServerHost\":\"my-cockroach-server\""
                 + "}";
 
         final JsonObject data = new Gson().fromJson(payload, JsonObject.class);
         Record record = parser.parseRecord(data);
 
-        assertEquals("10.0.0.5", record.getSessionLocator().getServerIp());
-        assertEquals(NOT_AVAILABLE, record.getAccessor().getServerHostName());
+        assertEquals("my-cockroach-server", record.getAccessor().getServerHostName());
+        assertEquals("0.0.0.0", record.getSessionLocator().getServerIp());
     }
 
     @Test
