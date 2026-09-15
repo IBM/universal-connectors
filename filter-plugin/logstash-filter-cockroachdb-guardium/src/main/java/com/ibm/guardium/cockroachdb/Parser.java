@@ -18,12 +18,8 @@ import com.ibm.guardium.universalconnector.commons.structures.Sentence;
 import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
-import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 import static com.ibm.guardium.cockroachdb.Constants.*;
 import static com.ibm.guardium.universalconnector.commons.structures.Accessor.LANGUAGE_FREE_TEXT_STRING;
@@ -38,7 +34,6 @@ import static com.ibm.guardium.universalconnector.commons.structures.Accessor.LA
 public class Parser {
 
     private static Logger logger = LogManager.getLogger(Parser.class);
-    private static final InetAddressValidator inetAddressValidator = InetAddressValidator.getInstance();
 
     public Parser() {
     }
@@ -116,18 +111,10 @@ public class Parser {
 
         accessor.setServerOs(UNKNOWN_STRING);
         accessor.setServerDescription(UNKNOWN_STRING);
-
-        // Set server hostname - only if ServerHost is NOT an IP address
-        // If it's an IP, set to N.A. since we don't have the actual hostname
-        String serverHostName = NOT_AVAILABLE;
-        if (data.has(SERVER_HOST) && !data.get(SERVER_HOST).isJsonNull()) {
-            String serverHost = data.get(SERVER_HOST).getAsString();
-            // Only set as hostname if it's NOT a valid IP address
-            if (!inetAddressValidator.isValid(serverHost)) {
-                serverHostName = serverHost;
-            }
-            // else: it's an IP, keep serverHostName as NOT_AVAILABLE
-        }
+        // Set server hostname from ServerHost field (populated from serverHostname= in rsyslog template)
+        String serverHostName = data.has(SERVER_HOST) && !data.get(SERVER_HOST).isJsonNull()
+                ? data.get(SERVER_HOST).getAsString()
+                : NOT_AVAILABLE;
 
         accessor.setServerHostName(serverHostName);
         accessor.setClientHostName(UNKNOWN_STRING);
@@ -157,17 +144,8 @@ public class Parser {
         sessionLocator.setClientPort(data.has(CLIENT_PORT) && !data.get(CLIENT_PORT).isJsonNull()
                 ? Integer.parseInt(data.get(CLIENT_PORT).getAsString())
                 : DEFAULT_PORT);
-
-        // Set server IP only if ServerHost field contains a valid IP address
-        String serverIp = DEFAULT_IP;
-        if (data.has(SERVER_HOST) && !data.get(SERVER_HOST).isJsonNull()) {
-            String serverHost = data.get(SERVER_HOST).getAsString();
-            // Only set as IP if it's a valid IP address
-            if (inetAddressValidator.isValid(serverHost)) {
-                serverIp = serverHost;
-            }
-        }
-        sessionLocator.setServerIp(serverIp);
+        // ServerHost is always a hostname (not an IP) — server IP defaults to 0.0.0.0
+        sessionLocator.setServerIp(DEFAULT_IP);
 
         int serverPort = DEFAULT_PORT;
         if (data.has(SERVER_PORT) && !data.get(SERVER_PORT).isJsonNull()) {
