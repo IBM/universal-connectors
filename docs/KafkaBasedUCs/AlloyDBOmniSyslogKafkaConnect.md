@@ -527,7 +527,6 @@ The following table describes the fields that are specific to Kafka Connect and 
 After creating a profile, you must test the connection to ensure that the provided configuration is valid.
 
 **Note:**
-- Only one syslog profile can use a specific port at a time across all datasource profiles in your Guardium environment. If multiple syslog profiles are configured to use the same port, connection conflicts occur.
 - You must test the connection immediately before you deploy the profile. The test connection validates that the port is available.
 - If you test a connection and then wait before deployment, another syslog profile might claim the port and cause the deployment to fail.
 - If a test connection is successful and the profile is deployed, other profiles using the same port will also succeed in testing unless the port is actually occupied by the deployed profile.
