@@ -236,9 +236,6 @@ The rsyslog template **must** include `serverHostname=` and `serverPort=` values
    )
    ```
 
-   **Note:**
-   - The `serverHostname=` value in the template must exactly match the **Server hostname** field configured in the Guardium universal connector. If they differ, messages are dropped.
-
 6. Restart the rsyslog service:
 	```bash
 	systemctl restart rsyslog

@@ -195,15 +195,14 @@ Yugabyte syslog-based profile. Fields may vary depending on the actual Yugabyte 
 | **Database hostname** | Hostname or IP address of the YugabyteDB server, node, or cluster endpoint whose audit logs are being collected. This identifies the database source represented by the incoming audit events; do not use the Kafka, Guardium, or syslog relay host unless that host is also the YugabyteDB source being documented.              |
 | **No traffic threshold (minutes)** | Number of minutes the profile can go without receiving Yugabyte audit events before it is treated as no-traffic or inactive. Set this value based on the expected audit-event frequency. Use a lower value for active test systems and a higher value for low-traffic environments to avoid false no-traffic alerts.              |
 
-## Testing a connection
+## Testing a Connection
 
-After creating a profile, test the configuration to ensure that the provided values are valid.
+After you create a profile, test the connection to ensure that the configuration is valid.
 
 **Note:**
-- You must test the connection immediately before you deploy the profile. The test connection validates that the port is available.
-- If you test a connection and then wait before deployment, another syslog profile might claim the port and cause the deployment to fail.
-- If a test connection is successful and the profile is deployed, other profiles using the same port will also succeed in testing unless the port is actually occupied by the deployed profile.
-- Test connection will fail for a profile that is already deployed. When a profile is deployed, it occupies the port defined in its configuration. Since the port is already in use, any subsequent connection test will fail with a port conflict error.
+- If you test a connection and then wait before deployment, another syslog profile might claim the port with a conflicting listener type and cause the deployment to fail. Always test connection immediately before deploying a profile.
+- Multiple profiles sharing the same port and listener type all pass the connection test, whether or not any of them are already deployed.
+- A test connection fails only if the port is in use by a **different listener type** (TCP vs TCPSSL) or by a **non-syslog process**.
 
 ### Procedure
 
