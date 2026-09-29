@@ -32,7 +32,7 @@ Kafka-connect is a framework for streaming data between Apache Kafka and other s
 1.  [Create a topic in Pub/Sub](https://cloud.google.com/pubsub/docs/create-topic#create_a_topic_2).
 2.  [Create a subscription in Pub/Sub](https://cloud.google.com/pubsub/docs/create-subscription#create_a_pull_subscription)
 3.  [Create a service account](https://developers.google.com/workspace/guides/create-credentials#create_a_service_account).
-    - To provide subscription access to the service account, select the **Pub/Sub Subscriber** role from the role selection list when you are creating the service account.
+    - Assign the **Pub/Sub Viewer** role to the service account. This is the minimum required role. If you encounter issues, you can additionally assign the **Pub/Sub Subscriber** role.
     - You do not need to grant users access to this service account.
 4.  [Create credentials for a service account](https://developers.google.com/workspace/guides/create-credentials#create_credentials_for_a_service_account). The key is used by the Logstash input plugin configuration file.
 5.  [Create a log sink in Pub/Sub](https://cloud.google.com/logging/docs/export/configure_export_v2#creating_sink).
