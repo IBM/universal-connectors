@@ -81,7 +81,7 @@ assigned.
 2. Select **project** and click **Create Service Account**.
 3. Enter a **Service account name**, such as Bigtable-Pub/Sub.
 4. Click **Create**.
-5. The owner role is required for the service account. Select the owner role from the drop-down menu.
+5. Assign the **Pub/Sub Viewer** role to the service account. This is the minimum required role. If you encounter issues, you can additionally assign the **Pub/Sub Subscriber** role.
 6. Click **Continue**. You do not need to grant users access to this service account.
 7. Click **Create Key**. This key is used by the Logstash input plug-in configuration file.
 8. Select **JSON** and click **Create**.
