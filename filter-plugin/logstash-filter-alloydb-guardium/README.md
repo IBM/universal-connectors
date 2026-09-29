@@ -36,7 +36,7 @@ and collections (objects) involved. The AlloyDB Logstash filter plug-in supports
 1. [Create a topic in Pub/Sub](https://cloud.google.com/pubsub/docs/create-topic#create_a_topic_2).
 2. [Create a subscription in Pub/Sub](https://cloud.google.com/pubsub/docs/create-subscription#create_a_pull_subscription)
 3. [Create service account credentials](https://developers.google.com/workspace/guides/create-credentials#create_a_service_account):
-   - To provide subscription access to the service account, select the **Pub/Sub Subscriber** role from the role selection list during the service account creation process.
+   - Assign the **Pub/Sub Viewer** role to the service account. This is the minimum required role. If you encounter issues, you can additionally assign the **Pub/Sub Subscriber** role.
    - You do not need to grant users access to this service account.
 4. [Create credentials for a service account](https://developers.google.com/workspace/guides/create-credentials#create_credentials_for_a_service_account). The key is used by the Logstash input plug-in configuration file.
 

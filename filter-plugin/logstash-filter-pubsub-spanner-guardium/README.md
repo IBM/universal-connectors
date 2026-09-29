@@ -80,7 +80,7 @@ To set permissions for the log sink to route to its destination, do the followin
 - Select project and click Create Service Account.
 - Enter a Service account name, such as spanner-pubsub.
 - Click Create.
-- The service account needs access to a subscription that was created earlier. Use the Select a role drop-down menu to add the Pub/Sub Subscriber role. ​
+- Assign the **Pub/Sub Viewer** role to the service account. This is the minimum required role. If you encounter issues, you can additionally assign the **Pub/Sub Subscriber** role.
 - Click Continue. You do not need to grant users access to this service account.
 - Click the Create Key. The key is used by the Logstash input plug-in configuration file.
 - Select JSON and click Create.

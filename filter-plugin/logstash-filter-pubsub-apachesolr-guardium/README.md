@@ -135,7 +135,7 @@ You can learn more about [Ops Agent installation](https://cloud.google.com/monit
 - Select project and click on Create Service Account.
 - Enter a Service account name, such as apachesolrgcp-pubsub.
 - Click Create.
-- The service account needs access to a subscription that was created earlier. Use the Select a role drop-down menu to add the Pub/Sub Subscriber role.
+- Assign the **Pub/Sub Viewer** role to the service account. This is the minimum required role. If you encounter issues, you can additionally assign the **Pub/Sub Subscriber** role.
 - Click Continue. The user does not need to grant users access to this service account.
 - Click the Create key. The key is used by the logstash input plug-in configuration file.
 - Select JSON and click Create.
