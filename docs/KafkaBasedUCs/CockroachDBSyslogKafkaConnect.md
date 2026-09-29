@@ -182,6 +182,10 @@ If either value is missing, messages are dropped and do not appear in Guardium.
    module(load="imfile" PollingInterval="10")
    $MaxMessageSize 64k
 
+   global(
+      DefaultNetstreamDriverCAFile="/path/to/certs/ca.pem"
+   )
+
    template(name="AuditFormat" type="string"
      string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% - - - serverHostname=<DB_HOSTNAME> serverPort=<DB_PORT> %rawmsg%\n"
    )
@@ -191,7 +195,7 @@ If either value is missing, messages are dropped and do not appear in Guardium.
            Protocol="tcp"
            StreamDriver="gtls"
            StreamDriverMode="1"
-           StreamDriverAuthMode="anon"
+           StreamDriverAuthMode="x509/certvalid" # StreamDriverAuthMode="anon"
            template="AuditFormat"
            Target=["<KAFKA_BROKER_1>", "<KAFKA_BROKER_2>", "<KAFKA_BROKER_3>", ...]
            Port="<TARGET_PORT>"
@@ -370,7 +374,6 @@ The following table describes the fields that are specific to CockroachDB Over S
 After you create a profile, test the connection to ensure that the configuration is valid.
 
 **Note:**
-- If you test a connection and then wait before deployment, another syslog profile might claim the port with a conflicting listener type and cause the deployment to fail. Always test connection immediately before deploying a profile.
 - Multiple profiles sharing the same port and listener type all pass the connection test, whether or not any of them are already deployed.
 - A test connection fails only if the port is in use by a **different listener type** (TCP vs TCPSSL) or by a **non-syslog process**.
 
