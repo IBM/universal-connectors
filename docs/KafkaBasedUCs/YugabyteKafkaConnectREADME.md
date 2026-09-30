@@ -126,7 +126,7 @@ datasource profile.
    ```conf
    template(name="YugabyteCsv"
             type="string"
-            string="%hostname%,%fromhost-ip%,%msg%\n")
+            string="<hostname>,<fromhost-ip>,<host-port>,%msg%\n")
    ```
 
 3. Forward the events to the syslog listener host and port.
@@ -136,8 +136,44 @@ datasource profile.
    ```conf
    ruleset(name="yugabyte_to_guardium") {
     action(type="omfwd"
-        target="perffidelitykf2.dev.fyre.ibm.com"
-        port="6514"
+        target="<KAFKA_BROKER_1>"
+        port="<TARGET_PORT>"
+        protocol="tcp"
+        template="YugabyteCsv"
+        # High traffic configuration
+        action.resumeRetryCount="-1"
+        action.resumeInterval="10"
+        action.reportSuspension="off"
+        action.reportSuspensionContinuation="off"
+        # Queue configuration for high throughput
+        queue.type="LinkedList"
+        queue.size="100000"
+        queue.dequeueBatchSize="2000"
+        queue.workerThreads="4"
+        queue.timeoutEnqueue="0"
+        queue.saveOnShutdown="on"
+    )
+       action(type="omfwd"
+        target="<KAFKA_BROKER_2>"
+        port="<TARGET_PORT>"
+        protocol="tcp"
+        template="YugabyteCsv"
+        # High traffic configuration
+        action.resumeRetryCount="-1"
+        action.resumeInterval="10"
+        action.reportSuspension="off"
+        action.reportSuspensionContinuation="off"
+        # Queue configuration for high throughput
+        queue.type="LinkedList"
+        queue.size="100000"
+        queue.dequeueBatchSize="2000"
+        queue.workerThreads="4"
+        queue.timeoutEnqueue="0"
+        queue.saveOnShutdown="on"
+    )
+       action(type="omfwd"
+        target="<KAFKA_BROKER_3>"
+        port="<TARGET_PORT>"
         protocol="tcp"
         template="YugabyteCsv"
         # High traffic configuration
