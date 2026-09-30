@@ -22,7 +22,6 @@ To see if a particular plug-in is supported by older versions, please refer to t
 - [Azure MYSQL](../filter-plugin/logstash-filter-mysql-azure-guardium/mainREADME.md)
 - [Azure SQL](../filter-plugin/logstash-filter-azure-sql-guardium/mainREADME.md)
 - [Capella](../filter-plugin/logstash-filter-capella-guardium/mainREADME.md)
-- [Claude](KafkaBasedUCs/ClaudeOverClaudeKafkaConnect.md)
 - [CockroachDB](../filter-plugin/logstash-filter-cockroachdb-guardium/mainREADME.md)
 - [Couchbase](../filter-plugin/logstash-filter-couchbasedb-guardium/mainREADME.md)
 - [CouchDB](../filter-plugin/logstash-filter-couchdb-guardium/README.md)
