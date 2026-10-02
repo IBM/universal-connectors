@@ -8,7 +8,7 @@ databases through rsyslog forwarding by using Kafka Connect.
 * Environments: On-prem
 * Supported inputs: Kafka connect Syslog 2.0
 * Supported Guardium versions:
-    * Guardium Data Protection: Appliance bundle 12.2 or later
+    * Guardium Data Protection: Appliance bundle 12.2.4 or later
 * Tested DB version: 8.2.1
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems.

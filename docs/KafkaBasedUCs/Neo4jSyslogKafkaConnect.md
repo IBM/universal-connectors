@@ -8,7 +8,7 @@ Create and configure datasource profiles through Central Manager for **Neo4j ove
 * **Environment:** On-premises
 * **Supported inputs:** Kafka Connect Syslog 2.0 (push)
 * **Supported Guardium versions:**
-    * Guardium Data Protection: Appliance bundle 12.2 or later
+    * Guardium Data Protection: Appliance bundle 12.2.4 or later
 
 Kafka Connect is a framework for streaming data between Apache Kafka and other systems. This connector enables monitoring of Neo4j query, security, and HTTP logs through syslog.
 
