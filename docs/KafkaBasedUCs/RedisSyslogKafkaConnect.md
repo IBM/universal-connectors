@@ -8,8 +8,8 @@ databases through rsyslog forwarding by using Kafka Connect.
 * Environments: On-prem
 * Supported inputs: Kafka connect Syslog 2.0
 * Supported Guardium versions:
-    * Guardium Data Protection: Appliance bundle 12.2.4 or later
-* Tested DB version: 8.2.1
+    * Guardium Data Protection: Appliance bundle 12.2 or later
+* Tested DB version: Redis on-prem 8.2.1, Containerized Redis Enterprise 8.2.0-78
 
 Kafka-connect is a framework for streaming data between Apache Kafka and other systems.
 
@@ -99,7 +99,7 @@ To forward Redis Enterprise audit logs to Guardium through Kafka, configure rsys
    sudo apt-get update && sudo apt-get install -y rsyslog
    ```
 
-3. Create the rsyslog configuration file for Redis Enterprise:
+3. Create the rsyslog configuration file for Redis Enterprise on-prem:
 
    ```bash
    cat /etc/rsyslog.conf
@@ -152,7 +152,54 @@ To forward Redis Enterprise audit logs to Guardium through Kafka, configure rsys
        # Prevent these logs from cluttering your standard /var/log/messages
        stop
    ```
-
+   
+    For containerized Redis Enterprise 8.2.0-78
+    ```bash
+    module(load="imtcp")
+    input(type="imtcp" port="514")
+   
+    template(name="RedisAuditJsonTemplate" type="string"
+      string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% redis-audit - - - serverHostname=<HOSTNAME> serverPort=<PORT> %rawmsg%\n"
+    )
+    
+    if ($rawmsg contains "<DB NAME>") then {
+    
+        action(type="omfile"
+               file="/var/log/redis_audit.log"
+               template="RedisAuditJsonTemplate")
+    
+        action(type="omfwd"
+               Target="<kafka-connect-hostname-1>"
+               Port="6514"
+               Protocol="tcp"
+               template="RedisAuditJsonTemplate"
+               queue.type="LinkedList"
+               queue.size="10000"
+               action.resumeRetryCount="-1"
+               action.resumeInterval="10")
+    
+        action(type="omfwd"
+               Target="<kafka-connect-hostname-2>"
+               Port="6514"
+               Protocol="tcp"
+               template="RedisAuditJsonTemplate"
+               queue.type="LinkedList"
+               queue.size="10000"
+               action.resumeRetryCount="-1"
+               action.resumeInterval="10")
+    
+        action(type="omfwd"
+               Target="<kafka-connect-hostname-3>"
+               Port="6514"
+               Protocol="tcp"
+               template="RedisAuditJsonTemplate"
+               queue.type="LinkedList"
+               queue.size="10000"
+               action.resumeRetryCount="-1"
+               action.resumeInterval="10")
+    
+        stop
+    ```
    Replace `<kafka-connect-hostname-1>`, `<kafka-connect-hostname-2>`, and `<kafka-connect-hostname-3>` with your
    Kafka Connect server hostnames or IP addresses. If you have fewer Kafka nodes, remove the extra action blocks.
 
