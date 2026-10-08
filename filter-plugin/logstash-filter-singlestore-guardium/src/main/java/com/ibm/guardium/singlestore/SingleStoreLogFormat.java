@@ -21,6 +21,7 @@ public class SingleStoreLogFormat {
     public static final String EVENT_TYPE = "eventType";
     public static final String DB_USER = "dbUser";
     public static final String DB_NAME = "dbName";
+    public static final String SERVER_HOSTNAME = "serverHostname";
     public static final String SERVER_PORT = "serverPort";
     public static final String QUERY = "query";
     public static final String LOGIN_STATUS = "loginStatus";
@@ -50,7 +51,7 @@ public class SingleStoreLogFormat {
             // Split on commas that are NOT preceded by backslash
             // This handles escaped commas (\,) in the log format
             String[] values = logMessage.split("(?<!\\\\),");
-
+            
             // Unescape both comma separators AND backslashes to get original SQL
             for (int i = 0; i < values.length; i++) {
                 if (values[i] != null) {
@@ -63,7 +64,6 @@ public class SingleStoreLogFormat {
 
             // Basic validation - USER_LOGOUT has 12 fields, USER_LOGIN has 13+, normal events have 12+
             if (values.length < 11) {
-                log.warn("Log format error: Not enough fields in log event. Expected at least 11, got {}", values.length);
                 return logMap;
             }
 
@@ -74,16 +74,22 @@ public class SingleStoreLogFormat {
             logMap.put(DB_USER, values[7] != null ? values[7] : "");
             logMap.put(DB_NAME, values[8] != null ? values[8] : "");
 
-            // Extract server port from format like "port:1234" with null check
+            // Extract server hostname and port from format like "hostname:port" with null check
             if (values[3] != null) {
                 String serverPortField = values[3];
                 String[] portParts = serverPortField.split(":");
-                if (portParts.length > 1 && portParts[1] != null) {
-                    logMap.put(SERVER_PORT, portParts[1]);
+                if (portParts.length > 0 && portParts[0] != null && !portParts[0].trim().isEmpty()) {
+                    logMap.put(SERVER_HOSTNAME, portParts[0].trim());
+                } else {
+                    logMap.put(SERVER_HOSTNAME, "");
+                }
+                if (portParts.length > 1 && portParts[1] != null && !portParts[1].trim().isEmpty()) {
+                    logMap.put(SERVER_PORT, portParts[1].trim());
                 } else {
                     logMap.put(SERVER_PORT, "");
                 }
             } else {
+                logMap.put(SERVER_HOSTNAME, "");
                 logMap.put(SERVER_PORT, "");
             }
 
@@ -109,4 +115,3 @@ public class SingleStoreLogFormat {
         }
     }
 }
-

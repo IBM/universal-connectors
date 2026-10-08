@@ -96,6 +96,13 @@ public class SingleStoredbGuardiumFilter implements Filter {
 
                 getParsedEvent(e.getField("message").toString(), e);
 
+                // If getParsedEvent couldn't parse the log line (e.g. too few fields),
+                // it leaves 'ts' unset. Skip those events rather than propagating an error.
+                if (e.getField(Constants.TIMESTAMP) == null) {
+                    log.debug("Skipping unparseable event (insufficient log fields): {}", e.getField("message"));
+                    continue;
+                }
+
                 JsonObject inputData = inputData(e);
                 if (inputData == null) {
                     log.error("Failed to create inputData from event");
@@ -204,7 +211,6 @@ public class SingleStoredbGuardiumFilter implements Filter {
             Map<String, String> logMap = SingleStoreLogFormat.parseLog(logEvent);
 
             if (logMap.isEmpty()) {
-                log.error("Failed to parse log event: {}", logEvent);
                 return;
             }
 
@@ -227,19 +233,18 @@ public class SingleStoredbGuardiumFilter implements Filter {
                 event.setField(Constants.DB_NAME, "");
             }
 
-            if (event.getData() != null) {
-                if (event.getData().containsKey("serverIP")) {
-                    Object serverIP = event.getField("serverIP");
-                    if (serverIP != null) {
-                        event.setField(Constants.SERVER_IP, serverIP.toString());
-                    }
-                }
+            Object serverIP = event.getField("serverIP");
+            if (serverIP != null) {
+                event.setField(Constants.SERVER_IP, serverIP.toString());
+            }
 
-                if (event.getData().containsKey("serverHostname")) {
-                    Object serverHostname = event.getField("serverHostname");
-                    if (serverHostname != null) {
-                        event.setField(Constants.SERVER_HOSTNAME, serverHostname.toString());
-                    }
+            Object serverHostname = event.getField("serverHostname");
+            if (serverHostname != null && !serverHostname.toString().trim().isEmpty()) {
+                event.setField(Constants.SERVER_HOSTNAME, serverHostname.toString().trim());
+            } else {
+                String logHostname = logMap.get(SingleStoreLogFormat.SERVER_HOSTNAME);
+                if (logHostname != null && !logHostname.isEmpty()) {
+                    event.setField(Constants.SERVER_HOSTNAME, logHostname);
                 }
             }
 

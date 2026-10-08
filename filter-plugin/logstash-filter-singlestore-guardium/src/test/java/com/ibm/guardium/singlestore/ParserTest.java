@@ -8,26 +8,21 @@ package com.ibm.guardium.singlestore;
 import co.elastic.logstash.api.Event;
 import com.google.gson.JsonObject;
 import com.ibm.guardium.universalconnector.commons.structures.Accessor;
-import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
-import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
-import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
-import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
-import com.ibm.guardium.universalconnector.commons.structures.Time;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 public class ParserTest {
 
-    String singlestoreString = "133855,2024-06-24 07:16:16.901,UTC,53b9ae806c1c:3306,agg,1,100000,root,test_db,,1308432953418920798,CREATE DATABASE uc_test_db";
+    String singlestoreString = "133855,2024-06-24 07:16:16.901,UTC,singlestore.node1:3306,agg,1,100000,root,test_db,,1308432953418920798,CREATE DATABASE uc_test_db";
     Parser parser = new Parser();
 
     @Test
@@ -71,6 +66,33 @@ public class ParserTest {
     }
 
     @Test
+    public void testParseAccessorWithServerHostname() {
+        Event e = getParsedEvent(singlestoreString);
+        // The hostname comes from the log field position 3 (e.g. "singlestore.node1:3306" → "singlestore.node1")
+        JsonObject inputData = inputData(e);
+        // Simulate the serverHostname being set from [host][name] in the .conf add_field
+        inputData.addProperty(Constants.SERVER_HOSTNAME, "singlestore.server.com");
+        final Accessor result = parser.parseAccessor(inputData, "test_db");
+
+        Assert.assertEquals("singlestore.server.com", result.getServerHostName());
+    }
+
+    @Test
+    public void testParseAccessorFallsBackToNA_WhenHostnameMissing() {
+        JsonObject inputData = new JsonObject();
+        final Accessor result = parser.parseAccessor(inputData, "test_db");
+
+        Assert.assertEquals(Constants.NOT_AVAILABLE, result.getServerHostName());
+    }
+
+    @Test
+    public void testSingleStoreLogFormatExtractsHostnameAndPort() {
+        Map<String, String> logMap = SingleStoreLogFormat.parseLog(singlestoreString);
+        Assert.assertEquals("singlestore.node1", logMap.get(SingleStoreLogFormat.SERVER_HOSTNAME));
+        Assert.assertEquals("3306", logMap.get(SingleStoreLogFormat.SERVER_PORT));
+    }
+
+    @Test
     public void testGetTime() {
         Event e = getParsedEvent(singlestoreString);
         JsonObject inputData = inputData(e);
@@ -96,7 +118,7 @@ public class ParserTest {
 
     @Test
     public void testParseExceptionRecord() {
-        String failedLoginString = "1546,2025-05-07 11:07:20.523,PDT,53b9ae806c1c:3308,leaf,USER_LOGIN,99985,root,localhost,,password,FAILURE: Access denied";
+        String failedLoginString = "1546,2025-05-07 11:07:20.523,PDT,singlestore.node1:3308,leaf,USER_LOGIN,99985,root,localhost,,password,FAILURE: Access denied";
         Event e = getParsedEvent(failedLoginString);
         JsonObject inputData = inputData(e);
         Record result = parser.parseExceptionRecord(inputData);
@@ -127,7 +149,7 @@ public class ParserTest {
 
     @Test
     public void testParseRecordWithLoginEvent() {
-        String loginString = "1546,2025-05-07 11:07:20.523,PDT,53b9ae806c1c:3308,leaf,USER_LOGIN,99985,root,localhost,,password,SUCCESS";
+        String loginString = "1546,2025-05-07 11:07:20.523,PDT,singlestore.node1:3308,leaf,USER_LOGIN,99985,root,localhost,,password,SUCCESS";
         Event e = getParsedEvent(loginString);
         JsonObject inputData = inputData(e);
         Record result = parser.parseRecord(inputData);
@@ -142,7 +164,7 @@ public class ParserTest {
 
     @Test
     public void testParseRecordWithLogoutEvent() {
-        String logoutString = "29428,2026-08-19 09:41:23.180,PDT,53b9ae806c1c:3306,agg,USER_LOGOUT,100000,root,localhost,root@%,plaintext,memsqlctl";
+        String logoutString = "29428,2026-08-19 09:41:23.180,PDT,singlestore.node1:3306,agg,USER_LOGOUT,100000,root,localhost,root@%,plaintext,memsqlctl";
         Event e = getParsedEvent(logoutString);
         JsonObject inputData = inputData(e);
         Record result = parser.parseRecord(inputData);
@@ -202,13 +224,9 @@ public class ParserTest {
         JsonObject inputData = inputData(e);
         inputData.remove(Constants.QUERY_STATEMENT);
 
-        try {
-            Data result = parser.parseData(inputData);
-            // Should handle null gracefully
-            Assert.assertNotNull(result);
-        } catch (Exception ex) {
-            // Expected to handle null
-        }
+        Data result = parser.parseData(inputData);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(Constants.UNKNOWN_STRING, result.getOriginalSqlCommand());
     }
 
     @Test
@@ -237,6 +255,34 @@ public class ParserTest {
         Assert.assertEquals(0, result.getTimstamp());
     }
 
+    @Test
+    public void testUnknownDbNameUppercaseMapsToNA() {
+        JsonObject inputData = new JsonObject();
+        inputData.addProperty(Constants.DB_NAME, "[UNKNOWN]");
+        inputData.addProperty("message", "");
+        Record result = parser.getInitialRecord(inputData);
+        Assert.assertEquals(Constants.NOT_AVAILABLE, result.getDbName());
+        Assert.assertEquals(Constants.NOT_AVAILABLE, result.getAccessor().getServiceName());
+    }
+
+    @Test
+    public void testUnknownDbNameLowercaseMapsToNA() {
+        JsonObject inputData = new JsonObject();
+        inputData.addProperty(Constants.DB_NAME, "[unknown]");
+        inputData.addProperty("message", "");
+        Record result = parser.getInitialRecord(inputData);
+        Assert.assertEquals(Constants.NOT_AVAILABLE, result.getDbName());
+        Assert.assertEquals(Constants.NOT_AVAILABLE, result.getAccessor().getServiceName());
+    }
+
+    @Test
+    public void testParseAccessorUnknownServiceNameMapsToNA() {
+        JsonObject inputData = new JsonObject();
+        inputData.addProperty(Constants.DB_USER, "root");
+        final Accessor result = parser.parseAccessor(inputData, "[unknown]");
+        Assert.assertEquals(Constants.NOT_AVAILABLE, result.getServiceName());
+    }
+
 //	    ----------------------------------- ---------------------------------------------------
 
     private JsonObject inputData(Event e) {
@@ -248,7 +294,7 @@ public class ParserTest {
         if (e.getField(Constants.SERVER_IP).toString() != null && !e.getField(Constants.SERVER_IP).toString().isEmpty()) {
             data.addProperty(Constants.SERVER_IP, e.getField(Constants.SERVER_IP).toString());
         }
-        if (e.getField(Constants.SERVER_HOSTNAME).toString() != null && e.getField(Constants.SERVER_HOSTNAME).toString().isEmpty()) {
+        if (e.getField(Constants.SERVER_HOSTNAME).toString() != null && !e.getField(Constants.SERVER_HOSTNAME).toString().isEmpty()) {
             data.addProperty(Constants.SERVER_HOSTNAME, e.getField(Constants.SERVER_HOSTNAME).toString());
         }
         if (e.getField(Constants.TIMESTAMP).toString() != null && !e.getField(Constants.TIMESTAMP).toString().isEmpty()) {
@@ -311,5 +357,4 @@ public class ParserTest {
         }
     }
 }
-
 
