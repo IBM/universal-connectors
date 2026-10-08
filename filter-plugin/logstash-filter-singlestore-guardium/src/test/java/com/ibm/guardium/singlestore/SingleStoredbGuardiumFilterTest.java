@@ -14,6 +14,8 @@ import org.junit.Test;
 import org.logstash.plugins.ContextImpl;
 
 import com.ibm.guardium.universalconnector.commons.GuardConstants;
+import com.ibm.guardium.universalconnector.commons.structures.Record;
+import com.google.gson.Gson;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,24 +33,7 @@ public class SingleStoredbGuardiumFilterTest {
         System.out.println("========================================||testFieldGuardRecord_singlestoredb||========================================");
         System.out.println("                                        ================================");
 
-        String singlestoreString = "133855,2024-06-24 07:16:16.901,UTC,53b9ae806c1c:3306,agg,1,100000,root,vector_db,,1308432953418920798,CREATE DATABASE `uc_vector_db`";
-        //String singlestoreString= "133865,2024-06-24 07:17:27.705,UTC,53b9ae806c1c:3306,agg,1,100000,root,uc_vector_db,,9259882968147880232,CREATE TABLE uc_vector_table (AND SCHEMA_NAME LIKE 'uc_vector_db' AND TABLE_SCHEMA LIKE 'uc_vector_db' WHERE t.table_schema like 'uc_vector_db'";
-        //String singlestoreString = "21596,2024-06-10 10:42:43.236,UTC,53b9ae806c1c:3306,agg,1,99995,root,information_schema,temp_1_5015_0,694459544968825767,SELECT IP_ADDR\\, PORT\\, MEMSQL_DIR\\, DISK_USED_B\\ FROM information_schema.mv_disk_usage JOIN information_schema.mv_nodes\\ ON mv_disk_usage.NODE_ID = mv_nodes.ID\\ ORDER BY IP_ADDR\\, PORT";
-        //String singlestoreString="21622,2024-06-10 10:47:43.235,UTC,53b9ae806c1c:3306,agg,USER_LOGIN,99995,root,localhost,root@%,password,SUCCESS";
-        //String singlestoreString="152310,2024-06-26 13:54:39.421,UTC,53b9ae806c1c:3306,agg,USER_LOGIN,99997,ayoub,10.3.220.131,,authentication_none,FAILURE: Access denied";
-        //String singlestoreString="133899,2024-06-24 07:21:24.876,UTC,53b9ae806c1c:3306,agg,1,100000,amine,uc_vector_db,temp_1_31066_6,5822492499834975395,update uc_vector_table set id=999 where id=122";
-        //String singlestoreString="133894,2024-06-24 07:20:50.842,UTC,53b9ae806c1c:3306,agg,1,100000,root,uc_vector_db,temp_1_31066_5,17413739249988095469,UPDATE employees SET salary = 80000.00 WHERE id = 1";
-        //String singlestoreString="133894,2024-06-24 07:20:50.842,UTC,53b9ae806c1c:3306,agg,1,100000,root,uc_vector_db,temp_1_31066_5,17413739249988095469,DELETE FROM employees WHERE id = 3";
-        //String singlestoreString="133894,2024-06-24 07:20:50.842,UTC,53b9ae806c1c:3306,agg,1,100000,root,uc_vector_db,temp_1_31066_5,17413739249988095469,INSERT INTO high_earners (id, name, salary) SELECT id, name, salary FROM employees WHERE salary > 100000";
-        //String singlestoreString="133894,2024-06-24 07:20:50.842,UTC,53b9ae806c1c:3306,agg,1,100000,root,uc_vector_db,temp_1_31066_5,17413739249988095469,INSERT INTO employees VALUES (1, 'John Doe', 'Engineer', 75000.00)";
-        //String singlestoreString="21881,2024-06-10 11:30:23.310,UTC,53b9ae806c1c:3306,agg,1,99995,root,information_schema,temp_1_5079_5,14799535652165267194,select * from information_schema.schemata where schema_name not in ('cluster', 'memsql') order by schema_name";
-        //String singlestoreString="21869,2024-06-10 11:30:19.227,UTC,53b9ae806c1c:3306,agg,1,99995,root,information_schema,temp_1_5078_1,11951698597271110224,SELECT @@max_allowed_packet\\, @@aggregator_id";
-        //String singlestoreString="133872,2024-06-24 07:17:33.287,UTC,53b9ae806c1c:3306,agg,1,99993,distributed,uc_vector_db,,6408909967012182963,SHOW TABLE STATUS FROM `uc_vector_db`";
-        //String singlestoreString="21866,2024-06-10 11:29:58.831,UTC,53b9ae806c1c:3306,agg,1,99993,distributed,information_schema,temp_1_5077_3,4952243803313514788,/*!90621 OBJECT()*/ SELECT WITH(binary_serialization=1\\, binary_serialization_internal=1) `_MV_QUERY_PROSPECTIVE_HISTOGRAMS`.`DATABASE_NAME` AS `DATABASE_NAME`\\, `_MV_QUERY_PROSPECTIVE_HISTOGRAMS`.`TABLE_NAME` AS `TABLE_NAME`\\, `_MV_QUERY_PROSPECTIVE_HISTOGRAMS`.`COLUMN_NAME` AS `COLUMN_NAME`\\, `_MV_QUERY_PROSPECTIVE_HISTOGRAMS`.`JSON_KEY` AS `JSON_KEY`\\, MAX(`_MV_QUERY_PROSPECTIVE_HISTOGRAMS`.`USAGE_COUNT`) AS `USAGE_COUNT`\\, `_MV_QUERY_PROSPECTIVE_HISTOGRAMS`.`ACTIVITY_NAME` AS `ACTIVITY_NAME` FROM `_MV_QUERY_PROSPECTIVE_HISTOGRAMS` as `_MV_QUERY_PROSPECTIVE_HISTOGRAMS` WITH (disable_encoded_joins = TRUE) WHERE (NOT 0) GROUP BY 6\\, 1\\, 2\\, 3\\, 4 /*!90623 OPTION(NO_QUERY_REWRITE=1\\, INTERPRETER_MODE=INTERPRET_FIRST)*/";
-        //String singlestoreString="21866,2024-06-10 11:29:58.831,UTC,53b9ae806c1c:3306,agg,1,99993,distributed,information_schema,temp_1_5077_3,4952243803313514788,SELECT first_name, (SELECT department_name FROM departments WHERE departments.department_id = employees.department_id) AS department_name FROM employees";
-        //String singlestoreString="21866,2024-06-10 11:29:58.831,UTC,53b9ae806c1c:3306,agg,1,99993,distributed,information_schema,temp_1_5077_3,4952243803313514788,SELECT first_name FROM employees WHERE department_id IN (SELECT department_id FROM departments WHERE location_id>1500)";
-
-
+        String singlestoreString = "133855,2024-06-24 07:16:16.901,UTC,singlestore.node1:3306,agg,1,100000,root,vector_db,,1308432953418920798,CREATE DATABASE `uc_vector_db`";
         Context context = new ContextImpl(null, null);
         SingleStoredbGuardiumFilter filter = new SingleStoredbGuardiumFilter("test-id", null, context);
 
@@ -57,13 +42,35 @@ public class SingleStoredbGuardiumFilterTest {
         TestMatchListener matchListener = new TestMatchListener();
 
         if (e != null) {
-            e.setField(Constants.SERVER_IP, "1.1.1.1");
+            e.setField(Constants.SERVER_IP, "10.0.0.1");
             e.setField(Constants.SERVER_HOSTNAME, "singlestore.server.com");
             Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
             Assert.assertEquals(1, results.size());
             Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
         }
 
+    }
+
+    @Test
+    public void testShortLogLineIsSkippedSilently() {
+        // 4-field internal audit entries like "126245,C,SUCCESS,0" should not produce
+        // an error record — they must be silently skipped without tagging or crashing.
+        String shortLog = "126245,C,SUCCESS,0";
+
+        Context context = new ContextImpl(null, null);
+        SingleStoredbGuardiumFilter filter = new SingleStoredbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        e.setField("message", shortLog);
+        e.setField(Constants.SERVER_IP, "10.0.0.1");
+        e.setField(Constants.SERVER_HOSTNAME, "singlestore.server.com");
+
+        TestMatchListener matchListener = new TestMatchListener();
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        // GuardRecord must NOT be set — the event was skipped
+        Assert.assertNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
     }
 
     @Test
@@ -77,6 +84,202 @@ public class SingleStoredbGuardiumFilterTest {
         Assert.assertEquals(expectedCleanedQuery, actualCleanedQuery);
     }
 
+    @Test
+    public void testServerHostnameFromEventMetadataTakesPrecedence() {
+        String logMessage = "133855,2024-06-24 07:16:16.901,UTC,singlestore.node1:3306,agg,1,100000,root,vector_db,,1308432953418920798,CREATE DATABASE `uc_vector_db`";
+
+        Context context = new ContextImpl(null, null);
+        SingleStoredbGuardiumFilter filter = new SingleStoredbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        e.setField("message", logMessage);
+        e.setField("serverHostname", "filebeat.override.hostname.com");
+        e.setField("serverIP", "10.0.0.1");
+
+        TestMatchListener matchListener = new TestMatchListener();
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+
+        Record record = new Gson().fromJson(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString(), Record.class);
+        Assert.assertEquals("filebeat.override.hostname.com", record.getAccessor().getServerHostName());
+    }
+
+    @Test
+    public void testServerHostnameFallsBackToAuditLogWhenMetadataMissing() {
+        String logMessage = "133855,2024-06-24 07:16:16.901,UTC,singlestore.node1:3306,agg,1,100000,root,vector_db,,1308432953418920798,CREATE DATABASE `uc_vector_db`";
+
+        Context context = new ContextImpl(null, null);
+        SingleStoredbGuardiumFilter filter = new SingleStoredbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        e.setField("message", logMessage);
+        // Do NOT set serverHostname on the event — simulate absence of Filebeat metadata
+        e.setField("serverIP", "10.0.0.1");
+
+        TestMatchListener matchListener = new TestMatchListener();
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+
+        Record record = new Gson().fromJson(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString(), Record.class);
+        Assert.assertEquals("singlestore.node1", record.getAccessor().getServerHostName());
+    }
+
+    @Test
+    public void testDMLInsertQuery() {
+        String logMessage = "133894,2024-06-24 07:20:50.842,UTC,singlestore.node1:3306,agg,1,100000,root,uc_vector_db,temp_1_31066_5,17413739249988095469,INSERT INTO employees VALUES (1\\, 'John Doe'\\, 'Engineer'\\, 75000.00)";
+
+        Context context = new ContextImpl(null, null);
+        SingleStoredbGuardiumFilter filter = new SingleStoredbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        e.setField("message", logMessage);
+        e.setField(Constants.SERVER_IP, "10.0.0.1");
+
+        TestMatchListener matchListener = new TestMatchListener();
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+
+        Record record = new Gson().fromJson(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString(), Record.class);
+        Assert.assertEquals("INSERT INTO employees VALUES (1, 'John Doe', 'Engineer', 75000.00)", record.getData().getOriginalSqlCommand());
+        Assert.assertEquals("root", record.getAccessor().getDbUser());
+        Assert.assertEquals("uc_vector_db", record.getDbName());
+    }
+
+    @Test
+    public void testDMLUpdateQuery() {
+        String logMessage = "133894,2024-06-24 07:20:50.842,UTC,singlestore.node1:3306,agg,1,100000,root,uc_vector_db,temp_1_31066_5,17413739249988095469,UPDATE employees SET salary = 80000.00 WHERE id = 1";
+
+        Context context = new ContextImpl(null, null);
+        SingleStoredbGuardiumFilter filter = new SingleStoredbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        e.setField("message", logMessage);
+        e.setField(Constants.SERVER_IP, "10.0.0.1");
+
+        TestMatchListener matchListener = new TestMatchListener();
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+
+        Record record = new Gson().fromJson(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString(), Record.class);
+        Assert.assertEquals("UPDATE employees SET salary = 80000.00 WHERE id = 1", record.getData().getOriginalSqlCommand());
+    }
+
+    @Test
+    public void testDMLDeleteQuery() {
+        String logMessage = "133894,2024-06-24 07:20:50.842,UTC,singlestore.node1:3306,agg,1,100000,root,uc_vector_db,temp_1_31066_5,17413739249988095469,DELETE FROM employees WHERE id = 3";
+
+        Context context = new ContextImpl(null, null);
+        SingleStoredbGuardiumFilter filter = new SingleStoredbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        e.setField("message", logMessage);
+        e.setField(Constants.SERVER_IP, "10.0.0.1");
+
+        TestMatchListener matchListener = new TestMatchListener();
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+
+        Record record = new Gson().fromJson(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString(), Record.class);
+        Assert.assertEquals("DELETE FROM employees WHERE id = 3", record.getData().getOriginalSqlCommand());
+    }
+
+    @Test
+    public void testEscapedCommasInQuery() {
+        String logMessage = "21596,2024-06-10 10:42:43.236,UTC,singlestore.node1:3306,agg,1,99995,root,information_schema,temp_1_5015_0,694459544968825767,SELECT IP_ADDR\\, PORT\\, MEMSQL_DIR FROM information_schema.mv_disk_usage";
+
+        Context context = new ContextImpl(null, null);
+        SingleStoredbGuardiumFilter filter = new SingleStoredbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        e.setField("message", logMessage);
+        e.setField(Constants.SERVER_IP, "10.0.0.1");
+
+        TestMatchListener matchListener = new TestMatchListener();
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+
+        Record record = new Gson().fromJson(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString(), Record.class);
+        Assert.assertEquals("SELECT IP_ADDR, PORT, MEMSQL_DIR FROM information_schema.mv_disk_usage", record.getData().getOriginalSqlCommand());
+    }
+
+    @Test
+    public void testUserLoginSuccessEvent() {
+        String logMessage = "21622,2024-06-10 10:47:43.235,UTC,singlestore.node1:3306,agg,USER_LOGIN,99995,root,localhost,root@%,password,SUCCESS";
+
+        Context context = new ContextImpl(null, null);
+        SingleStoredbGuardiumFilter filter = new SingleStoredbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        e.setField("message", logMessage);
+        e.setField(Constants.SERVER_IP, "10.0.0.1");
+
+        TestMatchListener matchListener = new TestMatchListener();
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+
+        Record record = new Gson().fromJson(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString(), Record.class);
+        Assert.assertEquals("SET @event = 'USER_LOGIN'", record.getData().getOriginalSqlCommand());
+        Assert.assertEquals("root", record.getAccessor().getDbUser());
+    }
+
+    @Test
+    public void testUserLoginFailureExceptionRecord() {
+        String logMessage = "152310,2024-06-26 13:54:39.421,UTC,singlestore.node1:3306,agg,USER_LOGIN,99997,testuser,192.0.2.1,,authentication_none,FAILURE: Access denied";
+
+        Context context = new ContextImpl(null, null);
+        SingleStoredbGuardiumFilter filter = new SingleStoredbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        e.setField("message", logMessage);
+        e.setField(Constants.SERVER_IP, "10.0.0.1");
+
+        TestMatchListener matchListener = new TestMatchListener();
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+
+        Record record = new Gson().fromJson(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString(), Record.class);
+        Assert.assertNotNull(record.getException());
+        Assert.assertEquals("LOGIN_FAILED", record.getException().getExceptionTypeId());
+        Assert.assertEquals("Login Failed (FAILURE: Access denied)", record.getException().getDescription());
+    }
+
+    @Test
+    public void testComplexQueryWithOptimizerHints() {
+        String logMessage = "21866,2024-06-10 11:29:58.831,UTC,singlestore.node1:3306,agg,1,99993,root,information_schema,temp_1_5077_3,4952243803313514788,/*!90621 OBJECT()*/ SELECT `TABLE_NAME` FROM `_MV_QUERY_PROSPECTIVE_HISTOGRAMS`";
+
+        Context context = new ContextImpl(null, null);
+        SingleStoredbGuardiumFilter filter = new SingleStoredbGuardiumFilter("test-id", null, context);
+
+        Event e = new org.logstash.Event();
+        e.setField("message", logMessage);
+        e.setField(Constants.SERVER_IP, "10.0.0.1");
+
+        TestMatchListener matchListener = new TestMatchListener();
+        Collection<Event> results = filter.filter(Collections.singletonList(e), matchListener);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertNotNull(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+
+        Record record = new Gson().fromJson(e.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME).toString(), Record.class);
+        Assert.assertEquals("SELECT TABLE_NAME FROM _MV_QUERY_PROSPECTIVE_HISTOGRAMS", record.getData().getOriginalSqlCommand());
+    }
+
 }
 
 class TestMatchListener implements FilterMatchListener {
@@ -88,4 +291,3 @@ class TestMatchListener implements FilterMatchListener {
         matchCount.incrementAndGet();
     }
 }
-

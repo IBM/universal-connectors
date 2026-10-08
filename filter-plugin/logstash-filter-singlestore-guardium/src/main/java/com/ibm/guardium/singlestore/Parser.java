@@ -10,8 +10,6 @@ import com.ibm.guardium.universalconnector.commons.structures.Construct;
 import com.ibm.guardium.universalconnector.commons.structures.Data;
 import com.ibm.guardium.universalconnector.commons.structures.ExceptionRecord;
 import com.ibm.guardium.universalconnector.commons.structures.Record;
-import com.ibm.guardium.universalconnector.commons.structures.Sentence;
-import com.ibm.guardium.universalconnector.commons.structures.SentenceObject;
 import com.ibm.guardium.universalconnector.commons.structures.SessionLocator;
 import com.ibm.guardium.universalconnector.commons.structures.Time;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -116,7 +114,8 @@ public class Parser {
         String dbName = Constants.NOT_AVAILABLE;
 
         if (data.has(Constants.DB_NAME) && !data.get(Constants.DB_NAME).isJsonNull()) {
-            dbName = data.get(Constants.DB_NAME).getAsString();
+            String val = data.get(Constants.DB_NAME).getAsString();
+            dbName = "[UNKNOWN]".equalsIgnoreCase(val) ? Constants.NOT_AVAILABLE : val;
         }
         record.setDbName(dbName);
 
@@ -236,8 +235,14 @@ public class Parser {
         }
         accessor.setDbUser(dbUser);
 
-        // GRD-114546: Set to N.A. to fix multiple S-Taps
-		accessor.setServerHostName(Constants.NOT_AVAILABLE);
+        String serverHostName = Constants.NOT_AVAILABLE;
+        if (data.has(Constants.SERVER_HOSTNAME) && !data.get(Constants.SERVER_HOSTNAME).isJsonNull()) {
+            String val = data.get(Constants.SERVER_HOSTNAME).getAsString();
+            if (val != null && !val.isEmpty()) {
+                serverHostName = val;
+            }
+        }
+        accessor.setServerHostName(serverHostName);
 
         accessor.setLanguage(Constants.LANGUAGE_MEMSQL_STRING);
         accessor.setDataType(Accessor.DATA_TYPE_GUARDIUM_SHOULD_PARSE_SQL);
@@ -250,13 +255,19 @@ public class Parser {
         accessor.setOsUser(Constants.UNKNOWN_STRING);
         accessor.setServerDescription(Constants.UNKNOWN_STRING);
         accessor.setServerOs(Constants.UNKNOWN_STRING);
-        accessor.setServiceName(dbName != null ? dbName : Constants.UNKNOWN_STRING);
+        accessor.setServiceName(
+                (dbName == null || "[UNKNOWN]".equalsIgnoreCase(dbName)) ? Constants.NOT_AVAILABLE : dbName);
 
         return accessor;
     }
 
     protected Data parseData(JsonObject inputJSON) {
         Data data = new Data();
+
+        if (!inputJSON.has(Constants.QUERY_STATEMENT) || inputJSON.get(Constants.QUERY_STATEMENT).isJsonNull()) {
+            data.setOriginalSqlCommand(Constants.UNKNOWN_STRING);
+            return data;
+        }
 
         String originalQuery = inputJSON.get(Constants.QUERY_STATEMENT).getAsString();
 
