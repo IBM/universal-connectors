@@ -64,7 +64,6 @@ public class SingleStoreLogFormat {
 
             // Basic validation - USER_LOGOUT has 12 fields, USER_LOGIN has 13+, normal events have 12+
             if (values.length < 11) {
-                log.debug("Log format error: Not enough fields in log event. Expected at least 11, got {}", values.length);
                 return logMap;
             }
 

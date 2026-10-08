@@ -211,7 +211,6 @@ public class SingleStoredbGuardiumFilter implements Filter {
             Map<String, String> logMap = SingleStoreLogFormat.parseLog(logEvent);
 
             if (logMap.isEmpty()) {
-                log.debug("Skipping unparseable log event: {}", logEvent);
                 return;
             }
 
