@@ -2,30 +2,6 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
-
-buildscript {
-    repositories {
-        mavenLocal()
-        maven {
-            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
-            credentials {
-                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
-                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
-            }
-        }
-    }
-
-    dependencies {
-        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0"
-        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
-    }
-}
-
-def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
-def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
-gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
-
 apply from: LOGSTASH_CORE_PATH + "/../rubyUtils.gradle"
 
 // ===========================================================================
@@ -45,10 +21,10 @@ pluginInfo.pluginName      = "singlestoredb_guardium_filter" // must match the @
 // ===========================================================================
 
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
-def jacocoVersion = '0.8.11'
+def jacocoVersion = '0.8.4'
 // minimumCoverage can be set by Travis ENV
 def minimumCoverageStr = System.getenv("MINIMUM_COVERAGE") ?: "50.0%"
 if (minimumCoverageStr.endsWith("%")) {
@@ -56,17 +32,28 @@ if (minimumCoverageStr.endsWith("%")) {
 }
 def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
 
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
+}
+
+def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 
 
 repositories {
-    mavenLocal()
-    maven {
-        url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
-        credentials {
-            username System.getenv("ARTIFACTORY_USERNAME") ?: ""
-            password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
-        }
-    }
+    mavenCentral()
 }
 
 tasks.register("vendor"){
@@ -77,21 +64,22 @@ tasks.register("vendor"){
         File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
         projectJarFile.mkdirs()
         Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
+        validatePluginJar(projectJarFile, project.group)
     }
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-    archiveClassifier = null
+    classifier = null
 }
 
 dependencies {
     implementation group: 'commons-validator', name: 'commons-validator', version: versions.dependencies.commonsValidator
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.dependencies.log4jCore
     implementation 'org.apache.commons:commons-lang3:' + versions.dependencies.commonsLang
-    implementation 'com.google.code.gson:gson:' + versions.dependencies.gson
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.dependencies.commonsBeanutils
+    implementation 'com.google.code.gson:gson:' + versions.dependencies.gson
     implementation fileTree(dir: LOGSTASH_CORE_PATH, include: "build/libs/logstash-core-*.*.*.jar")
     implementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "guardium-universalconnector-commons-*.*.*.jar")
 
@@ -113,17 +101,6 @@ clean {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-}
-
-test {
-    jvmArgs = [
-        '--add-opens=java.base/java.lang=ALL-UNNAMED',
-        '--add-opens=java.base/java.util=ALL-UNNAMED',
-        '--add-opens=java.base/java.text=ALL-UNNAMED',
-        '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.resources=ALL-UNNAMED',
-        '--add-opens=java.base/sun.util.cldr=ALL-UNNAMED'
-    ]
 }
 
 
@@ -168,16 +145,17 @@ apply plugin: "org.barfuin.gradle.jacocolog"
 // ------------------------------------
 jacoco {
     toolVersion = "${jacocoVersion}"
+    reportsDir = file("$buildDir/reports/jacoco")
 }
 jacocoTestReport {
     // You will see "Report -> file://...." at the end of a JaCoCo build
     // If no output, run this first:   ./gradlew test
     reports {
-        html.required = true
-        xml.required = true
-        csv.required = true
-        html.outputLocation = file("${buildDir}/reports/jacoco")
-        csv.outputLocation = file("${buildDir}/reports/jacoco/all.csv")
+        html.enabled true
+        xml.enabled true
+        csv.enabled true
+        html.destination file("${buildDir}/reports/jacoco")
+        csv.destination file("${buildDir}/reports/jacoco/all.csv")
     }
     executionData.from fileTree(dir: "${buildDir}/jacoco/", includes: [
             '**/*.exec'
