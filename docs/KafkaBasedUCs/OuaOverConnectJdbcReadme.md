@@ -2,12 +2,12 @@
 
 ## Meet Oracle Unified Audit Over JDBC Connect
 
-- Tested versions: 19, 21
+- Tested versions: 19, 21, 26ai
 - Environments: On-prem, RDS in AWS, Oracle Base Database Service in OCI
 - Supported inputs: Kafka Input (pull)
-- Supported Oracle versions: 19, 21
+- Supported Oracle versions: 19, 21, 26ai
 - Supported Guardium versions:
-  - Guardium Data Protection: appliance bundle 12.1p105 or later.
+    - Guardium Data Protection: appliance bundle 12.1p105 or later.
 
 **Note**: This readme is also applicable for **OUA over JDBC connect 2.0** and **OUA Multitenant over JDBC connect 2.0** plug-ins.
 
@@ -124,12 +124,95 @@ Detailed breakdown:
 | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Credential**                     | Create JDBC credentials. For more information, see [Creating Credentials](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_credential_management.html).                                                                                                                                                                                                                                                                                        |
 | **Kafka cluster**                  | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_kafka_cluster_management.html).                                                                                                                                                                                                 |
-| **No traffic threshold (minutes)** | Default value is 60. If there is no incoming traffic for an hour, S-TAP displays a red status. Once incoming traffic resumes, the status returns to green.                                                                                                                                                                                                                                                                                                              |
-| **Initial Time (ms)**              | The timestamp from which the connector starts polling for changes in the database. Setting this to 0 means the connector starts from the earliest available data. For incremental data fetching, this ensures only new data (after the initial time) is retrieved.                                                                                                                                                                                                      |
-| **Hostname**                       | Specifies the hostname or IP address of the Oracle database server. It is the address where the Oracle instance can be accessed for establishing a JDBC connection.                                                                                                                                                                                                                                                                                                     |
 | **JDBC driver library**            | The Oracle JDBC driver JAR file (e.g., `ojdbc8.jar`) is required for the connector to communicate with the Oracle database. Download the [Oracle JDBC driver JAR file](https://download.oracle.com/otn-pub/otn_software/jdbc/234/ojdbc8.jar) and upload it to the Kafka Connect environment. <br/><b>Note:</b> Uploading multiple OJDBC versions simultaneously is not supported. This action causes Guardium Universal Connector to fail due to classloader conflicts. |
+| **Hostname**                       | Specifies the hostname or IP address of the Oracle database server. It is the address where the Oracle instance can be accessed for establishing a JDBC connection.                                                                                                                                                                                                                                                                                                     |
 | **Port**                           | Specifies the port number used to connect to the Oracle database. The default port number is 1521, but it can vary depending on the Oracle configuration. Port 1521 must be open and accessible for the connection.                                                                                                                                                                                                                                                     |
-| **Service Name / SID**             | Specifies the Oracle service name (or SID if it's an older configuration) for the Kafka connector to connect. The service name uniquely identifies a database service within an Oracle environment and is provided by the database administrator. For OUA over JDBC data is retrived from the service itself: unified_audit_trail .                                                                                                                                     |
-| **CDB Service Name / SID**         | OUA over JDBC Connect 2.0 and OUA multitenant over JDBC Connect, data is retrived from CDB service audit log: cdb_unified_audit_trail.                                                                                                                                                                                                                                                                                                                                  |
+| **Service Name / SID**             | Specifies the Oracle service name (or SID if it's an older configuration) for the Kafka connector to connect. The service name uniquely identifies a database service within an Oracle environment and is provided by the database administrator. For OUA over JDBC data is retrieved from the service itself: `unified_audit_trail`.                                                                                                                                    |
+| **CDB Service Name / SID**         | OUA over JDBC Connect 2.0 and OUA multitenant over JDBC Connect, data is retrieved from CDB service audit log: `cdb_unified_audit_trail`.                                                                                                                                                                                                                                                                                                                               |
+| **Query**                          | The SQL query used to retrieve audit records from the Oracle database. The default query selects from `unified_audit_trail`. Modify only if you need to add or remove columns from the result set. The query must include the `EVENT_TIMESTAMP_UTC` column, which is used as the tracking column for incremental polling.                                                                                                                                                 |
+| **Account ID (RDS OUA)**           | The AWS account ID, required only when connecting to an Oracle RDS instance. Leave as `None` for on-premises and OCI deployments.                                                                                                                                                                                                                                                                                                                                       |
+| **Is PDB**                         | Set to `true` if the Oracle database is a pluggable database (PDB) within a multitenant container database (CDB). When enabled, the connector injects the PDB service name into the connection URL. Default value is `true`.                                                                                                                                                                                                                                             |
+| **Poll interval (ms)**             | How frequently the connector polls the Oracle database for new audit records, in milliseconds. A lower value reduces latency but increases database load. Default value is 10000 (10 seconds).                                                                                                                                                                                                                                                                           |
+| **Connector max batch size**       | Maximum number of rows to include in a single batch when polling for new data. Use this to limit the amount of data buffered internally in the connector. Default value is 2000.                                                                                                                                                                                                                                                                                         |
+| **JDBC Driver fetch size**         | Number of rows to fetch from the database in each JDBC round trip (controls `ResultSet.setFetchSize`). A larger value reduces round trips but increases memory usage; a smaller value reduces memory pressure. If not set or set to 0, the connector automatically calculates an optimal value (approximately 1/4 of the connector max batch size). Default value is 500.                                                                                                 |
+| **Initial Time (ms)**              | The timestamp from which the connector starts polling for changes in the database. Setting this to 0 means the connector starts from the earliest available data. For incremental data fetching, this ensures only new data (after the initial time) is retrieved.                                                                                                                                                                                                      |
+| **Delay interval (ms)**            | How long to wait after a row with a certain timestamp appears before including it in the result. Use this to allow transactions with earlier timestamps to complete before the connector queries them. Default value is 500 ms.                                                                                                                                                                                                                                           |
+| **No traffic threshold (minutes)** | Default value is 60. If there is no incoming traffic for an hour, S-TAP displays a red status. Once incoming traffic resumes, the status returns to green.                                                                                                                                                                                                                                                                                                              |
 
 4. Continue from step 3 of [Creating data source profile topic](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_datasource_profile_management.html) to complete creating a datasource profile.
+
+## Troubleshooting
+
+### 1. No audit logs received in GDP
+
+The first thing to check is whether audit logging is working correctly on your database. Run the following query to see if there are any audit records from the last 10 minutes. If there are no results, you can extend the time interval to broaden the search:
+
+```sql
+SELECT EVENT_TIMESTAMP_UTC,
+       To_char(sessionid)                                             AS SESSION_ID,
+       dbusername                                                     AS USER_ID,
+       Sys_context('USERENV', 'CON_NAME')                            AS CON_NAME,
+       os_username                                                    AS OS_USER,
+       Substr(Regexp_substr(authentication_type, 'HOST=([^)]*)'), 6) AS CLIENT_HOST_IP,
+       userhost                                                       AS CLIENT_HOST_NAME,
+       Sys_context('USERENV', 'SERVER_HOST_IP')                      AS SERVER_HOST_IP,
+       client_program_name,
+       To_char(dbid)                                                  AS DB_ID,
+       sys_context('USERENV', 'DB_NAME')                             AS DB_NAME,
+       To_char(return_code)                                          AS RETURN_CODE,
+       SQL_TEXT,
+       CLIENT_IDENTIFIER,
+       DBLINK_INFO
+FROM   unified_audit_trail
+WHERE  EVENT_TIMESTAMP >= SYSTIMESTAMP - INTERVAL '10' MINUTE
+ORDER BY "EVENT_TIMESTAMP" ASC;
+```
+
+If this query returns no records, audit logging may not be enabled or configured correctly. Contact your DBA team to review the database audit configuration.
+
+### 2. Audit log table size
+
+To avoid performance issues, ensure you have a regular purge policy for the `unified_audit_trail` view. An unchecked table can grow very large and make queries slow or unresponsive. Use the following query to check the current row count:
+
+```sql
+SELECT count(*) FROM unified_audit_trail;
+```
+
+Work with your DBA team to schedule routine purges of old audit data.
+
+### 3. Partition column mismatch
+
+By default, the OUA Over JDBC connector uses `EVENT_TIMESTAMP_UTC` as the partition column. If your database table uses a different partition key, the UC will not function correctly. To verify the partition configuration on your database, run:
+
+```sql
+SELECT owner,
+       name           AS table_name,
+       column_name,
+       column_position
+FROM   dba_part_key_columns
+WHERE  owner = 'AUDSYS'
+AND    name  = 'AUD$UNIFIED'
+ORDER BY column_position;
+```
+
+If the partition column differs from `EVENT_TIMESTAMP_UTC`, update the partition column name in your UC profile configuration to match and also, add EVENT_TIMESTAMP to the SELECT query.
+
+### 4. Parallel execution errors
+
+If you see an error similar to:
+
+```
+Could not allocate slaves on all specified instances: 4 needed, 3 allocated
+```
+
+Add the `/*+ NO_PARALLEL */` hint to your query. Change the `SELECT` clause in your query to:
+
+```sql
+SELECT /*+ NO_PARALLEL */ ...
+```
+
+Additionally, disable parallel execution in the UC profile configuration. When this option is selected, the UC issues the following statement at session start:
+
+```sql
+ALTER SESSION DISABLE PARALLEL QUERY;
+```
