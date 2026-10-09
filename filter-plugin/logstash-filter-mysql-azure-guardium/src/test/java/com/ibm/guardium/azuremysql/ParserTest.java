@@ -300,4 +300,21 @@ public class ParserTest {
 		assertNotNull(record);
 	}
 
+	@Test(expected = Exception.class)
+	public void testparseMissingProperties() throws Exception {
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\"}";
+		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
+		Parser.parseRecord(mysqlJson);
+	}
+
+	@Test
+	public void testparseMissingEventClassAndMissingEventTime() throws Exception {
+		final String mysqlString = "{\"ServerType\":\"MySQL\",\"resourceId\":\"/SUBSCRIPTIONS/083DE1FB-CD2D-4B7C-895A-2B5AF1D091E8/RESOURCEGROUPS/NEWRESOURCEGUARDIUM/PROVIDERS/MICROSOFT.DBFORMYSQL/FLEXIBLESERVERS/MYSQL-TEST-GUARDIUM\",\"category\":\"MySqlAuditLogs\",\"properties\":{\"error_code\":1146,\"sql_text\":\"select 1\"}}";
+		final JsonObject mysqlJson = JsonParser.parseString(mysqlString).getAsJsonObject();
+		Record record = Parser.parseRecord(mysqlJson);
+		assertNotNull(record);
+		assertEquals("SQL_ERROR", record.getException().getExceptionTypeId());
+		assertNotNull(record.getTime());
+	}
+
 }
