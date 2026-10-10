@@ -2,6 +2,26 @@ import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 apply plugin: 'java'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        maven {
+            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
+            credentials {
+                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
+                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
+            }
+        }
+    }
+
+    dependencies {
+        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:4.0.1"
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
+}
+
 def universalConnectorsDir=project.projectDir.parentFile?.parentFile.toString();
 def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 gradle.ext.versions = new org.yaml.snakeyaml.Yaml().load( new File(LOGSTASH_CORE_PATH + "/../versions.yml").newInputStream() )
@@ -41,27 +61,6 @@ if (minimumCoverageStr.endsWith("%")) {
     minimumCoverageStr = minimumCoverageStr.substring(0, minimumCoverageStr.length() - 1)
 }
 def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
-
-buildscript {
-    repositories {
-        mavenLocal()
-        maven {
-            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
-            credentials {
-                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
-                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
-            }
-        }
-    }
-
-    dependencies {
-        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:4.0.1"
-        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
-    }
-}
-
-
 
 repositories {
     mavenLocal()

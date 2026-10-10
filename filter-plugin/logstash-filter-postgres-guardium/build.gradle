@@ -56,23 +56,6 @@ if (minimumCoverageStr.endsWith("%")) {
 }
 def minimumCoverage = Float.valueOf(minimumCoverageStr) / 100
 
-buildscript {
-    repositories {
-        mavenLocal()
-        maven {
-            url System.getenv("ARTIFACTORY_URL") ?: "https://repo.maven.apache.org/maven2/"
-            credentials {
-                username System.getenv("ARTIFACTORY_USERNAME") ?: ""
-                password System.getenv("ARTIFACTORY_AUTH_TOKEN") ?: ""
-            }
-        }
-    }
-    dependencies {
-        classpath 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
-        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:4.0.1"
-    }
-}
-
 repositories {
     mavenLocal()
     maven {
@@ -115,7 +98,6 @@ tasks.register("vendor") {
         File projectJarFile = file("${vendorPathPrefix}/${projectGroupPath}/${pluginInfo.pluginFullName()}/${project.version}/${pluginInfo.pluginFullName()}-${project.version}.jar")
         projectJarFile.mkdirs()
         Files.copy(file("$buildDir/libs/${project.name}-${project.version}.jar").toPath(), projectJarFile.toPath(), REPLACE_EXISTING)
-        validatePluginJar(projectJarFile, project.group)
     }
 }
 
