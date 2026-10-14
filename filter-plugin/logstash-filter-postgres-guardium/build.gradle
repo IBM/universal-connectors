@@ -96,7 +96,7 @@ dependencies {
     // ✅ JUnit 4 only
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:5.17.0'
-    testImplementation 'org.jruby:jruby-complete:9.2.7.0'
+    testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
     testImplementation fileTree(dir: GUARDIUM_UNIVERSALCONNECTOR_COMMONS_PATH, include: "common-*.*.*.jar")
 }
 
