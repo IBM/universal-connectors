@@ -97,7 +97,7 @@ dependencies {
 
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.jruby:jruby-complete:9.4.7.0'
+    testImplementation 'org.jruby:jruby-complete:' + versions.dependencies.jrubyComplete
     testImplementation 'org.mock-server:mockserver-netty:5.14.0'
     testImplementation 'org.slf4j:slf4j-simple:2.0.17'
 
