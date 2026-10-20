@@ -29,7 +29,7 @@ As a universal connector plug-in developer, you should be familiar with code cov
 
   - Plug-ins used: jacoco, org.barfuin.gradle.jacocolog
 
-  - Note that to be able to install the jacocolog plug-in, you must include this classpath in the dependencies of the buildscript: org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2
+  - Note that to be able to install the jacocolog plug-in, you must include this classpath in the dependencies of the buildscript: org.barfuin.gradle.jacocolog:gradle-jacoco-log:4.0.2
 
 - Executing “./gradlew build” executes the Jacoco percentage coverage and the reports output path in your plug-in’s directory.
 
@@ -90,7 +90,7 @@ buildscript {
 
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
-        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.0.0-RC2"
+        classpath "org.barfuin.gradle.jacocolog:gradle-jacoco-log:4.0.2"
 
     }
 }
