@@ -6,7 +6,8 @@ The following plug-ins are supported by the latest product versions. Exceptions 
 To see if a particular plug-in is supported by older versions, please refer to the "supported versions" section inside each plug-in page.
 
 - [Adabas](../filter-plugin/logstash-filter-adabas-guardium/README.md)
-- [Alloy_DB](../filter-plugin/logstash-filter-alloydb-guardium/mainREADME.md)
+- [AlloyDB](../filter-plugin/logstash-filter-alloydb-guardium/mainREADME.md)
+- [Amazon Athena Iceberg](../docs/KafkaBasedUCs/AWSAthenaIcebergCloudwatchKafkaConnect/AWSAthenaIcebergCloudwatchKafkaConnect.md)
 - [Amazon Aurora MySQL](../filter-plugin/logstash-filter-aurora-mysql-guardium/mainREADME.md)
 - [Amazon DynamoDB](../filter-plugin/logstash-filter-dynamodb-guardium/mainREADME.md)
 - [Amazon OpenSearch](../filter-plugin/logstash-filter-opensearch-guardium/mainREADME.md)
