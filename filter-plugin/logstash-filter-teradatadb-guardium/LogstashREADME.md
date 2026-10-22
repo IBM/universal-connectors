@@ -185,7 +185,7 @@ Make sure the input section of your connector configuration uses this connection
 jdbc_connection_string => "jdbc:teradata://<server-name>/DATABASE=<database-name>,DBS_PORT=<port>"
 ```
 
-**Step 2. Check whether audit logs were generated in the last 10 minutes**
+**Step 2: Check whether audit logs were generated in the last 10 minutes**
 
 If there is still no traffic in Guardium, run the connector's JDBC query manually (for example, in Teradata Studio Express) with the `:sql_last_value` condition replaced by a 10-minute time window. If rows are returned, the audit logs exist in Teradata and the issue is in the connector configuration. If no rows are returned, run some queries on the Teradata server and confirm that query logging is enabled (see [Enabling Auditing](#2-enabling-auditing)).
 
