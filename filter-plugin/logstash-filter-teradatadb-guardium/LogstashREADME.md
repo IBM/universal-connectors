@@ -173,9 +173,13 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 ## 6. Troubleshooting
 
-#### 1. No traffic is seen in Guardium
+#### No traffic is seen in Guardium
 
-If there is no Teradata traffic in Guardium, make sure the input section of your connector configuration uses this connection string format:
+If there is no Teradata traffic in Guardium, please follow these steps in order.
+
+**Step 1: Verify the connection string**
+
+Make sure the input section of your connector configuration uses this connection string format:
 
 ```
 jdbc_connection_string => "jdbc:teradata://<server-name>/DATABASE=<database-name>,DBS_PORT=<port>"
