@@ -180,3 +180,11 @@ If there is no Teradata traffic in Guardium, make sure the input section of your
 ```
 jdbc_connection_string => "jdbc:teradata://<server-name>/DATABASE=<database-name>,DBS_PORT=<port>"
 ```
+
+#### Check whether audit logs were generated in the last 10 minutes
+
+If there is still no traffic in Guardium, run the connector's JDBC query manually (for example, in Teradata Studio Express) with the `:sql_last_value` condition replaced by a 10-minute time window. If rows are returned, the audit logs exist in Teradata and the issue is in the connector configuration. If no rows are returned, run some queries on the Teradata server and confirm that query logging is enabled (see [Enabling Auditing](#2-enabling-auditing)).
+
+```
+select SessionID, CAST((((CAST(CAST(CAST(STARTTIME At 'GMT' AS FORMAT 'YYYY-MM-DD') AS VARCHAR(14))  AS DATE FORMAT 'YYYY-MM-DD') - DATE '1970-01-01')*86400 * 1000) + ((EXTRACT(HOUR FROM StartTime at 'gmt')*3600*1000) + (EXTRACT(MINUTE FROM StartTime at 'gmt')*60*1000) + (EXTRACT(SECOND FROM db.STARTTIME AT TIME ZONE 'GMT')*1000)))AS BIGINT) AS t1, StartTime at 'gmt' as t2, trim(qca.ClientIPAddrByClient) as ClientAddr, trim(qca.ServerIPAddrByServer) as ServerAddr,db.UserName,db.QueryID,SqlTextInfo,trim(ErrorText) as ErrorText,trim(AppID) as LogonSource,trim(ClientID) as ClientID, NumResultRows as rowsReturned from dbc.qrylogv db INNER JOIN DBC.QryLogSQLV dbs ON db.QueryID = dbs.QueryID INNER JOIN DBC.QryLogClientAttrV qca ON db.QueryID = qca.QueryID where db.StartTime >= CURRENT_TIMESTAMP(0) - INTERVAL '10' MINUTE and ClientID <> 'GUC' and sqltextinfo NOT IN ('select * from DBC.Database_Default_JournalsV','COMMIT WORK','SELECT 1','SELECT USER','--isValid') and sqltextinfo not like '%LogonSource%' and sqltextinfo not like'%ApplicationName%' and sqltextinfo not like'%LOCK%' and sqltextinfo not like'%TYPE%' and sqltextinfo not like'%WORK%' order by t1;
+```
