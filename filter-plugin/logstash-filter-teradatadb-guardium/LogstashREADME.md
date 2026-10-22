@@ -170,3 +170,13 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 3. Click on Apply.
 4. Click on Restart Inspection Engines.
 5. To add the column in the Full SQL Report, select the Attribute `Records Affected` listed under the Entity `FULL SQL`.
+
+## 6. Troubleshooting
+
+#### No traffic is seen in Guardium
+
+If there is no Teradata traffic in Guardium, make sure the input section of your connector configuration uses this connection string format:
+
+```
+jdbc_connection_string => "jdbc:teradata://<server-name>/DATABASE=<database-name>,DBS_PORT=<port>"
+```
