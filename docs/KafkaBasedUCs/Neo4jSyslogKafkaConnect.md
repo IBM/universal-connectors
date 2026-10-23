@@ -262,7 +262,7 @@ You can uninstall or reinstall an installed profile.
 
 ## Troubleshooting
 
-### Issue: Logs are not being forwarded
+### Logs are not being forwarded
 
 1. Verify that rsyslog is running:
 
@@ -289,7 +289,7 @@ You can uninstall or reinstall an installed profile.
    sudo journalctl -u rsyslog -f
    ```
 
-### Issue: Neo4j query logs are not being generated
+### Neo4j query logs are not being generated
 
 1. Confirm that you are running Neo4j Enterprise Edition:
 
@@ -312,7 +312,7 @@ You can uninstall or reinstall an installed profile.
    tail -f /opt/neo4j/logs/query.log
    ```
 
-### Issue: Connection test fails
+### Connection test fails
 
 1. Verify that the Kafka Connect server is listening on the specified port:
 
@@ -328,7 +328,7 @@ You can uninstall or reinstall an installed profile.
 
 3. Verify that rsyslog is configured with the correct Kafka broker address and port.
 
-### Issue: Permission denied or forwarding suspended (SELinux)
+### Permission denied or forwarding suspended (SELinux)
 
 If rsyslog cannot read the logs (`Permission denied`) or fails to connect to the collector port (`action suspended`):
 
