@@ -173,15 +173,19 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 
 ## 6. Troubleshooting
 
-#### 1. No traffic is seen in Guardium
+#### No traffic is seen in Guardium
 
-If there is no Teradata traffic in Guardium, make sure the input section of your connector configuration uses this connection string format:
+If there is no Teradata traffic in Guardium, please follow these steps in order.
+
+**Step 1: Verify the connection string**
+
+Make sure the input section of your connector configuration uses this connection string format:
 
 ```
 jdbc_connection_string => "jdbc:teradata://<server-name>/DATABASE=<database-name>,DBS_PORT=<port>"
 ```
 
-#### 2. Check whether audit logs were generated in the last 10 minutes
+**Step 2: Check whether audit logs were generated in the last 10 minutes**
 
 If there is still no traffic in Guardium, run the connector's JDBC query manually (for example, in Teradata Studio Express) with the `:sql_last_value` condition replaced by a 10-minute time window. If rows are returned, the audit logs exist in Teradata and the issue is in the connector configuration. If no rows are returned, run some queries on the Teradata server and confirm that query logging is enabled (see [Enabling Auditing](#2-enabling-auditing)).
 
