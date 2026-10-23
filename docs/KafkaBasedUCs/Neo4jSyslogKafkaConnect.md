@@ -335,8 +335,8 @@ You can uninstall or reinstall an installed profile.
 * **Forwarding failure:** No Neo4j traffic in GDP while rsyslog is active: `cannot connect to <COLLECTOR_HOST>:<PORT>: Permission denied` followed by `action 'builtin:omfwd' suspended`
 
 **Root causes:**
-1. Custom or separate log directory (e.g., `/neo4jlogs`) is labelled `default_t` instead of `var_log_t`, blocking `syslogd_t` from reading logs (`avc: denied { read }`).
-2. The destination port is not registered in SELinux policy under `syslogd_port_t`, blocking outbound connections.
+- Custom or separate log directory (e.g., `/neo4jlogs`) is labelled `default_t` instead of `var_log_t`, blocking `syslogd_t` from reading logs (`avc: denied { read }`).
+- The destination port is not registered in SELinux policy under `syslogd_port_t`, blocking outbound connections.
 
 1. **Diagnose SELinux denials:**
 
