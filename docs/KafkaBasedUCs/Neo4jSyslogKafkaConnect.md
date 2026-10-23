@@ -328,4 +328,49 @@ You can uninstall or reinstall an installed profile.
 
 3. Verify that rsyslog is configured with the correct Kafka broker address and port.
 
+### Permission denied or forwarding suspended (SELinux)
+
+If rsyslog cannot read the logs (`Permission denied`) or fails to connect to the collector port (`action suspended`):
+
+1. **Diagnose SELinux denials:**
+
+   ```bash
+   journalctl -u rsyslog --since "1 hour ago" --no-pager | grep -iE 'cannot connect|suspended|imfile'
+   ausearch -m avc,user_avc -c rsyslogd -ts today
+   ls -lZ /neo4jlogs/logs ; ls -ldZ /neo4jlogs
+   semanage port -l | grep -w 9515
+   ```
+
+2. **Fix log file context and outbound port:**
+
+   ```bash
+   # Update log directory SELinux context
+   semanage fcontext -a -t var_log_t "/neo4jlogs(/.*)?"   # use -m if rule exists
+   restorecon -RFv /neo4jlogs
+
+   # Allow outbound syslog port
+   semanage port -a -t syslogd_port_t -p tcp 9515
+
+   # Restart rsyslog
+   systemctl restart rsyslog
+   ```
+
+3. **Verify:**
+
+   ```bash
+   ls -ldZ /neo4jlogs /neo4jlogs/logs/query.log
+   journalctl -u rsyslog --since "2 min ago" --no-pager | grep -iE 'cannot connect|suspended|permission denied'
+   ss -tnp | grep 9515
+   ausearch -m avc -c rsyslogd -ts recent
+   getenforce
+   ```
+
+4. **Verify end-to-end traffic:**
+
+   Run a test query in `cypher-shell` and confirm the event appears in GDP:
+
+   ```cypher
+   RETURN 1;
+   ```
+
 ---
