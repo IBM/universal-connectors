@@ -338,7 +338,7 @@ If rsyslog cannot read the logs (`Permission denied`) or fails to connect to the
    journalctl -u rsyslog --since "1 hour ago" --no-pager | grep -iE 'cannot connect|suspended|imfile'
    ausearch -m avc,user_avc -c rsyslogd -ts today
    ls -lZ /neo4jlogs/logs ; ls -ldZ /neo4jlogs
-   semanage port -l | grep -w 9515
+   semanage port -l | grep -w <PORT>
    ```
 
 2. **Fix log file context and outbound port:**
@@ -349,7 +349,7 @@ If rsyslog cannot read the logs (`Permission denied`) or fails to connect to the
    restorecon -RFv /neo4jlogs
 
    # Allow outbound syslog port
-   semanage port -a -t syslogd_port_t -p tcp 9515
+   semanage port -a -t syslogd_port_t -p tcp <PORT>
 
    # Restart rsyslog
    systemctl restart rsyslog
@@ -360,7 +360,7 @@ If rsyslog cannot read the logs (`Permission denied`) or fails to connect to the
    ```bash
    ls -ldZ /neo4jlogs /neo4jlogs/logs/query.log
    journalctl -u rsyslog --since "2 min ago" --no-pager | grep -iE 'cannot connect|suspended|permission denied'
-   ss -tnp | grep 9515
+   ss -tnp | grep <PORT>
    ausearch -m avc -c rsyslogd -ts recent
    getenforce
    ```
