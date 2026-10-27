@@ -4,7 +4,7 @@
 
 - Tested versions: 8.7.12 (memsql version)
 - Environment: On-premise, Iaas
-- Supported inputs: Filebeat (push)
+- Supported inputs: Filebeat (push), Syslog (push). For Syslog, see [SingleStore over Syslog](SingleStoreOverSyslogREADME.md).
 - Supported Guardium versions:
   - Guardium Data Protection: 12.0 and above
 
