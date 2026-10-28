@@ -29,7 +29,7 @@ Follow [Enabling the audit logs](README.md#1-enabling-the-audit-logs) in the mai
    # The message carries the syslog header, the database hostname and the raw SingleStore audit line.
    # Replace singlestore10.dev.fyre.ibm.com with the hostname of the SingleStore node.
    template(name="SingleStoreAuditFormat" type="string"
-     string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% singlestore10.dev.fyre.ibm.com %syslogtag% - - - serverHostname=singlestore10.dev.fyre.ibm.com serverPort=6514 %rawmsg%\n"
+     string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% <CLIENT_HOST_NAME> %syslogtag% - - - serverHostname=<CLIENT_HOST_NAME> serverPort=<CLIENT_PORT_NUMBER>" %rawmsg%\n"
    )
 
    ruleset(name="forwardToGUC") {
@@ -84,7 +84,7 @@ Follow [Enabling the audit logs](README.md#1-enabling-the-audit-logs) in the mai
 ### Sample message received by Guardium
 
 ```text
-<133>1 2026-10-27T12:09:30.724-07:00 singlestore10.dev.fyre.ibm.com singlestore-audit - - - serverHostname=singlestore10.dev.fyre.ibm.com serverPort=6514 263075,2026-10-27 12:09:30.724,PDT,singlestore10.dev.fyre.ibm.com:3306,agg,1,99999,root,uc_audit_test,,11966432271814971918,CREATE ROWSTORE TABLE IF NOT EXISTS audit_test (\\n   id INT NOT NULL\,\\n    username VARCHAR(100)\,\\n    department VARCHAR(100)\,\\n    salary DECIMAL(10\,2)\,\\n    created_at DATETIME\,\\n    PRIMARY KEY (id)\,\\n    SHARD KEY (id)\\n)
+<133>1 2026-10-27T12:09:30.724-07:00 singlestore_test.server.com singlestore-audit - - - serverHostname=singlestore_test.server.com serverPort=6514 263075,2026-10-27 12:09:30.724,PDT,singlestore_test.server.com:3306,agg,1,99999,root,uc_audit_test,,11966432271814971918,CREATE ROWSTORE TABLE IF NOT EXISTS audit_test (\\n   id INT NOT NULL\,\\n    username VARCHAR(100)\,\\n    department VARCHAR(100)\,\\n    salary DECIMAL(10\,2)\,\\n    created_at DATETIME\,\\n    PRIMARY KEY (id)\,\\n    SHARD KEY (id)\\n)
 ```
 
 ### Limitations
