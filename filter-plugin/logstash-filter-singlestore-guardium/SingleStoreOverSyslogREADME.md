@@ -29,7 +29,7 @@ Follow [Enabling the audit logs](README.md#1-enabling-the-audit-logs) in the mai
    # The message carries the syslog header, the database hostname and the raw SingleStore audit line.
    # Replace singlestore10.dev.fyre.ibm.com with the hostname of the SingleStore node.
    template(name="SingleStoreAuditFormat" type="string"
-     string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% singlestore10.dev.fyre.ibm.com %APP-NAME% - - - serverHostname=singlestore10.dev.fyre.ibm.com serverPort=6514 %rawmsg%\n"
+     string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% singlestore10.dev.fyre.ibm.com %syslogtag% - - - serverHostname=singlestore10.dev.fyre.ibm.com serverPort=6514 %rawmsg%\n"
    )
 
    ruleset(name="forwardToGUC") {
@@ -68,7 +68,7 @@ Follow [Enabling the audit logs](README.md#1-enabling-the-audit-logs) in the mai
    ```
 
    **Note:**
-   - `Tag` becomes the `APP-NAME` field of the syslog header. Use the same value as the **Datasource Tag** when you configure the connector in Guardium.
+   - `Tag` is written to the syslog header by `%syslogtag%` in the template, and arrives in the event log. The filter compares it with the **Datasource Tag** given on the input (`tags` of the TCP input). Use the same value in both places. An event whose tag is different is dropped.
    - `startmsg.regex="^[0-9]+,"` keeps a multi-line SQL statement together in one event.
    - `reopenOnTruncate="on"` makes rsyslog read the file again when it is truncated or rotated.
    - `serverHostname=` is optional. If it is removed, the server hostname is taken from the SingleStore audit line.
@@ -116,5 +116,5 @@ The Guardium universal connector is the Guardium entry point for native audit lo
 6. Update the input section to add the details from the [singleStoreSyslog.conf](./singleStoreSyslog.conf) file input section, omitting the keyword "input{" at the beginning and its corresponding "}" at the end.
 7. Update the filter section to add the details from the [singleStoreSyslog.conf](./singleStoreSyslog.conf) file filter section, omitting the keyword "filter{" at the beginning and its corresponding "}" at the end.
 8. The "type" fields should match in the input and the filter configuration section. This field should be unique for every individual connector added.
-9. The tag in the input section (`tags => ["singlestore-audit"]`) and in the filter section (`"singlestore-audit" in [tags]`) must match the `Tag` of the rsyslog `imfile` input.
+9. The tag in the input section (`tags => ["singlestore-audit"]`) and in the filter section (`"singlestore-audit" in [tags]`) is the Datasource Tag given on the input. It must be the same as the `Tag` of the rsyslog `imfile` input, which the filter reads from the `%syslogtag%` field of the event log.
 10. Click Save. Guardium validates the new connector and displays it in the Configure Universal Connector page.
