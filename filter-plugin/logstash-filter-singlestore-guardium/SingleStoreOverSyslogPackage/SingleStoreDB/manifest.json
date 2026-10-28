@@ -1,0 +1,14 @@
+{
+	"name": "Guardium_SingleStore_Syslog_filter",
+	"alias": "SingleStore Syslog",
+	"type": "filter",
+	"pipeline_type":"push",
+	"plugin_version": "1.0.0",
+	"datasourceTypes": [{"type":"SingleStore","supportedVersions": ["8.7.1"]}],
+	"supported_input_plugins": ["syslog_input"],
+	"developer": "IBM",
+	"license": "Apache 2.0",
+	"description": "Parses SingleStore database events into Guardium via Syslog connection.",
+	"configuration_notes": "",
+	"documentation_path": "https://github.com/IBM/universal-connectors/blob/main/filter-plugin/logstash-filter-singlestore-guardium/README.md"
+}
