@@ -49,7 +49,10 @@ public class Parser {
 	public static Record parseRecord(final JsonObject data) throws Exception {
 		Record record = new Record();
 		try {
-			JsonObject properties = data.get(Constants.PROPERTIES).getAsJsonObject();
+			if (data == null || !data.has(Constants.PROPERTIES) || !data.get(Constants.PROPERTIES).isJsonObject()) {
+				throw new IllegalArgumentException("Missing or invalid 'properties' object in Azure MySQL event");
+			}
+			JsonObject properties = data.getAsJsonObject(Constants.PROPERTIES);
 			record.setSessionId(getSessionId(data, properties));
 			record.setTime(parseTime(properties));
 			record.setAppUserName(Constants.UNKNOWN_STRING);
@@ -57,18 +60,17 @@ public class Parser {
 			record.setDbName(getDbName(data, properties));
 			record.setAccessor(parseAccessor(data, properties));
 			if (properties.has(Constants.ERROR_CODE)
-					&& properties.get(Constants.ERROR_CODE).getAsString().equals("0")) {
+					&& "0".equals(properties.get(Constants.ERROR_CODE).getAsString())) {
 				record.setData(parseData(properties));
-			} else if (properties.get(Constants.EVENT_CATEGORY).getAsString().equals("connection_log")) {
-
+			} else if (properties.has(Constants.EVENT_CATEGORY)
+					&& "connection_log".equalsIgnoreCase(properties.get(Constants.EVENT_CATEGORY).getAsString())) {
 				record.setData(parseData(properties));
-
 			} else {
 				record.setException(parseExceptionRecord(properties));
 			}
 		} catch (Exception e) {
-			log.error("Exception occurred while parsing event in parseRecord method:  ", e);
-			throw new Exception("Exception occured while parsing event in parseData method: " + e.getMessage());
+			String errorMsg = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+			throw new Exception("Exception occurred while parsing event in parseRecord method: " + errorMsg, e);
 		}
 		return record;
 	}
@@ -76,64 +78,72 @@ public class Parser {
 	/**
 	 * Method to get the time from JsonObject, set the expected value into
 	 * respective Time Object and then return the value as response
-	 * 
+	 *
 	 * @param Property
 	 * @return
 	 */
 	public static Time parseTime(JsonObject Property) {
 		if (Property.has(Constants.EVENT_CATEGORY)
-				&& (Property.get(Constants.EVENT_CATEGORY).getAsString().equals("connection_log")
-						|| Property.get(Constants.EVENT_CATEGORY).getAsString().equals("table_access_log"))) {
+				&& (Property.get(Constants.EVENT_CATEGORY).getAsString().equalsIgnoreCase("connection_log")
+						|| Property.get(Constants.EVENT_CATEGORY).getAsString().equalsIgnoreCase("table_access_log"))) {
 			LocalDateTime ldt = LocalDateTime.now();
 			ZonedDateTime date = ldt.atZone(ZoneId.of("UTC"));
 			long millis = date.toInstant().toEpochMilli();
 			int minOffset = date.getOffset().getTotalSeconds() / 60;
 			return new Time(millis, minOffset, 0);
 		}
-		String dateString = Property.get(Constants.TIMESTAMP).getAsString();
-		ZonedDateTime date = ZonedDateTime.parse(dateString);
+		if (Property.has(Constants.TIMESTAMP) && !Property.get(Constants.TIMESTAMP).isJsonNull()) {
+			try {
+				String dateString = Property.get(Constants.TIMESTAMP).getAsString();
+				ZonedDateTime date = ZonedDateTime.parse(dateString);
+				long millis = date.toInstant().toEpochMilli();
+				int minOffset = date.getOffset().getTotalSeconds() / 60;
+				return new Time(millis, minOffset, 0);
+			} catch (Exception e) {
+				log.warn("Failed to parse event_time, defaulting to current time: ", e);
+			}
+		}
+		LocalDateTime ldt = LocalDateTime.now();
+		ZonedDateTime date = ldt.atZone(ZoneId.of("UTC"));
 		long millis = date.toInstant().toEpochMilli();
 		int minOffset = date.getOffset().getTotalSeconds() / 60;
 		return new Time(millis, minOffset, 0);
-
 	}
 
 	/**
 	 * Method to get the subscription ID from the JsonObject
-	 * 
+	 *
 	 * @param data
 	 * @return
 	 */
 
 	public static String getSubscriptionID(JsonObject data) {
-		if (data.has(Constants.RESOURCE_ID) && !data.get(Constants.RESOURCE_ID).getAsString().isEmpty()) {
+		if (data != null && data.has(Constants.RESOURCE_ID) && !data.get(Constants.RESOURCE_ID).getAsString().isEmpty()) {
 			String res = data.get(Constants.RESOURCE_ID).getAsString();
 			String[] listWord = res.split("/");
-			String SubscriptionID = listWord[2];
-			return SubscriptionID;
-		} else {
-			return Constants.UNKNOWN_STRING;
+			if (listWord.length > 2) {
+				return listWord[2];
+			}
 		}
-
+		return Constants.UNKNOWN_STRING;
 	}
 
 	/**
 	 * Method to get the server name from the JsonObject
-	 * 
+	 *
 	 * @param data
 	 * @param Property
 	 * @return
 	 */
 	public static String getServerName(JsonObject data) {
-		if (data.has(Constants.RESOURCE_ID) && !data.get(Constants.RESOURCE_ID).getAsString().isEmpty()) {
+		if (data != null && data.has(Constants.RESOURCE_ID) && !data.get(Constants.RESOURCE_ID).getAsString().isEmpty()) {
 			String res = data.get(Constants.RESOURCE_ID).getAsString();
 			String[] listWord = res.split("/");
-			String ServerName = listWord[listWord.length - 1];
-			return ServerName;
-		} else {
-			return Constants.UNKNOWN_STRING;
+			if (listWord.length > 0) {
+				return listWord[listWord.length - 1];
+			}
 		}
-
+		return Constants.UNKNOWN_STRING;
 	}
 
 	/**
@@ -256,8 +266,8 @@ public class Parser {
 		Data data1 = new Data();
 		if (data.has(Constants.SQL_TEXT)) {
 			data1.setOriginalSqlCommand(data.get(Constants.SQL_TEXT).getAsString());
-		} else if (!data.has(Constants.SQL_TEXT) && data.has(Constants.EVENT_SUBCATEGORY)
-				&& data.get(Constants.EVENT_CATEGORY).getAsString().equals("connection_log")) {
+		} else if (data.has(Constants.EVENT_SUBCATEGORY) && data.has(Constants.EVENT_CATEGORY)
+				&& "connection_log".equalsIgnoreCase(data.get(Constants.EVENT_CATEGORY).getAsString())) {
 			data1.setOriginalSqlCommand(data.get(Constants.EVENT_SUBCATEGORY).getAsString());
 		}
 		return data1;
