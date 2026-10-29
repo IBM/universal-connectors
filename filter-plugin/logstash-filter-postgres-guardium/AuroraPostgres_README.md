@@ -92,6 +92,37 @@ Object auditing affects the performance less than session auditing, due to the f
 6. Select the database instance in its configuration section. The state of the DB Parameter Group is pending-reboot.
 7. Reboot the database instance for the changes to take effect.
 
+#### Enabling public accessibility for the database instance
+
+The **Public accessibility** option must be enabled on the Aurora Postgres database instance so that the instance can be accessed.
+
+> **Note:** Enabling **Public accessibility** only makes the database instance reachable. The inbound rules of the AWS Security Group that is attached to the instance still control which specific IP addresses are allowed to make inbound connections.
+
+##### Procedure
+
+1. Go to **Services** > **Database** > **RDS** > **Databases**.
+2. Select the Aurora Postgres database instance, and click **Modify**.
+3. In the **Connectivity** section, expand **Additional configuration** and set **Public accessibility** to **Publicly accessible**.
+4. Click **Continue**.
+5. In the **Summary of modifications** page, verify that **Public accessibility** changes from **No** to **Yes**.
+6. Under **Schedule modifications**, select **Apply immediately** (or **Apply during the next scheduled maintenance window**), and click **Modify DB instance**.
+7. Go to **EC2** > **Security Groups**, select the Security Group that is attached to the database instance, and review its **Inbound rules** to make sure that only the intended IP addresses are allowed to connect to the database port.
+
+#### Enabling PostgreSQL log export to CloudWatch
+
+The **PostgreSQL log** must be selected in **Log exports** on the Aurora Postgres DB cluster. This setting assigns a CloudWatch log group to the database, which is where the PGAudit logs are published.
+
+> **Note:** If **PostgreSQL log** is not enabled in **Log exports**, no logs are exported to CloudWatch.
+
+##### Procedure
+
+1. Go to **Services** > **Database** > **RDS** > **Databases**.
+2. Select the Aurora Postgres DB cluster, and click **Modify**.
+3. In the **Log exports** section ("Select the log types to publish to Amazon CloudWatch Logs"), select **PostgreSQL log**.
+4. Click **Continue**.
+5. Under **Schedule modifications**, select **Apply immediately** (or **Apply during the next scheduled maintenance window**), and click **Modify cluster**.
+6. After the modification is applied, verify that the log group `/aws/rds/cluster/<cluster_name>/postgresql` is created in CloudWatch.
+
 ## 2. Viewing the PGAudit logs
 
 The PGAudit logs (both session and object logs) can be seen in log files in RDS, and also on CloudWatch:
