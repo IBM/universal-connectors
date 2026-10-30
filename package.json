@@ -27,5 +27,18 @@
   },
   "devDependencies": {
     "prettier": "^3.8.4"
+  },
+  "overrides": {
+    "@11ty/gray-matter": "3.0.0",
+    "tinypool": "2.2.0",
+    "file-loader": {
+      "schema-utils": "4.3.3"
+    },
+    "null-loader": {
+      "schema-utils": "4.3.3"
+    },
+    "url-loader": {
+      "schema-utils": "4.3.3"
+    }
   }
 }
