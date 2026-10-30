@@ -1,6 +1,6 @@
 # Configuring AWS Athena Iceberg datasource profiles for Kafka Connect plug-ins
 
-Create and configure datasource profiles through Central Manager for **AWS Athena Iceberg over CloudWatch Connect 2.0** plug-in.
+Create and configure datasource profiles by using central manager for **AWS Athena Iceberg over CloudWatch Connect 2.0** plug-in.
 
 ## Meet AWS Athena Iceberg over CloudWatch Connect
 
@@ -11,139 +11,125 @@ Create and configure datasource profiles through Central Manager for **AWS Athen
 
 Kafka Connect is a framework for streaming data between Apache Kafka and other systems. This connector enables monitoring of AWS Athena query activity on Iceberg tables through CloudWatch. Because CloudTrail omits the full query string from Athena events by default, a Lambda enricher function is required to retrieve the complete SQL and write it to a separate enriched log group before the connector reads it.
 
-**Note:** This connector requires an Iceberg-format table. Regular Hive tables will not exercise the Iceberg code path. The `table_type = 'ICEBERG'` property must be set when creating the table.
+**Note:** This connector requires an Apache Iceberg table. Standard Hive tables do not use the Iceberg code path. You must set the `table_type = 'ICEBERG'` table property when you create the table.
 
 ## Configuring AWS
 
-### 1. Enabling CloudTrail Management Events
+1. Go to **CloudTrail** and enable **Management events** on your trail.
 
-Navigate to **CloudTrail** and enable **Management Events** on your trail.
+2. Go to **S3** and create a new bucket. This bucket stores the Athena query results and the Iceberg table data.
 
-### 2. Creating an S3 Bucket
+3. Configure the Athena query result location.</br>
+      a. Go to **Amazon Athena > Query Settings**. </br>
+      b. In the **Query result location** field, specify the S3 bucket that you created in step 2. </br>
 
-Navigate to **S3** and create a new bucket. This bucket is used for Athena query results and the Iceberg table data.
+4. In the **Athena query editor**, create a database and an Apache Iceberg table. 
+In the following example, replace `your-bucket` with the S3 bucket name that you created in step 2:
 
-### 3. Configuring the Athena Query Result Location
+      ```sql
+      CREATE DATABASE IF NOT EXISTS iceberg_db;
 
-Navigate to **Amazon Athena → Query Settings**.
-Set **Query result location** to the bucket you created in step 2.
+      CREATE TABLE iceberg_db.orders (
+        order_id  INT,
+        customer  STRING,
+        amount    DOUBLE
+      )
+      LOCATION 's3://your-bucket/iceberg/orders/'
+      TBLPROPERTIES ('table_type' = 'ICEBERG');
+      ```
 
-### 4. Creating an Iceberg Test Table
+      To verify that the table is created, run the following command:
 
-In the Athena Query Editor, create a database and an Iceberg-format table. Replace `your-bucket` with the bucket name from step 2.
+      ```sql
+      SHOW TABLES IN iceberg_db;
+      ```
 
-```sql
-CREATE DATABASE IF NOT EXISTS iceberg_db;
+      **Note:** The `table_type = 'ICEBERG'` table property is required. Regular Hive tables do not use the Iceberg code path.
 
-CREATE TABLE iceberg_db.orders (
-  order_id  INT,
-  customer  STRING,
-  amount    DOUBLE
-)
-LOCATION 's3://your-bucket/iceberg/orders/'
-TBLPROPERTIES ('table_type' = 'ICEBERG');
-```
+5. Create the Lambda Enricher function. </br>
+      a. In the AWS Lambda console, create a new function (for example, `athena-audit-enricher`). </br>
+      b. Paste the contents of [`lambda.py`](lambda.py) into the function code editor, and then click **Deploy**. </br>
+      c. On the Configuration tab, click **Environment variables > Edit**, and configure the following variables: </br>
 
-Confirm the table was created:
+   | Variable | Example value | Description |
+   |---|---|---|
+   | `REGION` | `us-east-1` | The AWS region where the CloudTrail trail is configured. |
+   | `ENRICHED_LOG_GROUP` | `/aws/cloudtrail/athena-audit-enriched` | The CloudWatch log group where the Lambda function writes enriched events. Enter a unique name to avoid duplicate entries. |
+   | `ENRICHED_LOG_STREAM` | `enriched-stream` | The log stream name within the enriched log group. |
 
-```sql
-SHOW TABLES IN iceberg_db;
-```
+6. Increase the Lambda function timeout. </br>
+      a. In the AWS Lambda console, go to **Configuration > General configuration > Edit**.</br>
+      b. In the **Timeout** field, specify at least `30` seconds, and then click **Save**.</br>
+      
+      **Note:** The default timeout is 3 seconds. If the Athena `GetQueryExecution` call is delayed by a cold start or throttling, the Lambda function times out without writing events to the enriched log group.
 
-**Note:** The `table_type = 'ICEBERG'` property is required. Regular Hive tables will not exercise the Iceberg code path.
+7. Grant IAM permissions to the Lambda function. </br>
+      a. In the AWS IAM console, go to **Roles**, and open the execution role that is attached to your Lambda function (listed on the **Configuration** > **Permissions** tab in the Lambda console). </br>
+      b. Click **Add permissions > Create inline policy**.</br>
+      c. Select the **JSON** tab, paste the following policy, enter `AthenaIcebergLambdaPolicy` for the policy name, and then click **Create policy**. </br>
 
-### 5. Creating the Lambda Enricher Function
+      ```json
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": "athena:GetQueryExecution",
+            "Resource": "*"
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "logs:CreateLogGroup",
+              "logs:CreateLogStream",
+              "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:*:*:log-group:*:*"
+          }
+        ]
+      }
+      ```
 
-Navigate to **Lambda** and create a new function (for example, `athena-audit-enricher`).
+      **Note:** Without the `athena:GetQueryExecution` permission, the Lambda function cannot retrieve the actual query string and records `UNAVAILABLE` instead.
 
-Paste the contents of [`lambda.py`](lambda.py) into the function code editor and click **Deploy**.
+8. Configure a CloudWatch Logs subscription filter for the Lambda function. </br>
+      a. In the AWS CloudWatch console, go to **Log groups**, and open the CloudWatch log group that is associated with your CloudTrail trail (for example, `/aws/cloudtrail`). </br>
+      b. Go to the **Subscription filters** tab, then click **Create Lambda subscription filter**. </br> 
+      c. Under **Lambda function**, select the Lambda function that you created in step 5. </br>
+      d. In the **Filter pattern** field, enter `{ $.eventSource = "athena.amazonaws.com" }` to capture only Athena events. </br>
+      e. Enter a filter name (for example, `athena-cloudtrail-to-lambda`), then click **Start streaming**.
 
-After deploying, set the following **environment variables** on the Lambda (**Configuration → Environment variables → Edit**):
+      **Note:** If you do not configure this subscription filter, the Lambda function is not invoked. CloudTrail captures Athena events, but the enriched log group remains empty.
 
-| Variable | Example value | Description |
-|---|---|---|
-| `REGION` | `us-east-1` | The AWS region where the CloudTrail trail is configured. |
-| `ENRICHED_LOG_GROUP` | `/aws/cloudtrail/athena-audit-enriched` | The CloudWatch log group where the Lambda writes enriched events. Use a unique name to avoid duplication. |
-| `ENRICHED_LOG_STREAM` | `enriched-stream` | The log stream within the enriched log group. |
+9. Configure the universal connector profile log group. </br>
+         a. Configure the universal connector to read from the **enriched** CloudWatch log group (the Lambda function output), not the raw CloudTrail log group. Specify the same log group name that you set in the `ENRICHED_LOG_GROUP` environment variable on the Lambda function in step 5. </br>
+         b. Verify that the AWS credentials configured for the universal connector have the following permissions on the enriched log group: </br>
+&emsp;                  - `logs:GetLogEvents`</br>
+&emsp;                  - `logs:DescribeLogStreams`</br>
 
-### 6. Increasing the Lambda Timeout
+    **Note:** If the universal connector is configured to read from the raw CloudTrail log group, the connector receives events where `queryString` is `***OMITTED***`, and the SQL statements are not displayed in Guardium.
+   
 
-In the Lambda console, go to **Configuration → General configuration → Edit**.
-Set **Timeout** to at least **30 seconds** and click **Save**.
+## Viewing the audit Logs
 
-**Note:** The default timeout is 3 seconds. If Athena's `GetQueryExecution` call is slow due to a cold start or throttling, the Lambda will time out and write nothing to the enriched log group.
-
-### 7. Granting Lambda IAM Permissions
-
-Navigate to **IAM → Roles** and open the execution role attached to your Lambda (visible on the Lambda's **Configuration → Permissions** tab).
-
-Click **Add permissions → Create inline policy**, paste the following JSON, name it `AthenaIcebergLambdaPolicy`, and click **Create policy**:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": "athena:GetQueryExecution",
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": "arn:aws:logs:*:*:log-group:*:*"
-    }
-  ]
-}
-```
-
-**Note:** Without `athena:GetQueryExecution`, the Lambda cannot retrieve the real query string and will write `UNAVAILABLE` instead.
-
-### 8. Wiring CloudWatch Logs to the Lambda (Subscription Filter)
-
-Navigate to **CloudWatch → Log groups** and open the CloudTrail log group associated with your trail (for example, `/aws/cloudtrail`).
-
-1. Click the **Subscription filters** tab → **Create Lambda subscription filter**.
-2. Under **Lambda function**, select the Lambda you created in step 5.
-3. Set a **Filter pattern** of `{ $.eventSource = "athena.amazonaws.com" }` to reduce noise.
-4. Give the filter a name (for example, `athena-cloudtrail-to-lambda`) and click **Start streaming**.
-
-**Note:** Without this step, the Lambda is never invoked. Athena events will arrive in CloudTrail but the enriched log group will remain empty.
-
-### 9. Configuring the UC Profile Log Group
-
-Point the UC connector at the **enriched** log group (the Lambda's output), not the raw CloudTrail log group. Use the same value you set in the `ENRICHED_LOG_GROUP` environment variable on the Lambda.
-
-Ensure that the AWS credentials supplied to the connector have the following permissions on the enriched log group:
-- `logs:GetLogEvents`
-- `logs:DescribeLogStreams`
-
-**Note:** If the connector points at the raw CloudTrail log group, it will receive events where `queryString` is `***OMITTED***` and the SQL will not be visible in Guardium.
-
-## Viewing the Audit Logs
-
-Athena audit events are captured by CloudTrail and forwarded to CloudWatch via the subscription filter and Lambda enricher. The enriched log group contains one event per query with the following key fields:
+AWS CloudTrail captures Athena audit events and forwards them to CloudWatch through the subscription filter and the Lambda enricher function. The enriched log group contains one event for each query with the following fields:
 
 | Field | Description |
 |---|---|
 | `requestParameters.queryString` | The full SQL statement that was executed. |
 | `requestParameters.queryStatus` | The query result: `SUCCEEDED` or `FAILED`. |
-| `requestParameters.queryExecutionContext.database` | The Athena database against which the query ran. |
+| `requestParameters.queryExecutionContext.database` | The Athena database where the query was run. |
 | `userIdentity` | Details of the IAM principal that ran the query. |
 | `sourceIPAddress` | The IP address of the client that submitted the query. |
-| `eventTime` | The time the event was recorded in CloudTrail. |
+| `eventTime` | The timestamp when the event was recorded in CloudTrail. |
 
-For the full CloudTrail event structure for Athena, see the [AWS CloudTrail documentation for Athena](https://docs.aws.amazon.com/athena/latest/ug/logging-using-cloudtrail.html).
+For more information about the CloudTrail event structure for Athena, see [AWS CloudTrail documentation for Athena](https://docs.aws.amazon.com/athena/latest/ug/logging-using-cloudtrail.html).
 
 ## Limitations
 
-- The connector requires a Lambda enricher function. Without it, `queryString` is `***OMITTED***` in CloudTrail events and the SQL cannot be parsed.
-- Lambda cold starts or throttling can delay enriched log entries. If entries are missing, check the Lambda logs in CloudWatch and verify that the timeout is at least 30 seconds.
-- The `table_type = 'ICEBERG'` property is required on the Athena table. Queries against standard Hive tables will not be captured on the Iceberg code path.
+- The connector requires a Lambda enricher function. Without this function, the `queryString` field is set to `***OMITTED***` in CloudTrail events, and the SQL statements cannot be parsed.
+- Lambda function cold starts or throttling can delay enriched log entries. If log entries are missing, check the Lambda function logs in CloudWatch and verify that the function timeout is set to at least 30 seconds.
+- The `table_type = 'ICEBERG'` table property is required on the Athena table. Queries against standard Hive tables are not captured on the Iceberg code path.
 
 ## Creating datasource profiles
 
@@ -153,7 +139,7 @@ You can create a new datasource profile from the **Datasource Profile Management
 
 1. Go to **Manage > Universal Connector > Datasource Profile Management**.
 2. Click the **➕ (Add)** button.
-3. You can create a profile by using one of the following methods:
+3. Select one of the following methods to create a profile:
 
     - To **create a new profile manually**, go to the **Add Profile** tab and provide values for the following fields:
         - **Name** and **Description**.
@@ -166,28 +152,28 @@ You can create a new datasource profile from the **Datasource Profile Management
 
 **Note:** Configuration options vary based on the selected plug-in.
 
-## Configuring AWS Athena Iceberg Over CloudWatch Connect 2.0
+## Configuring AWS Athena Iceberg over CloudWatch Connect 2.0
 
-The following table describes the fields that are specific to the AWS Athena Iceberg Over CloudWatch Connect 2.0 plug-in.
+The following table describes the configuration fields for the AWS Athena Iceberg Over CloudWatch Connect 2.0 plug-in.
 
 | Field | Description |
 |---|---|
 | **Name** | Unique name of the profile. |
 | **Description** | Description of the profile. |
-| **Plug-in** | Plug-in type for this profile. Select `AWS Athena Iceberg Over Cloudwatch Connect 2.0`. A full list of available plug-ins is available on the **Package Management** page. |
-| **Credential** | Select AWS Credentials or AWS Role ARN. The credential to authenticate with AWS. Must be created in **Credential Management**, or click **➕** to create one. For more information, see [Creating Credentials](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_credential_management.html). |
-| **Kafka Cluster** | Select the appropriate Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_kafka_cluster_management.html). |
-| **Label** | Grouping label. For example, customer name or ID. |
+| **Plug-in** | Plug-in type for this profile. Select `AWS Athena Iceberg Over Cloudwatch Connect 2.0`. A complete list of available plug-ins is displayed on the **Package Management** page. |
+| **Credential** | Credential used to authenticate with AWS. Select **AWS Credentials** or **AWS Role ARN**. You must create credentials in **Credential Management**, or click the **Add (+)** icon to create new credentials. For more information, see [Creating Credentials](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_credential_management.html). |
+| **Kafka Cluster** | Select a Kafka cluster from the available Kafka cluster list or create a new Kafka cluster. For more information, see [Managing Kafka clusters](https://www.ibm.com/docs/en/SSMPHH_12.x/com.ibm.guardium.doc.stap/guc/guc_kafka_cluster_management.html). |
+| **Label** | Grouping label for the profile. For example, customer name or ID. |
 | **AWS account region** | The AWS region where your Athena workgroup and CloudTrail trail are located (for example, `us-east-1`). |
-| **Log groups** | The enriched CloudWatch log group to monitor — the output of the Lambda enricher, not the raw CloudTrail log group. Use the same value as the `ENRICHED_LOG_GROUP` Lambda environment variable. |
-| **Filter pattern** | CloudWatch Logs filter pattern to apply. Use `None` to retrieve all logs, or specify a pattern to filter specific log events. |
-| **Account ID** | Your AWS account ID (12-digit number). |
+| **Log groups** | The enriched CloudWatch log group to monitor — the output of the Lambda enricher, not the raw CloudTrail log group. Specify the same value that you set in the `ENRICHED_LOG_GROUP` environment variable on the Lambda function. |
+| **Filter pattern** | CloudWatch Logs filter pattern to apply. Specify `None` to retrieve all logs, or specify a pattern to filter for specific log events. |
+| **Account ID** | The 12-digit AWS account ID. |
 | **Cluster name** | The Athena workgroup or table identifier. |
-| **Ingestion delay (seconds)** | Default value is 900 seconds (15 minutes). This delay accounts for the time it takes for logs to be available in CloudWatch after being generated. |
-| **No-traffic threshold (minutes)** | Default value is 60. If there is no incoming traffic for an hour, S-TAP displays a red status. When incoming traffic resumes, the status returns to green. |
-| **Unmask sensitive value** | Optional boolean flag. When enabled, sensitive values in the audit logs will not be masked. |
-| **Use Enterprise Load Balancing (ELB)** | Enable this if ELB support is required. |
-| **Managed Unit Count** | Number of Managed Units (MUs) to allocate for ELB. |
+| **Ingestion delay (seconds)** | Ingestion delay in seconds. Default value is 900 seconds (15 minutes). This delay accounts for the latency between event generation and log availability in CloudWatch. |
+| **No-traffic threshold (minutes)** | Inactivity threshold in minutes. The default value is 60. If no incoming traffic is detected for 60 minutes, the S-TAP status changes to red. When incoming traffic resumes, the status returns to green. |
+| **Unmask sensitive value** | Optional boolean flag. Select this option to display sensitive values in audit logs without masking. |
+| **Use Enterprise Load Balancing (ELB)** | Select this option to enable Enterprise Load Balancing (ELB) support. |
+| **Managed Unit Count** | The number of managed units (MUs) to allocate for ELB. |
 
 **Notes:**
 - Ensure that the **profile name** is unique.
@@ -196,7 +182,7 @@ The following table describes the fields that are specific to the AWS Athena Ice
 
 ---
 
-## Testing a Connection
+## Testing a connection
 
 After you create a profile, test the connection to ensure that the configuration is valid.
 
@@ -204,17 +190,17 @@ After you create a profile, test the connection to ensure that the configuration
 
 1. Select the new profile.
 2. From the top menu, click **Test Connection**.
-3. If the test is successful, proceed to installing the profile.
-4. If the test fails, verify the following items:
-   - The AWS credentials have the required CloudWatch permissions on the enriched log group.
-   - The enriched log group name matches the `ENRICHED_LOG_GROUP` Lambda environment variable.
-   - The Kafka cluster is accessible.
+3. If the connection test succeeds, proceed to install the profile.
+4. If the connection test fails, verify the following items:
+   - The AWS credentials have the required CloudWatch permissions (`logs:GetLogEvents` and `logs:DescribeLogStreams`) on the enriched log group.
+   - The enriched log group name matches the `ENRICHED_LOG_GROUP` environment variable on the Lambda function.
+   - The Kafka cluster is running and accessible.
 
 ---
 
-## Installing a Profile
+## Installing a profile
 
-Once the connection test is successful, you can install the profile on **Managed Units (MUs)** or **Edges**. The parsed audit logs are sent to the selected Managed Unit or Edge to be consumed by the Sniffer.
+After the connection test succeeds, install the profile on managed units (MUs) or edge units. The parsed audit logs are sent to the selected managed unit or edge unit for the sniffer to process.
 
 ### Procedure
 
@@ -239,27 +225,28 @@ You can uninstall or reinstall an installed profile.
 
 ### The enriched log group is empty
 
-1. Confirm that the CloudWatch subscription filter is attached to the raw CloudTrail log group and targets the Lambda function.
-2. Run an Athena query and wait 30–60 seconds, then check the enriched log group.
-3. Check the Lambda function's own CloudWatch logs for errors:
-   - Navigate to **CloudWatch → Log groups** and open `/aws/lambda/<function-name>`.
-   - Look for timeout errors (increase the Lambda timeout to at least 30 seconds) or permission errors (verify the IAM policy includes `athena:GetQueryExecution`).
+1. Verify that the CloudWatch subscription filter is attached to the raw CloudTrail log group and targets the Lambda function.
+2. Run a test query in Athena, wait 30–60 seconds, and then check the enriched log group for events.
+3. Check the Lambda function CloudWatch logs for execution errors:
+   - Go to **CloudWatch > Log groups**, and open `/aws/lambda/<function-name>`.
+   - If timeout errors occur, increase the Lambda function timeout to at least 30 seconds.
+   - If permission errors occur, verify that the IAM policy attached to the Lambda execution role includes the `athena:GetQueryExecution` permission.
 
-### The `queryString` field shows `UNAVAILABLE`
+### The queryString field shows UNAVAILABLE
 
-The Lambda failed to call `GetQueryExecution`. Verify that the Lambda execution role includes the `athena:GetQueryExecution` IAM permission.
+The Lambda function failed to call the `GetQueryExecution` API. Verify that the Lambda execution role includes the `athena:GetQueryExecution` IAM permission.
 
-### Logs are not appearing in Guardium
+### Logs do not appear in Guardium
 
-1. Confirm that the UC profile **Log groups** field points to the enriched log group, not the raw CloudTrail log group.
-2. Verify that the enriched log group contains events with `queryString` showing the real SQL (not `***OMITTED***`).
-3. Confirm that the AWS credentials attached to the profile have `logs:GetLogEvents` and `logs:DescribeLogStreams` on the enriched log group.
+1. Verify that the **Log groups** field in the universal connector profile specifies the enriched log group, not the raw CloudTrail log group.
+2. Verify that the enriched log group contains events where the `queryString` field displays the actual SQL statements (not `***OMITTED***`).
+3. Verify that the AWS credentials configured for the profile have `logs:GetLogEvents` and `logs:DescribeLogStreams` permissions on the enriched log group.
 4. Check the Kafka Connect logs for connector errors.
 
 ### Connection test fails
 
 1. Verify that the AWS credentials are valid and have not expired.
-2. Confirm that the log group name is correct and exists in the specified region.
-3. Verify that the Kafka cluster is accessible.
+2. Verify that the log group name is correct and exists in the specified AWS region.
+3. Verify that the Kafka cluster is running and accessible.
 
 ---
