@@ -49,7 +49,7 @@ The plug-in is free and open-source (Apache 2.0). It can be used as a starting p
 	file-defaults:
 	  format: json
 	  redact: false
-	  redactable: true
+	  redactable: false
 
 	sinks:
 	  file-groups:
@@ -273,6 +273,7 @@ The rsyslog template **must** include `serverHostname=` and `serverPort=` values
 - When using `cockroach sql` CLI with password authentication, a `client_authentication_failed` event is logged before successful login. The failed event is reported to Guardium as a LOGIN_FAILED exception.
 - The audit logs captures sql errors for syntactically correct queries (appears in both Full SQL report and Exception report) and does not capture syntactically incorrect queries.
 - Some operations may appear in multiple log files. For example, DDL operations (CREATE, ALTER, DROP, etc.) may appear in `cockroach-sql-exec.log`, `cockroach-sensitive-access.log`, and/or `cockroach-sql-schema.log`.
+- Duplicate records can appear for admin users as it appears in multiple log files.
 
 ## 5. Configuring the CockroachDB filter in Guardium
 
