@@ -381,43 +381,16 @@ You can uninstall or reinstall an installed profile.
 
 ### Some Neo4j statements do not appear in Guardium (GDP)
 
-**Symptom:** The Full SQL report shows only cypher-shell `MATCH ... SET` and `DELETE` statements wrapped in a Bolt `RUN {"statement":...}` format. Other statements are missing.
+**Symptom:** The Full SQL report only showed cypher-shell `MATCH ... SET` and `DELETE` statements wrapped in a Bolt `RUN {"statement":...}` format.
 
-**Settings to check:**
+**Settings:** The query-log settings were correct (VERBOSE, 0s threshold, no literal obfuscation). Two known gaps remain:
+- `server.logs.query.early_raw_logging_enabled=false` — syntax-error statements are never logged.
+- Transaction events are off — `BEGIN`/`COMMIT`/`ROLLBACK` are not captured.
 
-| Setting | Required value | Gap if wrong |
-|---|---|---|
-| `db.logs.query.enabled` | `VERBOSE` or `INFO` | Queries are not logged |
-| `db.logs.query.threshold` | `0` | Only slow queries are logged |
-| `db.logs.query.obfuscate_literals` | `false` (default) | Literal values are stripped |
-| `server.logs.query.early_raw_logging_enabled` | `true` | Syntax-error statements are never logged |
-| Transaction event log | enabled | `BEGIN`/`COMMIT`/`ROLLBACK` events are not logged |
+**Next step:** Search for `GDP_TEST` in three places — the first place a marker is missing is the layer to fix:
 
-**To find which layer drops the statements**, run five marker statements in cypher-shell (statement `_05` is intentionally invalid to test syntax-error logging):
-
-```cypher
-RETURN 'GDP_TEST_01' AS marker;
-MATCH (n) WHERE n.id = 'GDP_TEST_02' RETURN n;
-CREATE (:Marker {id: 'GDP_TEST_03'});
-MATCH (n {id: 'GDP_TEST_04'}) SET n.checked = true;
-RETURN GDP_TEST_05_SYNTAX_ERROR;
-```
-
-Then search for `GDP_TEST` at each layer in order — the first place a marker is missing is the layer to fix:
-
-1. **`query.log` on the Neo4j host:**
-   ```bash
-   grep 'GDP_TEST' /opt/neo4j/logs/query.log
-   ```
-   If missing: check the settings above. To capture syntax-error statements, also set `server.logs.query.early_raw_logging_enabled=true` and restart Neo4j.
-
-2. **Syslog traffic to the Kafka broker:**
-   ```bash
-   sudo tcpdump -A -i any dst port 5000 | grep 'GDP_TEST'
-   ```
-   If missing: the rsyslog `imfile` rule is not tailing the right file. Verify the `File=` path and restart rsyslog.
-
-3. **Guardium Full SQL and Exception reports:** search for `GDP_TEST` in Full SQL. Statement `_05` (syntax error) appears in the Exception report, not Full SQL.
-   If missing: the filter plug-in did not parse the message. Check Logstash filter logs on the UC node for parse errors.
+1. `query.log` on the Neo4j host
+2. Syslog traffic to the Kafka broker (tcpdump)
+3. Guardium Full SQL and Exception reports
 
 ---
