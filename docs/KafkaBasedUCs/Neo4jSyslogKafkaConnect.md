@@ -289,6 +289,18 @@ You can uninstall or reinstall an installed profile.
    sudo journalctl -u rsyslog -f
    ```
 
+### SELinux blocks the syslog port
+
+If SELinux is enforcing and logs are still not forwarded, allow the syslog port and restart rsyslog:
+
+```bash
+semanage port -a -t syslogd_port_t -p tcp <PORT>
+# if semanage is missing: dnf install -y policycoreutils-python-utils
+semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+systemctl restart rsyslog
+```
+
+
 ### Neo4j query logs are not being generated
 
 1. Confirm that you are running Neo4j Enterprise Edition:
