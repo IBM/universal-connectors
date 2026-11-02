@@ -217,7 +217,7 @@ To forward Redis Enterprise audit logs to Guardium through Kafka, configure rsys
 
 ## Limitations
 
-1. The universal connector can be installed on multiple Managed Units (MUs) for high availability, but all traffic will be displayed to a single MU.
+1. The universal connector can be installed on multiple Managed Units (MUs) for high availability.
 
 2. See the [Testing a Connection](#testing-a-connection) section for test connection limitations and expected behaviour.
 

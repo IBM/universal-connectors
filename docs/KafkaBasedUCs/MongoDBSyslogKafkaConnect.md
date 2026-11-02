@@ -214,7 +214,7 @@ For encrypted forwarding, the GUC connector is the TLS **server** and rsyslog is
 
 1. The MongoDB Enterprise Audit plugin is required. MongoDB Community Edition does not include this plugin.
 
-2. The universal connector can be installed on multiple Managed Units (MUs) for high availability, but all traffic will be displayed to a single MU.
+2. The universal connector can be installed on multiple Managed Units (MUs) for high availability.
 
 3. See the [Testing a Connection](#testing-a-connection) section for test connection limitations and expected behavior.
 
