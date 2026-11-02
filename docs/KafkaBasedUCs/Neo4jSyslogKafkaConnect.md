@@ -389,18 +389,14 @@ You can uninstall or reinstall an installed profile.
 |---|---|---|
 | `db.logs.query.enabled` | `VERBOSE` or `INFO` | Queries are not logged |
 | `db.logs.query.threshold` | `0` | Only slow queries are logged |
-| `db.logs.query.obfuscate_literals` | `false` (default) | Literal values are stripped |
 | `server.logs.query.early_raw_logging_enabled` | `true` | Syntax-error statements are never logged |
-| Transaction event log | enabled | `BEGIN`/`COMMIT`/`ROLLBACK` events are not logged |
 
-**To find which layer drops the statements**, run five marker statements in cypher-shell (statement `_05` is intentionally invalid to test syntax-error logging):
+**To find which layer drops the statements**, run these marker statements in cypher-shell (`_03` is intentionally invalid to test syntax-error logging):
 
 ```cypher
 RETURN 'GDP_TEST_01' AS marker;
-MATCH (n) WHERE n.id = 'GDP_TEST_02' RETURN n;
-CREATE (:Marker {id: 'GDP_TEST_03'});
-MATCH (n {id: 'GDP_TEST_04'}) SET n.checked = true;
-RETURN GDP_TEST_05_SYNTAX_ERROR;
+CREATE (:Marker {id: 'GDP_TEST_02'});
+RETURN GDP_TEST_03_SYNTAX_ERROR;
 ```
 
 Then search for `GDP_TEST` at each layer in order — the first place a marker is missing is the layer to fix:
@@ -417,7 +413,7 @@ Then search for `GDP_TEST` at each layer in order — the first place a marker i
    ```
    If missing: the rsyslog `imfile` rule is not tailing the right file. Verify the `File=` path and restart rsyslog.
 
-3. **Guardium Full SQL and Exception reports:** search for `GDP_TEST` in Full SQL. Statement `_05` (syntax error) appears in the Exception report, not Full SQL.
+3. **Guardium Full SQL and Exception reports:** search for `GDP_TEST` in Full SQL. Statement `_03` (syntax error) appears in the Exception report, not Full SQL.
    If missing: the filter plug-in did not parse the message. Check Logstash filter logs on the UC node for parse errors.
 
 ---
