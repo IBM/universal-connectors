@@ -26,7 +26,14 @@ buildscript {
             }
         }
     }
+
+    dependencies {
+        classpath group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+    }
 }
+
+def universalConnectorsDir = project.projectDir.parentFile.toString()
+def versions = new org.yaml.snakeyaml.Yaml().load( new File("${universalConnectorsDir}/versions.yml").newInputStream() )
 
 repositories {
     mavenLocal()
@@ -46,7 +53,7 @@ dependencies {
     implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.25.4'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.18.10'
-    implementation group: 'com.google.guava', name: 'guava', version: '33.3.1-jre'
+    implementation group: 'com.google.guava', name: 'guava', version: versions.dependencies.guava
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.11.0'
 
     testImplementation 'junit:junit:4.13.1'
