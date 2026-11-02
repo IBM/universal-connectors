@@ -51,7 +51,7 @@ Kafka-connect is a framework for streaming data between Apache Kafka and other s
 	file-defaults:
 	  format: json
 	  redact: false
-	  redactable: true
+	  redactable: false
 
 	sinks:
 	  file-groups:
@@ -314,9 +314,11 @@ If either value is missing, messages are dropped and do not appear in Guardium.
 
 8. Some operations may appear in multiple log files. For example, DDL operations (CREATE, ALTER, DROP, etc.) may appear in `cockroach-sql-exec.log`, `cockroach-sensitive-access.log`, and/or `cockroach-sql-schema.log`.
 
-9. The universal connector can be installed on multiple Managed Units (MUs) for high availability, but all traffic will be displayed to a single MU.
+9. Duplicate records can appear for admin users as it appears in multiple log files.
 
-10. See the [Testing a Connection](#testing-a-connection) section for test connection limitations and expected behaviour.
+10. The universal connector can be installed on multiple Managed Units (MUs) for high availability, but traffic will be displayed on MUs depending on traffic.
+
+11. See the [Testing a Connection](#testing-a-connection) section for test connection limitations and expected behaviour.
 
 ## Creating datasource profiles
 

@@ -379,4 +379,40 @@ You can uninstall or reinstall an installed profile.
    RETURN 1;
    ```
 
+### Some Neo4j statements do not appear in Guardium (GDP)
+
+**Symptom:** The Full SQL report shows only cypher-shell `MATCH ... SET` and `DELETE` statements wrapped in a Bolt `RUN {"statement":...}` format. Other statements are missing.
+
+**Settings to check:**
+
+| Setting | Required value | Gap if wrong |
+|---|---|---|
+| `db.logs.query.enabled` | `VERBOSE` or `INFO` | Queries are not logged |
+| `db.logs.query.threshold` | `0` | Only slow queries are logged |
+| `server.logs.query.early_raw_logging_enabled` | `true` | Syntax-error statements are never logged |
+
+**To find which layer drops the statements**, run these marker statements in cypher-shell (`_03` is intentionally invalid to test syntax-error logging):
+
+```cypher
+RETURN 'GDP_TEST_01' AS marker;
+CREATE (:Marker {id: 'GDP_TEST_02'});
+RETURN GDP_TEST_03_SYNTAX_ERROR;
+```
+
+Then search for `GDP_TEST` at each layer in order — the first place a marker is missing is the layer to fix:
+
+1. **`query.log` on the Neo4j host:**
+   ```bash
+   grep 'GDP_TEST' /opt/neo4j/logs/query.log
+   ```
+   If missing: check the settings above. To capture syntax-error statements, also set `server.logs.query.early_raw_logging_enabled=true` and restart Neo4j.
+
+2. **Syslog traffic to the Kafka broker:**
+   ```bash
+   sudo tcpdump -A -i any dst port 5000 | grep 'GDP_TEST'
+   ```
+   If missing: the rsyslog `imfile` rule is not tailing the right file. Verify the `File=` path and restart rsyslog.
+
+3. **Guardium Full SQL and Exception reports:** search for `GDP_TEST` in Full SQL. Statement `_03` (syntax error) appears in the Exception report, not Full SQL.
+
 ---
