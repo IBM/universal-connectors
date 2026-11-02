@@ -379,4 +379,54 @@ You can uninstall or reinstall an installed profile.
    RETURN 1;
    ```
 
+### Some Neo4j statements do not appear in Guardium (GDP)
+
+**Symptom:** The Full SQL report shows only a subset of statements — for example, cypher-shell `MATCH ... SET` and `DELETE` statements wrapped in a Bolt `RUN {"statement":...}` format — while other statements run on the Neo4j server are missing.
+
+**Known contributing settings:**
+
+| Setting | Required value | Effect if wrong |
+|---|---|---|
+| `db.logs.query.enabled` | `VERBOSE` or `INFO` | Queries are not logged at all |
+| `db.logs.query.threshold` | `0` | Only slow queries are logged |
+| `db.logs.query.obfuscate_literals` | `false` (default) | Literal values are stripped from logged SQL |
+| `server.logs.query.early_raw_logging_enabled` | `true` | When `false`, statements that fail with a syntax error are never written to `query.log` |
+| Transaction event log | enabled | When off, `BEGIN`/`COMMIT`/`ROLLBACK` events are not logged |
+
+**Diagnosing which layer drops the statements:**
+
+Run a set of uniquely named marker statements so you can trace exactly where each one disappears. For example:
+
+```cypher
+RETURN 'GDP_TEST_01' AS marker;
+MATCH (n) WHERE n.id = 'GDP_TEST_02' RETURN n;
+CREATE (:Marker {id: 'GDP_TEST_03'});
+MATCH (n {id: 'GDP_TEST_04'}) SET n.checked = true;
+RETURN GDP_TEST_05_SYNTAX_ERROR;
+```
+
+Statement `_05` is intentionally invalid and will fail with a syntax error. Because `early_raw_logging_enabled` defaults to `false`, it will not appear in `query.log` unless that setting is enabled.
+
+Search for the markers at each layer in order. The first layer where a marker is absent is where the gap occurs:
+
+1. **Neo4j `query.log`** — confirm each marker reached the log file:
+
+   ```bash
+   grep 'GDP_TEST' /opt/neo4j/logs/query.log
+   ```
+
+2. **Syslog network traffic** — confirm rsyslog forwarded each marker to the Kafka broker:
+
+   ```bash
+   sudo tcpdump -A -i any dst port 5000 | grep 'GDP_TEST'
+   ```
+
+3. **Guardium Full SQL and Exception reports** — search for `GDP_TEST` in the **Full SQL** report. Statements that failed with a syntax error (such as `_05`) should appear in the **Exception** report instead of Full SQL.
+
+**Resolution steps based on findings:**
+
+- **Marker missing from `query.log`:** Review the Neo4j query-log settings. Ensure `db.logs.query.enabled` is `VERBOSE` (preferred) or `INFO` and that `db.logs.query.threshold=0`. To capture syntax-error statements, set `server.logs.query.early_raw_logging_enabled=true` in `neo4j.conf` and restart Neo4j.
+- **Marker in `query.log` but missing from tcpdump:** The rsyslog `imfile` input is not tailing the correct file, or the forwarding rule is not matching. Re-check the rsyslog configuration, confirm the `File=` path, and restart rsyslog.
+- **Marker in tcpdump but missing from GDP:** The Kafka Connect syslog connector received the message but the Guardium filter plug-in did not parse or emit it. Check the Logstash filter logs on the UC node for parse errors, and verify that the Grok pattern matches the log format produced by your Neo4j version.
+
 ---
