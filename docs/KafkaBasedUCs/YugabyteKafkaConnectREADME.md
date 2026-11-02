@@ -263,7 +263,6 @@ If SELinux is enforcing and logs are still not forwarded, allow the syslog port 
 
 ```bash
 semanage port -a -t syslogd_port_t -p tcp <PORT>
-# if semanage is missing: dnf install -y policycoreutils-python-utils
 semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
 systemctl restart rsyslog
 ```
