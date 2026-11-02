@@ -381,19 +381,35 @@ You can uninstall or reinstall an installed profile.
 
 ### Some Neo4j statements do not appear in Guardium (GDP)
 
-**Symptom:** The Full SQL report only showed cypher-shell `MATCH ... SET` and `DELETE` statements wrapped in a Bolt `RUN {"statement":...}` format.
+**Symptom:** The Full SQL report shows only cypher-shell `MATCH ... SET` and `DELETE` statements wrapped in a Bolt `RUN {"statement":...}` format. Other statements are missing.
 
-**Settings:** The query-log settings were correct (VERBOSE, 0s threshold, no literal obfuscation). Two known gaps remain:
-- `server.logs.query.early_raw_logging_enabled=false` — syntax-error statements are never logged.
-- Transaction events are off — `BEGIN`/`COMMIT`/`ROLLBACK` are not captured.
+**Settings to check:**
 
-**Next step:** Search for `GDP_TEST` in three places — the first place a marker is missing is the layer to fix:
+| Setting | Required value | Gap if wrong |
+|---|---|---|
+| `db.logs.query.enabled` | `VERBOSE` or `INFO` | Queries are not logged |
+| `db.logs.query.threshold` | `0` | Only slow queries are logged |
+| `db.logs.query.obfuscate_literals` | `false` (default) | Literal values are stripped |
+| `server.logs.query.early_raw_logging_enabled` | `true` | Syntax-error statements are never logged |
+| Transaction event log | enabled | `BEGIN`/`COMMIT`/`ROLLBACK` events are not logged |
+
+**To find which layer drops the statements**, run five marker statements in cypher-shell (statement `_05` is intentionally invalid to test syntax-error logging):
+
+```cypher
+RETURN 'GDP_TEST_01' AS marker;
+MATCH (n) WHERE n.id = 'GDP_TEST_02' RETURN n;
+CREATE (:Marker {id: 'GDP_TEST_03'});
+MATCH (n {id: 'GDP_TEST_04'}) SET n.checked = true;
+RETURN GDP_TEST_05_SYNTAX_ERROR;
+```
+
+Then search for `GDP_TEST` at each layer in order — the first place a marker is missing is the layer to fix:
 
 1. **`query.log` on the Neo4j host:**
    ```bash
    grep 'GDP_TEST' /opt/neo4j/logs/query.log
    ```
-   If missing: check the query-log settings above. To also capture syntax-error statements, set `server.logs.query.early_raw_logging_enabled=true` in `neo4j.conf` and restart Neo4j.
+   If missing: check the settings above. To capture syntax-error statements, also set `server.logs.query.early_raw_logging_enabled=true` and restart Neo4j.
 
 2. **Syslog traffic to the Kafka broker:**
    ```bash
