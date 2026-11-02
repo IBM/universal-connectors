@@ -349,7 +349,6 @@ semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
 systemctl restart rsyslog
 ```
 
-
 #### Redis Enterprise audit logs are not being generated
 
 1. Verify that audit logging is enabled:
