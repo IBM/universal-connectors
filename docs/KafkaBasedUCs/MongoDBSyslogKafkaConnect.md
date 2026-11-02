@@ -214,7 +214,7 @@ For encrypted forwarding, the GUC connector is the TLS **server** and rsyslog is
 
 1. The MongoDB Enterprise Audit plugin is required. MongoDB Community Edition does not include this plugin.
 
-2. The universal connector can be installed on multiple Managed Units (MUs) for high availability, but all traffic will be displayed to a single MU.
+2. The universal connector can be installed on multiple Managed Units (MUs) for high availability.
 
 3. See the [Testing a Connection](#testing-a-connection) section for test connection limitations and expected behavior.
 
@@ -332,6 +332,16 @@ You can uninstall or reinstall an installed profile.
    ```bash
    sudo journalctl -u rsyslog -f
    ```
+
+### SELinux blocks the syslog port
+
+If SELinux is enforcing and logs are still not forwarded, allow the syslog port and restart rsyslog:
+
+```bash
+semanage port -a -t syslogd_port_t -p tcp <PORT>
+semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+systemctl restart rsyslog
+```
 
 ### MongoDB audit logs are not being generated
 

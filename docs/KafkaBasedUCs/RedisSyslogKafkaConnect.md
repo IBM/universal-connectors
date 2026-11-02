@@ -217,7 +217,7 @@ To forward Redis Enterprise audit logs to Guardium through Kafka, configure rsys
 
 ## Limitations
 
-1. The universal connector can be installed on multiple Managed Units (MUs) for high availability, but all traffic will be displayed to a single MU.
+1. The universal connector can be installed on multiple Managed Units (MUs) for high availability.
 
 2. See the [Testing a Connection](#testing-a-connection) section for test connection limitations and expected behaviour.
 
@@ -338,6 +338,16 @@ An installed profile can be uninstalled or reinstalled if needed.
    ```bash
    ls -la /var/log/redis_audit.log
    ```
+
+#### SELinux blocks the syslog port
+
+If SELinux is enforcing and logs are still not forwarded, allow the syslog port and restart rsyslog:
+
+```bash
+semanage port -a -t syslogd_port_t -p tcp <PORT>
+semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+systemctl restart rsyslog
+```
 
 #### Redis Enterprise audit logs are not being generated
 

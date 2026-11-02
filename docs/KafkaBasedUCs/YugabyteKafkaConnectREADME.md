@@ -257,6 +257,16 @@ If the connection test or traffic validation fails, verify:
 * The database hostname in the profile represents the correct YugabyteDB source.
 * The no-traffic threshold is appropriate for the expected event volume.
 
+### Troubleshooting: SELinux blocks the syslog port
+
+If SELinux is enforcing and logs are still not forwarded, allow the syslog port and restart rsyslog:
+
+```bash
+semanage port -a -t syslogd_port_t -p tcp <PORT>
+semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+systemctl restart rsyslog
+```
+
 ## Installing a profile
 
 After the connection test is successful, install the profile on the required **Managed Units (MUs)** or **Edges**.
@@ -279,6 +289,6 @@ An installed profile can be uninstalled or reinstalled if needed.
 
 ## Limitations
 
-1. The universal connector can be installed on multiple Managed Units (MUs) for high availability, but all traffic will be displayed to a single MU.
+1. The universal connector can be installed on multiple Managed Units (MUs) for high availability.
 
 2. See the [Testing a connection](#testing-a-connection) section for test connection limitations and expected behaviour.

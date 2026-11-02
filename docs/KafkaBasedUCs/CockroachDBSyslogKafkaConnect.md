@@ -316,7 +316,7 @@ If either value is missing, messages are dropped and do not appear in Guardium.
 
 9. Duplicate records can appear for admin users as it appears in multiple log files.
 
-10. The universal connector can be installed on multiple Managed Units (MUs) for high availability, but traffic will be displayed on MUs depending on traffic.
+10. The universal connector can be installed on multiple Managed Units (MUs) for high availability.
 
 11. See the [Testing a Connection](#testing-a-connection) section for test connection limitations and expected behaviour.
 
@@ -435,6 +435,16 @@ You can uninstall or reinstall an installed profile.
    ```bash
    sudo tail -f /var/log/syslog | grep rsyslog
    ```
+
+### SELinux blocks the syslog port
+
+If SELinux is enforcing and logs are still not forwarded, allow the syslog port and restart rsyslog:
+
+```bash
+semanage port -a -t syslogd_port_t -p tcp <PORT>
+semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+systemctl restart rsyslog
+```
 
 ### CockroachDB logs are not being generated
 
