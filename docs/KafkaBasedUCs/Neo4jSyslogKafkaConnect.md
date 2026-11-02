@@ -414,6 +414,5 @@ Then search for `GDP_TEST` at each layer in order — the first place a marker i
    If missing: the rsyslog `imfile` rule is not tailing the right file. Verify the `File=` path and restart rsyslog.
 
 3. **Guardium Full SQL and Exception reports:** search for `GDP_TEST` in Full SQL. Statement `_03` (syntax error) appears in the Exception report, not Full SQL.
-   If missing: the filter plug-in did not parse the message. Check Logstash filter logs on the UC node for parse errors.
 
 ---
