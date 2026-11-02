@@ -389,8 +389,19 @@ You can uninstall or reinstall an installed profile.
 
 **Next step:** Search for `GDP_TEST` in three places — the first place a marker is missing is the layer to fix:
 
-1. `query.log` on the Neo4j host
-2. Syslog traffic to the Kafka broker (tcpdump)
-3. Guardium Full SQL and Exception reports
+1. **`query.log` on the Neo4j host:**
+   ```bash
+   grep 'GDP_TEST' /opt/neo4j/logs/query.log
+   ```
+   If missing: check the query-log settings above. To also capture syntax-error statements, set `server.logs.query.early_raw_logging_enabled=true` in `neo4j.conf` and restart Neo4j.
+
+2. **Syslog traffic to the Kafka broker:**
+   ```bash
+   sudo tcpdump -A -i any dst port 5000 | grep 'GDP_TEST'
+   ```
+   If missing: the rsyslog `imfile` rule is not tailing the right file. Verify the `File=` path and restart rsyslog.
+
+3. **Guardium Full SQL and Exception reports:** search for `GDP_TEST` in Full SQL. Statement `_05` (syntax error) appears in the Exception report, not Full SQL.
+   If missing: the filter plug-in did not parse the message. Check Logstash filter logs on the UC node for parse errors.
 
 ---
