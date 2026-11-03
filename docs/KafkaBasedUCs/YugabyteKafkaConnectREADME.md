@@ -257,7 +257,8 @@ If the connection test or traffic validation fails, verify:
 * The database hostname in the profile represents the correct YugabyteDB source.
 * The no-traffic threshold is appropriate for the expected event volume.
 
-### Troubleshooting: SELinux blocks the syslog port
+
+### SELinux blocks the syslog port
 
 If SELinux is enforcing and logs are still not forwarded, allow the syslog port and restart rsyslog:
 
@@ -291,4 +292,178 @@ An installed profile can be uninstalled or reinstalled if needed.
 
 1. The universal connector can be installed on multiple Managed Units (MUs) for high availability.
 
-2. See the [Testing a connection](#testing-a-connection) section for test connection limitations and expected behaviour.
+2. See the [Testing a Connection](#testing-a-connection) section for test connection limitations and expected behaviour.
+
+## Troubleshooting
+
+### 1. Database layer: YSQL audit log verification (pgaudit)
+
+Verify that YSQL audit logging and `pgaudit` are correctly enabled and configured:
+
+1. Connect to the database using `ysqlsh`:
+
+   ```bash
+   "$YB_BIN/ysqlsh" -h "$DB_HOST" -p "$DB_PORT" \
+     -U "$DB_USER" -d "$DB_NAME" -W
+   ```
+
+2. Inside `ysqlsh`, inspect the current session, extension status, and audit settings:
+
+   ```sql
+   SELECT version();
+   SELECT current_database(), current_user, pg_backend_pid(),
+          inet_server_addr(), inet_server_port(),
+          inet_client_addr(), inet_client_port();
+
+   SELECT extname, extversion
+   FROM pg_extension
+   WHERE extname = 'pgaudit';
+
+   SELECT name, setting, source, context, pending_restart
+   FROM pg_settings
+   WHERE name IN (
+       'shared_preload_libraries',
+       'pgaudit.log', 'pgaudit.log_parameter', 'pgaudit.log_relation',
+       'pgaudit.log_statement', 'pgaudit.log_statement_once', 'pgaudit.log_rows',
+       'pgaudit.log_client', 'pgaudit.log_level',
+       'log_line_prefix', 'log_connections', 'log_disconnections',
+       'log_statement', 'log_min_messages'
+   )
+   ORDER BY name;
+   ```
+
+3. Verification checkpoints:
+
+   - **pgaudit extension:** The target database must have the `pgaudit` extension created. If missing, run `CREATE EXTENSION IF NOT EXISTS pgaudit;`.
+   - **Audit classes:** `pgaudit.log=none` will not generate session audit records. Verify that the required audit classes (e.g., `ALL`, `READ`, `WRITE`, `DDL`, etc.) are configured.
+   - **Scope:** Running `SET pgaudit.log='all'` only affects the current connection session; it does not apply to other application connections or cluster nodes. Verify the settings in the TServer configuration flags.
+   - **log_line_prefix formatting:** `log_line_prefix` must match the pattern expected by the Guardium Universal Connector parser (`%n %r [%p] %a %u %d %c %x `). Check `context` and `pending_restart` to verify whether changes require a TServer restart.
+
+   Universal Connector expected prefix:
+
+   ```text
+   %n %r [%p] %a %u %d %c %x
+   ```
+
+   | Placeholder | Purpose |
+   | --- | --- |
+   | `%n` | Unix epoch timestamp in seconds, including millisecond decimals |
+   | `%r` | Remote client address and port (or `[local]` for local sockets) |
+   | `%p` | Backend process ID |
+   | `%a` | Application name |
+   | `%u` / `%d` | Database user / Database name |
+   | `%c` / `%x` | Session ID / Transaction ID |
+
+   > **Note:** If `log_line_prefix` is modified (for example, from epoch timestamp to a formatted date string), both the rsyslog message boundary regular expression (`startmsg.regex`) and the Universal Connector parser pattern must be updated simultaneously. `pgaudit.log_level=INFO` is related to `pgaudit.log_client`; verify the actual log output based on your specific YugabyteDB version.
+
+---
+
+### 2. Database layer: YCQL audit log verification
+
+Verify the effective runtime flags on each relevant TServer, including both inclusion and exclusion settings:
+
+```text
+ycql_enable_audit_log
+ycql_audit_log_level
+ycql_audit_included_categories / ycql_audit_excluded_categories
+ycql_audit_included_users / ycql_audit_excluded_users
+ycql_audit_included_keyspaces / ycql_audit_excluded_keyspaces
+```
+
+Confirm the actual values from the YugabyteDB admin UI or runtime flags endpoint (values in the flagfile may not reflect the active process state if not reloaded).
+
+- **Inclusion and exclusion:** Both inclusion and exclusion filters apply simultaneously. Verify that the target user or keyspace is not filtered out by an exclusion rule.
+- **System keyspaces:** System keyspaces may be excluded by default. Use an independent user keyspace to validate audit log generation.
+- **Log level & file destination:** The configured log level (e.g., `INFO`, `WARNING`, `ERROR`) determines which log file receives the entries. If configured as `ERROR`, collecting only `INFO` logs will miss the audit events. Note that `INFO` and `WARNING` logs may be buffered and might not appear instantly.
+- **Authentication:** Enabling `use_cassandra_authentication` alters connection authentication requirements; do not change existing authentication settings solely for troubleshooting purposes.
+
+1. Connect via `ycqlsh` to the active YCQL host and port, then execute a test sequence:
+
+   ```sql
+   CREATE KEYSPACE uc_ts_20261103_a;
+   CREATE TABLE uc_ts_20261103_a.audit_test (id int PRIMARY KEY, note text);
+   INSERT INTO uc_ts_20261103_a.audit_test (id, note) VALUES (1, 'UC_TS_20261103_A');
+   SELECT * FROM uc_ts_20261103_a.audit_test WHERE id = 1;
+   UPDATE uc_ts_20261103_a.audit_test SET note = 'UC_TS_UPDATED' WHERE id = 1;
+   DELETE FROM uc_ts_20261103_a.audit_test WHERE id = 1;
+   DROP TABLE uc_ts_20261103_a.audit_test;
+   DROP KEYSPACE uc_ts_20261103_a;
+   ```
+
+2. Search raw TServer logs for the test entries:
+
+   ```bash
+   rg -n -i --glob '*INFO*' --glob '*WARNING*' --glob '*ERROR*' \
+     'uc_ts_20261103_a|audit' "$YB_LOG_DIR" | tail -n 100
+   ```
+
+   > **Note:** Failed YCQL requests may produce both an operation record and an error record; parsing/analysis errors may only produce error records. A single CQL statement does not necessarily correspond to a single log line.
+
+---
+
+### 3. Syslog layer: rsyslog configuration, permissions, ruleset, and multiline handling
+
+#### 3.1 Check existing configuration, service status, and permissions
+
+1. Validate configuration syntax and check service logs:
+
+   ```bash
+   sudo rsyslogd -N1
+   systemctl status rsyslog --no-pager
+   journalctl -u rsyslog --since '30 minutes ago' --no-pager
+   sudo rg -n 'imfile|postgres|yb-tserver|Ruleset|ruleset|omfwd|template|queue\.' \
+     /etc/rsyslog.conf /etc/rsyslog.d
+   ```
+
+   > **Note:** `rsyslogd -N1` validates syntax only; it does not confirm file read permissions, TLS handshake success, or downstream receiver delivery.
+
+2. Verify file permissions and the rsyslog running process:
+
+   ```bash
+   ps -C rsyslogd -o pid,user,group,args
+   namei -l /actual/path/postgresql-active.log
+   stat /actual/path/postgresql-active.log
+   tail -n 30 /actual/path/postgresql-active.log
+   ```
+
+   - Ensure the rsyslog running user has read permissions on the log files and execute/traversal permissions (`+x`) on all parent directories (especially if logs are placed under `/root/...`).
+   - Check SELinux AVC denial logs (`ausearch -m avc -ts recent`).
+   - Verify write permissions and available disk space for the rsyslog working/spool directory.
+
+#### 3.2 Ensure YSQL and YCQL inputs enter the expected ruleset
+
+Verify that the `imfile` input blocks are properly bound to the Universal Connector ruleset:
+
+```conf
+input(type="imfile"
+      File="/actual/path/postgresql-*.log"
+      Tag="yugabyte:"
+      Facility="local0"
+      Severity="info"
+      Ruleset="yugabyte_to_guardium"
+      startmsg.regex="^[0-9]+[.][0-9]{3} "
+      readTimeout="10"
+      escapeLF="on"
+      escapeLF.replacement=" ")
+
+input(type="imfile"
+      File="/actual/path/yb-tserver.*.log.INFO.*"
+      Tag="yugabyte:"
+      Facility="local0"
+      Severity="info"
+      Ruleset="yugabyte_to_guardium"
+      startmsg.regex="^[IWEF][0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}[.][0-9]+"
+      readTimeout="10"
+      escapeLF="on"
+      escapeLF.replacement=" ")
+```
+
+Checkpoints:
+
+- **Ruleset binding:** Both `input` blocks must explicitly bind `Ruleset="yugabyte_to_guardium"`. Without an explicit ruleset, messages fall back to default rsyslog processing and may not trigger the forwarder action.
+- **Message boundary regex (`startmsg.regex`):**
+  - **YSQL:** `^[0-9]+[.][0-9]{3} ` matches epoch timestamp prefixes. Adjust if timestamps use human-readable date formats (e.g. `YYYY-MM-DD`).
+  - **YCQL:** `^[IWEF][0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}[.][0-9]+` matches YugabyteDB glog format (`I1103 12:34:56.123456 ...`).
+- **Multiline & linefeed handling:** `startmsg.regex` determines message boundaries, while `escapeLF="on"` with `escapeLF.replacement=" "` replaces linebreaks inside multiline SQL statements with spaces so that statements spanning multiple lines are forwarded as a single syslog message.
+- **Read timeout:** `readTimeout="10"` prevents trailing log lines from waiting indefinitely in buffers during idle traffic.
+- **Avoid duplicate inputs:** Do not simultaneously monitor both a symlink (such as `yb-tserver.INFO`) and the underlying physical log file (`yb-tserver.*.log.INFO.*`).
