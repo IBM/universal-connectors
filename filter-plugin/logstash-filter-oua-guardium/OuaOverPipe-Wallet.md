@@ -136,7 +136,12 @@ Upload the Wallet files to Guardium system by using GRDAPI endpoint.
                                  {
                                  drop{}
                                  }
-        			mutate {
+          # Drop the collector's own sessions (the OUA binary) so they do not show up
+          # as SESSION_STARTED or inflate session counts. Real user sessions and failed logins are kept.
+          if [client_program_name] =~ /^oracle_unified_audit_oci_standalone/ {
+           drop{}
+          }
+           mutate {
                         	add_field => {"[HostName]" => "%{SERVER_ADDRESS}" }
                         	add_field => {"[PortNumber]" => "%{SERVER_PORT}" }
                         	add_field => {"[accountId]" => "%{ACCOUNT_ID}" }
