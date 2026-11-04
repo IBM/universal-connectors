@@ -141,7 +141,7 @@ Upload the Wallet files to Guardium system by using GRDAPI endpoint.
           if [client_program_name] =~ /^oracle_unified_audit_oci_standalone/ {
            drop{}
           }
-           mutate {
+        			mutate {
                         	add_field => {"[HostName]" => "%{SERVER_ADDRESS}" }
                         	add_field => {"[PortNumber]" => "%{SERVER_PORT}" }
                         	add_field => {"[accountId]" => "%{ACCOUNT_ID}" }
