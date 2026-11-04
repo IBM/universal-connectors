@@ -8,11 +8,20 @@
   - Guardium Data Protection: 11.4 and later
   - Guardium Data Security Center: 3.2 and later
 
-## Configuring native logging (optional)
+## Enabling PostgreSQL log export to CloudWatch
 
-You can enable encryption on the database instances by completing the following step.
+For the CloudWatch method, the **PostgreSQL log** must be selected in **Log exports** on the PostgreSQL DB instance. This setting assigns a CloudWatch log group to the database, which is where the PGAudit logs are published.
 
-Click **Additional configuration** > **Log exports**. Then select the **Postgresql** log type to publish to Amazon CloudWatch.
+> **Note:** If **PostgreSQL log** is not enabled in **Log exports**, no logs are exported to CloudWatch.
+
+### Procedure
+
+1. Go to **Services** > **Database** > **RDS** > **Databases**.
+2. Select the PostgreSQL DB instance, and click **Modify**.
+3. In the **Log exports** section ("Select the log types to publish to Amazon CloudWatch Logs"), select **PostgreSQL log**.
+4. Click **Continue**.
+5. Under **Schedule modifications**, select **Apply immediately** (or **Apply during the next scheduled maintenance window**), and click **Modify DB instance**.
+6. After the modification is applied, verify that the log group `/aws/rds/instance/<instance_name>/postgresql` is created in CloudWatch.
 
 ## Enabling the PGAudit extension
 
