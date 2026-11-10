@@ -48,6 +48,7 @@ To see if a particular plug-in is supported by older versions, please refer to t
 - [MongoDB Atlas](KafkaBasedUCs/MongoAtlasoverMongoAtlasKafkaConnect.md)
 - [MongoDB Syslog](KafkaBasedUCs/MongoDBSyslogKafkaConnect.md)
 - [MySQL](../filter-plugin/logstash-filter-mysql-guardium/README.md)
+- [MySQL On-Premises Syslog](KafkaBasedUCs/MySQLOnPremSyslogKafkaConnect.md)
 - [MySQL Percona](../filter-plugin/logstash-filter-mysql-percona-guardium/README.md)
 - [Neo4j](../filter-plugin/logstash-filter-neo4j-guardium/README.md)
 - [Neo4j Syslog](KafkaBasedUCs/Neo4jSyslogKafkaConnect.md)
