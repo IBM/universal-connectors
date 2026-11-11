@@ -8,6 +8,7 @@ plug-ins.
 * **Tested versions:** YugabyteDB 2.25.1.0
 * **Environment:** On-premise
 * **Supported inputs:** Syslog push through a TCP or TCPSSL listener
+* **Supported connection types:** TCP/IP and Unix domain socket (see [Limitations](#limitations))
 * **Supported Guardium versions:**
     * The existing Yugabyte over syslog README lists Guardium Data Protection 12.1 patch 5008 and above, 12.2 patch 5008
       and above, and 12.3 and above.
@@ -293,6 +294,15 @@ An installed profile can be uninstalled or reinstalled if needed.
 1. The universal connector can be installed on multiple Managed Units (MUs) for high availability.
 
 2. See the [Testing a Connection](#testing-a-connection) section for test connection limitations and expected behaviour.
+
+3. **Unix domain socket support:**
+   Unix domain socket connections (where YugabyteDB logs `[local]` client addresses via `%r` in `log_line_prefix`) are supported. The connector normalizes the client address to `serverIp(serverPort)` based on the server IP and server port extracted from the syslog CSV prefix. Currently, support is limited to the following format variants:
+   - `[local]`
+   - `[local:<path>]`
+   - `[local](<port>)`
+   - `[local:<path>](<port>)`
+
+   Any other Unix socket address format is currently not supported.
 
 ## Troubleshooting
 
