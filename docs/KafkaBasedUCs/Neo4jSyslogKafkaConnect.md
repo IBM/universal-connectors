@@ -91,6 +91,12 @@ The plug-in uses the Confluent Syslog Source Connector to receive syslog message
 4. Add the following configuration. Replace the `<UC_NODE_*>` placeholders with the addresses of your Kafka broker nodes (for UC 2.0) or your MU/Collector node (for UC 1.0):
 
    ```
+   module(load="imfile")
+
+   template(name="Neo4jAuditFormat" type="string"
+      string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% - - - serverHostname=neo4jnewfilebeat.dev.fyre.ibm.com serverPort=5000 %rawmsg%\n"
+   ) 
+
    # Neo4j query.log
    input(type="imfile"
          File="/opt/neo4j/logs/query.log"
