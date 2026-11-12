@@ -128,7 +128,7 @@ The plug-in uses the Confluent Syslog Source Connector to receive syslog message
    if $programname contains 'neo4j' then {
        action(type="omfwd"
               target="<UC_NODE_1>"
-              port="5000"
+              port="<port>"
               protocol="tcp"
               template="Neo4jAuditFormat"
               action.resumeRetryCount="-1"
@@ -136,7 +136,7 @@ The plug-in uses the Confluent Syslog Source Connector to receive syslog message
               queue.size="10000")
        action(type="omfwd"
               target="<UC_NODE_2>"
-              port="5000"
+              port="<port>"
               protocol="tcp"
               template="Neo4jAuditFormat"
               action.resumeRetryCount="-1"
@@ -144,7 +144,7 @@ The plug-in uses the Confluent Syslog Source Connector to receive syslog message
               queue.size="10000")
        action(type="omfwd"
               target="<UC_NODE_3>"
-              port="5000"
+              port="<port>"
               protocol="tcp"
               template="Neo4jAuditFormat"
               action.resumeRetryCount="-1"
