@@ -94,7 +94,7 @@ The plug-in uses the Confluent Syslog Source Connector to receive syslog message
    module(load="imfile")
 
    template(name="Neo4jAuditFormat" type="string"
-      string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% - - - serverHostname=neo4jnewfilebeat.dev.fyre.ibm.com serverPort=5000 %rawmsg%\n"
+      string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% - - - serverHostname=<host> serverPort=<port> %rawmsg%\n"
    ) 
 
    # Neo4j query.log
