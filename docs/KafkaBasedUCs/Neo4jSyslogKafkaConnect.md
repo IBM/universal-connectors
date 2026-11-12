@@ -130,7 +130,7 @@ The plug-in uses the Confluent Syslog Source Connector to receive syslog message
               target="<UC_NODE_1>"
               port="5000"
               protocol="tcp"
-              template="RSYSLOG_SyslogProtocol23Format"
+              template="Neo4jAuditFormat"
               action.resumeRetryCount="-1"
               queue.type="LinkedList"
               queue.size="10000")
@@ -138,7 +138,7 @@ The plug-in uses the Confluent Syslog Source Connector to receive syslog message
               target="<UC_NODE_2>"
               port="5000"
               protocol="tcp"
-              template="RSYSLOG_SyslogProtocol23Format"
+              template="Neo4jAuditFormat"
               action.resumeRetryCount="-1"
               queue.type="LinkedList"
               queue.size="10000")
@@ -146,7 +146,7 @@ The plug-in uses the Confluent Syslog Source Connector to receive syslog message
               target="<UC_NODE_3>"
               port="5000"
               protocol="tcp"
-              template="RSYSLOG_SyslogProtocol23Format"
+              template="Neo4jAuditFormat"
               action.resumeRetryCount="-1"
               queue.type="LinkedList"
               queue.size="10000")
