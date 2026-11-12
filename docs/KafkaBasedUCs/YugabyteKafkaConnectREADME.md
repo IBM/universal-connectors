@@ -129,6 +129,13 @@ datasource profile.
             type="string"
             string="<hostname>,<fromhost-ip>,<host-port>,%msg%\n")
    ```
+   
+   NOTE: For Guardium versions earlier than 12.2.5, remove <host-port> as shown in the following template..
+   ```conf
+   template(name="YugabyteCsv"
+            type="string"
+            string="<hostname>,<fromhost-ip>,%msg%\n")
+   ```
 
 3. Forward the events to the syslog listener host and port.
 
