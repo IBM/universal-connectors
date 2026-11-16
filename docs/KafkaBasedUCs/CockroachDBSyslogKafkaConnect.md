@@ -270,15 +270,13 @@ systemctl restart rsyslog
    )
    ```
 
-   **Generic configuration (if your rsyslog version does not support an array for `Target`):**
+   **Configuration (if rsyslog does not support an array for `Target`):**
 
-   Some rsyslog versions, such as 8.2102 on RHEL 9, do not support an array for `Target` and fail with the error `parameter 'target' is not a string`. Use one `omfwd` action for each Kafka broker instead:
+   Some rsyslog versions, such as 8.2102 on RHEL 9, fail with `parameter 'target' is not a string` when `Target` is an array. Use one `omfwd` action for each Kafka broker instead. Each event is sent to the first broker that is reachable:
 
    - The first action always runs.
-   - Each later action runs only when the previous action is suspended (`action.execOnlyWhenPreviousIsSuspended="on"`), so each event is sent to only one broker: the first one that is reachable.
-   - All actions except the last give up after one retry (`action.resumeRetryCount="1"`), so the next action takes over quickly.
-   - The last action retries indefinitely (`action.resumeRetryCount="-1"`).
-   - The queue settings are defined once on the `ruleset`, and all actions share them.
+   - Each later action runs only if the previous action is suspended.
+   - All actions except the last retry once. The last action retries indefinitely.
 
    ```
    module(load="imfile" PollingInterval="10")
@@ -308,6 +306,10 @@ systemctl restart rsyslog
        # Action 1: always runs
        action(type="omfwd"
            Protocol="tcp"
+           # For a TLS connection, uncomment the following three lines
+           # StreamDriver="gtls"
+           # StreamDriverMode="1"
+           # StreamDriverAuthMode="anon"
            template="AuditFormat"
            Target="<KAFKA_BROKER_1>"
            Port="<TARGET_PORT>"
@@ -317,6 +319,10 @@ systemctl restart rsyslog
        # Action 2: runs only when action 1 is suspended
        action(type="omfwd"
            Protocol="tcp"
+           # For a TLS connection, uncomment the following three lines
+           # StreamDriver="gtls"
+           # StreamDriverMode="1"
+           # StreamDriverAuthMode="anon"
            template="AuditFormat"
            Target="<KAFKA_BROKER_2>"
            Port="<TARGET_PORT>"
@@ -327,6 +333,10 @@ systemctl restart rsyslog
        # Last action: runs only when the previous action is suspended and retries indefinitely
        action(type="omfwd"
            Protocol="tcp"
+           # For a TLS connection, uncomment the following three lines
+           # StreamDriver="gtls"
+           # StreamDriverMode="1"
+           # StreamDriverAuthMode="anon"
            template="AuditFormat"
            Target="<KAFKA_BROKER_3>"
            Port="<TARGET_PORT>"
@@ -369,17 +379,13 @@ systemctl restart rsyslog
    ```
 
    **Notes:**
-   - Add one `action` block for each Kafka broker. Only the first block omits `action.execOnlyWhenPreviousIsSuspended`, and only the last block uses `action.resumeRetryCount="-1"` with `action.resumeInterval="10"`.
-   - For a TLS connection, add `StreamDriver="gtls"`, `StreamDriverMode="1"`, and `StreamDriverAuthMode="anon"` to every `action` block.
-   - To use RFC 3164, replace the `template()` block as described in the **RFC 3164 (alternative)** section.
-
-
-   
-   **Note:**
    - The `serverHostname=` value in the template must exactly match the **Database hostname** field configured in the datasource profile. If they differ, messages are dropped.
    - Use the high traffic configuration parameters for handling extremely high traffic (more than 11,400 events per second per CockroachDB).
    - The persistent queue configuration is optional. It provides data persistence if Kafka Connect issues occur, but it might reduce throughput at high traffic volumes.
    - When multiple Kafka brokers are configured, rsyslog connects to only one broker for the source connector. Connection errors may appear in the rsyslog service status for the other Kafka nodes, which is expected behavior.
+   - If you use one `omfwd` action for each Kafka broker, add one `action` block for each broker. Only the first block omits `action.execOnlyWhenPreviousIsSuspended`, and only the last block uses `action.resumeRetryCount="-1"` with `action.resumeInterval="10"`.
+   - If you use one `omfwd` action for each Kafka broker and a TLS connection, uncomment the `StreamDriver`, `StreamDriverMode`, and `StreamDriverAuthMode` lines in every `action` block.
+   - To use RFC 3164, replace the `template()` block as described in the **RFC 3164 (alternative)** section.
 
 5. Restart the rsyslog service:
  ```bash
