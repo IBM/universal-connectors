@@ -269,6 +269,111 @@ systemctl restart rsyslog
      string="<%PRI%>%TIMESTAMP:::date-rfc3164% %HOSTNAME% %APP-NAME%: serverHostname=<DB_HOSTNAME> serverPort=<DB_PORT> %rawmsg%\n"
    )
    ```
+
+   **Generic configuration (if your rsyslog version does not support an array for `Target`):**
+
+   Some rsyslog versions, such as 8.2102 on RHEL 9, do not support an array for `Target` and fail with the error `parameter 'target' is not a string`. Use one `omfwd` action for each Kafka broker instead:
+
+   - The first action always runs.
+   - Each later action runs only when the previous action is suspended (`action.execOnlyWhenPreviousIsSuspended="on"`), so each event is sent to only one broker: the first one that is reachable.
+   - All actions except the last give up after one retry (`action.resumeRetryCount="1"`), so the next action takes over quickly.
+   - The last action retries indefinitely (`action.resumeRetryCount="-1"`).
+   - The queue settings are defined once on the `ruleset`, and all actions share them.
+
+   ```
+   module(load="imfile" PollingInterval="10")
+   $MaxMessageSize 64k
+
+   template(name="AuditFormat" type="string"
+     string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% - - - serverHostname=<DB_HOSTNAME> serverPort=<DB_PORT> %rawmsg%\n"
+   )
+
+   ruleset(name="imfile_to_gdp"
+           # High traffic configuration (required for >11,400 eps per CockroachDB)
+           queue.type="LinkedList"
+           queue.size="100000"
+           queue.dequeueBatchSize="2000"
+           queue.workerThreads="4"
+           queue.timeoutEnqueue="0"
+           queue.saveOnShutdown="on"
+
+           # Persistent queue configuration (optional)
+           queue.fileName="cockroachdb_queue"
+           queue.maxDiskSpace="2g"
+           queue.highWatermark="80000"
+           queue.lowWatermark="40000"
+           queue.discardMark="95000"
+           queue.discardSeverity="7") {
+
+       # Action 1: always runs
+       action(type="omfwd"
+           Protocol="tcp"
+           template="AuditFormat"
+           Target="<KAFKA_BROKER_1>"
+           Port="<TARGET_PORT>"
+           action.resumeRetryCount="1"
+           action.resumeInterval="2")
+
+       # Action 2: runs only when action 1 is suspended
+       action(type="omfwd"
+           Protocol="tcp"
+           template="AuditFormat"
+           Target="<KAFKA_BROKER_2>"
+           Port="<TARGET_PORT>"
+           action.execOnlyWhenPreviousIsSuspended="on"
+           action.resumeRetryCount="1"
+           action.resumeInterval="2")
+
+       # Last action: runs only when the previous action is suspended and retries indefinitely
+       action(type="omfwd"
+           Protocol="tcp"
+           template="AuditFormat"
+           Target="<KAFKA_BROKER_3>"
+           Port="<TARGET_PORT>"
+           action.execOnlyWhenPreviousIsSuspended="on"
+           action.resumeRetryCount="-1"
+           action.resumeInterval="10")
+   }
+
+   # Monitor CockroachDB SQL query execution logs
+   input(type="imfile"
+         File="/path/to/logs/directory/cockroach-sql-exec.log"
+         Tag="cockroachdb-sql-exec"
+         Ruleset="imfile_to_gdp"
+         reopenOnTruncate="on")
+
+   # Monitor CockroachDB admin/sensitive access logs
+   # For v23: cockroach-sensitive-access.log
+   # For v25: cockroach-sql-audit.log
+   input(type="imfile"
+         File="/path/to/logs/directory/cockroach-sensitive-access.log"
+         Tag="cockroachdb-sensitive-access"
+         Ruleset="imfile_to_gdp"
+         reopenOnTruncate="on")
+
+   # Monitor CockroachDB schema change logs
+   input(type="imfile"
+         File="/path/to/logs/directory/cockroach-sql-schema.log"
+         Tag="cockroachdb-sql-schema"
+         Ruleset="imfile_to_gdp"
+         reopenOnTruncate="on")
+
+   # Monitor CockroachDB authentication/session logs
+   # For v23: use cockroach-sessions.log
+   # For v25: use cockroach-sql-auth.log
+   input(type="imfile"
+         File="/path/to/logs/directory/cockroach-sessions.log"
+         Tag="cockroachdb-sessions"
+         Ruleset="imfile_to_gdp"
+         reopenOnTruncate="on")
+   ```
+
+   **Notes:**
+   - Add one `action` block for each Kafka broker. Only the first block omits `action.execOnlyWhenPreviousIsSuspended`, and only the last block uses `action.resumeRetryCount="-1"` with `action.resumeInterval="10"`.
+   - For a TLS connection, add `StreamDriver="gtls"`, `StreamDriverMode="1"`, and `StreamDriverAuthMode="anon"` to every `action` block.
+   - To use RFC 3164, replace the `template()` block as described in the **RFC 3164 (alternative)** section.
+
+
    
    **Note:**
    - The `serverHostname=` value in the template must exactly match the **Database hostname** field configured in the datasource profile. If they differ, messages are dropped.
