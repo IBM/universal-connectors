@@ -28,6 +28,16 @@ AlloyDB Omni is a downloadable edition of AlloyDB that you can run anywhere. It 
    oc adm policy add-scc-to-user anyuid -z default -n <your-namespace>
    ```
 
+### SELinux blocks the syslog port
+
+If SELinux is enforcing on the database server, allow the syslog port (the target port used in the rsyslog configuration) and restart rsyslog. Otherwise, logs might not be forwarded:
+
+```bash
+semanage port -a -t syslogd_port_t -p tcp <PORT>
+semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+systemctl restart rsyslog
+```
+
 ## Configuring logging for PostgreSQL
 
 To enable comprehensive audit logging for AlloyDB Omni (which is based on PostgreSQL), you need to configure the PostgreSQL logging parameters.

@@ -82,13 +82,21 @@ The plug-in uses the Confluent Syslog Source Connector to receive syslog message
    systemctl status rsyslog
    ```
 
-3. Create the rsyslog configuration file:
+3. If SELinux is enforcing on the database server, allow the syslog port (the target port used in the rsyslog configuration) and restart rsyslog. Otherwise, logs might not be forwarded:
+
+   ```bash
+   semanage port -a -t syslogd_port_t -p tcp <PORT>
+   semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+   systemctl restart rsyslog
+   ```
+
+4. Create the rsyslog configuration file:
 
    ```bash
    vi /etc/rsyslog.d/neo4j.conf
    ```
 
-4. Add the following configuration. Replace the `<UC_NODE_*>` placeholders with the addresses of your Kafka broker nodes (for UC 2.0) or your MU/Collector node (for UC 1.0):
+5. Add the following configuration. Replace the `<UC_NODE_*>` placeholders with the addresses of your Kafka broker nodes (for UC 2.0) or your MU/Collector node (for UC 1.0):
 
    ```
    module(load="imfile")
@@ -159,13 +167,13 @@ The plug-in uses the Confluent Syslog Source Connector to receive syslog message
    - Add or remove `action(type="omfwd" ...)` blocks to match the number of nodes in your environment.
    - The `startmsg.regex` patterns match the ISO-format timestamp prefix on each log line, enabling rsyslog to correctly reassemble multi-line entries.
 
-5. Restart the rsyslog service:
+6. Restart the rsyslog service:
 
    ```bash
    systemctl restart rsyslog
    ```
 
-6. Verify that rsyslog is running with no errors:
+7. Verify that rsyslog is running with no errors:
 
    ```bash
    systemctl status rsyslog

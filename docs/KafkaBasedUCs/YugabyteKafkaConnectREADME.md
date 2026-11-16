@@ -87,6 +87,16 @@ Enable YugabyteDB audit logging before creating the Guardium datasource profile.
 Configure syslog forwarding so that Yugabyte audit log events are pushed to the syslog listener configured in the
 datasource profile.
 
+### SELinux blocks the syslog port
+
+If SELinux is enforcing on the database server, allow the syslog port (the target port used in the rsyslog configuration) and restart rsyslog. Otherwise, logs might not be forwarded:
+
+```bash
+semanage port -a -t syslogd_port_t -p tcp <PORT>
+semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+systemctl restart rsyslog
+```
+
 ### Procedure
 
 1. Configure rsyslog `imfile` to read the Yugabyte audit log file.

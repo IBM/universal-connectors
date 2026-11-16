@@ -112,13 +112,21 @@ If either value is missing, messages are dropped and do not appear in Guardium.
    systemctl status rsyslog
    ```
 
-3. Create the rsyslog configuration file:
+3. If SELinux is enforcing on the database server, allow the syslog port (the target port used in the rsyslog configuration) and restart rsyslog. Otherwise, logs might not be forwarded:
+
+   ```bash
+   semanage port -a -t syslogd_port_t -p tcp <PORT>
+   semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+   systemctl restart rsyslog
+   ```
+
+4. Create the rsyslog configuration file:
 
    ```bash
    vi /etc/rsyslog.d/mysql-kafka.conf
    ```
 
-4. Add the following configuration. Replace the placeholders with values for your environment:
+5. Add the following configuration. Replace the placeholders with values for your environment:
 
    ```
    module(load="imfile")
@@ -164,13 +172,13 @@ If either value is missing, messages are dropped and do not appear in Guardium.
    - The `facility="local6"` assignment and `local6.*` filter ensure only MySQL audit messages are forwarded.
    - When multiple Kafka brokers are configured, rsyslog connects to only one broker for the source connector. Connection errors may appear in the rsyslog service status for the other Kafka nodes, which is expected behavior.
 
-5. Restart the rsyslog service:
+6. Restart the rsyslog service:
 
    ```bash
    systemctl restart rsyslog
    ```
 
-6. Verify that rsyslog is running with no errors:
+7. Verify that rsyslog is running with no errors:
 
    ```bash
    systemctl status rsyslog
