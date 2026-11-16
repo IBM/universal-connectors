@@ -146,6 +146,16 @@ The rsyslog template **must** include `serverHostname=` and `serverPort=` values
 
 If either value is missing, messages are dropped and do not appear in Guardium.
 
+### SELinux blocks the syslog port
+
+If SELinux is enforcing on the CockroachDB server, allow the syslog port (the `<TARGET_PORT>` used in the rsyslog configuration) and restart rsyslog. Otherwise, logs might not be forwarded:
+
+```bash
+semanage port -a -t syslogd_port_t -p tcp <PORT>
+semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+systemctl restart rsyslog
+```
+
 ### Procedure
 
 1. Install rsyslog on the CockroachDB server if its not already installed:
