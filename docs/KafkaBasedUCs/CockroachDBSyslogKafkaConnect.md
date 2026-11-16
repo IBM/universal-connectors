@@ -184,7 +184,7 @@ If either value is missing, messages are dropped and do not appear in Guardium.
 
    Replace `<DB_HOSTNAME>` with the hostname of your CockroachDB server (must match the **Database hostname** field in the datasource profile), `<DB_PORT>` with the CockroachDB SQL port (default `26257`), `<KAFKA_BROKER_N>` with your Kafka broker hostnames, and `/path/to/logs/directory/` with the actual path to your CockroachDB log files.
 
-   **RFC 5424 (recommended):**
+   ### **RFC 5424 (recommended):**
    ```
    module(load="imfile" PollingInterval="10")
    $MaxMessageSize 64k
@@ -258,7 +258,7 @@ If either value is missing, messages are dropped and do not appear in Guardium.
          reopenOnTruncate="on")
    ```
 
-   **RFC 3164 (alternative):**
+   ### **RFC 3164 (alternative):**
 
    Replace the `template()` block with the following. Everything else remains the same.
    ```
@@ -267,7 +267,7 @@ If either value is missing, messages are dropped and do not appear in Guardium.
    )
    ```
 
-   **Configuration (if rsyslog does not support an array for `Target`):**
+   ### **Configuration (if rsyslog does not support an array for `Target`):**
 
    Some rsyslog versions, such as 8.2102 on RHEL 9, fail with `parameter 'target' is not a string` when `Target` is an array. Use one `omfwd` action for each Kafka broker instead. Each event is sent to the first broker that is reachable:
 
