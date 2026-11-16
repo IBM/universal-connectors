@@ -81,16 +81,6 @@ A typical audit log entry looks like this:
 
 To forward Redis Enterprise audit logs to Guardium through Kafka, configure rsyslog on each Redis Enterprise node.
 
-### SELinux blocks the syslog port
-
-If SELinux is enforcing on the database server, allow the syslog port (the target port used in the rsyslog configuration) and restart rsyslog. Otherwise, logs might not be forwarded:
-
-```bash
-semanage port -a -t syslogd_port_t -p tcp <PORT>
-semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
-systemctl restart rsyslog
-```
-
 ### Procedure for Standard (Non-containerised) Deployments
 
 1. Connect to the Redis Enterprise node:
@@ -109,7 +99,15 @@ systemctl restart rsyslog
    sudo apt-get update && sudo apt-get install -y rsyslog
    ```
 
-3. Create the rsyslog configuration file for Redis Enterprise on-prem:
+3. If SELinux is enforcing on the database server, allow the syslog port (the target port used in the rsyslog configuration) and restart rsyslog. Otherwise, logs might not be forwarded:
+
+   ```bash
+   semanage port -a -t syslogd_port_t -p tcp <PORT>
+   semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+   systemctl restart rsyslog
+   ```
+
+4. Create the rsyslog configuration file for Redis Enterprise on-prem:
 
    ```bash
    cat /etc/rsyslog.conf
@@ -213,13 +211,13 @@ systemctl restart rsyslog
    Replace `<kafka-connect-hostname-1>`, `<kafka-connect-hostname-2>`, and `<kafka-connect-hostname-3>` with your
    Kafka Connect server hostnames or IP addresses. If you have fewer Kafka nodes, remove the extra action blocks.
 
-4. Restart the rsyslog service to apply the configuration:
+5. Restart the rsyslog service to apply the configuration:
 
    ```bash
    systemctl restart rsyslog
    ```
 
-5. Verify that rsyslog is running:
+6. Verify that rsyslog is running:
 
    ```bash
    systemctl status rsyslog

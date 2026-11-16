@@ -146,16 +146,6 @@ The rsyslog template **must** include `serverHostname=` and `serverPort=` values
 
 If either value is missing, messages are dropped and do not appear in Guardium.
 
-### SELinux blocks the syslog port
-
-If SELinux is enforcing on the CockroachDB server, allow the syslog port (the `<TARGET_PORT>` used in the rsyslog configuration) and restart rsyslog. Otherwise, logs might not be forwarded:
-
-```bash
-semanage port -a -t syslogd_port_t -p tcp <PORT>
-semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
-systemctl restart rsyslog
-```
-
 ### Procedure
 
 1. Install rsyslog on the CockroachDB server if its not already installed:
@@ -174,12 +164,19 @@ systemctl restart rsyslog
     systemctl status rsyslog
     ```
 
-3. Create the rsyslog configuration file `cockroachdb-kafka.conf`:
+3. If SELinux is enforcing on the CockroachDB server, allow the syslog port (the `<TARGET_PORT>` used in the rsyslog configuration) and restart rsyslog. Otherwise, logs might not be forwarded:
+    ```bash
+    semanage port -a -t syslogd_port_t -p tcp <PORT>
+    semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+    systemctl restart rsyslog
+    ```
+
+4. Create the rsyslog configuration file `cockroachdb-kafka.conf`:
 	```bash
 	vi /etc/rsyslog.d/cockroachdb-kafka.conf
 	```
 
-4. Add the configuration to read logs from the CockroachDB log directory and send syslog messages to the Kafka broker.
+5. Add the configuration to read logs from the CockroachDB log directory and send syslog messages to the Kafka broker.
    
    **For a TLS connection, add the following configuration:**
     
@@ -383,16 +380,16 @@ systemctl restart rsyslog
    - Use the high traffic configuration parameters for handling extremely high traffic (more than 11,400 events per second per CockroachDB).
    - The persistent queue configuration is optional. It provides data persistence if Kafka Connect issues occur, but it might reduce throughput at high traffic volumes.
    - When multiple Kafka brokers are configured, rsyslog connects to only one broker for the source connector. Connection errors may appear in the rsyslog service status for the other Kafka nodes, which is expected behavior.
+   - To use RFC 3164, replace the `template()` block as described in the **RFC 3164 (alternative)** section.
    - If you use one `omfwd` action for each Kafka broker, add one `action` block for each broker. Only the first block omits `action.execOnlyWhenPreviousIsSuspended`, and only the last block uses `action.resumeRetryCount="-1"` with `action.resumeInterval="10"`.
    - If you use one `omfwd` action for each Kafka broker and a TLS connection, uncomment the `StreamDriver`, `StreamDriverMode`, and `StreamDriverAuthMode` lines in every `action` block.
-   - To use RFC 3164, replace the `template()` block as described in the **RFC 3164 (alternative)** section.
 
-5. Restart the rsyslog service:
+6. Restart the rsyslog service:
  ```bash
  systemctl restart rsyslog
  ```
 
-6. Verify that rsyslog is running:
+7. Verify that rsyslog is running:
  ```bash
  systemctl status rsyslog
  ```
