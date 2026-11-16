@@ -60,7 +60,7 @@ Each `query.log` entry is a single line containing space-separated fields that i
 
 Configure rsyslog to tail the Neo4j log files and forward them to the Kafka Connect broker. This example uses rsyslog, which is available in most Linux distributions.
 
-The plug-in uses the Confluent Syslog Source Connector to receive syslog messages from rsyslog.
+The plug-in uses the Syslog Source Connector to receive syslog messages from rsyslog.
 
 ### Procedure
 

@@ -136,7 +136,7 @@ The audit logs are stored in the directory specified in your YAML configuration 
 
 Configure a syslog utility to enable Kafka to process the data collected by syslog. This example uses rsyslog, which is available in most Linux distributions.
 
-The plug-in uses the Confluent Syslog Source Connector to receive syslog messages from rsyslog.
+The plug-in uses the Syslog Source Connector to receive syslog messages from rsyslog.
 
 ### Before you begin
 
