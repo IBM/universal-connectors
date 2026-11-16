@@ -87,19 +87,17 @@ Enable YugabyteDB audit logging before creating the Guardium datasource profile.
 Configure syslog forwarding so that Yugabyte audit log events are pushed to the syslog listener configured in the
 datasource profile.
 
-### SELinux blocks the syslog port
-
-If SELinux is enforcing on the database server, allow the syslog port (the target port used in the rsyslog configuration) and restart rsyslog. Otherwise, logs might not be forwarded:
-
-```bash
-semanage port -a -t syslogd_port_t -p tcp <PORT>
-semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
-systemctl restart rsyslog
-```
-
 ### Procedure
 
-1. Configure rsyslog `imfile` to read the Yugabyte audit log file.
+1. If SELinux is enforcing on the database server, allow the syslog port (the target port used in the rsyslog configuration) and restart rsyslog. Otherwise, logs might not be forwarded:
+
+   ```bash
+   semanage port -a -t syslogd_port_t -p tcp <PORT>
+   semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+   systemctl restart rsyslog
+   ```
+
+2. Configure rsyslog `imfile` to read the Yugabyte audit log file.
 
    Example for YSQL audit logs:
 
@@ -132,7 +130,7 @@ systemctl restart rsyslog
        escapeLF.replacement=" "
    )
    ```
-2. Add a template that prepends the hostname and source IP address before the original message.
+3. Add a template that prepends the hostname and source IP address before the original message.
 
    ```conf
    template(name="YugabyteCsv"
@@ -147,7 +145,7 @@ systemctl restart rsyslog
             string="<hostname>,<fromhost-ip>,%msg%\n")
    ```
 
-3. Forward the events to the syslog listener host and port.
+4. Forward the events to the syslog listener host and port.
 
    For plain TCP syslog forwarding:
 
@@ -213,7 +211,7 @@ systemctl restart rsyslog
    The `<target_host_ip>` must be the host that receives syslog events for the Kafka Connect profile.
    The `<syslog_port>` must match the **Syslog port** field in the datasource profile.
 
-4. If **TCPSSL** is used, configure the syslog sender with the required TLS settings and make sure the datasource
+5. If **TCPSSL** is used, configure the syslog sender with the required TLS settings and make sure the datasource
    profile uses **TCPSSL** as the listener type. Do not mix TCP on one side and TCPSSL on the other side.
 
 ## Creating a datasource profile
