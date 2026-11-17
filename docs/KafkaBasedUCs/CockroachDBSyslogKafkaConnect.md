@@ -194,14 +194,9 @@ If either value is missing, messages are dropped and do not appear in Guardium.
    )
 
    ruleset(name="imfile_to_gdp") {
-       # Filter system-generated queries (internal executor, jobs, internal catalogs)
-       if ( $rawmsg contains "intExec"
-            or $rawmsg contains "job=AUTO "
-            or $rawmsg contains "exec-internal"
-            or ($rawmsg contains "ApplicationName" and $rawmsg contains "\$ internal")
-            or re_match($rawmsg, "User=node[,[:space:]]")
-            or $rawmsg contains "\"User\":\"node\""
-            or re_match($rawmsg, "(crdb_internal[.]|pg_catalog[.]|information_schema[.]|system[.](jobs|lease|sql_instances|job_info|statement_statistics|transaction_statistics|job_progress_history|reports_meta))")
+       # Filter system-generated queries (internal executor and background jobs)
+       if ( $rawmsg contains "\"ExecMode\":\"exec-internal\""
+            or $rawmsg contains "\"intExec\":\""
           ) then {
            stop
        }
@@ -312,14 +307,9 @@ If either value is missing, messages are dropped and do not appear in Guardium.
            queue.discardMark="95000"
            queue.discardSeverity="7") {
 
-       # Filter system-generated queries (internal executor, jobs, internal catalogs)
-       if ( $rawmsg contains "intExec"
-            or $rawmsg contains "job=AUTO "
-            or $rawmsg contains "exec-internal"
-            or ($rawmsg contains "ApplicationName" and $rawmsg contains "\$ internal")
-            or re_match($rawmsg, "User=node[,[:space:]]")
-            or $rawmsg contains "\"User\":\"node\""
-            or re_match($rawmsg, "(crdb_internal[.]|pg_catalog[.]|information_schema[.]|system[.](jobs|lease|sql_instances|job_info|statement_statistics|transaction_statistics|job_progress_history|reports_meta))")
+       # Filter system-generated queries (internal executor and background jobs)
+       if ( $rawmsg contains "\"ExecMode\":\"exec-internal\""
+            or $rawmsg contains "\"intExec\":\""
           ) then {
            stop
        }
@@ -401,7 +391,7 @@ If either value is missing, messages are dropped and do not appear in Guardium.
 
    **Notes:**
    - The `serverHostname=` value in the template must exactly match the **Database hostname** field configured in the datasource profile. If they differ, messages are dropped.
-   - The `if ... then { stop }` block in each ruleset filters out system-generated queries on the CockroachDB server before they are forwarded to Kafka. This reduces network traffic and Kafka Connect load. Keep the filter before the `omfwd` action(s), so that filtered messages are never forwarded. The plug-in applies a similar filter, as described in [Limitations](#limitations).
+   - The `if ... then { stop }` block in each ruleset filters out system-generated queries on the CockroachDB server before they are forwarded to Kafka. This reduces network traffic and Kafka Connect load. Keep the filter before the `omfwd` action(s), so that filtered messages are never forwarded. The filter matches the JSON fields `"ExecMode":"exec-internal"` and `"intExec"`, so it requires the JSON log format configured earlier in this procedure. The plug-in applies the same filter, as described in [Limitations](#limitations).
    - Use the high traffic configuration parameters for handling extremely high traffic (more than 11,400 events per second per CockroachDB).
    - The persistent queue configuration is optional. It provides data persistence if Kafka Connect issues occur, but it might reduce throughput at high traffic volumes.
    - When multiple Kafka brokers are configured, rsyslog connects to only one broker for the source connector. Connection errors may appear in the rsyslog service status for the other Kafka nodes, which is expected behavior.
@@ -426,18 +416,12 @@ If either value is missing, messages are dropped and do not appear in Guardium.
 
 2. CockroachDB automatically logs `SHOW database` queries (along with query executions), which are sent to Guardium.
 
-3. The plug-in automatically filters out the following system-generated queries, which are not sent to Guardium:
+3. The plug-in automatically filters out system-generated queries, which are not sent to Guardium. These are queries that CockroachDB runs internally, such as background jobs, statistics collection, and session cleanup:
 
-  - Internal execution queries (`intExec=`)
-  - Automatic job queries (`job=AUTO`)
-  - User: "node" (internal CockroachDB operations)
-  - Application Name starting with "$ internal"
+  - Internal execution queries (queries with the `intExec` tag)
   - ExecMode: "exec-internal"
-  - Queries against system schemas:
-    - `crdb_internal.*`
-    - `pg_catalog.*`
-    - `information_schema.*`
-    - System tables: `system.jobs`, `system.lease`, `system.sql_instances`, `system.job_info`, `system.statement_statistics`, `system.transaction_statistics`, `system.job_progress_history`, `system.reports_meta`
+
+  Queries that you or your client tools run against `crdb_internal`, `pg_catalog`, `information_schema`, or `system` tables, such as `SELECT * FROM information_schema.tables`, are not filtered. They are sent to Guardium.
 
 4. The following fields are not found in CockroachDB audit logs (applies to queries and failed logins):
 
