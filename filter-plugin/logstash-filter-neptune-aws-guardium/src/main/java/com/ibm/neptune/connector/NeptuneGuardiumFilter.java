@@ -9,11 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import javax.script.ScriptException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.rdf4j.query.MalformedQueryException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,6 +33,7 @@ public class NeptuneGuardiumFilter implements Filter {
 	public static final PluginConfigSpec<String> SOURCE_CONFIG = PluginConfigSpec
 			.stringSetting(ApplicationConstants.SOURCE, ApplicationConstants.MESSAGE);
 	private static final String NEPTUNE_PARSE_FAILURE_TAG = " neptune-parse-failure_error ";
+	private static final int MAX_LOGGED_PAYLOAD_LENGTH = 2000;
 	private static final String LOGSTASH_SKIP_NOT_NEPTUNE = " neptune_skip_not_neptune ";
 
 	private String id;
@@ -56,62 +54,66 @@ public class NeptuneGuardiumFilter implements Filter {
 		if (log == null) {
 			log = LogManager.getLogger(NeptuneGuardiumFilter.class);
 		}
-		Record record = null;
 		for (Event event : events) {
-			if(log.isDebugEnabled()){
-				log.debug("Event Now: {}", event.getField(ApplicationConstants.MESSAGE));
-			}
-//			log.error("Message received => " + event.getField(ApplicationConstants.MESSAGE));
-			if (event.getField(ApplicationConstants.MESSAGE).toString()
-					.contains(ApplicationConstants.QUERY_TYPE_GREMLIN)
-					|| event.getField(ApplicationConstants.MESSAGE).toString()
-							.contains(ApplicationConstants.QUERY_TYPE_SPARQL)) {
+			try {
+				Object message = event.getField(ApplicationConstants.MESSAGE);
+				if (log.isDebugEnabled()) {
+					log.debug("Event Now: {}", message);
+				}
+				if (!(message instanceof String)) {
+					throw new IllegalArgumentException("Event has no message field or it is not a string");
+				}
+				String messageText = (String) message;
+				if (messageText.contains(ApplicationConstants.QUERY_TYPE_GREMLIN)
+						|| messageText.contains(ApplicationConstants.QUERY_TYPE_SPARQL)) {
 
-				record = new Record();
-				try {
-
-					if (event.getField(ApplicationConstants.MESSAGE) instanceof String) {
-						record = ParserHelper.parseRecord(event, record);
-						final GsonBuilder builder = new GsonBuilder().disableHtmlEscaping();
-						builder.serializeNulls();
-						final Gson gson = builder.create();
-						event.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
-//						log.error("Guard record => " + gson.toJson(record));
-						matchListener.filterMatched(event);
-					}
-
-				} catch (Exception e) {
-
-					if (e instanceof ScriptException) {
-						log.error("Invalid Query, Unable to parse: "
-								+ event.getField(ApplicationConstants.PAYLOAD).toString());
-					} else if (e instanceof MalformedQueryException) {
-						log.error("Invalid Query, Unable to parse: " + ParserHelper
-								.decodeContent(event.getField(ApplicationConstants.PAYLOAD).toString()
-										.split(ApplicationConstants.EQUAL, 2)[1])
-								.replaceAll("\n|\r", ApplicationConstants.SPACE));
-					} else {
-						log.error(e.getMessage());
-					}
-
-					event.tag(NEPTUNE_PARSE_FAILURE_TAG);
-
-					/*
-					 * we can afford skipping the failing event from further processing by Logstash
-					 * pipeline because in case of Exception event should not reach to Guardium. The
-					 * details of message are logged for investigation.
-					 * 
-					 */
+					Record record = ParserHelper.parseRecord(event, new Record());
+					final GsonBuilder builder = new GsonBuilder().disableHtmlEscaping();
+					builder.serializeNulls();
+					final Gson gson = builder.create();
+					event.setField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME, gson.toJson(record));
+					matchListener.filterMatched(event);
+				} else {
+					event.tag(LOGSTASH_SKIP_NOT_NEPTUNE);
 					skippedEvents.add(event);
 				}
-			} else {
-//				log.error("Not a NeptuneDB Log");
-				event.tag(LOGSTASH_SKIP_NOT_NEPTUNE);
+			} catch (Exception | StackOverflowError e) {
+				/*
+				 * A malformed event must never stop the Logstash pipeline. Log the reason and
+				 * the payload for investigation, tag the event and skip it, so it does not
+				 * reach Guardium.
+				 */
+				logSkippedEvent(event, e);
+				try {
+					event.tag(NEPTUNE_PARSE_FAILURE_TAG);
+				} catch (Exception ignored) {
+					// tagging is best effort, the event is skipped anyway
+				}
 				skippedEvents.add(event);
 			}
 		}
 		events.removeAll(skippedEvents);
 		return events;
+	}
+
+	/**
+	 * Logs why an event is skipped. This method must never throw, as it runs while
+	 * handling a failure.
+	 */
+	private static void logSkippedEvent(Event event, Throwable cause) {
+		try {
+			Object payload = event.getField(ApplicationConstants.PAYLOAD);
+			String payloadText = payload == null ? "<no payload>"
+					: ParserHelper.decodeContent(payload.toString()).replaceAll("\n|\r", ApplicationConstants.SPACE);
+			if (payloadText.length() > MAX_LOGGED_PAYLOAD_LENGTH) {
+				payloadText = payloadText.substring(0, MAX_LOGGED_PAYLOAD_LENGTH) + "...";
+			}
+			String reason = String.valueOf(cause.getMessage()).replaceAll("\n|\r", ApplicationConstants.SPACE);
+			log.error("Skipping malformed Neptune event, Unable to parse. Reason: {}: {}. Payload: {}",
+					cause.getClass().getSimpleName(), reason, payloadText);
+		} catch (Exception | StackOverflowError e) {
+			log.error("Skipping malformed Neptune event, Unable to parse. Reason: {}", String.valueOf(cause));
+		}
 	}
 
 	@Override

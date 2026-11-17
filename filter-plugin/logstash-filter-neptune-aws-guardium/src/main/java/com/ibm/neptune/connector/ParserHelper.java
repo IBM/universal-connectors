@@ -7,6 +7,8 @@ import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,6 +38,56 @@ public class ParserHelper {
 	 */
 	private static final Logger LOG = LogManager.getLogger(ParserHelper.class);
 
+	private static final Pattern QUERY_ID_SUFFIX = Pattern.compile("&queryId=[\\w-]+\\s*$");
+
+	// IRIREF production from the SPARQL grammar
+	private static final Pattern IRIREF = Pattern.compile("<[^<>\"{}|^`\\\\\\s]*>");
+
+	/**
+	 * Removes the trailing "&queryId=..." form parameter (sent by clients such as
+	 * Graph Explorer) and the SPARQL '#' comments. Comments must be removed before
+	 * line breaks are replaced by spaces, otherwise a comment swallows the rest of
+	 * the query.
+	 */
+	static String sanitizeSparqlPayload(String payload) {
+		return stripSparqlComments(QUERY_ID_SUFFIX.matcher(payload).replaceFirst(""));
+	}
+
+	static String stripSparqlComments(String sparql) {
+		int length = sparql.length();
+		StringBuilder sb = new StringBuilder(length);
+		Matcher iri = IRIREF.matcher(sparql);
+		char quote = 0;
+		int i = 0;
+		while (i < length) {
+			char c = sparql.charAt(i);
+			if (quote != 0) {
+				sb.append(c);
+				if (c == '\\' && i + 1 < length) {
+					sb.append(sparql.charAt(++i));
+				} else if (c == quote) {
+					quote = 0;
+				}
+				i++;
+			} else if (c == '"' || c == '\'') {
+				quote = c;
+				sb.append(c);
+				i++;
+			} else if (c == '<' && iri.region(i, length).lookingAt()) {
+				sb.append(iri.group());
+				i = iri.end();
+			} else if (c == '#') {
+				while (i < length && sparql.charAt(i) != '\n' && sparql.charAt(i) != '\r') {
+					i++;
+				}
+			} else {
+				sb.append(c);
+				i++;
+			}
+		}
+		return sb.toString();
+	}
+
 	public static Record parseRecord(Event event, Record record) throws Exception {
 		String fullSQL = null;
 
@@ -64,6 +116,10 @@ public class ParserHelper {
 							: fullSQL;
 
 				}
+			}
+			if (event.getField(ApplicationConstants.MESSAGE) != null && event.getField(ApplicationConstants.MESSAGE)
+					.toString().contains(ApplicationConstants.QUERY_TYPE_SPARQL)) {
+				fullSQL = sanitizeSparqlPayload(fullSQL);
 			}
 			event.setField(ApplicationConstants.PAYLOAD,
 					fullSQL.replaceAll("(\\n)|(\\r)", ApplicationConstants.SPACE).trim());
