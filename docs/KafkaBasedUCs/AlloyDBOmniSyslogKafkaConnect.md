@@ -28,16 +28,6 @@ AlloyDB Omni is a downloadable edition of AlloyDB that you can run anywhere. It 
    oc adm policy add-scc-to-user anyuid -z default -n <your-namespace>
    ```
 
-### SELinux blocks the syslog port
-
-If SELinux is enforcing on the database server, allow the syslog port (the target port used in the rsyslog configuration) and restart rsyslog. Otherwise, logs might not be forwarded:
-
-```bash
-semanage port -a -t syslogd_port_t -p tcp <PORT>
-semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
-systemctl restart rsyslog
-```
-
 ## Configuring logging for PostgreSQL
 
 To enable comprehensive audit logging for AlloyDB Omni (which is based on PostgreSQL), you need to configure the PostgreSQL logging parameters.
@@ -178,7 +168,15 @@ To forward the PostgreSQL audit logs to Guardium through Kafka, you need to conf
    apt-get update && apt-get install -y rsyslog
    ```
 
-3. Create the rsyslog configuration file for AlloyDB Omni:
+3. If SELinux is enforcing on the Docker host, allow the syslog port (the target port used in the rsyslog configuration) and restart rsyslog. Run these commands on the host, not inside the container. Otherwise, logs might not be forwarded:
+
+   ```bash
+   semanage port -a -t syslogd_port_t -p tcp <PORT>
+   semanage port -l | grep syslogd_port_t  # <PORT> should now be listed
+   systemctl restart rsyslog
+   ```
+
+4. Create the rsyslog configuration file for AlloyDB Omni:
 
    ```bash
    cat > /etc/rsyslog.d/alloydb-guardium.conf <<'EOF'
@@ -229,7 +227,7 @@ To forward the PostgreSQL audit logs to Guardium through Kafka, you need to conf
 
    Replace `<kafka-connect-hostname-1>`, `<kafka-connect-hostname-2>`, and `<kafka-connect-hostname-3>` with your Kafka Connect server hostnames or IP addresses. If you have fewer Kafka nodes, remove the extra action blocks.
 
-4. Start rsyslog service:
+5. Start rsyslog service:
 
    ```bash
    service rsyslog start

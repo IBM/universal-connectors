@@ -184,7 +184,7 @@ If either value is missing, messages are dropped and do not appear in Guardium.
 
    Replace `<DB_HOSTNAME>` with the hostname of your CockroachDB server (must match the **Database hostname** field in the datasource profile), `<DB_PORT>` with the CockroachDB SQL port (default `26257`), `<KAFKA_BROKER_N>` with your Kafka broker hostnames, and `/path/to/logs/directory/` with the actual path to your CockroachDB log files.
 
-   **RFC 5424 (recommended):**
+   ### **RFC 5424 (recommended):**
    ```
    module(load="imfile" PollingInterval="10")
    $MaxMessageSize 64k
@@ -194,6 +194,13 @@ If either value is missing, messages are dropped and do not appear in Guardium.
    )
 
    ruleset(name="imfile_to_gdp") {
+       # Filter system-generated queries (internal executor and background jobs)
+       if ( $rawmsg contains "\"ExecMode\":\"exec-internal\""
+            or $rawmsg contains "\"intExec\":\""
+          ) then {
+           stop
+       }
+
        action(type="omfwd"
            Protocol="tcp"
            StreamDriver="gtls"
@@ -258,7 +265,7 @@ If either value is missing, messages are dropped and do not appear in Guardium.
          reopenOnTruncate="on")
    ```
 
-   **RFC 3164 (alternative):**
+   ### **RFC 3164 (alternative):**
 
    Replace the `template()` block with the following. Everything else remains the same.
    ```
@@ -267,7 +274,7 @@ If either value is missing, messages are dropped and do not appear in Guardium.
    )
    ```
 
-   **Configuration (if rsyslog does not support an array for `Target`):**
+   ### **Configuration (if rsyslog does not support an array for `Target`):**
 
    Some rsyslog versions, such as 8.2102 on RHEL 9, fail with `parameter 'target' is not a string` when `Target` is an array. Use one `omfwd` action for each Kafka broker instead. Each event is sent to the first broker that is reachable:
 
@@ -299,6 +306,13 @@ If either value is missing, messages are dropped and do not appear in Guardium.
            queue.lowWatermark="40000"
            queue.discardMark="95000"
            queue.discardSeverity="7") {
+
+       # Filter system-generated queries (internal executor and background jobs)
+       if ( $rawmsg contains "\"ExecMode\":\"exec-internal\""
+            or $rawmsg contains "\"intExec\":\""
+          ) then {
+           stop
+       }
 
        # Action 1: always runs
        action(type="omfwd"
@@ -377,6 +391,7 @@ If either value is missing, messages are dropped and do not appear in Guardium.
 
    **Notes:**
    - The `serverHostname=` value in the template must exactly match the **Database hostname** field configured in the datasource profile. If they differ, messages are dropped.
+   - The `if ... then { stop }` block in each ruleset filters out system-generated queries on the CockroachDB server before they are forwarded to Kafka. This reduces network traffic and Kafka Connect load. Keep the filter before the `omfwd` action(s), so that filtered messages are never forwarded. The filter matches the JSON fields `"ExecMode":"exec-internal"` and `"intExec"`, so it requires the JSON log format configured earlier in this procedure. The plug-in applies the same filter, as described in [Limitations](#limitations).
    - Use the high traffic configuration parameters for handling extremely high traffic (more than 11,400 events per second per CockroachDB).
    - The persistent queue configuration is optional. It provides data persistence if Kafka Connect issues occur, but it might reduce throughput at high traffic volumes.
    - When multiple Kafka brokers are configured, rsyslog connects to only one broker for the source connector. Connection errors may appear in the rsyslog service status for the other Kafka nodes, which is expected behavior.
@@ -401,18 +416,12 @@ If either value is missing, messages are dropped and do not appear in Guardium.
 
 2. CockroachDB automatically logs `SHOW database` queries (along with query executions), which are sent to Guardium.
 
-3. The plug-in automatically filters out the following system-generated queries, which are not sent to Guardium:
+3. The plug-in automatically filters out system-generated queries, which are not sent to Guardium. These are queries that CockroachDB runs internally, such as background jobs, statistics collection, and session cleanup:
 
-  - Internal execution queries (`intExec=`)
-  - Automatic job queries (`job=AUTO`)
-  - User: "node" (internal CockroachDB operations)
-  - Application Name starting with "$ internal"
+  - Internal execution queries (queries with the `intExec` tag)
   - ExecMode: "exec-internal"
-  - Queries against system schemas:
-    - `crdb_internal.*`
-    - `pg_catalog.*`
-    - `information_schema.*`
-    - System tables: `system.jobs`, `system.lease`, `system.sql_instances`, `system.job_info`, `system.statement_statistics`, `system.transaction_statistics`, `system.job_progress_history`, `system.reports_meta`
+
+  Queries that are run against `crdb_internal`, `pg_catalog`, `information_schema`, or `system` tables, such as `SELECT * FROM information_schema.tables`, are not filtered. They are sent to Guardium.
 
 4. The following fields are not found in CockroachDB audit logs (applies to queries and failed logins):
 
