@@ -39,6 +39,8 @@ The following identity and access management roles are required to view and down
 
 ### Creating a topic in Pub/Sub
 
+**Note:** Use a dedicated Pub/Sub topic, subscription, and log sink for each database type. Make sure that they are not used by any other database type or application. Messages from another source can cause parsing errors or incorrect audit records.
+
 - Go to the Pub/Sub topics page in the Cloud Console. 
 - Click `Create a topic`
 - In the Topic ID field, provide a unique topic name, for example, MyTopic.
@@ -157,3 +159,7 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 9. The 'type' fields should match in input and filter configuration sections. This field should be unique for every individual connector added.
 10. Click Save.Guardium validates the new connector and displays it in the Configure Universal Connector page.
 11. After installing the plugins offline package and once the configuration is uploaded and saved to your Guardium machine, restart the universal connector using the Disable/Enable button.
+
+## Troubleshooting
+
+For troubleshooting steps for Google Cloud Pub/Sub based universal connectors, see the [Google Cloud (Pub/Sub) Troubleshooting Guide](../../docs/troubleshoot/GooglePubSubTroubleshooting.md).

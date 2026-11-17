@@ -104,6 +104,8 @@ You can learn more about [Ops Agent installation](https://cloud.google.com/monit
 
 ##### Steps to create Topic in Pub/Sub
 
+**Note:** Use a dedicated Pub/Sub topic, subscription, and log sink for each database type. Make sure that they are not used by any other database type or application. Messages from another source can cause parsing errors or incorrect audit records.
+
 - Go to the Pub/Sub topics page in the Cloud Console. 
 - Click on Create a topic
 - In the Topic ID field, provide a unique topic name, for example, MyTopic.
@@ -199,3 +201,7 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 2. While launching Solr in SolrCloud mode, multiple logs will be generated for single query execution as a call to shard(In SolrCloud, a logical partition of a single Collection) and replica(A Core that acts as a physical copy of a Shard in a SolrCloud Collection).
 
 3. On executing error queries in multiline from third-party tool, GCP is not capturing log as a single event.So, partial query will be displayed in the SQL Error Report.
+
+## Troubleshooting
+
+For troubleshooting steps for Google Cloud Pub/Sub based universal connectors, see the [Google Cloud (Pub/Sub) Troubleshooting Guide](../../docs/troubleshoot/GooglePubSubTroubleshooting.md).

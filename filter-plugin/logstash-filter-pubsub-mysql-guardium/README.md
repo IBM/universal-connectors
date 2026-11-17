@@ -83,6 +83,8 @@ In case you wish to use **Cloud SQL proxy**, use the following steps:
 
 ### Creating a topic in Pub/Sub
 
+**Note:** Use a dedicated Pub/Sub topic, subscription, and log sink for each database type. Make sure that they are not used by any other database type or application. Messages from another source can cause parsing errors or incorrect audit records.
+
 1. Go to the Pub/Sub topics page in the Cloud Console and click Create a topic.
 2. In the Topic ID field, provide a unique topic name. For example, MyTopic.
 3. Click Create Topic.
@@ -306,6 +308,8 @@ pubsub-mysql-guardium{ cloudsqlproxy_enabled => true }
 ## Troubleshooting
 
 Refer to the input plug-in's [Troubleshooting](../../input-plugin/logstash-input-google-pubsub#troubleshooting) section.
+
+For troubleshooting steps for Google Cloud Pub/Sub based universal connectors, see the [Google Cloud (Pub/Sub) Troubleshooting Guide](../../docs/troubleshoot/GooglePubSubTroubleshooting.md).
 
 ## Contributing
 
