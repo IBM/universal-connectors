@@ -14,6 +14,8 @@ Kafka-connect is a framework for streaming data between Apache Kafka and other s
 
 ## Configuring AlloyDB on GCP
 
+**Note:** Use a dedicated Pub/Sub topic, subscription, and log sink for each database type. Make sure that they are not used by any other database type or application. Messages from another source can cause parsing errors or incorrect audit records.
+
 1.  [Create a cluster and its
     primary instance](https://cloud.google.com/alloydb/docs/quickstart/create-and-connect?hl=en#create-cluster).
 2.  [Connect to your instance and create
@@ -28,6 +30,8 @@ Kafka-connect is a framework for streaming data between Apache Kafka and other s
               ((resource.type="alloydb.googleapis.com/Instance" logName="projects/<project-name>/logs/alloydb.googleapis.com%2Fpostgres.log" ))
 
 ## Configuring GCP for the input plug-in
+
+**Note:** Use a dedicated Pub/Sub topic, subscription, and log sink for each database type. Make sure that they are not used by any other database type or application. Messages from another source can cause parsing errors or incorrect audit records.
 
 1. [Create a topic in Pub/Sub](https://cloud.google.com/pubsub/docs/create-topic#create_a_topic_2).
 2. [Create a subscription in Pub/Sub](https://cloud.google.com/pubsub/docs/create-subscription#create_a_pull_subscription).
@@ -192,6 +196,8 @@ Pub/Sub level before the messages reach the connector.
      ```
 
 ## Troubleshooting
+
+For troubleshooting steps for Google Cloud Pub/Sub based universal connectors, see the [Google Cloud (Pub/Sub) Troubleshooting Guide](../troubleshoot/GooglePubSubTroubleshooting.md).
 
 #### Messages are not being processed
 

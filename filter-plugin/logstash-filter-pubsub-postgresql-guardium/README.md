@@ -36,6 +36,8 @@ The PostgreSQL filter plug-in supports Guardium Data Protection and Guardium Dat
 
 ### Configuring GCP for the input plug-in
 
+**Note:** Use a dedicated Pub/Sub topic, subscription, and log sink for each database type. Make sure that they are not used by any other database type or application. Messages from another source can cause parsing errors or incorrect audit records.
+
 1.  [Create a topic in Pub/Sub](https://cloud.google.com/pubsub/docs/create-topic#create_a_topic_2).
 2.  [Create a subscription in Pub/Sub](https://cloud.google.com/pubsub/docs/create-subscription#create_a_pull_subscription)
 3.  [Create service account credentials](https://developers.google.com/workspace/guides/create-credentials#create_a_service_account):
@@ -139,3 +141,7 @@ Complete the following steps for 3.6.1 and prior:
 - The _SQL string that caused the exception_ column in the report is blank, since this information is not embedded in the error messages pulled from Google Cloud.
 - `sourceProgram` field is left blank since this information is not embedded in the messages pulled from Google Cloud. Queries can be run either from Cloud Shell with `gcloud` or from a locally installed PostgreSQL Server
 - `clientIP` and `serverIP` fields are populated with `0.0.0.0`, as this information is not embedded in the messages pulled from Google Cloud.
+
+## Troubleshooting
+
+For troubleshooting steps for Google Cloud Pub/Sub based universal connectors, see the [Google Cloud (Pub/Sub) Troubleshooting Guide](../../docs/troubleshoot/GooglePubSubTroubleshooting.md).

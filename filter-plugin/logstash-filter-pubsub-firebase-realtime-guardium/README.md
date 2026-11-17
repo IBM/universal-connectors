@@ -83,6 +83,8 @@ To set permissions for log sink to route to its destination, do the following:
 
 ### Steps to create Topic in Pub/Sub
 
+**Note:** Use a dedicated Pub/Sub topic, subscription, and log sink for each database type. Make sure that they are not used by any other database type or application. Messages from another source can cause parsing errors or incorrect audit records.
+
 - Go to the Pub/Sub topics page in the Cloud Console. 
 - Click Create a topic
 - In the Topic ID field, provide a unique topic name. For example, MyTopic.
@@ -192,3 +194,7 @@ The Guardium universal connector is the Guardium entry point for native audit/da
 - While using Firebase CLI(third-party tool), the GetDatabaseInstance event populates all data operations (GET/PUSH/UPDATE/REMOVE) inside the logs.
 - The "logging.googleapis.com" service is a general logging service that logs various activities, such as switching between databases or clicking on different tabs. The service is available on the Firebase UI, and when updating JSON files using the UI. Logs for the Firebase UI and the JSON file updates on the UI will generate the same logs with no new information.
 - Error queries are not supported in GCP for Firebase.
+
+## 6. Troubleshooting
+
+For troubleshooting steps for Google Cloud Pub/Sub based universal connectors, see the [Google Cloud (Pub/Sub) Troubleshooting Guide](../../docs/troubleshoot/GooglePubSubTroubleshooting.md).

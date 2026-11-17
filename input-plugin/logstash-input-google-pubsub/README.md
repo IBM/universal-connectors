@@ -44,6 +44,8 @@ are pretty much free to use it however you want in whatever way.
 
 #### Procedure:
 
+**Note:** Use a dedicated Pub/Sub topic, subscription, and log sink for each database type. Make sure that they are not used by any other database type or application. Messages from another source can cause parsing errors or incorrect audit records.
+
 1. Create a project attached to billing info 
 2. Set up your Google Cloud project and Pub/Sub topic and subscriptions:
    - Grant Pub/Sub Editor, Pub/Sub Publisher, Pub/Sub Subscriber roles to your account in IAM to enable editing Pub/Sub and viewing all audited logs. See [Pub/Sub Roles](https://cloud.google.com/pubsub/docs/access-control#roles) for the full list.
@@ -189,6 +191,8 @@ Setting a different `subscription` for each Logstash pipeline running on a serve
 Setting the same `subscription` for multiple Logstash pipelines running on different servers, can be used for **Load Balancing** the processing of the messages over those servers.
 
 ## Troubleshooting
+
+For troubleshooting steps for Google Cloud Pub/Sub based universal connectors, see the [Google Cloud (Pub/Sub) Troubleshooting Guide](../../docs/troubleshoot/GooglePubSubTroubleshooting.md).
 
 - Logs aren't showing:
   - Check that messages are being sent to your gmachine by going to your _Pub/Sub topic > Publish Messages_, publish a message and see if it's logged in `logstash_stdout_err.log`
