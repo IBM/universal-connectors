@@ -421,7 +421,7 @@ If either value is missing, messages are dropped and do not appear in Guardium.
   - Internal execution queries (queries with the `intExec` tag)
   - ExecMode: "exec-internal"
 
-  Queries that you or your client tools run against `crdb_internal`, `pg_catalog`, `information_schema`, or `system` tables, such as `SELECT * FROM information_schema.tables`, are not filtered. They are sent to Guardium.
+  Queries that are run against `crdb_internal`, `pg_catalog`, `information_schema`, or `system` tables, such as `SELECT * FROM information_schema.tables`, are not filtered. They are sent to Guardium.
 
 4. The following fields are not found in CockroachDB audit logs (applies to queries and failed logins):
 
