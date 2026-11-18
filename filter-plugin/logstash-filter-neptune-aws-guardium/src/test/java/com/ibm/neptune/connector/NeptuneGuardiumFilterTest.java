@@ -2144,6 +2144,105 @@ public class NeptuneGuardiumFilterTest {
 		assertEquals(1, matchListener.getMatchCount());
 
 	}
+	private Event sparqlEvent(String payload) {
+		Event event = new org.logstash.Event();
+		event.setField(ApplicationConstantTest.LOG_MESSAGE_KEY, ApplicationConstantTest.LOG_MESSAGE1);
+		event.setField(ApplicationConstantTest.CLIENT_HOST_KEY, ApplicationConstantTest.CLIENT_HOST1);
+		event.setField(ApplicationConstantTest.SERVER_HOST_KEY, ApplicationConstantTest.SERVER_HOST);
+		event.setField(ApplicationConstantTest.TIME_STAMP_KEY, ApplicationConstantTest.TIME_STAMP);
+		event.setField(ApplicationConstantTest.HTTP_HEADERS_KEY, ApplicationConstantTest.HTTP_HEADERS);
+		event.setField(ApplicationConstantTest.PAYLOAD_KEY, payload);
+		event.setField(ApplicationConstantTest.CALLERIAM_KEY, ApplicationConstantTest.CALLERIAM);
+		event.setField(ApplicationConstantTest.SERVER_HOSTNAME_PREFIX_KEY,
+				ApplicationConstantTest.SERVER_HOSTNAME_PREFIX);
+		event.setField(ApplicationConstantTest.DBNAME_PREFIX_KEY, ApplicationConstantTest.DBNAME_PREFIX);
+		return event;
+	}
+
+	/**
+	 * A malformed query must be skipped and must not stop the other events of the
+	 * same batch from being processed.
+	 */
+	@Test
+	public void filterSkipsMalformedSparqlAndKeepsValidEvents() {
+
+		Event malformed = sparqlEvent("query=SELECT+WHERE+%7B+this+is+not+sparql");
+		Event valid = sparqlEvent(ApplicationConstantTest.ACTUAL_PAYLOAD);
+		List<Event> events = new ArrayList<>();
+		events.add(malformed);
+		events.add(valid);
+
+		Collection<Event> response = FILTER.filter(events, matchListener);
+
+		assertNull(malformed.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+		assertNotNull(valid.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+		assertEquals(1, response.size());
+		assertEquals(1, matchListener.getMatchCount());
+	}
+
+	/**
+	 * A payload without the "name=" form prefix used to throw
+	 * ArrayIndexOutOfBoundsException, which is not caught per event.
+	 */
+	@Test
+	public void filterSkipsSparqlPayloadWithoutEqualSign() {
+
+		Event event = sparqlEvent("no-form-parameter");
+		List<Event> events = new ArrayList<>();
+		events.add(event);
+
+		Collection<Event> response = FILTER.filter(events, matchListener);
+
+		assertNull(event.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+		assertEquals(0, response.size());
+		assertEquals(0, matchListener.getMatchCount());
+	}
+
+	/**
+	 * An event without message field must be skipped instead of throwing a
+	 * NullPointerException.
+	 */
+	@Test
+	public void filterSkipsEventWithoutMessage() {
+
+		Event event = new org.logstash.Event();
+		List<Event> events = new ArrayList<>();
+		events.add(event);
+
+		Collection<Event> response = FILTER.filter(events, matchListener);
+
+		assertEquals(0, response.size());
+		assertEquals(0, matchListener.getMatchCount());
+	}
+
+	/**
+	 * The query which came from Graph Explorer, with comments and the queryId
+	 * suffix, must produce a Guardium record.
+	 */
+	@Test
+	public void filterSparqlWithCommentsAndQueryId() {
+
+		String query = "# Fetch nodes matching the given search parameters\n"
+				+ "SELECT DISTINCT ?subject ?predicate ?object WHERE {\n  {\n"
+				+ "    # This sub-query will find any matching instances\n"
+				+ "    SELECT DISTINCT ?subject\n    WHERE {\n      ?subject ?pValue ?value .\n"
+				+ "      OPTIONAL { ?subject a ?class } .\n    }\n    LIMIT 10\n  }\n  {\n"
+				+ "    # Values and types\n    ?subject ?predicate ?object\n"
+				+ "    FILTER(isLiteral(?object) || ?predicate = <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>)\n"
+				+ "  }\n}";
+		String payload = "query=" + query + "&queryId=382c8729-8088-4c57-849a-c1b6e5605700";
+		Event event = sparqlEvent(payload);
+		List<Event> events = new ArrayList<>();
+		events.add(event);
+
+		Collection<Event> response = FILTER.filter(events, matchListener);
+
+		assertNotNull(event.getField(GuardConstants.GUARDIUM_RECORD_FIELD_NAME));
+		assertEquals(1, response.size());
+		assertEquals(1, matchListener.getMatchCount());
+	}
+
+
 
 }
 

@@ -155,6 +155,53 @@ public class ParserHelperTest {
 	}
 
 	@Test
+	public void sanitizeSparqlPayloadRemovesQueryIdTest() {
+		assertEquals("query=SELECT * WHERE { ?s ?p ?o }",
+				ParserHelper.sanitizeSparqlPayload(
+						"query=SELECT * WHERE { ?s ?p ?o }&queryId=382c8729-8088-4c57-849a-c1b6e5605700"));
+		assertEquals("query=SELECT+%2A+WHERE+%7B+%3Fs+%3Fp+%3Fo+%7D",
+				ParserHelper.sanitizeSparqlPayload(
+						"query=SELECT+%2A+WHERE+%7B+%3Fs+%3Fp+%3Fo+%7D&queryId=382c8729-8088-4c57-849a-c1b6e5605700"));
+	}
+
+	@Test
+	public void stripSparqlCommentsTest() {
+		assertEquals("SELECT * WHERE { ?s ?p ?o }\n",
+				ParserHelper.stripSparqlComments("# leading comment\nSELECT * WHERE { ?s ?p ?o } # trailing\n")
+						.replaceFirst("^\n", ""));
+		// '#' inside an IRI or a string literal is not a comment
+		String keep = "SELECT * WHERE { ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> \"a # b\" }";
+		assertEquals(keep, ParserHelper.stripSparqlComments(keep));
+	}
+
+	@Test
+	public void parseRecordSparqlWithCommentsAndQueryIdTest() throws Exception {
+		String query = "# Fetch nodes\nSELECT DISTINCT ?subject ?predicate ?object WHERE {\n  {\n    # sub-query\n"
+				+ "    SELECT DISTINCT ?subject WHERE {\n      ?subject ?pValue ?value .\n"
+				+ "      OPTIONAL { ?subject a ?class } .\n    }\n    LIMIT 10\n  }\n  {\n    # Values and types\n"
+				+ "    ?subject ?predicate ?object\n"
+				+ "    FILTER(isLiteral(?object) || ?predicate = <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>)\n"
+				+ "  }\n}";
+		Event event = new org.logstash.Event();
+		event.setField(ApplicationConstantTest.TIME_STAMP_KEY, ApplicationConstantTest.TIME_STAMP);
+		event.setField(ApplicationConstantTest.SERVER_HOST_KEY, ApplicationConstantTest.SERVER_HOST);
+		event.setField(ApplicationConstantTest.CLIENT_HOST_KEY, ApplicationConstantTest.CLIENT_HOST1);
+		event.setField(ApplicationConstantTest.HTTP_HEADERS_KEY, ApplicationConstantTest.HTTP_HEADERS);
+		event.setField(ApplicationConstantTest.LOG_MESSAGE_KEY, ApplicationConstantTest.LOG_MESSAGE1);
+		event.setField(ApplicationConstantTest.PAYLOAD_KEY,
+				"query=" + query + "&queryId=382c8729-8088-4c57-849a-c1b6e5605700");
+		event.setField(ApplicationConstantTest.CALLERIAM_KEY, ApplicationConstantTest.CALLERIAM);
+		event.setField(ApplicationConstantTest.SERVER_HOSTNAME_PREFIX_KEY,
+				ApplicationConstantTest.SERVER_HOSTNAME_PREFIX);
+		event.setField(ApplicationConstantTest.DBNAME_PREFIX_KEY, ApplicationConstantTest.DBNAME_PREFIX);
+
+		Record actualResponse = ParserHelper.parseRecord(event, record);
+
+		assertNotNull(actualResponse);
+		assertNotNull(actualResponse.getData().getConstruct().sentences.get(0).getVerb());
+	}
+
+	@Test
 	public void prepareGuardRecordDataTest() {
 
 		Event event = new org.logstash.Event();
