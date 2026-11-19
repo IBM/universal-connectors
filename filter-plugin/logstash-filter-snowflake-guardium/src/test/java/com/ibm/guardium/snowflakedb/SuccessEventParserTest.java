@@ -98,7 +98,7 @@ public class SuccessEventParserTest {
 
         Assert.assertEquals(StringUtils.EMPTY, record.getSessionId());
         Assert.assertEquals(-1, sessionLocator.getClientPort());
-    Assert.assertEquals(443, sessionLocator.getServerPort());
+        Assert.assertEquals(-1, sessionLocator.getServerPort());
     }
 
     @Test

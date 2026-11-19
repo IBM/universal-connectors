@@ -18,7 +18,7 @@ public class Constants {
     public static final String DB_PROTOCOL = "SNOWFLAKE";
     public static final String SERVER_TYPE = "SNOWFLAKE";
 
-    public static final Integer SERVER_PORT = 443;
+    public static final Integer SERVER_PORT = -1;
 
     public static final String DATABASE_NAME = "database_name";
     public static final String QUERY_ID = "query_id";
