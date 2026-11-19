@@ -71,10 +71,10 @@ public class AuthFailedEventParser implements Parser{
             guardRecord.setSessionId(sessionId);
         } else {
             guardRecord.setSessionId(Constants.UNKNOWN_STRING);
-            sessionLocator.setServerPort(-1);
             sessionLocator.setClientPort(-1);
         }
 
+        sessionLocator.setServerPort(Constants.SERVER_PORT);
         guardRecord.setSessionLocator(sessionLocator);
 
         guardRecord.setDbName(Constants.NOT_AVAILABLE);
