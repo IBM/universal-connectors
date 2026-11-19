@@ -95,11 +95,14 @@ OneFS strictly enforces TLS certificate verification. The Guardium server CA cer
 3. Save the downloaded PEM file (for example, `guard_uc_CA.pem`).
 
 **Step 2. Verify that the CA certificate validates the Kafka listener.**
+
+> **Note:** The **Dell PowerScale OneFS Over Syslog Connect 2.0** datasource profile must be created and active in Central Manager before running this test. The syslog listener on TCP port `5514` is started dynamically by Kafka Connect only when the profile is running, and will bind to whichever Kafka node is currently hosting the active connector task. If the profile is not active, or if you connect to an inactive node in a multi-node cluster, connection attempts will time out (`Operation timed out` / `errno=60`) or be refused (`Connection refused` / `errno=61`).
+
 From a system that can reach the Guardium Kafka nodes, test the connection using the downloaded CA certificate:
 
 ```bash
 openssl s_client -connect <kafka-node-fqdn>:5514 \
-  -CAfile guard_kafka_cluster_CA.pem -verify_hostname <kafka-node-fqdn> </dev/null 2>&1 | grep "Verify return code"
+  -CAfile guard_uc_CA.pem -verify_hostname <kafka-node-fqdn> </dev/null 2>&1 | grep "Verify return code"
 ```
 
 The output must show `Verify return code: 0 (ok)`.
@@ -109,10 +112,10 @@ Copy the certificate to a directory under `/ifs` (import will fail if placed out
 
 ```bash
 # Copy to PowerScale
-scp guard_kafka_cluster_CA.pem root@<powerscale-ip>:/ifs/data/certs/
+scp guard_uc_CA.pem root@<powerscale-ip>:/ifs/data/certs/
 
 # On the PowerScale CLI, import the authority certificate
-isi certificate authority import /ifs/data/certs/guard_kafka_cluster_CA.pem \
+isi certificate authority import /ifs/data/certs/guard_uc_CA.pem \
   --name guardium-uc --description "Guardium Universal Connector Server CA"
 
 # Verify the certificate is imported
