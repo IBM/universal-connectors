@@ -1,16 +1,18 @@
 package com.ibm.guardium.couchbase.capella;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.zip.GZIPInputStream;
 
-import com.google.common.io.ByteSource;
-import com.google.common.io.FileBackedOutputStream;
 import com.google.gson.Gson;
 import org.apache.http.*;
 
@@ -70,23 +72,6 @@ public class CapellaAuditLogApiManager {
     }
 
 
-    /**
-     * unzip uses FileBackedOutputStream to convert gz file into string
-     */
-    private static ByteSource unzip(InputStream inStr) {
-        try (FileBackedOutputStream out = new FileBackedOutputStream(20*1024*1024); GZIPInputStream in = new GZIPInputStream(inStr)) {
-            byte[] buffer = new byte[4096];
-            int c = 0;
-            while ((c = in.read(buffer, 0, 4096)) > 0) {
-                out.write(buffer, 0, c);
-            }
-            return out.asByteSource();
-        } catch (Exception ex) {
-            log.error("Failed to unzip gz response",ex);
-            return null;
-        }
-
-    }
 
     /** Create an export job with Capella API:
      * <a href="https://docs.couchbase.com/cloud/management-api-reference/index.html#tag/Audit-Logs/operation/postAuditLogExport">
@@ -94,7 +79,7 @@ public class CapellaAuditLogApiManager {
      * @return If success, return the id of the export job; otherwise, return null.
      */
     public String createExportJob(String baseUrl, String orgID, String projID, String clusterID,
-                                     String token, String startTime, String endTime) {
+                                  String token, String startTime, String endTime) {
         URL url;
         try {
             url = new URL(baseUrl);
@@ -132,20 +117,31 @@ public class CapellaAuditLogApiManager {
             HttpHost targetHost = new HttpHost(url.getHost(), url.getPort(), url.getProtocol());
             CloseableHttpResponse response = httpClient.execute(targetHost, httppost, context);
 
+            int statusCode = response.getStatusLine().getStatusCode();
             HttpEntity e = response.getEntity();
-            String responseString = EntityUtils.toString(e, "UTF-8");
+            String responseString = e != null ? EntityUtils.toString(e, "UTF-8") : "";
             Gson gson = new Gson();
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_ACCEPTED) {
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
                 CreateClusterAuditLogExportJobResponse res
                         = gson.fromJson(responseString, CreateClusterAuditLogExportJobResponse.class);
 
                 response.close();
-                return res.exportId;
+                return res != null ? res.exportId : null;
             }
 
-            ErrorResponse res = gson.fromJson(responseString, ErrorResponse.class);
-            log.error("Request failed, httpStatusCode {}, code {}, message {}, hint {}",
-                    res.httpStatusCode, res.code, res.message, res.hint);
+            ErrorResponse res = null;
+            try {
+                res = gson.fromJson(responseString, ErrorResponse.class);
+            } catch (Exception parseEx) {
+                log.debug("Could not parse ErrorResponse JSON: {}", parseEx.getMessage());
+            }
+
+            if (res != null) {
+                log.error("Request failed, httpStatusCode {}, code {}, message {}, hint {}, raw response {}",
+                        res.httpStatusCode != 0 ? res.httpStatusCode : statusCode, res.code, res.message, res.hint, responseString);
+            } else {
+                log.error("Request failed, httpStatusCode {}, raw response {}", statusCode, responseString);
+            }
             response.close();
             return null;
 
@@ -168,7 +164,7 @@ public class CapellaAuditLogApiManager {
      * @return if success, return the auditLogDownloadURL; otherwise return null
      */
     public String getExportJobStatus( String baseUrl, String orgID, String projID, String clusterID,
-                                               String token, String exportJobID) {
+                                      String token, String exportJobID) {
         return getExportJobStatusWithRetry(baseUrl, orgID, projID, clusterID, token, exportJobID, 2);
     }
 
@@ -186,7 +182,7 @@ public class CapellaAuditLogApiManager {
      * @return if success, return the auditLogDownloadURL; otherwise return null
      */
     protected String getExportJobStatusWithRetry( String baseUrl, String orgID, String projID, String clusterID,
-                                        String token, String exportJobID, int retryLimit) {
+                                                  String token, String exportJobID, int retryLimit) {
         URL url;
         try {
             url = new URL(baseUrl);
@@ -230,12 +226,16 @@ public class CapellaAuditLogApiManager {
                 if (statusCode == HttpStatus.SC_OK) {
 
                     HttpEntity entity = response.getEntity();
-                    String responseString = EntityUtils.toString(entity, "UTF-8");
+                    String responseString = entity != null ? EntityUtils.toString(entity, "UTF-8") : "";
 
                     Gson gson = new Gson();
-                    res = gson.fromJson(responseString, GetClusterAuditLogExportResponse.class);
+                    try {
+                        res = gson.fromJson(responseString, GetClusterAuditLogExportResponse.class);
+                    } catch (Exception parseEx) {
+                        log.debug("Could not parse GetClusterAuditLogExportResponse JSON: {}", parseEx.getMessage());
+                    }
 
-                    if (res.status.equalsIgnoreCase("completed")) {
+                    if (res != null && res.status != null && res.status.equalsIgnoreCase("completed")) {
                         response.close();
                         return res.auditLogDownloadURL;
                     }
@@ -252,8 +252,9 @@ public class CapellaAuditLogApiManager {
 
             }
 
+            String resStatus = (res != null && res.status != null) ? res.status : "unknown";
             log.error("Fail to get completed audit log export job, http status code is {}, status is {}",
-                    statusCode, res.status);
+                    statusCode, resStatus);
             if (response != null) {
                 response.close();
             }
@@ -265,73 +266,76 @@ public class CapellaAuditLogApiManager {
     }
 
     /**
-     * Downloads tar.gz file from the downloadURL and unzip it to a String
-     * @param downloadURL the URL to download log tar.gz
-     * @return the content of the file as a string
+     * Downloads gzip file from the downloadURL and processes each line using lineConsumer.
+     * @param downloadURL the URL to download log gz
+     * @param lineConsumer consumer to process each line
+     * @return true if successfully downloaded and processed; false otherwise
      */
-    public ByteSource downloadAuditLogFile(String downloadURL) {
-        return downloadAuditLogFileWithRetry(downloadURL, 2);
+    public boolean downloadAuditLogFile(String downloadURL, Consumer<String> lineConsumer) {
+        return downloadAuditLogFileWithRetry(downloadURL, lineConsumer, 2);
     }
 
     /**
-     * Downloads a tar.gz file from downloadURL and unzip it to a String while adhering to the retryLimit.
+     * Downloads gzip file from downloadURL and processes each line using lineConsumer while adhering to the retryLimit.
      * Each successive failure to connect will result in an exponential backoff.
+     * @param downloadURL the URL to download log gz
+     * @param lineConsumer consumer to process each line
      * @param retryLimit the limit of retry times
-     * @param downloadURL the URL to download log tar.gz
-     * @return the content the of file as a string
+     * @return true if successfully downloaded and processed; false otherwise
      */
-    protected ByteSource downloadAuditLogFileWithRetry(String downloadURL, int retryLimit) {
+    protected boolean downloadAuditLogFileWithRetry(String downloadURL, Consumer<String> lineConsumer, int retryLimit) {
         URL url;
         try {
             url = new URL(downloadURL);
         } catch (MalformedURLException e) {
             log.error("invalid base URL {}", e);
-            return null;
+            return false;
         }
 
-        try( CloseableHttpClient httpClient = buildHttpClient();) {
-
+        try (CloseableHttpClient httpClient = buildHttpClient()) {
             HttpClientContext context = HttpClientContext.create();
 
             HttpGet request = new HttpGet(downloadURL);
             request.addHeader("Accept", "application/gzip");
 
             HttpHost targetHost = new HttpHost(url.getHost(), url.getPort(), url.getProtocol());
-            CloseableHttpResponse response = null;
             int retry = 0;
             int statusCode = 0;
             while (retry <= retryLimit) {
-                response = httpClient.execute(targetHost, request, context);
-                statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode == HttpStatus.SC_OK) {
-                    HttpEntity entity = response.getEntity();
-                    if (entity != null && ( entity.getContentLength() > 0 || entity.isChunked())) {
-                        try (InputStream inputStream = entity.getContent()) {
-                            return unzip(inputStream);
+                try (CloseableHttpResponse response = httpClient.execute(targetHost, request, context)) {
+                    statusCode = response.getStatusLine().getStatusCode();
+                    if (statusCode == HttpStatus.SC_OK) {
+                        HttpEntity entity = response.getEntity();
+                        if (entity != null && (entity.getContentLength() > 0 || entity.isChunked())) {
+                            try (InputStream inputStream = entity.getContent();
+                                 GZIPInputStream gzipIn = new GZIPInputStream(inputStream);
+                                 BufferedReader reader = new BufferedReader(new InputStreamReader(gzipIn, StandardCharsets.UTF_8))) {
+                                String line;
+                                while ((line = reader.readLine()) != null) {
+                                    lineConsumer.accept(line);
+                                }
+                                return true;
+                            }
+                        } else {
+                            log.error("Empty response body from the downloading URL");
                         }
                     }
-                    else {
-                        log.error("Empty response body from the downloading URL");
-                    }
+                } catch (Exception e) {
+                    log.error("Error during download attempt {}: {}", retry, e.getMessage());
                 }
 
-                // Important: close response before sleep !!
-                response.close();
-                if (retryLimit != 0) {
-                    int sleep = (retry+1)*RETRY_BASE;
+                if (retryLimit != 0 && retry < retryLimit) {
+                    int sleep = (retry + 1) * RETRY_BASE;
                     log.debug("downloadAuditLog sleep {} seconds", sleep);
                     TimeUnit.SECONDS.sleep(sleep);
                 }
                 retry++;
             }
             log.error("Failed to download audit log file, httpStatusCode {}", statusCode);
-            if (response != null) {
-                response.close();
-            }
-            return null;
+            return false;
         } catch (Exception e) {
-            log.error("Download audit log tar.gz file exception {}" , e);
-            return null;
+            log.error("Download audit log tar.gz file exception {}", e);
+            return false;
         }
     }
 }
