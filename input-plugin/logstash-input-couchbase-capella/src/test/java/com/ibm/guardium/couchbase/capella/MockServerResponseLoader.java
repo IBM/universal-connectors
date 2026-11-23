@@ -1,3 +1,4 @@
+
 package com.ibm.guardium.couchbase.capella;
 
 import com.google.gson.Gson;
@@ -61,7 +62,7 @@ public class MockServerResponseLoader {
         String body = "{\n" +
                 "    \"code\": 1001,\n" +
                 "    \"hint\": \"The request is unauthorized. Please ensure you have provided appropriate credentials " +
-                                "in the request header. Please make sure the client IP that is trying to access the " +
+                "in the request header. Please make sure the client IP that is trying to access the " +
                 "                 resource using the API key is in the API key allowlist.\",\n" +
                 "    \"httpStatusCode\": 401,\n" +
                 "    \"message\": \"Unauthorized\"\n" +
@@ -164,6 +165,20 @@ public class MockServerResponseLoader {
                                 .withBody(allBytes)
                 )
         ;
+    }
+
+    public void downloadAuditLogFile_LoadPayload(String pathRegex, byte[] payload) {
+        this.server.when(
+                        request()
+                                .withMethod("GET")
+                                .withPath(pathRegex)
+                )
+                .respond(
+                        response()
+                                .withStatusCode(HttpStatus.SC_OK)
+                                .withHeader(header("Content-Type", "application/gzip"))
+                                .withBody(payload)
+                );
     }
 
 }
