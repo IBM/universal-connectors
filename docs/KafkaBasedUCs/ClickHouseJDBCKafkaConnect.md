@@ -3,6 +3,7 @@
 Create and configure data source profiles through central manager for ClickHouse JDBC Kafka Connect plug-ins.
 
 ## Meet ClickHouse Over JDBC Connect
+* Tested versions: 25.3.14.14
 * Environments: On-prem
 * Supported inputs: Kafka connect JDBC 2.0 (pull)
 * Supported Guardium versions:
