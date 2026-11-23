@@ -1,3 +1,4 @@
+
 package com.ibm.guardium.couchbase.capella;
 
 import org.junit.AfterClass;
@@ -6,6 +7,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockserver.configuration.ConfigurationProperties;
 import org.mockserver.integration.ClientAndServer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.stop.Stop.stopQuietly;
@@ -45,9 +49,10 @@ public class DownloadAuditLogFileTest {
             Assert.assertNull(e);
         }
 
-        var auditLog = mgr.downloadAuditLogFile(downloadUrl);
-        Assert.assertNotNull(auditLog);
-        Assert.assertNotEquals("", auditLog);
+        List<String> lines = new ArrayList<>();
+        boolean success = mgr.downloadAuditLogFile(downloadUrl, lines::add);
+        Assert.assertTrue(success);
+        Assert.assertFalse(lines.isEmpty());
     }
 
     @Test
@@ -59,7 +64,9 @@ public class DownloadAuditLogFileTest {
         var downloadUrlPath = "/audit-log-files/unknown-file";
         var downloadUrl = baseUrl + downloadUrlPath;
 
-        var auditLog = mgr.downloadAuditLogFileWithRetry(downloadUrl, 0);
-        Assert.assertNull(auditLog);
+        List<String> lines = new ArrayList<>();
+        boolean success = mgr.downloadAuditLogFileWithRetry(downloadUrl, lines::add, 0);
+        Assert.assertFalse(success);
+        Assert.assertTrue(lines.isEmpty());
     }
 }

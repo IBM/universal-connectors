@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import com.google.common.io.ByteSource;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
@@ -204,51 +203,42 @@ public class CouchbaseCapellaInput implements Input {
                     continue;
                 }
 
-                ByteSource byteSource = mgr.downloadAuditLogFile(downloadURL);
-                if (byteSource == null) {
+                boolean success = mgr.downloadAuditLogFile(downloadURL, originalLine -> {
+                    String line = refineLine(originalLine);
+                    if (line == null) {
+                        log.debug("invalid json exception: {}", originalLine);
+                        return;
+                    }
+
+                    // Drop system generated logs
+                    if (line.contains("\"user\":\"@")) {
+                        log.debug("Drop logs: {}", line);
+                        return;
+                    }
+
+                    HashMap map = new HashMap();
+                    map.put(Constants.OUTPUT_KEY_MESSAGE, line);
+                    map.put(Constants.OUTPUT_KEY_ORG, organizationID);
+                    map.put(Constants.OUTPUT_KEY_PROJ, projectID);
+                    map.put(Constants.OUTPUT_KEY_CLUSTER, clusterID);
+                    map.put(Constants.OUTPUT_KEY_TYPE, pluginType);
+                    log.debug("capella input plugin: input message is {}", line);
+
+                    consumer.accept(map);
+                });
+
+                if (!success) {
                     try {
-                        log.debug("capella input plugin: empty audit log");
+                        log.debug("capella input plugin: failed to download or empty audit log");
                         sleepTillNexPull();
                     } catch (InterruptedException e) {
                         log.error("interrupted", e);
                         break;
                     }
-                    queryPara newRange =  calculateQueryPara(queryRange.start, queryRange.end);
+                    queryPara newRange = calculateQueryPara(queryRange.start, queryRange.end);
                     queryRange.start = newRange.start;
                     queryRange.end = newRange.end;
                     continue;
-                }
-
-                // Open an InputStream and wrap it with BufferedReader to read line by line
-                try (InputStream in = byteSource.openStream(); BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(in, StandardCharsets.UTF_8))) {
-
-                    String originalLine;
-                    while ((originalLine = reader.readLine()) != null) {
-                        String line = refineLine(originalLine);
-                        if (line == null) {
-                            log.debug("invalid json exception: {}", originalLine);
-                            continue;
-                        }
-                        
-                        // Drop system generated logs
-                        if (line.contains("\"user\":\"@")){
-                            log.debug("Drop logs: {}", line);
-                            continue;
-                        }
-                        
-                        HashMap map = new HashMap();
-                        map.put(Constants.OUTPUT_KEY_MESSAGE, line);
-                        map.put(Constants.OUTPUT_KEY_ORG, organizationID);
-                        map.put(Constants.OUTPUT_KEY_PROJ, projectID);
-                        map.put(Constants.OUTPUT_KEY_CLUSTER, clusterID);
-                        map.put(Constants.OUTPUT_KEY_TYPE,pluginType);
-                        log.debug("capella input plugin: input message is {}", line);
-
-                        consumer.accept(map);
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
 
                 try {
